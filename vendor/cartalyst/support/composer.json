@@ -1,0 +1,40 @@
+{
+	"name": "cartalyst/support",
+	"description": "Support helpers.",
+	"keywords": [
+		"support",
+		"helper",
+		"laravel",
+		"cartalyst"
+	],
+	"license": "BSD-3-Clause",
+	"authors": [
+	    {
+	        "name": "Cartalyst LLC",
+	        "email": "help@cartalyst.com",
+	        "homepage": "https://cartalyst.com"
+	    }
+	],
+	"require": {
+		"php": ">=5.6.4"
+	},
+	"require-dev": {
+		"symfony/translation": "~3.2",
+		"illuminate/mail": "~5.0",
+		"illuminate/validation": "~5.0",
+		"mockery/mockery": "~0.9",
+		"phpunit/phpunit": "^5.7"
+	},
+	"autoload": {
+		"psr-4": {
+			"Cartalyst\\Support\\": "src/"
+		}
+	},
+	"extra": {
+		"component": "package",
+		"branch-alias": {
+			"dev-master": "2.0.x-dev"
+		}
+	},
+	"minimum-stability": "stable"
+}

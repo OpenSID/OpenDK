@@ -1,0 +1,65 @@
+{
+    "name": "cartalyst/sentinel",
+    "description": "PHP 5.4+ Fully-featured Authentication & Authorization System",
+    "keywords": [
+        "php",
+        "cartalyst",
+        "laravel",
+        "auth",
+        "security",
+        "codeigniter",
+        "fuelphp"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Cartalyst LLC",
+            "email": "help@cartalyst.com",
+            "homepage": "https://cartalyst.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "cartalyst/support": "~1.0|~2.0",
+        "illuminate/support": "~5.0"
+    },
+    "require-dev": {
+        "illuminate/cookie": "~5.0",
+        "illuminate/database": "~5.0",
+        "illuminate/events": "~5.0",
+        "illuminate/http": "~5.0",
+        "illuminate/session": "~5.0",
+        "ircmaxell/password-compat": "~1.0",
+        "mockery/mockery": "~0.9",
+        "paragonie/random_compat": "^1.4|^2",
+        "phpunit/phpunit": "~4.0"
+    },
+    "suggest": {
+        "illuminate/database": "By default, Sentinel utilizes the powerful Illuminate database layer.",
+        "illuminate/events": "To hook into various events across Sentinel, we recommend using Illuminate's event dispatcher.",
+        "ircmaxell/password-compat": "Default hashing uses PHP 5.5 password_* functions, with forward-compatible support.",
+        "symfony/http-foundation": "Required for native implementations."
+    },
+    "autoload": {
+        "psr-4": {
+            "Cartalyst\\Sentinel\\": "src/"
+        }
+    },
+    "extra": {
+        "component": "package",
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Cartalyst\\Sentinel\\Laravel\\SentinelServiceProvider"
+            ],
+            "aliases": {
+                "Activation": "Cartalyst\\Sentinel\\Laravel\\Facades\\Activation",
+                "Reminder": "Cartalyst\\Sentinel\\Laravel\\Facades\\Reminder",
+                "Sentinel": "Cartalyst\\Sentinel\\Laravel\\Facades\\Sentinel"
+            }
+        }
+    },
+    "minimum-stability": "stable"
+}

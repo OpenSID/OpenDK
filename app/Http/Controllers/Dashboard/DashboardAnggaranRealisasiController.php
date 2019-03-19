@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Http\Controllers\Dashboard;
+
+use Counter;
+use App\Http\Controllers\Controller;
+use App\Models\Profil;
+use Illuminate\Support\Facades\DB;
+
+class DashboardAnggaranRealisasiController extends Controller
+{
+    //
+    /**
+     * Menampilkan Data Anggaran Dan realisasi Kecamatan
+     **/
+    public function showAnggaranDanRealisasi()
+    {
+        Counter::count('dashboard.anggaran-dan-realisasi');
+
+        $data['page_title'] = 'Anggaran & Realisasi';
+        $data['page_description'] = 'Data Anggaran & Realisasi Kecamatan';
+        $defaultProfil = config('app.default_profile');
+        $data['defaultProfil'] = $defaultProfil;
+        $data['year_list'] = years_list();
+        $data['list_kecamatan'] = Profil::with('kecamatan')->orderBy('kecamatan_id', 'desc')->get();
+        /*$data['list_desa'] = DB::table('ref_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();*/
+
+        return view('dashboard.anggaran_realisasi.show_anggaran_realisasi')->with($data);
+    }
+
+    public function getChartAnggaranRealisasi()
+    {
+        $mid = request('mid');
+        $year = request('y');
+
+        // Grafik Data Pendidikan
+        $data_pendidikan = array();
+        if ($year == 'ALL') {
+            $total_anggaran = 0;
+            $total_belanja = 0;
+            $belanja_pegawai = 0;
+            $belanja_barang_jasa = 0;
+            $belanja_modal = 0;
+            $belanja_tidak_langsung = 0;
+
+            foreach (array_sort(years_list()) as $yearls) {
+                $query_result = DB::table('das_anggaran_realisasi')
+                    ->select('*')
+                    ->where('kecamatan_id', '=', config('app.default_profile'));
+                if($mid != 'ALL'){
+                    $query_result->where('bulan', '=', $mid);
+                }
+                $query_result->where('tahun', '=', $yearls);
+
+                $res = $query_result->first();
+
+                if (count($res) > 0) {
+                    $total_anggaran = $res->total_anggaran;
+                    $total_belanja = $res->total_belanja;
+                    $belanja_pegawai = $res->belanja_pegawai;
+                    $belanja_barang_jasa = $res->belanja_barang_jasa;
+                    $belanja_modal = $res->belanja_modal;
+                    $belanja_tidak_langsung = $res->belanja_tidak_langsung;
+                } else {
+                    $total_anggaran += 0;
+                    $total_belanja += 0;
+                    $belanja_pegawai += 0;
+                    $belanja_barang_jasa += 0;
+                    $belanja_modal += 0;
+                    $belanja_tidak_langsung += 0;
+                }
+
+            }
+
+            $data_pendidikan['sum'] = [
+                'total_belanja' => number_format($total_belanja),
+                'total_belanja_persen' => number_format(($total_belanja / $total_anggaran) * 100, 1),
+
+                'selisih_anggaran_realisasi' => number_format(0),
+                'selisih_anggaran_realisasi_persen' => number_format(0),
+
+                'belanja_pegawai' => number_format($belanja_pegawai),
+                'belanja_pegawai_persen' => number_format(($belanja_pegawai / $total_belanja) * 100, 1)
+                ,
+                'belanja_barang_jasa' => number_format($belanja_barang_jasa),
+                'belanja_barang_jasa_persen' => number_format(($belanja_barang_jasa / $total_belanja) * 100, 1),
+
+                'belanja_modal' => number_format($belanja_modal),
+                'belanja_modal_persen' => number_format(($belanja_modal / $total_belanja) * 100, 1),
+
+                'belanja_tidak_langsung' => number_format($belanja_tidak_langsung),
+                'belanja_tidak_langsung_persen' => number_format(($belanja_tidak_langsung / $total_belanja) * 100, 1),
+            ];
+            $data_pendidikan['chart'] = [
+                [
+                    'anggaran' => 'Belanja Pegawai',
+                    'value' => number_format(($belanja_pegawai / $total_belanja) * 100, 1)
+                ],
+                [
+                    'anggaran' => 'Belanja Barang dan Jasa',
+                    'value' => number_format(($belanja_barang_jasa / $total_belanja) * 100, 1),
+                ],
+                [
+                    'anggaran' => 'Belanja Modal',
+                    'value' => number_format(($belanja_modal / $total_belanja) * 100, 1),
+                ],
+                [
+                    'anggaran' => 'Belanja Tidak Langsung',
+                    'value' => number_format(($belanja_tidak_langsung / $total_belanja) * 100, 1),
+                ],
+            ];
+
+        } else {
+            $total_anggaran = 0;
+            $total_belanja = 0;
+            $belanja_pegawai = 0;
+            $belanja_barang_jasa = 0;
+            $belanja_modal = 0;
+            $belanja_tidak_langsung = 0;
+
+
+            $query_result = DB::table('das_anggaran_realisasi')
+                ->selectRaw('sum(total_anggaran) as total_anggaran, sum(total_belanja) as total_belanja,
+                sum(belanja_pegawai) as belanja_pegawai, sum(belanja_barang_jasa) as belanja_barang_jasa,
+                sum(belanja_modal) as belanja_modal, sum(belanja_tidak_langsung) as belanja_tidak_langsung')
+                ->where('kecamatan_id', '=', config('app.default_profile'));
+
+               if($mid != 'ALL'){
+                   $query_result->where('bulan', '=', $mid);
+               }
+               $query_result->where('tahun', '=', $year);
+
+                $res = $query_result->first();
+
+            if (count($res) > 0) {
+                $total_anggaran = $res->total_anggaran;
+                $total_belanja = $res->total_belanja;
+                $belanja_pegawai = $res->belanja_pegawai;
+                $belanja_barang_jasa = $res->belanja_barang_jasa;
+                $belanja_modal = $res->belanja_modal;
+                $belanja_tidak_langsung = $res->belanja_tidak_langsung;
+            }
+
+            $data_pendidikan['sum'] = [
+                'total_belanja' => number_format($total_belanja),
+                'total_belanja_persen' => number_format(($total_belanja / $total_anggaran) * 100, 1),
+
+                'selisih_anggaran_realisasi' => number_format(0),
+                'selisih_anggaran_realisasi_persen' => number_format(0),
+
+                'belanja_pegawai' => number_format($belanja_pegawai),
+                'belanja_pegawai_persen' => number_format(($belanja_pegawai / $total_belanja) * 100, 1)
+                ,
+                'belanja_barang_jasa' => number_format($belanja_barang_jasa),
+                'belanja_barang_jasa_persen' => number_format(($belanja_barang_jasa / $total_belanja) * 100, 1),
+
+                'belanja_modal' => number_format($belanja_modal),
+                'belanja_modal_persen' => number_format(($belanja_modal / $total_belanja) * 100, 1),
+
+                'belanja_tidak_langsung' => number_format($belanja_tidak_langsung),
+                'belanja_tidak_langsung_persen' => number_format(($belanja_tidak_langsung / $total_belanja) * 100, 1),
+            ];
+            $data_pendidikan['chart'] = [
+                [
+                    'anggaran' => 'Belanja Pegawai',
+                    'value' => number_format(($belanja_pegawai / $total_belanja) * 100, 1)
+                ],
+                [
+                    'anggaran' => 'Belanja Barang dan Jasa',
+                    'value' => number_format(($belanja_barang_jasa / $total_belanja) * 100, 1),
+                ],
+                [
+                    'anggaran' => 'Belanja Modal',
+                    'value' => number_format(($belanja_modal / $total_belanja) * 100, 1),
+                ],
+                [
+                    'anggaran' => 'Belanja Tidak Langsung',
+                    'value' => number_format(($belanja_tidak_langsung / $total_belanja) * 100, 1),
+                ],
+            ];
+        }
+
+        return $data_pendidikan;
+    }
+}

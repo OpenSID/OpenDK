@@ -12,3 +12,4 @@ yarn-error.log
 .env
 composer.lock
 composer.log
+/storage/installed

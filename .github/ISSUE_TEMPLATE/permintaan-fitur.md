@@ -2,7 +2,7 @@
 name: Permintaan fitur
 about: Mengusulkan perbaikan fitur atau fitur baru
 title: ''
-labels: ''
+labels: permintaan fitur
 assignees: ''
 
 ---

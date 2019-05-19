@@ -2,7 +2,7 @@
 name: Laporan Bug
 about: Laporkan bug supaya aplikasi kita bisa terus disempurnakan
 title: ''
-labels: ''
+labels: bug
 assignees: ''
 
 ---

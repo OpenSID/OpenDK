@@ -39,12 +39,18 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(DasMenuTableSeeder::class);
         /*
-         * Data Seeder Kecamatan Arongan Lambalek
+         * Data Seeder Kecamatan - ubah ini untuk kecamatan yg akan diinstal
          */
         $this->call(DasProfilTableSeeder::class);
         $this->call(DasDataUmumTableSeeder::class);
         $this->call(DasDataDesaTableSeeder::class);
 
+        /*
+         * Data Seeder Kecamatan Luak
+         */
+        // $this->call(DasProfilLuakTableSeeder::class);
+        // $this->call(DasDataUmumLuakTableSeeder::class);
+        // $this->call(DasDataDesaLuakTableSeeder::class);
         /*
          * Data Seeder Kecamatan Aikmel
          */

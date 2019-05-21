@@ -50,11 +50,11 @@ class DataDesaController extends Controller
     {
         //
         try{
-                      
+
             $desa = new DataDesa();
             $desa->fill($request->all());
             $desa->kecamatan_id = config('app.default_profile');
-          
+
             request()->validate([
                 'desa_id' => 'required',
                 'nama' => 'required',
@@ -62,8 +62,8 @@ class DataDesaController extends Controller
                 'luas_wilayah' => 'required'
             ]);
 
-            
-            $desa->save();          
+
+            $desa->save();
 
             return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil disimpan!');
         }catch (Exception $e){
@@ -112,8 +112,8 @@ class DataDesaController extends Controller
         $desa = DataDesa::findOrFail($id);
         $desa->fill($request->all());
         $desa->kecamatan_id = config('app.default_profile');
-        try{           
-          
+        try{
+
             request()->validate([
                 'desa_id' => 'required',
                 'nama' => 'required',
@@ -121,8 +121,8 @@ class DataDesaController extends Controller
                 'luas_wilayah' => 'required'
             ]);
 
-            
-            $desa->save();          
+
+            $desa->save();
 
             return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil disimpan!');
         }catch (Exception $e){
@@ -152,7 +152,7 @@ class DataDesaController extends Controller
     public function getDataDesa()
     {
         return DataTables::of(DataDesa::select(['id', 'desa_id', 'nama', 'website', 'luas_wilayah'])
-            ->where('kecamatan_id',config('app.default_profil'))
+            ->where('kecamatan_id', config('app.default_profile'))
             ->get())
             ->addColumn('action', function ($row) {
                 $edit_url = route('data.data-desa.edit', $row->id);
@@ -164,7 +164,7 @@ class DataDesaController extends Controller
                 return view('forms.action', $data);
             })
             ->editColumn('website', function($row){
-                                
+
                 return '<a href="'.$row->website.'" target="_blank">'.$row->website.'</a>';
             })
             ->rawColumns(['website', 'action'])->make();

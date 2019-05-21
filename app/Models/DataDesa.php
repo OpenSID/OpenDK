@@ -8,7 +8,7 @@ class DataDesa extends Model
 {
     //
    protected $table = 'das_data_desa';
-    
+
     protected $fillable = [
         'desa_id',
         'nama',

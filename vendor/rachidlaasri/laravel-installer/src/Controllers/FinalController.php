@@ -21,7 +21,11 @@ class FinalController extends Controller
         $finalMessages = $finalInstall->runFinal();
         $finalStatusMessage = $fileManager->update();
         $finalEnvFile = $environment->getEnvContent();
-        
+
+        // Buat symlink untuk public_html/storage di cPanel
+        if (!file_exists(public_path('storage')))
+            symlink(storage_path('app/public'), public_path('storage'));
+
         event(new LaravelInstallerFinished);
 
         return view('vendor.installer.finished', compact('finalMessages', 'finalStatusMessage', 'finalEnvFile'));

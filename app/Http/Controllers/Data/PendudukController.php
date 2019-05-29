@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Excel;
 use Yajra\DataTables\DataTables;
+use App\Classes\Data\ImporPenduduk;
 
 class PendudukController extends Controller
 {
@@ -44,7 +45,7 @@ class PendudukController extends Controller
             ->selectRaw('das_penduduk.id, das_penduduk.nik, das_penduduk.nama, das_penduduk.no_kk,
             das_penduduk.alamat, ref_pendidikan_kk.nama as pendidikan,
             das_penduduk.tanggal_lahir, ref_kawin.nama as status_kawin, ref_pekerjaan.nama as pekerjaan');
-      
+
         return DataTables::of($query->get())
             ->addColumn('action', function ($row) {
                 $edit_url = route('data.penduduk.edit', $row->id);
@@ -231,102 +232,21 @@ class PendudukController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Impor data penduduk dari file Excel.
+     * Kalau penduduk sudah ada (berdasarkan NIK), update dengan data yg diimpor
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function importExcel(Request $request)
     {
-        ini_set('max_execution_time', 0);
-        $tahun = $request->input('tahun');
-        $desa_id = $request->input('desa_id');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
-        ]);
-
-        if ($request->hasFile('file')) {
-
-            try{
-                $path = Input::file('file')->getRealPath();
-                $data = Excel::selectSheetsByIndex(0)->load($path, function ($reader) {
-                })->get();
-                /*$data = Excel::load($path, function ($reader) {
-                })->get();*/
-
-
-                if (!empty($data) && $data->count()) {
-
-                    foreach ($data as $key => $value) {
-                        if (!empty($value)) {
-                            $insert = [
-                                'nik' => $value['nomor_nik'],
-                                'nama' => $value['nama'],
-                                'no_kk' => $value['nomor_kk'],
-                                'sex' => $value['jenis_kelamin'],
-                                'tempat_lahir' => $value['tempat_lahir'],
-                                'tanggal_lahir' => $value['tanggal_lahir'],
-                                'agama_id' => $value['agama'],
-                                'pendidikan_kk_id' => $value['pendidikan_dlm_kk'],
-                                'pendidikan_sedang_id' => $value['pendidikan_sdg_ditempuh'],
-                                'pekerjaan_id' => $value['pekerjaan'],
-                                'status_kawin' => $value['kawin'],
-                                'kk_level' => $value['hubungan_keluarga'],
-                                'warga_negara_id' => $value['kewarganegaraan'],
-                                'nama_ibu' => $value['nama_ibu'],
-                                'nama_ayah' => $value['nama_ayah'],
-                                'golongan_darah_id' => $value['gol_darah'],
-                                'akta_lahir' => $value['akta_lahir'],
-                                'dokumen_pasport' => $value['nomor_dokumen_pasport'],
-                                'tanggal_akhir_pasport' => $value['tanggal_akhir_pasport'],
-                                'dokumen_kitas' => $value['nomor_dokumen_kitas'],
-                                'ayah_nik' => $value['nik_ayah'],
-                                'ibu_nik' => $value['nik_ibu'],
-                                'akta_perkawinan' => $value['nomor_akta_perkawinan'],
-                                'tanggal_perkawinan' => $value['tanggal_perkawinan'],
-                                'akta_perceraian' => $value['nomor_akta_perceraian'],
-                                'tanggal_perceraian' => $value['tanggal_perceraian'],
-                                'cacat_id' => $value['cacat'],
-                                'cara_kb_id' => $value['cara_kb'],
-                                'hamil' => $value['hamil'],
-
-                                // Tambahan
-                                'alamat_sekarang' => $value['alamat'],
-                                'alamat' => $value['alamat'],
-                                'dusun' => $value['dusun'],
-                                'rw' => $value['rw'],
-                                'rt' => $value['rt'],
-
-                                'kecamatan_id' => config('app.default_profile'),
-                                'desa_id' => $desa_id,
-                                'tahun' => $tahun,
-                                'status_dasar' => 1,
-                            ];
-
-                            if (!empty($insert)) {
-                                try{
-                                    Penduduk::insert($insert);
-                                }catch (QueryException $ex){
-                                    return back()->with('error', 'Import data gagal. </br>'.$ex->getCode());
-                                }
-                            }
-
-                        }
-                    }
-
-
-                    return back()->with('success', 'Import data sukses.');
-
-                }else{
-                    return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
-                }
-            }catch (\Exception $e){
-                return back()->with('error', 'Import data gagal. '.$e->getMessage());
-            }
-
-        }else{
-            return back()->with('error', 'Import data gagal. File excel belum dipilih.');
+        try {
+            $impor_penduduk = new ImporPenduduk($request);
+            $impor_penduduk->insertOrUpdate();
+        } catch (\Exception $e){
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
+
+        return back()->with('success', 'Import data sukses.');
     }
 }

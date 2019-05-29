@@ -39,15 +39,11 @@ class ImporPenduduk
             );
         }
 
-        try {
-            $this->path = Input::file('file')->getRealPath();
-            $this->data = Excel::selectSheetsByIndex(0)->load($this->path, function ($reader) {
-            })->get();
-            /*$data = Excel::load($path, function ($reader) {
-            })->get();*/
-        } catch (\Exception $e){
-            throw new \InvalidArgumentException($e->getMessage());
-        }
+        $this->path = Input::file('file')->getRealPath();
+        $this->data = Excel::selectSheetsByIndex(0)->load($this->path, function ($reader) {
+        })->get();
+        /*$data = Excel::load($path, function ($reader) {
+        })->get();*/
 
         if (empty($this->data) or !$this->data->count()) {
             throw new \InvalidArgumentException(
@@ -112,15 +108,10 @@ class ImporPenduduk
                 continue;
             }
             $penduduk = Penduduk::where('nik', $insert['nik'])->first();
-            try {
-                if ($penduduk) {
-                    $penduduk->update($insert);
-                }
-                else {
-                    Penduduk::insert($insert);
-                }
-            } catch (\Exception $e){
-	           	throw new \InvalidArgumentException($e->getMessage());
+            if ($penduduk) {
+                $penduduk->update($insert);
+            } else {
+                Penduduk::insert($insert);
             }
         }
     }

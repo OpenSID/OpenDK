@@ -20,11 +20,11 @@ class AkiAkb extends Model
 
     public function kecamatan()
     {
-        return $this->hasOne(Kecamatan::class, 'id', 'kecamatan_id');
+        return $this->hasOne(Wilayah::class, 'kode', 'kecamatan_id');
     }
 
     public function desa()
     {
-        return $this->hasOne(Desa::class, 'id', 'desa_id');
+        return $this->hasOne(Wilayah::class, 'kode', 'desa_id');
     }
 }

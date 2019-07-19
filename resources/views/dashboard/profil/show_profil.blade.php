@@ -121,7 +121,7 @@
                                 </tr>
                                 <tr>
                                     <th class="col-md-4">Kode Kecamatan</th>
-                                    <td class="col-md-8">: {{ ucwords(strtolower($profil->kecamatan->id)) }}</td>
+                                    <td class="col-md-8">: {{ ucwords(strtolower($profil->kecamatan->kode)) }}</td>
                                 </tr>
 
                                 <tr>

@@ -8,7 +8,7 @@
         "php": ">=7.0.0",
         "cartalyst/sentinel": "2.0.17",
         "cviebrock/eloquent-sluggable": "^4.3",
-        "doctrine/dbal": "^2.5",
+        "doctrine/dbal": "^2.9",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^6.3",
         "jaybizzle/crawler-detect": "1.*",

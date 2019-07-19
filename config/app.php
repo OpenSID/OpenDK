@@ -6,7 +6,7 @@ return [
      *  Default Profil
      */
 
-    'default_profile' => env('KD_DEFAULT_PROFIL', '1107062'),
+    'default_profile' => env('KD_DEFAULT_PROFIL', '13.07.04'),
 
     /*
     |--------------------------------------------------------------------------

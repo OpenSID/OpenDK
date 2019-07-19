@@ -13,6 +13,9 @@ class ImporPenduduk
     protected $request = [];
     protected $path;
     protected $data = [];
+    protected $provinsi_id;
+    protected $kabupaten_id;
+    protected $kecamatan_id;
     protected $desa_id;
     protected $tahun;
 
@@ -26,6 +29,9 @@ class ImporPenduduk
     public function __construct(Request $request)
     {
 		$this->request = $request;
+        $this->kecamatan_id = config('app.default_profile');
+        $this->provinsi_id = substr($this->kecamatan_id, 0, 2);
+        $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
         $this->tahun = $request->input('tahun');
         $this->desa_id = $request->input('desa_id');
 
@@ -98,7 +104,9 @@ class ImporPenduduk
                 'rw' => $value['rw'],
                 'rt' => $value['rt'],
 
-                'kecamatan_id' => config('app.default_profile'),
+                'provinsi_id' => $this->provinsi_id,
+                'kabupaten_id' => $this->kabupaten_id,
+                'kecamatan_id' => $this->kecamatan_id,
                 'desa_id' => $this->desa_id,
                 'tahun' => $this->tahun,
                 'status_dasar' => 1,

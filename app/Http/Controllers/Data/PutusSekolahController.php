@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Models\Kecamatan;
 use App\Models\PutusSekolah;
+use App\Models\Wilayah;
 use Doctrine\DBAL\Driver\Mysqli\MysqliException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PutusSekolahController extends Controller
     public function index()
     {
         //
-        $kecamatan = Kecamatan::find(config('app.default_profile'));
+        $kecamatan = Wilayah::where('kode',config('app.default_profile'))->first();
         $page_title = 'Anak Putus Sekolah';
         $page_description = 'Data Anak Putus Sekolah Kecamatan '.$kecamatan->nama_kecamatan;
         return view('data.putus_sekolah.index', compact('page_title', 'page_description'));

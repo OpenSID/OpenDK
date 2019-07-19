@@ -41,6 +41,6 @@ class DataUmum extends Model
 
     public function kecamatan()
     {
-        return $this->belongsTo(Kecamatan::class, 'kecamatan_id', 'id');
+        return $this->belongsTo(Wilayah::class, 'kecamatan_id', 'kode');
     }
 }

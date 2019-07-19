@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Models\FasilitasPAUD;
 use App\Models\Kecamatan;
+use App\Models\Wilayah;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ class FasilitasPaudController extends Controller
     public function index()
     {
         //
-        $kecamatan = Kecamatan::find(config('app.default_profile'));
+        $kecamatan = Wilayah::where('kode',config('app.default_profile'))->first();
         $page_title = 'Fasilitas PAUD';
         $page_description = 'Data Fasilitas PAUD Kecamatan '.$kecamatan->nama_kecamatan;
         return view('data.fasilitas_paud.index', compact('page_title', 'page_description'));

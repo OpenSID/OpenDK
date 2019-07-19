@@ -58,12 +58,12 @@ return array(
     ],
 
     'properties' => [
-        'creator'        => 'Kecamatan Dashboard',
-        'lastModifiedBy' => 'Kecamatan Dashboard',
+        'creator'        => 'Dashboard Kecamatan',
+        'lastModifiedBy' => 'Dashboard Kecamatan',
         'title'          => 'Spreadsheet',
         'description'    => 'Default spreadsheet export',
         'subject'        => 'Spreadsheet export',
-        'keywords'       => 'kecamatan dashboard, excel, export',
+        'keywords'       => 'Dashboard Kecamatan, excel, export',
         'category'       => 'Excel',
         'manager'        => 'KOMPAK',
         'company'        => 'KOMPAK',
@@ -106,7 +106,7 @@ return array(
     |
     */
 
-    'creator'    => 'Kecamatan Dashboard',
+    'creator'    => 'Dashboard Kecamatan',
 
     'csv'        => [
         /*

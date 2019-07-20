@@ -101,13 +101,20 @@ class ImporPenduduk
                 'kecamatan_id' => config('app.default_profile'),
                 'desa_id' => $this->desa_id,
                 'tahun' => $this->tahun,
-                'status_dasar' => 1,
+
+                'id_pend_desa' => $value['id'],
+                'status_dasar' => $value['status_dasar'],
+                'created_at' => $value['created_at'],
+                'updated_at' => $value['updated_at'],
+                'imported_at' => date("Y-m-d h:i:s")
             ];
 
             if (empty($insert)) {
                 continue;
             }
-            $penduduk = Penduduk::where('nik', $insert['nik'])->first();
+            // Gunakan desa_id && id_pend_desa untuk membandingkan penduduk, bukan NIK, karena NIK mungkin 0 dan juga mungkin diubah di desa.
+            $penduduk = Penduduk::where('desa_id', $insert['desa_id'])
+                ->where('id_pend_desa', $insert['id_pend_desa'])->first();
             if ($penduduk) {
                 $penduduk->update($insert);
             } else {

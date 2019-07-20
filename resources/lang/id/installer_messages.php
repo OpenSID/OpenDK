@@ -7,7 +7,7 @@ return [
      * Shared translations.
      *
      */
-    'title' => 'Kecamatan Dashboard Installer',
+    'title' => 'Dashboard Dashboard Installer',
     'next' => 'Selanjutnya',
     'back' => 'Kembali',
     'finish' => 'Pasang',
@@ -22,7 +22,7 @@ return [
      */
     'welcome' => [
         'templateTitle' => 'Selamat Datang',
-        'title'   => 'Kecamatan Dashboard Installer',
+        'title'   => 'Dashboard Kecamatan Installer',
         'message' => 'Instalasi Mudah dan Persiapan Aplikasi',
         'next'    => 'Cek Kebutuhan',
     ],
@@ -175,7 +175,7 @@ return [
      *
      */
     'installed' => [
-        'success_log_message' => 'Kecamatan Dashboard berhasil DIPASANG pada ',
+        'success_log_message' => 'Dashboard Kecamatan berhasil DIPASANG pada ',
     ],
 
     /**
@@ -205,7 +205,7 @@ return [
          * Shared translations.
          *
          */
-        'title' => 'Kecamatan Dashboard Updater',
+        'title' => 'Dashboard Kecamatan Updater',
 
         /**
          *
@@ -240,7 +240,7 @@ return [
         ],
 
         'log' => [
-            'success_message' => 'Kecamatan Dashboard berhasil DIPERBARUI pada ',
+            'success_message' => 'Dashboard Kecamatan berhasil DIPERBARUI pada ',
         ],
     ],
 ];

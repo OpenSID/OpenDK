@@ -13,10 +13,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleTableSeeder::class);
         $this->call(UsersTableSeeder::class);
-        $this->call(RefProvinsiTableSeeder::class);
-        $this->call(RefKabupatenTableSeeder::class);
-        $this->call(RefKecamatanTableSeeder::class);
-        $this->call(RefDesaTableSeeder::class);
+        //$this->call(RefProvinsiTableSeeder::class);
+        //$this->call(RefKabupatenTableSeeder::class);
+        //$this->call(RefKecamatanTableSeeder::class);
+        //$this->call(RefDesaTableSeeder::class);
+		$this->call(RefWilayahTableSeeder::class);
         $this->call(RefPekerjaanTableSeeder::class);
         $this->call(RefAgamaTableSeeder::class);
         $this->call(RefKawinTableSeeder::class);

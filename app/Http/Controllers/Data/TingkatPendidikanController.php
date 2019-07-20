@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Data;
 use App\Models\Kecamatan;
 use App\Models\LogImport;
 use App\Models\TingkatPendidikan;
+use App\Models\Wilayah;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,7 +20,7 @@ class TingkatPendidikanController extends Controller
     public function index()
     {
         //
-        $kecamatan = Kecamatan::find(config('app.default_profile'));
+        $kecamatan = Wilayah::where('kode',config('app.default_profile'))->first();
         $page_title = 'Tingkat Pendidikan';
         $page_description = 'Data Tingkat Pendidikan Kecamatan '.$kecamatan->nama_kecamatan;
         return view('data.tingkat_pendidikan.index', compact('page_title', 'page_description'));

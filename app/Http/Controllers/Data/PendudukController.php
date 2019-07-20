@@ -93,6 +93,9 @@ class PendudukController extends Controller
             $penduduk->pendidikan_id = 0;
             $penduduk->id_cluster = 0;
             $penduduk->status_dasar = 1;
+            $penduduk->kecamatan_id = config('app.default_profile');
+            $penduduk->provinsi_id = substr($penduduk->kecamatan_id,0,2);
+            $penduduk->kabupaten_id = substr($penduduk->kecamatan_id,0,5);
 
             request()->validate([
                 'nama' => 'required',

@@ -555,35 +555,35 @@ Route::group(['middleware' => 'installed'], function () {
 
 // All Provinsi Select2
     Route::get('/api/provinsi', function () {
-        return \App\Models\Provinsi::where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
+        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 2')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
 
 // All Kabupaten Select2
     Route::get('/api/kabupaten', function () {
-        return \App\Models\Kabupaten::where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
+        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 5')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
 
 //  All Kecamatan Select2
     Route::get('/api/kecamatan', function () {
-        return \App\Models\Kecamatan::where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
+        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 8')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
 
 // All Desa Select2
     Route::get('/api/desa', function () {
-        return \App\Models\Desa::where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
+        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 13')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
 
 // Desa Select2 By Kecamatan ID
     Route::get('/api/desa-by-kid', function () {
-        return DB::table('ref_desa')->select('id', 'nama')->where('kecamatan_id', '=', strtoupper(request('kid')))->get();
+        return DB::table('ref_desa')->select('kode', 'nama')->whereRaw('LENGTH(kode) = 2')->where('kecamatan_id', '=', strtoupper(request('kid')))->get();
     })->name('api.desa-by-kid');
 
 // All Profil Select2
     Route::get('/api/profil', function () {
         return DB::table('das_profil')
-            ->join('ref_kecamatan', 'das_profil.kecamatan_id', '=', 'ref_kecamatan.id')
-            ->select('ref_kecamatan.id', 'ref_kecamatan.nama')
-            ->where('ref_kecamatan.nama', 'LIKE', '%' . strtoupper(request('q')) . '%')
+            ->join('ref_wilayah', 'das_profil.kecamatan_id', '=', 'ref_wilayah.kode')
+            ->select('ref_wilayah.kode', 'ref_kecamatan.nama')
+            ->where('ref_wilayah.nama', 'LIKE', '%' . strtoupper(request('q')) . '%')
             ->paginate(10);
     })->name('api.profil');
 

@@ -34,17 +34,17 @@ class Profil extends Model
 
     public function kecamatan()
     {
-        return $this->hasOne(Kecamatan::class, 'id', 'kecamatan_id');
+        return $this->hasOne(Wilayah::class, 'kode', 'kecamatan_id');
     }
 
     public function kabupaten()
     {
-        return $this->hasOne(Kabupaten::class, 'id', 'kabupaten_id');
+        return $this->hasOne(Wilayah::class, 'kode', 'kabupaten_id');
     }
 
     public function provinsi()
     {
-        return $this->hasOne(Provinsi::class, 'id', 'provinsi_id');
+        return $this->hasOne(Wilayah::class, 'kode', 'provinsi_id');
     }
 
     public static function getProfilTanpaDataUmum()

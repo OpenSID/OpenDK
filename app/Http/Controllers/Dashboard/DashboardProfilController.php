@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Dashboard;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Support\Facades\DB;
 use App\Models\Profil;
 use App\Http\Controllers\Controller;
@@ -17,7 +18,7 @@ class DashboardProfilController extends Controller
 
         $defaultProfil = config('app.default_profile');
 
-        $profil = Profil::where(['kecamatan_id'=>$defaultProfil])->first();
+        $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
 
         $dokumen = DB::table('das_form_dokumen')->take(5)->get();
 

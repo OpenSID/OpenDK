@@ -9,6 +9,7 @@ use App\Models\Desa;
 use App\Models\DataDesa;
 use App\Models\Profil;
 use App\Models\VisiMisi;
+use App\Models\Wilayah;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
@@ -90,8 +91,8 @@ class ProfilController extends Controller
 
             $profil = new Profil();
             $profil->fill($request->all());
-            $profil->kabupaten_id = Kecamatan::find($profil->kecamatan_id)->kabupaten_id;
-            $profil->provinsi_id = Kabupaten::find($profil->kabupaten_id)->provinsi_id;
+            $profil->kabupaten_id = substr($profil->kecamatan_id,0,5);
+            $profil->provinsi_id = substr($profil->kecamatan_id,0,2);
 
 
 
@@ -125,7 +126,7 @@ class ProfilController extends Controller
 
                 DataDesa::insert($data_desa);
             return redirect()->route('data.profil.success', $id)->with('success', 'Profil berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Profil gagal disimpan!');
         }
     }
@@ -197,8 +198,8 @@ class ProfilController extends Controller
         try {
             $profil = Profil::find($id);
             $profil->fill($request->all());
-            $profil->kabupaten_id = Kecamatan::find($profil->kecamatan_id)->kabupaten_id;
-            $profil->provinsi_id = Kabupaten::find($profil->kabupaten_id)->provinsi_id;
+            $profil->kabupaten_id = substr($profil->kecamatan_id,0,5);
+            $profil->provinsi_id = substr($profil->kecamatan_id,0,2);
 
             $dataumum = DataUmum::where('profil_id', $id)->first();
             $dataumum->kecamatan_id = $profil->kecamatan_id;
@@ -233,7 +234,7 @@ class ProfilController extends Controller
             $dataumum->update();
 
             return redirect()->route('data.profil.success', $profil->dataumum->id)->with('success', 'Update Profil sukses!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
     }

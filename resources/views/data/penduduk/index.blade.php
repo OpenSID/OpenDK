@@ -27,9 +27,9 @@
         <div class="tab-content">
             <div class="row">
                 <div class="col-md-12">
-                       {{-- <a href="{{ route('data.penduduk.create') }}">
+                       <a href="{{ route('data.penduduk.create') }}">
                             <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Penduduk</button>
-                        </a>--}}
+                        </a>
                         <a href="{{ route('data.penduduk.import') }}">
                             <button type="button" class="btn btn-warning btn-sm" title="Upload Data"><i class="fa fa-upload"></i> Import</button>
                         </a>

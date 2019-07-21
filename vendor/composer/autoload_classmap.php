@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Classes\\Data\\ImporPenduduk' => $baseDir . '/app/Classes/Data/ImporPenduduk.php',
     'App\\Classes\\MenuNav\\MenuFacade' => $baseDir . '/app/Classes/MenuNav/MenuFacade.php',
     'App\\Classes\\MenuNav\\MenuNav' => $baseDir . '/app/Classes/MenuNav/MenuNav.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
@@ -137,6 +138,7 @@ return array(
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\Warganegara' => $baseDir . '/app/Models/Warganegara.php',
     'App\\Models\\WilClusterDesa' => $baseDir . '/app/Models/WilClusterDesa.php',
+    'App\\Models\\Wilayah' => $baseDir . '/app/Models/Wilayah.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
@@ -285,7 +287,6 @@ return array(
     'DasPendudukTableSeeder' => $baseDir . '/database/seeds/DasPendudukAcehTableSeeder.php',
     'DasProfilAikmelTableSeeder' => $baseDir . '/database/seeds/DasProfilAikmelTableSeeder.php',
     'DasProfilLuakTableSeeder' => $baseDir . '/database/seeds/DasProfilLuakTableSeeder.php',
-    'DasProfilLuakTableSeeder1' => $baseDir . '/database/seeds/DasProfilLuakTableSeeder1.php',
     'DasProfilTableSeeder' => $baseDir . '/database/seeds/DasProfilTableSeeder.php',
     'DasTipeRegulasiTableSeeder' => $baseDir . '/database/seeds/DasTipeRegulasiTableSeeder.php',
     'DasWilClusterdesaAikmelTableSeeder' => $baseDir . '/database/seeds/DasWilClusterdesaAikmelTableSeeder.php',
@@ -2568,6 +2569,7 @@ return array(
     'RefSubSubCoaTableSeeder' => $baseDir . '/database/seeds/RefSubSubCoaTableSeeder.php',
     'RefUmurTableSeeder' => $baseDir . '/database/seeds/RefUmurTableSeeder.php',
     'RefWarganegaraTableSeeder' => $baseDir . '/database/seeds/RefWarganegaraTableSeeder.php',
+    'RefWilayahTableSeeder' => $baseDir . '/database/seeds/RefWilayahTableSeeder.php',
     'RoleTableSeeder' => $baseDir . '/database/seeds/RoleTableSeeder.php',
     'RolesTableSeeder' => $baseDir . '/database/seeds/RolesTableSeeder.php',
     'SessionUpdateTimestampHandlerInterface' => $vendorDir . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',

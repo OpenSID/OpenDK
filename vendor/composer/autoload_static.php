@@ -418,6 +418,7 @@ class ComposerStaticInit747cbaa42ba592865f2c7f37d863d60a
     );
 
     public static $classMap = array (
+        'App\\Classes\\Data\\ImporPenduduk' => __DIR__ . '/../..' . '/app/Classes/Data/ImporPenduduk.php',
         'App\\Classes\\MenuNav\\MenuFacade' => __DIR__ . '/../..' . '/app/Classes/MenuNav/MenuFacade.php',
         'App\\Classes\\MenuNav\\MenuNav' => __DIR__ . '/../..' . '/app/Classes/MenuNav/MenuNav.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
@@ -549,6 +550,7 @@ class ComposerStaticInit747cbaa42ba592865f2c7f37d863d60a
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
         'App\\Models\\Warganegara' => __DIR__ . '/../..' . '/app/Models/Warganegara.php',
         'App\\Models\\WilClusterDesa' => __DIR__ . '/../..' . '/app/Models/WilClusterDesa.php',
+        'App\\Models\\Wilayah' => __DIR__ . '/../..' . '/app/Models/Wilayah.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
@@ -697,7 +699,6 @@ class ComposerStaticInit747cbaa42ba592865f2c7f37d863d60a
         'DasPendudukTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DasPendudukAcehTableSeeder.php',
         'DasProfilAikmelTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DasProfilAikmelTableSeeder.php',
         'DasProfilLuakTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DasProfilLuakTableSeeder.php',
-        'DasProfilLuakTableSeeder1' => __DIR__ . '/../..' . '/database/seeds/DasProfilLuakTableSeeder1.php',
         'DasProfilTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DasProfilTableSeeder.php',
         'DasTipeRegulasiTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DasTipeRegulasiTableSeeder.php',
         'DasWilClusterdesaAikmelTableSeeder' => __DIR__ . '/../..' . '/database/seeds/DasWilClusterdesaAikmelTableSeeder.php',
@@ -2980,6 +2981,7 @@ class ComposerStaticInit747cbaa42ba592865f2c7f37d863d60a
         'RefSubSubCoaTableSeeder' => __DIR__ . '/../..' . '/database/seeds/RefSubSubCoaTableSeeder.php',
         'RefUmurTableSeeder' => __DIR__ . '/../..' . '/database/seeds/RefUmurTableSeeder.php',
         'RefWarganegaraTableSeeder' => __DIR__ . '/../..' . '/database/seeds/RefWarganegaraTableSeeder.php',
+        'RefWilayahTableSeeder' => __DIR__ . '/../..' . '/database/seeds/RefWilayahTableSeeder.php',
         'RoleTableSeeder' => __DIR__ . '/../..' . '/database/seeds/RoleTableSeeder.php',
         'RolesTableSeeder' => __DIR__ . '/../..' . '/database/seeds/RolesTableSeeder.php',
         'SessionUpdateTimestampHandlerInterface' => __DIR__ . '/..' . '/symfony/polyfill-php70/Resources/stubs/SessionUpdateTimestampHandlerInterface.php',

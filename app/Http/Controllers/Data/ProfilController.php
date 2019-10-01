@@ -29,7 +29,8 @@ class ProfilController extends Controller
         /*$page_title = 'Profil';
         $page_description= 'Data Profil Kecamatan';
         return view('data.profil.index', compact('page_title', 'page_description'));*/
-        $profil = Profil::where('kecamatan_id', config('app.default_profile'))->first();
+        $profil = Profil::with('kecamatan')->where('kecamatan_id', config('app.default_profile'))->first();
+        // dd($profil);
         if($profil->file_struktur_organisasi == ''){
             $profil->file_struktur_organisasi = 'http://placehold.it/600x400';
         }

@@ -23,8 +23,10 @@ class DashboardProfilController extends Controller
         $dokumen = DB::table('das_form_dokumen')->take(5)->get();
 
         $page_title = 'Profil';
+        $page_description = null;
+
         if(isset($profil)){
-            $page_description= ucwords(strtolower('Kecamatan '.$profil->kecamatan->nama));
+            $page_description = ucwords(strtolower('Kecamatan '.$profil->kecamatan->nama));
         }
 
         return view('dashboard.profil.show_profil', compact('page_title', 'page_description', 'profil', 'defaultProfil', 'dokumen'));

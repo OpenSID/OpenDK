@@ -17,9 +17,9 @@ class DasProfilTableSeeder extends Seeder
             0 =>
             array (
                 'id' => 1,
-                'provinsi_id' => '13',
-                'kabupaten_id' => '1308',
-                'kecamatan_id' => '1308020',
+                'provinsi_id' => '53',
+                'kabupaten_id' => '53.06',
+                'kecamatan_id' => '53.06.13',
                 'alamat' => 'Jl. Koperasi No. 1, Kab Lombok Barat, Provinsi Nusa Tenggara Barat',
                 'kode_pos' => '83653',
                 'telepon' => '021-2345234',

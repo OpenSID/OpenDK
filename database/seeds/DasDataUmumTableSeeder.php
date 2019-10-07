@@ -21,7 +21,7 @@ class DasDataUmumTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'profil_id' => 1,
-                'kecamatan_id' => '13.07.04',
+                'kecamatan_id' => '53.06.13',
                 'tipologi' => 'Kecamatan maju namun terpencil.',
                 'ketinggian' => 1,
                 'luas_wilayah' => 0.0,

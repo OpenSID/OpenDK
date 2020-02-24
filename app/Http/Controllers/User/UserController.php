@@ -37,7 +37,7 @@ class UserController extends Controller
     public function create()
     {
         $item = Role::where('slug','!=','super-admin')->pluck('name', 'slug')->toArray();
-        return view( 'user.create', compact('item', $item) );
+        return view( 'user.create', compact('item') );
     }
 
     /**
@@ -90,7 +90,7 @@ class UserController extends Controller
         $user = User::find($id);
         $title = [ 'title' => 'Pengguna' ];
         $item = Role::where('slug','!=','super-admin')->pluck('name', 'slug')->toArray();
-        return view( 'user.edit', compact('user','title','item', $item));
+        return view( 'user.edit', compact('user','title','item'));
     }
 
     /**

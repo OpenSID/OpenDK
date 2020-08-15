@@ -54,7 +54,7 @@ class DashboardAnggaranRealisasiController extends Controller
 
                 $res = $query_result->first();
 
-                if (count($res) > 0) {
+                if (count((array) $res) > 0) {
                     $total_anggaran = $res->total_anggaran;
                     $total_belanja = $res->total_belanja;
                     $belanja_pegawai = $res->belanja_pegawai;

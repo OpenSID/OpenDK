@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
 use App\Models\Profil;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
@@ -104,7 +104,7 @@ class EpidemiPenyakitController extends Controller
 
         if ($request->hasFile('file') && $this->uploadValidation($bulan, $tahun, $penyakit_id)) {
             try {
-                $path = Input::file('file')->getRealPath();
+                $path = RequestFacade::file('file')->getRealPath();
 
                 $data = Excel::load($path, function ($reader) {
                 })->get();

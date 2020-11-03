@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\AkiAkb;
 use App\Models\Profil;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
@@ -83,7 +84,7 @@ class AKIAKBController extends Controller
         $page_description = 'Import Data AKI & AKB';
         $years_list       = years_list();
         $months_list      = months_list();
-        return view('data.aki_akb.import', compact('page_title', 'page_description', 'kecamatan_id', 'list_desa', 'years_list', 'months_list'));
+        return view('data.aki_akb.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
     /**
@@ -103,7 +104,7 @@ class AKIAKBController extends Controller
 
         if ($request->hasFile('file') && $this->uploadValidation($bulan, $tahun)) {
             try {
-                $path = Input::file('file')->getRealPath();
+                $path = RequestFacade::file('file')->getRealPath();
 
                 $data = Excel::load($path, function ($reader) {
                 })->get();

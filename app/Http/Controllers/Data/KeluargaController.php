@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use Yajra\DataTables\DataTables;
 
 use function back;
@@ -196,7 +196,7 @@ class KeluargaController extends Controller
     {
         ini_set('max_execution_time', 300);
         if (Input::hasFile('data_file')) {
-            $path = Input::file('data_file')->getRealPath();
+            $path = RequestFacade::file('data_file')->getRealPath();
 
             Excel::filter('chunk')->load($path)->chunk(1000, function ($results) {
                 foreach ($results as $row) {

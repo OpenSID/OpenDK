@@ -3,9 +3,9 @@
 namespace App\Classes\Data;
 
 use App\Models\Penduduk;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use InvalidArgumentException;
 
 use function config;
@@ -48,7 +48,7 @@ class ImporPenduduk
             );
         }
 
-        $this->path = Input::file('file')->getRealPath();
+        $this->path = RequestFacade::file('file')->getRealPath();
         $this->data = Excel::selectSheetsByIndex(0)->load($this->path, function ($reader) {
         })->get();
         /*$data = Excel::load($path, function ($reader) {

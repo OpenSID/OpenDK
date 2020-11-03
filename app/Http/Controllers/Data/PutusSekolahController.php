@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\PutusSekolah;
 use App\Models\Wilayah;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use Yajra\DataTables\DataTables;
 
 use function back;
@@ -88,7 +88,7 @@ class PutusSekolahController extends Controller
 
         if ($request->hasFile('file') && $this->uploadValidation($desa_id, $semester, $tahun)) {
             try {
-                $path = Input::file('file')->getRealPath();
+                $path = RequestFacade::file('file')->getRealPath();
                 $data = Excel::selectSheetsByIndex(0)->load($path, function ($reader) {
                 })->get();
                 /*$data = Excel::load($path, function ($reader) {

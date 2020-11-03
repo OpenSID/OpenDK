@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\LogImport;
 use App\Models\TingkatPendidikan;
 use App\Models\Wilayah;
-use Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Request as RequestFacade;
 use Validator;
 use Yajra\DataTables\DataTables;
 
@@ -95,7 +95,7 @@ class TingkatPendidikanController extends Controller
 
         if ($validator->passes() && $this->uploadValidation($desa_id, $semester, $tahun)) {
             try {
-                $path = Input::file('file')->getRealPath();
+                $path = RequestFacade::file('file')->getRealPath();
 
                 $data = Excel::load($path, function ($reader) {
                 })->get();

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\CoaType;
 use App\Models\Profil;
-use App\Facades\Counter;
 use Illuminate\Support\Facades\DB;
 
 use function compact;

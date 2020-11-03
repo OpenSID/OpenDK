@@ -7,6 +7,7 @@ use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
 use App\Models\Role;
 use App\Models\RoleUser;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -67,7 +68,7 @@ class RoleController extends Controller
             ]));
 
             return redirect()->route('setting.role.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
             ]));
@@ -125,7 +126,7 @@ class RoleController extends Controller
                 Role::find($id)->update(['name' => $request->name, 'permissions' => []]);
             }
             return redirect()->route('setting.role.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('message.role.update-error', [
                 'attribute' => trans('island.role'),
             ]));
@@ -155,7 +156,7 @@ class RoleController extends Controller
                 flash()->success(trans('general.destroy-success'));
                 return redirect()->route('setting.role.index');
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
             ]));

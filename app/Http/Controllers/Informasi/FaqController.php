@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use App\Facades\Counter;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -105,7 +106,7 @@ class FaqController extends Controller
             Faq::find($id)->update($request->all());
 
             return redirect()->route('informasi.faq.index')->with('success', 'Update FAQ sukses!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Update FAQ gagal!');
         }
     }
@@ -122,7 +123,7 @@ class FaqController extends Controller
             Faq::findOrFail($id)->delete();
 
             return redirect()->route('informasi.faq.index')->with('success', 'FAQ sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('informasi.faq.index')->with('error', 'FAQ gagal dihapus!');
         }
     }

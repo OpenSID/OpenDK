@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipeRegulasi;
+use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -62,7 +63,7 @@ class TipeRegulasiController extends Controller
 
             $tipe->save();
             return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dikirim!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dikirim!');
         }
     }
@@ -88,7 +89,7 @@ class TipeRegulasiController extends Controller
 
             $tipe->save();
             return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil diupdate!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal diupdate!');
         }
     }
@@ -99,7 +100,7 @@ class TipeRegulasiController extends Controller
             TipeRegulasi::findOrFail($id)->delete();
 
             return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dihapus!');
         }
     }

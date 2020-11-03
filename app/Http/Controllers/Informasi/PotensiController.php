@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Potensi;
-use App\Facades\Counter;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -166,7 +167,7 @@ class PotensiController extends Controller
             $potensi->save();
 
             return redirect()->route('informasi.potensi.index')->with('success', 'Data Potensi berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('error', 'Data Potensi gagal disimpan!' . $e->getMessage());
         }
     }

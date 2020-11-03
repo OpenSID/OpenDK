@@ -6,11 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
 use App\Models\Profil;
-use Maatwebsite\Excel\Facades\Excel;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
@@ -134,7 +135,7 @@ class EpidemiPenyakitController extends Controller
                         }
                     }
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
             }
         } else {
@@ -181,7 +182,7 @@ class EpidemiPenyakitController extends Controller
             EpidemiPenyakit::find($id)->update($request->all());
 
             return redirect()->route('data.epidemi-penyakit.index')->with('success', 'Data berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -198,7 +199,7 @@ class EpidemiPenyakitController extends Controller
             EpidemiPenyakit::findOrFail($id)->delete();
 
             return redirect()->route('data.epidemi-penyakit.index')->with('success', 'Data sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.epidemi-penyakit.index')->with('error', 'Data gagal dihapus!');
         }
     }

@@ -6,7 +6,7 @@ use App\Classes\Data\ImporPenduduk;
 use App\Http\Controllers\Controller;
 use App\Models\Penduduk;
 use Doctrine\DBAL\Query\QueryException;
-use DummyFullModelClass;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -126,7 +126,7 @@ class PendudukController extends Controller
 
             $penduduk->save();
             return redirect()->route('data.penduduk.index')->with('success', 'Penduduk berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Penduduk gagal disimpan!');
         }
     }
@@ -235,7 +235,7 @@ class PendudukController extends Controller
         try {
             $impor_penduduk = new ImporPenduduk($request);
             $impor_penduduk->insertOrUpdate();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 

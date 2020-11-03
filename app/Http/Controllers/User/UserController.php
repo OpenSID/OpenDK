@@ -4,14 +4,14 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Http\Requests\UserUpdatePasswordRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Facades\File;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\File;
 use Yajra\DataTables\DataTables;
 
 use function back;
@@ -45,7 +45,7 @@ class UserController extends Controller
     public function create()
     {
         $page_title = 'Tambah Pengguna';
-        $item = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
         return view('user.create', compact('item', 'page_title'));
     }
 
@@ -69,7 +69,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('setting.user.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }
@@ -96,9 +96,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $page_title = 'Ubah Pengguna';
-        $user  = User::find($id);
-        $title = ['title' => 'Pengguna'];
-        $item  = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+        $user       = User::find($id);
+        $title      = ['title' => 'Pengguna'];
+        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
         return view('user.edit', compact('page_title', 'user', 'title', 'item'));
     }
 
@@ -127,7 +127,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -153,7 +153,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -174,7 +174,7 @@ class UserController extends Controller
 
             flash()->success(trans('general.suspend-success'));
             return redirect()->route('setting.user.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->success(trans('general.suspend-error'));
             return redirect()->route('setting.user.index');
         }
@@ -195,7 +195,7 @@ class UserController extends Controller
 
             flash()->success(trans('general.active-success'));
             return redirect()->route('setting.user.index');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->success(trans('general.active-error'));
             return redirect()->route('setting.user.index');
         }

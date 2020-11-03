@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\JenisPenyakit;
+use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -60,7 +61,7 @@ class JenisPenyakitController extends Controller
 
             $penyakit->save();
             return redirect()->route('setting.jenis-penyakit.index')->with('success', 'Data berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -86,7 +87,7 @@ class JenisPenyakitController extends Controller
 
             $penyakit->save();
             return redirect()->route('setting.jenis-penyakit.index')->with('success', 'Data berhasil diupdate!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal diupdate!');
         }
     }
@@ -97,7 +98,7 @@ class JenisPenyakitController extends Controller
             JenisPenyakit::findOrFail($id)->delete();
 
             return redirect()->route('setting.jenis-penyakit.index')->with('success', 'Data berhasil dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal dihapus!');
         }
     }

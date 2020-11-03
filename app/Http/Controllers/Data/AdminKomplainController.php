@@ -7,6 +7,7 @@ use App\Models\DataDesa;
 use App\Models\KategoriKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -86,7 +87,7 @@ class AdminKomplainController extends Controller
             Komplain::find($id)->update($request->all());
 
             return redirect()->route('admin-komplain.index')->with('success', 'Status Komplain berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Status Komplain gagal disimpan!');
         }
     }
@@ -160,7 +161,7 @@ class AdminKomplainController extends Controller
 
             $komplain->save();
             return redirect()->route('admin-komplain.index')->with('success', 'Komplain berhasil dikirim!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
     }

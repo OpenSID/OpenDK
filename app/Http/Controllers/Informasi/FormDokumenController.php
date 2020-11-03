@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\FormDokumen;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 use function asset;
@@ -110,7 +111,7 @@ class FormDokumenController extends Controller
             $dokumen->save();
 
             return redirect()->route('informasi.form-dokumen.index')->with('success', 'Form Dokumen berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('error', 'Form Dokumen gagal disimpan!' . $e->getMessage());
         }
     }
@@ -122,7 +123,7 @@ class FormDokumenController extends Controller
             unlink(base_path('public/' . $dokumen->file_dokumen));
             $dokumen->delete();
             return redirect()->route('informasi.form-dokumen.index')->with('success', 'Form Dokumen berhasil dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Form Dokumen gagal dihapus!');
         }
     }

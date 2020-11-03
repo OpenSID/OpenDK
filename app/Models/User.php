@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Models\Role;
 use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
-use Illuminate\Support\Facades\File;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\File;
 use Image;
 
 use function file_exists;

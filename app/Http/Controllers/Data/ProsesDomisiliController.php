@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProsesDomisili;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -94,7 +95,7 @@ class ProsesDomisiliController extends Controller
             ProsesDomisili::create($request->all());
 
             return redirect()->route('data.proses-domisili.index')->with('success', 'Data Proses Surat Domisili berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Proses Proses Surat Domisili gagal disimpan!');
         }
     }
@@ -143,7 +144,7 @@ class ProsesDomisiliController extends Controller
             ProsesDomisili::find($id)->update($request->all());
 
             return redirect()->route('data.proses-domisili.index')->with('success', 'Data Proses Surat Domisili berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Proses Proses Surat Domisili gagal disimpan!');
         }
     }
@@ -160,7 +161,7 @@ class ProsesDomisiliController extends Controller
             ProsesDomisili::findOrFail($id)->delete();
 
             return redirect()->route('data.proses-domisili.index')->with('success', 'Proses Surat Domisili berhasil dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.proses-domisili.index')->with('error', 'Proses Surat Domisili gagal dihapus!');
         }
     }

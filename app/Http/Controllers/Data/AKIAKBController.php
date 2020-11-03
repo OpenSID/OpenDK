@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\AkiAkb;
 use App\Models\Profil;
-use Maatwebsite\Excel\Facades\Excel;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
@@ -133,7 +134,7 @@ class AKIAKBController extends Controller
                         }
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return back()->with('error', 'Import data gagal. ' . $e->getCode());
             }
         } else {
@@ -178,7 +179,7 @@ class AKIAKBController extends Controller
             AkiAkb::find($id)->update($request->all());
 
             return redirect()->route('data.aki-akb.index')->with('success', 'Data berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -195,7 +196,7 @@ class AKIAKBController extends Controller
             AkiAkb::findOrFail($id)->delete();
 
             return redirect()->route('data.aki-akb.index')->with('success', 'Data sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.aki-akb.index')->with('error', 'Data gagal dihapus!');
         }
     }

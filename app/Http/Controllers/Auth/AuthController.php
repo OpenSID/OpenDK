@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 use function back;
 use function flash;
@@ -41,7 +42,7 @@ class AuthController extends Controller
 
             flash()->success('Login success! Welcome to Bali Tower admin page!');
             return redirect()->route('dashboard.profil');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error('Error login!' . $e);
             return redirect()->back()->withInput();
         }
@@ -84,7 +85,7 @@ class AuthController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('/');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }

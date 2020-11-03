@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Facades\Counter;
 
 use function view;
 

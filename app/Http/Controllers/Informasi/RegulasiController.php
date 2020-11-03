@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use App\Models\Regulasi;
-use App\Facades\Counter;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -82,7 +83,7 @@ class RegulasiController extends Controller
             $regulasi->save();
 
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
     }
@@ -149,7 +150,7 @@ class RegulasiController extends Controller
             $regulasi->save();
 
             return redirect()->route('informasi.regulasi.show', $id)->with('success', 'Regulasi berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
     }
@@ -166,7 +167,7 @@ class RegulasiController extends Controller
             Regulasi::findOrFail($id)->delete();
 
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
     }

@@ -3,10 +3,10 @@
 namespace App\Classes\Data;
 
 use App\Models\Penduduk;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use InvalidArgumentException;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function config;
 use function date;

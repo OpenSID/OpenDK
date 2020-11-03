@@ -6,7 +6,6 @@ use App\Models\User;
 use Cartalyst\Sentinel\Roles\EloquentRole as Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use function array_push;
 

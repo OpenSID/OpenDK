@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Prosedur;
-use App\Facades\Counter;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use League\Flysystem\Exception;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 use function back;

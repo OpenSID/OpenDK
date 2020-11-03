@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProsesKK;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -94,7 +95,7 @@ class ProsesKKController extends Controller
             ProsesKK::create($request->all());
 
             return redirect()->route('data.proses-kk.index')->with('success', 'Data Proses KK Baru berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Proses KK gagal disimpan!');
         }
     }
@@ -143,7 +144,7 @@ class ProsesKKController extends Controller
             ProsesKK::find($id)->update($request->all());
 
             return redirect()->route('data.proses-kk.index')->with('success', 'Data Proses KK Baru berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Proses KK gagal disimpan!');
         }
     }
@@ -160,7 +161,7 @@ class ProsesKKController extends Controller
             ProsesKK::findOrFail($id)->delete();
 
             return redirect()->route('data.proses-kk.index')->with('success', 'Proses KK sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.proses-kk.index')->with('error', 'Proses KK gagal dihapus!');
         }
     }

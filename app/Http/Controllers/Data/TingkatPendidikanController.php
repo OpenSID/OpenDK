@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\LogImport;
 use App\Models\TingkatPendidikan;
 use App\Models\Wilayah;
-use Maatwebsite\Excel\Facades\Excel;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 use function back;
@@ -136,7 +137,7 @@ class TingkatPendidikanController extends Controller
                         }
                     }
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 return back()->with('error', 'Import data gagal. ' . $ex->getMessage() . $tmp);
             }
         } else {
@@ -185,7 +186,7 @@ class TingkatPendidikanController extends Controller
             TingkatPendidikan::find($id)->update($request->all());
 
             return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -202,7 +203,7 @@ class TingkatPendidikanController extends Controller
             TingkatPendidikan::findOrFail($id)->delete();
 
             return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
     }

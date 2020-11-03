@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Coa;
 use App\Models\SubCoa;
 use App\Models\SubSubCoa;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -60,7 +61,7 @@ class COAController extends Controller
             );
 
             return redirect()->route('setting.coa.index')->with('success', 'Akun COA berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }
     }

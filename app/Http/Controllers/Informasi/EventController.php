@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\INformasi;
 
+use app\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use App\Facades\Counter;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -63,7 +64,7 @@ class EventController extends Controller
             $event->status = 'OPEN';
             $event->save();
             return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
     }
@@ -124,7 +125,7 @@ class EventController extends Controller
             $event->save();
 
             return redirect()->route('informasi.event.index')->with('success', 'Update Event sukses!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Update Event gagal!');
         }
     }
@@ -141,7 +142,7 @@ class EventController extends Controller
             Event::findOrFail($id)->delete();
 
             return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
     }

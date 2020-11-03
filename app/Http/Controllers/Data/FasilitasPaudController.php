@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\FasilitasPAUD;
 use App\Models\Wilayah;
-use Maatwebsite\Excel\Facades\Excel;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
@@ -119,7 +120,7 @@ class FasilitasPaudController extends Controller
                         }
                     }
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
             }
         } else {
@@ -166,7 +167,7 @@ class FasilitasPaudController extends Controller
             FasilitasPAUD::find($id)->update($request->all());
 
             return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -183,7 +184,7 @@ class FasilitasPaudController extends Controller
             FasilitasPAUD::findOrFail($id)->delete();
 
             return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.fasilitas-paud.index')->with('error', 'Data gagal dihapus!');
         }
     }

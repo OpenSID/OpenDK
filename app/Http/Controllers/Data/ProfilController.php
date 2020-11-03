@@ -7,6 +7,7 @@ use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Desa;
 use App\Models\Profil;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -129,7 +130,7 @@ class ProfilController extends Controller
 
                 DataDesa::insert($data_desa);
             return redirect()->route('data.profil.success', $id)->with('success', 'Profil berhasil disimpan!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Profil gagal disimpan!');
         }
     }
@@ -223,7 +224,7 @@ class ProfilController extends Controller
             $dataumum->update();
 
             return redirect()->route('data.profil.success', $profil->dataumum->id)->with('success', 'Update Profil sukses!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
     }
@@ -243,7 +244,7 @@ class ProfilController extends Controller
             $profil->delete();
 
             return redirect()->route('data.profil.index')->with('success', 'Profil sukses dihapus!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.profil.index')->with('error', 'Profil gagal dihapus!');
         }
     }

@@ -12,7 +12,7 @@ use function request;
 use function view;
 use function years_list;
 
-class dashboardController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Menampilkan Data Kesehatan

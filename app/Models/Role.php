@@ -28,7 +28,7 @@ class Role extends Model
      *
      * @return array
      */
-    public function sluggable()
+    public function sluggable(): array
     {
         return [
             'slug' => [
@@ -94,15 +94,5 @@ class Role extends Model
             $permissions[] = $key;
         }
         return $permissions;
-    }
-
-    /**
-     * The directories belongs to broadcasts.
-     *
-     * @return HasMany
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'role_users');
     }
 }

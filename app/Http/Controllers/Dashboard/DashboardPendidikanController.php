@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use app\Facades\Counter;
+use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\Profil;

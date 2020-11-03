@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use app\Facades\Counter;
+use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use App\Models\Regulasi;

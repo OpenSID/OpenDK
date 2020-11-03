@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\INformasi;
 
-use app\Facades\Counter;
+use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Exception;

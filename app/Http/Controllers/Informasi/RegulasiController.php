@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use App\Models\Regulasi;
-use Counter;
+use App\Facades\Counter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

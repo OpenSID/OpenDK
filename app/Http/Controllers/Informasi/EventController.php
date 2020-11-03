@@ -4,7 +4,7 @@ namespace App\Http\Controllers\INformasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use Counter;
+use App\Facades\Counter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 

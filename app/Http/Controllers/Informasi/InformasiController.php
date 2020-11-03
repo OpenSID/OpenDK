@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
-use Counter;
+use App\Facades\Counter;
 
 use function view;
 

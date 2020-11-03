@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
-use Counter;
+use App\Facades\Counter;
 use Illuminate\Support\Facades\DB;
 
 use function array_sort;

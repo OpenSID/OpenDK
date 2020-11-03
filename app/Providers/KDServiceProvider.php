@@ -15,7 +15,7 @@ class KDServiceProvider extends ServiceProvider
     protected $defer = false;
     public function register()
     {
-        $this->app->singleton('counter', function () {
+        $this->app->singleton('Counter', function () {
             return $this->app->make(Counter::class);
         });
     }

@@ -12,6 +12,6 @@ class Counter extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'counter';
+        return 'Counter';
     }
 }

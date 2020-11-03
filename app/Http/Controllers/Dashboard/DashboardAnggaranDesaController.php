@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\CoaType;
 use App\Models\Profil;
-use Counter;
+use App\Facades\Counter;
 use Illuminate\Support\Facades\DB;
 
 use function compact;

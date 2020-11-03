@@ -2,23 +2,30 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Http\Controllers\Controller;
 use App\Models\ProsesAktaLahir;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+
+use function back;
+use function compact;
+use function redirect;
+use function request;
+use function route;
+use function view;
 
 class ProsesAktaLahirController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        //
-        $page_title = 'Proses Akta Lahir';
+        $page_title       = 'Proses Akta Lahir';
         $page_description = 'Data Proses Pembuatan Akta Lahir';
         return view('data.proses_aktalahir.index', compact('page_title', 'page_description'));
     }
@@ -26,19 +33,18 @@ class ProsesAktaLahirController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function getDataProsesAktaLahir()
     {
-        //
         return DataTables::of(DB::table('das_proses_akta_lahir')->join('das_penduduk', 'das_proses_akta_lahir.penduduk_id', '=', 'das_penduduk.id')
             ->select('das_penduduk.nama as nama_penduduk, das_proses_akta_lahir.alamat, das_proses_akta_lahir.tanggal_pengajuan, das_proses_akta_lahir.tanggal_selesai, das_proses_akta_lahir.status, das_proses_akta_lahir.catatan')
             ->get())
             ->addColumn('action', function ($row) {
-                $edit_url = route('data.proses-aktalahir.edit', $row->id);
+                $edit_url   = route('data.proses-aktalahir.edit', $row->id);
                 $delete_url = route('data.proses-aktalahir.destroy', $row->id);
 
-                $data['edit_url'] = $edit_url;
+                $data['edit_url']   = $edit_url;
                 $data['delete_url'] = $delete_url;
 
                 return view('forms.action', $data);
@@ -60,12 +66,11 @@ class ProsesAktaLahirController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        //
-        $page_title = 'Tambah';
+        $page_title       = 'Tambah';
         $page_description = 'Tambah Proses Akta Lahir Baru';
 
         return view('data.proses_aktalahir.create', compact('page_title', 'page_description'));
@@ -74,24 +79,22 @@ class ProsesAktaLahirController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
-        //
-        try{
+        try {
             request()->validate([
-                'penduduk_id' => 'required',
-                'alamat' => 'required',
-                'tanggal_pengajuan'=>'required|date',
-                'status' => 'required',
+                'penduduk_id'       => 'required',
+                'alamat'            => 'required',
+                'tanggal_pengajuan' => 'required|date',
+                'status'            => 'required',
             ]);
 
             ProsesAktaLahir::create($request->all());
 
             return redirect()->route('data.proses-aktalahir.index')->with('success', 'Data Proses Akta Lahir Baru berhasil disimpan!');
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Proses Akta Lahir gagal disimpan!');
         }
     }
@@ -100,26 +103,23 @@ class ProsesAktaLahirController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
-        //
-
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
-        //
-        $akta = ProsesAktaLahir::findOrFail($id);
-        $page_title = 'Ubah';
-        $page_description = 'Ubah Proses Akta Lahir : '.$akta->penduduk->nama;
+        $akta             = ProsesAktaLahir::findOrFail($id);
+        $page_title       = 'Ubah';
+        $page_description = 'Ubah Proses Akta Lahir : ' . $akta->penduduk->nama;
 
         return view('data.proses_aktalahir.edit', compact('page_title', 'page_description', 'akta'));
     }
@@ -127,25 +127,23 @@ class ProsesAktaLahirController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
-        //
-        try{
+        try {
             request()->validate([
-                'penduduk_id' => 'required',
-                'alamat' => 'required',
-                'tanggal_pengajuan'=>'required|date',
-                'status' => 'required',
+                'penduduk_id'       => 'required',
+                'alamat'            => 'required',
+                'tanggal_pengajuan' => 'required|date',
+                'status'            => 'required',
             ]);
 
             ProsesAktaLahir::find($id)->update($request->all());
 
             return redirect()->route('data.proses-aktalahir.index')->with('success', 'Data Proses Akta Lahir Baru berhasil disimpan!');
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Proses Akta Lahir gagal disimpan!');
         }
     }
@@ -154,16 +152,14 @@ class ProsesAktaLahirController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
-        //
         try {
             ProsesAktaLahir::findOrFail($id)->delete();
 
             return redirect()->route('data.proses-aktalahir.index')->with('success', 'Proses Akta Lahir sukses dihapus!');
-
         } catch (Exception $e) {
             return redirect()->route('data.proses-aktalahir.index')->with('error', 'Proses Akta Lahir gagal dihapus!');
         }

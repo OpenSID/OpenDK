@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Counter;
+
+use function view;
 
 class InformasiController extends Controller
 {
@@ -14,7 +15,7 @@ class InformasiController extends Controller
 
     public function showProsedur()
     {
-        $data['page_title'] = 'Kumpulan Prosedur ';
+        $data['page_title']       = 'Kumpulan Prosedur ';
         $data['page_description'] = 'Kumpulan Prosedur ';
 
         return view('Informasi.prosedur')->with($data);
@@ -26,7 +27,7 @@ class InformasiController extends Controller
 
     public function showLayanan()
     {
-        $data['page_title'] = 'Layanan';
+        $data['page_title']       = 'Layanan';
         $data['page_description'] = 'Layanan Kecamatan';
 
         return view('informasi.layanan')->with($data);
@@ -39,7 +40,7 @@ class InformasiController extends Controller
     public function showPotensi()
     {
         Counter::count('informasi.potensi');
-        $data['page_title'] = 'Potensi Kecamatan';
+        $data['page_title']       = 'Potensi Kecamatan';
         $data['page_description'] = 'Menampilkan Data Potensi Kecamatan';
 
         return view('informasi.potensi')->with($data);
@@ -51,7 +52,7 @@ class InformasiController extends Controller
 
     public function showEvent()
     {
-        $data['page_title'] = 'Event';
+        $data['page_title']       = 'Event';
         $data['page_description'] = 'Menampilkan Event Terdekat';
 
         return view('Informasi.event')->with($data);

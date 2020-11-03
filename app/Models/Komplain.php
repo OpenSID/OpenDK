@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Komplain extends Model
 {
-    //
-  //
     protected $table = 'das_komplain';
 
     protected $fillable = [
@@ -24,7 +22,7 @@ class Komplain extends Model
         'lampiran3',
         'lampiran4',
     ];
-  
+
     public function kategori_komplain()
     {
         return $this->hasOne(KategoriKomplain::class, 'id', 'kategori');

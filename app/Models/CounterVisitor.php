@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CounterVisitor extends Model
 {
-    //
     protected $table = 'das_counter_visitor';
 
     protected $fillable = ['visitor'];

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProsesKK extends Model
 {
-    //
     protected $table = 'das_proses_kk';
 
     protected $fillable = [
@@ -15,11 +14,11 @@ class ProsesKK extends Model
         'tanggal_pengajuan',
         'tanggal_selesai',
         'status',
-        'catatan'
+        'catatan',
     ];
 
     public function penduduk()
     {
-        return $this->hasOne(Penduduk::class, 'id','penduduk_id');
+        return $this->hasOne(Penduduk::class, 'id', 'penduduk_id');
     }
 }

@@ -13,7 +13,7 @@ class Imunisasi extends Model
         'desa_id',
         'cakupan_imunisasi',
         'bulan',
-        'tahun'
+        'tahun',
     ];
 
     public function kecamatan()

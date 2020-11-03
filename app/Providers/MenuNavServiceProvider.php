@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
 use App\Classes\MenuNav\MenuNav;
+use Illuminate\Support\ServiceProvider;
 
 class MenuNavServiceProvider extends ServiceProvider
 {
@@ -15,7 +14,6 @@ class MenuNavServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
     }
 
     /**
@@ -25,8 +23,8 @@ class MenuNavServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind( 'Menu', function() {
-            return new MenuNav;
+        $this->app->bind('Menu', function () {
+            return new MenuNav();
         });
     }
 }

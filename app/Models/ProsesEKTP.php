@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProsesEKTP extends Model
 {
-    //
     protected $table = 'das_proses_ektp';
 
     protected $fillable = [
@@ -16,7 +15,7 @@ class ProsesEKTP extends Model
         'alamat',
         'tanggal_pengajuan',
         'tanggal_selesai',
-        'status'
+        'status',
     ];
 
     public function penduduk()

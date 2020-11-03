@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubCoa extends Model
 {
-    //
-    protected $table = 'ref_sub_coa';
+    protected $table     = 'ref_sub_coa';
     public $incrementing = false;
 
     protected $fillable = [
         'type_id',
-        'sub_name'
+        'sub_name',
     ];
 }

@@ -1,8 +1,6 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: Rosid
- * Date: 4/28/2018
  * Time: 5:50 AM
  */
 
@@ -10,17 +8,22 @@ namespace App\Helpers;
 
 use App\Models\CounterPage;
 use App\Models\CounterVisitor;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use Carbon\Carbon;
-use DB;
 use Cookie;
+use DB;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
+use function config;
+use function env;
+use function hash;
+use function number_format;
 
 class Counter
 {
     public function __construct(CrawlerDetect $visitor)
     {
         $this->visitor = $visitor;
-        $this->hasDnt = (isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1) ? true : false;
+        $this->hasDnt  = isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1 ? true : false;
     }
 
     /**
@@ -30,39 +33,33 @@ class Counter
      * @var bool
      */
     private static $ignore_bots = true;
-
-    /**
-     * Check to determine if we will count hits
-     * from visitors that send a DO NOT TRACK header.
-     *
-     * @var bool
-     */
+/**
+ * Check to determine if we will count hits
+ * from visitors that send a DO NOT TRACK header.
+ *
+ * @var bool
+ */
     private static $honor_do_not_track = false;
-
-    /**
-     * Singleton for the $page in question
-     *
-     * @var null|object
-     */
+/**
+ * Singleton for the $page in question
+ *
+ * @var null|object
+ */
     private static $current_page;
-
-    /**
-     * Show view count for the requested page.
-     *
-     * Use this when you just want to show the current view count
-     * for the page in question. Does not add counts.
-     *
-     * @param string $identifier A unique string to the page you are tracking
-     * @param null|integer $id A unique identifier for dynamic page tracking
-     * @return string Unique view count for requested resource
-     */
+/**
+ * Show view count for the requested page.
+ *
+ * Use this when you just want to show the current view count
+ * for the page in question. Does not add counts.
+ *
+ * @param string $identifier A unique string to the page you are tracking
+ * @param null|integer $id A unique identifier for dynamic page tracking
+ * @return string Unique view count for requested resource
+ */
     public function show($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);
-
-        $hits = self::countHits($page);
-
-        return $hits;
+        return self::countHits($page);
     }
 
     /**
@@ -80,12 +77,8 @@ class Counter
     public function showAndCount($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);
-
         self::processHit($page);
-
-        $hits = self::countHits($page);
-
-        return $hits;
+        return self::countHits($page);
     }
 
     /**
@@ -103,7 +96,6 @@ class Counter
     public function count($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);
-
         self::processHit($page);
     }
 
@@ -122,8 +114,7 @@ class Counter
     {
         $prefix = config('database.connections.' . config('database.default') . '.prefix');
         if ($days) {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')
-                ->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = DB::table($prefix . 'das_counter_page_visitor')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
         } else {
             $hits = DB::table($prefix . 'das_counter_page_visitor')->count();
         }
@@ -146,9 +137,7 @@ class Counter
     {
         $prefix = config('database.connections.' . config('database.default') . '.prefix');
         if ($days) {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')
-                ->groupBy('visitor_id')
-                ->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = DB::table($prefix . 'das_counter_page_visitor')->groupBy('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
         } else {
             $hits = DB::table($prefix . 'das_counter_page_visitor')->groupBy('visitor_id')->count();
         }
@@ -156,9 +145,7 @@ class Counter
         return number_format($hits);
     }
 
-
     /*====================== PRIVATE METHODS =============================*/
-
     /**
      * Processes the hit request for the page in question.
      *
@@ -168,7 +155,6 @@ class Counter
     private function processHit($page)
     {
         $addHit = true;
-
         if (self::$ignore_bots && $this->visitor->isCrawler()) {
             $addHit = false;
         }
@@ -189,9 +175,8 @@ class Counter
      */
     private static function hashVisitor()
     {
-        $cookie = Cookie::get(env('COUNTER_COOKIE', 'kryptonit3-counter'));
-        $visitor = ($cookie !== false) ? $cookie : $_SERVER['REMOTE_ADDR'];
-
+        $cookie  = Cookie::get(env('COUNTER_COOKIE', 'kryptonit3-counter'));
+        $visitor = $cookie !== false ? $cookie : $_SERVER['REMOTE_ADDR'];
         return hash("SHA256", env('APP_KEY') . $visitor);
     }
 
@@ -227,11 +212,7 @@ class Counter
      */
     private static function createVisitorRecordIfNotPresent($visitor)
     {
-        $visitor_record = CounterVisitor::firstOrCreate([
-            'visitor' => $visitor
-        ]);
-
-        return $visitor_record;
+        return CounterVisitor::firstOrCreate(['visitor' => $visitor]);
     }
 
     /**
@@ -253,12 +234,9 @@ class Counter
      */
     private static function createCountIfNotPresent($page)
     {
-        $page_record = self::createPageIfNotPresent($page);
-
-        $visitor = self::hashVisitor();
-
+        $page_record    = self::createPageIfNotPresent($page);
+        $visitor        = self::hashVisitor();
         $visitor_record = self::createVisitorRecordIfNotPresent($visitor);
-
         $page_record->visitors()->sync([$visitor_record->id => ['created_at' => Carbon::now()]], false);
     }
 
@@ -271,7 +249,6 @@ class Counter
     private static function countHits($page)
     {
         $page_record = self::createPageIfNotPresent($page);
-
         return number_format($page_record->visitors->count());
     }
 }

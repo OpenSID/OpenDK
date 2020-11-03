@@ -2,22 +2,29 @@
 
 namespace App\Http\Controllers\Role;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\RoleRequest;
+use App\Models\Menu;
+use App\Models\Role;
 use App\Models\RoleUser;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
-use App\Http\Requests\RoleRequest;
-use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Models\Role;
-use App\Models\Menu;
+
+use function back;
+use function compact;
+use function flash;
+use function redirect;
+use function route;
+use function trans;
+use function view;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -28,7 +35,7 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -38,32 +45,32 @@ class RoleController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @author Yoga <yoga.h@smooets.com>
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @return Response
      */
     public function store(RoleRequest $request)
     {
         try {
-            $temp = array();
-            if (!empty($request->permissions)) {
+            $temp = [];
+            if (! empty($request->permissions)) {
                 foreach ($request->permissions as $key => $value) {
-                    $temp[$key] = ($value == 1 ? TRUE:FALSE);
+                    $temp[$key] = $value == 1 ? true : false;
                 }
             }
-        
-            $request['permissions'] = $temp;
-            $role = Role::create($request->all());
-            flash()->success( trans( 'message.role.create-success', [
-                'attribute' => trans( 'island.role' ),
-                'detail' => '#' . $role->id . ' | ' . $role->slug
-                ] ) );
 
-            return redirect()->route( 'setting.role.index' );
+            $request['permissions'] = $temp;
+            $role                   = Role::create($request->all());
+            flash()->success(trans('message.role.create-success', [
+                'attribute' => trans('island.role'),
+                'detail'    => '#' . $role->id . ' | ' . $role->slug,
+            ]));
+
+            return redirect()->route('setting.role.index');
         } catch (Exception $e) {
-            flash()->error( trans( 'general.destroy-error', [
-                'attribute' => trans( 'island.role' ),
-                ] ) );
+            flash()->error(trans('general.destroy-error', [
+                'attribute' => trans('island.role'),
+            ]));
 
             return back()->withInput();
         }
@@ -71,93 +78,92 @@ class RoleController extends Controller
 
     /**
      * Display the specified resource.
-     * @author Yoga <yoga.h@smooets.com>
+     *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
-     * @author Yoga <yoga.h@smooets.com>
+     *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit($id)
     {
-        $role = Role::find($id);
+        $role        = Role::find($id);
         $permissions = Role::getListPermission();
-        $menu = Menu::get();
-        return view('role.edit', compact('role','permissions','menu'));
+        $menu        = Menu::get();
+        return view('role.edit', compact('role', 'permissions', 'menu'));
     }
 
     /**
      * Update the specified resource in storage.
-     * @author Yoga <yoga.h@smooets.com>
-     * @param  \Illuminate\Http\Request  $request
+     *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, $id)
     {
         try {
-          if (isset($request->permissions)) {
-            foreach ($request->permissions as $key => $value) {
-                $temp[$key] = ($value == 1 ? TRUE:FALSE);
+            if (isset($request->permissions)) {
+                foreach ($request->permissions as $key => $value) {
+                    $temp[$key] = $value == 1 ? true : false;
+                }
+
+                $request['permissions'] = $temp;
+                Role::find($id)->update($request->all());
+                $role = Role::find($id);
+                flash()->success(trans('message.role.update-success', [
+                    'attribute' => trans('island.role'),
+                    'detail'    => '#' . $role->id . ' | ' . $role->slug,
+                ]));
+            } else {
+                Role::find($id)->update(['name' => $request->name, 'permissions' => []]);
             }
+            return redirect()->route('setting.role.index');
+        } catch (Exception $e) {
+            flash()->error(trans('message.role.update-error', [
+                'attribute' => trans('island.role'),
+            ]));
 
-            $request['permissions'] = $temp;
-            Role::find($id)->update( $request->all() );
-            $role = Role::find($id);
-            flash()->success( trans( 'message.role.update-success', [
-                'attribute' => trans( 'island.role' ),
-                'detail' => '#' . $role->id . ' | ' . $role->slug
-                ] ) );
-        } else{
-           Role::find($id)->update(['name' => $request->name,'permissions' => []]);
-       }
-       return redirect()->route( 'setting.role.index' );
-   } catch (Exception $e) {
-        flash()->error( trans( 'message.role.update-error', [
-        'attribute' => trans( 'island.role' ),
-        ] ) );
-
-    return back()->withInput();
-}
-}
+            return back()->withInput();
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
-     * @author Yoga <yoga.h@smooets.com>
+     *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
         try {
-            if(RoleUser::where('role_id', $id)->first()) {
-                flash()->error( trans( 'general.destroy-error', [
-                    'attribute' => trans( 'island.role' ),
-                    ] ) );
+            if (RoleUser::where('role_id', $id)->first()) {
+                flash()->error(trans('general.destroy-error', [
+                    'attribute' => trans('island.role'),
+                ]));
 
                 return back();
             } else {
                 $role = Role::findOrFail($id);
                 $role->delete();
-                flash()->success( trans( 'general.destroy-success' ) );
-                return redirect()->route( 'setting.role.index' );
+                flash()->success(trans('general.destroy-success'));
+                return redirect()->route('setting.role.index');
             }
         } catch (Exception $e) {
-            flash()->error( trans( 'general.destroy-error', [
-                'attribute' => trans( 'island.role' ),
-                ] ) );
+            flash()->error(trans('general.destroy-error', [
+                'attribute' => trans('island.role'),
+            ]));
 
             return back();
         }
     }
+
     /**
      * Gets the data.
      *
@@ -166,8 +172,8 @@ class RoleController extends Controller
     public function getData()
     {
         return DataTables::of(Role::datatables())
-        ->addColumn( 'action', function ( $role ) {
-            $edit_url = route('setting.role.edit', $role->id );
+        ->addColumn('action', function ($role) {
+            $edit_url   = route('setting.role.edit', $role->id);
             $delete_url = route('setting.role.destroy', $role->id);
 
             $data['edit_url']   = $edit_url;

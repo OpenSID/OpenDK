@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AkiAkb extends Model
 {
-    //
     protected $table = 'das_akib';
 
     protected $fillable = [
@@ -15,7 +14,7 @@ class AkiAkb extends Model
         'aki',
         'akb',
         'bulan',
-        'tahun'
+        'tahun',
     ];
 
     public function kecamatan()

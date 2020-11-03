@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnggaranRealisasi extends Model
 {
-    //
     protected $table = 'das_anggaran_realisasi';
 
     protected $fillable = [
@@ -18,6 +17,6 @@ class AnggaranRealisasi extends Model
         'belanja_pegawai',
         'belanja_barang_jasa',
         'belanja_modal',
-        'belanja_tidak_langsung'
+        'belanja_tidak_langsung',
     ];
 }

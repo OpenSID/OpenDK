@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AnggaranDesa extends Model
 {
-    //
     protected $table = 'das_anggaran_desa';
 
     protected $fillable = [
@@ -15,7 +14,7 @@ class AnggaranDesa extends Model
         'nama_akun',
         'jumlah',
         'bulan',
-        'tahun'
+        'tahun',
     ];
 
     public function desa()

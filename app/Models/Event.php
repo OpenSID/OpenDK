@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    //
     protected $table = 'das_events';
 
     protected $fillable = [
@@ -17,18 +16,13 @@ class Event extends Model
         'description',
         'attendants',
         'status',
-        'attachment'
+        'attachment',
     ];
 
     public static function getOpenEvents()
     {
-        $events = self::get()->groupBy(function($item)
-        {
+        return self::get()->groupBy(function ($item) {
             return Carbon::parse($item->start)->format('d-M-y');
         });
-
-
-
-        return $events;
     }
 }

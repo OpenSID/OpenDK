@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\Counter;
 use Illuminate\Support\ServiceProvider;
 
 class KDServiceProvider extends ServiceProvider
@@ -14,10 +15,11 @@ class KDServiceProvider extends ServiceProvider
     protected $defer = false;
     public function register()
     {
-        $this->app->singleton('counter', function() {
-            return $this->app->make('App\Helpers\Counter');
+        $this->app->singleton('counter', function () {
+            return $this->app->make(Counter::class);
         });
     }
+
     public function boot()
     {
         /*$this->publishes([
@@ -28,6 +30,7 @@ class KDServiceProvider extends ServiceProvider
             require __DIR__.'/routes.php';
         }*/
     }
+
     public function provides()
     {
         return ['counter'];

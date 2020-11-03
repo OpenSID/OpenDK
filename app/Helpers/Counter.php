@@ -9,8 +9,8 @@ namespace App\Helpers;
 use App\Models\CounterPage;
 use App\Models\CounterVisitor;
 use Carbon\Carbon;
-use Cookie;
-use DB;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 use function config;

@@ -8,10 +8,10 @@ use App\Http\Requests\UserUpdatePasswordRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 use function back;
@@ -68,7 +68,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }
@@ -125,7 +125,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -151,7 +151,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -172,7 +172,7 @@ class UserController extends Controller
 
             flash()->success(trans('general.suspend-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             flash()->success(trans('general.suspend-error'));
             return redirect()->route('setting.user.index');
         }

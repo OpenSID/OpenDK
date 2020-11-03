@@ -124,7 +124,7 @@ class TipePotensiController extends Controller
 
             $tipe->save();
             return redirect()->route('setting.tipe-potensi.index')->with('success', 'Kategori Potensi berhasil diupdate!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Kategori Potensi gagal diupdate!');
         }
     }
@@ -141,7 +141,7 @@ class TipePotensiController extends Controller
             TipePotensi::findOrFail($id)->delete();
 
             return redirect()->route('setting.tipe-potensi.index')->with('success', 'Kategori Potensi berhasil dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Tipe Potensi gagal dihapus!');
         }
     }

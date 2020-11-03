@@ -243,7 +243,7 @@ class ProfilController extends Controller
             $profil->delete();
 
             return redirect()->route('data.profil.index')->with('success', 'Profil sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.profil.index')->with('error', 'Profil gagal dihapus!');
         }
     }

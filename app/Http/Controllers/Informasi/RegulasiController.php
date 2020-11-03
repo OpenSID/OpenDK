@@ -82,7 +82,7 @@ class RegulasiController extends Controller
             $regulasi->save();
 
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
     }
@@ -149,7 +149,7 @@ class RegulasiController extends Controller
             $regulasi->save();
 
             return redirect()->route('informasi.regulasi.show', $id)->with('success', 'Regulasi berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
     }
@@ -166,7 +166,7 @@ class RegulasiController extends Controller
             Regulasi::findOrFail($id)->delete();
 
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
     }

@@ -178,7 +178,7 @@ class ToiletSanitasiController extends Controller
             ToiletSanitasi::find($id)->update($request->all());
 
             return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -195,7 +195,7 @@ class ToiletSanitasiController extends Controller
             ToiletSanitasi::findOrFail($id)->delete();
 
             return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }
     }

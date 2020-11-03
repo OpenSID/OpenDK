@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\AnggaranRealisasi;
 use Maatwebsite\Excel\Facades\Excel;
-use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -121,7 +120,7 @@ class AnggaranRealisasiController extends Controller
                         }
                     }
                 }
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
             }
         } else {

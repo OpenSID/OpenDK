@@ -149,7 +149,7 @@ class SistemKomplainController extends Controller
 
             $komplain->save();
             return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim. Tunggu Admin untuk di review terlebih dahulu!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
     }
@@ -223,7 +223,7 @@ class SistemKomplainController extends Controller
 
             $komplain->save();
             return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
     }
@@ -240,7 +240,7 @@ class SistemKomplainController extends Controller
             Komplain::findOrFail($id)->delete();
 
             return redirect()->route('sistem-komplain.index')->with('success', 'Komplain sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('sistem-komplain.index')->with('error', 'Komplain gagal dihapus!');
         }
     }
@@ -255,7 +255,7 @@ class SistemKomplainController extends Controller
     {
         try {
             $komplain = Komplain::where('slug', '=', $slug)->first();
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             return back()->withInput()->with('error', $ex);
         }
 
@@ -299,7 +299,7 @@ class SistemKomplainController extends Controller
                     'msg'    => 'Jawaban  berhasil disimpan!',
                 ];
                 return response()->json($response);
-            } catch (Exception $ex) {
+            } catch (\Exception $ex) {
                 $response = [
                     'status' => 'error',
                     'msg'    => 'Jawaban  gagal disimpan!',

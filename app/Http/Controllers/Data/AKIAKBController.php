@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\AkiAkb;
 use App\Models\Profil;
 use Maatwebsite\Excel\Facades\Excel;
-use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -179,7 +178,7 @@ class AKIAKBController extends Controller
             AkiAkb::find($id)->update($request->all());
 
             return redirect()->route('data.aki-akb.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -196,7 +195,7 @@ class AKIAKBController extends Controller
             AkiAkb::findOrFail($id)->delete();
 
             return redirect()->route('data.aki-akb.index')->with('success', 'Data sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.aki-akb.index')->with('error', 'Data gagal dihapus!');
         }
     }

@@ -63,7 +63,7 @@ class ProsesEKTPController extends Controller
             ProsesEKTP::create($request->all());
 
             return redirect()->route('data.proses-ektp.index')->with('success', 'Proses e-KTP berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Proses e-KTP gagal disimpan!');
         }
     }
@@ -114,7 +114,7 @@ class ProsesEKTPController extends Controller
             $ektp->update();
 
             return redirect()->route('data.proses-ektp.index')->with('success', 'Proses e-KTP berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Proses e-KTP gagal disimpan!');
         }
     }
@@ -131,7 +131,7 @@ class ProsesEKTPController extends Controller
             ProsesEKTP::findOrFail($id)->delete();
 
             return redirect()->route('data.proses-ektp.index')->with('success', 'Proses e-KTP sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.proses-ektp.index')->with('error', 'Proses e-KTP gagal dihapus!');
         }
     }

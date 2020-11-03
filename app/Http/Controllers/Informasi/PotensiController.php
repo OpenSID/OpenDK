@@ -166,7 +166,7 @@ class PotensiController extends Controller
             $potensi->save();
 
             return redirect()->route('informasi.potensi.index')->with('success', 'Data Potensi berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Data Potensi gagal disimpan!' . $e->getMessage());
         }
     }

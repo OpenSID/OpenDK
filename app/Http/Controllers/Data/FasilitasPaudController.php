@@ -166,7 +166,7 @@ class FasilitasPaudController extends Controller
             FasilitasPAUD::find($id)->update($request->all());
 
             return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -183,7 +183,7 @@ class FasilitasPaudController extends Controller
             FasilitasPAUD::findOrFail($id)->delete();
 
             return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.fasilitas-paud.index')->with('error', 'Data gagal dihapus!');
         }
     }

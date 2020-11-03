@@ -60,7 +60,7 @@ class JenisPenyakitController extends Controller
 
             $penyakit->save();
             return redirect()->route('setting.jenis-penyakit.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Eception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -86,7 +86,7 @@ class JenisPenyakitController extends Controller
 
             $penyakit->save();
             return redirect()->route('setting.jenis-penyakit.index')->with('success', 'Data berhasil diupdate!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal diupdate!');
         }
     }
@@ -97,7 +97,7 @@ class JenisPenyakitController extends Controller
             JenisPenyakit::findOrFail($id)->delete();
 
             return redirect()->route('setting.jenis-penyakit.index')->with('success', 'Data berhasil dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal dihapus!');
         }
     }

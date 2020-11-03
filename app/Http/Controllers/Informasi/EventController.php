@@ -63,7 +63,7 @@ class EventController extends Controller
             $event->status = 'OPEN';
             $event->save();
             return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
     }
@@ -124,7 +124,7 @@ class EventController extends Controller
             $event->save();
 
             return redirect()->route('informasi.event.index')->with('success', 'Update Event sukses!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Update Event gagal!');
         }
     }
@@ -141,7 +141,7 @@ class EventController extends Controller
             Event::findOrFail($id)->delete();
 
             return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
     }

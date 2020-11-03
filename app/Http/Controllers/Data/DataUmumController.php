@@ -107,7 +107,7 @@ class DataUmumController extends Controller
             ]);
             $profil->save();
             return redirect()->route('data.data-umum.index')->with('success', 'Data Umum berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data Umum gagal disimpan!');
         }
     }
@@ -177,7 +177,7 @@ class DataUmumController extends Controller
             DataUmum::find($id)->update($request->all());
 
             return redirect()->route('data.data-umum.index')->with('success', 'Update Data Umum sukses!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Update Data Umum gagal!');
         }
     }
@@ -195,7 +195,7 @@ class DataUmumController extends Controller
             DataUmum::findOrFail($id)->delete();
 
             return redirect()->route('data.data-umum.index')->with('success', 'Data Umum sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.data-umum.index')->with('error', 'Data Umum gagal dihapus!');
         }
     }

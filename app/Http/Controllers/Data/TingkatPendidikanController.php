@@ -11,7 +11,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 use function back;
@@ -93,7 +93,7 @@ class TingkatPendidikanController extends Controller
             'file'     => 'file|mimes:xls,xlsx,csv|max:5120',
         ]);
 
-        if ($validator->passes() && $this->uploadValidation($desa_id, $semester, $tahun)) {
+        if ($validator->fails() && $this->uploadValidation($desa_id, $semester, $tahun)) {
             try {
                 $path = RequestFacade::file('file')->getRealPath();
 
@@ -185,7 +185,7 @@ class TingkatPendidikanController extends Controller
             TingkatPendidikan::find($id)->update($request->all());
 
             return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -202,7 +202,7 @@ class TingkatPendidikanController extends Controller
             TingkatPendidikan::findOrFail($id)->delete();
 
             return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
     }

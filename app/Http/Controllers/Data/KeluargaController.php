@@ -96,7 +96,7 @@ class KeluargaController extends Controller
             Keluarga::create($request->all());
 
             return redirect()->route('data.keluarga.index')->with('success', 'Data Keluarga berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data Keluarga gagal disimpan!');
         }
     }
@@ -152,7 +152,7 @@ class KeluargaController extends Controller
             $keluarga->save();
 
             return redirect()->route('data.keluarga.index')->with('success', 'Data Keluarga berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data Keluarga gagal disimpan!');
         }
     }
@@ -169,7 +169,7 @@ class KeluargaController extends Controller
             Keluarga::findOrFail($id)->delete();
 
              return redirect()->route('data.keluarga.index')->with('success', 'Data Keluarga berhasil dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data Keluarga gagal dihapus!');
         }
     }

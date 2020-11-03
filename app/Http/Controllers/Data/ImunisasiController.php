@@ -174,7 +174,7 @@ class ImunisasiController extends Controller
             Imunisasi::find($id)->update($request->all());
 
             return redirect()->route('data.imunisasi.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -191,7 +191,7 @@ class ImunisasiController extends Controller
             Imunisasi::findOrFail($id)->delete();
 
             return redirect()->route('data.imunisasi.index')->with('success', 'Data sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.imunisasi.index')->with('error', 'Data gagal dihapus!');
         }
     }

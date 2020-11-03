@@ -84,7 +84,7 @@ class AuthController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('/');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }

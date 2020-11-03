@@ -60,7 +60,7 @@ class COAController extends Controller
             );
 
             return redirect()->route('setting.coa.index')->with('success', 'Akun COA berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }
     }

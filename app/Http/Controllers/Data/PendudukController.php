@@ -126,19 +126,9 @@ class PendudukController extends Controller
 
             $penduduk->save();
             return redirect()->route('data.penduduk.index')->with('success', 'Penduduk berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Penduduk gagal disimpan!');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param DummyFullModelClass $DummyModelVariable
-     * @return Response
-     */
-    public function show(Penduduk $penduduk, DummyModelClass $DummyModelVariable)
-    {
     }
 
     /**

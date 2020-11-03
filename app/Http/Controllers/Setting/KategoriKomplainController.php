@@ -62,7 +62,7 @@ class KategoriKomplainController extends Controller
 
             $kategori->save();
             return redirect()->route('setting.komplain-kategori.index')->with('success', 'Kategori Komplain berhasil dikirim!');
-        } catch (Eception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Kategori Komplain gagal dikirim!');
         }
     }
@@ -88,7 +88,7 @@ class KategoriKomplainController extends Controller
 
             $kategori->save();
             return redirect()->route('setting.komplain-kategori.index')->with('success', 'Kategori Komplain berhasil diupdate!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Kategori Komplain gagal diupdate!');
         }
     }
@@ -99,7 +99,7 @@ class KategoriKomplainController extends Controller
             KategoriKomplain::findOrFail($id)->delete();
 
             return redirect()->route('setting.komplain-kategori.index')->with('success', 'Kategori Komplain berhasil dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Kategori Komplain gagal dihapus!');
         }
     }

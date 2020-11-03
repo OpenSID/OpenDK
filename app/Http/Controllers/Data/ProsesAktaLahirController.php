@@ -94,7 +94,7 @@ class ProsesAktaLahirController extends Controller
             ProsesAktaLahir::create($request->all());
 
             return redirect()->route('data.proses-aktalahir.index')->with('success', 'Data Proses Akta Lahir Baru berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data Proses Akta Lahir gagal disimpan!');
         }
     }
@@ -143,7 +143,7 @@ class ProsesAktaLahirController extends Controller
             ProsesAktaLahir::find($id)->update($request->all());
 
             return redirect()->route('data.proses-aktalahir.index')->with('success', 'Data Proses Akta Lahir Baru berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data Proses Akta Lahir gagal disimpan!');
         }
     }
@@ -160,7 +160,7 @@ class ProsesAktaLahirController extends Controller
             ProsesAktaLahir::findOrFail($id)->delete();
 
             return redirect()->route('data.proses-aktalahir.index')->with('success', 'Proses Akta Lahir sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.proses-aktalahir.index')->with('error', 'Proses Akta Lahir gagal dihapus!');
         }
     }

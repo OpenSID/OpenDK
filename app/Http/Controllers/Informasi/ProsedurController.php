@@ -8,7 +8,7 @@ use App\Facades\Counter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use League\Flysystem\Exception;
-use Sentinel;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 use function back;

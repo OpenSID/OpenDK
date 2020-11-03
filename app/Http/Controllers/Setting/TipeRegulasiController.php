@@ -62,7 +62,7 @@ class TipeRegulasiController extends Controller
 
             $tipe->save();
             return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dikirim!');
-        } catch (Eception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dikirim!');
         }
     }
@@ -88,7 +88,7 @@ class TipeRegulasiController extends Controller
 
             $tipe->save();
             return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil diupdate!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal diupdate!');
         }
     }
@@ -99,7 +99,7 @@ class TipeRegulasiController extends Controller
             TipeRegulasi::findOrFail($id)->delete();
 
             return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dihapus!');
         }
     }

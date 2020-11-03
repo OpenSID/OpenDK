@@ -44,8 +44,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $page_title = 'Tambah Pengguna';
         $item = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.create', compact('item', $item));
+        return view('user.create', compact('item', 'page_title'));
     }
 
     /**
@@ -94,10 +95,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $page_title = 'Ubah Pengguna';
         $user  = User::find($id);
         $title = ['title' => 'Pengguna'];
         $item  = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.edit', compact('user', 'title', 'item', $item));
+        return view('user.edit', compact('page_title', 'user', 'title', 'item'));
     }
 
     /**
@@ -138,7 +140,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function updatePassword(UserUpdatePasswordRequest $request, $id)
+    public function updatePassword(UserUpdateRequest $request, $id)
     {
         // dd($request->all());
         try {
@@ -193,7 +195,7 @@ class UserController extends Controller
 
             flash()->success(trans('general.active-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             flash()->success(trans('general.active-error'));
             return redirect()->route('setting.user.index');
         }

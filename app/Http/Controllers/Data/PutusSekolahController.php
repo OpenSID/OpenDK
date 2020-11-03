@@ -175,7 +175,7 @@ class PutusSekolahController extends Controller
             PutusSekolah::find($id)->update($request->all());
 
             return redirect()->route('data.putus-sekolah.index')->with('success', 'Data berhasil disimpan!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
     }
@@ -192,7 +192,7 @@ class PutusSekolahController extends Controller
             PutusSekolah::findOrFail($id)->delete();
 
             return redirect()->route('data.putus-sekolah.index')->with('success', 'Data sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.putus-sekolah.index')->with('error', 'Data gagal dihapus!');
         }
     }

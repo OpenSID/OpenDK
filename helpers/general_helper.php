@@ -1,4 +1,5 @@
 <?php
+
 /* -----------------------------------------------------
  | Function Helpers.
  | -----------------------------------------------------
@@ -20,8 +21,7 @@ use Illuminate\Support\Carbon;
  */
 function define_child($parent_id)
 {
-    $child = Menu::Where('parent_id', $parent_id)->where('is_active', TRUE)->get();
-
+    $child = Menu::Where('parent_id', $parent_id)->where('is_active', true)->get();
     return $child;
 }
 
@@ -37,7 +37,6 @@ function permission_val($id, $permission)
 {
     $role = Role::find($id);
     $format = json_decode(json_encode($role), true);
-
     $result = (isset($format['permissions'][$permission]) && $format['permissions'][$permission] != '' ? 1 : 0);
     return $result;
 }
@@ -61,7 +60,6 @@ function upload_image($image, $file)
     $name = time() . uniqid();
     $img = Image::make($image->getRealPath());
     $img->save($path . $name . '.' . $extension);
-
     return $name . '.' . $extension;
 }
 
@@ -100,7 +98,6 @@ function respon_meta($code, $message)
         'code' => $code,
         'message' => $message
     );
-
     return $meta;
 }
 
@@ -108,12 +105,9 @@ function convert_xml_to_array($filename)
 {
     try {
         $xml = file_get_contents($filename);
-
         $convert = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOCDATA);
-
         $json = json_encode($convert);
-
-        $array = json_decode($json, TRUE);
+        $array = json_decode($json, true);
         return $array;
     } catch (\Exception $e) {
         \Log::info([
@@ -122,9 +116,8 @@ function convert_xml_to_array($filename)
             "FILE" => $e->getFile()
         ]);
         return false;
-        // throw new \UnexpectedValueException(trans('message.news.import-error'), 1);
+    // throw new \UnexpectedValueException(trans('message.news.import-error'), 1);
     }
-
 }
 
 
@@ -135,11 +128,15 @@ function convert_born_date_to_age($date)
     return $from->diff($to)->y;
 }
 
-function random_color_part() {
-    return str_pad( dechex( mt_rand( 0, 255 ) ), 2, '0', STR_PAD_LEFT);
+function random_color_part()
+{
+
+    return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
 }
 
-function random_color() {
+function random_color()
+{
+
     return random_color_part() . random_color_part() . random_color_part();
 }
 
@@ -149,8 +146,8 @@ function years_list()
     $this_year = date('Y');
     $year_list = [];
 
-    for($i = 1; $i<=3; $i++){
-        $year_list[] = (int) $this_year --;
+    for ($i = 1; $i <= 3; $i++) {
+        $year_list[] = (int) $this_year--;
     }
 
     return $year_list;
@@ -174,7 +171,9 @@ function months_list()
     );
 }
 
-function get_words($sentence, $count = 10) {
+function get_words($sentence, $count = 10)
+{
+
     preg_match("/(?:\w+(?:\W+|$)){0,$count}/", $sentence, $matches);
     return $matches[0];
 }
@@ -256,7 +255,9 @@ function status_rekam()
 function is_wajib_ktp($umur, $status_kawin)
 {
     // Wajib KTP = sudah umur 17 atau pernah kawin
-    if ($umur === null) return null;
-    $wajib_ktp = (($umur > 16) OR (!empty($status_kawin) AND $status_kawin != 1));
+    if ($umur === null) {
+        return null;
+    }
+    $wajib_ktp = (($umur > 16) or (!empty($status_kawin) and $status_kawin != 1));
     return $wajib_ktp;
 }

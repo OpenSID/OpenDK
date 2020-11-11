@@ -13,3 +13,5 @@ yarn-error.log
 composer.lock
 composer.log
 /storage/installed
+Vagrantfile.*
+Vagrantfile

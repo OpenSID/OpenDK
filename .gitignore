@@ -15,3 +15,5 @@ composer.log
 /storage/installed
 Vagrantfile.*
 Vagrantfile
+# Shell script di cPanel > Terminal untuk menyalin folder public ke public_html
+copy_public.sh

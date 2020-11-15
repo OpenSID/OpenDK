@@ -60,8 +60,9 @@ class DashboardAnggaranRealisasiController extends Controller
                 $query_result->where('tahun', '=', $yearls);
 
                 $res = $query_result->first();
-
-                if (count($res) > 0) {
+              
+              
+                if (! empty($res)) {
                     $total_anggaran         = $res->total_anggaran;
                     $total_belanja          = $res->total_belanja;
                     $belanja_pegawai        = $res->belanja_pegawai;
@@ -130,8 +131,8 @@ class DashboardAnggaranRealisasiController extends Controller
                $query_result->where('tahun', '=', $year);
 
                 $res = $query_result->first();
-
-            if (count($res) > 0) {
+          
+            if (! empty($res)) {
                 $total_anggaran         = $res->total_anggaran;
                 $total_belanja          = $res->total_belanja;
                 $belanja_pegawai        = $res->belanja_pegawai;

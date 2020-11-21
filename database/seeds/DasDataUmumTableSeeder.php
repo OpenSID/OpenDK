@@ -13,6 +13,7 @@ class DasDataUmumTableSeeder extends Seeder
     public function run()
     {
 
+        $kecamatan_id = Config::get('app.default_profile');
 
         \DB::table('das_data_umum')->delete();
 
@@ -21,7 +22,7 @@ class DasDataUmumTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'profil_id' => 1,
-                'kecamatan_id' => '53.06.13',
+                'kecamatan_id' => $kecamatan_id,
                 'tipologi' => 'Kecamatan maju namun terpencil.',
                 'ketinggian' => 1,
                 'luas_wilayah' => 0.0,

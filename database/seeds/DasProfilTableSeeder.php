@@ -11,15 +11,17 @@ class DasProfilTableSeeder extends Seeder
      */
     public function run()
     {
+        $kecamatan_id = Config::get('app.default_profile');
+
         \DB::table('das_profil')->delete();
 
         \DB::table('das_profil')->insert(array (
             0 =>
             array (
                 'id' => 1,
-                'provinsi_id' => '53',
-                'kabupaten_id' => '53.06',
-                'kecamatan_id' => '53.06.13',
+                'provinsi_id' => substr($kecamatan_id, 0, 2),
+                'kabupaten_id' => substr($kecamatan_id, 0, 5),
+                'kecamatan_id' => $kecamatan_id,
                 'alamat' => 'Jl. Koperasi No. 1, Kab Lombok Barat, Provinsi Nusa Tenggara Barat',
                 'kode_pos' => '83653',
                 'telepon' => '021-2345234',

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ToiletSanitasi extends Model
 {
-    //
     protected $table = 'das_toilet_sanitasi';
 
     protected $fillable = [
@@ -15,7 +14,7 @@ class ToiletSanitasi extends Model
         'toilet',
         'sanitasi',
         'bulan',
-        'tahun'
+        'tahun',
     ];
 
     public function desa()

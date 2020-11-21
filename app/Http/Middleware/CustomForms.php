@@ -4,14 +4,18 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Form;
+use Illuminate\Http\Request;
+
+use function array_diff_key;
+use function session;
+use function sprintf;
 
 class CustomForms
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param Request $request
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -23,7 +27,7 @@ class CustomForms
         // with configured default options...
         Form::macro('modelHorizontal', function ($model, $options = []) {
             $options = array_diff_key([
-                'class' => 'form-horizontal',
+                'class'        => 'form-horizontal',
                 'autocomplete' => 'off',
             ], $options) + $options;
 
@@ -47,7 +51,6 @@ class CustomForms
 
             return;
         });
-
 
         return $next($request);
     }

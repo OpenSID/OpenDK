@@ -207,6 +207,7 @@ return [
     'aliases' => [
 
         'App' => Illuminate\Support\Facades\App::class,
+        'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
         'Blade' => Illuminate\Support\Facades\Blade::class,
@@ -246,6 +247,7 @@ return [
         'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'Counter' => \App\Facades\Counter::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FasilitasPAUD extends Model
 {
-    //
-    protected $table = 'das_fasilitas_paud';
+    protected $table    = 'das_fasilitas_paud';
     protected $fillable = [
         'kecamatan_id',
         'desa_id',
@@ -15,12 +14,11 @@ class FasilitasPAUD extends Model
         'jumlah_guru_paud',
         'jumlah_siswa_paud',
         'bulan',
-        'tahun'
+        'tahun',
     ];
 
     public function desa()
     {
         return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
-
 }

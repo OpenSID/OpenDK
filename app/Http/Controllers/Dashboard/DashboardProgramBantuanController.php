@@ -2,36 +2,40 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Profil;
-use App\Models\Program;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Program;
 use Illuminate\Support\Facades\DB;
+
+use function compact;
+use function config;
+use function request;
+use function rtrim;
+use function view;
+use function years_list;
 
 class DashboardProgramBantuanController extends Controller
 {
-    //
     /**
      * Menampilkan Data Program Bantuan
      **/
     public function showProgramBantuan()
     {
-        $page_title = 'Program Bantuan';
+        $page_title       = 'Program Bantuan';
         $page_description = 'Data Program Bantuan';
-        $defaultProfil = config('app.default_profile');
-        $year_list = years_list();
-        $list_desa = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
+        $defaultProfil    = config('app.default_profile');
+        $year_list        = years_list();
+        $list_desa        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
         return view('dashboard.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));
     }
 
     public function getChartBantuanPenduduk()
     {
-        $kid = config('app.default_profile');
-        $did = request('did');
+        $kid  = config('app.default_profile');
+        $did  = request('did');
         $year = request('y');
 
         // Data Grafik Bantuan Penduduk/Perorangan
-        $data = array();
+        $data    = [];
         $program = Program::where('sasaran', 1)->get();
 
         foreach ($program as $prog) {
@@ -40,9 +44,9 @@ class DashboardProgramBantuanController extends Controller
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_peserta_program.sasaran', '=', 1)
                 ->where('das_peserta_program.program_id', '=', $prog->id);
-            if($year == 'ALL'){
+            if ($year == 'ALL') {
                 $query_result->whereRaw('YEAR(das_peserta_program.created_at) in (?)', $this->where_year_helper());
-            }else{
+            } else {
                 $query_result->where('das_penduduk.tahun', $year);
             }
 
@@ -50,20 +54,19 @@ class DashboardProgramBantuanController extends Controller
                 $query_result->where('das_penduduk.desa_id', '=', $did);
             }
 
-
-            $data[] = array('program' => $prog->nama, 'value' => $query_result->count());
+            $data[] = ['program' => $prog->nama, 'value' => $query_result->count()];
         }
         return $data;
     }
 
     public function getChartBantuanKeluarga()
     {
-        $kid = config('app.default_profile');
-        $did = request('did');
+        $kid  = config('app.default_profile');
+        $did  = request('did');
         $year = request('y');
 
         // Data Grafik Bantuan Penduduk/Perorangan
-        $data = array();
+        $data    = [];
         $program = Program::where('sasaran', 2)->get();
 
         foreach ($program as $prog) {
@@ -72,9 +75,9 @@ class DashboardProgramBantuanController extends Controller
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_peserta_program.sasaran', '=', 2)
                 ->where('das_peserta_program.program_id', '=', $prog->id);
-            if($year == 'ALL'){
+            if ($year == 'ALL') {
                 $query_result->whereRaw('YEAR(das_peserta_program.created_at) in (?)', $this->where_year_helper());
-            }else{
+            } else {
                 $query_result->where('das_penduduk.tahun', $year);
             }
 
@@ -83,7 +86,7 @@ class DashboardProgramBantuanController extends Controller
             }
             $query_result->groupBy('das_penduduk.no_kk');
 
-            $data[] = array('program' => $prog->nama, 'value' => $query_result->count());
+            $data[] = ['program' => $prog->nama, 'value' => $query_result->count()];
         }
         return $data;
     }
@@ -91,10 +94,9 @@ class DashboardProgramBantuanController extends Controller
     protected function where_year_helper()
     {
         $str = '';
-        foreach(years_list() as $year){
-            $str.=$year.',';
+        foreach (years_list() as $year) {
+            $str .= $year . ',';
         }
         return rtrim($str, ',');
     }
 }
-

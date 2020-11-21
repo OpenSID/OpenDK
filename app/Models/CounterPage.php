@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\CounterVisitor;
 use Illuminate\Database\Eloquent\Model;
 
 class CounterPage extends Model
 {
-    //
     protected $table = 'das_counter_page';
 
     protected $fillable = ['page'];
@@ -15,6 +15,6 @@ class CounterPage extends Model
 
     public function visitors()
     {
-        return $this->belongsToMany('App\Models\CounterVisitor', 'das_counter_page_visitor', 'page_id', 'visitor_id');
+        return $this->belongsToMany(CounterVisitor::class, 'das_counter_page_visitor', 'page_id', 'visitor_id');
     }
 }

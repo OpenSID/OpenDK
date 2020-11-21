@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coa extends Model
 {
-    //
-    protected $table = 'ref_coa';
+    protected $table     = 'ref_coa';
     public $incrementing = false;
-    public $timestamps= false;
+    public $timestamps   = false;
 
     protected $fillable = [
         'sub_sub_id',
-        'coa_name'
+        'coa_name',
     ];
 }

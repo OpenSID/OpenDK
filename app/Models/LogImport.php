@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class LogImport extends Model
 {
-    //
     protected $table = 'log_imports';
 
     protected $fillable = [

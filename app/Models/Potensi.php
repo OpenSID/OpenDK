@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Potensi extends Model
 {
-    //
     protected $table = 'das_potensi';
 
     protected $fillable = [
@@ -21,6 +20,6 @@ class Potensi extends Model
 
     public function tipe()
     {
-      return $this->hasOne(App\Models\TipePotensi::class, 'id', 'tipe_id');
+        return $this->hasOne(App\Models\TipePotensi::class, 'id', 'tipe_id');
     }
 }

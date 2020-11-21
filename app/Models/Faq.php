@@ -13,11 +13,9 @@ class Faq extends Model
      */
 
     protected $table = 'das_faq';
-    
+
     protected $fillable = [
-
         'question',
-        'answer'
-
+        'answer',
     ];
 }

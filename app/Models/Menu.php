@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
@@ -18,17 +18,16 @@ class Menu extends Model
     /**
      * {@inheritDoc}
      */
-    protected $fillable = [ 'name', 'slug', 'parent_id', 'url', 'icon' ];
+    protected $fillable = ['name', 'slug', 'parent_id', 'url', 'icon'];
 
     /**
      * Return user's query for Datatables.
      *
-     * 
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public static function datatables()
     {
-        return static::select( 'name', 'slug', 'parent_id', 'id' )->get();
+        return static::select('name', 'slug', 'parent_id', 'id')->get();
     }
 
     /**
@@ -40,7 +39,7 @@ class Menu extends Model
     {
         return [
             'slug' => [
-                'source' => 'name'
+                'source' => 'name',
             ],
         ];
     }
@@ -52,8 +51,6 @@ class Menu extends Model
      */
     public static function getAccess()
     {
-        $permission = [ 'vm.create' => true, 'vm.update' => true, 'vm.delete' => true,'vm.show' => true];
-
-        return $permission;
+        return ['vm.create' => true, 'vm.update' => true, 'vm.delete' => true, 'vm.show' => true];
     }
 }

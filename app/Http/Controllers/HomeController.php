@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+use function captcha_img;
+use function response;
+use function view;
 
 class HomeController extends Controller
 {
@@ -13,13 +17,12 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -28,6 +31,6 @@ class HomeController extends Controller
 
     public function refresh_captcha()
     {
-        return response()->json(['captcha'=> captcha_img('mini')]);
+        return response()->json(['captcha' => captcha_img('mini')]);
     }
 }

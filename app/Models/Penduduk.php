@@ -1,11 +1,14 @@
 <?php
+
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Model;
+
 class Penduduk extends Model
 {
     public $incrementing = false;
-    protected $table = 'das_penduduk';
-    protected $fillable = [
+    protected $table     = 'das_penduduk';
+    protected $fillable  = [
         'nama',
         'nik',
         'kk_level',
@@ -50,10 +53,8 @@ class Penduduk extends Model
     ];
 
     /**
-     *
      * Relation Methods
      * */
-
 
     public function pekerjaan()
     {

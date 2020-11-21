@@ -6,18 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class JawabKomplain extends Model
 {
-    //
     protected $table = 'das_jawab_komplain';
 
     protected $fillable = [
         'komplain_id',
         'penjawab',
-        'jawaban'
+        'jawaban',
     ];
 
     public function komplains()
     {
-        return $this->belongsTo(Komplain::class,'komplain_id', 'komplain_id');
+        return $this->belongsTo(Komplain::class, 'komplain_id', 'komplain_id');
     }
 
     public function komplain()
@@ -27,6 +26,6 @@ class JawabKomplain extends Model
 
     public function penjawab_komplain()
     {
-        return $this->hasOne(Penduduk::class,'nik','penjawab');
+        return $this->hasOne(Penduduk::class, 'nik', 'penjawab');
     }
 }

@@ -4,13 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
 class Profil extends Model
 {
     // ID Kecamatan untuk default profil
 
     protected $table = 'das_profil';
-    
+
     protected $fillable = [
         'kecamatan_id',
         'alamat',
@@ -29,7 +28,7 @@ class Profil extends Model
         'file_struktur_organisasi',
         'file_logo',
         'visi',
-        'misi'
+        'misi',
     ];
 
     public function kecamatan()
@@ -50,8 +49,8 @@ class Profil extends Model
     public static function getProfilTanpaDataUmum()
     {
         $data_umums = DataUmum::get();
-        $ids = array();
-        foreach ($data_umums as $val){
+        $ids        = [];
+        foreach ($data_umums as $val) {
             $ids[] = $val->kecamatan_id;
         }
 
@@ -62,7 +61,7 @@ class Profil extends Model
     {
         return $this->hasOne(DataUmum::class, 'kecamatan_id', 'kecamatan_id');
     }
-  
+
     public function dataDesa()
     {
         return $this->hasMany(DataDesa::class, 'kecamatan_id', 'kecamatan_id');

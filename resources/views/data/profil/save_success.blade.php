@@ -6,8 +6,8 @@
         <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        {{ $page_title or "Page Title" }}
-        <small>{{ $page_description or null }}</small>
+        {{ $page_title ?? "Page Title" }}
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -24,7 +24,7 @@
         <div class="col-md-4">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <h3 class="box-title">{{ $page_title or "Page Title" }}</h3>
+                    <h3 class="box-title">{{ $page_title ?? "Page Title" }}</h3>
                 </div>
                 <div class="box-body">
                     <p>Data Profil berhasil disimpan!</p>

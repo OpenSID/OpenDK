@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PesertaProgram extends Model
 {
-    //
     protected $table = 'das_peserta_program';
 
     protected $fillable = [
@@ -22,12 +21,11 @@ class PesertaProgram extends Model
         'kartu_peserta',
     ];
 
-
     public function penduduk()
     {
-        if($this->sasaran==1){
+        if ($this->sasaran == 1) {
             return $this->hasOne(Penduduk::class, 'nik', 'peserta');
-        }elseif($this->sasaran==2){
+        } elseif ($this->sasaran == 2) {
             return $this->hasOne(Penduduk::class, 'no_kk', 'peserta');
         }
     }

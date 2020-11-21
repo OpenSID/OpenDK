@@ -35,9 +35,8 @@ class DataUmum extends Model
         'jml_pasar',
         'jml_balai_pertemuan',
         'kepadatan_penduduk',
-        'embed_peta'
+        'embed_peta',
     ];
-
 
     public function kecamatan()
     {

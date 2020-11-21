@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class EpidemiPenyakit extends Model
 {
-    //
     protected $table = 'das_epidemi_penyakit';
 
     protected $fillable = [
@@ -15,7 +14,7 @@ class EpidemiPenyakit extends Model
         'jumlah_penderita',
         'penyakit_id',
         'bulan',
-        'tahun'
+        'tahun',
     ];
 
     public function penyakit()

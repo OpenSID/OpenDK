@@ -41,7 +41,7 @@ class ProsesDomisiliController extends Controller
         return DataTables::of(DB::table('das_proses_domisili')
             ->join('das_penduduk', 'das_proses_domisili.penduduk_id', '=', 'das_penduduk.id')
             ->select([
-                'das_penduduk.id',
+                'das_proses_domisili.id',
                 'das_penduduk.nama as nama_penduduk',
                 'das_proses_domisili.alamat',
                 'das_proses_domisili.tanggal_pengajuan',

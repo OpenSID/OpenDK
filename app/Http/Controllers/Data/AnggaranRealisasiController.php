@@ -78,7 +78,6 @@ class AnggaranRealisasiController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa'  => 'required|unique:das_anggaran_realisasi,desa_id',
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required|unique:das_anggaran_realisasi',
             'tahun' => 'required|unique:das_anggaran_realisasi',

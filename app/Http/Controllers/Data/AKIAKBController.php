@@ -14,7 +14,6 @@ use Yajra\DataTables\Facades\DataTables;
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function redirect;
 use function request;
@@ -93,7 +92,6 @@ class AKIAKBController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa'  => 'required|unique:das_akib,desa_id',
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required|unique:das_akib',
             'tahun' => 'required|unique:das_akib',

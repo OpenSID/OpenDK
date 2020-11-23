@@ -92,7 +92,6 @@ class EpidemiPenyakitController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa'  => 'required|unique:das_epidemi_penyakit,desa_id',
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required|unique:das_epidemi_penyakit',
             'tahun' => 'required|unique:das_epidemi_penyakit',

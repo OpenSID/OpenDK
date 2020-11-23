@@ -92,7 +92,6 @@ class ToiletSanitasiController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa'  => 'required|unique:das_toilet_sanitasi,desa_id',
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required|unique:das_toilet_sanitasi',
             'tahun' => 'required|unique:das_toilet_sanitasi',

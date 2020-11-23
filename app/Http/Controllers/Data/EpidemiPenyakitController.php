@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImportEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
 use App\Models\Profil;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function redirect;
 use function request;
@@ -84,7 +81,7 @@ class EpidemiPenyakitController extends Controller
         $years_list       = years_list();
         $months_list      = months_list();
         $jenis_penyakit   = JenisPenyakit::pluck('nama', 'id');
-        return view('data.epidemi_penyakit.import', compact('page_title', 'page_description', 'kecamatan_id', 'list_desa', 'years_list', 'months_list', 'jenis_penyakit'));
+        return view('data.epidemi_penyakit.import', compact('page_title', 'page_description', 'years_list', 'months_list', 'jenis_penyakit'));
     }
 
     /**
@@ -94,58 +91,21 @@ class EpidemiPenyakitController extends Controller
      */
     public function do_import(Request $request)
     {
-        ini_set('max_execution_time', 300);
-        $bulan       = $request->input('bulan');
-        $tahun       = $request->input('tahun');
-        $penyakit_id = $request->input('penyakit_id');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+        $this->validate($request, [
+            'desa'  => 'required|unique:das_epidemi_penyakit,desa_id',
+            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'bulan' => 'required|unique:das_epidemi_penyakit',
+            'tahun' => 'required|unique:das_epidemi_penyakit',
         ]);
 
-        if ($request->hasFile('file') && $this->uploadValidation($bulan, $tahun, $penyakit_id)) {
-            try {
-                $path = RequestFacade::file('file')->getRealPath();
-
-                $data = Excel::load($path, function ($reader) {
-                })->get();
-
-                if (! empty($data) && $data->count()) {
-                    foreach ($data->toArray() as $key => $value) {
-                        if (! empty($value)) {
-                            foreach ($value as $v) {
-                                $insert[] = [
-                                    'kecamatan_id'     => config('app.default_profile'),
-                                    'desa_id'          => $v['desa_id'],
-                                    'jumlah_penderita' => $v['jumlah_penderita'],
-                                    'bulan'            => $bulan,
-                                    'tahun'            => $tahun,
-                                    'penyakit_id'      => $penyakit_id,
-                                ];
-                            }
-                        }
-                    }
-
-                    if (! empty($insert)) {
-                        try {
-                            EpidemiPenyakit::insert($insert);
-                            return back()->with('success', 'Import data sukses.');
-                        } catch (QueryException $ex) {
-                            return back()->with('error', 'Import data gagal. ' . $ex->getCode());
-                        }
-                    }
-                }
-            } catch (Exception $ex) {
-                return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
-            }
-        } else {
-            return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
+        try {
+            (new ImportEpidemiPenyakit($request))
+                ->import($request->file('file'));
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-    }
 
-    protected function uploadValidation($bulan, $tahun, $penyakit_id)
-    {
-        return ! EpidemiPenyakit::where('bulan', $bulan)->where('tahun', $tahun)->where('penyakit_id', $penyakit_id)->exists();
+        return back()->with('success', 'Import data sukses.');
     }
 
     /**

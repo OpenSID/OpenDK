@@ -15,6 +15,7 @@ class FasilitasPAUD extends Model
         'jumlah_siswa_paud',
         'bulan',
         'tahun',
+        'semester',
     ];
 
     public function desa()

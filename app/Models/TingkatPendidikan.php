@@ -10,6 +10,7 @@ class TingkatPendidikan extends Model
     protected $fillable = [
         'kecamatan_id',
         'desa_id',
+        'semester',
         'tidak_tamat_sekolah',
         'tamat_sd',
         'tamat_smp',
@@ -17,6 +18,7 @@ class TingkatPendidikan extends Model
         'tamat_diploma_sederajat',
         'bulan',
         'tahun',
+        'import_id',
     ];
 
     public function desa()

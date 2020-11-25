@@ -88,10 +88,10 @@ class AnggaranDesaController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa_id' => 'required|unique:das_anggaran_desa,desa_id',
-            'file'    => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan'   => 'required|unique:das_anggaran_desa',
-            'tahun'   => 'required|unique:das_anggaran_desa',
+            'desa'  => 'required|unique:das_anggaran_desa,desa_id',
+            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'bulan' => 'required|unique:das_anggaran_desa',
+            'tahun' => 'required|unique:das_anggaran_desa',
         ]);
 
         try {

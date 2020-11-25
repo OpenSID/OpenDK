@@ -76,7 +76,7 @@ class PutusSekolahController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa'     => 'required|unique:das_putus_sekolah,desa_id',
+            'desa_id'  => 'required|unique:das_putus_sekolah,desa_id',
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'tahun'    => 'required|unique:das_putus_sekolah',
             'semester' => 'required|unique:das_putus_sekolah'

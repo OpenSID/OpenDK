@@ -2,13 +2,13 @@
 
 namespace App\Imports;
 
-use App\Models\FasilitasPAUD;
+use App\Models\EpidemiPenyakit;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImportFasilitasPaud implements ToModel, WithHeadingRow
+class ImporEpidemiPenyakit implements ToModel, WithHeadingRow
 {
     use Importable;
 
@@ -25,13 +25,12 @@ class ImportFasilitasPaud implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        return new FasilitasPAUD([
+        return new EpidemiPenyakit([
             'kecamatan_id'      => config('app.default_profile'),
-            'desa_id'           => $this->request->input('desa_id'),
-            'jumlah_paud'       => $row['jumlah_paud_ra'],
-            'jumlah_guru_paud'  => $row['jumlah_guru_paud_ra'],
-            'jumlah_siswa_paud' => $row['jumlah_siswa_paud_ra'],
-            'semester'          => $this->request->input('semester'),
+            'desa_id'           => $row['desa_id'],
+            'jumlah_penderita'  => $row['jumlah_penderita'],
+            'penyakit_id'       => $this->request->input('penyakit_id'),
+            'bulan'             => $this->request->input('bulan'),
             'tahun'             => $this->request->input('tahun'),
         ]);
     }

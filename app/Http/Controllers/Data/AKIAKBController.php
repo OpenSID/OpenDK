@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportAKIAKB;
+use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use App\Models\Profil;
 use Exception;
@@ -98,7 +98,7 @@ class AKIAKBController extends Controller
         ]);
 
         try {
-            (new ImportAKIAKB($request))
+            (new ImporAKIAKB($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

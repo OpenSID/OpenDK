@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImportToiletSanitasi implements ToModel, WithHeadingRow
+class ImporToiletSanitasi implements ToModel, WithHeadingRow
 {
     use Importable;
 

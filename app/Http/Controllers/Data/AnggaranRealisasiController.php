@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportAnggaranRealisasi;
+use App\Imports\ImporAnggaranRealisasi;
 use App\Models\AnggaranRealisasi;
 use Exception;
 use Illuminate\Database\QueryException;
@@ -84,7 +84,7 @@ class AnggaranRealisasiController extends Controller
         ]);
 
         try {
-            (new ImportAnggaranRealisasi($request))
+            (new ImporAnggaranRealisasi($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

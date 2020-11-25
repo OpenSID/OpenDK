@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportFasilitasPaud;
+use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
 use App\Models\Wilayah;
 use Exception;
@@ -83,7 +83,7 @@ class FasilitasPaudController extends Controller
         ]);
 
         try {
-            (new ImportFasilitasPaud($request))
+            (new ImporFasilitasPaud($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

@@ -12,12 +12,9 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use function config;
 use function substr;
 
-class ImportPenduduk implements ToCollection, WithHeadingRow
+class ImporPenduduk implements ToCollection, WithHeadingRow
 {
     use Importable;
-
-    /** @var Request $request */
-    protected $request;
 
     /** @var string */
     protected $provinsi_id;
@@ -28,7 +25,6 @@ class ImportPenduduk implements ToCollection, WithHeadingRow
 
     public function __construct(Request $request)
     {
-        $this->request      = $request;
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
         $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
@@ -74,7 +70,7 @@ class ImportPenduduk implements ToCollection, WithHeadingRow
                 'hamil'                 => $value['hamil'],
 
                 // Tambahan
-                'alamat_sekarang' => $value['alamat'],
+                'alamat_sekarang' => $value['alamat_sekarang'],
                 'alamat'          => $value['alamat'],
                 'dusun'           => $value['dusun'],
                 'rw'              => $value['rw'],
@@ -84,18 +80,14 @@ class ImportPenduduk implements ToCollection, WithHeadingRow
                 'kecamatan_id'    => $this->kecamatan_id,
                 'desa_id'         => $this->desa_id,
                 'tahun'           => $this->tahun,
-                'id_pend_desa'    => rand(),
-                'status_dasar'    => 1,
-                'created_at'      => now(),
-                'updated_at'      => now(),
+                'id_pend_desa'    => $value['id'],
+                'status_dasar'    => $value['status_dasar'],
+                'created_at'      => $value['created_at'],
+                'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
             ];
 
-            if ($penduduk = Penduduk::where('nik', $insert['nik'])->first()) {
-                $penduduk->update($insert);
-            } else {
-                Penduduk::insert($insert);
-            }
+            Penduduk::updateOrInsert(['nik' => $insert['nik'], 'id_pend_desa' => $insert['id_pend_desa']], $insert);
         }
     }
 }

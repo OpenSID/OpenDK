@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImportPutusSekolah implements ToModel, WithHeadingRow
+class ImporPutusSekolah implements ToModel, WithHeadingRow
 {
     use Importable;
 

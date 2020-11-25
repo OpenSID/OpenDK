@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportToiletSanitasi;
+use App\Imports\ImporToiletSanitasi;
 use App\Models\Profil;
 use App\Models\ToiletSanitasi;
 use Exception;
@@ -98,7 +98,7 @@ class ToiletSanitasiController extends Controller
         ]);
 
         try {
-            (new ImportToiletSanitasi($request))
+            (new ImporToiletSanitasi($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

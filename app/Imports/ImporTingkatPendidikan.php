@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImportTingkatPendidikan implements ToModel, WithHeadingRow
+class ImporTingkatPendidikan implements ToModel, WithHeadingRow
 {
     use Importable;
 

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportImunisasi;
+use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
 use App\Models\Profil;
 use Exception;
@@ -98,7 +98,7 @@ class ImunisasiController extends Controller
         ]);
 
         try {
-            (new ImportImunisasi($request))
+            (new ImporImunisasi($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

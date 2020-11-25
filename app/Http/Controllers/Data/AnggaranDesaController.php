@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportAPBDesa;
+use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
 use App\Models\DataDesa;
 use Exception;
@@ -95,7 +95,7 @@ class AnggaranDesaController extends Controller
         ]);
 
         try {
-            (new ImportAPBDesa($request))
+            (new ImporAPBDesa($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

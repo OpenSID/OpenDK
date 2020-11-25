@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportTingkatPendidikan;
+use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
 use App\Models\Wilayah;
 use Exception;
@@ -83,7 +83,7 @@ class TingkatPendidikanController extends Controller
         ]);
 
         try {
-            (new ImportTingkatPendidikan($request))
+            (new ImporTingkatPendidikan($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

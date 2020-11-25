@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportPutusSekolah;
+use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
 use App\Models\Wilayah;
 use Exception;
@@ -83,7 +83,7 @@ class PutusSekolahController extends Controller
         ]);
 
         try {
-            (new ImportPutusSekolah($request))
+            (new ImporPutusSekolah($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

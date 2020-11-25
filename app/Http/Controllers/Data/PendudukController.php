@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportPenduduk;
+use App\Imports\ImporPenduduk;
 use App\Models\Penduduk;
 use Doctrine\DBAL\Query\QueryException;
 use Exception;
@@ -237,7 +237,7 @@ class PendudukController extends Controller
         ]);
 
         try {
-            (new ImportPenduduk($request))
+            (new ImporPenduduk($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

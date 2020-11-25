@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Penduduk extends Model
 {
     public $incrementing = false;
-    public $timestamps   = true;
     protected $table     = 'das_penduduk';
     protected $fillable  = [];
     protected $guarded   = [];

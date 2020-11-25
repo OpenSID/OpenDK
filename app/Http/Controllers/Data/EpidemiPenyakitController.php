@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImportEpidemiPenyakit;
+use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
 use App\Models\Profil;
@@ -98,7 +98,7 @@ class EpidemiPenyakitController extends Controller
         ]);
 
         try {
-            (new ImportEpidemiPenyakit($request))
+            (new ImporEpidemiPenyakit($request))
                 ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

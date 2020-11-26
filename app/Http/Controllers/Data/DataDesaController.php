@@ -60,10 +60,10 @@ class DataDesaController extends Controller
             $desa->kecamatan_id = config('app.default_profile');
 
             request()->validate([
-                'desa_id'      => 'required',
+                'desa_id'      => 'required|regex:/^[0-9.]+$/|min:13|max:13|unique:das_data_desa,desa_id',
                 'nama'         => 'required',
                 'website'      => 'required',
-                'luas_wilayah' => 'required',
+                'luas_wilayah' => 'required|numeric',
             ]);
 
             $desa->save();
@@ -113,10 +113,9 @@ class DataDesaController extends Controller
         $desa->kecamatan_id = config('app.default_profile');
         try {
             request()->validate([
-                'desa_id'      => 'required',
                 'nama'         => 'required',
                 'website'      => 'required',
-                'luas_wilayah' => 'required',
+                'luas_wilayah' => 'required|numeric',
             ]);
 
             $desa->save();

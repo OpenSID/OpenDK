@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use App\Models\Profil;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function redirect;
 use function request;
@@ -94,57 +91,20 @@ class AKIAKBController extends Controller
      */
     public function do_import(Request $request)
     {
-        ini_set('max_execution_time', 300);
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+        $this->validate($request, [
+            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'bulan' => 'required|unique:das_akib',
+            'tahun' => 'required|unique:das_akib',
         ]);
 
-        if ($request->hasFile('file') && $this->uploadValidation($bulan, $tahun)) {
-            try {
-                $path = RequestFacade::file('file')->getRealPath();
-
-                $data = Excel::load($path, function ($reader) {
-                })->get();
-
-                if (! empty($data) && $data->count()) {
-                    foreach ($data->toArray() as $key => $value) {
-                        if (! empty($value)) {
-                            foreach ($value as $v) {
-                                $insert[] = [
-                                    'kecamatan_id' => config('app.default_profile'),
-                                    'desa_id'      => $v['desa_id'],
-                                    'bulan'        => $bulan,
-                                    'tahun'        => $tahun,
-                                    'aki'          => $v['jumlah_aki'],
-                                    'akb'          => $v['jumlah_akb'],
-                                ];
-                            }
-                        }
-                    }
-
-                    if (! empty($insert)) {
-                        try {
-                            AkiAkb::insert($insert);
-                            return back()->with('success', 'Import data sukses.');
-                        } catch (QueryException $ex) {
-                            return back()->with('error', 'Import data gagal. ' . $ex->getCode());
-                        }
-                    }
-                }
-            } catch (Exception $e) {
-                return back()->with('error', 'Import data gagal. ' . $e->getCode());
-            }
-        } else {
-            return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
+        try {
+            (new ImporAKIAKB($request))
+                ->import($request->file('file'));
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-    }
 
-    protected function uploadValidation($bulan, $tahun)
-    {
-        return ! AkiAkb::where('bulan', $bulan)->where('tahun', $tahun)->exists();
+        return back()->with('success', 'Import data sukses.');
     }
 
     /**

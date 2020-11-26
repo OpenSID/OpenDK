@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
 use App\Models\Profil;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function redirect;
 use function request;
@@ -84,7 +81,7 @@ class ImunisasiController extends Controller
         $page_description = 'Import Data Cakupan Imunisasi';
         $years_list       = years_list();
         $months_list      = months_list();
-        return view('data.imunisasi.import', compact('page_title', 'page_description', 'kecamatan_id', 'list_desa', 'years_list', 'months_list'));
+        return view('data.imunisasi.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
     /**
@@ -94,54 +91,20 @@ class ImunisasiController extends Controller
      */
     public function do_import(Request $request)
     {
-        ini_set('max_execution_time', 300);
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+        $this->validate($request, [
+            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'bulan' => 'required|unique:das_imunisasi',
+            'tahun' => 'required|unique:das_imunisasi',
         ]);
 
-        if ($request->hasFile('file') && $this->uploadValidation($bulan, $tahun)) {
-            try {
-                $path = RequestFacade::file('file')->getRealPath();
-
-                $data = Excel::load($path, function ($reader) {
-                })->get();
-
-                if (! empty($data) && $data->count()) {
-                    foreach ($data->toArray() as $key => $value) {
-                        if (! empty($value)) {
-                            $insert[] = [
-                                'kecamatan_id'      => config('app.default_profile'),
-                                'desa_id'           => $value['desa_id'],
-                                'cakupan_imunisasi' => $value['cakupan_imunisasi'],
-                                'bulan'             => $bulan,
-                                'tahun'             => $tahun,
-                            ];
-                        }
-                    }
-
-                    if (! empty($insert)) {
-                        try {
-                            Imunisasi::insert($insert);
-                            return back()->with('success', 'Import data sukses.');
-                        } catch (QueryException $ex) {
-                            return back()->with('error', 'Import data gagal. ' . $ex->getCode());
-                        }
-                    }
-                }
-            } catch (Exception $ex) {
-                return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
-            }
-        } else {
-            return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
+        try {
+            (new ImporImunisasi($request))
+                ->import($request->file('file'));
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-    }
 
-    protected function uploadValidation($bulan, $tahun)
-    {
-        return ! Imunisasi::where('bulan', $bulan)->where('tahun', $tahun)->exists();
+        return back()->with('success', 'Import data sukses.');
     }
 
     /**

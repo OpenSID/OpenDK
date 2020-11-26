@@ -3,20 +3,17 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
 use App\Models\Wilayah;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function redirect;
 use function request;
@@ -68,7 +65,7 @@ class FasilitasPaudController extends Controller
         $page_description = 'Import Data Fasilitas PAUD';
         $years_list       = years_list();
         $months_list      = months_list();
-        return view('data.fasilitas_paud.import', compact('page_title', 'page_description', 'list_desa', 'years_list', 'months_list'));
+        return view('data.fasilitas_paud.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
     /**
@@ -78,59 +75,21 @@ class FasilitasPaudController extends Controller
      */
     public function do_import(Request $request)
     {
-        ini_set('max_execution_time', 300);
-        $semester = $request->input('semester');
-        $tahun    = $request->input('tahun');
-        $desa_id  = $request->input('desa_id');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+        $this->validate($request, [
+            'desa_id'  => 'required|unique:das_fasilitas_paud,desa_id',
+            'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'tahun'    => 'required|unique:das_fasilitas_paud',
+            'semester' => 'required|unique:das_fasilitas_paud'
         ]);
 
-        if ($request->hasFile('file') && $this->uploadValidation($desa_id, $semester, $tahun)) {
-            try {
-                $path = RequestFacade::file('file')->getRealPath();
-
-                $data = Excel::load($path, function ($reader) {
-                })->get();
-
-                if (! empty($data) && $data->count()) {
-                    foreach ($data->toArray() as $key => $value) {
-                        if (! empty($value)) {
-                            foreach ($value as $v) {
-                                $insert[] = [
-                                    'kecamatan_id'      => config('app.default_profile'),
-                                    'desa_id'           => $desa_id,
-                                    'jumlah_paud'       => $v['jumlah_paud_ra'] ?? 0,
-                                    'jumlah_guru_paud'  => $v['jumlah_guru_paud_ra'] ?? 0,
-                                    'jumlah_siswa_paud' => $v['jumlah_siswa_paud_ra'] ?? 0,
-                                    'semester'          => $semester,
-                                    'tahun'             => $tahun,
-                                ];
-                            }
-                        }
-                    }
-
-                    if (! empty($insert)) {
-                        try {
-                            FasilitasPAUD::insert($insert);
-                            return back()->with('success', 'Import data sukses.');
-                        } catch (QueryException $ex) {
-                            return back()->with('error', 'Import data gagal. ' . $ex->getCode());
-                        }
-                    }
-                }
-            } catch (Exception $ex) {
-                return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
-            }
-        } else {
-            return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
+        try {
+            (new ImporFasilitasPaud($request))
+                ->import($request->file('file'));
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-    }
 
-    protected function uploadValidation($desa_id, $semester, $tahun)
-    {
-        return ! FasilitasPAUD::where('semester', $semester)->where('tahun', $tahun)->where('desa_id', $desa_id)->exists();
+        return back()->with('success', 'Import data sukses.');
     }
 
     /**

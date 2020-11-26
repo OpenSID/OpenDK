@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Classes\Data\ImporPenduduk;
 use App\Http\Controllers\Controller;
+use App\Imports\ImporPenduduk;
 use App\Models\Penduduk;
 use Doctrine\DBAL\Query\QueryException;
 use Exception;
@@ -232,9 +232,13 @@ class PendudukController extends Controller
      */
     public function importExcel(Request $request)
     {
+        $this->validate($request, [
+            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+        ]);
+
         try {
-            $impor_penduduk = new ImporPenduduk($request);
-            $impor_penduduk->insertOrUpdate();
+            (new ImporPenduduk($request))
+                ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

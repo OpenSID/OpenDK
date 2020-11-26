@@ -62,7 +62,7 @@
             columns: [
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
                 {data: 'status', name: 'status'},
-                {data: 'penduduk.nama', name: 'nama_penduduk'},
+                {data: 'nama_penduduk', name: 'nama_penduduk'},
                 {data: 'alamat', name: 'alamat'},
                 {data: 'tanggal_pengajuan', name: 'tanggal_pengajuan'},
                 {data: 'tanggal_selesai', name: 'tanggal_selesai'},

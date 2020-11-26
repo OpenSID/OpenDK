@@ -3,22 +3,17 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Models\LogImport;
+use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
 use App\Models\Wilayah;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function redirect;
 use function request;
@@ -70,7 +65,7 @@ class TingkatPendidikanController extends Controller
         $page_description = 'Import Data Tingkat Pendidikan';
         $years_list       = years_list();
         $months_list      = months_list();
-        return view('data.tingkat_pendidikan.import', compact('page_title', 'page_description', 'list_desa', 'years_list', 'months_list'));
+        return view('data.tingkat_pendidikan.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
     /**
@@ -80,74 +75,21 @@ class TingkatPendidikanController extends Controller
      */
     public function do_import(Request $request)
     {
-        ini_set('max_execution_time', 300);
-        $semester = $request->input('semester');
-        $tahun    = $request->input('tahun');
-        $desa_id  = $request->input('desa_id');
-
-        $tmp = $desa_id;
-
-        $validator = Validator::make($request->all(), [
-            'semester' => 'required',
-            'tahun'    => 'required',
-            'desa_id'  => 'required',
-            'file'     => 'file|mimes:xls,xlsx,csv|max:5120',
+        $this->validate($request, [
+            'desa_id'  => 'required|unique:das_tingkat_pendidikan,desa_id',
+            'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'tahun'    => 'required|unique:das_tingkat_pendidikan',
+            'semester' => 'required|unique:das_tingkat_pendidikan'
         ]);
 
-        if ($validator->fails() && $this->uploadValidation($desa_id, $semester, $tahun)) {
-            try {
-                $path = RequestFacade::file('file')->getRealPath();
-
-                $data = Excel::load($path, function ($reader) {
-                })->get();
-
-                if (! empty($data) && $data->count()) {
-                    $import = LogImport::create([
-                        'nama_tabel' => 'das_tingkat_pendidikan',
-                        'desa_id'    => $desa_id,
-                        'bulan'      => $semester,
-                        'tahun'      => $tahun,
-                    ]);
-
-                    foreach ($data->toArray() as $key => $value) {
-                        if (! empty($value)) {
-                            foreach ($value as $v) {
-                                $insert[] = [
-                                    'kecamatan_id'            => config('app.default_profile'),
-                                    'desa_id'                 => $desa_id,
-                                    'tidak_tamat_sekolah'     => $v['tidak_tamat_sekolah'] ?? 0,
-                                    'tamat_sd'                => $v['tamat_sd_sederajat'] ?? 0,
-                                    'tamat_smp'               => $v['tamat_smp_sederajat'] ?? 0,
-                                    'tamat_sma'               => $v['tamat_sma_sederajat'] ?? 0,
-                                    'tamat_diploma_sederajat' => $v['tamat_diploma_sederajat'] ?? 0,
-                                    'semester'                => $semester,
-                                    'tahun'                   => $tahun,
-                                    'import_id'               => $import->id,
-                                ];
-                            }
-                        }
-                    }
-
-                    if (! empty($insert)) {
-                        try {
-                            TingkatPendidikan::insert($insert);
-                            return back()->with('success', 'Import data sukses.');
-                        } catch (QueryException $ex) {
-                            return back()->with('error', 'Import data gagal. ' . $ex->getMessage());
-                        }
-                    }
-                }
-            } catch (Exception $ex) {
-                return back()->with('error', 'Import data gagal. ' . $ex->getMessage() . $tmp);
-            }
-        } else {
-            return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
+        try {
+            (new ImporTingkatPendidikan($request))
+                ->import($request->file('file'));
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-    }
 
-    protected function uploadValidation($desa_id, $semester, $tahun)
-    {
-        return ! TingkatPendidikan::where('semester', $semester)->where('tahun', $tahun)->where('desa_id', $desa_id)->exists();
+        return back()->with('success', 'Import data sukses.');
     }
 
     /**

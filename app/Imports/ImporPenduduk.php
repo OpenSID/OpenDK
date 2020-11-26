@@ -1,74 +1,43 @@
 <?php
 
-namespace App\Classes\Data;
+namespace App\Imports;
 
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use InvalidArgumentException;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 use function config;
-use function date;
-use function ini_set;
-use function request;
 use function substr;
 
-class ImporPenduduk
+class ImporPenduduk implements ToCollection, WithHeadingRow
 {
-    protected $request = [];
-    protected $path;
-    protected $data = [];
+    use Importable;
+
+    /** @var string */
     protected $provinsi_id;
     protected $kabupaten_id;
     protected $kecamatan_id;
     protected $desa_id;
     protected $tahun;
 
-    /**
-     * @param Request dari form impor.
-     * @throws InvalidArgumentException
-     */
     public function __construct(Request $request)
     {
-        $this->request      = $request;
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
         $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
         $this->tahun        = $request->input('tahun');
         $this->desa_id      = $request->input('desa_id');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
-        ]);
-
-        if (! $request->hasFile('file')) {
-            throw new InvalidArgumentException(
-                'File excel belum dipilih.'
-            );
-        }
-
-        $this->path = RequestFacade::file('file')->getRealPath();
-        $this->data = Excel::selectSheetsByIndex(0)->load($this->path, function ($reader) {
-        })->get();
-        /*$data = Excel::load($path, function ($reader) {
-        })->get();*/
-
-        if (empty($this->data) or ! $this->data->count()) {
-            throw new InvalidArgumentException(
-                'Data sudah pernah diimport.'
-            );
-        }
     }
 
-    public function insertOrUpdate()
+    /**
+     * {@inheritdoc}
+     */
+    public function collection(Collection $collection)
     {
-        ini_set('max_execution_time', 0);
-
-        foreach ($this->data as $key => $value) {
-            if (empty($value)) {
-                continue;
-            }
+        foreach ($collection as $value) {
             $insert = [
                 'nik'                   => $value['nomor_nik'],
                 'nama'                  => $value['nama'],
@@ -101,7 +70,7 @@ class ImporPenduduk
                 'hamil'                 => $value['hamil'],
 
                 // Tambahan
-                'alamat_sekarang' => $value['alamat'],
+                'alamat_sekarang' => $value['alamat_sekarang'],
                 'alamat'          => $value['alamat'],
                 'dusun'           => $value['dusun'],
                 'rw'              => $value['rw'],
@@ -115,20 +84,10 @@ class ImporPenduduk
                 'status_dasar'    => $value['status_dasar'],
                 'created_at'      => $value['created_at'],
                 'updated_at'      => $value['updated_at'],
-                'imported_at'     => date("Y-m-d h:i:s"),
+                'imported_at'     => now(),
             ];
 
-            if (empty($insert)) {
-                continue;
-            }
-            // Gunakan desa_id && id_pend_desa untuk membandingkan penduduk, bukan NIK, karena NIK mungkin 0 dan juga mungkin diubah di desa.
-            $penduduk = Penduduk::where('desa_id', $insert['desa_id'])
-                ->where('id_pend_desa', $insert['id_pend_desa'])->first();
-            if ($penduduk) {
-                $penduduk->update($insert);
-            } else {
-                Penduduk::insert($insert);
-            }
+            Penduduk::updateOrInsert(['nik' => $insert['nik'], 'id_pend_desa' => $insert['id_pend_desa']], $insert);
         }
     }
 }

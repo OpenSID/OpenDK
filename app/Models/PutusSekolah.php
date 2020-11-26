@@ -20,6 +20,7 @@ class PutusSekolah extends Model
         'anak_usia_sma',
         'bulan',
         'tahun',
+        'semester',
     ];
 
     public function desa()

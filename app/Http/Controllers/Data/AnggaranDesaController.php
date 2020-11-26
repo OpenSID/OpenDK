@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
 use App\Models\DataDesa;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
 use function config;
-use function ini_set;
 use function months_list;
 use function number_format;
 use function redirect;
@@ -89,59 +87,21 @@ class AnggaranDesaController extends Controller
      */
     public function do_import(Request $request)
     {
-        ini_set('max_execution_time', 300);
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
-        $desa  = $request->input('desa');
-
-        request()->validate([
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+        $this->validate($request, [
+            'desa'  => 'required|unique:das_anggaran_desa,desa_id',
+            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'bulan' => 'required|unique:das_anggaran_desa',
+            'tahun' => 'required|unique:das_anggaran_desa',
         ]);
 
-        if ($request->hasFile('file') && $this->uploadValidation($bulan, $tahun, $desa)) {
-            try {
-                $path = RequestFacade::file('file')->getRealPath();
-
-                $data = Excel::load($path, function ($reader) {
-                })->get();
-
-                if (! empty($data) && $data->count()) {
-                    foreach ($data->toArray() as $key => $value) {
-                        if (! empty($value)) {
-                            $insert[] = [
-                                'no_akun'   => $value['no_akun'],
-                                'nama_akun' => $value['nama_akun'],
-                                'jumlah'    => $value['jumlah'],
-                                'bulan'     => $bulan,
-                                'tahun'     => $tahun,
-                                'desa_id'   => $desa,
-                            ];
-                        }
-                    }
-
-                    if (! empty($insert)) {
-                        try {
-                            AnggaranDesa::insert($insert);
-                            return back()->with('success', 'Import data sukses.');
-                        } catch (QueryException $ex) {
-                            return back()->with('error', 'Import data gagal. ' . $ex->getCode());
-                        }
-                    }
-                }
-            } catch (Exception $ex) {
-                return back()->with('error', 'Import data gagal. ' . $ex->getCode());
-            }
-        } else {
-            return back()->with('error', 'Import data gagal. Data sudah pernah diimport.');
+        try {
+            (new ImporAPBDesa($request))
+                ->import($request->file('file'));
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-    }
 
-    protected function uploadValidation($bulan, $tahun, $desa)
-    {
-        return ! AnggaranDesa::where('bulan', $bulan)
-            ->where('tahun', $tahun)
-            ->where('desa_id', $desa)
-            ->exists();
+        return back()->with('success', 'Import data sukses.');
     }
 
     /**

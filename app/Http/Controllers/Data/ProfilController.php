@@ -41,9 +41,16 @@ class ProfilController extends Controller
         $page_description= 'Data Profil Kecamatan';
         return view('data.profil.index', compact('page_title', 'page_description'));*/
         $profil = Profil::where('kecamatan_id', config('app.default_profile'))->first();
-        if ($profil->file_struktur_organisasi == '') {
-            $profil->file_struktur_organisasi = 'http://placehold.it/600x400';
+        
+        if ($profil->file_struktur_organisasi == '' || ! is_file(asset($profil->file_struktur_organisasi))) {
+            $profil->file_struktur_organisasi = '/img/no-image.png';
         }
+
+        if ($profil->file_logo == '' || ! is_file(asset($profil->file_logo))) {
+            $profil->file_logo = '/img/no-image.png';
+        }
+
+
         $page_title       = 'Ubah Profil';
         $page_description = 'Kecamatan: ' . ucwords(strtolower($profil->kecamatan->nama));
 

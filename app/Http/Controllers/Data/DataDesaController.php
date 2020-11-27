@@ -62,7 +62,6 @@ class DataDesaController extends Controller
             request()->validate([
                 'desa_id'      => 'required|regex:/^[0-9.]+$/|min:13|max:13|unique:das_data_desa,desa_id',
                 'nama'         => 'required',
-                'website'      => 'required',
                 'luas_wilayah' => 'required|numeric',
             ]);
 
@@ -114,7 +113,6 @@ class DataDesaController extends Controller
         try {
             request()->validate([
                 'nama'         => 'required',
-                'website'      => 'required',
                 'luas_wilayah' => 'required|numeric',
             ]);
 

@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="desa_id" class="control-label col-md-4 col-sm-3 col-xs-12">ID <span class="required">*</span></label>
+    <label for="desa_id" class="control-label col-md-4 col-sm-3 col-xs-12">Kode Wilayah Desa <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <?php $coba = config('app.default_profile'); ?>
@@ -14,10 +14,10 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website <span class="required">*</span></label>
+    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-         {!! Form::text('website', null, ['class' => 'form-control',  'id'=>'website', 'required' => true, 'placeholder'=>'Website Desa']) !!}
+         {!! Form::text('website', null, ['class' => 'form-control',  'id'=>'website', 'placeholder'=>'Website Desa']) !!}
     </div>
 </div>
 <div class="form-group">

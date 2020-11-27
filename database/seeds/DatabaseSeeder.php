@@ -39,7 +39,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DasMenuTableSeeder::class);
 
         /*
-         * Seed untuk system Kecamatan Pengguna (Dinamis)
+         * Seed untuk ubahan Kecamatan Pengguna (Dinamis)
          * Lakukan penyesuian data seed sesuai dengan data Kecamatan yang akan diinstal
          */
         $this->call(UsersTableSeeder::class);

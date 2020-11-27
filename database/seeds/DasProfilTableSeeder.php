@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DasProfilTableSeeder extends Seeder
 {
@@ -11,37 +12,31 @@ class DasProfilTableSeeder extends Seeder
      */
     public function run()
     {
-        $kecamatan_id = Config::get('app.default_profile');
+        $kecamatan_id = config('app.default_profile');
 
-        \DB::table('das_profil')->delete();
-
-        \DB::table('das_profil')->insert(array (
-            0 =>
-            array (
-                'id' => 1,
-                'provinsi_id' => substr($kecamatan_id, 0, 2),
-                'kabupaten_id' => substr($kecamatan_id, 0, 5),
-                'kecamatan_id' => $kecamatan_id,
-                'alamat' => 'Jl. Koperasi No. 1, Kab Lombok Barat, Provinsi Nusa Tenggara Barat',
-                'kode_pos' => '83653',
-                'telepon' => '021-2345234',
-                'email' => 'admin@mail.com',
-                'tahun_pembentukan' => 1990,
-                'dasar_pembentukan' => 'PEREGUB No 4 1990',
-                'nama_camat' => 'H. Hadi Fathurrahman, S.Sos, M.AP',
-                'sekretaris_camat' => 'Drs. Zaenal Abidin',
-                'kepsek_pemerintahan_umum' => 'Musyayad, S.Sos',
-                'kepsek_kesejahteraan_masyarakat' => 'Suhartono, S.Sos',
-                'kepsek_pemberdayaan_masyarakat' => 'Asrarudin, SE',
-                'kepsek_pelayanan_umum' => 'Masturi, ST',
-                'kepsek_trantib' => 'Mastur Idris, SH',
-                'file_struktur_organisasi' => 'Lighthouse.jpg',
-                'file_logo' => NULL,
-                'visi' => NULL,
-                'misi' => NULL,
-                'created_at' => '2018-02-03 06:57:26',
-                'updated_at' => '2018-07-19 01:29:57',
-            ),
-        ));
+        DB::table('das_profil')->insert([
+            'provinsi_id'                     => substr($kecamatan_id, 0, 2),
+            'kabupaten_id'                    => substr($kecamatan_id, 0, 5),
+            'kecamatan_id'                    => $kecamatan_id,
+            'alamat'                          => env('PROFIL_ALAMAT'),
+            'kode_pos'                        => env('PROFIL_KODE_POS'),
+            'telepon'                         => env('PROFIL_TELEPON'),
+            'email'                           => env('PROFIL_EMAIL'),
+            'tahun_pembentukan'               => env('PROFIL_TAHUN_PEMBENTUKAN'),
+            'dasar_pembentukan'               => env('PROFIL_DASAR_PEMBENTUKAN'),
+            'nama_camat'                      => env('PROFIL_NAMA_CAMAT'),
+            'sekretaris_camat'                => env('PROFIL_SEKRETARIS_CAMAT'),
+            'kepsek_pemerintahan_umum'        => env('PROFIL_PEMERINTAH_UMUM'),
+            'kepsek_kesejahteraan_masyarakat' => env('PROFIL_KESEJAHTERAAN_MASYARAKAT'),
+            'kepsek_pemberdayaan_masyarakat'  => env('PROFIL_PEMBERDAYAAN_MASYARAKAT'),
+            'kepsek_pelayanan_umum'           => env('PROFIL_KEPSEK_PELAYAN_UMUM'),
+            'kepsek_trantib'                  => env('PROFIL_KEPSEK_TRANTIB'),
+            'file_struktur_organisasi'        => env('PROFIL_FILE_STRUKTUR_ORGANISASI'),
+            'file_logo'                       => env('PROFIL_FILE_LOGO'),
+            'visi'                            => env('PROFIL_VISI'),
+            'misi'                            => env('PROFIL_MISI'),
+            'created_at'                      => now(),
+            'updated_at'                      => now(),
+        ]);
     }
 }

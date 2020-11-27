@@ -50,12 +50,20 @@ class PendudukController extends Controller
             ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
             ->leftJoin('ref_kawin', 'das_penduduk.status_kawin', '=', 'ref_kawin.id')
             ->leftJoin('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
-            ->selectRaw('das_penduduk.id, das_penduduk.nik, das_penduduk.nama, das_penduduk.no_kk,
-            das_penduduk.alamat, ref_pendidikan_kk.nama as pendidikan,
-            das_penduduk.tanggal_lahir, ref_kawin.nama as status_kawin, ref_pekerjaan.nama as pekerjaan')
+            ->select([
+                'das_penduduk.id',
+                'das_penduduk.nik',
+                'das_penduduk.nama',
+                'das_penduduk.no_kk',
+                'das_penduduk.alamat',
+                'ref_pendidikan_kk.nama as pendidikan',
+                'das_penduduk.tanggal_lahir',
+                'ref_kawin.nama as status_kawin',
+                'ref_pekerjaan.nama as pekerjaan',
+            ])
             ->where('status_dasar', 1);
 
-        return DataTables::of($query->get())
+        return DataTables::of($query)
             ->addColumn('action', function ($row) {
                 $edit_url   = route('data.penduduk.edit', $row->id);
                 $delete_url = route('data.penduduk.destroy', $row->id);

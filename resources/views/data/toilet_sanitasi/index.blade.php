@@ -58,7 +58,7 @@
             ajax: "{!! route( 'data.toilet-sanitasi.getdata' ) !!}",
             columns: [
                 {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'toilet', name: 'toilet'},
                 {data: 'sanitasi', name: 'sanitasi'},
                 {data: 'bulan', name: 'bulan'},
@@ -66,9 +66,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

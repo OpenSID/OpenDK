@@ -46,7 +46,7 @@ class DataUmumController extends Controller
 
     public function getDataUmum()
     {
-        return DataTables::of(DataUmum::with(['Kecamatan'])->select(['id', 'kecamatan_id', 'tipologi', 'luas_wilayah', 'jumlah_penduduk', 'bts_wil_utara', 'bts_wil_timur', 'bts_wil_selatan', 'bts_wil_barat'])->get())
+        return DataTables::of(DataUmum::with(['Kecamatan'])->select(['id', 'kecamatan_id', 'tipologi', 'luas_wilayah', 'jumlah_penduduk', 'bts_wil_utara', 'bts_wil_timur', 'bts_wil_selatan', 'bts_wil_barat']))
             ->addColumn('action', function ($data) {
                 $edit_url = route('data.data-umum.edit', $data->id);
 

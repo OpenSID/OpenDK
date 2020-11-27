@@ -53,8 +53,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#program-table').DataTable({
-            processing: false,
-            serverSide: false,
+            processing: true,
+            serverSide: true,
             ajax: "{!! route( 'data.program-bantuan.getdata' ) !!}",
             columns: [
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
@@ -64,9 +64,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

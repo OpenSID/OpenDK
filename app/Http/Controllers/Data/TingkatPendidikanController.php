@@ -38,7 +38,7 @@ class TingkatPendidikanController extends Controller
      */
     public function getDataTingkatPendidikan()
     {
-        return DataTables::of(TingkatPendidikan::with(['desa'])->select('*')->get())
+        return DataTables::of(TingkatPendidikan::with(['desa']))
             ->addColumn('actions', function ($row) {
                 $edit_url   = route('data.tingkat-pendidikan.edit', $row->id);
                 $delete_url = route('data.tingkat-pendidikan.destroy', $row->id);
@@ -47,9 +47,6 @@ class TingkatPendidikanController extends Controller
                 $data['delete_url'] = $delete_url;
 
                 return view('forms.action', $data);
-            })
-            ->editColumn('desa_id', function ($row) {
-                return $row->desa->nama;
             })
             ->rawColumns(['actions'])->make();
     }

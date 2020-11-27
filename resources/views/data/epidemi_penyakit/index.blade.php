@@ -53,22 +53,19 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#aki-table').DataTable({
-            processing: false,
-            serverSide: false,
+            processing: true,
+            serverSide: true,
             ajax: "{!! route( 'data.epidemi-penyakit.getdata' ) !!}",
             columns: [
                 {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
-                {data: 'penyakit_id', name: 'penyakit_id'},
+                {data: 'desa.nama', name: 'desa.nama'},
+                {data: 'penyakit.nama', name: 'penyakit.nama'},
                 {data: 'jumlah_penderita', name: 'jumlah_penderita'},
                 {data: 'bulan', name: 'bulan'},
                 {data: 'tahun', name: 'tahun'},
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

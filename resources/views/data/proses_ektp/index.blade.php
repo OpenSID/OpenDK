@@ -55,22 +55,19 @@
     $(document).ready(function () {
         var data = $('#ektp-table').DataTable({
             processing: true,
-            //serverSide: true,
+            serverSide: true,
             ajax: "{!! route( 'data.proses-ektp.getdata' ) !!}",
             columns: [
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
                 {data: 'status', name: 'status'},
-                {data: 'nama', name: 'nama'},
+                {data: 'nama', name: 'das_penduduk.nama'},
                 {data: 'nik', name: 'nik'},
-                {data: 'alamat', name: 'alamat'},
+                {data: 'alamat', name: 'das_proses_ektp.alamat'},
                 {data: 'tanggal_pengajuan', name: 'tanggal_pengajuan'},
                 {data: 'tanggal_selesai', name: 'tanggal_selesai'},
             ],
             order: [[0, 'desc']]
         });
-
-       // $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

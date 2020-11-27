@@ -44,7 +44,7 @@ class AnggaranDesaController extends Controller
      */
     public function getDataAnggaran()
     {
-        return DataTables::of(AnggaranDesa::select('*')->get())
+        return DataTables::of(AnggaranDesa::with('desa'))
             ->addColumn('actions', function ($row) {
                 $edit_url   = route('data.anggaran-desa.edit', $row->id);
                 $delete_url = route('data.anggaran-desa.destroy', $row->id);
@@ -55,9 +55,6 @@ class AnggaranDesaController extends Controller
                 return view('forms.action', $data);
             })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
-            })
-            ->editColumn('desa_id', function ($row) {
-                return $row->desa->nama;
             })
             ->editColumn('jumlah', function ($row) {
                 return number_format($row->jumlah, 2);

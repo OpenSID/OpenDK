@@ -38,7 +38,7 @@ class PutusSekolahController extends Controller
      */
     public function getDataPutusSekolah()
     {
-        return DataTables::of(PutusSekolah::with(['desa'])->select('*')->get())
+        return DataTables::of(PutusSekolah::with(['desa']))
             ->addColumn('actions', function ($row) {
                 $edit_url   = route('data.putus-sekolah.edit', $row->id);
                 $delete_url = route('data.putus-sekolah.destroy', $row->id);
@@ -47,9 +47,6 @@ class PutusSekolahController extends Controller
                 $data['delete_url'] = $delete_url;
 
                 return view('forms.action', $data);
-            })
-            ->editColumn('desa_id', function ($row) {
-                return $row->desa->nama;
             })
             ->rawColumns(['actions'])->make();
     }

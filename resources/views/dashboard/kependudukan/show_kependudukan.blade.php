@@ -1310,7 +1310,8 @@
 
             data = $('#penduduk-table').DataTable({
                 processing: true,
-                serverSide: false,
+                serverSide: true,
+                destroy: true,
                 ajax: {
                     url: "{!! route( 'dashboard.data-penduduk' ) !!}",
                     type: 'GET',
@@ -1321,11 +1322,11 @@
                     {data: 'nik', name: 'nik'},
                     {data: 'nama', name: 'nama'},
                     {data: 'no_kk', name: 'no_kk'},
-                    {data: 'alamat', name: 'alamat'},
-                    {data: 'pendidikan', name: 'pendidikan_kk'},
+                    {data: 'alamat', name: 'das_penduduk.alamat'},
+                    {data: 'pendidikan', name: 'ref_pendidikan_kk.nama'},
                     {data: 'tanggal_lahir', name: 'tanggal_lahir'},
-                    {data: 'pekerjaan', name: 'pekerjaan'},
-                    {data: 'status_kawin', name: 'status_kawin'},
+                    {data: 'pekerjaan', name: 'ref_pekerjaan.nama'},
+                    {data: 'status_kawin', name: 'ref_kawin.nama'},
                 ],
                 order: [[0, 'desc']]
             });
@@ -1338,12 +1339,6 @@
             });
 
         });
-
-        $('#detail-modal').on('hidden.bs.modal', function () {
-            // do something…
-            data.destroy();
-            $('#penduduk-table').empty();
-        })
     });
 </script>
 

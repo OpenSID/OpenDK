@@ -21,5 +21,6 @@ copy_public.sh
 .DS_Store
 # Seed ubahan kecamatan / pengguna
 /database/seeds/DasDataDesaTableSeeder.php
+/database/seeds/DasDataDesaTableSeeder.php
 /database/seeds/DasDataUmumTableSeederContoh.php
 /database/seeds/DasProfilTableSeeder.php

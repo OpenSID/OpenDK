@@ -19,3 +19,8 @@ Vagrantfile
 # Shell script di cPanel > Terminal untuk menyalin folder public ke public_html
 copy_public.sh
 .DS_Store
+# Seed ubahan kecamatan / pengguna
+/database/seeds/UsersTableSeeder.php
+/database/seeds/DasProfilTableSeeder.php
+/database/seeds/DasDataUmumTableSeeder.php
+/database/seeds/DasDataDesaTableSeeder.php

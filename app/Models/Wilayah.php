@@ -10,7 +10,7 @@ class Wilayah extends Model
     const PROVINSI  = 2;
     const KABUPATEN = 5;
     const KECAMATAN = 8;
-    const DESA      = 8;
+    const DESA      = 13;
 
     protected $primaryKey = 'kode';
 
@@ -34,7 +34,7 @@ class Wilayah extends Model
     }
 
     /**
-     * Scope query untuk menampilkan hanya provinsi kabupaten.
+     * Scope query untuk menampilkan hanya kabupaten.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder

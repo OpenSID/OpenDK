@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DasDataDesaTableSeeder extends Seeder
+class ContohDasDataDesaTableSeeder extends Seeder
 {
 
     /**

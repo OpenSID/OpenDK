@@ -2,7 +2,7 @@ sdrxfc<?php
 
 use Illuminate\Database\Seeder;
 
-class UsersTableSeeder extends Seeder
+class ContohUsersTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

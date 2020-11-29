@@ -259,11 +259,11 @@ class SistemKomplainController extends Controller
         } catch (Exception $ex) {
             return back()->withInput()->with('error', $ex);
         }
-
+		$camat = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
         $page_title       = 'Detail Laporan';
         $page_description = $komplain->judul;
 
-        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain'));
+        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain','camat'));
     }
 
     public function reply(Request $request, $id)

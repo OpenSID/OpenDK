@@ -24,6 +24,7 @@ class PendudukRequest extends FormRequest
     public function rules()
     {
         return [
+            // Batch insert atau update validation
             "pendudul.*.id_pend_desa"          => "required",
             "penduduk.*.nama"                  => "required",
             "penduduk.*.nik"                   => "required|string|min:16|max:16",
@@ -81,6 +82,9 @@ class PendudukRequest extends FormRequest
             "penduduk.*.created_at"            => "required|date",
             "penduduk.*.updated_at"            => "required|date",
             "penduduk.*.id_pend_desa"          => "required|integer",
+
+            // Batch delete validation
+            "hapus_penduduk.*.nik" => "present|max:16|max:16",
         ];
     }
 }

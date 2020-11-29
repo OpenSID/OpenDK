@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PendudukRequest;
 use App\Jobs\PendudukQueueJob;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PendudukController extends Controller
 {
@@ -34,10 +32,5 @@ class PendudukController extends Controller
         return response()->json([
             'message' => 'Proses sync data penduduk OpenSID sedang berjalan',
         ]);
-    }
-
-    public function test(Request $request)
-    {
-        return response(['penduduk' => DB::table('das_penduduk')->get()]);
     }
 }

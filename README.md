@@ -1,33 +1,32 @@
-# README #
+<h1 align="center">Selamat datang di OpenDK! 👋</h1>
 
-This README would normally document whatever steps are necessary to get your application up and running.
+![readme-image](https://user-images.githubusercontent.com/57283157/100576066-e71e9800-330f-11eb-899c-29c06b54feaa.JPG)
 
-### What is this repository for? ###
+### 🤔 Apa itu OpenDK?
+OpenDK (https://github.com/OpenSID/OpenDK) adalah aplikasi yang bisa digunakan oleh Pemerintah Kecamatan di Seluruh Indonesia. Aplikasi ini sangat berguna untuk menampilkan statistik di wilayah Kecamatan, diantaranya adalah statistik Penduduk, statistik Kesehatan, Statistik Pendidikan dan Statistik lainnya. Upaya ini adalah sebagai bentuk transparansi dan Keterbukaan Informasi Publik yang dilakukan Pemerintah Kecamatan kepada seluruh rakyat di wilayahnya.
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+### 📃 PEDOMAN PENGGUNAAN
+Pedoman pemasangan dan penggunaan OpenDK dapat dilihat di wiki OpenDK di https://github.com/opensid/opendk/wiki.
 
-### How do I get set up? ###
+### 💻 DEMO
+Demo aplikasi OpenDK dapat dilihat di https://demo.opendk.my.id. Versi yang terlihat di demo itu adalah rilis terkini. Versi beta dapat diujicoba di https://beta.opendk.my.id sebelum dirilis resmi pada bulan berikutnya.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Modul administrasi OpenDK demo dapat diaskses pada https://demo.opendk.my.id/index.php/login. Masukkan Username = admin@mail.com dan Password = password.
 
-### Contribution guidelines ###
+### 💬 FORUM
 
-* Writing tests
-* Code review
-* Other guidelines
+Anda dapat bergabung dengan [Forum Pengguna dan Pegiat OpenDK](https://www.facebook.com/groups/opendk) di Facebook. Group ini bersifat informal dan merupakan tempat berbagi informasi dan saling membantu menggunakan dan mengembangkan aplikasi OpenDK.
 
-### Who do I talk to? ###
+### 🤝 KEMBANGKAN BERSAMA
 
-* Repo owner or admin
-* Other community or team contact
+Pengguna dan pegiat OpenDK dapat melaporkan dan mendaftarkan masalah/usulan/permintaan perbaikan atau pengembangan di https://github.com/opensid/opendk/issues. Laporan ini merupakan daftar tugas bagi pegiat untuk mengembangkan OpenDK berdasarkan masukan dari komunitas OpenDK.
 
-### Visitor Counter ###
-* https://github.com/Kryptonit3/Counter
-* https://github.com/weboAp/Visitor
+Komunitas OpenDK juga bebas, bahkan diajak, untuk turut membuat kontribusi pada panduan OpenDK di https://github.com/OpenSID/OpenDK/wiki, dan pada script OpenDK di (https://github.com/OpenSID/OpenDK).
+
+### 👨‍💻 KONTRIBUTOR
+
+Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+| [<img src="https://avatars.githubusercontent.com/eddieridwan?s=150&v=1" width="200px;"/><br /><sub><b>Eddie Ridwan</b></sub>](https://github.com/eddieridwan)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=eddieridwan "Code") [🔧](https://github.com/OpenSID/OpenDK/commits?author=eddieridwan "Code") | [<img src="https://avatars.githubusercontent.com/agungsugiarto?s=150&v=1" width="200px;"/><br /><sub><b>Agung Sugiarto</b></sub>](https://github.com/agungsugiarto)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=agungsugiarto "Code") | [<img src="https://avatars.githubusercontent.com/xiaocids?s=150&v=1" width="200px;"/><br /><sub><b>Xiaocids</b></sub>](https://github.com/xiaocids)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=xiaocids "Code") | [<img src="https://avatars.githubusercontent.com/roaddee?s=150&v=1" width="200px;"/><br /><sub><b>Roaddee</b></sub>](https://github.com/roaddee)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=roaddee "Code") | [<img src="https://avatars.githubusercontent.com/afa28?s=150&v=1" width="200px;"/><br /><sub><b>Afa28</b></sub>](https://github.com/afa28)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=afa28 "Code") | [<img src="https://avatars.githubusercontent.com/mizwaruddin?s=150&v=1" width="200px;"/><br /><sub><b>Mizwaruddin</b></sub>](https://github.com/mizwaruddin)<br />[🐛](https://github.com/OpenSID/OpenDK/issues?q=author%3Amizwaruddin) | [<img src="https://avatars.githubusercontent.com/deanvhin2?s=150&v=1" width="200px;"/><br /><sub><b>Deanvhin2</b></sub>](https://github.com/deanvhin2)<br />[🐛](https://github.com/OpenSID/OpenDK/issues?q=author%3Adeanvhin2)
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |

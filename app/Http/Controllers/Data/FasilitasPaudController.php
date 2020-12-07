@@ -38,7 +38,7 @@ class FasilitasPaudController extends Controller
      */
     public function getDataFasilitasPAUD()
     {
-        return DataTables::of(FasilitasPAUD::with(['desa'])->select('*')->get())
+        return DataTables::of(FasilitasPAUD::with(['desa']))
             ->addColumn('actions', function ($row) {
                 $edit_url   = route('data.fasilitas-paud.edit', $row->id);
                 $delete_url = route('data.fasilitas-paud.destroy', $row->id);
@@ -47,9 +47,6 @@ class FasilitasPaudController extends Controller
                 $data['delete_url'] = $delete_url;
 
                 return view('forms.action', $data);
-            })
-            ->editColumn('desa_id', function ($row) {
-                return $row->desa->nama;
             })
             ->rawColumns(['actions'])->make();
     }

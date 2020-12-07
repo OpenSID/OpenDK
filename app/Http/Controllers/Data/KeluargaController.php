@@ -41,7 +41,7 @@ class KeluargaController extends Controller
 
     public function getKeluarga()
     {
-        return DataTables::of(Keluarga::select('*')->get())
+        return DataTables::of(Keluarga::query())
             ->addColumn('action', function ($row) {
                 $edit_url   = route('data.keluarga.edit', $row->id);
                 $delete_url = route('data.keluarga.destroy', $row->id);

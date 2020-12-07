@@ -27,7 +27,7 @@ class JenisPenyakitController extends Controller
     // Get Data Kategori Komplain
     public function getData()
     {
-        return DataTables::of(JenisPenyakit::select(['id', 'nama'])->orderBy('id')->get())
+        return DataTables::of(JenisPenyakit::select(['id', 'nama'])->orderBy('id'))
             ->addColumn('action', function ($row) {
                 $edit_url   = route('setting.jenis-penyakit.edit', $row->id);
                 $delete_url = route('setting.jenis-penyakit.destroy', $row->id);

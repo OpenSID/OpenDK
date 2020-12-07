@@ -614,9 +614,9 @@ class DashboardKependudukanController extends Controller
             }
         }
 
-        return DataTables::of($query->get())
+        return DataTables::of($query)
             ->addColumn('tanggal_lahir', function ($row) {
                 return convert_born_date_to_age($row->tanggal_lahir);
-            })->make();
+            })->make(true);
     }
 }

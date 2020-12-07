@@ -28,7 +28,7 @@ class KategoriKomplainController extends Controller
     // Get Data Kategori Komplain
     public function getData()
     {
-        return DataTables::of(KategoriKomplain::select(['id', 'nama'])->orderBy('id')->get())
+        return DataTables::of(KategoriKomplain::select(['id', 'nama'])->orderBy('id'))
             ->addColumn('action', function ($row) {
                 $edit_url   = route('setting.komplain-kategori.edit', $row->id);
                 $delete_url = route('setting.komplain-kategori.destroy', $row->id);

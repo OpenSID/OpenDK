@@ -50,21 +50,6 @@ class ProfilController extends Controller
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
 
-    public function getDataProfil()
-    {
-        return DataTables::of(Profil::with(['Kecamatan'])->get())
-            ->addColumn('action', function ($data) {
-                $edit_url   = route('data.profil.edit', $data->id);
-                $delete_url = route('data.profil.destroy', $data->id);
-
-                $data['edit_url'] = $edit_url;
-                //$data['delete_url'] = $delete_url;
-
-                return view('forms.action', $data);
-            })
-            ->make();
-    }
-
     /**
      * Show the form for creating a new resource.
      *

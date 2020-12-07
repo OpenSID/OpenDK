@@ -59,7 +59,7 @@
             ajax: "{!! route( 'data.anggaran-desa.getdata' ) !!}",
             columns: [
                 {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'no_akun', name: 'no_akun'},
                 {data: 'nama_akun', name: 'nama_akun'},
                 {data: 'jumlah', name: 'jumlah',class: 'text-right'},
@@ -68,9 +68,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        //$.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

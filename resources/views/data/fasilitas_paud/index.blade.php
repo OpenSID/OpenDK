@@ -54,12 +54,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#fasilitas-table').DataTable({
-            processing: false,
-            serverSide: false,
+            processing: true,
+            serverSide: true,
             ajax: "{!! route( 'data.fasilitas-paud.getdata' ) !!}",
             columns: [
                 {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'jumlah_paud', name: 'jumlah_paud'},
                 {data: 'jumlah_guru_paud', name: 'jumlah_guru_paud'},
                 {data: 'jumlah_siswa_paud', name: 'jumlah_siswa_paud'},
@@ -68,9 +68,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

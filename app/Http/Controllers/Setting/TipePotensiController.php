@@ -34,7 +34,7 @@ class TipePotensiController extends Controller
     // Get Data Tipe Potensi
     public function getData()
     {
-        return DataTables::of(TipePotensi::select(['id', 'nama_kategori'])->orderBy('id')->get())
+        return DataTables::of(TipePotensi::select(['id', 'nama_kategori'])->orderBy('id'))
             ->addColumn('action', function ($row) {
                 $edit_url   = route('setting.tipe-potensi.edit', $row->id);
                 $delete_url = route('setting.tipe-potensi.destroy', $row->id);

@@ -261,3 +261,13 @@ function is_wajib_ktp($umur, $status_kawin)
     $wajib_ktp = (($umur > 16) or (!empty($status_kawin) and $status_kawin != 1));
     return $wajib_ktp;
 }
+
+function is_img($img)
+{
+    if ($img == '' || ! is_file($img)) {
+        $img = '/img/no-image.png';
+    }
+    
+    return $img;
+}
+

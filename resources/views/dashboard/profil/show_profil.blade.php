@@ -24,7 +24,7 @@
             <div class="col-sm-12">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="kecamatan" class="col-sm-2 control-label">Kecamatan</label>
+                        <label for="kecamatan" class="col-sm-2 control-label">{{ $sebutan_wilayah }}</label>
 
                         <div class="col-sm-4">
                             <input type="hidden" id="defaultProfil" value="{{ $defaultProfil }}">
@@ -45,17 +45,17 @@
                 <div class="widget-user-header bg-blue" style="padding:5px;">
                     @if(! $profil->file_logo == '')
                       <div class="widget-user-image">
-                        <img class="img-rounded" src="{{ asset($profil->file_logo) }}" alt="Logo Kecamatan">
+                        <img class="img-rounded" src="{{ asset($profil->file_logo) }}" alt="Logo {{ $sebutan_wilayah }}">
                       </div>
                     @else
                         <div class="widget-user-image">
-                            <img class="img-rounded" src="{{ asset('/img/no-image.png') }}" alt="Logo Kecamatan">
+                            <img class="img-rounded" src="{{ asset('/img/no-image.png') }}" alt="Logo {{ $sebutan_wilayah }}">
                         </div>
                     @endif
                   <!-- /.widget-user-image -->
                   <h3 style="padding-top:15px; padding-left:0px; padding-bottom:15px;" class="widget-user-username">{{ ucwords(strtolower($profil->kecamatan->nama)) }}</h3>
                 </div>
-              
+
                 <div class="box-footer no-padding">
                   <ul class="nav nav-stacked">
                     <li><a href="#"><strong>Luas Wilayah </strong><span class="pull-right badge bg-aqua" id="luaswilayah">{{ number_format($profil->dataumum->luas_wilayah) }} km</span></a></li>
@@ -116,11 +116,11 @@
                             <table class="table table-striped">
                                 <tbody>
                                 <tr>
-                                    <th class="col-md-4">Nama Kecamatan</th>
+                                    <th class="col-md-4">Nama {{ $sebutan_wilayah }}</th>
                                     <td class="col-md-8">: {{ ucwords(strtolower($profil->kecamatan->nama)) }}</td>
                                 </tr>
                                 <tr>
-                                    <th class="col-md-4">Kode Kecamatan</th>
+                                    <th class="col-md-4">Kode {{ $sebutan_wilayah }}</th>
                                     <td class="col-md-8">: {{ ucwords(strtolower($profil->kecamatan->kode)) }}</td>
                                 </tr>
 
@@ -396,8 +396,8 @@
                                   @foreach($profil->datadesa as $desa)
                                   <li><a class="nav-item" target="_parent" @if($desa->website != '') href="{{ $desa->website}}"  title="Masuk Ke Website Desa" @else href="#" title="Website Desa Tidak Tersedia!" @endif>{{ $desa->nama }}<span class="pull-right" >@if($desa->website != '') <i class="fa fa-globe"></i> @endif</span></a></li>
                                   @endforeach
-                                </ul>                                
-                              </div>  
+                                </ul>
+                              </div>
                             </div>
                         </div>
 

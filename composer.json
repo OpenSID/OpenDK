@@ -22,6 +22,7 @@
         "orangehill/iseed": "^2.6",
         "proengsoft/laravel-jsvalidation": "^4.4",
         "rachidlaasri/laravel-installer": "^4.1",
+        "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables-oracle": "~9."
     },
     "require-dev": {

@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeds\Demo;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ContohDasKeluargaTableSeeder extends Seeder
 {
@@ -12,9 +15,9 @@ class ContohDasKeluargaTableSeeder extends Seeder
     public function run()
     {
 
-        \DB::table('das_keluarga')->delete();
+        DB::table('das_keluarga')->truncate();
 
-        \DB::table('das_keluarga')->insert(array (
+        DB::table('das_keluarga')->insert(array (
             0 =>
             array (
                 'id' => '1',

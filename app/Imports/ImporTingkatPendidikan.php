@@ -29,7 +29,7 @@ class ImporTingkatPendidikan implements ToModel, WithHeadingRow
         $import = LogImport::create([
             'nama_tabel' => 'das_tingkat_pendidikan',
             'desa_id'    => $this->request->input('desa_id'),
-            'bulan'      => $this->request->input('semester'),
+            'bulan'      => now()->month,
             'tahun'      => $this->request->input('tahun'),
         ]);
 

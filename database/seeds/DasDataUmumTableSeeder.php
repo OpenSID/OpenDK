@@ -14,6 +14,9 @@ class DasDataUmumTableSeeder extends Seeder
      */
     public function run()
     {
+
+        \DB::table('das_data_umum')->delete();
+
         DB::table('das_data_umum')->insert([
             'profil_id'              => 1,
             'kecamatan_id'           => config('app.default_profile'),

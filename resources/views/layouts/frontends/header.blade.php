@@ -35,14 +35,14 @@
               </ul>
           </li>
 
-            <li class="dropdown">
+            {{-- <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">PUBLIKASI <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
                   <li><a href="#">Action</a></li>
                   <li><a href="#">Another action</a></li>
                   <li><a href="#">Something else here</a></li>
                 </ul>
-            </li>
+            </li> --}}
             <li class="dropdown @if(Request::is('desa-*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">

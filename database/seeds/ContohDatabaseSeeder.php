@@ -1,5 +1,6 @@
 <?php
 
+use Database\Seeds\Demo\ContohDasDataDesaTableSeeder;
 use Database\Seeds\Demo\ContohDasProfilTableSeeder;
 use Database\Seeds\Demo\ContohDasDataUmumTableSeeder;
 use Database\Seeds\Demo\ContohDasKeluargaTableSeeder;
@@ -24,6 +25,7 @@ class ContohDatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(ContohDasDataDesaTableSeeder::class);
         $this->call(ContohDasDataUmumTableSeeder::class);
         $this->call(ContohDasProfilTableSeeder::class);
         $this->call(ContohDasKeluargaTableSeeder::class);

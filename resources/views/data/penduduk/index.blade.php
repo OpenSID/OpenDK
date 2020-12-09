@@ -83,15 +83,14 @@
                 /*{data: 'dusun', name: 'dusun'},
                 {data: 'rw', name: 'rw'},
                 {data: 'rt', name: 'rt'},*/
-                {data: 'pendidikan', name: 'pendidikan'},
+                {data: 'pendidikan', name: 'ref_pendidikan_kk.nama'},
                 {data: 'tanggal_lahir', name: 'tanggal_lahir'},
-                {data: 'pekerjaan', name: 'pekerjaan'},
-                {data: 'status_kawin', name: 'status_kawin'},
+                {data: 'pekerjaan', name: 'ref_pekerjaan.nama'},
+                {data: 'status_kawin', name: 'ref_kawin.nama'},
             ],
             order: [[0, 'desc']]
         });
     });
-    //$.fn.dataTable.ext.errMode = 'throw';
 </script>
 @include('forms.datatable-vertical')
 @include('forms.delete-modal')

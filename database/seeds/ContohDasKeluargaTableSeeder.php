@@ -2,22 +2,20 @@
 
 use Illuminate\Database\Seeder;
 
-class DasKeluargaTableSeeder extends Seeder
+class ContohDasKeluargaTableSeeder extends Seeder
 {
-
     /**
-     * Auto generated seed file
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        
 
         \DB::table('das_keluarga')->delete();
-        
+
         \DB::table('das_keluarga')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => '1',
                 'no_kk' => '1105070208130002',
@@ -31,7 +29,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => '2',
                 'no_kk' => '1105072808070078',
@@ -45,7 +43,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'id' => '3',
                 'no_kk' => '1105071101128300',
@@ -59,7 +57,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'id' => '4',
                 'no_kk' => '1105072708070041',
@@ -73,7 +71,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'id' => '5',
                 'no_kk' => '1105072409070010',
@@ -87,7 +85,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'id' => '6',
                 'no_kk' => '1105072609070005',
@@ -101,7 +99,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'id' => '7',
                 'no_kk' => '1105070208013000',
@@ -115,7 +113,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'id' => '8',
                 'no_kk' => '1105070712110008',
@@ -129,7 +127,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'id' => '9',
                 'no_kk' => '1105070708150002',
@@ -143,7 +141,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'id' => '10',
                 'no_kk' => '1105072709070005',
@@ -157,7 +155,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'id' => '11',
                 'no_kk' => '1105070705130002',
@@ -171,7 +169,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'id' => '12',
                 'no_kk' => '1105072011150001',
@@ -185,7 +183,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            12 => 
+            12 =>
             array (
                 'id' => '13',
                 'no_kk' => '1105071812120005',
@@ -199,7 +197,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            13 => 
+            13 =>
             array (
                 'id' => '14',
                 'no_kk' => '1105070807100001',
@@ -213,7 +211,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            14 => 
+            14 =>
             array (
                 'id' => '15',
                 'no_kk' => '1105071701170001',
@@ -227,7 +225,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            15 => 
+            15 =>
             array (
                 'id' => '16',
                 'no_kk' => '1105071708066066',
@@ -241,7 +239,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            16 => 
+            16 =>
             array (
                 'id' => '17',
                 'no_kk' => '1105072808070085',
@@ -255,7 +253,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            17 => 
+            17 =>
             array (
                 'id' => '18',
                 'no_kk' => '1105072709070017',
@@ -269,7 +267,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            18 => 
+            18 =>
             array (
                 'id' => '19',
                 'no_kk' => '110501708063913',
@@ -283,7 +281,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            19 => 
+            19 =>
             array (
                 'id' => '20',
                 'no_kk' => '1105071708063998',
@@ -297,7 +295,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            20 => 
+            20 =>
             array (
                 'id' => '21',
                 'no_kk' => '1105072609070041',
@@ -311,7 +309,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            21 => 
+            21 =>
             array (
                 'id' => '22',
                 'no_kk' => '1105072709070003',
@@ -325,7 +323,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            22 => 
+            22 =>
             array (
                 'id' => '23',
                 'no_kk' => '1105072709070012',
@@ -339,7 +337,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            23 => 
+            23 =>
             array (
                 'id' => '24',
                 'no_kk' => '1105072709070028',
@@ -353,7 +351,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            24 => 
+            24 =>
             array (
                 'id' => '25',
                 'no_kk' => '1105072609070021',
@@ -367,7 +365,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            25 => 
+            25 =>
             array (
                 'id' => '26',
                 'no_kk' => '1105072709070001',
@@ -381,7 +379,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            26 => 
+            26 =>
             array (
                 'id' => '27',
                 'no_kk' => '1105071708061810',
@@ -395,7 +393,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            27 => 
+            27 =>
             array (
                 'id' => '28',
                 'no_kk' => '1105072609070046',
@@ -409,7 +407,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            28 => 
+            28 =>
             array (
                 'id' => '29',
                 'no_kk' => '1105072609070029',
@@ -423,7 +421,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            29 => 
+            29 =>
             array (
                 'id' => '30',
                 'no_kk' => '1105072609070035',
@@ -437,7 +435,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            30 => 
+            30 =>
             array (
                 'id' => '31',
                 'no_kk' => '1105072709070020',
@@ -451,7 +449,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            31 => 
+            31 =>
             array (
                 'id' => '32',
                 'no_kk' => '1105072609077003',
@@ -465,7 +463,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            32 => 
+            32 =>
             array (
                 'id' => '33',
                 'no_kk' => '1105100106110004',
@@ -479,7 +477,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            33 => 
+            33 =>
             array (
                 'id' => '34',
                 'no_kk' => '1105072808070076',
@@ -493,7 +491,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            34 => 
+            34 =>
             array (
                 'id' => '35',
                 'no_kk' => '1105071308150001',
@@ -507,7 +505,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            35 => 
+            35 =>
             array (
                 'id' => '36',
                 'no_kk' => '1105071504110001',
@@ -521,7 +519,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            36 => 
+            36 =>
             array (
                 'id' => '37',
                 'no_kk' => '1105071708065691',
@@ -535,7 +533,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            37 => 
+            37 =>
             array (
                 'id' => '38',
                 'no_kk' => '1105070105070004',
@@ -549,7 +547,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            38 => 
+            38 =>
             array (
                 'id' => '39',
                 'no_kk' => '1105072509070004',
@@ -563,7 +561,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            39 => 
+            39 =>
             array (
                 'id' => '40',
                 'no_kk' => '1105072509070006',
@@ -577,7 +575,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            40 => 
+            40 =>
             array (
                 'id' => '41',
                 'no_kk' => '1105072509070008',
@@ -591,7 +589,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            41 => 
+            41 =>
             array (
                 'id' => '42',
                 'no_kk' => '1105072609074500',
@@ -605,7 +603,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            42 => 
+            42 =>
             array (
                 'id' => '43',
                 'no_kk' => '1105072609070004',
@@ -619,7 +617,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            43 => 
+            43 =>
             array (
                 'id' => '44',
                 'no_kk' => '1105072609070008',
@@ -633,7 +631,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            44 => 
+            44 =>
             array (
                 'id' => '45',
                 'no_kk' => '1105072708070038',
@@ -647,7 +645,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            45 => 
+            45 =>
             array (
                 'id' => '46',
                 'no_kk' => '1105072709070009',
@@ -661,7 +659,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            46 => 
+            46 =>
             array (
                 'id' => '47',
                 'no_kk' => '1105072808070075',
@@ -675,7 +673,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            47 => 
+            47 =>
             array (
                 'id' => '48',
                 'no_kk' => '1105072808070084',
@@ -689,7 +687,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            48 => 
+            48 =>
             array (
                 'id' => '49',
                 'no_kk' => '1105073010070015',
@@ -703,7 +701,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            49 => 
+            49 =>
             array (
                 'id' => '50',
                 'no_kk' => '1105070110070069',
@@ -717,7 +715,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            50 => 
+            50 =>
             array (
                 'id' => '51',
                 'no_kk' => '1105072107170001',
@@ -731,7 +729,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            51 => 
+            51 =>
             array (
                 'id' => '52',
                 'no_kk' => '1105070910140001',
@@ -745,7 +743,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            52 => 
+            52 =>
             array (
                 'id' => '53',
                 'no_kk' => '1105072408070006',
@@ -759,7 +757,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            53 => 
+            53 =>
             array (
                 'id' => '54',
                 'no_kk' => '1105072007070004',
@@ -773,7 +771,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            54 => 
+            54 =>
             array (
                 'id' => '55',
                 'no_kk' => '1105071708062764',
@@ -787,7 +785,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            55 => 
+            55 =>
             array (
                 'id' => '56',
                 'no_kk' => '1105072809070076',
@@ -801,7 +799,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            56 => 
+            56 =>
             array (
                 'id' => '57',
                 'no_kk' => '1105072708070046',
@@ -815,7 +813,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            57 => 
+            57 =>
             array (
                 'id' => '58',
                 'no_kk' => '1105073112090001',
@@ -829,7 +827,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            58 => 
+            58 =>
             array (
                 'id' => '59',
                 'no_kk' => '1105071605070004',
@@ -843,7 +841,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            59 => 
+            59 =>
             array (
                 'id' => '60',
                 'no_kk' => '1105072708070036',
@@ -857,7 +855,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            60 => 
+            60 =>
             array (
                 'id' => '61',
                 'no_kk' => '1105070110070015',
@@ -871,7 +869,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            61 => 
+            61 =>
             array (
                 'id' => '62',
                 'no_kk' => '1105073105070002',
@@ -885,7 +883,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            62 => 
+            62 =>
             array (
                 'id' => '63',
                 'no_kk' => '1105071708062333',
@@ -899,7 +897,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            63 => 
+            63 =>
             array (
                 'id' => '64',
                 'no_kk' => '1105072408070026',
@@ -913,7 +911,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            64 => 
+            64 =>
             array (
                 'id' => '65',
                 'no_kk' => '1105072809070073',
@@ -927,7 +925,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            65 => 
+            65 =>
             array (
                 'id' => '66',
                 'no_kk' => '1105073010070027',
@@ -941,7 +939,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            66 => 
+            66 =>
             array (
                 'id' => '67',
                 'no_kk' => '1105070110070056',
@@ -955,7 +953,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            67 => 
+            67 =>
             array (
                 'id' => '68',
                 'no_kk' => '1105071708061777',
@@ -969,7 +967,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            68 => 
+            68 =>
             array (
                 'id' => '69',
                 'no_kk' => '1105070401110003',
@@ -983,7 +981,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            69 => 
+            69 =>
             array (
                 'id' => '70',
                 'no_kk' => '1105071110130001',
@@ -997,7 +995,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            70 => 
+            70 =>
             array (
                 'id' => '71',
                 'no_kk' => '1105071411110001',
@@ -1011,7 +1009,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            71 => 
+            71 =>
             array (
                 'id' => '72',
                 'no_kk' => '1105071605070003',
@@ -1025,7 +1023,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            72 => 
+            72 =>
             array (
                 'id' => '73',
                 'no_kk' => '1105073010070023',
@@ -1039,7 +1037,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            73 => 
+            73 =>
             array (
                 'id' => '74',
                 'no_kk' => '1105070706130002',
@@ -1053,7 +1051,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            74 => 
+            74 =>
             array (
                 'id' => '75',
                 'no_kk' => '1105072408070030',
@@ -1067,7 +1065,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            75 => 
+            75 =>
             array (
                 'id' => '76',
                 'no_kk' => '1105072910070009',
@@ -1081,7 +1079,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            76 => 
+            76 =>
             array (
                 'id' => '77',
                 'no_kk' => '1105072408070034',
@@ -1095,7 +1093,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            77 => 
+            77 =>
             array (
                 'id' => '78',
                 'no_kk' => '1105072910070010',
@@ -1109,7 +1107,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            78 => 
+            78 =>
             array (
                 'id' => '79',
                 'no_kk' => '1105072308070037',
@@ -1123,7 +1121,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            79 => 
+            79 =>
             array (
                 'id' => '80',
                 'no_kk' => '1105072809070056',
@@ -1137,7 +1135,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            80 => 
+            80 =>
             array (
                 'id' => '81',
                 'no_kk' => '1105071404100003',
@@ -1151,7 +1149,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            81 => 
+            81 =>
             array (
                 'id' => '82',
                 'no_kk' => '1105010509060025',
@@ -1165,7 +1163,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            82 => 
+            82 =>
             array (
                 'id' => '83',
                 'no_kk' => '1105072302090002',
@@ -1179,7 +1177,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            83 => 
+            83 =>
             array (
                 'id' => '84',
                 'no_kk' => '1105072809070031',
@@ -1193,7 +1191,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            84 => 
+            84 =>
             array (
                 'id' => '85',
                 'no_kk' => '1105070110070011',
@@ -1207,7 +1205,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            85 => 
+            85 =>
             array (
                 'id' => '86',
                 'no_kk' => '1105070110070022',
@@ -1221,7 +1219,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            86 => 
+            86 =>
             array (
                 'id' => '87',
                 'no_kk' => '1105072809070008',
@@ -1235,7 +1233,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            87 => 
+            87 =>
             array (
                 'id' => '88',
                 'no_kk' => '1105072106170001',
@@ -1249,7 +1247,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            88 => 
+            88 =>
             array (
                 'id' => '89',
                 'no_kk' => '1105070401110004',
@@ -1263,7 +1261,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            89 => 
+            89 =>
             array (
                 'id' => '90',
                 'no_kk' => '1105071607070001',
@@ -1277,7 +1275,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            90 => 
+            90 =>
             array (
                 'id' => '91',
                 'no_kk' => '1105071708065304',
@@ -1291,7 +1289,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            91 => 
+            91 =>
             array (
                 'id' => '92',
                 'no_kk' => '1105072809070044',
@@ -1305,7 +1303,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            92 => 
+            92 =>
             array (
                 'id' => '93',
                 'no_kk' => '1105072904080002',
@@ -1319,7 +1317,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            93 => 
+            93 =>
             array (
                 'id' => '94',
                 'no_kk' => '1105072408070037',
@@ -1333,7 +1331,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            94 => 
+            94 =>
             array (
                 'id' => '95',
                 'no_kk' => '1105070110070028',
@@ -1347,7 +1345,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            95 => 
+            95 =>
             array (
                 'id' => '96',
                 'no_kk' => '1105070110070036',
@@ -1361,7 +1359,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            96 => 
+            96 =>
             array (
                 'id' => '97',
                 'no_kk' => '1105072408070002',
@@ -1375,7 +1373,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            97 => 
+            97 =>
             array (
                 'id' => '98',
                 'no_kk' => '1105072408070023',
@@ -1389,7 +1387,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            98 => 
+            98 =>
             array (
                 'id' => '99',
                 'no_kk' => '1105071708061566',
@@ -1403,7 +1401,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            99 => 
+            99 =>
             array (
                 'id' => '100',
                 'no_kk' => '1105071708060038',
@@ -1417,7 +1415,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            100 => 
+            100 =>
             array (
                 'id' => '101',
                 'no_kk' => '1105072809070079',
@@ -1431,7 +1429,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            101 => 
+            101 =>
             array (
                 'id' => '102',
                 'no_kk' => '1105071708060972',
@@ -1445,7 +1443,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            102 => 
+            102 =>
             array (
                 'id' => '103',
                 'no_kk' => '1105070110070007',
@@ -1459,7 +1457,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            103 => 
+            103 =>
             array (
                 'id' => '104',
                 'no_kk' => '1105072708070047',
@@ -1473,7 +1471,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            104 => 
+            104 =>
             array (
                 'id' => '105',
                 'no_kk' => '1105072809070066',
@@ -1487,7 +1485,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            105 => 
+            105 =>
             array (
                 'id' => '106',
                 'no_kk' => '1105072302090004',
@@ -1501,7 +1499,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            106 => 
+            106 =>
             array (
                 'id' => '107',
                 'no_kk' => '1105070401110002',
@@ -1515,7 +1513,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            107 => 
+            107 =>
             array (
                 'id' => '108',
                 'no_kk' => '1105072308070036',
@@ -1529,7 +1527,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            108 => 
+            108 =>
             array (
                 'id' => '109',
                 'no_kk' => '1105071708062616',
@@ -1543,7 +1541,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            109 => 
+            109 =>
             array (
                 'id' => '110',
                 'no_kk' => '1105071708063375',
@@ -1557,7 +1555,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            110 => 
+            110 =>
             array (
                 'id' => '111',
                 'no_kk' => '1105071412100003',
@@ -1571,7 +1569,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            111 => 
+            111 =>
             array (
                 'id' => '112',
                 'no_kk' => '1105072708070034',
@@ -1585,7 +1583,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            112 => 
+            112 =>
             array (
                 'id' => '113',
                 'no_kk' => '1105071708060117',
@@ -1599,7 +1597,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            113 => 
+            113 =>
             array (
                 'id' => '114',
                 'no_kk' => '110507260308001',
@@ -1613,7 +1611,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            114 => 
+            114 =>
             array (
                 'id' => '115',
                 'no_kk' => '1105071708060770',
@@ -1627,7 +1625,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            115 => 
+            115 =>
             array (
                 'id' => '116',
                 'no_kk' => '1105071912170001',
@@ -1641,7 +1639,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            116 => 
+            116 =>
             array (
                 'id' => '117',
                 'no_kk' => '1105072809070037',
@@ -1655,7 +1653,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            117 => 
+            117 =>
             array (
                 'id' => '118',
                 'no_kk' => '1107070309070003',
@@ -1669,7 +1667,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            118 => 
+            118 =>
             array (
                 'id' => '119',
                 'no_kk' => '1105072310070006',
@@ -1683,7 +1681,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            119 => 
+            119 =>
             array (
                 'id' => '120',
                 'no_kk' => '1100570912110017',
@@ -1697,7 +1695,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            120 => 
+            120 =>
             array (
                 'id' => '121',
                 'no_kk' => '1105071708064481',
@@ -1711,7 +1709,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            121 => 
+            121 =>
             array (
                 'id' => '122',
                 'no_kk' => '1105071708065316',
@@ -1725,7 +1723,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            122 => 
+            122 =>
             array (
                 'id' => '123',
                 'no_kk' => '1105071708060455',
@@ -1739,7 +1737,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            123 => 
+            123 =>
             array (
                 'id' => '124',
                 'no_kk' => '1105071708065100',
@@ -1753,7 +1751,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            124 => 
+            124 =>
             array (
                 'id' => '125',
                 'no_kk' => '1105070405110009',
@@ -1767,7 +1765,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            125 => 
+            125 =>
             array (
                 'id' => '126',
                 'no_kk' => '1105070309077004',
@@ -1781,7 +1779,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            126 => 
+            126 =>
             array (
                 'id' => '127',
                 'no_kk' => '1105071708063320',
@@ -1795,7 +1793,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            127 => 
+            127 =>
             array (
                 'id' => '128',
                 'no_kk' => '1105070912110015',
@@ -1809,7 +1807,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            128 => 
+            128 =>
             array (
                 'id' => '129',
                 'no_kk' => '1105070309070055',
@@ -1823,7 +1821,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            129 => 
+            129 =>
             array (
                 'id' => '130',
                 'no_kk' => '1105070912110024',
@@ -1837,7 +1835,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            130 => 
+            130 =>
             array (
                 'id' => '131',
                 'no_kk' => '1105070605100002',
@@ -1851,7 +1849,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            131 => 
+            131 =>
             array (
                 'id' => '132',
                 'no_kk' => '1105071502160001',
@@ -1865,7 +1863,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            132 => 
+            132 =>
             array (
                 'id' => '133',
                 'no_kk' => '1105071708062742',
@@ -1879,7 +1877,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            133 => 
+            133 =>
             array (
                 'id' => '134',
                 'no_kk' => '1105072212110004',
@@ -1893,7 +1891,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            134 => 
+            134 =>
             array (
                 'id' => '135',
                 'no_kk' => '1105072212110003',
@@ -1907,7 +1905,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            135 => 
+            135 =>
             array (
                 'id' => '136',
                 'no_kk' => '1105070309070006',
@@ -1921,7 +1919,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            136 => 
+            136 =>
             array (
                 'id' => '137',
                 'no_kk' => '1105071404110003',
@@ -1935,7 +1933,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            137 => 
+            137 =>
             array (
                 'id' => '138',
                 'no_kk' => '1105072010150003',
@@ -1949,7 +1947,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            138 => 
+            138 =>
             array (
                 'id' => '139',
                 'no_kk' => '1105070910070014',
@@ -1963,7 +1961,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            139 => 
+            139 =>
             array (
                 'id' => '140',
                 'no_kk' => '1105070912110005',
@@ -1977,7 +1975,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            140 => 
+            140 =>
             array (
                 'id' => '141',
                 'no_kk' => '1105071708062449',
@@ -1991,7 +1989,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            141 => 
+            141 =>
             array (
                 'id' => '142',
                 'no_kk' => '1105072202110001',
@@ -2005,7 +2003,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            142 => 
+            142 =>
             array (
                 'id' => '143',
                 'no_kk' => '1105072810140003',
@@ -2019,7 +2017,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            143 => 
+            143 =>
             array (
                 'id' => '144',
                 'no_kk' => '1105071708061068',
@@ -2033,7 +2031,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            144 => 
+            144 =>
             array (
                 'id' => '145',
                 'no_kk' => '1105071708063369',
@@ -2047,7 +2045,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            145 => 
+            145 =>
             array (
                 'id' => '146',
                 'no_kk' => '1105070109140001',
@@ -2061,7 +2059,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            146 => 
+            146 =>
             array (
                 'id' => '147',
                 'no_kk' => '1105072302150002',
@@ -2075,7 +2073,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            147 => 
+            147 =>
             array (
                 'id' => '148',
                 'no_kk' => '1105070912110004',
@@ -2089,7 +2087,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            148 => 
+            148 =>
             array (
                 'id' => '149',
                 'no_kk' => '1105071708060100',
@@ -2103,7 +2101,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            149 => 
+            149 =>
             array (
                 'id' => '150',
                 'no_kk' => '1105070309070004',
@@ -2117,7 +2115,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            150 => 
+            150 =>
             array (
                 'id' => '151',
                 'no_kk' => '1105071105120001',
@@ -2131,7 +2129,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '01',
                 'id_cluster' => NULL,
             ),
-            151 => 
+            151 =>
             array (
                 'id' => '152',
                 'no_kk' => '1105072408110002',
@@ -2145,7 +2143,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            152 => 
+            152 =>
             array (
                 'id' => '153',
                 'no_kk' => '1105070109140002',
@@ -2159,7 +2157,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            153 => 
+            153 =>
             array (
                 'id' => '154',
                 'no_kk' => '1105070011200004',
@@ -2173,7 +2171,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            154 => 
+            154 =>
             array (
                 'id' => '155',
                 'no_kk' => '1105071708062687',
@@ -2187,7 +2185,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            155 => 
+            155 =>
             array (
                 'id' => '156',
                 'no_kk' => '1105070401120007',
@@ -2201,7 +2199,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            156 => 
+            156 =>
             array (
                 'id' => '157',
                 'no_kk' => '1105071708065578',
@@ -2215,7 +2213,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            157 => 
+            157 =>
             array (
                 'id' => '158',
                 'no_kk' => '1105071708062862',
@@ -2229,7 +2227,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            158 => 
+            158 =>
             array (
                 'id' => '159',
                 'no_kk' => '1105071708063488',
@@ -2243,7 +2241,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            159 => 
+            159 =>
             array (
                 'id' => '160',
                 'no_kk' => '1105070912110009',
@@ -2257,7 +2255,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            160 => 
+            160 =>
             array (
                 'id' => '161',
                 'no_kk' => '1105073108070026',
@@ -2271,7 +2269,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            161 => 
+            161 =>
             array (
                 'id' => '162',
                 'no_kk' => '1105071812120002',
@@ -2285,7 +2283,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            162 => 
+            162 =>
             array (
                 'id' => '163',
                 'no_kk' => '1105070912110001',
@@ -2299,7 +2297,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            163 => 
+            163 =>
             array (
                 'id' => '164',
                 'no_kk' => '1105070107110002',
@@ -2313,7 +2311,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            164 => 
+            164 =>
             array (
                 'id' => '165',
                 'no_kk' => '1105070401120003',
@@ -2327,7 +2325,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            165 => 
+            165 =>
             array (
                 'id' => '166',
                 'no_kk' => '1105070801130001',
@@ -2341,7 +2339,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            166 => 
+            166 =>
             array (
                 'id' => '167',
                 'no_kk' => '1105071708063294',
@@ -2355,7 +2353,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            167 => 
+            167 =>
             array (
                 'id' => '168',
                 'no_kk' => '1105071708062298',
@@ -2369,7 +2367,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            168 => 
+            168 =>
             array (
                 'id' => '169',
                 'no_kk' => '1105070912110019',
@@ -2383,7 +2381,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            169 => 
+            169 =>
             array (
                 'id' => '170',
                 'no_kk' => '1105071702160004',
@@ -2397,7 +2395,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            170 => 
+            170 =>
             array (
                 'id' => '171',
                 'no_kk' => '1105071708060161',
@@ -2411,7 +2409,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            171 => 
+            171 =>
             array (
                 'id' => '172',
                 'no_kk' => '1105071708065272',
@@ -2425,7 +2423,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            172 => 
+            172 =>
             array (
                 'id' => '173',
                 'no_kk' => '1105072701120002',
@@ -2439,7 +2437,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            173 => 
+            173 =>
             array (
                 'id' => '174',
                 'no_kk' => '1105071708062268',
@@ -2453,7 +2451,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            174 => 
+            174 =>
             array (
                 'id' => '175',
                 'no_kk' => '1105070603150003',
@@ -2467,7 +2465,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            175 => 
+            175 =>
             array (
                 'id' => '176',
                 'no_kk' => '1105072612110002',
@@ -2481,7 +2479,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            176 => 
+            176 =>
             array (
                 'id' => '177',
                 'no_kk' => '1105073008070016',
@@ -2495,7 +2493,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            177 => 
+            177 =>
             array (
                 'id' => '178',
                 'no_kk' => '1111111111111111',
@@ -2509,7 +2507,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            178 => 
+            178 =>
             array (
                 'id' => '179',
                 'no_kk' => '1105072312110010',
@@ -2523,7 +2521,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            179 => 
+            179 =>
             array (
                 'id' => '180',
                 'no_kk' => '1105070912110018',
@@ -2537,7 +2535,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            180 => 
+            180 =>
             array (
                 'id' => '181',
                 'no_kk' => '1105071810100001',
@@ -2551,7 +2549,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            181 => 
+            181 =>
             array (
                 'id' => '182',
                 'no_kk' => '1105071706064233',
@@ -2565,7 +2563,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            182 => 
+            182 =>
             array (
                 'id' => '183',
                 'no_kk' => '1105071708061905',
@@ -2579,7 +2577,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            183 => 
+            183 =>
             array (
                 'id' => '184',
                 'no_kk' => '1105071010070012',
@@ -2593,7 +2591,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            184 => 
+            184 =>
             array (
                 'id' => '185',
                 'no_kk' => '1105072306110001',
@@ -2607,7 +2605,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            185 => 
+            185 =>
             array (
                 'id' => '186',
                 'no_kk' => '1105070407110001',
@@ -2621,7 +2619,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            186 => 
+            186 =>
             array (
                 'id' => '187',
                 'no_kk' => '1105071812120001',
@@ -2635,7 +2633,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            187 => 
+            187 =>
             array (
                 'id' => '188',
                 'no_kk' => '1105071708065290',
@@ -2649,7 +2647,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            188 => 
+            188 =>
             array (
                 'id' => '189',
                 'no_kk' => '1105071504110002',
@@ -2663,7 +2661,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            189 => 
+            189 =>
             array (
                 'id' => '190',
                 'no_kk' => '1105071708063947',
@@ -2677,7 +2675,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            190 => 
+            190 =>
             array (
                 'id' => '191',
                 'no_kk' => '1105071010070010',
@@ -2691,7 +2689,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            191 => 
+            191 =>
             array (
                 'id' => '192',
                 'no_kk' => '1105070602120003',
@@ -2705,7 +2703,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            192 => 
+            192 =>
             array (
                 'id' => '193',
                 'no_kk' => '1105071708063239',
@@ -2719,7 +2717,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            193 => 
+            193 =>
             array (
                 'id' => '194',
                 'no_kk' => '1105071708065935',
@@ -2733,7 +2731,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            194 => 
+            194 =>
             array (
                 'id' => '195',
                 'no_kk' => '1105072312110001',
@@ -2747,7 +2745,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            195 => 
+            195 =>
             array (
                 'id' => '196',
                 'no_kk' => '1105072002140002',
@@ -2761,7 +2759,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            196 => 
+            196 =>
             array (
                 'id' => '197',
                 'no_kk' => '1105071080600164',
@@ -2775,7 +2773,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            197 => 
+            197 =>
             array (
                 'id' => '198',
                 'no_kk' => '1105070601120002',
@@ -2789,7 +2787,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            198 => 
+            198 =>
             array (
                 'id' => '199',
                 'no_kk' => '1105072210140005',
@@ -2803,7 +2801,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            199 => 
+            199 =>
             array (
                 'id' => '200',
                 'no_kk' => '1105070912110014',
@@ -2817,7 +2815,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            200 => 
+            200 =>
             array (
                 'id' => '201',
                 'no_kk' => '1105072101140001',
@@ -2831,7 +2829,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            201 => 
+            201 =>
             array (
                 'id' => '202',
                 'no_kk' => '1105071201120002',
@@ -2845,7 +2843,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            202 => 
+            202 =>
             array (
                 'id' => '203',
                 'no_kk' => '1105072312110006',
@@ -2859,7 +2857,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            203 => 
+            203 =>
             array (
                 'id' => '204',
                 'no_kk' => '1105071708065850',
@@ -2873,7 +2871,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            204 => 
+            204 =>
             array (
                 'id' => '205',
                 'no_kk' => '1105070509070020',
@@ -2887,7 +2885,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            205 => 
+            205 =>
             array (
                 'id' => '206',
                 'no_kk' => '1105070601120003',
@@ -2901,7 +2899,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            206 => 
+            206 =>
             array (
                 'id' => '207',
                 'no_kk' => '1105070912110011',
@@ -2915,7 +2913,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            207 => 
+            207 =>
             array (
                 'id' => '208',
                 'no_kk' => '1105071708061988',
@@ -2929,7 +2927,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            208 => 
+            208 =>
             array (
                 'id' => '209',
                 'no_kk' => '1105070912110010',
@@ -2943,7 +2941,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            209 => 
+            209 =>
             array (
                 'id' => '210',
                 'no_kk' => '1105073008070014',
@@ -2957,7 +2955,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            210 => 
+            210 =>
             array (
                 'id' => '211',
                 'no_kk' => '1105070111110008',
@@ -2971,7 +2969,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            211 => 
+            211 =>
             array (
                 'id' => '212',
                 'no_kk' => '1105070409070016',
@@ -2985,7 +2983,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            212 => 
+            212 =>
             array (
                 'id' => '213',
                 'no_kk' => '1105070110100001',
@@ -2999,7 +2997,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            213 => 
+            213 =>
             array (
                 'id' => '214',
                 'no_kk' => '1105070110100002',
@@ -3013,7 +3011,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            214 => 
+            214 =>
             array (
                 'id' => '215',
                 'no_kk' => '1105073008070029',
@@ -3027,7 +3025,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            215 => 
+            215 =>
             array (
                 'id' => '216',
                 'no_kk' => '1105072612110001',
@@ -3041,7 +3039,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            216 => 
+            216 =>
             array (
                 'id' => '217',
                 'no_kk' => '1105070912110013',
@@ -3055,7 +3053,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            217 => 
+            217 =>
             array (
                 'id' => '218',
                 'no_kk' => '1105072701120005',
@@ -3069,7 +3067,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            218 => 
+            218 =>
             array (
                 'id' => '219',
                 'no_kk' => '1105070912110020',
@@ -3083,7 +3081,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            219 => 
+            219 =>
             array (
                 'id' => '220',
                 'no_kk' => '1105070903150001',
@@ -3097,7 +3095,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            220 => 
+            220 =>
             array (
                 'id' => '221',
                 'no_kk' => '1105072410070005',
@@ -3111,7 +3109,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            221 => 
+            221 =>
             array (
                 'id' => '222',
                 'no_kk' => '1105092712120005',
@@ -3125,7 +3123,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            222 => 
+            222 =>
             array (
                 'id' => '223',
                 'no_kk' => '1105071708061685',
@@ -3139,7 +3137,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            223 => 
+            223 =>
             array (
                 'id' => '224',
                 'no_kk' => '1105071612080001',
@@ -3153,7 +3151,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            224 => 
+            224 =>
             array (
                 'id' => '225',
                 'no_kk' => '1105070502080001',
@@ -3167,7 +3165,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            225 => 
+            225 =>
             array (
                 'id' => '226',
                 'no_kk' => '1105070912110016',
@@ -3181,7 +3179,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            226 => 
+            226 =>
             array (
                 'id' => '227',
                 'no_kk' => '1105070808110005',
@@ -3195,7 +3193,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            227 => 
+            227 =>
             array (
                 'id' => '228',
                 'no_kk' => '1105072310070001',
@@ -3209,7 +3207,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            228 => 
+            228 =>
             array (
                 'id' => '229',
                 'no_kk' => '1105070311110002',
@@ -3223,7 +3221,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            229 => 
+            229 =>
             array (
                 'id' => '230',
                 'no_kk' => '1105070808110006',
@@ -3237,7 +3235,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            230 => 
+            230 =>
             array (
                 'id' => '231',
                 'no_kk' => '1105071708063936',
@@ -3251,7 +3249,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '2',
                 'id_cluster' => NULL,
             ),
-            231 => 
+            231 =>
             array (
                 'id' => '232',
                 'no_kk' => '1105071708062638',
@@ -3265,7 +3263,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            232 => 
+            232 =>
             array (
                 'id' => '233',
                 'no_kk' => '1105071708064469',
@@ -3279,7 +3277,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            233 => 
+            233 =>
             array (
                 'id' => '234',
                 'no_kk' => '1105071708060288',
@@ -3293,7 +3291,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            234 => 
+            234 =>
             array (
                 'id' => '235',
                 'no_kk' => '1105070912110022',
@@ -3307,7 +3305,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            235 => 
+            235 =>
             array (
                 'id' => '236',
                 'no_kk' => '1105072312110003',
@@ -3321,7 +3319,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            236 => 
+            236 =>
             array (
                 'id' => '237',
                 'no_kk' => '1105071808110001',
@@ -3335,7 +3333,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            237 => 
+            237 =>
             array (
                 'id' => '238',
                 'no_kk' => '1105071708060278',
@@ -3349,7 +3347,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            238 => 
+            238 =>
             array (
                 'id' => '239',
                 'no_kk' => '1105072009130001',
@@ -3363,7 +3361,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            239 => 
+            239 =>
             array (
                 'id' => '240',
                 'no_kk' => '1105071612080002',
@@ -3377,7 +3375,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            240 => 
+            240 =>
             array (
                 'id' => '241',
                 'no_kk' => '1105071809150001',
@@ -3391,7 +3389,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            241 => 
+            241 =>
             array (
                 'id' => '242',
                 'no_kk' => '1105072010150002',
@@ -3405,7 +3403,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            242 => 
+            242 =>
             array (
                 'id' => '243',
                 'no_kk' => '1105071708062461',
@@ -3419,7 +3417,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            243 => 
+            243 =>
             array (
                 'id' => '244',
                 'no_kk' => '1105072701120003',
@@ -3433,7 +3431,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            244 => 
+            244 =>
             array (
                 'id' => '245',
                 'no_kk' => '1105071708064654',
@@ -3447,7 +3445,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            245 => 
+            245 =>
             array (
                 'id' => '246',
                 'no_kk' => '1105071010110001',
@@ -3461,7 +3459,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            246 => 
+            246 =>
             array (
                 'id' => '247',
                 'no_kk' => '1105072701120006',
@@ -3475,7 +3473,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            247 => 
+            247 =>
             array (
                 'id' => '248',
                 'no_kk' => '1105070703120001',
@@ -3489,7 +3487,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            248 => 
+            248 =>
             array (
                 'id' => '249',
                 'no_kk' => '1105072312110004',
@@ -3503,7 +3501,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            249 => 
+            249 =>
             array (
                 'id' => '250',
                 'no_kk' => '1105071708641224',
@@ -3517,7 +3515,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            250 => 
+            250 =>
             array (
                 'id' => '251',
                 'no_kk' => '1105070311110001',
@@ -3531,7 +3529,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            251 => 
+            251 =>
             array (
                 'id' => '252',
                 'no_kk' => '1105073008070003',
@@ -3545,7 +3543,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            252 => 
+            252 =>
             array (
                 'id' => '253',
                 'no_kk' => '1105072312110002',
@@ -3559,7 +3557,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            253 => 
+            253 =>
             array (
                 'id' => '254',
                 'no_kk' => '1105070701140002',
@@ -3573,7 +3571,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            254 => 
+            254 =>
             array (
                 'id' => '255',
                 'no_kk' => '1105072312110007',
@@ -3587,7 +3585,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            255 => 
+            255 =>
             array (
                 'id' => '256',
                 'no_kk' => '1105070809160001',
@@ -3601,7 +3599,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            256 => 
+            256 =>
             array (
                 'id' => '257',
                 'no_kk' => '1105070304120001',
@@ -3615,7 +3613,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            257 => 
+            257 =>
             array (
                 'id' => '258',
                 'no_kk' => '1105071708060880',
@@ -3629,7 +3627,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            258 => 
+            258 =>
             array (
                 'id' => '259',
                 'no_kk' => '1105071708064991',
@@ -3643,7 +3641,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            259 => 
+            259 =>
             array (
                 'id' => '260',
                 'no_kk' => '1105070509110002',
@@ -3657,7 +3655,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            260 => 
+            260 =>
             array (
                 'id' => '261',
                 'no_kk' => '1105071708061908',
@@ -3671,7 +3669,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            261 => 
+            261 =>
             array (
                 'id' => '262',
                 'no_kk' => '1105071212110007',
@@ -3685,7 +3683,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            262 => 
+            262 =>
             array (
                 'id' => '263',
                 'no_kk' => '1105071212110005',
@@ -3699,7 +3697,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            263 => 
+            263 =>
             array (
                 'id' => '264',
                 'no_kk' => '1105071212110006',
@@ -3713,7 +3711,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            264 => 
+            264 =>
             array (
                 'id' => '265',
                 'no_kk' => '1105070910070001',
@@ -3727,7 +3725,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            265 => 
+            265 =>
             array (
                 'id' => '266',
                 'no_kk' => '1105072404830002',
@@ -3741,7 +3739,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            266 => 
+            266 =>
             array (
                 'id' => '267',
                 'no_kk' => '1105072808070092',
@@ -3755,7 +3753,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            267 => 
+            267 =>
             array (
                 'id' => '268',
                 'no_kk' => '1105071708065523',
@@ -3769,7 +3767,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            268 => 
+            268 =>
             array (
                 'id' => '269',
                 'no_kk' => '1105070210070012',
@@ -3783,7 +3781,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            269 => 
+            269 =>
             array (
                 'id' => '270',
                 'no_kk' => '1105071708063943',
@@ -3797,7 +3795,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            270 => 
+            270 =>
             array (
                 'id' => '271',
                 'no_kk' => '1105072208070015',
@@ -3811,7 +3809,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            271 => 
+            271 =>
             array (
                 'id' => '272',
                 'no_kk' => '1105073007100001',
@@ -3825,7 +3823,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            272 => 
+            272 =>
             array (
                 'id' => '273',
                 'no_kk' => '1105072908070014',
@@ -3839,7 +3837,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            273 => 
+            273 =>
             array (
                 'id' => '274',
                 'no_kk' => '1105070310070011',
@@ -3853,7 +3851,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            274 => 
+            274 =>
             array (
                 'id' => '275',
                 'no_kk' => '1105071708065708',
@@ -3867,7 +3865,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            275 => 
+            275 =>
             array (
                 'id' => '276',
                 'no_kk' => '1105071708060776',
@@ -3881,7 +3879,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            276 => 
+            276 =>
             array (
                 'id' => '277',
                 'no_kk' => '1105070505140005',
@@ -3895,7 +3893,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            277 => 
+            277 =>
             array (
                 'id' => '278',
                 'no_kk' => '1105071708062270',
@@ -3909,7 +3907,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            278 => 
+            278 =>
             array (
                 'id' => '279',
                 'no_kk' => '1105070210070022',
@@ -3923,7 +3921,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            279 => 
+            279 =>
             array (
                 'id' => '280',
                 'no_kk' => '1105071708060005',
@@ -3937,7 +3935,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            280 => 
+            280 =>
             array (
                 'id' => '281',
                 'no_kk' => '1105071708062269',
@@ -3951,7 +3949,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            281 => 
+            281 =>
             array (
                 'id' => '282',
                 'no_kk' => '1105071708061120',
@@ -3965,7 +3963,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            282 => 
+            282 =>
             array (
                 'id' => '283',
                 'no_kk' => '1105072808070119',
@@ -3979,7 +3977,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            283 => 
+            283 =>
             array (
                 'id' => '284',
                 'no_kk' => '1105070310070017',
@@ -3993,7 +3991,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            284 => 
+            284 =>
             array (
                 'id' => '285',
                 'no_kk' => '1105071708061681',
@@ -4007,7 +4005,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            285 => 
+            285 =>
             array (
                 'id' => '286',
                 'no_kk' => '1105070310070022',
@@ -4021,7 +4019,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            286 => 
+            286 =>
             array (
                 'id' => '287',
                 'no_kk' => '1105072808070111',
@@ -4035,7 +4033,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            287 => 
+            287 =>
             array (
                 'id' => '288',
                 'no_kk' => '1105071708063376',
@@ -4049,7 +4047,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            288 => 
+            288 =>
             array (
                 'id' => '289',
                 'no_kk' => '1105071708060837',
@@ -4063,7 +4061,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            289 => 
+            289 =>
             array (
                 'id' => '290',
                 'no_kk' => '1105071708065909',
@@ -4077,7 +4075,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            290 => 
+            290 =>
             array (
                 'id' => '291',
                 'no_kk' => '1105072808070122',
@@ -4091,7 +4089,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            291 => 
+            291 =>
             array (
                 'id' => '292',
                 'no_kk' => '1105073112720001',
@@ -4105,7 +4103,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            292 => 
+            292 =>
             array (
                 'id' => '293',
                 'no_kk' => '1105072108070042',
@@ -4119,7 +4117,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            293 => 
+            293 =>
             array (
                 'id' => '294',
                 'no_kk' => '1105072303090002',
@@ -4133,7 +4131,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            294 => 
+            294 =>
             array (
                 'id' => '295',
                 'no_kk' => '1105072908070024',
@@ -4147,7 +4145,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            295 => 
+            295 =>
             array (
                 'id' => '296',
                 'no_kk' => '1105070810070012',
@@ -4161,7 +4159,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            296 => 
+            296 =>
             array (
                 'id' => '297',
                 'no_kk' => '1105072808070110',
@@ -4175,7 +4173,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            297 => 
+            297 =>
             array (
                 'id' => '298',
                 'no_kk' => '1105071708061897',
@@ -4189,7 +4187,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            298 => 
+            298 =>
             array (
                 'id' => '299',
                 'no_kk' => '1105070210070019',
@@ -4203,7 +4201,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            299 => 
+            299 =>
             array (
                 'id' => '300',
                 'no_kk' => '1105073110130004',
@@ -4217,7 +4215,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            300 => 
+            300 =>
             array (
                 'id' => '301',
                 'no_kk' => '1105070210070016',
@@ -4231,7 +4229,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            301 => 
+            301 =>
             array (
                 'id' => '302',
                 'no_kk' => '1105071708065847',
@@ -4245,7 +4243,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            302 => 
+            302 =>
             array (
                 'id' => '303',
                 'no_kk' => '1105071708060723',
@@ -4259,7 +4257,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            303 => 
+            303 =>
             array (
                 'id' => '304',
                 'no_kk' => '1105071708061733',
@@ -4273,7 +4271,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            304 => 
+            304 =>
             array (
                 'id' => '305',
                 'no_kk' => '1105072212110001',
@@ -4287,7 +4285,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            305 => 
+            305 =>
             array (
                 'id' => '306',
                 'no_kk' => '1105071708060146',
@@ -4301,7 +4299,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            306 => 
+            306 =>
             array (
                 'id' => '307',
                 'no_kk' => '1105071907080001',
@@ -4315,7 +4313,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            307 => 
+            307 =>
             array (
                 'id' => '308',
                 'no_kk' => '1105070410070005',
@@ -4329,7 +4327,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            308 => 
+            308 =>
             array (
                 'id' => '309',
                 'no_kk' => '1105071708062078',
@@ -4343,7 +4341,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            309 => 
+            309 =>
             array (
                 'id' => '310',
                 'no_kk' => '1105071207170002',
@@ -4357,7 +4355,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            310 => 
+            310 =>
             array (
                 'id' => '311',
                 'no_kk' => '1105073005170001',
@@ -4371,7 +4369,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            311 => 
+            311 =>
             array (
                 'id' => '312',
                 'no_kk' => '1105072810140003',
@@ -4385,7 +4383,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            312 => 
+            312 =>
             array (
                 'id' => '313',
                 'no_kk' => '1105070503080001',
@@ -4399,7 +4397,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            313 => 
+            313 =>
             array (
                 'id' => '314',
                 'no_kk' => '1105071705130001',
@@ -4413,7 +4411,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            314 => 
+            314 =>
             array (
                 'id' => '315',
                 'no_kk' => '1105071910100002',
@@ -4427,7 +4425,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            315 => 
+            315 =>
             array (
                 'id' => '316',
                 'no_kk' => '1105072401120007',
@@ -4441,7 +4439,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            316 => 
+            316 =>
             array (
                 'id' => '317',
                 'no_kk' => '1105071708066105',
@@ -4455,7 +4453,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            317 => 
+            317 =>
             array (
                 'id' => '318',
                 'no_kk' => '1105071708061887',
@@ -4469,7 +4467,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            318 => 
+            318 =>
             array (
                 'id' => '319',
                 'no_kk' => '1105072208070010',
@@ -4483,7 +4481,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            319 => 
+            319 =>
             array (
                 'id' => '320',
                 'no_kk' => '1105072306150001',
@@ -4497,7 +4495,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            320 => 
+            320 =>
             array (
                 'id' => '321',
                 'no_kk' => '1105071708061124',
@@ -4511,7 +4509,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            321 => 
+            321 =>
             array (
                 'id' => '322',
                 'no_kk' => '1105102001110006',
@@ -4525,7 +4523,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            322 => 
+            322 =>
             array (
                 'id' => '323',
                 'no_kk' => '1105071708063350',
@@ -4539,7 +4537,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            323 => 
+            323 =>
             array (
                 'id' => '324',
                 'no_kk' => '1105070810070004',
@@ -4553,7 +4551,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            324 => 
+            324 =>
             array (
                 'id' => '325',
                 'no_kk' => '1105070510070017',
@@ -4567,7 +4565,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            325 => 
+            325 =>
             array (
                 'id' => '326',
                 'no_kk' => '1105071708065328',
@@ -4581,7 +4579,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            326 => 
+            326 =>
             array (
                 'id' => '327',
                 'no_kk' => '1105070510070021',
@@ -4595,7 +4593,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            327 => 
+            327 =>
             array (
                 'id' => '328',
                 'no_kk' => '1105071708060789',
@@ -4609,7 +4607,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            328 => 
+            328 =>
             array (
                 'id' => '329',
                 'no_kk' => '1105071612110002',
@@ -4623,7 +4621,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            329 => 
+            329 =>
             array (
                 'id' => '330',
                 'no_kk' => '1105071612110000',
@@ -4637,7 +4635,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            330 => 
+            330 =>
             array (
                 'id' => '331',
                 'no_kk' => '1105071708065103',
@@ -4651,7 +4649,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            331 => 
+            331 =>
             array (
                 'id' => '332',
                 'no_kk' => '1105071708065515',
@@ -4665,7 +4663,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            332 => 
+            332 =>
             array (
                 'id' => '333',
                 'no_kk' => '1105072808070117',
@@ -4679,7 +4677,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            333 => 
+            333 =>
             array (
                 'id' => '334',
                 'no_kk' => '1105070510070010',
@@ -4693,7 +4691,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            334 => 
+            334 =>
             array (
                 'id' => '335',
                 'no_kk' => '1105072908130002',
@@ -4707,7 +4705,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            335 => 
+            335 =>
             array (
                 'id' => '336',
                 'no_kk' => '1105071708062716',
@@ -4721,7 +4719,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            336 => 
+            336 =>
             array (
                 'id' => '337',
                 'no_kk' => '1105070410070028',
@@ -4735,7 +4733,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            337 => 
+            337 =>
             array (
                 'id' => '338',
                 'no_kk' => '1105071708065532',
@@ -4749,7 +4747,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            338 => 
+            338 =>
             array (
                 'id' => '339',
                 'no_kk' => '1105070704150001',
@@ -4763,7 +4761,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            339 => 
+            339 =>
             array (
                 'id' => '340',
                 'no_kk' => '1105072805070001',
@@ -4777,7 +4775,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            340 => 
+            340 =>
             array (
                 'id' => '341',
                 'no_kk' => '1105070304100006',
@@ -4791,7 +4789,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            341 => 
+            341 =>
             array (
                 'id' => '342',
                 'no_kk' => '1105070910070028',
@@ -4805,7 +4803,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            342 => 
+            342 =>
             array (
                 'id' => '343',
                 'no_kk' => '1105072601110001',
@@ -4819,7 +4817,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            343 => 
+            343 =>
             array (
                 'id' => '344',
                 'no_kk' => '1105072309130002',
@@ -4833,7 +4831,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            344 => 
+            344 =>
             array (
                 'id' => '345',
                 'no_kk' => '1105070810070006',
@@ -4847,7 +4845,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            345 => 
+            345 =>
             array (
                 'id' => '346',
                 'no_kk' => '1105071708063516',
@@ -4861,7 +4859,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            346 => 
+            346 =>
             array (
                 'id' => '347',
                 'no_kk' => '1105072203100001',
@@ -4875,7 +4873,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            347 => 
+            347 =>
             array (
                 'id' => '348',
                 'no_kk' => '1105073010090007',
@@ -4889,7 +4887,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            348 => 
+            348 =>
             array (
                 'id' => '349',
                 'no_kk' => '1105073001120001',
@@ -4903,7 +4901,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            349 => 
+            349 =>
             array (
                 'id' => '350',
                 'no_kk' => '1105071304090001',
@@ -4917,7 +4915,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            350 => 
+            350 =>
             array (
                 'id' => '351',
                 'no_kk' => '1105072901070001',
@@ -4931,7 +4929,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            351 => 
+            351 =>
             array (
                 'id' => '352',
                 'no_kk' => '1105070405100001',
@@ -4945,7 +4943,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            352 => 
+            352 =>
             array (
                 'id' => '353',
                 'no_kk' => '1105070510070022',
@@ -4959,7 +4957,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            353 => 
+            353 =>
             array (
                 'id' => '354',
                 'no_kk' => '1105072411080003',
@@ -4973,7 +4971,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            354 => 
+            354 =>
             array (
                 'id' => '355',
                 'no_kk' => '1105071708065687',
@@ -4987,7 +4985,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            355 => 
+            355 =>
             array (
                 'id' => '356',
                 'no_kk' => '1105071712080002',
@@ -5001,7 +4999,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            356 => 
+            356 =>
             array (
                 'id' => '357',
                 'no_kk' => '110507112090001',
@@ -5015,7 +5013,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            357 => 
+            357 =>
             array (
                 'id' => '358',
                 'no_kk' => '1105071708063596',
@@ -5029,7 +5027,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            358 => 
+            358 =>
             array (
                 'id' => '359',
                 'no_kk' => '1105070410070001',
@@ -5043,7 +5041,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            359 => 
+            359 =>
             array (
                 'id' => '360',
                 'no_kk' => '1105071109130001',
@@ -5057,7 +5055,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            360 => 
+            360 =>
             array (
                 'id' => '361',
                 'no_kk' => '1105070310070028',
@@ -5071,7 +5069,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            361 => 
+            361 =>
             array (
                 'id' => '362',
                 'no_kk' => '1105070510070014',
@@ -5085,7 +5083,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            362 => 
+            362 =>
             array (
                 'id' => '363',
                 'no_kk' => '1105072404080002',
@@ -5099,7 +5097,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            363 => 
+            363 =>
             array (
                 'id' => '364',
                 'no_kk' => '1105071708061492',
@@ -5113,7 +5111,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            364 => 
+            364 =>
             array (
                 'id' => '365',
                 'no_kk' => '1105071102090001',
@@ -5127,7 +5125,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            365 => 
+            365 =>
             array (
                 'id' => '366',
                 'no_kk' => '1105071708061882',
@@ -5141,7 +5139,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            366 => 
+            366 =>
             array (
                 'id' => '367',
                 'no_kk' => '1105077804100004',
@@ -5155,7 +5153,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            367 => 
+            367 =>
             array (
                 'id' => '368',
                 'no_kk' => '1105072404120002',
@@ -5169,7 +5167,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            368 => 
+            368 =>
             array (
                 'id' => '369',
                 'no_kk' => '1105070910070018',
@@ -5183,7 +5181,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            369 => 
+            369 =>
             array (
                 'id' => '370',
                 'no_kk' => '1105071501090002',
@@ -5197,7 +5195,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            370 => 
+            370 =>
             array (
                 'id' => '371',
                 'no_kk' => '1105072307850001',
@@ -5211,7 +5209,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            371 => 
+            371 =>
             array (
                 'id' => '372',
                 'no_kk' => '1105070204900001',
@@ -5225,7 +5223,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            372 => 
+            372 =>
             array (
                 'id' => '373',
                 'no_kk' => '1105075003990001',
@@ -5239,7 +5237,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            373 => 
+            373 =>
             array (
                 'id' => '374',
                 'no_kk' => '1105074603780001',
@@ -5253,7 +5251,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '02',
                 'id_cluster' => NULL,
             ),
-            374 => 
+            374 =>
             array (
                 'id' => '375',
                 'no_kk' => '1105074604560001',
@@ -5267,7 +5265,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            375 => 
+            375 =>
             array (
                 'id' => '376',
                 'no_kk' => '1105070207960002',
@@ -5281,7 +5279,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            376 => 
+            376 =>
             array (
                 'id' => '377',
                 'no_kk' => '1105070110820001',
@@ -5295,7 +5293,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            377 => 
+            377 =>
             array (
                 'id' => '378',
                 'no_kk' => '1105074202910001',
@@ -5309,7 +5307,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            378 => 
+            378 =>
             array (
                 'id' => '379',
                 'no_kk' => '1105074708750002',
@@ -5323,7 +5321,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            379 => 
+            379 =>
             array (
                 'id' => '380',
                 'no_kk' => '1112034304680002',
@@ -5337,7 +5335,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            380 => 
+            380 =>
             array (
                 'id' => '381',
                 'no_kk' => '1105075911630014',
@@ -5351,7 +5349,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            381 => 
+            381 =>
             array (
                 'id' => '382',
                 'no_kk' => '1105070609890001',
@@ -5365,7 +5363,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            382 => 
+            382 =>
             array (
                 'id' => '383',
                 'no_kk' => '1105070206940001',
@@ -5379,7 +5377,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            383 => 
+            383 =>
             array (
                 'id' => '384',
                 'no_kk' => '1105073112600043',
@@ -5393,7 +5391,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            384 => 
+            384 =>
             array (
                 'id' => '385',
                 'no_kk' => '1105071011650005',
@@ -5407,7 +5405,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            385 => 
+            385 =>
             array (
                 'id' => '386',
                 'no_kk' => '1114020310120001',
@@ -5421,7 +5419,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            386 => 
+            386 =>
             array (
                 'id' => '387',
                 'no_kk' => '1105075505010001',
@@ -5435,7 +5433,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            387 => 
+            387 =>
             array (
                 'id' => '388',
                 'no_kk' => '1105074609100001',
@@ -5449,7 +5447,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            388 => 
+            388 =>
             array (
                 'id' => '389',
                 'no_kk' => '1105070705930001',
@@ -5463,7 +5461,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            389 => 
+            389 =>
             array (
                 'id' => '390',
                 'no_kk' => '1105070505950001',
@@ -5477,7 +5475,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            390 => 
+            390 =>
             array (
                 'id' => '391',
                 'no_kk' => '1105010608860011',
@@ -5491,7 +5489,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            391 => 
+            391 =>
             array (
                 'id' => '392',
                 'no_kk' => '1105077112840075',
@@ -5505,7 +5503,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            392 => 
+            392 =>
             array (
                 'id' => '393',
                 'no_kk' => '1105077007100001',
@@ -5519,7 +5517,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '3',
                 'id_cluster' => NULL,
             ),
-            393 => 
+            393 =>
             array (
                 'id' => '394',
                 'no_kk' => '1105076403840001',
@@ -5533,7 +5531,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            394 => 
+            394 =>
             array (
                 'id' => '395',
                 'no_kk' => '1105074507780002',
@@ -5547,7 +5545,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            395 => 
+            395 =>
             array (
                 'id' => '396',
                 'no_kk' => '1105078805050002',
@@ -5561,7 +5559,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            396 => 
+            396 =>
             array (
                 'id' => '397',
                 'no_kk' => '1105072605070001',
@@ -5575,7 +5573,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            397 => 
+            397 =>
             array (
                 'id' => '398',
                 'no_kk' => '1105090107480044',
@@ -5589,7 +5587,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            398 => 
+            398 =>
             array (
                 'id' => '399',
                 'no_kk' => '1105070508930001',
@@ -5603,7 +5601,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            399 => 
+            399 =>
             array (
                 'id' => '400',
                 'no_kk' => '1105072508090001',
@@ -5617,7 +5615,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            400 => 
+            400 =>
             array (
                 'id' => '401',
                 'no_kk' => '1105070102910001',
@@ -5631,7 +5629,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            401 => 
+            401 =>
             array (
                 'id' => '402',
                 'no_kk' => '1105074903940002',
@@ -5645,7 +5643,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            402 => 
+            402 =>
             array (
                 'id' => '403',
                 'no_kk' => '1105074610970001',
@@ -5659,7 +5657,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            403 => 
+            403 =>
             array (
                 'id' => '404',
                 'no_kk' => '1105074211090002',
@@ -5673,7 +5671,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            404 => 
+            404 =>
             array (
                 'id' => '405',
                 'no_kk' => '1105076707560002',
@@ -5687,7 +5685,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            405 => 
+            405 =>
             array (
                 'id' => '406',
                 'no_kk' => '1112075403890001',
@@ -5701,7 +5699,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            406 => 
+            406 =>
             array (
                 'id' => '407',
                 'no_kk' => '1105070108780003',
@@ -5715,7 +5713,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            407 => 
+            407 =>
             array (
                 'id' => '408',
                 'no_kk' => '1105073112780035',
@@ -5729,7 +5727,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            408 => 
+            408 =>
             array (
                 'id' => '409',
                 'no_kk' => '1105070907790002',
@@ -5743,7 +5741,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            409 => 
+            409 =>
             array (
                 'id' => '410',
                 'no_kk' => '1105073004070001',
@@ -5757,7 +5755,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            410 => 
+            410 =>
             array (
                 'id' => '411',
                 'no_kk' => '1105070510960001',
@@ -5771,7 +5769,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '4',
                 'id_cluster' => NULL,
             ),
-            411 => 
+            411 =>
             array (
                 'id' => '725',
                 'no_kk' => '1.10507040879e15',
@@ -5785,7 +5783,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            412 => 
+            412 =>
             array (
                 'id' => '726',
                 'no_kk' => '1.10507630577e15',
@@ -5799,7 +5797,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            413 => 
+            413 =>
             array (
                 'id' => '727',
                 'no_kk' => '1.10507470771e15',
@@ -5813,7 +5811,7 @@ class DasKeluargaTableSeeder extends Seeder
                 'rw' => '1',
                 'id_cluster' => NULL,
             ),
-            414 => 
+            414 =>
             array (
                 'id' => '728',
                 'no_kk' => '1.10507050562e15',
@@ -5828,7 +5826,5 @@ class DasKeluargaTableSeeder extends Seeder
                 'id_cluster' => NULL,
             ),
         ));
-        
-        
     }
 }

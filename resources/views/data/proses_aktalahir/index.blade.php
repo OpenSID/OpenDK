@@ -56,13 +56,13 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#akta-table').DataTable({
-            processing: false,
-            serverSide: false,
+            processing: true,
+            serverSide: true,
             ajax: "{!! route( 'data.proses-aktalahir.getdata' ) !!}",
             columns: [
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
                 {data: 'status', name: 'status'},
-                {data: 'penduduk.nama', name: 'nama_penduduk'},
+                {data: 'nama_penduduk', name: 'das_penduduk.nama'},
                 {data: 'alamat', name: 'alamat'},
                 {data: 'tanggal_pengajuan', name: 'tanggal_pengajuan'},
                 {data: 'tanggal_selesai', name: 'tanggal_selesai'},
@@ -70,8 +70,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
 
     });
 </script>

@@ -51,7 +51,7 @@
     $(document).ready(function () {
         var data = $('#komplain-table').DataTable({
             processing: true,
-            //serverSide: true,
+            serverSide: true,
             ajax: "{!! route( 'admin-komplain.getdata' ) !!}",
             columns: [
                 {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},

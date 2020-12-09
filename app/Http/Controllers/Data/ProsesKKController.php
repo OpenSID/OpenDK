@@ -38,10 +38,19 @@ class ProsesKKController extends Controller
      */
     public function getDataProsesKK()
     {
-        return DataTables::of(DB::table('das_proses_kk')->join('das_penduduk', 'das_proses_kk.penduduk_id', '=', 'das_penduduk.id')
-            ->select('das_penduduk.nama as nama_penduduk, das_proses_kk.alamat, das_proses_kk.tanggal_pengajuan, das_proses_kk.tanggal_selesai, das_proses_kk.status, das_proses_kk.catatan')
-            ->get())
-            ->addColumn('action', function ($row) {
+        return DataTables::of(DB::table('das_proses_kk')
+            ->join('das_penduduk', 'das_proses_kk.penduduk_id', '=', 'das_penduduk.id')
+            ->select([
+                'das_proses_kk.id',
+                'das_penduduk.nama as nama_penduduk',
+                'das_proses_kk.alamat',
+                'das_proses_kk.tanggal_pengajuan',
+                'das_proses_kk.tanggal_selesai',
+                'das_proses_kk.status',
+                'das_proses_kk.catatan',
+            ]))
+            ->addColumn('action',
+             function ($row) {
                 $edit_url   = route('data.proses-kk.edit', $row->id);
                 $delete_url = route('data.proses-kk.destroy', $row->id);
 

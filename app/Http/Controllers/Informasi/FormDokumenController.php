@@ -33,7 +33,7 @@ class FormDokumenController extends Controller
     public function getDataDokumen()
     {
         $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
-        return DataTables::of($query->get())
+        return DataTables::of($query)
             ->addColumn('action', function ($row) {
                // $show_url = route('informasi.form-dokumen.show', $row->id);
                 $edit_url     = route('informasi.form-dokumen.edit', $row->id);

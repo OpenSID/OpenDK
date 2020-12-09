@@ -38,7 +38,7 @@ class AdminKomplainController extends Controller
      */
     public function getDataKomplain()
     {
-        return DataTables::of(Komplain::with(['kategori_komplain'])->select('*')->get())
+        return DataTables::of(Komplain::with(['kategori_komplain']))
             ->addColumn('actions', function ($row) {
                 $edit_url   = route('admin-komplain.edit', $row->id);
                 $delete_url = route('admin-komplain.destroy', $row->id);

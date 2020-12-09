@@ -48,8 +48,7 @@ class ProsesDomisiliController extends Controller
                 'das_proses_domisili.tanggal_selesai',
                 'das_proses_domisili.status',
                 'das_proses_domisili.catatan',
-            ])
-            ->get())
+            ]))
             ->addColumn('action', function ($row) {
                 $edit_url   = route('data.proses-domisili.edit', $row->id);
                 $delete_url = route('data.proses-domisili.destroy', $row->id);

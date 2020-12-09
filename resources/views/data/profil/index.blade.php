@@ -68,9 +68,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

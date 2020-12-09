@@ -59,12 +59,12 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#imunisasi-table').DataTable({
-            processing: false,
-            serverSide: false,
+            processing: true,
+            serverSide: true,
             ajax: "{!! route( 'data.putus-sekolah.getdata' ) !!}",
             columns: [
-                {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
+                {data: 'actions', name: 'actions', class:'text-center', searchable: false, orderable: false},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'siswa_paud', name: 'siswa_paud'},
                 {data: 'anak_usia_paud', name: 'anak_usia_paud'},
                 {data: 'siswa_sd', name: 'siswa_sd'},
@@ -78,9 +78,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

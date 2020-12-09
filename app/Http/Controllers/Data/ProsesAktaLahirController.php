@@ -38,9 +38,17 @@ class ProsesAktaLahirController extends Controller
      */
     public function getDataProsesAktaLahir()
     {
-        return DataTables::of(DB::table('das_proses_akta_lahir')->join('das_penduduk', 'das_proses_akta_lahir.penduduk_id', '=', 'das_penduduk.id')
-            ->select('das_penduduk.nama as nama_penduduk, das_proses_akta_lahir.alamat, das_proses_akta_lahir.tanggal_pengajuan, das_proses_akta_lahir.tanggal_selesai, das_proses_akta_lahir.status, das_proses_akta_lahir.catatan')
-            ->get())
+        return DataTables::of(DB::table('das_proses_akta_lahir')
+            ->join('das_penduduk', 'das_proses_akta_lahir.penduduk_id', '=', 'das_penduduk.id')
+            ->select([
+                'das_penduduk.id',
+                'das_penduduk.nama as nama_penduduk',
+                'das_proses_akta_lahir.alamat',
+                'das_proses_akta_lahir.tanggal_pengajuan',
+                'das_proses_akta_lahir.tanggal_selesai',
+                'das_proses_akta_lahir.status',
+                'das_proses_akta_lahir.catatan',
+            ]))
             ->addColumn('action', function ($row) {
                 $edit_url   = route('data.proses-aktalahir.edit', $row->id);
                 $delete_url = route('data.proses-aktalahir.destroy', $row->id);

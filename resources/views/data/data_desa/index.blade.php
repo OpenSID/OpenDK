@@ -53,7 +53,7 @@
     $(document).ready(function () {
         var data = $('#datadesa-table').DataTable({
             processing: true,
-            //serverSide: true,
+            serverSide: true,
             ajax: "{!! route( 'data.data-desa.getdata' ) !!}",
             columns: [
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
@@ -64,9 +64,6 @@
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

@@ -27,7 +27,7 @@ class ProgramBantuanController extends Controller
 
     public function getaProgramBantuan()
     {
-        return DataTables::of(Program::all())
+        return DataTables::of(Program::query())
             ->addColumn('action', function ($row) {
                 $edit_url   = route('data.program-bantuan.edit', $row->id);
                 $delete_url = route('data.program-bantuan.destroy', $row->id);

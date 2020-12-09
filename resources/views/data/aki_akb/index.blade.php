@@ -53,22 +53,19 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#aki-table').DataTable({
-            processing: false,
-            serverSide: false,
+            processing: true,
+            serverSide: true,
             ajax: "{!! route( 'data.aki-akb.getdata' ) !!}",
             columns: [
                 {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'aki', name: 'aki'},
                 {data: 'akb', name: 'akb'},
-                {data: 'bulan', name: 'bulan'},
-                {data: 'tahun', name: 'tahun'},
+                {data: 'bulan', name: 'bulan', searchable: false,},
+                {data: 'tahun', name: 'tahun', searchable: false,},
             ],
             order: [[0, 'desc']]
         });
-
-        $.fn.dataTable.ext.errMode = 'throw';
-
     });
 </script>
 @include('forms.datatable-vertical')

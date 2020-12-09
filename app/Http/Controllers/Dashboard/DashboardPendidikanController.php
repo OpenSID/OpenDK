@@ -25,7 +25,7 @@ class DashboardPendidikanController extends Controller
      **/
     public function showPendidikan()
     {
-        Counter::count('dashboard.pendidikan');
+        Counter::count('statistik.pendidikan');
 
         $data['page_title']       = 'Pendidikan';
         $data['page_description'] = 'Data Pendidikan ' . $this->sebutan_wilayah;
@@ -35,7 +35,7 @@ class DashboardPendidikanController extends Controller
         $data['list_kecamatan']   = Profil::with('kecamatan')->orderBy('kecamatan_id', 'desc')->get();
         $data['list_desa']        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
 
-        return view('dashboard.pendidikan.show_pendidikan')->with($data);
+        return view('pages.pendidikan.show_pendidikan')->with($data);
     }
 
     public function getChartTingkatPendidikan()

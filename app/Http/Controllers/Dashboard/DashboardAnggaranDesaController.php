@@ -31,7 +31,7 @@ class DashboardAnggaranDesaController extends Controller
         $data['list_kecamatan']   = Profil::with('kecamatan')->orderBy('kecamatan_id', 'desc')->get();
         $data['list_desa']        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
 
-        return view('dashboard.anggaran_desa.show_anggaran_desa')->with($data);
+        return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
     }
 
     public function getChartAnggaranDesa()

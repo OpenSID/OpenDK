@@ -1,30 +1,14 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-
-        <!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-        <li class="active">Here</li>
-    </ol>
-</section>
-
 <!-- Main content -->
-<section class="content container-fluid">
+<div class="col-md-8">
     <div class="box box-primary">
         <div class="box-header with-border">
-
             <form class="form-horizontal">
-
-                <div class="col-md-4 col-lg-4 col-sm-12">
+                <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="list_desa" class="col-sm-4 control-label">Desa</label>
-
                         <div class="col-sm-8">
                             <input type="hidden" id="defaultProfil" value="{{ $defaultProfil }}">
                             <select class="form-control" id="list_desa">
@@ -36,11 +20,9 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-md-3 col-lg-2 col-sm-12">
+                <div class="col-lg-6 col-sm-12">
                     <div class="form-group">
                         <label for="list_year" class="col-sm-4 control-label">Tahun</label>
-
                         <div class="col-sm-8">
                             <select class="form-control" id="list_year">
                                 @foreach($year_list as $year)
@@ -53,12 +35,10 @@
             </form>
         </div>
     </div>
-    <!-- /.row -->
 
     {{--Div replace by Kecamatan--}}
-
     <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-yellow"><i class="ion ion-ios-people-outline"></i></span>
 
@@ -74,7 +54,7 @@
             <!-- /.info-box -->
         </div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-aqua"><i class="fa fa-male"></i></span>
 
@@ -90,7 +70,7 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-red"><i class="fa fa-female"></i></span>
 
@@ -106,7 +86,7 @@
             <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span><img src="{{asset("img/cacat_logo.png")}}" style="width:90px;height:90px;float:left;">
                     <!-- <i class="fa fa-wheelchair"></i> --></span>
@@ -130,8 +110,7 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-md-7">
-
+        <div class="col-md-12">
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h3 class="box-title">Grafik Penduduk Tiap Tahun</h3>
@@ -154,64 +133,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-md-5">
-            <!-- Info Boxes Style 2 -->
-            <div class="info-box bg-green">
-                <span class="info-box-icon"><i class="ion ion-card"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-number">KTP</span>
-                    <span class="info-box-text" id="data_ktp">{!! $ktp_terpenuhi !!} dari {!! $total_penduduk !!}
-                        Jiwa Terpenuhi</span>
-
-                    <div class="progress">
-                        <div id="ktp_persen" class="progress-bar" style="width: {!! $ktp_persen_terpenuhi !!}%"></div>
-                    </div>
-                    <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Terpenuhi</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-
-            <div class="info-box bg-red">
-                <span class="info-box-icon"><i class="ion ion-ios-paper-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-number">Akta Kelahiran</span>
-                    <span class="info-box-text" id="data_akta">{!! $akta_terpenuhi !!} dari {!! $total_penduduk !!}
-                        Jiwa Terpenuhi</span>
-
-                    <div class="progress">
-                        <div id="akta_persen" class="progress-bar" style="width: {!! $akta_persen_terpenuhi !!}%"></div>
-                    </div>
-                    <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Terpenuhi</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-
-            <div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="ion ion-clipboard"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-number">Akta Nikah</span>
-                    <span class="info-box-text" id="data_nikah">{!! $aktanikah_terpenuhi !!}dari {!! $total_penduduk !!}
-                        Jiwa Terpenuhi</span>
-
-                    <div class="progress">
-                        <div id="nikah_persen" class="progress-bar"
-                             style="width: {!! $aktanikah_persen_terpenuhi !!}%"></div>
-                    </div>
-                    <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Terpenuhi</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-
-        </div>
         <!-- /.row -->
-
         <div class="col-md-12">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
@@ -268,10 +190,59 @@
                 <!-- /.nav-tabs-custom -->
             </div>
         </div>
-        <!-- /.col -->
+        <div class="col-md-12">
+            <!-- Info Boxes Style 2 -->
+            <div class="info-box bg-green">
+                <span class="info-box-icon"><i class="ion ion-card"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-number">KTP</span>
+                    <span class="info-box-text" id="data_ktp">{!! $ktp_terpenuhi !!} dari {!! $total_penduduk !!}
+                        Jiwa Terpenuhi</span>
+
+                    <div class="progress">
+                        <div id="ktp_persen" class="progress-bar" style="width: {!! $ktp_persen_terpenuhi !!}%"></div>
+                    </div>
+                    <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+            <div class="info-box bg-red">
+                <span class="info-box-icon"><i class="ion ion-ios-paper-outline"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-number">Akta Kelahiran</span>
+                    <span class="info-box-text" id="data_akta">{!! $akta_terpenuhi !!} dari {!! $total_penduduk !!}
+                        Jiwa Terpenuhi</span>
+
+                    <div class="progress">
+                        <div id="akta_persen" class="progress-bar" style="width: {!! $akta_persen_terpenuhi !!}%"></div>
+                    </div>
+                    <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+            <div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="ion ion-clipboard"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-number">Akta Nikah</span>
+                    <span class="info-box-text" id="data_nikah">{!! $aktanikah_terpenuhi !!}dari {!! $total_penduduk !!}
+                        Jiwa Terpenuhi</span>
+
+                    <div class="progress">
+                        <div id="nikah_persen" class="progress-bar"
+                             style="width: {!! $aktanikah_persen_terpenuhi !!}%"></div>
+                    </div>
+                    <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
         <!-- /.row -->
     </div>
-</section>
+</div>
 <!-- /.content -->
 @endsection
 @include('partials.asset_datatables')

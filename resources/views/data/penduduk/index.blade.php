@@ -18,20 +18,20 @@
 <!-- Main content -->
 <section class="content container-fluid">
     @include('partials.flash_message')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <div class="float-right">
-                        <div class="btn-group">
-                            <a href="{{ route('data.penduduk.create') }}">
-                                <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Penduduk</button>
-                            </a>
-                            <a href="{{ route('data.penduduk.import') }}">
-                                <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i> Impor</button>
-                            </a>
-                        </div>
-                    </div>
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{{ route('data.penduduk.index') }}">Penduduk</a></li>
+            {{--<li><a href="{{ route('data.keluarga.index') }}" >Keluarga</a></li>--}}
+        </ul>
+        <div class="tab-content">
+            <div class="row">
+                <div class="col-md-12">
+                       <a href="{{ route('data.penduduk.create') }}">
+                            <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Penduduk</button>
+                        </a>
+                        <a href="{{ route('data.penduduk.import') }}">
+                            <button type="button" class="btn btn-warning btn-sm" title="Upload Data"><i class="fa fa-upload"></i> Import</button>
+                        </a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

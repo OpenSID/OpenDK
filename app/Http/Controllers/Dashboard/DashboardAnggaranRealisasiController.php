@@ -32,7 +32,7 @@ class DashboardAnggaranRealisasiController extends Controller
         $data['list_kecamatan']   = Profil::with('kecamatan')->orderBy('kecamatan_id', 'desc')->get();
         /*$data['list_desa'] = DB::table('ref_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();*/
 
-        return view('dashboard.anggaran_realisasi.show_anggaran_realisasi')->with($data);
+        return view('pages.anggaran_realisasi.show_anggaran_realisasi')->with($data);
     }
 
     public function getChartAnggaranRealisasi()

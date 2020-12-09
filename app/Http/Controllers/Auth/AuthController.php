@@ -56,7 +56,7 @@ class AuthController extends Controller
     public function logout()
     {
         Sentinel::logout();
-        return redirect()->route('dashboard.profil');
+        return redirect()->route('beranda');
     }
 
     /**

@@ -68,9 +68,9 @@ class RegulasiController extends Controller
                 'file_regulasi' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
             ]);
 
-            $regulasi               = new Regulasi($request->all());
+            $regulasi               = new Regulasi($request->input());
             $regulasi->kecamatan_id = config('app.default_profile');
-
+            
             if ($request->hasFile('file_regulasi')) {
                 $lampiran1 = $request->file('file_regulasi');
                 $fileName1 = $lampiran1->getClientOriginalName();
@@ -79,9 +79,8 @@ class RegulasiController extends Controller
                 $regulasi->file_regulasi = $path . $fileName1;
                 $regulasi->mime_type     = $lampiran1->getClientOriginalExtension();
             }
-
+            
             $regulasi->save();
-
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');

@@ -11,15 +11,23 @@
 |
 */
 
-/**
- * Group Routing for Dashboard
- */
 
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+/**
+ * Group Routing for Front End
+ */
 
-// Redirect if apps not installed
+
+Route::get('/',function () {
+
+});
+/**
+ * Group Routing for Dashboard
+ */
+
+ // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
 
     Route::namespace('Auth')->group(function () {
@@ -125,69 +133,108 @@ Route::group(['middleware' => 'installed'], function () {
 
     });
 
-    /**
-     * Group Routing for Dashboard
+    /**m 
+     * Group Routing for Dashboard / Pengunjung Website
      */
     Route::namespace('Dashboard')->group(function () {
-        Route::get('/', 'DashboardProfilController@showProfile')->name('dashboard.profil');
+        Route::get('/', 'DashboardProfilController@index')->name('beranda');
+        
+        Route::group(['prefix' => 'profil'], function () {
+            Route::get('letak-geografis', 'DashboardProfilController@LetakGeografis')->name('profil.letak-geografis');
+            Route::get('struktur-pemerintahan', 'DashboardProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
+            Route::get('visi-dan-misi', 'DashboardProfilController@VisiMisi')->name('profil.visi-misi');
+            Route::get('sejarah-{wilayah}', 'DashboardProfilController@sejarah')->name('profil.sejarah');
+            Route::get('kependudukan', 'DashboardProfilController@Kependudukan')->name('profil.kependudukan');
+        });    
 
-        Route::group(['prefix' => 'dashboard'], function () {
-            Route::get('index', 'DashboardProfilController@showProfile')->name('dashboard.profil.index');
-            Route::get('profil', 'DashboardProfilController@showProfile')->name('dashboard.profil');
+        Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
-            Route::get('kependudukan', 'DashboardKependudukanController@showKependudukan')->name('dashboard.kependudukan');
-            Route::get('show-kependudukan', 'DashboardKependudukanController@showKependudukanPartial')->name('dashboard.show-kependudukan');
-            Route::get('chart-kependudukan', 'DashboardKependudukanController@getChartPenduduk')->name('dashboard.chart-kependudukan');
-            Route::get('chart-kependudukan-usia', 'DashboardKependudukanController@getChartPendudukUsia')->name('dashboard.chart-kependudukan-usia');
-            Route::get('chart-kependudukan-pendidikan', 'DashboardKependudukanController@getChartPendudukPendidikan')->name('dashboard.chart-kependudukan-pendidikan');
-            Route::get('chart-kependudukan-goldarah', 'DashboardKependudukanController@getChartPendudukGolDarah')->name('dashboard.chart-kependudukan-goldarah');
-            Route::get('chart-kependudukan-kawin', 'DashboardKependudukanController@getChartPendudukKawin')->name('dashboard.chart-kependudukan-kawin');
-            Route::get('chart-kependudukan-agama', 'DashboardKependudukanController@getChartPendudukAgama')->name('dashboard.chart-kependudukan-agama');
-            Route::get('chart-kependudukan-kelamin', 'DashboardKependudukanController@getChartPendudukKelamin')->name('dashboard.chart-kependudukan-kelamin');
-            Route::get('data-penduduk', 'DashboardKependudukanController@getDataPenduduk')->name('dashboard.data-penduduk');
+        Route::get('potensi/{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
+        Route::get('potensi/{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
 
-            Route::group(['prefix' => 'pendidikan'], function () {
-                Route::get('/', 'DashboardPendidikanController@showPendidikan')->name('dashboard.pendidikan');
-                Route::get('chart-tingkat-pendidikan', 'DashboardPendidikanController@getChartTingkatPendidikan')->name('dashboard.pendidikan.chart-tingkat-pendidikan');
-                Route::get('chart-putus-sekolah', 'DashboardPendidikanController@getChartPutusSekolah')->name('dashboard.pendidikan.chart-putus-sekolah');
-                Route::get('chart-fasilitas-paud', 'DashboardPendidikanController@getChartFasilitasPAUD')->name('dashboard.pendidikan.chart-fasilitas-paud');
-            });
+        Route::group(['prefix' => 'statistik'], function () {
 
-            Route::group(['prefix' => 'kesehatan'], function () {
-                Route::get('/', 'DashboardKesehatanController@showKesehatan')->name('dashboard.kesehatan');
-                Route::get('chart-akiakb', 'DashboardKesehatanController@getChartAKIAKB')->name('dashboard.kesehatan.chart-akiakb');
-                Route::get('chart-imunisasi', 'DashboardKesehatanController@getChartImunisasi')->name('dashboard.kesehatan.chart-imunisasi');
-                Route::get('chart-penyakit', 'DashboardKesehatanController@getChartEpidemiPenyakit')->name('dashboard.kesehatan.chart-penyakit');
-                Route::get('chart-sanitasi', 'DashboardKesehatanController@getChartToiletSanitasi')->name('dashboard.kesehatan.chart-sanitasi');
-            });
+            Route::get('kependudukan', 'DashboardKependudukanController@showKependudukan')->name('statistik.kependudukan');
+            Route::get('show-kependudukan', 'DashboardKependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
+            Route::get('chart-kependudukan', 'DashboardKependudukanController@getChartPenduduk')->name('statistik.chart-kependudukan');
+            Route::get('chart-kependudukan-usia', 'DashboardKependudukanController@getChartPendudukUsia')->name('statistik.chart-kependudukan-usia');
+            Route::get('chart-kependudukan-pendidikan', 'DashboardKependudukanController@getChartPendudukPendidikan')->name('statistik.chart-kependudukan-pendidikan');
+            Route::get('chart-kependudukan-goldarah', 'DashboardKependudukanController@getChartPendudukGolDarah')->name('statistik.chart-kependudukan-goldarah');
+            Route::get('chart-kependudukan-kawin', 'DashboardKependudukanController@getChartPendudukKawin')->name('statistik.chart-kependudukan-kawin');
+            Route::get('chart-kependudukan-agama', 'DashboardKependudukanController@getChartPendudukAgama')->name('statistik.chart-kependudukan-agama');
+            Route::get('chart-kependudukan-kelamin', 'DashboardKependudukanController@getChartPendudukKelamin')->name('statistik.chart-kependudukan-kelamin');
+            Route::get('data-penduduk', 'DashboardKependudukanController@getDataPenduduk')->name('statistik.data-penduduk');
 
+            
+            Route::get('pendidikan', 'DashboardPendidikanController@showPendidikan')->name('statistik.pendidikan');
+            Route::get('chart-tingkat-pendidikan', 'DashboardPendidikanController@getChartTingkatPendidikan')->name('statistik.pendidikan.chart-tingkat-pendidikan');
+            Route::get('chart-putus-sekolah', 'DashboardPendidikanController@getChartPutusSekolah')->name('statistik.pendidikan.chart-putus-sekolah');
+            Route::get('chart-fasilitas-paud', 'DashboardPendidikanController@getChartFasilitasPAUD')->name('statistik.pendidikan.chart-fasilitas-paud');
+        
+            Route::get('program-dan-bantuan', 'DashboardProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
+            Route::get('chart-penduduk', 'DashboardProgramBantuanController@getChartBantuanPenduduk')->name('statistik.program-bantuan.chart-penduduk');
+            Route::get('chart-keluarga', 'DashboardProgramBantuanController@getChartBantuanKeluarga')->name('statistik.program-bantuan.chart-keluarga');
+            
+            Route::get('anggaran-dan-realisasi', 'DashboardAnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');
+            Route::get('chart-anggaran-realisasi', 'DashboardAnggaranRealisasiController@getChartAnggaranRealisasi')->name('statistik.chart-anggaran-realisasi');
 
-            Route::group(['prefix' => 'program-bantuan'], function () {
-                Route::get('/', 'DashboardProgramBantuanController@showProgramBantuan')->name('dashboard.program-bantuan');
-                Route::get('chart-penduduk', 'DashboardProgramBantuanController@getChartBantuanPenduduk')->name('dashboard.program-bantuan.chart-penduduk');
-                Route::get('chart-keluarga', 'DashboardProgramBantuanController@getChartBantuanKeluarga')->name('dashboard.program-bantuan.chart-keluarga');
-            });
+            Route::get('anggaran-desa', 'DashboardAnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
+            Route::get('chart-anggaran-desa', 'DashboardAnggaranDesaController@getChartAnggaranDesa')->name('statistik.chart-anggaran-desa');
 
-            Route::get('anggaran-dan-realisasi', 'DashboardAnggaranRealisasiController@showAnggaranDanRealisasi')->name('dashboard.anggaran-dan-realisasi');
-            Route::get('chart-anggaran-realisasi', 'DashboardAnggaranRealisasiController@getChartAnggaranRealisasi')->name('dashboard.chart-anggaran-realisasi');
-
-            Route::get('anggaran-desa', 'DashboardAnggaranDesaController@showAnggaranDesa')->name('dashboard.anggaran-desa');
-            Route::get('chart-anggaran-desa', 'DashboardAnggaranDesaController@getChartAnggaranDesa')->name('dashboard.chart-anggaran-desa');
+            Route::get('kesehatan', 'DashboardKesehatanController@showKesehatan')->name('statistik.kesehatan');
+            Route::get('chart-akiakb', 'DashboardKesehatanController@getChartAKIAKB')->name('statistik.kesehatan.chart-akiakb');
+            Route::get('chart-imunisasi', 'DashboardKesehatanController@getChartImunisasi')->name('statistik.kesehatan.chart-imunisasi');
+            Route::get('chart-penyakit', 'DashboardKesehatanController@getChartEpidemiPenyakit')->name('statistik.kesehatan.chart-penyakit');
+            Route::get('chart-sanitasi', 'DashboardKesehatanController@getChartToiletSanitasi')->name('statistik.kesehatan.chart-sanitasi');
+        
         });
 
-    });
+        Route::group(['prefix' => 'unduhan'], function () {
+            Route::get('prosedur', 'DownloadController@indexProsedur')->name('unduhan.prosedur');
+            Route::get('prosedur/getdata','DownloadController@getDataProsedur')->name('unduhan.prosedur.getdata');
+            Route::get('prosedur/{nama_prosedur}','DownloadController@showProsedur')->name('unduhan.prosedur.show');
+            Route::get('prosedur/{file}/download','DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
+            
+            Route::get('regulasi', 'DownloadController@indexRegulasi')->name('unduhan.regulasi');
+            Route::get('regulasi/{nama_regulasi}','DownloadController@showRegulasi')->name('unduhan.regulasi.show');
+            Route::get('regulasi/{file}/download','DownloadController@downloadRegulasi')->name('unduhan.regulasi.download');
 
+            Route::get('form-dokumen', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
+            Route::get('form-dokumen/getdata','DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
+        });
+
+        Route::get('agenda-kegiatan/{slug}','EventController@show')->name('event.show');
+        
+        });
+        
+        
     /**
-     * Group Routing for Informasi
+     * Group Routing for Sistem Komplain
      */
+    Route::namespace('SistemKomplain')->group(function () {
+        Route::group(['prefix' => 'sistem-komplain'], function () {
+            Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
+            Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
+            Route::post('store', ['as' => 'sistem-komplain.store', 'uses' => 'SistemKomplainController@store']);
+            Route::get('edit/{id}', ['as' => 'sistem-komplain.edit', 'uses' => 'SistemKomplainController@edit']);
+            Route::put('update/{id}', ['as' => 'sistem-komplain.update', 'uses' => 'SistemKomplainController@update']);
+            Route::delete('destroy/{id}', ['as' => 'sistem-komplain.destroy', 'uses' => 'SistemKomplainController@destroy']);
+            Route::get('komplain/{slug}', ['as' => 'sistem-komplain.komplain', 'uses' => 'SistemKomplainController@show']);
+            Route::get('komplain/kategori/{slug}', ['as' => 'sistem-komplain.kategori', 'uses' => 'SistemKomplainController@indexKategori']);
+            Route::get('komplain-sukses', ['as' => 'sistem-komplain.komplain-sukses', 'uses' => 'SistemKomplainController@indexSukses']);
+            Route::post('tracking', ['as' => 'sistem-komplain.tracking', 'uses' => 'SistemKomplainController@tracking']);
+            Route::post('reply/{id}', ['as' => 'sistem-komplain.reply', 'uses' => 'SistemKomplainController@reply']);
+            Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
+        });
+    });
+        /**
+         * Group Routing for Informasi
+     */
+
+    Route::group(['middleware' => 'sentinel_access:admin'], function () {
+    Route::get('dashboard', 'HomeController@index')->name('dashboard.profil');
     Route::namespace('Informasi')->group(function () {
         Route::group(['prefix' => 'informasi'], function () {
-
-            // Berita desa
-            Route::group(['prefix' => 'berita-desa'], function () {
-                Route::get('/', ['as' => 'informasi.berita-desa.index', 'uses' => 'BeritaDesaController@index']);
-            });
-
             //Routes for prosedur resource
             Route::group(['prefix' => 'prosedur'], function () {
                 Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);
@@ -200,7 +247,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::delete('destroy/{id}', ['as' => 'informasi.prosedur.destroy', 'uses' => 'ProsedurController@destroy']);
                 Route::get('download/{id}', ['as' => 'informasi.prosedur.download', 'uses' => 'ProsedurController@download']);
             });
-
+            
             //Routes for Regulasi resources
             Route::group(['prefix' => 'regulasi'], function () {
                 Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
@@ -211,7 +258,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'informasi.regulasi.update', 'uses' => 'RegulasiController@update']);
                 Route::delete('destroy/{id}', ['as' => 'informasi.regulasi.destroy', 'uses' => 'RegulasiController@destroy']);
             });
-
+            
             //Routes for FAQ resources
             Route::group(['prefix' => 'faq'], function () {
                 Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
@@ -222,7 +269,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::post('update/{id}', ['as' => 'informasi.faq.update', 'uses' => 'FaqController@update']);
                 Route::delete('destroy/{id}', ['as' => 'informasi.faq.destroy', 'uses' => 'FaqController@destroy']);
             });
-
+            
             //Routes for Events resources
             Route::group(['prefix' => 'event'], function () {
                 Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
@@ -245,9 +292,10 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'informasi.form-dokumen.update', 'uses' => 'FormDokumenController@update']);
                 Route::delete('destroy/{id}', ['as' => 'informasi.form-dokumen.destroy', 'uses' => 'FormDokumenController@destroy']);
             });
-
+            
             //Routes for Potensi resources
             Route::group(['prefix' => 'potensi'], function () {
+               
                 Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
                 Route::get('show/{id}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
                 Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
@@ -267,33 +315,10 @@ Route::group(['middleware' => 'installed'], function () {
             });
         });
     });
-
-    /**
-     * Group Routing for Sistem Komplain
-     */
-    Route::namespace('SistemKomplain')->group(function () {
-        Route::group(['prefix' => 'sistem-komplain'], function () {
-            Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
-            Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
-            Route::post('store', ['as' => 'sistem-komplain.store', 'uses' => 'SistemKomplainController@store']);
-            Route::get('edit/{id}', ['as' => 'sistem-komplain.edit', 'uses' => 'SistemKomplainController@edit']);
-            Route::put('update/{id}', ['as' => 'sistem-komplain.update', 'uses' => 'SistemKomplainController@update']);
-            Route::delete('destroy/{id}', ['as' => 'sistem-komplain.destroy', 'uses' => 'SistemKomplainController@destroy']);
-            Route::get('komplain/{slug}', ['as' => 'sistem-komplain.komplain', 'uses' => 'SistemKomplainController@show']);
-            Route::get('komplain/kategori/{slug}', ['as' => 'sistem-komplain.kategori', 'uses' => 'SistemKomplainController@indexKategori']);
-            Route::get('komplain-sukses', ['as' => 'sistem-komplain.komplain-sukses', 'uses' => 'SistemKomplainController@indexSukses']);
-            Route::post('tracking', ['as' => 'sistem-komplain.tracking', 'uses' => 'SistemKomplainController@tracking']);
-            Route::post('reply/{id}', ['as' => 'sistem-komplain.reply', 'uses' => 'SistemKomplainController@reply']);
-            Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
-        });
-    });
-
     /**
      * Group Routing for Data
      *
-     */
-
-    Route::group(['middleware' => 'sentinel_access:admin'], function () {
+     */   
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
 
@@ -552,95 +577,7 @@ Route::group(['middleware' => 'installed'], function () {
     });
 
 
-    /**
-     *
-     * Grouep Routing API Internal for Select2
-     */
-    
-    //Users JSON
-    Route::get('/api/users', function () {
-        return \App\Models\User::where('first_name', 'LIKE', '%' . request('q') . '%')->paginate(10);
-    });
-    
-    // All Provinsi Select2
-    Route::get('/api/provinsi', function () {
-        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 2')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
-    });
-    
-    // All Kabupaten Select2
-    Route::get('/api/kabupaten', function () {
-        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 5')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
-    });
-    
-    //  All Kecamatan Select2
-    Route::get('/api/kecamatan', function () {
-        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 8')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
-    });
-    
-    // All Desa Select2
-    Route::get('/api/desa', function () {
-        return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 13')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
-    });
-    
-    // Desa Select2 By Kecamatan ID
-    Route::get('/api/desa-by-kid', function () {
-        return DB::table('ref_desa')->select('kode', 'nama')->whereRaw('LENGTH(kode) = 2')->where('kecamatan_id', '=', strtoupper(request('kid')))->get();
-    })->name('api.desa-by-kid');
-    
-    // All Profil Select2
-    Route::get('/api/profil', function () {
-        return DB::table('das_profil')
-            ->join('ref_wilayah', 'das_profil.kecamatan_id', '=', 'ref_wilayah.kode')
-            ->select('ref_wilayah.kode', 'ref_kecamatan.nama')
-            ->where('ref_wilayah.nama', 'LIKE', '%' . strtoupper(request('q')) . '%')
-            ->paginate(10);
-    })->name('api.profil');
-    
-    // Profil By id
-    Route::get('/api/profil-byid', function () {
-        return DB::table('das_profil')
-            ->join('ref_kecamatan', 'das_profil.kecamatan_id', '=', 'ref_kecamatan.id')
-            ->select('ref_kecamatan.id', 'ref_kecamatan.nama')
-            ->where('ref_kecamatan.id', '=', request('id'))->get();
-    })->name('api.profil-byid');
-    
-    // All Penduduk Select2
-    Route::get('/api/penduduk', function () {
-        return \App\Models\Penduduk::where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
-    })->name('api.penduduk');
-    
-    // Penduduk By id
-    Route::get('/api/penduduk-byid', function () {
-        return DB::table('das_penduduk')
-            ->where('id', '=', request('id'))->get();
-    })->name('api.penduduk-byid');
-
-    Route::get('/api/test', function () {
-        $return = [];
-        $a = ['year' => 2018];
-        $return = array_merge($return, $a);
-        $b = ['penyakit1' => 23];
-        $return = array_merge($return, $b);
-        $c = ['penyakit2' => 23];
-        $return = array_merge($return, $c);
-
-        return $return;
-    })->name('api.test');
-    
-    // Dashboard Kependudukan
-    Route::namespace('Dashboard')->group(function () {
-
-        Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kekendudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
-    });
-
-    Route::get('/api/list-peserta-penduduk', function () {
-        return \App\Models\Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(nik) LIKE \'%' . strtolower(request('q')) . '%\'')->paginate(10);
-    });
-
-    Route::get('/api/list-peserta-kk', function () {
-        return \App\Models\Penduduk::selectRaw('no_kk as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(no_kk) LIKE \'%' . strtolower(request('q')) . '%\'')
-            ->where('kk_level', 1)->paginate(10);
-    });
 });
+
+Route::get('/sitemap', 'SitemapController@index');
+Route::get('/sitemap/prosedur', 'SitemapController@prosedur');

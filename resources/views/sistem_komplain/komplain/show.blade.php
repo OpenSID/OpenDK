@@ -1,33 +1,7 @@
-@extends('layouts.dashboard_template')
+@extends('layouts.app')
 
 @section('content')
-
-        <!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
-    </ol>
-</section>
-
-<!-- Main content -->
-<section class="content container-fluid">
-    @include('partials.flash_message')
-
-    <div class="row">
-        <div class="col-md-3">
-            @include('sistem_komplain.komplain._tracking')
-
-            @include('sistem_komplain.komplain._komplain_populer')
-
-            @include('sistem_komplain.komplain._komplain_sukses')
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-8">
             <!-- kirim komplain form -->
             <div class="box box-primary">
                 <div class="box-header">
@@ -168,12 +142,6 @@
                 </div>
             </div>
         </div>
-        <!-- /.col -->
-    </div>
-    <!-- /.row -->
-
-</section>
-<!-- /.content -->
 <!-- Modal HTML -->
 <div id="modalReply" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

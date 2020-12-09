@@ -1,6 +1,5 @@
 <!-- Main Header -->
 <header class="main-header">
-
     <!-- Logo -->
     <a href="{{$app->make('url')->to('/')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -9,7 +8,6 @@
         <span class="logo-lg"><img class="user-image" src="{{ asset("/img/logo.png")}}" alt="Dashboard Kecamatan"
                                    width="180px"></span>
     </a>
-
     <!-- Header Navbar -->
     <?php
     if (Sentinel::guest()){
@@ -24,8 +22,7 @@
             <ul class="nav navbar-nav">
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
-                    <a href="{{$app->make('url')->to('login')}}"><img src="{{ asset("/img/login.png")}}"
-                                                                      class="user-image" alt="User Image"><span
+                    <a href="{{$app->make('url')->to('login')}}"><img src="{{ asset("/img/login.png")}}" class="user-image" alt="User Image"><span
                                 class="hidden-xs">Login</span></a>
                 </li>
                 <!-- Control Sidebar Toggle Button -->

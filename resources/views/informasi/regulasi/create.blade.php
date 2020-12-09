@@ -23,10 +23,8 @@
                      <h3 class="box-title">Aksi</h3>
                  </div>--}}
                 <!-- /.box-header -->
-
                         <!-- form start -->
                 {!! Form::open( [ 'route' => 'informasi.regulasi.store', 'method' => 'post','id' => 'form-regulasi', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
-
                 <div class="box-body">
 
                     @if (count($errors) > 0)

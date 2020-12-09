@@ -23,7 +23,6 @@
             <li class="active"><a href="{{ route('data.penduduk.index') }}">Penduduk</a></li>
             {{--<li><a href="{{ route('data.keluarga.index') }}" >Keluarga</a></li>--}}
         </ul>
-
         <div class="tab-content">
             <div class="row">
                 <div class="col-md-12">

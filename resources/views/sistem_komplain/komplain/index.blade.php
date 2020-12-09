@@ -1,38 +1,12 @@
-@extends('layouts.dashboard_template')
+@extends('layouts.app')
 
 @section('content')
-
-        <!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
-    </ol>
-</section>
-
 <!-- Main content -->
-<section class="content container-fluid">
-    @include('partials.flash_message')
-
-    <div class="row">
-        <div class="col-md-3">
-            @include('sistem_komplain.komplain._tracking')
-
-            @include('sistem_komplain.komplain._komplain_populer')
-
-            @include('sistem_komplain.komplain._komplain_sukses')
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-8">
             <!-- quick email widget -->
             <div class="box box-primary">
                 <div class="box-header">
                     <i class="fa fa-comments"></i>
-
                     <h3 class="box-title">Daftar Komplain</h3>
                 </div>
                 <div class="box-body">
@@ -57,10 +31,9 @@
                             {!! get_words($item->laporan, 35) !!} ...
                         </p>
                         <ul class="list-inline">
-
                             <li><a href="{{ route('sistem-komplain.komplain', $item->slug) }}" class="link-black text-sm"><i class="fa fa-comments-o margin-r-5"></i>
                                     Tindak Lanjut Laporan ({{ count($item->jawabs) }})</a></li>
-                            @if(! Sentinel::guest())
+                            @if(!Sentinel::guest())
                                 <li class="pull-right">
                                     <a href="{{ route('sistem-komplain.komplain', $item->slug) }}" class="btn btn-xs btn-info"><i class="fa fa-search margin-r-5"></i>
                                         Lihat</a>
@@ -93,9 +66,4 @@
             </div>
         </div>
         <!-- /.col -->
-    </div>
-    <!-- /.row -->
-
-</section>
-<!-- /.content -->
 @endsection

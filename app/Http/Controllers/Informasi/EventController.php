@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\INformasi;
+namespace App\Http\Controllers\Informasi;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;

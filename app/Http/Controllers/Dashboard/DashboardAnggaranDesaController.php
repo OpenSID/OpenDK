@@ -21,7 +21,7 @@ class DashboardAnggaranDesaController extends Controller
    **/
     public function showAnggaranDesa()
     {
-        Counter::count('dashboard.anggaran-desa');
+        Counter::count('statistik.anggaran-desa');
 
         $data['page_title']       = 'Anggaran Desa (APBDes)';
         $data['page_description'] = 'Data Anggaran Desa (APBDes)';

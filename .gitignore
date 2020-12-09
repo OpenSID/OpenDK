@@ -20,3 +20,4 @@ Vagrantfile
 # Shell script di cPanel > Terminal untuk menyalin folder public ke public_html
 copy_public.sh
 .DS_Store
+public/error_log

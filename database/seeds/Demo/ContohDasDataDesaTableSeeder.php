@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeds\Demo;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ContohDasDataDesaTableSeeder extends Seeder
 {
@@ -14,9 +17,9 @@ class ContohDasDataDesaTableSeeder extends Seeder
 
         $kecamatan_id = config('app.default_profile');
 
-        \DB::table('das_data_desa')->delete();
+        DB::table('das_data_desa')->delete();
 
-        \DB::table('das_data_desa')->insert(array (
+        DB::table('das_data_desa')->insert(array (
             0 =>
             array (
                 'desa_id' => $kecamatan_id . '.2001',

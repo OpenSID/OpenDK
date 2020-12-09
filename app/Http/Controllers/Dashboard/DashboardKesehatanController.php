@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -18,20 +19,22 @@ use function years_list;
 class DashboardKesehatanController extends Controller
 {
     public $nama_kuartal = ['q1' => 'Kuartal 1', 'q2' => 'Kuartal 2', 'q3' => 'Kuartal 3', 'q4' => 'Kuartal 4'];
-
-    public function __construct()
-    {
-    }
+    
+    public function __construct(){
+        parent::__construct();
+     }
 
     // Dashboiard Kesehatan AKI & AKB
     public function showKesehatan()
     {
+        Counter::count('statistik.kesehatan');
+
         $defaultProfil    = config('app.default_profile');
         $page_title       = 'Kesehatan';
         $page_description = 'Data Kesehatan Kecamatan ';
         $year_list        = years_list();
         $list_desa        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
-        return view('dashboard.kesehatan.show_kesehatan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));
+        return view('pages.kesehatan.show_kesehatan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));
     }
 
     // Get Data Chart AKI & AKB
@@ -110,7 +113,7 @@ class DashboardKesehatanController extends Controller
                 $data_tabel['desa'][$key] = $query;
             }
 
-            $tabel_kesehatan = view('dashboard.kesehatan.tabel_akiakb_1', compact('data_tabel'))->render();
+            $tabel_kesehatan = view('pages.kesehatan.tabel_akiakb_1', compact('data_tabel'))->render();
             //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'ALL' && $did != 'ALL') {
             $data_tabel = [];
@@ -125,7 +128,7 @@ class DashboardKesehatanController extends Controller
                 ];
             }
 
-            $tabel_kesehatan = view('dashboard.kesehatan.tabel_akiakb_2', compact('data_tabel'))->render();
+            $tabel_kesehatan = view('pages.kesehatan.tabel_akiakb_2', compact('data_tabel'))->render();
         }
 
         return [
@@ -203,7 +206,7 @@ class DashboardKesehatanController extends Controller
                 $data_tabel['desa'][$key] = $query;
             }
 
-            $tabel_kesehatan = view('dashboard.kesehatan.tabel_imunisasi_1', compact('data_tabel'))->render();
+            $tabel_kesehatan = view('pages.kesehatan.tabel_imunisasi_1', compact('data_tabel'))->render();
             //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'ALL' && $did != 'ALL') {
             $data_tabel = [];
@@ -218,7 +221,7 @@ class DashboardKesehatanController extends Controller
             }
 
             //$tabel_kesehatan = $data_tabel;
-            $tabel_kesehatan = view('dashboard.kesehatan.tabel_imunisasi_2', compact('data_tabel'))->render();
+            $tabel_kesehatan = view('pages.kesehatan.tabel_imunisasi_2', compact('data_tabel'))->render();
         }
 
         return [
@@ -327,7 +330,6 @@ class DashboardKesehatanController extends Controller
             //$tabel_kesehatan = $data_tabel;
             $tabel_kesehatan = view('dashboard.kesehatan.tabel_penyakit_2', compact('data_tabel'))->render();
         }*/
-
         return [
             'grafik' => $data_kesehatan,
             'tabel'  => $tabel_kesehatan,
@@ -407,7 +409,7 @@ class DashboardKesehatanController extends Controller
                 $data_tabel['desa'][$key] = $query;
             }
 
-            $tabel_kesehatan = view('dashboard.kesehatan.tabel_sanitasi_1', compact('data_tabel'))->render();
+            $tabel_kesehatan = view('pages.kesehatan.tabel_sanitasi_1', compact('data_tabel'))->render();
             //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'ALL' && $did != 'ALL') {
             $data_tabel = [];
@@ -422,7 +424,7 @@ class DashboardKesehatanController extends Controller
                 ];
             }
 
-            $tabel_kesehatan = view('dashboard.kesehatan.tabel_sanitasi_2', compact('data_tabel'))->render();
+            $tabel_kesehatan = view('pages.kesehatan.tabel_sanitasi_2', compact('data_tabel'))->render();
         }
 
         return [

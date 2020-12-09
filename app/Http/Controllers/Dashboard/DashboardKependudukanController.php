@@ -29,7 +29,7 @@ class DashboardKependudukanController extends Controller
      **/
     public function showKependudukan()
     {
-        Counter::count('dashboard.kependudukan');
+        Counter::count('statistik.kependudukan');
 
         $data['page_title']       = 'Kependudukan';
         $data['page_description'] = 'Statistik Kependudukan';
@@ -41,7 +41,7 @@ class DashboardKependudukanController extends Controller
 
         $data = array_merge($data, $this->createDashboardKependudukan($defaultProfil, 'ALL', date('Y')));
 
-        return view('dashboard.kependudukan.show_kependudukan')->with($data);
+        return view('pages.kependudukan.show_kependudukan')->with($data);
     }
 
     public function showKependudukanPartial()

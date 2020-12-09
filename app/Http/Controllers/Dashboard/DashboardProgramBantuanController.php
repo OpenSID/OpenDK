@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Program;
 use Illuminate\Support\Facades\DB;
@@ -20,12 +21,14 @@ class DashboardProgramBantuanController extends Controller
      **/
     public function showProgramBantuan()
     {
+        Counter::count('statistik.program-bantuan');
+
         $page_title       = 'Program Bantuan';
         $page_description = 'Data Program Bantuan';
         $defaultProfil    = config('app.default_profile');
         $year_list        = years_list();
         $list_desa        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
-        return view('dashboard.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));
+        return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));
     }
 
     public function getChartBantuanPenduduk()

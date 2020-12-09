@@ -14,11 +14,8 @@ class Controller extends BaseController
     use AuthorizesRequests;
     use DispatchesJobs;
     use ValidatesRequests;
-
-    protected $nama_wilayah;
-    protected $sebutan_wilayah;
-    protected $sebutan_kepala_wilayah;
-
+	
+	
 	/**
      * Menampilkan Sebutan Wilayah Tingkat III (Kecamatan/Distrik)
      */
@@ -30,7 +27,7 @@ class Controller extends BaseController
         $nama_wilayah = $getProfilWilayah->kecamatan->nama;
         // dd($nama_wilayah);    
         $getWilayah = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
-
+        // dd($events);
         if(substr($getWilayah->kode,0,2) == 91 or substr($getWilayah->kode,0,2) == 92){
             $sebutan_wilayah = 'Kecamatan';
             $sebutan_kepala_wilayah = 'Camat';
@@ -52,4 +49,3 @@ class Controller extends BaseController
                       ]);
     }
 }
-    

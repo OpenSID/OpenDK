@@ -295,8 +295,7 @@ class DashboardProfilController extends Controller
 
         $page_title = 'Profil';
         if (isset($profil)) {
-            $page_description = ucwords(strtolower($this->sebutan_wilayah . ' ' . $profil->kecamatan->nama));
-
+            $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
 
         return view('pages.profil.show_profil', compact('page_title', 'page_description', 'profil', 'defaultProfil', 'dokumen'));

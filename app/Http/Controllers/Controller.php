@@ -26,9 +26,8 @@ class Controller extends BaseController
 
         $getProfilWilayah = \App\Models\Profil::where('kecamatan_id', $defaultProfil)->first();
         $nama_wilayah = $getProfilWilayah->kecamatan->nama;
-        // dd($nama_wilayah);    
+        
         $getWilayah = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
-
         if(substr($getWilayah->kode,0,2) == 91 or substr($getWilayah->kode,0,2) == 92){
             $sebutan_wilayah = 'Kecamatan';
             $sebutan_kepala_wilayah = 'Camat';

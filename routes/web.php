@@ -207,10 +207,7 @@ Route::group(['middleware' => 'installed'], function () {
         
         });
         
-        
-    /**
-     * Group Routing for Sistem Komplain
-     */
+   
     Route::namespace('SistemKomplain')->group(function () {
         Route::group(['prefix' => 'sistem-komplain'], function () {
             Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
@@ -230,6 +227,7 @@ Route::group(['middleware' => 'installed'], function () {
         /**
          * Group Routing for Informasi
      */
+
 
     Route::group(['middleware' => 'sentinel_access:admin'], function () {
     Route::get('dashboard', 'HomeController@index')->name('dashboard.profil');
@@ -577,7 +575,6 @@ Route::group(['middleware' => 'installed'], function () {
     });
 
 
-    
     Route::get('/sitemap', 'SitemapController@index');
     Route::get('/sitemap/prosedur', 'SitemapController@prosedur');
 

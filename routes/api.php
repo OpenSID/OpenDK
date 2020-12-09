@@ -36,4 +36,3 @@ Route::group(['prefix' => 'v1'], function() {
         Route::post('test', 'Api\PendudukController@test');
     });
 });
-

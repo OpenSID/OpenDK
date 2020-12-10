@@ -17,7 +17,6 @@
 <!-- Main content -->
 <section class="content container-fluid">
     @include('partials.flash_message')
-
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">

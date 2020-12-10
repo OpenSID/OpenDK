@@ -24,14 +24,15 @@ use function years_list;
 class TingkatPendidikanController extends Controller
 {
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
     }
+
     public function index()
     {
-       
         $page_title       = 'Tingkat Pendidikan';
-        $page_description = 'Data Tingkat Pendidikan ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_description = 'Data Tingkat Pendidikan ';
         return view('data.tingkat_pendidikan.index', compact('page_title', 'page_description'));
     }
 
@@ -84,8 +85,8 @@ class TingkatPendidikanController extends Controller
         ]);
 
         try {
-            (new ImporTingkatPendidikan($request->all()))
-                ->queue($request->file('file'));
+            (new ImporTingkatPendidikan($request))
+                ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

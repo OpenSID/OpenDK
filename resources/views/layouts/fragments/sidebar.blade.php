@@ -55,7 +55,7 @@ $user = Sentinel::getUser();
                     <ul class="treeview-menu">
                         @if($user->hasAnyAccess(['admin', 'data-kecamatan']))
                         <li class="treeview {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil','data/data-umum/*', 'data/data-umum/index', 'data/data-umum','data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'active' : '') }}">
-                            <a href="#"><i class="fa fa-circle-o"></i>Kecamatan
+                            <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -153,7 +153,7 @@ $user = Sentinel::getUser();
 
                         @if($user->hasAnyAccess(['admin', 'data-layanan']))
                         <li class="treeview {{ (Request::is(['data/proses-ektp/*', 'data/proses-kk/*', 'data/proses-aktalahir/*','data/proses-domisili/*', 'data/proses-ektp', 'data/proses-kk', 'data/proses-aktalahir','data/proses-domisili'])? 'active' : '') }}">
-                            <a href="#"><i class="fa fa-circle-o"></i>Layanan Kecamatan
+                            <a href="#"><i class="fa fa-circle-o"></i>Layanan {{ $sebutan_wilayah }}
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>

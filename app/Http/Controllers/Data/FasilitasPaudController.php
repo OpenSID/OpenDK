@@ -23,12 +23,16 @@ use function years_list;
 
 class FasilitasPaudController extends Controller
 {
-    
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
-        
         $page_title       = 'Fasilitas PAUD';
-        $page_description = 'Data Fasilitas PAUD ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_description = 'Data Fasilitas PAUD ';
         return view('data.fasilitas_paud.index', compact('page_title', 'page_description'));
     }
 
@@ -81,8 +85,8 @@ class FasilitasPaudController extends Controller
         ]);
 
         try {
-            (new ImporFasilitasPaud($request->all()))
-                ->queue($request->file('file'));
+            (new ImporFasilitasPaud($request))
+                ->import($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

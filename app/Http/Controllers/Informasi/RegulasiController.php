@@ -29,14 +29,10 @@ class RegulasiController extends Controller
         Counter::count('informasi.regulasi.index');
 
         $page_title       = 'Regulasi';
-        $page_description = 'Kumpulan Regulasi ' .$this->sebutan_wilayah;
+        $page_description = 'Kumpulan regulasi';
         $regulasi         = Regulasi::orderBy('id', 'asc')->paginate(10);
 
-        $defaultProfil = config('app.default_profile');
-
-        $profil = Profil::where(['kecamatan_id' => $defaultProfil])->first();
-
-        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi', 'defaultProfil', 'profil'));
+        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi'));
     }
 
     /**
@@ -47,7 +43,7 @@ class RegulasiController extends Controller
     public function create()
     {
         $page_title       = 'Tambah';
-        $page_description = 'Tambah baru Regulasi '.$this->sebutan_wilayah;
+        $page_description = 'Tambah baru Regulasi';
 
         return view('informasi.regulasi.create', compact('page_title', 'page_description'));
     }

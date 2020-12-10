@@ -25,11 +25,11 @@ class Controller extends BaseController
         $getProfilWilayah = \App\Models\Profil::where('kecamatan_id', $defaultProfil)->first();
     
         if($getProfilWilayah->provinsi_id == 91 or $getProfilWilayah->provinsi_id == 92){
-            $sebutan_wilayah = 'Distrik';
-            $sebutan_kepala_wilayah = 'Distrik';
-        }else{
             $sebutan_wilayah = 'Kecamatan';
             $sebutan_kepala_wilayah = 'Camat';
+        }else{
+            $sebutan_wilayah = 'Distrik';
+            $sebutan_kepala_wilayah = 'Distrik';
         }
         $nama_wilayah = $getProfilWilayah->kecamatan->nama;
         $events     = \App\Models\Event::getOpenEvents();

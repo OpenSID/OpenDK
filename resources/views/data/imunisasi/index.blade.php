@@ -6,7 +6,7 @@
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
+        <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah  }} {{ $nama_wilayah }}</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>

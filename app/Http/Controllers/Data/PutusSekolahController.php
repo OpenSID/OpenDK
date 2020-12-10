@@ -23,11 +23,17 @@ use function years_list;
 
 class PutusSekolahController extends Controller
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
-        $kecamatan        = Wilayah::where('kode', config('app.default_profile'))->first();
+        
         $page_title       = 'Anak Putus Sekolah';
-        $page_description = 'Data Anak Putus Sekolah Kecamatan ' . $kecamatan->nama_kecamatan;
+        $page_description = 'Data Anak Putus Sekolah ';
         return view('data.putus_sekolah.index', compact('page_title', 'page_description'));
     }
 

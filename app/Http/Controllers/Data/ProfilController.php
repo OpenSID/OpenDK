@@ -46,7 +46,7 @@ class ProfilController extends Controller
         $profil->file_logo = is_img($profil->file_logo);
 
         $page_title       = 'Ubah Profil';
-        $page_description = 'Kecamatan: ' . ucwords(strtolower($profil->kecamatan->nama));
+        $page_description = ucwords(strtolower($profil->kecamatan->nama));
 
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }

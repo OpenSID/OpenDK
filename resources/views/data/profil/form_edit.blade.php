@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kecamatan <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('nama_kecamatan', $profil->kecamatan->nama,['placeholder'=>'Nama Kecamatan', 'class'=>'form-control', 'readonly'=>true]) !!}
-                {!! Form::hidden('kecamatan_id', $profil->kecamatan_id,['placeholder'=>'Nama Kecamatan', 'class'=>'form-control', 'readonly'=>true]) !!}
+                {!! Form::text('nama_kecamatan', $profil->kecamatan->nama,['placeholder'=> 'Nama '.$sebutan_wilayah, 'class'=>'form-control', 'readonly'=>true]) !!}
+                {!! Form::hidden('kecamatan_id', $profil->kecamatan_id,['placeholder'=>'Nama '.$sebutan_wilayah, 'class'=>'form-control', 'readonly'=>true]) !!}
             </div>
         </div>
         <div class="form-group">
@@ -70,7 +70,7 @@
 
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama Camat <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama {{ $sebutan_kepala_wilayah }} <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris Camat <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris {{ $sebutan_kepala_wilayah }} <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">

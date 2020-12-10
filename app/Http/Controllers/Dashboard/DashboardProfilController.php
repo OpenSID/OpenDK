@@ -30,20 +30,11 @@ class DashboardProfilController extends Controller
 
     public function index()
     {
-        Counter::count('dashboard.profil');
+        Counter::count('beranda');
 
-        $defaultProfil = config('app.default_profile');
-
-        $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
-
-        $dokumen = DB::table('das_form_dokumen')->take(5)->get();
-
-        $page_title = 'Profil';
-        if (isset($profil)) {
-            $page_description = ucwords(strtolower($profil->kecamatan->nama));
-        }
-
-        return view('pages.post_show', compact('page_title', 'page_description', 'profil', 'defaultProfil', 'dokumen'));
+        $page_title = 'Beranda';
+        
+        return view('pages.post', compact('page_title'));
     }
 
     public function showKependudukanPartial()

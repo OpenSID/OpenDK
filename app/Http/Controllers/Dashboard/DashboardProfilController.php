@@ -6,9 +6,7 @@ use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Yajra\DataTables\DataTables;
-use SimpleXmlElement;
 
 use function array_merge;
 use function array_sort;
@@ -27,7 +25,7 @@ use function years_list;
 class DashboardProfilController extends Controller
 {
     /**
-     * Menampilkan Halaman Beranda Kecamatan
+     * Menampilkan Data Profil Kecamatan
      **/
 
     public function index()
@@ -35,11 +33,8 @@ class DashboardProfilController extends Controller
         Counter::count('beranda');
 
         $page_title = 'Beranda';
-        // Mengambil berita dari desa untuk ditampilkan diberanda kecamatan
-        $content = file_get_contents('https://demo.opensid.my.id/feed');
-        $artikel = new SimpleXmlElement($content);
-        // dd($artikel);
-        return View::make('pages.post', compact('page_title'))->with('artikel',$artikel);
+        
+        return view('pages.post', compact('page_title'));
     }
 
     public function showKependudukanPartial()
@@ -291,7 +286,8 @@ class DashboardProfilController extends Controller
 
         $page_title = 'Profil';
         if (isset($profil)) {
-            $page_description = ucwords(strtolower($profil->kecamatan->nama));
+            $page_description = ucwords(strtolower($this->sebutan_wilayah . ' ' . $profil->kecamatan->nama));
+
         }
 
         return view('pages.profil.show_profil', compact('page_title', 'page_description', 'profil', 'defaultProfil', 'dokumen'));

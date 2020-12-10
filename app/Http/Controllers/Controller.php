@@ -14,8 +14,7 @@ class Controller extends BaseController
     use AuthorizesRequests;
     use DispatchesJobs;
     use ValidatesRequests;
-	
-	
+
 	/**
      * Menampilkan Sebutan Wilayah Tingkat III (Kecamatan/Distrik)
      */
@@ -24,17 +23,15 @@ class Controller extends BaseController
         $defaultProfil = config('app.default_profile');
 
         $getProfilWilayah = \App\Models\Profil::where('kecamatan_id', $defaultProfil)->first();
-        $nama_wilayah = $getProfilWilayah->kecamatan->nama;
-        // dd($nama_wilayah);    
-        $getWilayah = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
-        // dd($events);
-        if(substr($getWilayah->kode,0,2) == 91 or substr($getWilayah->kode,0,2) == 92){
-            $sebutan_wilayah = 'Kecamatan';
-            $sebutan_kepala_wilayah = 'Camat';
-        }else{
+    
+        if($getProfilWilayah->provinsi_id == 91 or $getProfilWilayah->provinsi_id == 92){
             $sebutan_wilayah = 'Distrik';
             $sebutan_kepala_wilayah = 'Distrik';
+        }else{
+            $sebutan_wilayah = 'Kecamatan';
+            $sebutan_kepala_wilayah = 'Camat';
         }
+        $nama_wilayah = $getProfilWilayah->kecamatan->nama;
         $events     = \App\Models\Event::getOpenEvents();
         $navdesa     = \App\Models\DataDesa::orderby('nama','ASC')->get();
         $navpotensi     = \App\Models\TipePotensi::orderby('nama_kategori','ASC')->get();
@@ -49,3 +46,4 @@ class Controller extends BaseController
                       ]);
     }
 }
+    

@@ -6,7 +6,9 @@ use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Yajra\DataTables\DataTables;
+use SimpleXmlElement;
 
 use function array_merge;
 use function array_sort;
@@ -25,25 +27,19 @@ use function years_list;
 class DashboardProfilController extends Controller
 {
     /**
-     * Menampilkan Data Profil Kecamatan
+     * Menampilkan Halaman Beranda Kecamatan
      **/
 
     public function index()
     {
-        Counter::count('dashboard.profil');
+        Counter::count('beranda');
 
-        $defaultProfil = config('app.default_profile');
-
-        $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
-
-        $dokumen = DB::table('das_form_dokumen')->take(5)->get();
-
-        $page_title = 'Profil';
-        if (isset($profil)) {
-            $page_description = ucwords(strtolower($profil->kecamatan->nama));
-        }
-
-        return view('pages.post_show', compact('page_title', 'page_description', 'profil', 'defaultProfil', 'dokumen'));
+        $page_title = 'Beranda';
+        // Mengambil berita dari desa untuk ditampilkan diberanda kecamatan
+        $content = file_get_contents('https://demo.opensid.my.id/feed');
+        $artikel = new SimpleXmlElement($content);
+        // dd($artikel);
+        return View::make('pages.post', compact('page_title'))->with('artikel',$artikel);
     }
 
     public function showKependudukanPartial()

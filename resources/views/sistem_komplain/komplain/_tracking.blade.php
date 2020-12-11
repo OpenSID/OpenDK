@@ -12,7 +12,8 @@
         <form class="form-horizontal" method="post" action="{{ route('sistem-komplain.tracking') }}">
             <div class="input-group input-group-sm">
                 {{ csrf_field() }}
-                <input class="form-control" required type="text" name="q" placeholder="Tracking ID Komplain Anda" />
+                <input class="form-control" required type="text" id="tracking" name="q" placeholder="Tracking ID Komplain Anda" />
+                <label for="tracking"></label>
                 <span class="input-group-btn"><button type="submit" class="btn btn-warning btn-flat">Lacak</button></span>
             </div>
         </form>

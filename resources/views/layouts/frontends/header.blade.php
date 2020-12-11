@@ -8,7 +8,7 @@
           </button>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse js-navbar-collapse" id="navbar-collapse">
+        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown @if(Request::is('/'))active @endif"><a href="{{ route('beranda') }}">BERANDA <span class="sr-only">(current)</span></a></li>
             <li class="dropdown menu-large">
@@ -34,15 +34,14 @@
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>
           </li>
-
-            {{-- <li class="dropdown">
+            <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">PUBLIKASI <span class="caret"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+              <ul class="dropdown-menu fadeIn animated" role="menu">
+                  <li><a href="#">Agenda Kegiatan</a></li>
+                  <li><a href="#">Berita Kecamatan</a></li>
+                  <li><a href="#">Berita Desa</a></li>
                 </ul>
-            </li> --}}
+            </li>
             <li class="dropdown @if(Request::is('desa-*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
@@ -78,65 +77,17 @@
                 <li><a href="{{ route('unduhan.form-dokumen') }}">Dokumen</a></li>
               </ul>
           </li>
-          </ul>
-          <form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" name="mencari" id="navbar-search-input" placeholder="Search">
-            </div>
-          </form> 
-        </div>
-        <!-- /.navbar-collapse -->
-        <!-- Navbar Right Menu -->
-        {{-- <div class="navbar-custom-menu">
+        </ul>
+      </div>
+        <div class="navbar-custom-menu">
           <ul class="nav navbar-nav">
-            <!-- User Account Menu -->
-            @if (Sentinel::guest())
-            <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
-              <a href="{{ route('login') }}" class="dropdown-toggle">
-                <img src="{{ asset('/img/login.png')}}" class="user-image" alt="User Image">
-                <span class="hidden-xs">{{ __('Login') }}</span>
-            </a>
-              @else
-                  @php
-                      $user = Sentinel::getUser();
-                  @endphp  
-            <li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset("/img/login.png")}}" class="user-image" alt="User Image">
-                <span class="hidden-xs">{{ $user->first_name}}</span>
-                </a>
-              <ul class="dropdown-menu">  
-                <!-- The user image in the menu -->
-                <li class="user-header">
-                  <img src="{{ asset("/img/login.png")}}" class="img-circle" alt="User Image">
-                  <p>
-                    {{ $user->first_name .' '.$user->last_name }}
-                    <small>Member since {{ date('M, Y', strtotime($user->created_at)) }}</small>
-                  </p>
-                </li>
-                <!-- Menu Footer-->
-                <li class="user-footer">
-                  <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                  </div>
-                  <div class="pull-right">
-                    <a class="btn btn-default btn-flat" href="{{ route('logout') }}" onclick="">
-                     {{ __('Logout') }}
-                 </a>
-                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                       style="display: none;">
-                       @csrf
-                 </form>
-                  </div>
-                </li>
-              </ul>
-               @endif
+            <li class="notifications-menu">
+              <a href='#search' tooltip="t">
+                <em class="fa fa-search"></em>
+              </a>
             </li>
           </ul>
-        </div> --}}
-        <!-- /.navbar-custom-menu -->
+        </div>
       </div>
-      <!-- /.container-fluid -->
     </nav>
   </header>

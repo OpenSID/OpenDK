@@ -107,7 +107,7 @@ class DashboardAnggaranDesaController extends Controller
             }
             $data_anggaran['grafik'] = $tmp;
         }
-        $data_anggaran['detail'] = view('dashboard.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
+        $data_anggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
         return $data_anggaran;
     }
 }

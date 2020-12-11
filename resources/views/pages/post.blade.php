@@ -1,7 +1,44 @@
 @extends('layouts.app')
-@section('title') Profil @endsection
+@section('title','Beranda')
+@push('css')
+<style>
+p{
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+h4{
+    
+    text-transform: uppercase;
+    
+}
+.post {
+    width: 350px;
+    border: 0px solid blue;
+    overflow: hidden;
+    position: relative;
+    float: left;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+#myImg {
+  border: 0 solid;
+  transition: wi2s;
+  width: 100%;
+  max-width:350px;
+  margin: 0 auto;
+  clear: both;
+
+}
+#myImg:hover {
+  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  box-shadow: 2px 2px 4px #000000;
+}
+</style>
+@endpush
 @section('content')
-<div class="col-md-8">
+<div class="col-md-8 no-padding">
     @php
         $maxdata= 10;
     @endphp
@@ -11,22 +48,26 @@
         
     @endif 
     
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title">{{ $data->title }}</h3>
-        </div>
+    <div class="box box-widget">
         <div class="box-body">
-            <!-- The Modal -->
-            <img id="myImg"  style="float:left; width:100%; max-width:200px; " src="{{utf8_decode((string)$data->enclosure['url'])}}">
+            <div class="post">
+                @if(! $data->enclosure['url'] == '')
+                <img id="myImg" src="{{utf8_decode((string)$data->enclosure['url'])}}" alt="{{ $data->title }}">
+            @else
+            
+            <img class="img-thumb responsive" id="myImg"  src="{{ asset('/img/no-image-post.png') }}" alt="Logo {{ $sebutan_wilayah }}">
+            
+            @endif
+        </div>
+            <h4 class="text-bold">{{ $data->title }}</h4>
+                    <small class="text-muted"> <i class="fa fa-clock-o"></i> {!! $data->pubdate !!} </small>
+            {{-- <small class="text-muted"><i class="fa fa-user-o fa-xs"></i> Administrator </small>
+            <small class="text-muted"><i class="fa fa-comments-o"></i> 0 </small>
+            <small class="text-muted"><i class="fa fa-eye"></i> 10 </small> --}}
             <p class="text-justify clearfix" style="margin: 0px 10px">{!!  $data->description  !!}<a href="{{ $data->link }}" class="btn btn-default btn-xs btn-round">Baca Selengkapnya</a></p>
         </div>
-        <div class="box-footer">
-            <small class="text-muted"> <i class="fa fa-clock-o"></i> {!! $data->pubdate !!} </small>
-            <small class="text-muted"><i class="fa fa-user-o fa-xs"></i> Administrator </small>
-            <small class="text-muted"><i class="fa fa-comments-o"></i> 0 </small>
-            <small class="text-muted"><i class="fa fa-eye"></i> 10 </small>
-            
-            <div class="pull-right text-muted">
+       
+            {{-- <div class="pull-right text-muted">
                  <ul class="sharers social-icon list-inline">
                     <li><a class="btn btn-primary btn-xs" data-share="facebook" data-title="{{ $data->title }}" data-link="{{ $data->link }}" href="http://www.facebook.com/sharer.php?u={{ $data->link }}" target="_blank">
                         <i class="fa fa-share"></i> Share
@@ -35,8 +76,7 @@
                             <a class="btn btn-primary btn-xs">
                                 <i class="fa fa-thumbs-o-up"></i> Like </a>   
                 </ul>
-            </div>
-        </div>
+            </div> --}}
     </div>
     @if ($data->count() == $maxdata) 
     @break;

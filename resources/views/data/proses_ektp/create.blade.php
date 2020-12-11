@@ -115,10 +115,10 @@
             $('#nik').val(data.nik);
             $('#status_rekam').val(data.status_rekam);
             $('#status_rekam_nama').val(data.status_rekam);
-            if(data.status_rekam == 1 || data.status_rekam == 2){
+            if (data.status_rekam == 1 || data.status_rekam == 2 || data.status_rekam == null) {
                 $('#warning_status').removeClass("hide");
                 document.getElementById("btn_submit").disabled = true;
-            }else{
+            } else {
                 $('#warning_status').addClass("hide");
                 document.getElementById("btn_submit").disabled = false;
             }

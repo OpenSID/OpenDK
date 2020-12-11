@@ -25,7 +25,7 @@ class PendudukRequest extends FormRequest
     {
         return [
             // Batch insert atau update validation
-            "pendudul.*.id_pend_desa"          => "required",
+            "penduduk.*.id_pend_desa"          => "required",
             "penduduk.*.nama"                  => "required",
             "penduduk.*.nik"                   => "required|string|min:16|max:16",
             "penduduk.*.id_kk"                 => "integer|nullable",
@@ -84,7 +84,7 @@ class PendudukRequest extends FormRequest
             "penduduk.*.id_pend_desa"          => "required|integer",
 
             // Batch delete validation
-            "hapus_penduduk.*.nik" => "present|max:16|max:16",
+            "hapus_penduduk.*.nik" => "present|min:16|max:16",
         ];
     }
 }

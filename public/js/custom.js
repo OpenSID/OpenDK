@@ -1,21 +1,3 @@
-
-const signs = document.querySelectorAll('x-sign')
-const randomIn = (min, max) => (
-  Math.floor(Math.random() * (max - min + 1) + min)
-)
-
-const mixupInterval = el => {
-  const ms = randomIn(2000, 4000)
-  el.style.setProperty('--interval', `${ms}ms`)
-}
-
-signs.forEach(el => {
-  mixupInterval(el)
-  el.addEventListener('webkitAnimationIteration', () => {
-    mixupInterval(el)
-  })
-});
-
 $(document).ready(function() {
 
   $(function() {
@@ -41,6 +23,7 @@ $(document).ready(function() {
           scrollTop: offsetTop
       }, 500, 'linear');
   }
+});
 
   //drop down menu  
   $(".drop-down").hover(function() {
@@ -50,8 +33,6 @@ $(document).ready(function() {
     $('.dropdown-menu').removeClass('display-on');
   });
 
-  
-});
 
 window.onscroll = function() {stickyFunction()};
 
@@ -71,8 +52,6 @@ function stickyFunction() {
     logo.style.width = "100px";
   } else {
     navbar.style.fontSize = "17px";
-    // navbar.style.padding = "10px";
     logo.style.width = "130px";
-    // logo.style.bottom = "20px";
   }
 }

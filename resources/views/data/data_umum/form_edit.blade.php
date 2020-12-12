@@ -2,7 +2,7 @@
     <div class="col-md-6">
         <legend>Info Wilayah</legend>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kecamatan <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! Form::hidden('kecamatan_id', $data_umum->kecamatan_id) !!}

@@ -19,6 +19,8 @@ class DashboardProfilController extends Controller
      * Menampilkan Data Profil Kecamatan
      **/
 
+    
+
     public function showProfile()
     {
         Counter::count('dashboard.profil');

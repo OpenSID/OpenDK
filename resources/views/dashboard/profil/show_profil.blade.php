@@ -94,7 +94,7 @@
 
                         <p id="kontakdetail" style="font-size: 8pt;">
 
-                        <p style="text-align: center;"><strong>Kantor Camat {{ ucwords(strtolower($profil->kecamatan->nama)) }}<br></strong> {!! $profil->alamat !!}, {!! $profil->kode_pos !!}<br>Telp: {!! $profil->telepon !!}/e-mail: {!! $profil->email !!}</p></p><p>
+                        <p style="text-align: center;"><strong>Kantor {{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }}<br></strong> {!! $profil->alamat !!}, {!! $profil->kode_pos !!}<br>Telp: {!! $profil->telepon !!}/e-mail: {!! $profil->email !!}</p></p><p>
                         </p></div>
                     <!-- /.box-body -->
                 </div>
@@ -246,7 +246,6 @@
                                             <th class="col-md-2">Barat</th>
                                             <td class="col-md-9">: {!! $profil->dataumum->bts_wil_barat !!}</td>
                                         </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -343,12 +342,12 @@
                                     <table class="table table-striped">
                                         <tbody>
                                         <tr>
-                                            <th class="col-md-3">Camat</th>
+                                            <th class="col-md-3">Kepala {{ $sebutan_kepala_wilayah }}</th>
                                             <td class="col-md-8">: {!! $profil->nama_camat !!}</td>
                                         </tr>
 
                                         <tr>
-                                            <th class="col-md-3">Sekretaris Camat</th>
+                                            <th class="col-md-3">Sekretaris </th>
                                             <td class="col-md-8">: {!! $profil->sekretaris_camat !!}</td>
                                         </tr>
 

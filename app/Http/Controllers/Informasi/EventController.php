@@ -27,7 +27,7 @@ class EventController extends Controller
         Counter::count('informasi.event.index');
 
         $page_title       = 'Event';
-        $page_description = 'Kumpulan Event Kecamatan';
+        $page_description = 'Kumpulan Event ' .$this->sebutan_wilayah;
         $events           = Event::getOpenEvents();
 
         return view('informasi.event.index', compact('page_title', 'page_description', 'events'));

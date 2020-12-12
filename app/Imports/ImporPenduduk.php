@@ -82,12 +82,16 @@ class ImporPenduduk implements ToCollection, WithHeadingRow
                 'tahun'           => $this->tahun,
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
+                'status_rekam'    => $value['status_rekam'],
                 'created_at'      => $value['created_at'],
                 'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
             ];
 
-            Penduduk::updateOrInsert(['nik' => $insert['nik'], 'id_pend_desa' => $insert['id_pend_desa']], $insert);
+            Penduduk::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'id_pend_desa' => $insert['id_pend_desa']
+            ], $insert);
         }
     }
 }

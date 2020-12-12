@@ -15,8 +15,7 @@
           <li><a target="_BLANK" target="_BLANK" href="" class="site-button-link facebook hover"><i
                       class="fa fa-rss"></i></a></li>
       </ul>
-      </div>
-      
+    </div>
       <div class="col-md-3">
         <h5 class="text-bold">Desa dan kelurahan</h5>
         <ul class=" no-padding">

@@ -32,19 +32,13 @@
     <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }} feed">
 
     <link rel="icon" type="image/icon" href="{{ asset('/favicon.png') }}" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/icon/favicon-16x16.png">
-    <link rel="mask-icon" href="/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/icon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/icon/favicon-16x16.png') }}">
+    <link rel="mask-icon" href="{{ asset('/icon/safari-pinned-tab.svg') }}" color="#5bbad5">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}" />
 
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css') }}">
-    {{--
-    <link rel="stylesheet" href="{{ asset('/bower_components/Ionicons/css/ionicons.min.css') }}">
-    --}}
-    {{--
-    <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/plugins/iCheck/all.css') }}">
-    --}}
     @stack('css')
     @if (Route::currentRouteName() === 'beranda')
         <link rel="stylesheet" href="{{ asset('/css/slider.css') }}">
@@ -55,6 +49,46 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
         rel="stylesheet">
+        <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+    var $jq = jQuery.noConflict();
+        $jq(document).ready(function () {
+            $jq(".regular").slick({
+                dots: true,
+                infinite: true,
+                slidesToShow: 5,
+                slidesToScroll: 5,
+                responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+            ]
+            });
+        });
+  </script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
@@ -100,10 +134,10 @@
                         @yield('content')
                         @include('layouts.frontends.sidebar')
                     </section>
+                    @include('.layouts.frontends.instansi')
                 </div>
                 <!-- /.content -->
-                {{-- @include('.layouts.frontends.instansi')
-                --}}
+                
             </div>
             <!-- /.container -->
         </div>
@@ -114,9 +148,9 @@
     <!-- ./wrapper -->
 
     <div class="scroll-top-wrapper ">
-        <x-sign> <span class="scroll-top-inner">
+       <span class="scroll-top-inner">
                 <i class="fa fa-2x fa-arrow-circle-up"></i>
-            </span></x-sign>
+            </span>
     </div>
     <!-- ./wrapper -->
 

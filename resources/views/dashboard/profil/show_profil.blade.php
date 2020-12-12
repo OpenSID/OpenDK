@@ -342,7 +342,7 @@
                                     <table class="table table-striped">
                                         <tbody>
                                         <tr>
-                                            <th class="col-md-3">Kepala {{ $sebutan_kepala_wilayah }}</th>
+                                            <th class="col-md-3">{{ $sebutan_kepala_wilayah }}</th>
                                             <td class="col-md-8">: {!! $profil->nama_camat !!}</td>
                                         </tr>
 

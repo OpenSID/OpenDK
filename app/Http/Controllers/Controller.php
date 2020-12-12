@@ -26,11 +26,11 @@ class Controller extends BaseController
         $this->nama_wilayah = $getWilayah->kecamatan->nama;
 
         if(substr($getWilayah->provinsi_id ,0,2) == 91 or substr($getWilayah->provinsi_id ,0,2) == 92){
-            $this->sebutan_wilayah = 'Kecamatan';
-            $this->sebutan_kepala_wilayah = 'Camat';
-        }else{
             $this->sebutan_wilayah = 'Distrik';
             $this->sebutan_kepala_wilayah = 'Kepala Distrik';
+        }else{
+            $this->sebutan_wilayah = 'Kecamatan';
+            $this->sebutan_kepala_wilayah = 'Camat';
         }
         \View::share([
                 'nama_wilayah'=> $this->nama_wilayah, 

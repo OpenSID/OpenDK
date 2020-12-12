@@ -26,7 +26,7 @@ class AnggaranRealisasiController extends Controller
     {
         parent::__construct();
     }
-    
+
     public function index()
     {
         $page_title       = 'Anggran & Realisasi';

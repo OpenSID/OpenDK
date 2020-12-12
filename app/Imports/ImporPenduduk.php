@@ -12,6 +12,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Barryvdh\Debugbar\Facade as Debugbar;
 
 use function config;
+use function now;
 use function substr;
 
 class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue

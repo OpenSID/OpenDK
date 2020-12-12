@@ -6,26 +6,25 @@ use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
+use SimpleXMLElement;
 
 use function array_merge;
-use function array_sort;
+use function compact;
 use function config;
-use function convert_born_date_to_age;
 use function date;
 use function env;
+use function file_get_contents;
 use function number_format;
-use function random_color;
 use function request;
 use function strtolower;
-use function ucfirst;
+use function ucwords;
 use function view;
 use function years_list;
 
 class DashboardProfilController extends Controller
 {
     /**
-     * Menampilkan Data Profil Kecamatan
+     * Menampilkan Halaman Beranda Kecamatan
      **/
 
     public function index()
@@ -33,8 +32,10 @@ class DashboardProfilController extends Controller
         Counter::count('beranda');
 
         $page_title = 'Beranda';
-        
-        return view('pages.post', compact('page_title'));
+        // Mengambil berita dari desa untuk ditampilkan diberanda kecamatan
+        $content = file_get_contents('https://demo.opensid.my.id/feed');
+        $artikel = new SimpleXMLElement($content);
+        return view('pages.post', compact('page_title'))->with('artikel', $artikel);
     }
 
     public function showKependudukanPartial()
@@ -220,7 +221,7 @@ class DashboardProfilController extends Controller
     public function StrukturPemerintahan()
     {
         $defaultProfil = config('app.default_profile');
-        $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
+        $profil        = Profil::where('kecamatan_id', $defaultProfil)->first();
 
         $dokumen = DB::table('das_form_dokumen')->take(5)->get();
 
@@ -251,7 +252,7 @@ class DashboardProfilController extends Controller
     public function VisiMisi()
     {
         $defaultProfil = config('app.default_profile');
-        $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
+        $profil        = Profil::where('kecamatan_id', $defaultProfil)->first();
 
         $dokumen = DB::table('das_form_dokumen')->take(5)->get();
 
@@ -266,7 +267,7 @@ class DashboardProfilController extends Controller
     {
         $defaultProfil = config('app.default_profile');
 
-        $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
+        $profil     = Profil::where('kecamatan_id', $defaultProfil)->first();
         $page_title = 'Sejarah';
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
@@ -287,7 +288,6 @@ class DashboardProfilController extends Controller
         $page_title = 'Profil';
         if (isset($profil)) {
             $page_description = ucwords(strtolower($this->sebutan_wilayah . ' ' . $profil->kecamatan->nama));
-
         }
 
         return view('pages.profil.show_profil', compact('page_title', 'page_description', 'profil', 'defaultProfil', 'dokumen'));

@@ -49,16 +49,18 @@ class ProsesKKController extends Controller
                 'das_proses_kk.status',
                 'das_proses_kk.catatan',
             ]))
-            ->addColumn('action',
-             function ($row) {
-                $edit_url   = route('data.proses-kk.edit', $row->id);
-                $delete_url = route('data.proses-kk.destroy', $row->id);
+            ->addColumn(
+                'action',
+                function ($row) {
+                    $edit_url   = route('data.proses-kk.edit', $row->id);
+                    $delete_url = route('data.proses-kk.destroy', $row->id);
 
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
+                    $data['edit_url']   = $edit_url;
+                    $data['delete_url'] = $delete_url;
 
-                return view('forms.action', $data);
-            })
+                    return view('forms.action', $data);
+                }
+            )
             ->editColumn('status', function ($row) {
                 $status = '';
                 if ($row->status == 'PENGAJUAN') {

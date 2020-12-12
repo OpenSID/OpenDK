@@ -30,10 +30,9 @@ class DataUmumController extends Controller
      */
     public function index()
     {
-       
         $data_umum        = DataUmum::where('kecamatan_id', config('app.default_profile'))->first();
         $page_title       = 'Ubah Data Umum';
-        $page_description =  ucwords(strtolower($data_umum->kecamatan->nama));
+        $page_description = ucwords(strtolower($data_umum->kecamatan->nama));
 
         return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum'));
     }

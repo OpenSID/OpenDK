@@ -203,9 +203,9 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('form-dokumen/getdata','DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
         });
 
-        Route::get('agenda-kegiatan/{slug}','EventController@show')->name('event.show');
         
-        });
+    });
+    Route::get('agenda-kegiatan/{slug}','Informasi\EventController@show')->name('event.show');
         
         
     /**

@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 use function config;
+use function now;
 use function substr;
 
 class ImporPenduduk implements ToCollection, WithHeadingRow

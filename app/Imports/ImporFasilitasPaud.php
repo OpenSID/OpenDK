@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
+use function config;
+
 class ImporFasilitasPaud implements ToModel, WithHeadingRow
 {
     use Importable;
@@ -17,7 +19,7 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow
 
     public function __construct(Request $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

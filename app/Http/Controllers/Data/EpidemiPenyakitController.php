@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
-use App\Models\Profil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,7 +13,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -24,8 +22,6 @@ use function years_list;
 
 class EpidemiPenyakitController extends Controller
 {
-   
-
     public function __construct()
     {
         parent::__construct();

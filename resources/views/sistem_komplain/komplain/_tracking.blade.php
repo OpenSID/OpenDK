@@ -1,14 +1,13 @@
 <a href="{{ route('sistem-komplain.kirim') }}" class="btn btn-warning btn-block margin-bottom"><b><i class="fa fa-paper-plane"></i> Kirim Komplain</b></a>
 
 <!-- Form Tracking Komplain -->
-<div class="box box-danger box-solid">
-    <div class="box-header with-border">
+<div class="box box-widget bg-blue box-solid">
+    <div class="box-header flat">
         <i class="fa fa-search"></i>
-
         <h3 class="box-title">Lacak Komplain Anda!</h3>
     </div>
     <!-- /.box-header -->
-    <div class="box-body box-profile">
+    <div class="box-body flat box-profile">
         <form class="form-horizontal" method="post" action="{{ route('sistem-komplain.tracking') }}">
             <div class="input-group input-group-sm">
                 {{ csrf_field() }}

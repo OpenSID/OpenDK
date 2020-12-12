@@ -19,10 +19,11 @@ use function years_list;
 class DashboardKesehatanController extends Controller
 {
     public $nama_kuartal = ['q1' => 'Kuartal 1', 'q2' => 'Kuartal 2', 'q3' => 'Kuartal 3', 'q4' => 'Kuartal 4'];
-    
-    public function __construct(){
+
+    public function __construct()
+    {
         parent::__construct();
-     }
+    }
 
     // Dashboiard Kesehatan AKI & AKB
     public function showKesehatan()

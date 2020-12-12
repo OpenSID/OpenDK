@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
+use App\Models\Wilayah;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 use function back;
 use function compact;
+use function config;
 use function mt_rand;
 use function redirect;
 use function request;
@@ -259,11 +261,11 @@ class SistemKomplainController extends Controller
         } catch (Exception $ex) {
             return back()->withInput()->with('error', $ex);
         }
-		$camat = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
+        $camat            = Wilayah::where('kode', '=', config('app.default_profile'))->first();
         $page_title       = 'Detail Laporan';
         $page_description = $komplain->judul;
 
-        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain','camat'));
+        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain', 'camat'));
     }
 
     public function reply(Request $request, $id)

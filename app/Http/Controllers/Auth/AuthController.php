@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 use function back;
 use function flash;

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\Profil;
 use App\Models\Regulasi;
 use Exception;
 use Illuminate\Http\Request;
@@ -66,7 +65,7 @@ class RegulasiController extends Controller
 
             $regulasi               = new Regulasi($request->input());
             $regulasi->kecamatan_id = config('app.default_profile');
-            
+
             if ($request->hasFile('file_regulasi')) {
                 $lampiran1 = $request->file('file_regulasi');
                 $fileName1 = $lampiran1->getClientOriginalName();
@@ -75,7 +74,7 @@ class RegulasiController extends Controller
                 $regulasi->file_regulasi = $path . $fileName1;
                 $regulasi->mime_type     = $lampiran1->getClientOriginalExtension();
             }
-            
+
             $regulasi->save();
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
         } catch (Exception $e) {

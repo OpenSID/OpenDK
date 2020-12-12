@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Facades\Counter;
-use App\Models\Prosedur;
+use App\Http\Controllers\Controller;
 use App\Models\Profil;
+use App\Models\Prosedur;
 use App\Models\Regulasi;
-use App\Models\FormDokumen;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Yajra\DataTables\DataTables;
-use League\Flysystem\Exception;
-use Storage;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
+
+use function asset;
+use function compact;
+use function config;
+use function request;
+use function response;
+use function route;
+use function str_replace;
+use function str_slug;
+use function view;
+
 class DownloadController extends Controller
 {
     public function indexProsedur()
@@ -32,7 +38,7 @@ class DownloadController extends Controller
     {
         return DataTables::of(Prosedur::select('id', 'judul_prosedur'))
             ->addColumn('action', function ($row) {
-                $show_url   = route('unduhan.prosedur.show', ['nama_prosedur' => str_slug($row->judul_prosedur)]);
+                $show_url         = route('unduhan.prosedur.show', ['nama_prosedur' => str_slug($row->judul_prosedur)]);
                 $data['show_url'] = $show_url;
                 return view('forms.action', $data);
             })
@@ -43,16 +49,15 @@ class DownloadController extends Controller
 
     public function showProsedur($nama_prosedur)
     {
-        
         // $prosedur   = Prosedur::find($id);
-        $prosedur   = Prosedur::where('judul_prosedur',str_replace('-',' ',$nama_prosedur))->first();
+        $prosedur   = Prosedur::where('judul_prosedur', str_replace('-', ' ', $nama_prosedur))->first();
         $page_title = 'Detail Prosedur :' . $prosedur->judul_prosedur;
         return view('pages.unduhan.prosedur_show', compact('page_title', 'prosedur'));
     }
 
     public function downloadProsedur($file)
     {
-        $getFile   = Prosedur::where('judul_prosedur',str_replace('-',' ',$file))->firstOrFail();
+        $getFile = Prosedur::where('judul_prosedur', str_replace('-', ' ', $file))->firstOrFail();
         return response()->download($getFile->file_prosedur);
     }
 
@@ -73,14 +78,14 @@ class DownloadController extends Controller
 
     public function showRegulasi($nama_regulasi)
     {
-        $regulasi   = Regulasi::where('judul',str_replace('-',' ',$nama_regulasi))->first();
+        $regulasi   = Regulasi::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
         $page_title = 'Detail Regulasi :' . $regulasi->judul;
         return view('pages.unduhan.regulasi_show', compact('page_title', 'regulasi'));
     }
 
     public function downloadRegulasi($file)
     {
-        $getFile   = Regulasi::where('judul',str_replace('-',' ',$file))->firstOrFail();
+        $getFile = Regulasi::where('judul', str_replace('-', ' ', $file))->firstOrFail();
         return response()->download($getFile->file_regulasi);
     }
 
@@ -99,22 +104,22 @@ class DownloadController extends Controller
         return DataTables::of($query->get())
             ->addColumn('action', function ($row) {
                // $show_url = route('informasi.form-dokumen.show', $row->id);
-                $download_url = asset($row->file_dokumen);
+                $download_url         = asset($row->file_dokumen);
                 $data['download_url'] = $download_url;
                 return view('forms.action', $data);
             })->make();
     }
-    
+
     public function showDokumen($nama_dokumen)
     {
-        $dokumen   = dokumen::where('judul',str_replace('-',' ',$nama_regulasi))->first();
+        $dokumen    = dokumen::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
         $page_title = 'Detail Dokumen :' . $dokumen->judul;
         return view('pages.unduhan.dokumen_show', compact('page_title', 'dokumen'));
     }
 
     public function downloadDokumen($file)
     {
-        $getFile   = Dokumen::where('judul',str_replace('-',' ',$file))->firstOrFail();
+        $getFile = Dokumen::where('judul', str_replace('-', ' ', $file))->firstOrFail();
         return response()->download($getFile->file_dokumen);
     }
 }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PendudukRequest;
 use App\Jobs\PendudukQueueJob;
+use Illuminate\Http\JsonResponse;
+
+use function response;
 
 class PendudukController extends Controller
 {
@@ -20,9 +23,8 @@ class PendudukController extends Controller
 
     /**
      * Insert penduduk ke OpenDK.
-     * 
-     * @param PendudukRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     *
+     * @return JsonResponse
      */
     public function store(PendudukRequest $request)
     {

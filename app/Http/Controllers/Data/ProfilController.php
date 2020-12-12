@@ -10,16 +10,15 @@ use App\Models\Profil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
 
 use function back;
 use function basename;
 use function compact;
 use function config;
+use function is_img;
 use function pathinfo;
 use function redirect;
 use function request;
-use function route;
 use function strtolower;
 use function strval;
 use function substr;
@@ -41,9 +40,9 @@ class ProfilController extends Controller
         $page_description= 'Data Profil Kecamatan';
         return view('data.profil.index', compact('page_title', 'page_description'));*/
         $profil = Profil::where('kecamatan_id', config('app.default_profile'))->first();
-        
+
         $profil->file_struktur_organisasi = is_img($profil->file_struktur_organisasi);
-        $profil->file_logo = is_img($profil->file_logo);
+        $profil->file_logo                = is_img($profil->file_logo);
 
         $page_title       = 'Ubah Profil';
         $page_description = ucwords(strtolower($profil->kecamatan->nama));

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 use function array_sort;
 use function config;
-use function count;
 use function number_format;
 use function request;
 use function view;
@@ -60,8 +59,7 @@ class DashboardAnggaranRealisasiController extends Controller
                 $query_result->where('tahun', '=', $yearls);
 
                 $res = $query_result->first();
-              
-              
+
                 if (! empty($res)) {
                     $total_anggaran         = $res->total_anggaran;
                     $total_belanja          = $res->total_belanja;
@@ -131,7 +129,7 @@ class DashboardAnggaranRealisasiController extends Controller
                $query_result->where('tahun', '=', $year);
 
                 $res = $query_result->first();
-          
+
             if (! empty($res)) {
                 $total_anggaran         = $res->total_anggaran;
                 $total_belanja          = $res->total_belanja;

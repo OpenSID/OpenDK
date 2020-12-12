@@ -3,24 +3,22 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Facades\Counter;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Potensi;
-use App\Models\Profil;
 use App\Models\DataDesa;
-use Exception;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Response;
+use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+
+use function compact;
 use function config;
 use function intval;
 use function kuartal_bulan;
 use function request;
 use function rtrim;
 use function semester;
+use function str_replace;
 use function view;
 use function years_list;
+
 class PageController extends Controller
 {
     public function showPendidikan()
@@ -315,28 +313,25 @@ class PageController extends Controller
 
     public function PotensiByKategory($slug)
     {
-        
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug',$slug)->first();
+        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
         // dd($kategori_id);
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi Kecamatan';
-        
+
         $potensis = DB::table('das_potensi')->where('kategori_id', $kategoriPotensi->id)->simplePaginate(10);
 
-        return view('pages.potensi.index', compact(['page_title', 'page_description', 'potensis','kategoriPotensi']));
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'potensis', 'kategoriPotensi']));
     }
 
-    public function PotensiShow($kategori,$slug)
+    public function PotensiShow($kategori, $slug)
     {
-        
-
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug',$slug)->first();
+        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
         // dd($kategori_id);
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi Kecamatan';
-        $potensi = DB::table('das_potensi')->where('nama_potensi', Str_replace('-',' ', $slug))->first();
+        $potensi          = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
         // dd($potensis);
-        return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi','kategoriPotensi']));
+        return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi', 'kategoriPotensi']));
     }
 
     public function DesaShow($slug)
@@ -344,8 +339,8 @@ class PageController extends Controller
         // Counter::count('desa.show');
         $page_title       = 'Desa';
         $page_description = 'Data Desa';
-        $desa = DB::table('das_data_desa')->where('nama', Str_replace('-',' ', $slug))->first();
-        
+        $desa             = DB::table('das_data_desa')->where('nama', str_replace('-', ' ', $slug))->first();
+
         // dd($potensis);
         return view('pages.desa.desa_show', compact(['page_title', 'page_description', 'desa']));
     }

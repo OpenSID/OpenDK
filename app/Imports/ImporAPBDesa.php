@@ -17,7 +17,7 @@ class ImporAPBDesa implements ToModel, WithHeadingRow
 
     public function __construct(Request $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

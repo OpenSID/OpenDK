@@ -38,7 +38,7 @@ h4{
 </style>
 @endpush
 @section('content')
-<div class="col-md-8 no-padding">
+<div class="col-md-8 no-padding fadeIn">
     @php
         $maxdata= 10;
     @endphp

@@ -1,7 +1,7 @@
 <!-- Slider -->
 <div id="slider">
     <div class="slides">
-        <div class="slider">
+        <div class="slider-class">
             <div class="legend"></div>
             <div class="content-slide">
                 <div class="content-txt">
@@ -13,7 +13,7 @@
                 <img src="{{ asset('/slide/slide-1.png') }}">
             </div>
         </div>
-        <div class="slider">
+        <div class="slider-class">
             <div class="legend"></div>
             <div class="content-slide">
                 <div class="content-txt">
@@ -25,7 +25,7 @@
                 <img src="{{ asset('/slide/slide-2.png') }}">
             </div>
         </div>
-        <div class="slider">
+        <div class="slider-class">
             <div class="legend"></div>
             <div class="content-slide">
                 <div class="content-txt">
@@ -34,10 +34,10 @@
                 </div>
             </div>
             <div class="image">
-                <img src="{{ asset('/slide/slide-3.png') }}">
+                <img src="{{ asset('/slide/slide-4.png') }}">
             </div>
         </div>
-        <div class="slider">
+        <div class="slider-class">
             <div class="legend"></div>
             <div class="content-slide">
                 <div class="content-txt">
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="image">
-                <img src="{{ asset('/slide/slide-4.png') }}">
+                <img src="{{ asset('/slide/slide-3.png') }}">
             </div>
         </div>
     </div>

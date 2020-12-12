@@ -1,3 +1,5 @@
+
+
 /* Slider */
 #slider{
   width:100%;
@@ -11,7 +13,7 @@
   from{left:-100%;}
   to{left:0;}
 }
-.slider{
+.slider-class{
     /* width:25%; */
     height:100%;
     float:left;
@@ -34,7 +36,7 @@
     -moz-animation:slide 30s infinite;
     animation:slide 30s infinite;
     }
-    .slider{
+    .slider-class{
     width:25%;
     height:100%;
     float:left;
@@ -352,3 +354,4 @@ font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleG
     padding: 2px 10px;
 
 }
+

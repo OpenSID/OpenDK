@@ -5,7 +5,7 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><img src="{{ asset("/favicon.png")}}" alt="KD" width="28px"></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><img class="user-image" src="{{ asset("/img/logo.png")}}" alt="Dashboard Kecamatan"
+        <span class="logo-lg"><img class="user-image" src="{{ asset("/img/logo-coba.png")}}" alt="Dashboard {{ $sebutan_wilayah }}"
                                    width="180px"></span>
     </a>
     <!-- Header Navbar -->

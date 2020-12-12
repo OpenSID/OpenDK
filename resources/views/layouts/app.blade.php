@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#ffc40d">
-    <meta name="theme-color" content="#fff">
+    <meta name="theme-color" content="#ffc40d">
 
     <title>{{ $page_title ?? '' }} | {{ config('app.name', 'Laravel') }} </title>
     <meta name="description" content="{{ $page_description ?? '' }}.">
@@ -20,7 +20,7 @@
     <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ Request::url() }}">
-    <meta property="og:site_name" content="{{ Request::url() }}">
+    <meta property="og:site_name" content="{{ \URL::to('')}}">
     <meta property="og:title" content="{{ $page_title ?? '' }}">
     <meta property="og:description" content="{{ $page_description ?? '' }}. ">
     <meta property="og:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
@@ -29,14 +29,15 @@
     <meta name="twitter:title" content="{{ $page_title ?? '' }}">
     <meta name="twitter:description" content="{{ $page_description ?? '' }}. ">
     <meta name="twitter:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
-    <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }} feed">
+    <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }}">
 
     <link rel="icon" type="image/icon" href="{{ asset('/favicon.png') }}" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/icon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/icon/favicon-16x16.png') }}">
     <link rel="mask-icon" href="{{ asset('/icon/safari-pinned-tab.svg') }}" color="#5bbad5">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}" />
-
+    
+    <link href="{{ asset('/css/placeholder-loading.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css') }}">
     @stack('css')
@@ -86,12 +87,14 @@
                 }
                 }
             ]
-            });
         });
-  </script>
+        });
+        </script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
+    @include('partialspage.preloader')
+    
     {{-- <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js').then(function(registration) {
@@ -120,6 +123,7 @@
         {{-- @include('pages.sambutan') --}}
         <div class="content-wrapper">
             @if (Route::currentRouteName() === 'beranda')
+            
                 @include('layouts.frontends.slider')
                 @include('layouts.frontends.service')
             @endif
@@ -157,11 +161,19 @@
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 3 -->
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script> --}}
+    <script>
+		setTimeout(function(){
+		$('.preloader_bg').fadeToggle();
+		}, 500);
+	</script>
     <script src="{{ asset('/bower_components/jquery/dist/jquery.socialShare.js') }}"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="{{ asset('/js/custom.js') }}"></script>
     @stack('scripts')
 </body>

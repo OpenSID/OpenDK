@@ -25,16 +25,17 @@ class Controller extends BaseController
         $getWilayah = \App\Models\Profil::where('kecamatan_id', '=', config('app.default_profile'))->first();
         $this->nama_wilayah = $getWilayah->kecamatan->nama;
 
-        if(substr($getWilayah->provinsi_id ,0,2) == 91 or substr($getWilayah->provinsi_id ,0,2) == 92){
+        $kode_provinsi = $getWilayah->provinsi->kode;
+        if (in_array($kode_provinsi, [91, 92])){
             $this->sebutan_wilayah = 'Distrik';
             $this->sebutan_kepala_wilayah = 'Kepala Distrik';
-        }else{
+        } else {
             $this->sebutan_wilayah = 'Kecamatan';
             $this->sebutan_kepala_wilayah = 'Camat';
         }
         \View::share([
-                'nama_wilayah'=> $this->nama_wilayah, 
-                'sebutan_wilayah'=> $this->sebutan_wilayah, 
+                'nama_wilayah'=> $this->nama_wilayah,
+                'sebutan_wilayah'=> $this->sebutan_wilayah,
                 'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah
         ]);
     }

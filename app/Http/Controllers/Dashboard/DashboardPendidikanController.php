@@ -28,7 +28,7 @@ class DashboardPendidikanController extends Controller
         Counter::count('dashboard.pendidikan');
 
         $data['page_title']       = 'Pendidikan';
-        $data['page_description'] = 'Data Pendidikan Kecamatan';
+        $data['page_description'] = 'Data Pendidikan ' . $this->sebutan_wilayah;
         $defaultProfil            = config('app.default_profile');
         $data['defaultProfil']    = $defaultProfil;
         $data['year_list']        = years_list();

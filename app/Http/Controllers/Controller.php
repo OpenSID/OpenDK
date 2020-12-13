@@ -13,20 +13,29 @@ class Controller extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
+    protected $nama_wilayah;
     protected $sebutan_wilayah;
+    protected $sebutan_kepala_wilayah;
 
 	/**
      * Menampilkan Sebutan Wilayah Tongkat III (Kecamatan/Distrik)
      */
 	public function __construct()
     {
-        $getWilayah = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
+        $getWilayah = \App\Models\Profil::where('kecamatan_id', '=', config('app.default_profile'))->first();
+        $this->nama_wilayah = $getWilayah->kecamatan->nama;
 
-        if(substr($getWilayah->kode,0,2) == 91 or substr($getWilayah->kode,0,2) == 92){
+        if(substr($getWilayah->provinsi_id ,0,2) == 91 or substr($getWilayah->provinsi_id ,0,2) == 92){
             $this->sebutan_wilayah = 'Distrik';
+            $this->sebutan_kepala_wilayah = 'Kepala Distrik';
         }else{
             $this->sebutan_wilayah = 'Kecamatan';
+            $this->sebutan_kepala_wilayah = 'Camat';
         }
-        \View::share('sebutan_wilayah', $this->sebutan_wilayah);
+        \View::share([
+                'nama_wilayah'=> $this->nama_wilayah, 
+                'sebutan_wilayah'=> $this->sebutan_wilayah, 
+                'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah
+        ]);
     }
 }

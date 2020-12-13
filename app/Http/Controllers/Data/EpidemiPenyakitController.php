@@ -24,11 +24,10 @@ use function years_list;
 
 class EpidemiPenyakitController extends Controller
 {
-    public $nama_kecamatan;
-
+    
     public function __construct()
     {
-        $this->nama_kecamatan = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+        parent::__construct();
     }
 
     /**
@@ -39,7 +38,7 @@ class EpidemiPenyakitController extends Controller
     public function index()
     {
         $page_title       = 'Epidemi Penyakit';
-        $page_description = 'Data Epidemi Penyakit Kecamatan ' . $this->nama_kecamatan;
+        $page_description = 'Data Epidemi Penyakit ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.epidemi_penyakit.index', compact('page_title', 'page_description'));
     }
 

@@ -21,6 +21,7 @@ class DashboardKesehatanController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
     }
 
     // Dashboiard Kesehatan AKI & AKB
@@ -28,7 +29,7 @@ class DashboardKesehatanController extends Controller
     {
         $defaultProfil    = config('app.default_profile');
         $page_title       = 'Kesehatan';
-        $page_description = 'Data Kesehatan Kecamatan ';
+        $page_description = 'Data Kesehatan ' .$this->sebutan_wilayah;
         $year_list        = years_list();
         $list_desa        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
         return view('dashboard.kesehatan.show_kesehatan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));

@@ -23,13 +23,13 @@ use function years_list;
 
 class ImunisasiController extends Controller
 {
-    public $nama_kecamatan;
+    
     public $bulan;
     public $tahun;
 
     public function __construct()
     {
-        $this->nama_kecamatan = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+        parent::__construct();
     }
 
     /**
@@ -40,7 +40,7 @@ class ImunisasiController extends Controller
     public function index()
     {
         $page_title       = 'Imunisasi';
-        $page_description = 'Data Cakupan Imunisasi Kecamatan ' . $this->nama_kecamatan;
+        $page_description = 'Data Cakupan Imunisasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.imunisasi.index', compact('page_title', 'page_description'));
     }
 

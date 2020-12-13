@@ -46,7 +46,7 @@ class ProfilController extends Controller
         $profil->file_logo = is_img($profil->file_logo);
 
         $page_title       = 'Ubah Profil';
-        $page_description = 'Kecamatan: ' . ucwords(strtolower($profil->kecamatan->nama));
+        $page_description =   ucwords(strtolower($this->sebutan_wilayah).' : ' . $profil->kecamatan->nama);
 
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
@@ -59,7 +59,7 @@ class ProfilController extends Controller
     public function create()
     {
         $page_title       = 'Tambah';
-        $page_description = 'Tambah Profil Kecamatan';
+        $page_description = 'Tambah Profil ' .$this->sebutan_wilayah;
         $profil           = new Profil();
 
         return view('data.profil.create', compact('page_title', 'page_description', 'profil'));

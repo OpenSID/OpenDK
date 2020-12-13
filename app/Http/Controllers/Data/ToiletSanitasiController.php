@@ -23,13 +23,13 @@ use function years_list;
 
 class ToiletSanitasiController extends Controller
 {
-    public $nama_kecamatan;
+   
     public $bulan;
     public $tahun;
 
     public function __construct()
     {
-        $this->nama_kecamatan = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+       parent::__construct();
     }
 
     /**
@@ -40,7 +40,7 @@ class ToiletSanitasiController extends Controller
     public function index()
     {
         $page_title       = 'Toilet & Sanitasi';
-        $page_description = 'Data Toilet & Sanitasi Kecamatan ' . $this->nama_kecamatan;
+        $page_description = 'Data Toilet & Sanitasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.toilet_sanitasi.index', compact('page_title', 'page_description'));
     }
 

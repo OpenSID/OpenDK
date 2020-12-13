@@ -23,11 +23,12 @@ use function years_list;
 
 class FasilitasPaudController extends Controller
 {
+    
     public function index()
     {
-        $kecamatan        = Wilayah::where('kode', config('app.default_profile'))->first();
+        
         $page_title       = 'Fasilitas PAUD';
-        $page_description = 'Data Fasilitas PAUD Kecamatan ' . $kecamatan->nama_kecamatan;
+        $page_description = 'Data Fasilitas PAUD ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.fasilitas_paud.index', compact('page_title', 'page_description'));
     }
 

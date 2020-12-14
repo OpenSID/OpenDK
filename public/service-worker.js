@@ -1,8 +1,24 @@
-var CACHE_NAME = 'openDK-cache-v1';
+var CACHE_NAME = 'cache-v1';
 var urlsToCache = [
-  '',
-  'css/custom.css',
-  'js/custom.js'
+  '/',
+  '/favicon.png',
+  '/css/custom.css',
+  '/css/slider.css',
+  '/css/placeholder-loading.css',
+  '/bower_components/bootstrap/dist/css/bootstrap.min.css',
+  '/bower_components/font-awesome/css/font-awesome.min.css',
+  '/bower_components/font-awesome/fonts/fontawesome-webfont.eot',
+  '/bower_components/font-awesome/fonts/fontawesome-webfont.svg',
+  '/bower_components/font-awesome/fonts/fontawesome-webfont.ttf',
+  '/bower_components/font-awesome/fonts/fontawesome-webfont.woff',
+  '/bower_components/font-awesome/fonts/fontawesome-webfont.woff2',
+  '/bower_components/font-awesome/fonts/FontAwesome.otf',
+  '/bower_components/admin-lte/dist/css/AdminLTE.min.css',
+  '/bower_components/jquery/dist/jquery.min.js',
+  '/js/custom.js',
+  '/bower_components/bootstrap/dist/js/bootstrap.min.js',
+  '/bower_components/admin-lte/dist/js/adminlte.min.js',
+  '/offline.html'
 ];
 
 self.addEventListener('install', function(event) {
@@ -17,43 +33,59 @@ self.addEventListener('install', function(event) {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        if (response) {
-          return response;
+    // Try the cache
+    caches.match(event.request).then(function(response) {
+      if (response) {
+        return response;
+      }
+      return fetch(event.request).then(function(response) {
+        if (response.status === 404) {
+          return caches.match('pages/404.html');
         }
-        var fetchRequest = event.request.clone();
+        return response
+      });
+    }).catch(function() {
+      // If both fail, show a generic fallback:
+      return caches.match('/offline.html');
+    })
+  );
+  // event.respondWith(
+  //   caches.match(event.request)
+  //     .then(function(response) {
+  //       if (response) {
+  //         return response;
+  //       }
+  //       var fetchRequest = event.request.clone();
 
-        return fetch(fetchRequest).then(
-          function(response) {
-            if(!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            var responseToCache = response.clone();
+  //       return fetch(fetchRequest).then(
+  //         function(response) {
+  //           if(!response || response.status !== 200 || response.type !== 'basic') {
+  //             return response;
+  //           }
+  //           var responseToCache = response.clone();
 
-            caches.open(CACHE_NAME)
-              .then(function(cache) {
-                cache.put(event.request, responseToCache);
-              });
+  //           caches.open(CACHE_NAME)
+  //             .then(function(cache) {
+  //               cache.put(event.request, responseToCache);
+  //             });
 
-            return response;
-          }
-        );
-      })
-    );
+  //           return response;
+  //         }
+  //       );
+  //     })
+  //   );
 });
 
 self.addEventListener('activate', function(event) {
-
-  var cacheAllowlist = ['pages-cache-v1', 'other-cache-v1'];
-
   event.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(
-        cacheNames.map(function(cacheName) {
-          if (cacheAllowlist.indexOf(cacheName) === -1) {
-            return caches.delete(cacheName);
-          }
+        cacheNames.filter(function(cacheName) {
+          // Return true if you want to remove this cache,
+          // but remember that caches are shared across
+          // the whole origin
+        }).map(function(cacheName) {
+          return caches.delete(cacheName);
         })
       );
     })

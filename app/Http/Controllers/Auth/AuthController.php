@@ -39,7 +39,6 @@ class AuthController extends Controller
                 flash()->error('Wrong email or password!');
                 return redirect()->back()->withInput();
             }
-
             flash()->success('Login success! Welcome to Bali Tower admin page!');
             return redirect()->route('dashboard.profil');
         } catch (Exception $e) {

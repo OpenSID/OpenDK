@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
@@ -14,7 +14,7 @@ use function rtrim;
 use function view;
 use function years_list;
 
-class DashboardProgramBantuanController extends Controller
+class ProgramBantuanController extends Controller
 {
     /**
      * Menampilkan Data Program Bantuan

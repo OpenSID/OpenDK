@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
@@ -21,7 +21,7 @@ use function ucwords;
 use function view;
 use function years_list;
 
-class DashboardProfilController extends Controller
+class ProfilController extends Controller
 {
     /**
      * Menampilkan Halaman Beranda Kecamatan

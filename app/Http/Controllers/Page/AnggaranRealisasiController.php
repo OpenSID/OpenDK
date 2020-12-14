@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
@@ -14,7 +14,7 @@ use function request;
 use function view;
 use function years_list;
 
-class DashboardAnggaranRealisasiController extends Controller
+class AnggaranRealisasiController extends Controller
 {
     /**
      * Menampilkan Data Anggaran Dan realisasi Kecamatan

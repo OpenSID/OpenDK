@@ -1,4 +1,4 @@
-#slider {
+/* #slider {
 	width: 100%;
 	height: 400px;
 	position: relative;
@@ -12,17 +12,17 @@
 	to {
 		left: 0
 	}
-}
-
+} */
+/* 
 .slider-class {
 	height: 100%;
 	float: left;
 	position: relative;
 	z-index: 1;
 	overflow: hidden
-}
+} */
 
-@media only screen and (min-width:768px) {
+/* @media only screen and (min-width:768px) { */
 	#slider {
 		width: 100%;
 		height: 400px;
@@ -45,11 +45,11 @@
 		z-index: 1;
 		overflow: hidden
 	}
-	.slide img {
+	.slider-class img {
 		width: 100%;
 		height: 100%
 	}
-	.slide img {
+	.slider-class img {
 		width: 100%;
 		height: 100%
 	}
@@ -74,7 +74,7 @@
 		position: absolute;
 		overflow: hidden
 	}
-}
+/* } */
 
 .content-txt {
 	width: 300px;

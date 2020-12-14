@@ -39,24 +39,14 @@ h4{
 @endpush
 @section('content')
 <div class="col-md-8 no-padding fadeIn">
-    @php
-        $maxdata= 10;
-    @endphp
     @foreach ($artikel->item as $data)
-    @if($data->count() == 5)  
-    @continue    
-        
-    @endif 
-    
     <div class="box box-widget">
         <div class="box-body">
             <div class="post">
                 @if(! $data->enclosure['url'] == '')
-                <img id="myImg" src="{{utf8_decode((string)$data->enclosure['url'])}}" alt="{{ $data->title }}">
+                <img id="myImg" src="{{utf8_decode($data->enclosure['url'])}}" alt="{{ $data->title }}">
             @else
-            
             <img class="img-thumb responsive" id="myImg"  src="{{ asset('/img/no-image-post.png') }}" alt="Logo {{ $sebutan_wilayah }}">
-            
             @endif
         </div>
             <h4 class="text-bold">{{ $data->title }}</h4>
@@ -78,9 +68,6 @@ h4{
                 </ul>
             </div> --}}
     </div>
-    @if ($data->count() == $maxdata) 
-    @break;
-@endif
     @endforeach
 </div>
 @endsection

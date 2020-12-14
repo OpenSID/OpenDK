@@ -1,14 +1,11 @@
 {
 	"name": "openDK",
 	"short_name": "openDK",
-	"lang": "id",
-	"description": "Website Kecamatan ",
 	"start_url": "/",
-	"background_color": "#1a2035",
-	"theme_color": "#fff",
-	"dir": "ltr",
 	"display": "standalone",
-	"orientation": "portrait",
+	"description": "Website Kecamatan ",
+	"background_color": "#1a2035",
+	"theme_color": "#1a2035",
 	"icons": [
 		{
 			"src": "icon/android-chrome-192x192.png",
@@ -32,7 +29,7 @@
 		  "name": "openDK",
 		  "short_name": "openDK",
 		  "description": "website kecamatan",
-		  "url": "/",
+		  "url": "/profil/",
 		  "icons": [{ "src": "icon/favicon-96x96.png", "sizes": "96x96" }]
 		}
 	]

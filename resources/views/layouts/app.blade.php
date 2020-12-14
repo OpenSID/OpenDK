@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#ffc40d">
-    <meta name="theme-color" content="#ffc40d">
+    <meta name="theme-color" content="#1a2035">
 
     <title>{{ $page_title ?? '' }} | {{ config('app.name', 'Laravel') }} </title>
     <meta name="description" content="{{ $page_description ?? '' }}.">
@@ -95,16 +95,22 @@
 <body class="hold-transition skin-blue layout-top-nav">
     @include('partialspage.preloader')
     
-    {{-- <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+    <script>
+     if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
                 console.log('Service worker registered successfully', registration);
             }).catch(function(err) {
                 console.log('Service worker registration failed: ', err);
             });
         };
-
-    </script> --}}
+        window.addEventListener("beforeinstallprompt", function(e) { 
+  // log the platforms provided as options in an install prompt 
+  console.log(e.platforms); // e.g., ["web", "android", "windows"] 
+  e.userChoice.then(function(choiceResult) { 
+    console.log(choiceResult.outcome); // either "accepted" or "dismissed"
+  }, handleError); 
+});
+    </script> 
     <!-- overlay !-->
 
     <div class="wrapper">
@@ -132,6 +138,7 @@
                 <div class="row">
                     <section class="content container-fluid">
                         @if (Route::currentRouteName() === 'beranda')
+                        {{-- @include('pages.sambutan') --}}
                         @else
                             @include('layouts.frontends.breadcumb')
                         @endif

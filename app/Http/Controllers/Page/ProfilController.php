@@ -33,8 +33,8 @@ class ProfilController extends Controller
 
         $page_title = 'Beranda';
         // Mengambil berita dari desa untuk ditampilkan diberanda kecamatan
-        $content = file_get_contents('https://demo.opensid.my.id/feed');
-        $artikel = new SimpleXMLElement($content);
+        $rss = file_get_contents('https://demo.opensid.my.id/feed');
+        $artikel = new SimpleXMLElement($rss);
         return view('pages.post', compact('page_title'))->with('artikel', $artikel);
     }
 

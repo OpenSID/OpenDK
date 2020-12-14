@@ -29,12 +29,13 @@ class Controller extends BaseController
 
         $getProfilWilayah = Profil::where('kecamatan_id', $defaultProfil)->first();
 
-        if ($getProfilWilayah->provinsi_id == 91 or $getProfilWilayah->provinsi_id == 92) {
+        $kode_provinsi = $getProfilWilayah->provinsi->kode;
+        if (in_array($kode_provinsi, [91, 92])){
+            $sebutan_wilayah        = 'Distrik';
+            $sebutan_kepala_wilayah = 'Kepala Distrik';
+        } else {
             $sebutan_wilayah        = 'Kecamatan';
             $sebutan_kepala_wilayah = 'Camat';
-        } else {
-            $sebutan_wilayah        = 'Distrik';
-            $sebutan_kepala_wilayah = 'Distrik';
         }
         $nama_wilayah = $getProfilWilayah->kecamatan->nama;
         $events       = Event::getOpenEvents();

@@ -23,6 +23,11 @@ class Controller extends BaseController
     /**
      * Menampilkan Sebutan Wilayah Tingkat III (Kecamatan/Distrik)
      */
+
+    protected $nama_wilayah;
+    protected $sebutan_wilayah;
+    protected $sebutan_kepala_wilayah;
+    
     public function __construct()
     {
         $defaultProfil = config('app.default_profile');
@@ -31,11 +36,11 @@ class Controller extends BaseController
 
         $kode_provinsi = $getProfilWilayah->provinsi->kode;
         if (in_array($kode_provinsi, [91, 92])){
-            $sebutan_wilayah        = 'Distrik';
-            $sebutan_kepala_wilayah = 'Kepala Distrik';
+            $this->sebutan_wilayah = 'Distrik';
+            $this->sebutan_kepala_wilayah = 'Kepala Distrik';
         } else {
-            $sebutan_wilayah        = 'Kecamatan';
-            $sebutan_kepala_wilayah = 'Camat';
+            $this->sebutan_wilayah = 'Kecamatan';
+            $this->sebutan_kepala_wilayah = 'Camat';
         }
         $nama_wilayah = $getProfilWilayah->kecamatan->nama;
         $events       = Event::getOpenEvents();
@@ -43,8 +48,9 @@ class Controller extends BaseController
         $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
 
         View::share([
-            'sebutan_wilayah'        => $sebutan_wilayah,
-            'sebutan_kepala_wilayah' => $sebutan_kepala_wilayah,
+            'nama_wilayah'=> $this->nama_wilayah,
+            'sebutan_wilayah'=> $this->sebutan_wilayah,
+            'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah,
             'events'                 => $events,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,

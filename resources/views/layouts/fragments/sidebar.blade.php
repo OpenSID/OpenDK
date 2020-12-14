@@ -2,45 +2,13 @@
 use Illuminate\Support\Facades\URL;
 $user = Sentinel::getUser();
 ?>
-        <!-- Left side column. contains the logo and sidebar -->
+<!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
-
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">MENU UTAMA</li>
-            <!-- Optionally, you can add icons to the links -->
-            <li class="treeview {{ (Request::is(['/','dashboard/*'])? 'active' : '') }}">
-                <a href="#"><i class="fa fa-line-chart"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li {{ (Request::is(['/','dashboard/', 'dashboard/profil'])? 'class=active' : '') }}><a
-                                href="{{ route('dashboard.profil') }}"><i class="fa fa-circle-o"></i>Profile</a></li>
-                    <li {{ (Request::is(['dashboard/kependudukan', 'dashboard/kependudukan/*'])? 'class=active' : '') }}>
-                        <a href="{{ route('dashboard.kependudukan') }}"><i class="fa fa-circle-o"></i>Kependudukan</a>
-                    </li>
-                    <li {{ (Request::is(['dashboard/kesehatan'])? 'class=active' : '') }}><a
-                                href="{{ route('dashboard.kesehatan') }}"><i class="fa fa-circle-o"></i>Kesehatan</a>
-                    </li>
-                    <li {{ (Request::is(['dashboard/pendidikan'])? 'class=active' : '') }}><a
-                                href="{{ route('dashboard.pendidikan') }}"><i class="fa fa-circle-o"></i>Pendidikan</a>
-                    </li>
-                    <li {{ (Request::is(['dashboard/program-bantuan'])? 'class=active' : '') }}><a
-                                href="{{ route('dashboard.program-bantuan') }}"><i class="fa fa-circle-o"></i>Program
-                            Bantuan</a></li>
-                    <li {{ (Request::is(['dashboard/anggaran-dan-realisasi'])? 'class=active' : '') }}><a
-                                href="{{ route('dashboard.anggaran-dan-realisasi') }}"><i class="fa fa-circle-o"></i>Anggaran
-                            & Realisasi</a></li>
-                    <li {{ (Request::is(['dashboard/anggaran-desa'])? 'class=active' : '') }}><a
-                                href="{{ route('dashboard.anggaran-desa') }}"><i class="fa fa-circle-o"></i>Anggaran
-                            Desa</a></li>
-                </ul>
-            </li>
+            <li class="header">DASHBOARD</li>
             <li class="treeview {{ (Request::is(['informasi/*'])? 'active' : '') }}">
                 <a href="#"><i class="fa fa-archive"></i> <span>Informasi</span>
             <span class="pull-right-container">
@@ -68,11 +36,11 @@ $user = Sentinel::getUser();
                             Dokumen</a></li>
                 </ul>
             </li>
-
+{{-- 
             <li class="{{ (Request::is(['sistem-komplain/*', 'sistem-komplain'])? 'active' : '') }}">
                 <a href="{{ route('sistem-komplain.index') }}" title="Sistem Komplain Masyarakat"><i
                             class="fa fa-comments"></i> <span>SIKOMA</span></a>
-            </li>
+            </li> --}}
 
             @if(isset($user) && $user->hasAnyAccess(['admin', 'data-*', 'adminsikoma']))
                 <li class="header">MENU ADMINISTRATOR</li>
@@ -84,7 +52,7 @@ $user = Sentinel::getUser();
                     <ul class="treeview-menu">
                         @if($user->hasAnyAccess(['admin', 'data-kecamatan']))
                         <li class="treeview {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil','data/data-umum/*', 'data/data-umum/index', 'data/data-umum','data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'active' : '') }}">
-                            <a href="#"><i class="fa fa-circle-o"></i>Kecamatan
+                            <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -182,7 +150,7 @@ $user = Sentinel::getUser();
 
                         @if($user->hasAnyAccess(['admin', 'data-layanan']))
                         <li class="treeview {{ (Request::is(['data/proses-ektp/*', 'data/proses-kk/*', 'data/proses-aktalahir/*','data/proses-domisili/*', 'data/proses-ektp', 'data/proses-kk', 'data/proses-aktalahir','data/proses-domisili'])? 'active' : '') }}">
-                            <a href="#"><i class="fa fa-circle-o"></i>Layanan Kecamatan
+                            <a href="#"><i class="fa fa-circle-o"></i>Layanan {{ $sebutan_wilayah }}
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
                         </span>
@@ -273,7 +241,6 @@ $user = Sentinel::getUser();
             </li>
 
         </ul>
-
         <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->

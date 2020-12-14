@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 use function back;
 use function flash;
@@ -39,7 +39,6 @@ class AuthController extends Controller
                 flash()->error('Wrong email or password!');
                 return redirect()->back()->withInput();
             }
-
             flash()->success('Login success! Welcome to Bali Tower admin page!');
             return redirect()->route('dashboard.profil');
         } catch (Exception $e) {
@@ -56,7 +55,7 @@ class AuthController extends Controller
     public function logout()
     {
         Sentinel::logout();
-        return redirect()->route('dashboard.profil');
+        return redirect()->route('beranda');
     }
 
     /**

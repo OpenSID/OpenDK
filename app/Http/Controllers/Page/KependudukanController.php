@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
@@ -22,7 +22,7 @@ use function ucfirst;
 use function view;
 use function years_list;
 
-class DashboardKependudukanController extends Controller
+class KependudukanController extends Controller
 {
     /**
      * Menampilkan Data Kependudukan

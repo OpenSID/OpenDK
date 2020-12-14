@@ -21,6 +21,7 @@ use function years_list;
 
 class ImunisasiController extends Controller
 {
+    
     public $bulan;
     public $tahun;
 
@@ -37,7 +38,7 @@ class ImunisasiController extends Controller
     public function index()
     {
         $page_title       = 'Imunisasi';
-        $page_description = 'Data Cakupan Imunisasi ';
+        $page_description = 'Data Cakupan Imunisasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.imunisasi.index', compact('page_title', 'page_description'));
     }
 

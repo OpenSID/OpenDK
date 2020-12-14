@@ -21,12 +21,13 @@ use function years_list;
 
 class ToiletSanitasiController extends Controller
 {
+   
     public $bulan;
     public $tahun;
 
     public function __construct()
     {
-        parent::__construct();
+       parent::__construct();
     }
 
     /**
@@ -37,7 +38,7 @@ class ToiletSanitasiController extends Controller
     public function index()
     {
         $page_title       = 'Toilet & Sanitasi';
-        $page_description = 'Data Toilet & Sanitasi ';
+        $page_description = 'Data Toilet & Sanitasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.toilet_sanitasi.index', compact('page_title', 'page_description'));
     }
 

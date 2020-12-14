@@ -22,6 +22,7 @@ use function years_list;
 
 class EpidemiPenyakitController extends Controller
 {
+    
     public function __construct()
     {
         parent::__construct();
@@ -35,7 +36,7 @@ class EpidemiPenyakitController extends Controller
     public function index()
     {
         $page_title       = 'Epidemi Penyakit';
-        $page_description = 'Data Epidemi Penyakit ';
+        $page_description = 'Data Epidemi Penyakit ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.epidemi_penyakit.index', compact('page_title', 'page_description'));
     }
 

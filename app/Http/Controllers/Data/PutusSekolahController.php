@@ -21,15 +21,16 @@ use function years_list;
 
 class PutusSekolahController extends Controller
 {
-    public function __construct()
-    {
+
+    public function __construct(){
         parent::__construct();
     }
-
+    
     public function index()
     {
+        
         $page_title       = 'Anak Putus Sekolah';
-        $page_description = 'Data Anak Putus Sekolah ';
+        $page_description = 'Data Anak Putus Sekolah ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.putus_sekolah.index', compact('page_title', 'page_description'));
     }
 

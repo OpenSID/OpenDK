@@ -31,7 +31,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Attendants <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('attendants', null, ['placeholder' => 'BAPENAS, GUBERNUR, CAMAT','class' => 'form-control', 'required'=>true]) !!}
+        {!! Form::text('attendants', null, ['placeholder' => 'BAPENAS, GUBERNUR, ' . strtoupper($sebutan_kepala_wilayah). '','class' => 'form-control', 'required'=>true]) !!}
     </div>
 </div>
 <div class="ln_solid"></div>

@@ -24,7 +24,7 @@ class AnggaranRealisasiController extends Controller
         Counter::count('dashboard.anggaran-dan-realisasi');
 
         $data['page_title']       = 'Anggaran & Realisasi';
-        $data['page_description'] = 'Data Anggaran & Realisasi Kecamatan';
+        $data['page_description'] = 'Data Anggaran & Realisasi ' .$this->sebutan_wilayah;
         $defaultProfil            = config('app.default_profile');
         $data['defaultProfil']    = $defaultProfil;
         $data['year_list']        = years_list();

@@ -115,7 +115,10 @@ class PendudukQueueJob implements ShouldQueue
                     "updated_at"            => $value["updated_at"],
                 ];
 
-                Penduduk::updateOrInsert(['nik' => $insert['nik'], 'id_pend_desa' => $insert['id_pend_desa']], $insert);
+                Penduduk::updateOrInsert([
+                    'desa_id'      => $insert['desa_id'],
+                    'id_pend_desa' => $insert['id_pend_desa']
+                ], $insert);
             }
 
             // Batch delete penduduk

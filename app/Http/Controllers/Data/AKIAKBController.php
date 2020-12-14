@@ -37,7 +37,7 @@ class AKIAKBController extends Controller
     public function index()
     {
         $page_title       = 'AKI & AKB';
-        $page_description = 'Data Kematian Ibu & Bayi ';
+        $page_description = 'Data Kematian Ibu & Bayi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.aki_akb.index', compact('page_title', 'page_description'));
     }
 

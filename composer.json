@@ -10,6 +10,7 @@
         "cviebrock/eloquent-sluggable": "^6.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "jaybizzle/crawler-detect": "1.*",
         "laracasts/flash": "^3.0",

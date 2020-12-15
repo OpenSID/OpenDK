@@ -123,9 +123,10 @@ class PendudukQueueJob implements ShouldQueue
             if (isset($this->request['hapus_penduduk'])) {
                 foreach ($this->request['hapus_penduduk'] as $item) {
                     $nik[] = $item['nik'];
+                    $desa_id[] = $item['desa_id'];
                 }
 
-                Penduduk::whereIn('nik', $nik)->delete();
+                Penduduk::whereIn('desa_id', $desa_id)->whereNotIn('nik', $nik)->delete();
             }
 
             DB::commit();

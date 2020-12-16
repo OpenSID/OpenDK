@@ -83,6 +83,7 @@ class PendudukRequest extends FormRequest
 
             // Batch delete validation
             "hapus_penduduk.*.id_pend_desa" => "present|integer",
+            "hapus_penduduk.*.desa_id" => "present|string|exists:das_data_desa,desa_id",
         ];
     }
 }

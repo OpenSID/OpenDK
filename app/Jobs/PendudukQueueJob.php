@@ -122,11 +122,11 @@ class PendudukQueueJob implements ShouldQueue
             // Batch delete penduduk
             if (isset($this->request['hapus_penduduk'])) {
                 foreach ($this->request['hapus_penduduk'] as $item) {
-                    $nik[] = $item['nik'];
+                    $id_pend_desa[] = $item['id_pend_desa'];
                     $desa_id[] = $item['desa_id'];
                 }
 
-                Penduduk::whereIn('desa_id', $desa_id)->whereNotIn('nik', $nik)->delete();
+                Penduduk::whereIn('desa_id', $desa_id)->whereNotIn('id_pend_desa', $id_pend_desa)->delete();
             }
 
             DB::commit();

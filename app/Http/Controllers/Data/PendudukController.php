@@ -10,7 +10,10 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
+use ZipArchive;
 
 use function back;
 use function compact;
@@ -241,15 +244,35 @@ class PendudukController extends Controller
     public function importExcel(Request $request)
     {
         $this->validate($request, [
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'file|mimes:zip|max:5120',
         ]);
 
         try {
+            // Upload file zip temporary.
+            $file = $request->file('file');
+            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Temporary path file
+            $path = storage_path("app/temp/{$name}");
+            $extract = storage_path('app/public/penduduk/foto/');
+
+            // Ekstrak file
+            $zip = new ZipArchive;
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
             (new ImporPenduduk($request))
-                ->import($request->file('file'));
+                ->import($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
+
+        // Hapus folder temp ketika sudah selesai
+        Storage::deleteDirectory('temp');
+        // Hapus file excell temp ketika sudah selesai
+        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
 
         return back()->with('success', 'Import data sukses.');
     }

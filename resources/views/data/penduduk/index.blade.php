@@ -51,28 +51,30 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-striped table-bordered" id="penduduk-table">
-                                <thead>
-                                    <tr>
-                                    <th style="max-width: 80px;">Aksi</th>
-                                    <th>NIK</th>
-                                    <th>Nama</th>
-                                    <th>No. KK</th>
-                                    <th>Desa</th>
-                                    <th>Alamat</th>
-                                    <th>Pendidikan dalam KK</th>
-                                    <th>Umur</th>
-                                    <th>Pekerjaan</th>
-                                    <th>Status Kawin</th>
-                                </tr>
-                            </thead>
-                        </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered" id="penduduk-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="80px">Aksi</th>
+                                            <th>NIK</th>
+                                            <th>Nama</th>
+                                            <th>No. KK</th>
+                                            <th>Desa</th>
+                                            <th>Alamat</th>
+                                            <th>Pendidikan dalam KK</th>
+                                            <th>Umur</th>
+                                            <th>Pekerjaan</th>
+                                            <th>Status Kawin</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
 </section>
 <!-- /.content -->
 @endsection
@@ -85,9 +87,9 @@
         $('#list_desa').select2();
 
         var data = $('#penduduk-table').DataTable({
+            autoWidth: false,
             processing: true,
             serverSide: true,
-            // ajax: "{!! route( 'data.penduduk.getdata' ) !!}",
             ajax: {
                 url: "{!! route( 'data.penduduk.getdata' ) !!}",
                 data: function (d) {

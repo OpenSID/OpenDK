@@ -70,6 +70,7 @@ class ImporPenduduk implements ToCollection, WithHeadingRow
                 'hamil'                 => $value['hamil'],
 
                 // Tambahan
+                'foto'            => $value['foto'],
                 'alamat_sekarang' => $value['alamat_sekarang'],
                 'alamat'          => $value['alamat'],
                 'dusun'           => $value['dusun'],

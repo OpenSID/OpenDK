@@ -28,7 +28,7 @@
                                 <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Penduduk</button>
                             </a>
                             <a href="{{ route('data.penduduk.import') }}">
-                                <button type="button" class="btn btn-warning btn-sm" title="Upload Data"><i class="fa fa-upload"></i> Import</button>
+                                <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i> Impor</button>
                             </a>
                         </div>
                     </div>
@@ -112,7 +112,7 @@
         });
 
         $('#list_desa').on('select2:select', function (e) {
-            data.ajax.reload();  
+            data.ajax.reload();
         });
     });
 </script>

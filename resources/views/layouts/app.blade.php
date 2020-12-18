@@ -131,7 +131,7 @@
             @if (Route::currentRouteName() === 'beranda')
             
                 @include('layouts.frontends.slider')
-                @include('layouts.frontends.service')
+                {{-- @include('layouts.frontends.service') --}}
             @endif
             <div class="container">
                 <!-- Main content -->
@@ -145,7 +145,7 @@
                         @yield('content')
                         @include('layouts.frontends.sidebar')
                     </section>
-                    @include('.layouts.frontends.instansi')
+                    {{-- @include('.layouts.frontends.instansi') --}}
                 </div>
                 <!-- /.content -->
                 

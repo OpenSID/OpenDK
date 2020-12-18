@@ -34,14 +34,14 @@
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>
           </li>
-            <li class="dropdown">
+            {{-- <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">PUBLIKASI <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
                   <li><a href="#">Agenda Kegiatan</a></li>
                   <li><a href="#">Berita Kecamatan</a></li>
                   <li><a href="#">Berita Desa</a></li>
                 </ul>
-            </li>
+            </li> --}}
             <li class="dropdown @if(Request::is('desa-*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">

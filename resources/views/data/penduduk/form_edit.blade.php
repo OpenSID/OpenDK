@@ -5,7 +5,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <img src="@if(! $penduduk->foto == '') {{ asset($penduduk->foto) }} @else {{ "http://placehold.it/120x150" }} @endif" id="showgambar"
+                <img src="@if(! $penduduk->foto == '') {{ asset('storage/penduduk/foto/'.$penduduk->foto) }} @else {{ "http://placehold.it/120x150" }} @endif" id="showgambar"
                      style="max-width:120px;max-height:150px;float:left;"/>
             </div>
         </div>

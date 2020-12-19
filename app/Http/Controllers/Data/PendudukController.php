@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPenduduk;
+use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Doctrine\DBAL\Query\QueryException;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
+use ZipArchive;
 
 use function back;
 use function compact;
@@ -35,18 +39,23 @@ class PendudukController extends Controller
     {
         $page_title       = 'Penduduk';
         $page_description = 'Data Penduduk';
+        $list_desa        = DataDesa::get();
 
-        return view('data.penduduk.index', compact('page_title', 'page_description'));
+        return view('data.penduduk.index', compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**
-     * Return datatable Data Penduduk
+     * Return datatable Data Penduduk.
+     * 
+     * @param Request $request
+     * @return DataTables
      */
-
-    public function getPenduduk()
+    public function getPenduduk(Request $request)
     {
+        $desa = $request->input('desa');
+
         $query = DB::table('das_penduduk')
-            //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
+            ->leftJoin('das_data_desa', 'das_penduduk.desa_id', '=', 'das_data_desa.desa_id')
             ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
             ->leftJoin('ref_kawin', 'das_penduduk.status_kawin', '=', 'ref_kawin.id')
             ->leftJoin('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
@@ -56,11 +65,17 @@ class PendudukController extends Controller
                 'das_penduduk.nama',
                 'das_penduduk.no_kk',
                 'das_penduduk.alamat',
+                'das_data_desa.nama as nama_desa',
                 'ref_pendidikan_kk.nama as pendidikan',
                 'das_penduduk.tanggal_lahir',
                 'ref_kawin.nama as status_kawin',
                 'ref_pekerjaan.nama as pekerjaan',
             ])
+            ->when($desa, function ($query) use ($desa) {
+                return $desa === 'ALL'
+                    ? $query
+                    : $query->where('das_data_desa.desa_id', $desa);
+            })
             ->where('status_dasar', 1);
 
         return DataTables::of($query)
@@ -241,15 +256,35 @@ class PendudukController extends Controller
     public function importExcel(Request $request)
     {
         $this->validate($request, [
-            'file' => 'file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'file|mimes:zip|max:5120',
         ]);
 
         try {
+            // Upload file zip temporary.
+            $file = $request->file('file');
+            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Temporary path file
+            $path = storage_path("app/temp/{$name}");
+            $extract = storage_path('app/public/penduduk/foto/');
+
+            // Ekstrak file
+            $zip = new ZipArchive;
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
             (new ImporPenduduk($request))
-                ->import($request->file('file'));
+                ->import($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
+
+        // Hapus folder temp ketika sudah selesai
+        Storage::deleteDirectory('temp');
+        // Hapus file excell temp ketika sudah selesai
+        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
 
         return back()->with('success', 'Import data sukses.');
     }

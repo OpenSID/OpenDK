@@ -46,7 +46,7 @@ class PendudukController extends Controller
 
     /**
      * Return datatable Data Penduduk.
-     * 
+     *
      * @param Request $request
      * @return DataTables
      */
@@ -61,6 +61,7 @@ class PendudukController extends Controller
             ->leftJoin('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
             ->select([
                 'das_penduduk.id',
+                'das_penduduk.foto',
                 'das_penduduk.nik',
                 'das_penduduk.nama',
                 'das_penduduk.no_kk',
@@ -263,7 +264,7 @@ class PendudukController extends Controller
             // Upload file zip temporary.
             $file = $request->file('file');
             $file->storeAs('temp', $name = $file->getClientOriginalName());
-            
+
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
             $extract = storage_path('app/public/penduduk/foto/');

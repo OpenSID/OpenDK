@@ -6,14 +6,13 @@ use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 use willvincent\Feeds\Facades\FeedsFacade;
 
 class BeritaDesaController extends Controller
 {
     public function index(Request $request)
     {
-        Counter::count('informasi.prosedur.index');
+        Counter::count('informasi.berita-desa.index');
 
         $website = DataDesa::websiteUrl()->get()
             ->map(function ($website) {
@@ -35,7 +34,7 @@ class BeritaDesaController extends Controller
             ];
         }
 
-        return View::make('informasi.berita_desa.index', [
+        return view('informasi.berita_desa.index', [
             'page_title'       => 'Berita Desa',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
             'feeds'            => collect($data)->paginate(4),

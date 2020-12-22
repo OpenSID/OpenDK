@@ -183,6 +183,11 @@ Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Informasi')->group(function () {
         Route::group(['prefix' => 'informasi'], function () {
 
+            // Berita desa
+            Route::group(['prefix' => 'berita-desa'], function () {
+                Route::get('/', ['as' => 'informasi.berita-desa.index', 'uses' => 'BeritaDesaController@index']);
+            });
+
             //Routes for prosedur resource
             Route::group(['prefix' => 'prosedur'], function () {
                 Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);

@@ -25,19 +25,18 @@ class PendudukRequest extends FormRequest
     {
         return [
             // Batch insert atau update validation
-            "penduduk.*.id_pend_desa"          => "required",
+            "penduduk.*.id_pend_desa"          => "required|integer",
             "penduduk.*.nama"                  => "required",
             "penduduk.*.nik"                   => "required|string|min:16|max:16",
             "penduduk.*.id_kk"                 => "integer|nullable",
             "penduduk.*.kk_level"              => "required",
-            "penduduk.*.id_rtm"                => "integer|nullable",
+            "penduduk.*.id_rtm"                => "string|nullable",
             "penduduk.*.rtm_level"             => "integer|nullable",
             "penduduk.*.sex"                   => "required",
             "penduduk.*.tempat_lahir"          => "required",
             "penduduk.*.tanggal_lahir"         => "required|date_format:Y-m-d",
             "penduduk.*.agama_id"              => "required",
             "penduduk.*.pendidikan_kk_id"      => "required",
-            "penduduk.*.pendidikan_id"         => "integer|nullable",
             "penduduk.*.pendidikan_sedang_id"  => "integer|nullable",
             "penduduk.*.pekerjaan_id"          => "integer|nullable",
             "penduduk.*.status_kawin"          => "integer|nullable",
@@ -74,17 +73,17 @@ class PendudukRequest extends FormRequest
             "penduduk.*.dusun"                 => "nullable",
             "penduduk.*.rw"                    => "nullable",
             "penduduk.*.rt"                    => "nullable",
-            "penduduk.*.desa_id"               => "required|string",
-            "penduduk.*.kecamatan_id"          => "required|string",
+            "penduduk.*.desa_id"               => "required|string|exists:das_data_desa,desa_id",
+            "penduduk.*.kecamatan_id"          => "required|string|exists:das_data_desa,kecamatan_id",
             "penduduk.*.kabupaten_id"          => "required|string",
             "penduduk.*.provinsi_id"           => "required|string",
             "penduduk.*.tahun"                 => "required|int",
             "penduduk.*.created_at"            => "required|date",
             "penduduk.*.updated_at"            => "required|date",
-            "penduduk.*.id_pend_desa"          => "required|integer",
 
             // Batch delete validation
-            "hapus_penduduk.*.nik" => "present|min:16|max:16",
+            "hapus_penduduk.*.id_pend_desa" => "present|integer",
+            "hapus_penduduk.*.desa_id" => "present|string|exists:das_data_desa,desa_id",
         ];
     }
 }

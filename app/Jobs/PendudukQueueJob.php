@@ -69,7 +69,6 @@ class PendudukQueueJob implements ShouldQueue
                     "tanggal_lahir"         => $value["tanggal_lahir"],
                     "agama_id"              => $value["agama_id"],
                     "pendidikan_kk_id"      => $value["pendidikan_kk_id"],
-                    "pendidikan_id"         => $value["pendidikan_id"],
                     "pendidikan_sedang_id"  => $value["pendidikan_sedang_id"],
                     "pekerjaan_id"          => $value["pekerjaan_id"],
                     "status_kawin"          => $value["status_kawin"],
@@ -113,6 +112,7 @@ class PendudukQueueJob implements ShouldQueue
                     "tahun"                 => $value["tahun"],
                     "created_at"            => $value["created_at"],
                     "updated_at"            => $value["updated_at"],
+                    "imported_at"           => $value["imported_at"],
                 ];
 
                 Penduduk::updateOrInsert([
@@ -124,10 +124,11 @@ class PendudukQueueJob implements ShouldQueue
             // Batch delete penduduk
             if (isset($this->request['hapus_penduduk'])) {
                 foreach ($this->request['hapus_penduduk'] as $item) {
-                    $nik[] = $item['nik'];
+                    $id_pend_desa[] = $item['id_pend_desa'];
+                    $desa_id[] = $item['desa_id'];
                 }
 
-                Penduduk::whereIn('nik', $nik)->delete();
+                Penduduk::whereIn('desa_id', $desa_id)->whereNotIn('id_pend_desa', $id_pend_desa)->delete();
             }
 
             DB::commit();

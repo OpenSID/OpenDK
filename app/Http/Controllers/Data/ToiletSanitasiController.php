@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Imports\ImporToiletSanitasi;
-use App\Models\Profil;
 use App\Models\ToiletSanitasi;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,7 +12,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -95,8 +93,8 @@ class ToiletSanitasiController extends Controller
         ]);
 
         try {
-            (new ImporToiletSanitasi($request))
-                ->import($request->file('file'));
+            (new ImporToiletSanitasi($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

@@ -5,7 +5,6 @@ namespace Database\Seeds\Demo;
 use App\Imports\ImporAPBDesa;
 use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoAPBDesaSeeder extends Seeder
@@ -18,11 +17,11 @@ class DemoAPBDesaSeeder extends Seeder
     public function run()
     {
         Excel::import(
-            new ImporAPBDesa(Request::merge([
+            new ImporAPBDesa([
                 'bulan' => now()->month,
                 'tahun' => now()->year,
                 'desa'  => DataDesa::first()->desa_id,
-            ])),
+            ]),
             'template_upload/Format_Upload_APBDes.xlsx',
             'public'
         );

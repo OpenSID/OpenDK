@@ -577,7 +577,7 @@ class DashboardKependudukanController extends Controller
             ->join('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
             ->selectRaw('das_penduduk.id, das_penduduk.nik, das_penduduk.nama, das_penduduk.no_kk, das_penduduk.alamat_sekarang as alamat,
             ref_pendidikan_kk.nama as pendidikan,
-            das_penduduk.tanggal_lahir, ref_kawin.nama as status_kawin, ref_pekerjaan.nama as pekerjaan');
+            das_penduduk.tanggal_lahir, ref_kawin.nama as status_kawin, ref_pekerjaan.nama as pekerjaan, das_penduduk.foto');
         if ($type == 'C') {
             $query->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year);

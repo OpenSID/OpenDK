@@ -21,16 +21,12 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
     protected $provinsi_id;
     protected $kabupaten_id;
     protected $kecamatan_id;
-    protected $desa_id;
-    protected $tahun;
 
     public function __construct(array $request)
     {
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
         $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
-        $this->tahun        = $request['tahun'];
-        $this->desa_id      = $request['desa_id'];
     }
 
     /**
@@ -88,8 +84,8 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'provinsi_id'     => $this->provinsi_id,
                 'kabupaten_id'    => $this->kabupaten_id,
                 'kecamatan_id'    => $this->kecamatan_id,
-                'desa_id'         => $this->desa_id,
-                'tahun'           => $this->tahun,
+                'desa_id'         => $value['desa_id'],
+                'tahun'           => $value['tahun'],
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],

@@ -32,7 +32,9 @@
                                 </div>
                             </div>
                             @empty
-                                
+                            <div class="text-center">
+                                <p class="text-bold">Tidak ada berita yang ditampilkan!</p>
+                            </div>
                             @endforelse
                         </div>
                     </div>

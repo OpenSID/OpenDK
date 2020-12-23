@@ -10,6 +10,9 @@ use willvincent\Feeds\Facades\FeedsFacade;
 
 class BeritaDesaController extends Controller
 {
+    /** @var array */
+    protected $data = [];
+
     public function index(Request $request)
     {
         Counter::count('informasi.berita-desa.index');
@@ -22,7 +25,7 @@ class BeritaDesaController extends Controller
         $feeds = FeedsFacade::make($website);
 
         foreach ($feeds->get_items() as $item) {
-            $data[] = [
+            $this->data[] = [
                 'feed_link'   => $item->get_feed()->get_permalink(),
                 'feed_title'  => $item->get_feed()->get_title(),
                 'link'        => $item->get_link(),
@@ -37,7 +40,7 @@ class BeritaDesaController extends Controller
         return view('informasi.berita_desa.index', [
             'page_title'       => 'Berita Desa',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
-            'feeds'            => collect($data)->paginate(4),
+            'feeds'            => collect($this->data)->paginate(4),
         ]);
     }
 }

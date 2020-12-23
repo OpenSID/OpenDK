@@ -8,6 +8,7 @@ use App\Jobs\PendudukQueueJob;
 
 use Illuminate\Http\Request;
 use App\Imports\ImporPenduduk;
+use App\Imports\SinkronPenduduk;
 use App\Models\Penduduk;
 use Doctrine\DBAL\Query\QueryException;
 use Exception;
@@ -85,7 +86,7 @@ class PendudukController extends Controller
         $zip->close();
 
         // Proses impor excell
-        (new ImporPenduduk($request))
+        (new SinkronPenduduk($request))
         ->import($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
       } catch (Exception $e) {
         return back()->with('error', 'Import data gagal. ' . $e->getMessage());

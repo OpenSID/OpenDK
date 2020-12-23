@@ -3,21 +3,30 @@
 namespace App\Imports;
 
 use App\Models\AnggaranRealisasi;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporAnggaranRealisasi implements ToModel, WithHeadingRow
+class ImporAnggaranRealisasi implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
-    /** @var Request $request */
+    /** @var array $request */
     protected $request;
 
-    public function __construct(Request $request)
+    public function __construct(array $request)
     {
         $this->request = $request;    
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
@@ -33,8 +42,8 @@ class ImporAnggaranRealisasi implements ToModel, WithHeadingRow
             'belanja_barang_jasa'    => $row['belanja_barang_jasa'],
             'belanja_modal'          => $row['belanja_modal'],
             'belanja_tidak_langsung' => $row['belanja_tidak_langsung'],
-            'bulan'                  => $this->request->input('bulan'),
-            'tahun'                  => $this->request->input('tahun'),
+            'bulan'                  => $this->request['bulan'],
+            'tahun'                  => $this->request['tahun'],
         ]);
     }
 }

@@ -81,8 +81,8 @@ class FasilitasPaudController extends Controller
         ]);
 
         try {
-            (new ImporFasilitasPaud($request))
-                ->import($request->file('file'));
+            (new ImporFasilitasPaud($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

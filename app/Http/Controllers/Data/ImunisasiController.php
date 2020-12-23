@@ -95,8 +95,8 @@ class ImunisasiController extends Controller
         ]);
 
         try {
-            (new ImporImunisasi($request))
-                ->import($request->file('file'));
+            (new ImporImunisasi($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

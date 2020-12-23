@@ -4,21 +4,31 @@ namespace App\Imports;
 
 use App\Models\LogImport;
 use App\Models\TingkatPendidikan;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporTingkatPendidikan implements ToModel, WithHeadingRow
+class ImporTingkatPendidikan implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
-    /** @var Request $request */
+    /** @var array $request */
     protected $request;
 
-    public function __construct(Request $request)
+    public function __construct(array $request)
     {
         $this->request = $request;    
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
@@ -28,21 +38,21 @@ class ImporTingkatPendidikan implements ToModel, WithHeadingRow
     {
         $import = LogImport::create([
             'nama_tabel' => 'das_tingkat_pendidikan',
-            'desa_id'    => $this->request->input('desa_id'),
+            'desa_id'    => $this->request['desa_id'],
             'bulan'      => now()->month,
-            'tahun'      => $this->request->input('tahun'),
+            'tahun'      => $this->request['tahun'],
         ]);
 
         return new TingkatPendidikan([
             'kecamatan_id'            => config('app.default_profile'),
-            'desa_id'                 => $this->request->input('desa_id'),
-            'tahun'                   => $this->request->input('tahun'),
+            'desa_id'                 => $this->request['desa_id'],
+            'tahun'                   => $this->request['tahun'],
             'tidak_tamat_sekolah'     => $row['tidak_tamat_sekolah'],
             'tamat_sd'                => $row['tamat_sd_sederajat'],
             'tamat_smp'               => $row['tamat_smp_sederajat'],
             'tamat_sma'               => $row['tamat_sma_sederajat'],
             'tamat_diploma_sederajat' => $row['tamat_diploma_sederajat'],
-            'semester'                => $this->request->input('semester'),
+            'semester'                => $this->request['semester'],
             'import_id'               => $import->id,
         ]);
     }

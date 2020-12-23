@@ -78,7 +78,7 @@
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Penduduk.xlsx') }}">Download</a></p>
+                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/penduduk_22_12_2020_opendk.zip') }}">Download</a></p>
                             </div>
                         </div>
                     </div>

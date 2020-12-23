@@ -27,10 +27,6 @@ class DemoPendudukSeeder extends Seeder
         $zip->close();
 
         Excel::import(
-            new ImporPenduduk([
-                'tahun'   => now()->year,
-                'desa_id' => DataDesa::first()->desa_id,
-            ]),
             'penduduk/foto/penduduk_22_12_2020_opendk.xlsx',
             'public'
         );

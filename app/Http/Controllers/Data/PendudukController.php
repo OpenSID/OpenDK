@@ -257,7 +257,7 @@ class PendudukController extends Controller
     public function importExcel(Request $request)
     {
         $this->validate($request, [
-            'file' => 'file|mimes:zip|max:5120',
+            'file' => 'file|mimes:zip|max:51200',
         ]);
 
         try {

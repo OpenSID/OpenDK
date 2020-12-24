@@ -85,7 +85,6 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'kabupaten_id'    => $this->kabupaten_id,
                 'kecamatan_id'    => $this->kecamatan_id,
                 'desa_id'         => $value['desa_id'],
-                'tahun'           => $value['tahun'],
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],

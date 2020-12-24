@@ -27,10 +27,11 @@ class DemoPendudukSeeder extends Seeder
         $zip->close();
 
         Excel::import(
-            'penduduk/foto/penduduk_22_12_2020_opendk.xlsx',
+            new ImporPenduduk([]),
+            'penduduk/foto/penduduk_22_12_2020_opendk/penduduk_22_12_2020_opendk.xlsx',
             'public'
         );
 
-        Storage::disk('public')->delete('penduduk/foto/penduduk_22_12_2020_opendk.xlsx');
+        Storage::disk('public')->delete('penduduk/foto/penduduk_22_12_2020_opendk/penduduk_22_12_2020_opendk.xlsx');
     }
 }

@@ -43,6 +43,7 @@ class DashboardKependudukanController extends Controller
         return view('dashboard.kependudukan.show_kependudukan')->with($data);
     }
 
+    /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
     protected function years_list()
     {
         $years = DB::table('das_penduduk')
@@ -50,7 +51,11 @@ class DashboardKependudukanController extends Controller
             ->distinct()
             ->orderBy('tahun')
             ->get()->toArray();
-        return array_column($years, 'tahun');
+        $years = array_column($years, 'tahun');
+        for ($y = end($years) + 1; $y <= date("Y"); $y++) {
+            $years[] = $y;
+        }
+        return array_reverse($years);
     }
 
     public function showKependudukanPartial()

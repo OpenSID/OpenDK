@@ -84,8 +84,8 @@ class TingkatPendidikanController extends Controller
         ]);
 
         try {
-            (new ImporTingkatPendidikan($request))
-                ->import($request->file('file'));
+            (new ImporTingkatPendidikan($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

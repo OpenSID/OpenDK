@@ -1242,6 +1242,7 @@
                     <thead>
                     <tr>
                         <th>NIK</th>
+                        <th>Foto</th>
                         <th>Nama</th>
                         <th>No. KK</th>
                         <th>Alamat</th>
@@ -1320,6 +1321,18 @@
                 columns: [
                     // {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
                     {data: 'nik', name: 'nik'},
+                    {data: 'foto', name: 'foto',
+                    "searchable": false,
+                    "orderable":false,
+                    "render": function (data, type, row) {
+                        if ( !row.foto == '') {
+                          return "<img src=\"{{ asset('storage/penduduk/foto') }}" + "/" + data + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
+                        }
+                        else {
+                          return "<img src=\"{{ asset('storage/penduduk/foto/kuser.png') }}" + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
+                        }
+                      }
+                    },
                     {data: 'nama', name: 'nama'},
                     {data: 'no_kk', name: 'no_kk'},
                     {data: 'alamat', name: 'das_penduduk.alamat'},

@@ -17,10 +17,10 @@ class DemoImunisasiSeeder extends Seeder
     public function run()
     {
         Excel::import(
-            new ImporImunisasi(Request::merge([
+            new ImporImunisasi([
                 'bulan' => now()->month,
                 'tahun' => now()->year,
-            ])),
+            ]),
             'template_upload/Format_Upload_Cakupan_Imunisasi.xlsx',
             'public'
         );

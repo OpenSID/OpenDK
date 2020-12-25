@@ -3,21 +3,30 @@
 namespace App\Imports;
 
 use App\Models\AnggaranDesa;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporAPBDesa implements ToModel, WithHeadingRow
+class ImporAPBDesa implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
-    /** @var Request $request */
+    /** @var $request */
     protected $request;
 
-    public function __construct(Request $request)
+    public function __construct(array $request)
     {
         $this->request = $request;    
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
@@ -29,9 +38,9 @@ class ImporAPBDesa implements ToModel, WithHeadingRow
             'no_akun'   => $row['no_akun'],
             'nama_akun' => $row['nama_akun'],
             'jumlah'    => $row['jumlah'],
-            'bulan'     => $this->request->input('bulan'),
-            'tahun'     => $this->request->input('tahun'),
-            'desa_id'   => $this->request->input('desa'),
+            'bulan'     => $this->request['bulan'],
+            'tahun'     => $this->request['tahun'],
+            'desa_id'   => $this->request['desa'],
         ]);
     }
 }

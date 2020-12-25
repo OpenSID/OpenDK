@@ -3,21 +3,30 @@
 namespace App\Imports;
 
 use App\Models\AkiAkb;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporAKIAKB implements ToModel, WithHeadingRow
+class ImporAKIAKB implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
-    /** @var Request $request */
+    /** @var array $request */
     protected $request;
 
-    public function __construct(Request $request)
+    public function __construct(array $request)
     {
         $this->request = $request;    
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
@@ -28,8 +37,8 @@ class ImporAKIAKB implements ToModel, WithHeadingRow
         return new AkiAkb([
             'kecamatan_id' => config('app.default_profile'),
             'desa_id'      => $row['desa_id'],
-            'bulan'        => $this->request->input('bulan'),
-            'tahun'        => $this->request->input('tahun'),
+            'bulan'        => $this->request['bulan'],
+            'tahun'        => $this->request['tahun'],
             'aki'          => $row['jumlah_aki'],
             'akb'          => $row['jumlah_akb'],
         ]);

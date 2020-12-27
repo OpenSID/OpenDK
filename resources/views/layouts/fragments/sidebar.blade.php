@@ -206,6 +206,24 @@ $user = Sentinel::getUser();
                             </ul>
                         </li>
                         @endif
+
+                        @if($user->hasAnyAccess(['admin', 'data-apbdes']))
+                        <li class="treeview {{ (Request::is(['data/apbdes/*', 'data/apbdes/index', 'data/apbdes'])? 'active' : '') }}">
+                            <a href="#"><i class="fa fa-circle-o"></i>Keuangan
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                            </a>
+                            <ul class="treeview-menu">
+                                @if($user->hasAnyAccess(['admin', 'data-apbdes']))
+                                <li {{ (Request::is(['data/apbdes/*', 'data/apbdes/index', 'data/apbdes'])? 'class=active' : '') }}>
+                                    <a href="{{ route('data.apbdes.index') }}"><i class="fa fa-circle-o"></i>Laporan APBDes</a>
+                                </li>
+                                @endif
+                            </ul>
+                        </li>
+                        @endif
+
                     </ul>
                 </li>
                 @endif

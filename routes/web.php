@@ -525,6 +525,19 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.anggaran-desa.import', 'uses' => 'AnggaranDesaController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-desa.do_import', 'uses' => 'AnggaranDesaController@do_import']);
                 });
+
+                //Routes Resource Apbdes
+                Route::group(['prefix' => 'apbdes'], function () {
+                    Route::get('getdata', ['as' => 'data.apbdes.getdata', 'uses' => 'ApbdesController@getApbdes']);
+                    Route::get('/', ['as' => 'data.apbdes.index', 'uses' => 'ApbdesController@index']);
+                    Route::post('store', ['as' => 'data.apbdes.store', 'uses' => 'ApbdesController@store']);
+                    Route::get('show/{id}', ['as' => 'data.apbdes.show', 'uses' => 'ApbdesController@show']);
+                    Route::get('download{id}', ['as' => 'data.apbdes.download', 'uses' => 'ApbdesController@download']);
+                    Route::put('update/{id}', ['as' => 'data.apbdes.update', 'uses' => 'ApbdesController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.apbdes.destroy', 'uses' => 'ApbdesController@destroy']);
+                    Route::get('import', ['as' => 'data.apbdes.import', 'uses' => 'ApbdesController@import']);
+                    Route::post('import-excel', ['as' => 'data.apbdes.import-excel', 'uses' => 'ApbdesController@importExcel']);
+                });
             });
 
             //Routes Resource Admin SIKOMA
@@ -556,37 +569,37 @@ Route::group(['middleware' => 'installed'], function () {
      *
      * Grouep Routing API Internal for Select2
      */
-    
+
     //Users JSON
     Route::get('/api/users', function () {
         return \App\Models\User::where('first_name', 'LIKE', '%' . request('q') . '%')->paginate(10);
     });
-    
+
     // All Provinsi Select2
     Route::get('/api/provinsi', function () {
         return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 2')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
-    
+
     // All Kabupaten Select2
     Route::get('/api/kabupaten', function () {
         return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 5')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
-    
+
     //  All Kecamatan Select2
     Route::get('/api/kecamatan', function () {
         return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 8')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
-    
+
     // All Desa Select2
     Route::get('/api/desa', function () {
         return \App\Models\Wilayah::whereRaw('LENGTH(kode) = 13')->where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     });
-    
+
     // Desa Select2 By Kecamatan ID
     Route::get('/api/desa-by-kid', function () {
         return DB::table('ref_desa')->select('kode', 'nama')->whereRaw('LENGTH(kode) = 2')->where('kecamatan_id', '=', strtoupper(request('kid')))->get();
     })->name('api.desa-by-kid');
-    
+
     // All Profil Select2
     Route::get('/api/profil', function () {
         return DB::table('das_profil')
@@ -595,7 +608,7 @@ Route::group(['middleware' => 'installed'], function () {
             ->where('ref_wilayah.nama', 'LIKE', '%' . strtoupper(request('q')) . '%')
             ->paginate(10);
     })->name('api.profil');
-    
+
     // Profil By id
     Route::get('/api/profil-byid', function () {
         return DB::table('das_profil')
@@ -603,12 +616,12 @@ Route::group(['middleware' => 'installed'], function () {
             ->select('ref_kecamatan.id', 'ref_kecamatan.nama')
             ->where('ref_kecamatan.id', '=', request('id'))->get();
     })->name('api.profil-byid');
-    
+
     // All Penduduk Select2
     Route::get('/api/penduduk', function () {
         return \App\Models\Penduduk::where('nama', 'LIKE', '%' . strtoupper(request('q')) . '%')->paginate(10);
     })->name('api.penduduk');
-    
+
     // Penduduk By id
     Route::get('/api/penduduk-byid', function () {
         return DB::table('das_penduduk')
@@ -626,7 +639,7 @@ Route::group(['middleware' => 'installed'], function () {
 
         return $return;
     })->name('api.test');
-    
+
     // Dashboard Kependudukan
     Route::namespace('Dashboard')->group(function () {
 

@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
 class PendudukQueueJob implements ShouldQueue
@@ -56,10 +57,17 @@ class PendudukQueueJob implements ShouldQueue
             if (isset($this->request['hapus_penduduk'])) {
                 foreach ($this->request['hapus_penduduk'] as $item) {
                     $id_pend_desa[] = $item['id_pend_desa'];
+                    $foto[] = $item['foto'];
                     $desa_id[] = $item['desa_id'];
                 }
 
-                Penduduk::whereIn('desa_id', $desa_id)->whereNotIn('id_pend_desa', $id_pend_desa)->delete();
+                // Hapus data penduduk di database
+                Penduduk::whereIn('desa_id', $desa_id)->whereIn('id_pend_desa', $id_pend_desa)->delete();
+
+                // Hapus file foto di folder
+                foreach ($foto as $hapusfoto) {
+                  Storage::disk('public')->delete('penduduk/foto/' . 'kecil_' . $hapusfoto);
+                }
             }
 
             DB::commit();

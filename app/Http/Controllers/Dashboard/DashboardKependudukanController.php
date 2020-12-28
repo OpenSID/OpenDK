@@ -83,6 +83,7 @@ class DashboardKependudukanController extends Controller
         $query_total_penduduk = DB::table('das_penduduk')
            // ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
             ->where('das_penduduk.kecamatan_id', '=', $kid)
+            ->where('status_dasar', '=', 1)
             //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
             ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
@@ -96,6 +97,7 @@ class DashboardKependudukanController extends Controller
             // ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
             ->where('das_penduduk.kecamatan_id', '=', $kid)
             ->where('sex', '=', 1)
+            ->where('status_dasar', '=', 1)
             ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
             $query_total_lakilaki->where('das_penduduk.desa_id', '=', $did);
@@ -108,6 +110,7 @@ class DashboardKependudukanController extends Controller
             //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
             ->where('das_penduduk.kecamatan_id', '=', $kid)
             ->where('sex', '=', 2)
+            ->where('status_dasar', '=', 1)
             //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
             ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
@@ -145,27 +148,29 @@ class DashboardKependudukanController extends Controller
             $query_ktp_wajib = DB::table('das_penduduk')
                 //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
                 ->where('warga_negara_id', 1) // WNI
+                ->where('status_dasar', '=', 1) // Hidup
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
                 ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_ktp_wajib->where('das_penduduk.desa_id', '=', $did);
             }
-            $query_ktp_wajib->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 > ? ', 17) // Di atas 17 Tahun
+            $query_ktp_wajib->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 >= ? ', 17) // Sama Dengan atau Di atas 17 Tahun
             ->orWhere('das_penduduk.status_kawin', '<>', 1);
             $ktp_wajib = $query_ktp_wajib->count();
 
             $query_ktp_terpenuhi = DB::table('das_penduduk')
                 ->where('warga_negara_id', 1) // WNI
+                ->where('status_dasar', '=', 1) // Hidup
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
                 ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_ktp_terpenuhi->where('das_penduduk.desa_id', '=', $did);
             }
-            $query_ktp_terpenuhi->where('ktp_el', '=', 1);
+            $query_ktp_terpenuhi->where('status_rekam', '=', 4);
             $ktp_terpenuhi        = $query_ktp_terpenuhi->count();
-            $ktp_persen_terpenuhi = ($ktp_wajib - $ktp_terpenuhi) / $ktp_wajib * 100;
+            $ktp_persen_terpenuhi = $ktp_terpenuhi / $ktp_wajib * 100;
 
             $data['ktp_wajib']            = number_format($ktp_wajib);
             $data['ktp_terpenuhi']        = number_format($ktp_terpenuhi);

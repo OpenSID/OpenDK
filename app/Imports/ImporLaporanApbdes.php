@@ -22,7 +22,7 @@ class ImporLaporanApbdes implements ToCollection, WithHeadingRow, WithChunkReadi
     protected $kabupaten_id;
     protected $kecamatan_id;
 
-    public function __construct(array $request)
+    public function __construct()
     {
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);

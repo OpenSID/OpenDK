@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use function config;
 use function substr;
 
-class SinkronPenduduk implements ToCollection, WithHeadingRow
+class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -21,11 +21,19 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow
     protected $kabupaten_id;
     protected $kecamatan_id;
 
-    public function __construct(Request $request)
+    public function __construct()
     {
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
         $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
@@ -76,7 +84,6 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow
                 'kabupaten_id'    => $this->kabupaten_id,
                 'kecamatan_id'    => $this->kecamatan_id,
                 'desa_id'         => $value['desa_id'],
-                'tahun'           => $value['tahun'],
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],

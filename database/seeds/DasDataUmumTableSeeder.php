@@ -22,7 +22,7 @@ class DasDataUmumTableSeeder extends Seeder
             'kecamatan_id'           => config('app.default_profile'),
             'tipologi'               => null,
             'ketinggian'             => 1,
-            'luas_wilayah'           => 0.0,
+            'luas_wilayah'           => 2.0,
             'jumlah_penduduk'        => 0,
             'jml_laki_laki'          => 0,
             'jml_perempuan'          => 0,

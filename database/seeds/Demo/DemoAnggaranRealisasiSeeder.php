@@ -4,7 +4,6 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporAnggaranRealisasi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoAnggaranRealisasiSeeder extends Seeder
@@ -17,10 +16,10 @@ class DemoAnggaranRealisasiSeeder extends Seeder
     public function run()
     {
         Excel::import(
-            new ImporAnggaranRealisasi(Request::merge([
+            new ImporAnggaranRealisasi([
                 'bulan' => now()->month,
                 'tahun' => now()->year,
-            ])),
+            ]),
             'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
             'public'
         );

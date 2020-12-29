@@ -17,11 +17,11 @@ class DemoEpidemiPenyakitSeeder extends Seeder
     public function run()
     {
         Excel::import(
-            new ImporEpidemiPenyakit(Request::merge([
+            new ImporEpidemiPenyakit([
                 'penyakit_id' => 1,
                 'bulan'       => now()->month,
                 'tahun'       => now()->year,
-            ])),
+            ]),
             'template_upload/Format_Upload_Epidemi_Penyakit.xlsx',
             'public'
         );

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
@@ -20,9 +20,8 @@ use function request;
 use function strtolower;
 use function ucfirst;
 use function view;
-use function years_list;
 
-class DashboardKependudukanController extends Controller
+class KependudukanController extends Controller
 {
     /**
      * Menampilkan Data Kependudukan
@@ -35,7 +34,7 @@ class DashboardKependudukanController extends Controller
         $data['page_description'] = 'Statistik Kependudukan';
         $defaultProfil            = config('app.default_profile');
         $data['defaultProfil']    = $defaultProfil;
-        $data['year_list']        = years_list();
+        $data['year_list']        = $this->years_list();
         $data['list_kecamatan']   = Profil::with('kecamatan')->orderBy('kecamatan_id', 'desc')->get();
         $data['list_desa']        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
 
@@ -44,13 +43,30 @@ class DashboardKependudukanController extends Controller
         return view('pages.kependudukan.show_kependudukan')->with($data);
     }
 
+    /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
+    protected function years_list()
+    {
+        $tahun_tertua = DB::table('das_penduduk')
+            ->select(DB::raw('YEAR(created_at) as tahun'))
+            ->distinct()
+            ->orderBy('tahun', 'desc')
+            ->limit(1)
+            ->get()->first()->tahun;
+        $tahun_tertua = $tahun_tertua ?: date("Y");
+        $years = [];
+        for ($y = $tahun_tertua; $y <= date("Y"); $y++) {
+            $years[] = $y;
+        }
+        return array_reverse($years);
+    }
+
     public function showKependudukanPartial()
     {
         $data['page_title']       = 'Kependudukan';
         $data['page_description'] = 'Statistik Kependudukan';
         $defaultProfil            = env('DAS_DEFAULT_PROFIL', '1');
         $data['defaultProfil']    = $defaultProfil;
-        $data['year_list']        = years_list();
+        $data['year_list']        = $this->years_list();
 
         if (! empty(request('kid')) && ! empty(request('did')) && request('y')) {
             $data = array_merge($data, $this->createDashboardKependudukan(request('kid'), request('did'), request('y')));
@@ -68,7 +84,7 @@ class DashboardKependudukanController extends Controller
            // ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
             ->where('das_penduduk.kecamatan_id', '=', $kid)
             //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-            ->where('das_penduduk.tahun', $year);
+            ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
             $query_total_penduduk->where('das_penduduk.desa_id', '=', $did);
         }
@@ -76,14 +92,15 @@ class DashboardKependudukanController extends Controller
         $data['total_penduduk'] = number_format($total_penduduk);
 
         // Get Total Lakilaki
-        /*$query_total_lakilaki = DB::table('das_penduduk')
-            ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
+        $query_total_lakilaki = DB::table('das_penduduk')
+            // ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
             ->where('das_penduduk.kecamatan_id', '=', $kid)
-            ->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
+            ->where('sex', '=', 1)
+            ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
             $query_total_lakilaki->where('das_penduduk.desa_id', '=', $did);
-        }*/
-        $total_lakilaki         = $query_total_penduduk->where('sex', '=', 1)->count();
+        }
+        $total_lakilaki         = $query_total_lakilaki->count();
         $data['total_lakilaki'] = number_format($total_lakilaki);
 
         // Get Total Perempuan
@@ -92,7 +109,7 @@ class DashboardKependudukanController extends Controller
             ->where('das_penduduk.kecamatan_id', '=', $kid)
             ->where('sex', '=', 2)
             //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-            ->where('das_penduduk.tahun', $year);
+            ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
             $query_total_perempuan->where('das_penduduk.desa_id', '=', $did);
         }
@@ -105,7 +122,7 @@ class DashboardKependudukanController extends Controller
             ->where('das_penduduk.kecamatan_id', '=', $kid)
             ->where('cacat_id', '<>', 7)
             //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-            ->where('das_penduduk.tahun', $year);
+            ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
         if ($did != 'ALL') {
             $query_total_disabilitas->where('das_penduduk.desa_id', '=', $did);
         }
@@ -130,7 +147,7 @@ class DashboardKependudukanController extends Controller
                 ->where('warga_negara_id', 1) // WNI
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-                ->where('das_penduduk.tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_ktp_wajib->where('das_penduduk.desa_id', '=', $did);
             }
@@ -142,7 +159,7 @@ class DashboardKependudukanController extends Controller
                 ->where('warga_negara_id', 1) // WNI
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-                ->where('das_penduduk.tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_ktp_terpenuhi->where('das_penduduk.desa_id', '=', $did);
             }
@@ -161,7 +178,7 @@ class DashboardKependudukanController extends Controller
                 ->where('das_penduduk.akta_lahir', '<>', ' ')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                // ->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-               ->where('das_penduduk.tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_akta_terpenuhi->where('das_penduduk.desa_id', '=', $did);
             }
@@ -177,7 +194,7 @@ class DashboardKependudukanController extends Controller
                 ->where('status_kawin', '<>', 1)
                 ->where('kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-                ->where('tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_aktanikah_wajib->where('desa_id', '=', $did);
             }
@@ -191,7 +208,7 @@ class DashboardKependudukanController extends Controller
                 ->where('das_penduduk.akta_perkawinan', '<>', ' ')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
-                ->where('das_penduduk.tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query_aktanikah_terpenuhi->where('das_penduduk.desa_id', '=', $did);
             }
@@ -218,14 +235,14 @@ class DashboardKependudukanController extends Controller
 
         // Data Grafik Pertumbuhan
         $data = [];
-        foreach (array_sort(years_list()) as $yearls) {
+        foreach (array_sort($this->years_list()) as $yearls) {
             $query_result_laki = DB::table('das_penduduk')
                 //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
                 ->select('das_keluarga.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_penduduk.sex', '=', 1)
                //->whereRaw('year(das_keluarga.tgl_daftar) = ?', $yearls);
-               ->where('das_penduduk.tahun', $yearls);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearls);
             if ($did != 'ALL') {
                 $query_result_laki->where('das_penduduk.desa_id', '=', $did);
             }
@@ -236,7 +253,7 @@ class DashboardKependudukanController extends Controller
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_penduduk.sex', '=', 2)
                 //->whereRaw('year(das_keluarga.tgl_daftar) = ?', $yearls);
-                ->where('das_penduduk.tahun', $yearls);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearls);
             if ($did != 'ALL') {
                 $query_result_perempuan->where('das_penduduk.desa_id', '=', $did);
             }
@@ -260,7 +277,7 @@ class DashboardKependudukanController extends Controller
                 //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar) = ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 > ? ', $umur->dari)
                 ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(tanggal_lahir)), \'%Y\')+0 <= ?', $umur->sampai);
             if ($did != 'ALL') {
@@ -282,14 +299,14 @@ class DashboardKependudukanController extends Controller
         // Grafik Data Pendidikan
         $data_pendidikan = [];
         if ($year == 'ALL') {
-            foreach (years_list() as $yearl) {
+            foreach ($this->years_list() as $yearl) {
                 // SD
                 $query_total_sd = DB::table('das_penduduk')
                     //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
                     ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                     ->where('das_penduduk.kecamatan_id', '=', $kid)
                     //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $yearl)
-                    ->where('das_penduduk.tahun', $yearl)
+                    ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearl)
                     ->where('das_penduduk.pendidikan_kk_id', '=', 3);
                 if ($did != 'ALL') {
                     $query_total_sd->where('das_penduduk.desa_id', '=', $did);
@@ -302,7 +319,7 @@ class DashboardKependudukanController extends Controller
                     ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                     ->where('das_penduduk.kecamatan_id', '=', $kid)
                     //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $yearl)
-                    ->where('das_penduduk.tahun', $yearl)
+                    ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearl)
                     ->where('das_penduduk.pendidikan_kk_id', '=', 4);
                 if ($did != 'ALL') {
                     $query_total_sltp->where('das_penduduk.desa_id', '=', $did);
@@ -315,7 +332,7 @@ class DashboardKependudukanController extends Controller
                     ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                     ->where('das_penduduk.kecamatan_id', '=', $kid)
                     //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $yearl)
-                    ->where('das_penduduk.tahun', $yearl)
+                    ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearl)
                     ->where('das_penduduk.pendidikan_kk_id', '=', 5);
                 if ($did != 'ALL') {
                     $query_total_slta->where('das_penduduk.desa_id', '=', $did);
@@ -328,7 +345,7 @@ class DashboardKependudukanController extends Controller
                     ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                     ->where('das_penduduk.kecamatan_id', '=', $kid)
                     //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $yearl)
-                    ->where('das_penduduk.tahun', $yearl)
+                    ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearl)
                     ->whereRaw('(das_penduduk.pendidikan_kk_id = 6 or das_penduduk.pendidikan_kk_id = 7)');
                 if ($did != 'ALL') {
                     $query_total_diploma->where('das_penduduk.desa_id', '=', $did);
@@ -341,7 +358,7 @@ class DashboardKependudukanController extends Controller
                     ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                     ->where('das_penduduk.kecamatan_id', '=', $kid)
                     //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $yearl)
-                    ->where('das_penduduk.tahun', $yearl)
+                    ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $yearl)
                     ->whereRaw('(das_penduduk.pendidikan_kk_id = 8 or das_penduduk.pendidikan_kk_id = 9 or das_penduduk.pendidikan_kk_id = 10)');
                 if ($did != 'ALL') {
                     $query_total_sarjana->where('das_penduduk.desa_id', '=', $did);
@@ -364,7 +381,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->where('das_penduduk.pendidikan_kk_id', '=', 3);
             if ($did != 'ALL') {
                 $query_total_sd->where('das_penduduk.desa_id', '=', $did);
@@ -377,7 +394,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->where('das_penduduk.pendidikan_kk_id', '=', 4);
             if ($did != 'ALL') {
                 $query_total_sltp->where('das_penduduk.desa_id', '=', $did);
@@ -390,7 +407,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->where('das_penduduk.pendidikan_kk_id', '=', 5);
             if ($did != 'ALL') {
                 $query_total_slta->where('das_penduduk.desa_id', '=', $did);
@@ -403,7 +420,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->whereRaw('(das_penduduk.pendidikan_kk_id = 6 or das_penduduk.pendidikan_kk_id = 7)');
             if ($did != 'ALL') {
                 $query_total_diploma->where('das_penduduk.desa_id', '=', $did);
@@ -416,7 +433,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->whereRaw('(das_penduduk.pendidikan_kk_id = 8 or das_penduduk.pendidikan_kk_id = 9 or das_penduduk.pendidikan_kk_id = 10)');
             if ($did != 'ALL') {
                 $query_total_sarjana->where('das_penduduk.desa_id', '=', $did);
@@ -452,7 +469,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($val->id != 13) {
                 $query_total->where('das_penduduk.golongan_darah_id', '=', $val->id);
             } else {
@@ -485,7 +502,7 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->where('das_penduduk.status_kawin', '=', $val->id);
 
             if ($did != 'ALL') {
@@ -514,8 +531,8 @@ class DashboardKependudukanController extends Controller
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
-                ->where('das_penduduk.agama_id', '=', $val->id);
+                ->where('das_penduduk.agama_id', '=', $val->id)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
 
             if ($did != 'ALL') {
                 $query_total->where('das_penduduk.desa_id', '=', $did);
@@ -550,7 +567,7 @@ class DashboardKependudukanController extends Controller
                 //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->where('das_penduduk.tahun', $year)
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year)
                 ->where('das_penduduk.sex', '=', $val['id']);
 
             if ($did != 'ALL') {
@@ -577,11 +594,11 @@ class DashboardKependudukanController extends Controller
             ->join('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
             ->selectRaw('das_penduduk.id, das_penduduk.nik, das_penduduk.nama, das_penduduk.no_kk, das_penduduk.alamat_sekarang as alamat,
             ref_pendidikan_kk.nama as pendidikan,
-            das_penduduk.tanggal_lahir, ref_kawin.nama as status_kawin, ref_pekerjaan.nama as pekerjaan');
+            das_penduduk.tanggal_lahir, ref_kawin.nama as status_kawin, ref_pekerjaan.nama as pekerjaan, das_penduduk.foto');
         if ($type == 'C') {
             $query->where('das_penduduk.kecamatan_id', '=', $kid)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year);
-                ->where('tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query->where('das_penduduk.desa_id', '=', $did);
             }
@@ -590,7 +607,7 @@ class DashboardKependudukanController extends Controller
             $query->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_penduduk.sex', '=', 1)
                // ->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year);
-               ->where('tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query->where('das_penduduk.desa_id', '=', $did);
             }
@@ -599,7 +616,7 @@ class DashboardKependudukanController extends Controller
             $query->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_penduduk.sex', '=', 2)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year);
-                ->where('tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query->where('das_penduduk.desa_id', '=', $did);
             }
@@ -608,7 +625,7 @@ class DashboardKependudukanController extends Controller
             $query->where('das_penduduk.kecamatan_id', '=', $kid)
                 ->where('das_penduduk.cacat_id', '<>', 7)
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year);
-                ->where('tahun', $year);
+                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {
                 $query->where('das_penduduk.desa_id', '=', $did);
             }

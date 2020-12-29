@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
-use App\Models\Wilayah;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +12,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -77,12 +75,12 @@ class FasilitasPaudController extends Controller
             'desa_id'  => 'required|unique:das_fasilitas_paud,desa_id',
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'tahun'    => 'required|unique:das_fasilitas_paud',
-            'semester' => 'required|unique:das_fasilitas_paud'
+            'semester' => 'required|unique:das_fasilitas_paud',
         ]);
 
         try {
-            (new ImporFasilitasPaud($request))
-                ->import($request->file('file'));
+            (new ImporFasilitasPaud($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

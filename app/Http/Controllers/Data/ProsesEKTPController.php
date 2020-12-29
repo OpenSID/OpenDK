@@ -147,7 +147,7 @@ class ProsesEKTPController extends Controller
                 'das_proses_ektp.alamat as alamat',
                 'das_proses_ektp.tanggal_pengajuan',
                 'das_proses_ektp.tanggal_selesai',
-                'das_proses_ektp.status'
+                'das_proses_ektp.status',
             ]))
             ->addColumn('action', function ($row) {
                 $edit_url   = route('data.proses-ektp.edit', $row->id);

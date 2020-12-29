@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+
+use function sprintf;
 
 class Wilayah extends Model
 {
@@ -17,16 +20,16 @@ class Wilayah extends Model
     protected $keyType = 'string';
 
     public $incrementing = false;
-    
+
     public $table = 'ref_wilayah';
-    
+
     protected $fillable = ['kode', 'nama', 'tahun'];
 
     /**
      * Scope query untuk menampilkan hanya provinsi.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeProvinsi($query)
     {
@@ -36,8 +39,8 @@ class Wilayah extends Model
     /**
      * Scope query untuk menampilkan hanya kabupaten.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeKabupaten($query)
     {
@@ -47,8 +50,8 @@ class Wilayah extends Model
     /**
      * Scope query untuk menampilkan hanya kecamatan.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeKecamatan($query)
     {
@@ -58,8 +61,8 @@ class Wilayah extends Model
     /**
      * Scope query untuk menampilkan hanya desa.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeDesa($query)
     {
@@ -69,8 +72,8 @@ class Wilayah extends Model
     /**
      * Scope query untuk menampilkan desa berdaskan id kecamatan.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param Builder $query
+     * @return Builder
      */
     public function scopeGetDesaByKecamatan($query, $kecamatan_id)
     {

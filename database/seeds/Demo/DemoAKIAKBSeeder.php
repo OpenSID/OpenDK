@@ -4,7 +4,6 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporAKIAKB;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoAKIAKBSeeder extends Seeder
@@ -17,10 +16,10 @@ class DemoAKIAKBSeeder extends Seeder
     public function run()
     {
         Excel::import(
-            new ImporAKIAKB(Request::merge([
+            new ImporAKIAKB([
                 'bulan'   => now()->month,
                 'tahun'   => now()->year,
-            ])),
+            ]),
             'template_upload/Format_Upload_AKI_&_AKB.xlsx',
             'public'
         );

@@ -93,8 +93,8 @@ class ToiletSanitasiController extends Controller
         ]);
 
         try {
-            (new ImporToiletSanitasi($request))
-                ->import($request->file('file'));
+            (new ImporToiletSanitasi($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

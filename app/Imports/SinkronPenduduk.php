@@ -3,18 +3,16 @@
 namespace App\Imports;
 
 use App\Models\Penduduk;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 use function config;
-use function now;
 use function substr;
 
-class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class SinkronPenduduk implements ToCollection, WithHeadingRow
 {
     use Importable;
 
@@ -23,19 +21,11 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
     protected $kabupaten_id;
     protected $kecamatan_id;
 
-    public function __construct(array $request)
+    public function __construct(Request $request)
     {
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
         $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function chunkSize(): int
-    {
-        return 1000;
     }
 
     /**
@@ -86,6 +76,7 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'kabupaten_id'    => $this->kabupaten_id,
                 'kecamatan_id'    => $this->kecamatan_id,
                 'desa_id'         => $value['desa_id'],
+                'tahun'           => $value['tahun'],
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],

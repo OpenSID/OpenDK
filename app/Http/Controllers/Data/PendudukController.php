@@ -257,7 +257,7 @@ class PendudukController extends Controller
     public function importExcel(Request $request)
     {
         $this->validate($request, [
-            'file' => 'file|mimes:zip|max:5120',
+            'file' => 'file|mimes:zip|max:51200',
         ]);
 
         try {
@@ -276,8 +276,8 @@ class PendudukController extends Controller
             $zip->close();
 
             // Proses impor excell
-            (new ImporPenduduk($request))
-                ->import($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+            (new ImporPenduduk($request->all()))
+                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

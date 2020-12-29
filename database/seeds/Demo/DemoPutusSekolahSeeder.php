@@ -18,11 +18,11 @@ class DemoPutusSekolahSeeder extends Seeder
     public function run()
     {
         Excel::import(
-            new ImporPutusSekolah(Request::merge([
+            new ImporPutusSekolah([
                 'semester' => 1,
                 'tahun'    => now()->year,
                 'desa_id'  => DataDesa::first()->desa_id,
-            ])),
+            ]),
             'template_upload/Format_Upload_Putus_Sekolah.xlsx',
             'public'
         );

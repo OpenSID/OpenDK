@@ -92,8 +92,8 @@ class AnggaranDesaController extends Controller
         ]);
 
         try {
-            (new ImporAPBDesa($request))
-                ->import($request->file('file'));
+            (new ImporAPBDesa($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

@@ -22,7 +22,7 @@ h4{
     margin-right: 20px;
 }
 
-#myImg {
+.post img {
   border: 0 solid;
   transition: wi2s;
   width: 100%;
@@ -39,22 +39,22 @@ h4{
 @endpush
 @section('content')
 <div class="col-md-8 no-padding fadeIn">
-    @foreach ($artikel->item as $data)
-    <div class="box box-widget">
+    @foreach ($artikel->channel->item as $data)
+    <div class="card-body d-flex flex-column align-items-start">
         <div class="box-body">
             <div class="post">
-                @if(! $data->enclosure['url'] == '')
-                <img id="myImg" src="{{utf8_decode($data->enclosure['url'])}}" alt="{{ $data->title }}">
-            @else
-            <img class="img-thumb responsive" id="myImg"  src="{{ asset('/img/no-image-post.png') }}" alt="Logo {{ $sebutan_wilayah }}">
-            @endif
+                {{-- @if(! $data->enclosure['url'] == '') --}}
+                <img  class="pull-left img-responsive postImg img-thumbnail margin10" src="{{utf8_decode($data->enclosure['url'])}}" alt="{{ $data->title }}">
+            {{-- @else
+            <img class="img-thumb responsive" src="{{ asset('/img/no-image-post.png') }}" alt="Logo {{ $sebutan_wilayah }}">
+            @endif --}}
         </div>
             <h4 class="text-bold">{{ $data->title }}</h4>
                     <small class="text-muted"> <i class="fa fa-clock-o"></i> {!! $data->pubdate !!} </small>
             {{-- <small class="text-muted"><i class="fa fa-user-o fa-xs"></i> Administrator </small>
             <small class="text-muted"><i class="fa fa-comments-o"></i> 0 </small>
             <small class="text-muted"><i class="fa fa-eye"></i> 10 </small> --}}
-            <p class="text-justify clearfix" style="margin: 0px 10px">{!!  $data->description  !!}<a href="{{ $data->link }}" class="btn btn-default btn-xs btn-round">Baca Selengkapnya</a></p>
+            <p class="text-justify card-text mb-auto" style="margin: 0px 10px">{!!  $data->description  !!}<a href="{{ $data->link }}" class="btn btn-default btn-xs btn-round">Baca Selengkapnya</a></p>
         </div>
        
             {{-- <div class="pull-right text-muted">

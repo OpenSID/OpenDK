@@ -131,7 +131,6 @@
             @if (Route::currentRouteName() === 'beranda')
             
                 @include('layouts.frontends.slider')
-                @include('layouts.frontends.service')
             @endif
             <div class="container">
                 <!-- Main content -->

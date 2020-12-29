@@ -35,7 +35,7 @@ class ProfilController extends Controller
         // Mengambil berita dari desa untuk ditampilkan diberanda kecamatan
         $rss = file_get_contents('https://demo.opensid.my.id/feed');
         $artikel = new SimpleXMLElement($rss);
-        return view('pages.post', compact('page_title'))->with('artikel', $artikel);
+        return view('pages.index', compact('page_title'))->with('artikel', $artikel);
     }
 
     public function showKependudukanPartial()

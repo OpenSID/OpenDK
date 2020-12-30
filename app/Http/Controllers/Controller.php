@@ -33,7 +33,6 @@ class Controller extends BaseController
         $defaultProfil = config('app.default_profile');
 
         $getProfilWilayah = Profil::where('kecamatan_id', $defaultProfil)->first();
-
         $kode_provinsi = $getProfilWilayah->provinsi->kode;
         if (in_array($kode_provinsi, [91, 92])){
             $this->sebutan_wilayah = 'Distrik';

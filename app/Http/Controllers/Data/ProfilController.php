@@ -36,13 +36,11 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        /*$page_title = 'Profil';
-        $page_description= 'Data Profil Kecamatan';
-        return view('data.profil.index', compact('page_title', 'page_description'));*/
         $profil = Profil::where('kecamatan_id', config('app.default_profile'))->first();
 
         $profil->file_struktur_organisasi = is_img($profil->file_struktur_organisasi);
         $profil->file_logo                = is_img($profil->file_logo);
+        $profil->foto_kepala_wilayah                = is_img($profil->foto_kepala_wilayah);
 
         $page_title       = 'Ubah Profil';
         $page_description =   ucwords(strtolower($this->sebutan_wilayah).' : ' . $profil->kecamatan->nama);
@@ -179,8 +177,11 @@ class ProfilController extends Controller
         ], []);
 
         try {
+            // dd($request->socialmedia);
             $profil = Profil::find($id);
             $profil->fill($request->all());
+            $profil->sambutan     = $request->sambutan;
+            $profil->socialmedia  = $request->socialmedia;
             $profil->kabupaten_id = substr($profil->kecamatan_id, 0, 5);
             $profil->provinsi_id  = substr($profil->kecamatan_id, 0, 2);
 
@@ -203,6 +204,14 @@ class ProfilController extends Controller
                 $fileLogoName = $fileLogo->getClientOriginalName();
                 $request->file('file_logo')->move("storage/profil/file_logo/", $fileLogoName);
                 $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
+            }
+            if ($request->file('foto_kepala_wilayah') == "") {
+                $profil->foto_kepala_wilayah = $profil->foto_kepala_wilayah;
+            } else {
+                $fileFoto     = $request->file('foto_kepala_wilayah');
+                $fileFotoName = $fileFoto->getClientOriginalName();
+                $request->file('foto_kepala_wilayah')->move("storage/profil/pegawai/", $fileFotoName);
+                $profil->foto_kepala_wilayah = 'storage/profil/pegawai/' . $fileFotoName;
             }
 
             $profil->update();

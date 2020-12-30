@@ -41,9 +41,7 @@
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css') }}">
     @stack('css')
-    @if (Route::currentRouteName() === 'beranda')
-        <link rel="stylesheet" href="{{ asset('/css/slider.css') }}">
-    @endif
+    <link rel="stylesheet" href="{{ asset('/css/slider.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/skins/skin-blue.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
@@ -112,65 +110,52 @@
 });
     </script> 
     <!-- overlay !-->
-
     <div class="wrapper">
         <div id="search" class="fades animated">
             <a href="#" class="close-btn" id="close-search">
                 <em class="fa fa-times"></em>
             </a>
-            <form method="post">
+            <form method="get" action="" role="search">
                 <input class="form-control" placeholder="Mulai Pencarian" id="searchbox" type="search" />
             </form>
         </div>
         <!--- /overlay -->
-
         @include('layouts.frontends.topheader')
         @include('layouts.frontends.header')
-        {{-- @include('pages.sambutan') --}}
         <div class="content-wrapper">
             @if (Route::currentRouteName() === 'beranda')
-            
                 @include('layouts.frontends.slider')
-                {{-- @include('layouts.frontends.service') --}}
             @endif
             <div class="container">
                 <!-- Main content -->
-                <div class="row">
-                    <section class="content container-fluid">
+                <section class="content">
+                        <div class="row">
                         @if (Route::currentRouteName() === 'beranda')
-                        {{-- @include('pages.sambutan') --}}
                         @else
                             @include('layouts.frontends.breadcumb')
                         @endif
                         @yield('content')
                         @include('layouts.frontends.sidebar')
-                    </section>
-                    {{-- @include('.layouts.frontends.instansi') --}}
-                </div>
+                    </div>
+                </section>
                 <!-- /.content -->
-                
             </div>
             <!-- /.container -->
         </div>
         <!-- /.content-wrapper -->
         @include('.layouts.frontends.footer')
     </div>
-
     <!-- ./wrapper -->
-
     <div class="scroll-top-wrapper ">
        <span class="scroll-top-inner">
                 <i class="fa fa-2x fa-arrow-circle-up"></i>
             </span>
     </div>
     <!-- ./wrapper -->
-
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 3 -->
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
-    
-    {{-- <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script> --}}
-    <script>
+        <script>
 		setTimeout(function(){
 		$('.preloader_bg').fadeToggle();
 		}, 500);

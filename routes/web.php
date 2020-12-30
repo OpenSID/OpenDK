@@ -112,7 +112,17 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'setting.tipe-potensi.update', 'uses' => 'Setting\TipePotensiController@update']);
                 Route::delete('destroy/{id}', ['as' => 'setting.tipe-potensi.destroy', 'uses' => 'Setting\TipePotensiController@destroy']);
             });
+            Route::group(['prefix' => 'slide'], function(){
+                Route::get('/', ['as' => 'setting.slide.index', 'uses' => 'Setting\SlideController@index']);
+                Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
+                Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
+                Route::post('store', ['as' => 'setting.slide.store', 'uses' => 'Setting\SlideController@store']);
+                Route::get('edit/{id}', ['as' => 'setting.slide.edit', 'uses' => 'Setting\SlideController@edit']);
+                Route::get('show/{id}', ['as' => 'setting.slide.show', 'uses' => 'Setting\SlideController@show']);
+                Route::put('update/{id}', ['as' => 'setting.slide.update', 'uses' => 'Setting\SlideController@update']);
+                Route::delete('destroy/{id}', ['as' => 'setting.slide.destroy', 'uses' => 'Setting\SlideController@destroy']);
 
+            });
             // COA
             Route::group(['prefix' => 'coa'], function () {
                 Route::get('/', ['as' => 'setting.coa.index', 'uses' => 'Setting\COAController@index']);
@@ -137,7 +147,11 @@ Route::group(['middleware' => 'installed'], function () {
      * Group Routing for Dashboard / Pengunjung Website
      */
     Route::namespace('Page')->group(function () {
-        Route::get('/', 'ProfilController@index')->name('beranda');
+        Route::get('/', 'PageController@index')->name('beranda');
+        Route::post('#search',function(){
+            // return 'hello';
+            dd($request);
+        });
         
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
@@ -236,11 +250,6 @@ Route::group(['middleware' => 'installed'], function () {
     Route::get('dashboard', 'HomeController@index')->name('dashboard.profil');
     Route::namespace('Informasi')->group(function () {
         Route::group(['prefix' => 'informasi'], function () {
-
-            // Berita desa
-            Route::group(['prefix' => 'berita-desa'], function () {
-                Route::get('/', ['as' => 'informasi.berita-desa.index', 'uses' => 'BeritaDesaController@index']);
-            });
 
             //Routes for prosedur resource
             Route::group(['prefix' => 'prosedur'], function () {

@@ -260,7 +260,7 @@ body{
 	top: 0;
 	font-size: 17px;
 	/* Big font size */
-	font-weight: bold;
+	font-weight: bold;	
 	/* position: fixed; */
 }
 
@@ -445,10 +445,6 @@ body:hover::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-track :hover {
 	background-color: #000000;
 }
-
-
-/* Style untuk  Service/Layanan */
-
 
 /* services items */
 
@@ -713,7 +709,7 @@ body::-webkit-scrollbar-track :hover {
 	animation-name: fadeIn;
 }
 
-.section-title h3 {
+.section-title h4 {
 	text-align: center;
 	font-size: 18px;
 	font-weight: 600;
@@ -727,13 +723,15 @@ body::-webkit-scrollbar-track :hover {
 .section-title::after {
 	content: "";
 	height: 3px;
-	background: #fbb900;
-	width: 80px;
-	position: absolute;
+	background: #666664;
+	/* width: 80px; */
+	/* position: absolute; */
+	display:block;
 	left: 0;
 	right: 0;
 	margin: auto;
 }
+
 
 .footer-top {
 	background: #1f2d41;

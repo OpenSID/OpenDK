@@ -1,4 +1,4 @@
-<div class="col-md-4 col-sm-6" style="position: relative;">
+<div class="col-md-4">
     <div class="box box-widget">
         @include('widgets.komplain')
     </div>

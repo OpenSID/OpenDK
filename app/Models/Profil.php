@@ -27,8 +27,15 @@ class Profil extends Model
         'kepsek_trantib',
         'file_struktur_organisasi',
         'file_logo',
+        'sambutan',
+        'socialmedia',
         'visi',
         'misi',
+        'foto_kepala_wilayah',
+    ];
+
+    protected $cast = [
+        'socialmedia' => 'array'
     ];
 
     public function kecamatan()

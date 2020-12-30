@@ -170,7 +170,7 @@ class DashboardKependudukanController extends Controller
             }
             $query_ktp_terpenuhi->where('status_rekam', '=', 4);
             $ktp_terpenuhi        = $query_ktp_terpenuhi->count();
-            $ktp_persen_terpenuhi = $ktp_terpenuhi / $ktp_wajib * 100;
+            $ktp_persen_terpenuhi = ($total_penduduk - $ktp_terpenuhi) / $ktp_wajib * 100;
 
             $data['ktp_wajib']            = number_format($ktp_wajib);
             $data['ktp_terpenuhi']        = number_format($ktp_terpenuhi);
@@ -179,8 +179,9 @@ class DashboardKependudukanController extends Controller
             // Get Data Akta Penduduk Terpenuhi
             $query_akta_terpenuhi = DB::table('das_penduduk')
                // ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
+                ->where('das_penduduk.status_dasar', '=', 1)
                 ->where('das_penduduk.akta_lahir', '<>', null)
-                ->where('das_penduduk.akta_lahir', '<>', ' ')
+                ->where('das_penduduk.akta_lahir', '<>', '-')
                 ->where('das_penduduk.kecamatan_id', '=', $kid)
                // ->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
                 ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);

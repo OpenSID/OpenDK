@@ -53,9 +53,9 @@
       margin-bottom: 1rem;">
       <div class="pull-right hidden-xs no-padding">
         <ul class="navbottom"> 
-          <li class="listNavbottom"> <strong> <a href="https://yourdomain.com/feed" target="_blank"><i class="fa fa-rss"></i> </a></strong></li>
+          {{-- <li class="listNavbottom"> <strong> <a href="https://yourdomain.com/feed" target="_blank"><i class="fa fa-rss"></i> </a></strong></li> --}}
           <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li>
-          <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li>
+          {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>
       <strong>&copy; 2017 - {{ now()->format('Y') }} <a href="https://kompak.or.id">KOMPAK.</a> All rights reserved.</strong> 

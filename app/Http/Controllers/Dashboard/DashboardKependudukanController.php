@@ -170,7 +170,7 @@ class DashboardKependudukanController extends Controller
             }
             $query_ktp_terpenuhi->where('status_rekam', '=', 4);
             $ktp_terpenuhi        = $query_ktp_terpenuhi->count();
-            $ktp_persen_terpenuhi = ($total_penduduk - $ktp_terpenuhi) / $ktp_wajib * 100;
+            $ktp_persen_terpenuhi = ($ktp_terpenuhi / $total_penduduk) * 100;
 
             $data['ktp_wajib']            = number_format($ktp_wajib);
             $data['ktp_terpenuhi']        = number_format($ktp_terpenuhi);
@@ -189,15 +189,15 @@ class DashboardKependudukanController extends Controller
                 $query_akta_terpenuhi->where('das_penduduk.desa_id', '=', $did);
             }
             $akta_terpenuhi                = $query_akta_terpenuhi->count();
-            $akta_persen_terpenuhi         = ($total_penduduk - $akta_terpenuhi) / $total_penduduk * 100;
+            $akta_persen_terpenuhi         = ($akta_terpenuhi / $total_penduduk) * 100;
             $data['akta_terpenuhi']        = number_format($akta_terpenuhi);
             $data['akta_persen_terpenuhi'] = number_format($akta_persen_terpenuhi);
 
             // Get Data Akta Nikah Penduduk Terpenuhi
             $query_aktanikah_wajib = DB::table('das_penduduk')
                 ->where('warga_negara_id', 1) // WNI
-                ->where('agama_id', '<>', 1)
-                ->where('status_kawin', '<>', 1)
+                ->where('status_dasar', '=', 1)
+                ->where('status_kawin', '=', 2)
                 ->where('kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
                 ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
@@ -207,12 +207,13 @@ class DashboardKependudukanController extends Controller
             $aktanikah_wajib = $query_aktanikah_wajib->count();
 
             $query_aktanikah_terpenuhi = DB::table('das_penduduk')
-                ->where('das_penduduk.warga_negara_id', 1) // WNI
-                ->where('das_penduduk.agama_id', '<>', 1)
-                ->where('das_penduduk.status_kawin', '<>', 1)
-                ->where('das_penduduk.akta_perkawinan', '<>', null)
-                ->where('das_penduduk.akta_perkawinan', '<>', ' ')
-                ->where('das_penduduk.kecamatan_id', '=', $kid)
+                ->where('warga_negara_id', 1) // WNI
+                ->where('status_dasar', '=', 1)
+                ->where('status_kawin', '=', 2)
+                ->where('akta_perkawinan', '<>', null)
+                ->where('akta_perkawinan', '<>', ' ')
+                ->where('akta_perkawinan', '<>', '-')
+                ->where('kecamatan_id', '=', $kid)
                 //->whereRaw('YEAR(das_keluarga.tgl_daftar) = ?', $year);
                 ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($did != 'ALL') {

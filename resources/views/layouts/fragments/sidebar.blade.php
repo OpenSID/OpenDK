@@ -213,6 +213,10 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/jenis-penyakit/*', 'setting/jenis-penyakit'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.jenis-penyakit.index') }}"><i class="fa fa-circle-o"></i>Jenis Penyakit</a></li>
                         @endif
+                        @if($user->hasAnyAccess(['admin', 'setting-slide']))
+                        <li {{ (Request::is(['setting/slide/*', 'setting/slide'])? 'class=active' : '') }}>
+                            <a href="{{ route('setting.slide.index') }}"><i class="fa fa-circle-o"></i>Slide</a></li>
+                        @endif
                         @if($user->hasAnyAccess(['admin', 'setting-coa']))
                         <li {{ (Request::is(['setting/coa/*', 'setting/coa'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.coa.index') }}"><i class="fa fa-circle-o"></i>COA</a></li>

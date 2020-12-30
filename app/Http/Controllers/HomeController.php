@@ -15,6 +15,7 @@ class HomeController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
         parent::__construct();
@@ -28,7 +29,7 @@ class HomeController extends Controller
     public function index()
     {
         $data['page_title']       = 'Dashboard';
-        $data['page_description'] = 'Selamat Datang di openDK';
+        $data['page_description'] = $this->sebutan_wilayah;
         return view('home')->with($data);
     }
 

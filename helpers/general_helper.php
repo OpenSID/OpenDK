@@ -14,7 +14,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * Parsing url image dari rss feed description
- * 
+ *
  * @param string $content
  * @return string
  */
@@ -284,7 +284,15 @@ function is_img($img)
     if ($img == '' || ! is_file($img)) {
         $img = '/img/no-image.png';
     }
-    
+
     return $img;
 }
 
+if (! function_exists('divnum')) {
+
+        function divnum($numerator, $denominator)
+        {
+            return $denominator == 0 ? 0 : ($numerator / $denominator);
+        }
+
+    }

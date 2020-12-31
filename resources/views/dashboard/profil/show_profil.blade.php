@@ -60,7 +60,7 @@
                   <ul class="nav nav-stacked">
                     <li><a href="#"><strong>Luas Wilayah </strong><span class="pull-right badge bg-aqua" id="luaswilayah">{{ number_format($profil->dataumum->luas_wilayah) }} km</span></a></li>
                     <li><a href="#"><strong>Jumlah Penduduk </strong><span class="pull-right badge bg-aqua" id="jumlahpenduduk">{{ number_format(count($profil->dataPenduduk)) }} orang</span></a></li>
-                    <li><a href="#"><strong>Kepadatan Penduduk </strong><span class="pull-right badge bg-aqua" id="kepadatanpenduduk">{{ number_format(round(count($profil->dataPenduduk)) / ($profil->dataUmum->luas_wilayah)) }} orang/km</span></a></li>
+                    <li><a href="#"><strong>Kepadatan Penduduk </strong><span class="pull-right badge bg-aqua" id="kepadatanpenduduk">{{ number_format(round(divnum(count($profil->dataPenduduk), $profil->dataUmum->luas_wilayah))) }} orang/km</span></a></li>
                     <li><a href="#"><strong>Kelurahan/Desa </strong><span class="pull-right badge bg-aqua" id="kelurahandesa">{{ number_format(count($profil->dataDesa)) }}</span></a></li>
                   </ul>
                 </div>

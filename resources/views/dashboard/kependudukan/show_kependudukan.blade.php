@@ -130,7 +130,7 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-7">
 
             <div class="box box-success">
                 <div class="box-header with-border">
@@ -155,7 +155,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
             <!-- Info Boxes Style 2 -->
             <div class="info-box bg-green">
                 <span class="info-box-icon"><i class="ion ion-card"></i></span>
@@ -340,17 +340,17 @@
                 $('#total_disabilitas').html(data.total_disabilitas);
                 $('#total_disabilitas').html(data.total_disabilitas);
 
-                $('#data_ktp').html(data.ktp_terpenuhi + ' dari ' + data.ktp_wajib + ' Jiwa Terpenuhi');
+                $('#data_ktp').html(data.ktp_terpenuhi + ' dari ' + data.ktp_wajib + ' KTP Wajib Terpenuhi');
                 $('#ktp_persen').css('width', data.ktp_persen_terpenuhi + '%');
-                $('#ktp_terpenuhi').html(data.ktp_persen_terpenuhi + '% Jiwa Terpenuhi');
+                $('#ktp_terpenuhi').html(data.ktp_persen_terpenuhi + '% KTP Wajib Terpenuhi');
 
                 $('#data_akta').html(data.akta_terpenuhi + ' dari ' + data.total_penduduk + ' Jiwa Terpenuhi');
                 $('#akta_persen').css('width', data.akta_persen_terpenuhi + '%');
                 $('#akta_terpenuhi').html(data.akta_persen_terpenuhi + '% Jiwa Terpenuhi');
 
-                $('#data_nikah').html(data.aktanikah_terpenuhi + ' dari ' + data.aktanikah_wajib + ' Jiwa Terpenuhi');
+                $('#data_nikah').html(data.aktanikah_terpenuhi + ' dari ' + data.aktanikah_wajib + ' Status Kawin Terpenuhi');
                 $('#nikah_persen').css('width', data.aktanikah_persen_terpenuhi + '%');
-                $('#nikah_terpenuhi').html(data.aktanikah_persen_terpenuhi + '% Jiwa Terpenuhi');
+                $('#nikah_terpenuhi').html(data.aktanikah_persen_terpenuhi + '% Status Kawin Terpenuhi');
            /* }*/
 
         });

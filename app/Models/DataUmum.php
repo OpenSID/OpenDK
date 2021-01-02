@@ -14,9 +14,6 @@ class DataUmum extends Model
         'tipologi',
         'ketinggian',
         'luas_wilayah',
-        'jumlah_penduduk',
-        'jml_laki_laki',
-        'jml_perempuan',
         'bts_wil_utara',
         'bts_wil_timur',
         'bts_wil_selatan',
@@ -34,7 +31,6 @@ class DataUmum extends Model
         'jml_gereja',
         'jml_pasar',
         'jml_balai_pertemuan',
-        'kepadatan_penduduk',
         'embed_peta',
     ];
 

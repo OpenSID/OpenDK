@@ -206,9 +206,6 @@ Route::group(['middleware' => 'installed'], function () {
         
     });
     Route::get('agenda-kegiatan/{slug}','Informasi\EventController@show')->name('event.show');
-    Route::get('/offline.html', function(){
-        return view('offline');
-    });
         
         
     /**

@@ -31,7 +31,7 @@
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('luas_wilayah', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;','step'=>'0.1']) !!}
+                {!! Form::number('luas_wilayah', $luas_wilayah ,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;','step'=>'2.0']) !!}
             </div>
         </div>
 

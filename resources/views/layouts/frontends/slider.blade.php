@@ -29,7 +29,7 @@
                 <img src="{{ asset('/slide/slide-1.png') }}">
             </div>
         </div>
-        {{-- <div class="slider-class">
+        <div class="slider-class">
             <div class="legend"></div>
             <div class="content-slide">
                 <div class="content-txt">
@@ -64,7 +64,7 @@
             <div class="image">
                 <img src="{{ asset('/slide/slide-3.png') }}">
             </div>
-        </div> --}}
+        </div>
         @endforelse
         
 

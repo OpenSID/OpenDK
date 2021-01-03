@@ -180,8 +180,8 @@ class ProfilController extends Controller
             // dd($request->socialmedia);
             $profil = Profil::find($id);
             $profil->fill($request->all());
-            $profil->sambutan     = $request->sambutan;
-            $profil->socialmedia  = $request->socialmedia;
+            // $profil->sambutan     = $request->sambutan;
+            // $profil->socialmedia  = $request->socialmedia;
             $profil->kabupaten_id = substr($profil->kecamatan_id, 0, 5);
             $profil->provinsi_id  = substr($profil->kecamatan_id, 0, 2);
 

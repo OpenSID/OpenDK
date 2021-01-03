@@ -156,7 +156,7 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
-
+           
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
@@ -180,7 +180,7 @@
                     <span class="input-group-addon"><i class="fa fa-youtube"></i></span>
                     <input type="text" name="socialmedia[3][link]" class="form-control" placeholder="youtube">
                     <input type="hidden" name="socialmedia[3][icon]" value="fa fa-youtube" class="form-control" placeholder="facebook">
-                  </div>
+                </div>
             </div>
         </div>
     </div>
@@ -201,7 +201,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! Form::textarea('misi', null,['class'=>'textarea', 'placeholder'=>'Misi Kecamatan', 'style'=>'width: 100%;
-                 height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
+                height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
             </div>
         </div>
     </div>

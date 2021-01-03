@@ -160,11 +160,13 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('sejarah-{wilayah}', 'ProfilController@sejarah')->name('profil.sejarah');
             Route::get('kependudukan', 'ProfilController@Kependudukan')->name('profil.kependudukan');
         });    
-
+        
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
-        Route::get('potensi/{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
-        Route::get('potensi/{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+        Route::group(['prefix' => 'potensi'], function () {
+        Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
+        Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+        });
 
         Route::group(['prefix' => 'statistik'], function () {
 
@@ -179,7 +181,6 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('chart-kependudukan-kelamin', 'KependudukanController@getChartPendudukKelamin')->name('statistik.chart-kependudukan-kelamin');
             Route::get('data-penduduk', 'KependudukanController@getDataPenduduk')->name('statistik.data-penduduk');
 
-            
             Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');
             Route::get('chart-tingkat-pendidikan', 'PendidikanController@getChartTingkatPendidikan')->name('statistik.pendidikan.chart-tingkat-pendidikan');
             Route::get('chart-putus-sekolah', 'PendidikanController@getChartPutusSekolah')->name('statistik.pendidikan.chart-putus-sekolah');

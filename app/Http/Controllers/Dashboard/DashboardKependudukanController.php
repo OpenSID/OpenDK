@@ -51,7 +51,12 @@ class DashboardKependudukanController extends Controller
             ->distinct()
             ->orderBy('tahun', 'desc')
             ->limit(1)
-            ->get()->first()->tahun;
+            ->get()->first();
+
+        if ($tahun_tertua == null) {
+            return [];
+        }
+        $tahun_tertua = $tahun_tertua->tahun;
         $tahun_tertua = $tahun_tertua ?: date("Y");
         $years = [];
         for ($y = $tahun_tertua; $y <= date("Y"); $y++) {

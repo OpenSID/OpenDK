@@ -26,7 +26,6 @@ class Penduduk extends Model
         }
         return $penduduk;
     }
-    
 
     public function pekerjaan()
     {

@@ -18,7 +18,7 @@ class PendudukQueueJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-
+    public $timeout = 0;
     /** @var array request data */
     protected $request;
 

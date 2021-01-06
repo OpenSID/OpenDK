@@ -158,7 +158,6 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
             Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
             Route::get('sejarah-{wilayah}', 'ProfilController@sejarah')->name('profil.sejarah');
-            Route::get('kependudukan', 'ProfilController@Kependudukan')->name('profil.kependudukan');
         });    
         
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');

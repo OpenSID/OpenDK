@@ -111,7 +111,6 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-md-7">
-
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h3 class="box-title">Grafik Penduduk Tiap Tahun</h3>
@@ -134,65 +133,6 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD:resources/views/pages/kependudukan/show_kependudukan.blade.php
-=======
-
-        <div class="col-md-5">
-            <!-- Info Boxes Style 2 -->
-            <div class="info-box bg-green">
-                <span class="info-box-icon"><i class="ion ion-card"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-number">KTP</span>
-                    <span class="info-box-text" id="data_ktp">{!! $ktp_terpenuhi !!} dari {!! $total_penduduk !!}
-                        Jiwa Terpenuhi</span>
-
-                    <div class="progress">
-                        <div id="ktp_persen" class="progress-bar" style="width: {!! $ktp_persen_terpenuhi !!}%"></div>
-                    </div>
-                    <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Terpenuhi</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-
-            <div class="info-box bg-red">
-                <span class="info-box-icon"><i class="ion ion-ios-paper-outline"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-number">Akta Kelahiran</span>
-                    <span class="info-box-text" id="data_akta">{!! $akta_terpenuhi !!} dari {!! $total_penduduk !!}
-                        Jiwa Terpenuhi</span>
-
-                    <div class="progress">
-                        <div id="akta_persen" class="progress-bar" style="width: {!! $akta_persen_terpenuhi !!}%"></div>
-                    </div>
-                    <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Terpenuhi</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-
-            <div class="info-box bg-yellow">
-                <span class="info-box-icon"><i class="ion ion-clipboard"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-number">Akta Nikah</span>
-                    <span class="info-box-text" id="data_nikah">{!! $aktanikah_terpenuhi !!}dari {!! $total_penduduk !!}
-                        Jiwa Terpenuhi</span>
-
-                    <div class="progress">
-                        <div id="nikah_persen" class="progress-bar"
-                             style="width: {!! $aktanikah_persen_terpenuhi !!}%"></div>
-                    </div>
-                    <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Terpenuhi</span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-
-        </div>
->>>>>>> upstream/master:resources/views/dashboard/kependudukan/show_kependudukan.blade.php
         <!-- /.row -->
         <div class="col-md-12">
             <div class="nav-tabs-custom">

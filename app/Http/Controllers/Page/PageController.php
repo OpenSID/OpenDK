@@ -49,7 +49,7 @@ class PageController extends Controller
         }
        
         return view('pages.index', [
-            'page_title'       => 'Berita Desa',
+            'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
             'feeds'            => collect($this->data)->paginate(4),
         ]);

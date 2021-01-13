@@ -56,6 +56,9 @@ class DashboardKependudukanController extends Controller
     /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
     protected function years_list()
     {
+        if (DB::table('das_penduduk')->first() == null) {
+            return [];
+        }
         $tahun_tertua = DB::table('das_penduduk')
             ->select(DB::raw('YEAR(created_at) as tahun'))
             ->distinct()

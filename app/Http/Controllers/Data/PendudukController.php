@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
+use Barryvdh\Debugbar\Facade as Debugbar;
+
 use ZipArchive;
 
 use function back;
@@ -241,8 +243,8 @@ class PendudukController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Penduduk';
+        $page_title       = 'Impor';
+        $page_description = 'Impor Data Penduduk';
 
         $list_desa = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', config('app.default_profile'))->get();
         return view('data.penduduk.import', compact('page_title', 'page_description', 'list_desa'));

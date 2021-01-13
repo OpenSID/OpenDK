@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 use function config;
 use function substr;
@@ -92,7 +93,6 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
             ];
-
             Penduduk::updateOrInsert([
                 'desa_id'      => $insert['desa_id'],
                 'id_pend_desa' => $insert['id_pend_desa']

@@ -53,8 +53,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="well">
-                                <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/penduduk_22_12_2020_opendk.zip') }}">Download</a></p>
+                                <p>Instruksi Unggah Data:</p>
+                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/penduduk_22_12_2020_opendk.zip') }}">Unduh</a></p>
                             </div>
                         </div>
                     </div>
@@ -66,7 +66,7 @@
                             <a href="{{ route('data.penduduk.index') }}">
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal</button>
                             </a>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i> Import</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i> Impor</button>
                         </div>
                     </div>
                 </div>

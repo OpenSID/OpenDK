@@ -66,4 +66,9 @@ class Profil extends Model
     {
         return $this->hasMany(DataDesa::class, 'kecamatan_id', 'kecamatan_id');
     }
+
+    public function dataPenduduk()
+    {
+        return $this->hasMany(Penduduk::class, 'kecamatan_id', 'kecamatan_id')->where('status_dasar', 1);
+    }
 }

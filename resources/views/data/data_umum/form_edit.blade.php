@@ -35,42 +35,6 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Jumlah Penduduk <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jumlah_penduduk', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Laki Laki <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_laki_laki', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Perempuan <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_perempuan', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepadatan Penduduk <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('kepadatan_penduduk', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
         <br>
         <legend>Batas Wilayah</legend>
         <div class="form-group">

@@ -47,7 +47,7 @@ class PageController extends Controller
                 'content'     => $item->get_content(),
             ];
         }
-       
+    
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 

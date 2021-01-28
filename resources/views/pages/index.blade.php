@@ -79,8 +79,7 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
     <div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
   </div>
   <section class="page-header" style="margin:0px 0px;">
-  <strong>Berita Desa Wilayah 
-    {{ $sebutan_wilayah }} {{ $nama_wilayah }}
+  <strong>{{ $page_description }}
   </strong>
 </section>
   @forelse ($feeds as $item)
@@ -103,6 +102,7 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
             <p class="text-bold">Tidak ada berita yang ditampilkan!</p>
         </div>
         @endforelse
+        {{ $feeds->links() }}
     </div>
 @endsection
 

@@ -58,6 +58,6 @@
           {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>
-      <strong>&copy; 2017 - {{ now()->format('Y') }} <a href="https://kompak.or.id">KOMPAK.</a> All rights reserved.</strong> 
+      <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a>.</strong> Hak cipta dilindungi. 
     </div>
 </footer>

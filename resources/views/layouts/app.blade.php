@@ -93,9 +93,9 @@
 <body class="hold-transition skin-blue layout-top-nav">
     @include('partialspage.preloader')
     
-    <script>
+    {{-- <script>
      if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
                 console.log('Service worker registered successfully', registration);
             }).catch(function(err) {
                 console.log('Service worker registration failed: ', err);
@@ -108,7 +108,7 @@
     console.log(choiceResult.outcome); // either "accepted" or "dismissed"
   }, handleError); 
 });
-    </script> 
+    </script>  --}}
     <!-- overlay !-->
     <div class="wrapper">
         <div id="search" class="fades animated">

@@ -32,7 +32,7 @@ class KependudukanController extends Controller
     {
         $this->profil = $profil;
         $this->penduduk = $penduduk;
-        // parent::__construct();
+        parent::__construct();   
     }
     /**
      * Menampilkan Data Kependudukan

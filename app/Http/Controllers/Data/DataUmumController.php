@@ -82,9 +82,6 @@ class DataUmumController extends Controller
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
                 'luas_wilayah'           => 'required',
-                'jumlah_penduduk'        => 'required',
-                'jml_laki_laki'          => 'required',
-                'jml_perempuan'          => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
                 'bts_wil_selatan'        => 'required',
@@ -101,7 +98,6 @@ class DataUmumController extends Controller
                 'jml_gereja'             => 'required',
                 'jml_pasar'              => 'required',
                 'jml_balai_pertemuan'    => 'required',
-                'kepadatan_penduduk'     => 'required',
             ]);
             $profil->save();
             return redirect()->route('data.data-umum.index')->with('success', 'Data Umum berhasil disimpan!');
@@ -149,9 +145,6 @@ class DataUmumController extends Controller
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
                 'luas_wilayah'           => 'required',
-                'jumlah_penduduk'        => 'required',
-                'jml_laki_laki'          => 'required',
-                'jml_perempuan'          => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
                 'bts_wil_selatan'        => 'required',
@@ -169,7 +162,6 @@ class DataUmumController extends Controller
                 'jml_gereja'             => 'required',
                 'jml_pasar'              => 'required',
                 'jml_balai_pertemuan'    => 'required',
-                'kepadatan_penduduk'     => 'required',
             ]);
 
             DataUmum::find($id)->update($request->all());

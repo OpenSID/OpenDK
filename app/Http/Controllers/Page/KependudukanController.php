@@ -32,7 +32,7 @@ class KependudukanController extends Controller
     {
         $this->profil = $profil;
         $this->penduduk = $penduduk;
-        parent::__construct();
+        // parent::__construct();
     }
     /**
      * Menampilkan Data Kependudukan
@@ -60,7 +60,7 @@ class KependudukanController extends Controller
         if (DB::table('das_penduduk')->first() == null) {
             return [];
         }
-        
+
         $tahun_tertua = DB::table('das_penduduk')
             ->select(DB::raw('YEAR(created_at) as tahun'))
             ->distinct()

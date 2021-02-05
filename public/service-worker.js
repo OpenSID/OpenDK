@@ -18,6 +18,10 @@ var urlsToCache = [
   '/js/custom.js',
   '/bower_components/bootstrap/dist/js/bootstrap.min.js',
   '/bower_components/admin-lte/dist/js/adminlte.min.js',
+<<<<<<< HEAD
+=======
+  '/offline.html'
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 ];
 
 self.addEventListener('install', function(event) {

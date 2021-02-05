@@ -309,17 +309,17 @@
                 $('#total_disabilitas').html(data.total_disabilitas);
                 $('#total_disabilitas').html(data.total_disabilitas);
 
-                $('#data_ktp').html(data.ktp_terpenuhi + ' dari ' + data.ktp_wajib + ' KTP Wajib Terpenuhi');
+                $('#data_ktp').html(data.ktp_terpenuhi + ' dari ' + data.ktp_wajib + ' Jiwa Terpenuhi');
                 $('#ktp_persen').css('width', data.ktp_persen_terpenuhi + '%');
-                $('#ktp_terpenuhi').html(data.ktp_persen_terpenuhi + '% KTP Wajib Terpenuhi');
+                $('#ktp_terpenuhi').html(data.ktp_persen_terpenuhi + '% Jiwa Tidak Terpenuhi');
 
                 $('#data_akta').html(data.akta_terpenuhi + ' dari ' + data.total_penduduk + ' Jiwa Terpenuhi');
                 $('#akta_persen').css('width', data.akta_persen_terpenuhi + '%');
-                $('#akta_terpenuhi').html(data.akta_persen_terpenuhi + '% Jiwa Terpenuhi');
+                $('#akta_terpenuhi').html(data.akta_persen_terpenuhi + '% Jiwa Tidak Terpenuhi');
 
-                $('#data_nikah').html(data.aktanikah_terpenuhi + ' dari ' + data.aktanikah_wajib + ' Status Kawin Terpenuhi');
+                $('#data_nikah').html(data.aktanikah_terpenuhi + ' dari ' + data.aktanikah_wajib + ' Jiwa Terpenuhi');
                 $('#nikah_persen').css('width', data.aktanikah_persen_terpenuhi + '%');
-                $('#nikah_terpenuhi').html(data.aktanikah_persen_terpenuhi + '% Status Kawin Terpenuhi');
+                $('#nikah_terpenuhi').html(data.aktanikah_persen_terpenuhi + '% Jiwa Terpenuhi');
            /* }*/
 
         });
@@ -1211,7 +1211,6 @@
                     <thead>
                     <tr>
                         <th>NIK</th>
-                        <th>Foto</th>
                         <th>Nama</th>
                         <th>No. KK</th>
                         <th>Alamat</th>
@@ -1289,18 +1288,6 @@
                 columns: [
                     // {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
                     {data: 'nik', name: 'nik'},
-                    {data: 'foto', name: 'foto',
-                    "searchable": false,
-                    "orderable":false,
-                    "render": function (data, type, row) {
-                        if ( !row.foto == '') {
-                          return "<img src=\"{{ asset('storage/penduduk/foto') }}" + "/" + data + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
-                        }
-                        else {
-                          return "<img src=\"{{ asset('storage/penduduk/foto/kuser.png') }}" + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
-                        }
-                      }
-                    },
                     {data: 'nama', name: 'nama'},
                     {data: 'no_kk', name: 'no_kk'},
                     {data: 'alamat', name: 'alamat'},

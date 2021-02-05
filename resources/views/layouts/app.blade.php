@@ -41,7 +41,13 @@
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css') }}">
     @stack('css')
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ asset('/css/slider.css') }}">
+=======
+    @if (Route::currentRouteName() === 'beranda')
+        <link rel="stylesheet" href="{{ asset('/css/slider.css') }}">
+    @endif
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/skins/skin-blue.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
@@ -93,9 +99,15 @@
 <body class="hold-transition skin-blue layout-top-nav">
     @include('partialspage.preloader')
     
+<<<<<<< HEAD
     {{-- <script>
      if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+=======
+    <script>
+     if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
                 console.log('Service worker registered successfully', registration);
             }).catch(function(err) {
                 console.log('Service worker registration failed: ', err);
@@ -108,18 +120,29 @@
     console.log(choiceResult.outcome); // either "accepted" or "dismissed"
   }, handleError); 
 });
+<<<<<<< HEAD
     </script>  --}}
     <!-- overlay !-->
+=======
+    </script> 
+    <!-- overlay !-->
+
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
     <div class="wrapper">
         <div id="search" class="fades animated">
             <a href="#" class="close-btn" id="close-search">
                 <em class="fa fa-times"></em>
             </a>
+<<<<<<< HEAD
             <form method="get" action="" role="search">
+=======
+            <form method="post">
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
                 <input class="form-control" placeholder="Mulai Pencarian" id="searchbox" type="search" />
             </form>
         </div>
         <!--- /overlay -->
+<<<<<<< HEAD
         @include('layouts.frontends.topheader')
         @include('layouts.frontends.header')
         <div class="content-wrapper">
@@ -131,31 +154,73 @@
                 <section class="content">
                         <div class="row">
                         @if (Route::currentRouteName() === 'beranda')
+=======
+
+        @include('layouts.frontends.topheader')
+        @include('layouts.frontends.header')
+        {{-- @include('pages.sambutan') --}}
+        <div class="content-wrapper">
+            @if (Route::currentRouteName() === 'beranda')
+            
+                @include('layouts.frontends.slider')
+                {{-- @include('layouts.frontends.service') --}}
+            @endif
+            <div class="container">
+                <!-- Main content -->
+                <div class="row">
+                    <section class="content container-fluid">
+                        @if (Route::currentRouteName() === 'beranda')
+                        {{-- @include('pages.sambutan') --}}
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
                         @else
                             @include('layouts.frontends.breadcumb')
                         @endif
                         @yield('content')
                         @include('layouts.frontends.sidebar')
+<<<<<<< HEAD
                     </div>
                 </section>
                 <!-- /.content -->
+=======
+                    </section>
+                    {{-- @include('.layouts.frontends.instansi') --}}
+                </div>
+                <!-- /.content -->
+                
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
             </div>
             <!-- /.container -->
         </div>
         <!-- /.content-wrapper -->
         @include('.layouts.frontends.footer')
     </div>
+<<<<<<< HEAD
     <!-- ./wrapper -->
+=======
+
+    <!-- ./wrapper -->
+
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
     <div class="scroll-top-wrapper ">
        <span class="scroll-top-inner">
                 <i class="fa fa-2x fa-arrow-circle-up"></i>
             </span>
     </div>
     <!-- ./wrapper -->
+<<<<<<< HEAD
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 3 -->
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
         <script>
+=======
+
+    <!-- REQUIRED JS SCRIPTS -->
+    <!-- jQuery 3 -->
+    <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script> --}}
+    <script>
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 		setTimeout(function(){
 		$('.preloader_bg').fadeToggle();
 		}, 500);

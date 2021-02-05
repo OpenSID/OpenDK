@@ -1,6 +1,7 @@
 <!-- Slider -->
 <div id="slider">
     <div class="slides">
+<<<<<<< HEAD
        @php $slides  = \App\Models\Slide::orderBy('created_at','DESC')->take(4)->get(); @endphp
         @forelse ($slides as $slide)
         
@@ -17,6 +18,8 @@
             </div>
         </div>
         @empty          
+=======
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
         <div class="slider-class">
             <div class="legend"></div>
             <div class="content-slide">
@@ -65,9 +68,12 @@
                 <img src="{{ asset('/slide/slide-3.png') }}">
             </div>
         </div>
+<<<<<<< HEAD
         @endforelse
         
 
+=======
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
     </div>
     <div class="switch">
         <ul>
@@ -81,5 +87,9 @@
     </div>
 </div>
 <div class="dk-line">
+<<<<<<< HEAD
    
+=======
+    <i class="fa fa-globe fa-lg"></i>
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 </div>

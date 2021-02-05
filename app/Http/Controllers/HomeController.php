@@ -29,7 +29,11 @@ class HomeController extends Controller
     public function index()
     {
         $data['page_title']       = 'Dashboard';
+<<<<<<< HEAD
         $data['page_description'] = $this->sebutan_wilayah;
+=======
+        $data['page_description'] = 'Selamat Datang di openDK';
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
         return view('home')->with($data);
     }
 

@@ -1,13 +1,15 @@
 <section class="footer-top">
     <div class="container no-padding">
       <div class="col-md-3">
+        @if (is_array($profil_wilayah->socialmedia))
         <h5 class="text-bold">IKUTI KAMI</h5>
         <ul class="social-icon list-inline m-0">
           @foreach(json_decode($profil_wilayah->socialmedia) as $sosmed)
           <li><a target="_BLANK" href="{{ $sosmed->link }}" class="site-button-link facebook hover"><i
                       class="{{ $sosmed->icon }}"></i></a></li>
           @endforeach
-      </ul>
+        </ul>
+        @endif
     </div>
       <div class="col-md-4">
         <h5 class="text-bold">Desa dan kelurahan</h5>

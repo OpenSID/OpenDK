@@ -40,10 +40,13 @@ class ProfilController extends Controller
 
         $profil->file_struktur_organisasi = is_img($profil->file_struktur_organisasi);
         $profil->file_logo                = is_img($profil->file_logo);
+<<<<<<< HEAD
         $profil->foto_kepala_wilayah                = is_img($profil->foto_kepala_wilayah);
+=======
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 
         $page_title       = 'Ubah Profil';
-        $page_description =   ucwords(strtolower($this->sebutan_wilayah).' : ' . $profil->kecamatan->nama);
+        $page_description = ucwords(strtolower($profil->kecamatan->nama));
 
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
@@ -56,7 +59,7 @@ class ProfilController extends Controller
     public function create()
     {
         $page_title       = 'Tambah';
-        $page_description = 'Tambah Profil ' .$this->sebutan_wilayah;
+        $page_description = 'Tambah Profil Kecamatan';
         $profil           = new Profil();
 
         return view('data.profil.create', compact('page_title', 'page_description', 'profil'));

@@ -260,7 +260,11 @@ body{
 	top: 0;
 	font-size: 17px;
 	/* Big font size */
+<<<<<<< HEAD
 	font-weight: bold;	
+=======
+	font-weight: bold;
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 	/* position: fixed; */
 }
 
@@ -446,6 +450,13 @@ body::-webkit-scrollbar-track :hover {
 	background-color: #000000;
 }
 
+<<<<<<< HEAD
+=======
+
+/* Style untuk  Service/Layanan */
+
+
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 /* services items */
 
 #main-service {
@@ -709,7 +720,11 @@ body::-webkit-scrollbar-track :hover {
 	animation-name: fadeIn;
 }
 
+<<<<<<< HEAD
 .section-title h4 {
+=======
+.section-title h3 {
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 	text-align: center;
 	font-size: 18px;
 	font-weight: 600;
@@ -723,16 +738,25 @@ body::-webkit-scrollbar-track :hover {
 .section-title::after {
 	content: "";
 	height: 3px;
+<<<<<<< HEAD
 	background: #666664;
 	/* width: 80px; */
 	/* position: absolute; */
 	display:block;
+=======
+	background: #fbb900;
+	width: 80px;
+	position: absolute;
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 	left: 0;
 	right: 0;
 	margin: auto;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
 .footer-top {
 	background: #1f2d41;
 	height: 100%;

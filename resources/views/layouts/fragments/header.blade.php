@@ -5,7 +5,11 @@
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><img src="{{ asset("/favicon.png")}}" alt="KD" width="28px"></span>
         <!-- logo for regular state and mobile devices -->
+<<<<<<< HEAD
         <span class="logo-lg"><img class="user-image" src="{{ asset("/img/logo.png")}}" alt="Dashboard {{ $sebutan_wilayah }}"
+=======
+        <span class="logo-lg"><img class="user-image" src="{{ asset("/img/logo-coba.png")}}" alt="Dashboard {{ $sebutan_wilayah }}"
+>>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
                                    width="180px"></span>
     </a>
     <!-- Header Navbar -->

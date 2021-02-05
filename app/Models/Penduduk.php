@@ -15,6 +15,18 @@ class Penduduk extends Model
      * Relation Methods
      * */
 
+    public function getPendudukAktif($kid, $did, $year)
+    {
+        $penduduk =  $this
+            ->where('status_dasar', 1)
+            ->where('kecamatan_id', $kid)
+            ->whereRaw('YEAR(created_at) <= ?', $year);
+        if ($did != 'ALL') {
+            $penduduk->where('desa_id', $did);
+        }
+        return $penduduk;
+    }
+
     public function pekerjaan()
     {
         return $this->hasOne(Pekerjaan::class, 'id', 'pekerjaan_id');

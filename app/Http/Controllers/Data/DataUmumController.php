@@ -9,7 +9,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-
 use function back;
 use function compact;
 use function config;
@@ -30,14 +29,12 @@ class DataUmumController extends Controller
      */
     public function index()
     {
-       /* $page_title = 'Data Umum';
-        $page_description = 'Data Umum Kecamatan';
-        return view('data.data_umum.index', compact('page_title', 'page_description'));*/
         $data_umum        = DataUmum::where('kecamatan_id', config('app.default_profile'))->first();
+        $luas_wilayah     = \DB::table('das_data_desa')->sum('luas_wilayah');
         $page_title       = 'Ubah Data Umum';
-        $page_description = 'Kecamatan ' . ucwords(strtolower($data_umum->kecamatan->nama));
+        $page_description = ucwords(strtolower($this->sebutan_wilayah).' : ' . $data_umum->kecamatan->nama);
 
-        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum'));
+        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum','luas_wilayah'));
     }
 
     /**
@@ -85,9 +82,6 @@ class DataUmumController extends Controller
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
                 'luas_wilayah'           => 'required',
-                'jumlah_penduduk'        => 'required',
-                'jml_laki_laki'          => 'required',
-                'jml_perempuan'          => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
                 'bts_wil_selatan'        => 'required',
@@ -104,7 +98,6 @@ class DataUmumController extends Controller
                 'jml_gereja'             => 'required',
                 'jml_pasar'              => 'required',
                 'jml_balai_pertemuan'    => 'required',
-                'kepadatan_penduduk'     => 'required',
             ]);
             $profil->save();
             return redirect()->route('data.data-umum.index')->with('success', 'Data Umum berhasil disimpan!');
@@ -152,9 +145,6 @@ class DataUmumController extends Controller
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
                 'luas_wilayah'           => 'required',
-                'jumlah_penduduk'        => 'required',
-                'jml_laki_laki'          => 'required',
-                'jml_perempuan'          => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
                 'bts_wil_selatan'        => 'required',
@@ -172,7 +162,6 @@ class DataUmumController extends Controller
                 'jml_gereja'             => 'required',
                 'jml_pasar'              => 'required',
                 'jml_balai_pertemuan'    => 'required',
-                'kepadatan_penduduk'     => 'required',
             ]);
 
             DataUmum::find($id)->update($request->all());

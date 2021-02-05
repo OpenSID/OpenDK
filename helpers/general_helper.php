@@ -13,6 +13,23 @@ use App\Models\Role;
 use Illuminate\Support\Carbon;
 
 /**
+ * Parsing url image dari rss feed description
+ *
+ * @param string $content
+ * @return string
+ */
+if (! function_exists('get_tag_image')) {
+    function get_tag_image(string $content)
+    {
+        if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
+            return $match[1];
+        }
+
+        return 'http://placehold.it/500x300';
+    }
+}
+
+/**
  * { function_description }
  *
  * @param      <type>  $parent_id  The parent identifier
@@ -267,7 +284,15 @@ function is_img($img)
     if ($img == '' || ! is_file($img)) {
         $img = '/img/no-image.png';
     }
-    
+
     return $img;
 }
 
+if (! function_exists('divnum')) {
+
+        function divnum($numerator, $denominator)
+        {
+            return $denominator == 0 ? 0 : ($numerator / $denominator);
+        }
+
+    }

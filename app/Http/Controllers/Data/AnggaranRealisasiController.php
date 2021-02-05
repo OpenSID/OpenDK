@@ -22,15 +22,15 @@ use function years_list;
 
 class AnggaranRealisasiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
         $page_title       = 'Anggran & Realisasi';
-        $page_description = 'Data Anggran & Realisasi Kecamatan';
+        $page_description = 'Data Anggran & Realisasi';
         return view('data.anggaran_realisasi.index', compact('page_title', 'page_description'));
     }
 
@@ -84,8 +84,8 @@ class AnggaranRealisasiController extends Controller
         ]);
 
         try {
-            (new ImporAnggaranRealisasi($request))
-                ->import($request->file('file'));
+            (new ImporAnggaranRealisasi($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

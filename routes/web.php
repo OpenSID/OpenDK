@@ -112,7 +112,17 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'setting.tipe-potensi.update', 'uses' => 'Setting\TipePotensiController@update']);
                 Route::delete('destroy/{id}', ['as' => 'setting.tipe-potensi.destroy', 'uses' => 'Setting\TipePotensiController@destroy']);
             });
+            Route::group(['prefix' => 'slide'], function(){
+                Route::get('/', ['as' => 'setting.slide.index', 'uses' => 'Setting\SlideController@index']);
+                Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
+                Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
+                Route::post('store', ['as' => 'setting.slide.store', 'uses' => 'Setting\SlideController@store']);
+                Route::get('edit/{id}', ['as' => 'setting.slide.edit', 'uses' => 'Setting\SlideController@edit']);
+                Route::get('show/{id}', ['as' => 'setting.slide.show', 'uses' => 'Setting\SlideController@show']);
+                Route::put('update/{id}', ['as' => 'setting.slide.update', 'uses' => 'Setting\SlideController@update']);
+                Route::delete('destroy/{id}', ['as' => 'setting.slide.destroy', 'uses' => 'Setting\SlideController@destroy']);
 
+            });
             // COA
             Route::group(['prefix' => 'coa'], function () {
                 Route::get('/', ['as' => 'setting.coa.index', 'uses' => 'Setting\COAController@index']);
@@ -136,56 +146,60 @@ Route::group(['middleware' => 'installed'], function () {
     /**m 
      * Group Routing for Dashboard / Pengunjung Website
      */
-    Route::namespace('Dashboard')->group(function () {
-        Route::get('/', 'DashboardProfilController@index')->name('beranda');
+    Route::namespace('Page')->group(function () {
+        Route::get('/', 'PageController@index')->name('beranda');
+        Route::post('#search',function(){
+            // return 'hello';
+            dd($request);
+        });
         
         Route::group(['prefix' => 'profil'], function () {
-            Route::get('letak-geografis', 'DashboardProfilController@LetakGeografis')->name('profil.letak-geografis');
-            Route::get('struktur-pemerintahan', 'DashboardProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
-            Route::get('visi-dan-misi', 'DashboardProfilController@VisiMisi')->name('profil.visi-misi');
-            Route::get('sejarah-{wilayah}', 'DashboardProfilController@sejarah')->name('profil.sejarah');
-            Route::get('kependudukan', 'DashboardProfilController@Kependudukan')->name('profil.kependudukan');
+            Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
+            Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
+            Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
+            Route::get('sejarah-{wilayah}', 'ProfilController@sejarah')->name('profil.sejarah');
         });    
-
+        
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
-        Route::get('potensi/{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
-        Route::get('potensi/{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+        Route::group(['prefix' => 'potensi'], function () {
+        Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
+        Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+        });
 
         Route::group(['prefix' => 'statistik'], function () {
 
-            Route::get('kependudukan', 'DashboardKependudukanController@showKependudukan')->name('statistik.kependudukan');
-            Route::get('show-kependudukan', 'DashboardKependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
-            Route::get('chart-kependudukan', 'DashboardKependudukanController@getChartPenduduk')->name('statistik.chart-kependudukan');
-            Route::get('chart-kependudukan-usia', 'DashboardKependudukanController@getChartPendudukUsia')->name('statistik.chart-kependudukan-usia');
-            Route::get('chart-kependudukan-pendidikan', 'DashboardKependudukanController@getChartPendudukPendidikan')->name('statistik.chart-kependudukan-pendidikan');
-            Route::get('chart-kependudukan-goldarah', 'DashboardKependudukanController@getChartPendudukGolDarah')->name('statistik.chart-kependudukan-goldarah');
-            Route::get('chart-kependudukan-kawin', 'DashboardKependudukanController@getChartPendudukKawin')->name('statistik.chart-kependudukan-kawin');
-            Route::get('chart-kependudukan-agama', 'DashboardKependudukanController@getChartPendudukAgama')->name('statistik.chart-kependudukan-agama');
-            Route::get('chart-kependudukan-kelamin', 'DashboardKependudukanController@getChartPendudukKelamin')->name('statistik.chart-kependudukan-kelamin');
-            Route::get('data-penduduk', 'DashboardKependudukanController@getDataPenduduk')->name('statistik.data-penduduk');
+            Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
+            Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
+            Route::get('chart-kependudukan', 'KependudukanController@getChartPenduduk')->name('statistik.chart-kependudukan');
+            Route::get('chart-kependudukan-usia', 'KependudukanController@getChartPendudukUsia')->name('statistik.chart-kependudukan-usia');
+            Route::get('chart-kependudukan-pendidikan', 'KependudukanController@getChartPendudukPendidikan')->name('statistik.chart-kependudukan-pendidikan');
+            Route::get('chart-kependudukan-goldarah', 'KependudukanController@getChartPendudukGolDarah')->name('statistik.chart-kependudukan-goldarah');
+            Route::get('chart-kependudukan-kawin', 'KependudukanController@getChartPendudukKawin')->name('statistik.chart-kependudukan-kawin');
+            Route::get('chart-kependudukan-agama', 'KependudukanController@getChartPendudukAgama')->name('statistik.chart-kependudukan-agama');
+            Route::get('chart-kependudukan-kelamin', 'KependudukanController@getChartPendudukKelamin')->name('statistik.chart-kependudukan-kelamin');
+            Route::get('data-penduduk', 'KependudukanController@getDataPenduduk')->name('statistik.data-penduduk');
 
-            
-            Route::get('pendidikan', 'DashboardPendidikanController@showPendidikan')->name('statistik.pendidikan');
-            Route::get('chart-tingkat-pendidikan', 'DashboardPendidikanController@getChartTingkatPendidikan')->name('statistik.pendidikan.chart-tingkat-pendidikan');
-            Route::get('chart-putus-sekolah', 'DashboardPendidikanController@getChartPutusSekolah')->name('statistik.pendidikan.chart-putus-sekolah');
-            Route::get('chart-fasilitas-paud', 'DashboardPendidikanController@getChartFasilitasPAUD')->name('statistik.pendidikan.chart-fasilitas-paud');
+            Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');
+            Route::get('chart-tingkat-pendidikan', 'PendidikanController@getChartTingkatPendidikan')->name('statistik.pendidikan.chart-tingkat-pendidikan');
+            Route::get('chart-putus-sekolah', 'PendidikanController@getChartPutusSekolah')->name('statistik.pendidikan.chart-putus-sekolah');
+            Route::get('chart-fasilitas-paud', 'PendidikanController@getChartFasilitasPAUD')->name('statistik.pendidikan.chart-fasilitas-paud');
         
-            Route::get('program-dan-bantuan', 'DashboardProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
-            Route::get('chart-penduduk', 'DashboardProgramBantuanController@getChartBantuanPenduduk')->name('statistik.program-bantuan.chart-penduduk');
-            Route::get('chart-keluarga', 'DashboardProgramBantuanController@getChartBantuanKeluarga')->name('statistik.program-bantuan.chart-keluarga');
+            Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
+            Route::get('chart-penduduk', 'ProgramBantuanController@getChartBantuanPenduduk')->name('statistik.program-bantuan.chart-penduduk');
+            Route::get('chart-keluarga', 'ProgramBantuanController@getChartBantuanKeluarga')->name('statistik.program-bantuan.chart-keluarga');
             
-            Route::get('anggaran-dan-realisasi', 'DashboardAnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');
-            Route::get('chart-anggaran-realisasi', 'DashboardAnggaranRealisasiController@getChartAnggaranRealisasi')->name('statistik.chart-anggaran-realisasi');
+            Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');
+            Route::get('chart-anggaran-realisasi', 'AnggaranRealisasiController@getChartAnggaranRealisasi')->name('statistik.chart-anggaran-realisasi');
 
-            Route::get('anggaran-desa', 'DashboardAnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
-            Route::get('chart-anggaran-desa', 'DashboardAnggaranDesaController@getChartAnggaranDesa')->name('statistik.chart-anggaran-desa');
+            Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
+            Route::get('chart-anggaran-desa', 'AnggaranDesaController@getChartAnggaranDesa')->name('statistik.chart-anggaran-desa');
 
-            Route::get('kesehatan', 'DashboardKesehatanController@showKesehatan')->name('statistik.kesehatan');
-            Route::get('chart-akiakb', 'DashboardKesehatanController@getChartAKIAKB')->name('statistik.kesehatan.chart-akiakb');
-            Route::get('chart-imunisasi', 'DashboardKesehatanController@getChartImunisasi')->name('statistik.kesehatan.chart-imunisasi');
-            Route::get('chart-penyakit', 'DashboardKesehatanController@getChartEpidemiPenyakit')->name('statistik.kesehatan.chart-penyakit');
-            Route::get('chart-sanitasi', 'DashboardKesehatanController@getChartToiletSanitasi')->name('statistik.kesehatan.chart-sanitasi');
+            Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');
+            Route::get('chart-akiakb', 'KesehatanController@getChartAKIAKB')->name('statistik.kesehatan.chart-akiakb');
+            Route::get('chart-imunisasi', 'KesehatanController@getChartImunisasi')->name('statistik.kesehatan.chart-imunisasi');
+            Route::get('chart-penyakit', 'KesehatanController@getChartEpidemiPenyakit')->name('statistik.kesehatan.chart-penyakit');
+            Route::get('chart-sanitasi', 'KesehatanController@getChartToiletSanitasi')->name('statistik.kesehatan.chart-sanitasi');
         
         });
 
@@ -203,9 +217,9 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('form-dokumen/getdata','DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
         });
 
-        Route::get('agenda-kegiatan/{slug}','EventController@show')->name('event.show');
         
-        });
+    });
+    Route::get('agenda-kegiatan/{slug}','Informasi\EventController@show')->name('event.show');
         
    
     Route::namespace('SistemKomplain')->group(function () {
@@ -233,6 +247,7 @@ Route::group(['middleware' => 'installed'], function () {
     Route::get('dashboard', 'HomeController@index')->name('dashboard.profil');
     Route::namespace('Informasi')->group(function () {
         Route::group(['prefix' => 'informasi'], function () {
+
             //Routes for prosedur resource
             Route::group(['prefix' => 'prosedur'], function () {
                 Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);

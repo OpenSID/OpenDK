@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-  
+
 Route::group(['prefix' => 'v1'], function() {
     /**
      * Authentication api
@@ -33,6 +33,7 @@ Route::group(['prefix' => 'v1'], function() {
      */
     Route::group(['prefix' => 'penduduk'], function () {
         Route::post('/', 'Api\PendudukController@store');
+        Route::post('storedata', 'Api\PendudukController@storedata');
         Route::post('test', 'Api\PendudukController@test');
     });
 });

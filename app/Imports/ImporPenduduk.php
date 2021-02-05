@@ -3,16 +3,19 @@
 namespace App\Imports;
 
 use App\Models\Penduduk;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Barryvdh\Debugbar\Facade as Debugbar;
 
 use function config;
+use function now;
 use function substr;
 
-class ImporPenduduk implements ToCollection, WithHeadingRow
+class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -20,16 +23,20 @@ class ImporPenduduk implements ToCollection, WithHeadingRow
     protected $provinsi_id;
     protected $kabupaten_id;
     protected $kecamatan_id;
-    protected $desa_id;
-    protected $tahun;
 
-    public function __construct(Request $request)
+    public function __construct(array $request)
     {
         $this->kecamatan_id = config('app.default_profile');
         $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
         $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
-        $this->tahun        = $request->input('tahun');
-        $this->desa_id      = $request->input('desa_id');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 
     /**
@@ -70,6 +77,7 @@ class ImporPenduduk implements ToCollection, WithHeadingRow
                 'hamil'                 => $value['hamil'],
 
                 // Tambahan
+                'foto'            => $value['foto'],
                 'alamat_sekarang' => $value['alamat_sekarang'],
                 'alamat'          => $value['alamat'],
                 'dusun'           => $value['dusun'],
@@ -78,16 +86,18 @@ class ImporPenduduk implements ToCollection, WithHeadingRow
                 'provinsi_id'     => $this->provinsi_id,
                 'kabupaten_id'    => $this->kabupaten_id,
                 'kecamatan_id'    => $this->kecamatan_id,
-                'desa_id'         => $this->desa_id,
-                'tahun'           => $this->tahun,
+                'desa_id'         => $value['desa_id'],
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
+                'status_rekam'    => $value['status_rekam'],
                 'created_at'      => $value['created_at'],
                 'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
             ];
-
-            Penduduk::updateOrInsert(['nik' => $insert['nik'], 'id_pend_desa' => $insert['id_pend_desa']], $insert);
+            Penduduk::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'id_pend_desa' => $insert['id_pend_desa']
+            ], $insert);
         }
     }
 }

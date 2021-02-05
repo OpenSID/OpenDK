@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
-use App\Models\Wilayah;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +12,6 @@ use Yajra\DataTables\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -23,11 +21,16 @@ use function years_list;
 
 class PutusSekolahController extends Controller
 {
+
+    public function __construct(){
+        parent::__construct();
+    }
+    
     public function index()
     {
-        $kecamatan        = Wilayah::where('kode', config('app.default_profile'))->first();
+        
         $page_title       = 'Anak Putus Sekolah';
-        $page_description = 'Data Anak Putus Sekolah Kecamatan ' . $kecamatan->nama_kecamatan;
+        $page_description = 'Data Anak Putus Sekolah ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.putus_sekolah.index', compact('page_title', 'page_description'));
     }
 
@@ -76,12 +79,12 @@ class PutusSekolahController extends Controller
             'desa_id'  => 'required|unique:das_putus_sekolah,desa_id',
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'tahun'    => 'required|unique:das_putus_sekolah',
-            'semester' => 'required|unique:das_putus_sekolah'
+            'semester' => 'required|unique:das_putus_sekolah',
         ]);
 
         try {
-            (new ImporPutusSekolah($request))
-                ->import($request->file('file'));
+            (new ImporPutusSekolah($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

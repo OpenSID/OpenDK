@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
-use App\Models\Profil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +12,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -23,13 +21,12 @@ use function years_list;
 
 class AKIAKBController extends Controller
 {
-    public $nama_kecamatan;
     public $bulan;
     public $tahun;
 
     public function __construct()
     {
-        $this->nama_kecamatan = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+        parent::__construct();
     }
 
     /**
@@ -40,7 +37,7 @@ class AKIAKBController extends Controller
     public function index()
     {
         $page_title       = 'AKI & AKB';
-        $page_description = 'Data Kematian Ibu & Bayi Kecamatan ' . $this->nama_kecamatan;
+        $page_description = 'Data Kematian Ibu & Bayi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.aki_akb.index', compact('page_title', 'page_description'));
     }
 
@@ -95,8 +92,8 @@ class AKIAKBController extends Controller
         ]);
 
         try {
-            (new ImporAKIAKB($request))
-                ->import($request->file('file'));
+            (new ImporAKIAKB($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

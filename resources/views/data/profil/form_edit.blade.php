@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kecamatan <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('nama_kecamatan', $profil->kecamatan->nama,['placeholder'=>'Nama Kecamatan', 'class'=>'form-control', 'readonly'=>true]) !!}
-                {!! Form::hidden('kecamatan_id', $profil->kecamatan_id,['placeholder'=>'Nama Kecamatan', 'class'=>'form-control', 'readonly'=>true]) !!}
+                {!! Form::text('nama_kecamatan', $profil->kecamatan->nama,['placeholder'=> 'Nama '.$sebutan_wilayah, 'class'=>'form-control', 'readonly'=>true]) !!}
+                {!! Form::hidden('kecamatan_id', $profil->kecamatan_id,['placeholder'=>'Nama '.$sebutan_wilayah, 'class'=>'form-control', 'readonly'=>true]) !!}
             </div>
         </div>
         <div class="form-group">
@@ -56,21 +56,38 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">File Struktur Organisasi</label>
-
+            
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="file" id="file_struktur" name="file_struktur_organisasi" accept="image/*"
                        class="validate form-control"/>
+                       <br>
+                       <img src="{{ asset($profil->file_struktur_organisasi) }}" id="showgambar"
+                       style="max-width:200px;max-height:200px;float:left;"/>
+                    </div>
+                </div>
+        <div class="form-group">
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sambutan {{ $sebutan_kepala_wilayah }}</label>
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    {!! Form::textarea('sambutan', null,['class'=>'textarea', 'placeholder'=>'Sambutan '.$sebutan_kepala_wilayah. ' ' .$nama_wilayah .'', 'style'=>'width: 100%;
+                    height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto {{ $sebutan_kepala_wilayah }}</label>
+
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="file" id="foto_kepala_wilayah" name="foto_kepala_wilayah" accept="image/*"
+                       class="validate form-control"/>
                 <br>
-                <img src="{{ asset($profil->file_struktur_organisasi) }}" id="showgambar"
+                <img src="{{ asset($profil->foto_kepala_wilayah) }}" id="showgambar2"
                      style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
-
     </div>
 
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama Camat <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama {{ $sebutan_kepala_wilayah }} <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -78,7 +95,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris Camat <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
@@ -137,6 +154,35 @@
                      style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
+           
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                    <input type="text" name="socialmedia[0][link]" class="form-control" placeholder="facebook">
+                    <input type="hidden" name="socialmedia[0][icon]" value="fa fa-facebook" class="form-control" placeholder="facebook">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                    <input type="text" name="socialmedia[1][link]" class="form-control" placeholder="twitter">
+                    <input type="hidden" name="socialmedia[1][icon]" value="fa fa-twitter" class="form-control" placeholder="facebook">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                    <input type="text" name="socialmedia[2][link]" class="form-control" placeholder="instagram">
+                    <input type="hidden" name="socialmedia[2][icon]" value="fa fa-instagram" class="form-control" placeholder="facebook">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-youtube"></i></span>
+                    <input type="text" name="socialmedia[3][link]" class="form-control" placeholder="youtube">
+                    <input type="hidden" name="socialmedia[3][icon]" value="fa fa-youtube" class="form-control" placeholder="facebook">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -155,10 +201,9 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! Form::textarea('misi', null,['class'=>'textarea', 'placeholder'=>'Misi Kecamatan', 'style'=>'width: 100%;
-                 height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
+                height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
             </div>
         </div>
     </div>
 </div>
-
 <div class="ln_solid"></div>

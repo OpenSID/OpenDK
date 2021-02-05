@@ -200,6 +200,8 @@ return [
 
         // JWT Auth
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        // Debugbar
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -260,6 +262,7 @@ return [
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

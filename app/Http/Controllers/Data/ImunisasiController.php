@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
-use App\Models\Profil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +12,6 @@ use Yajra\DataTables\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -23,13 +21,13 @@ use function years_list;
 
 class ImunisasiController extends Controller
 {
-    public $nama_kecamatan;
+    
     public $bulan;
     public $tahun;
 
     public function __construct()
     {
-        $this->nama_kecamatan = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+        parent::__construct();
     }
 
     /**
@@ -40,7 +38,7 @@ class ImunisasiController extends Controller
     public function index()
     {
         $page_title       = 'Imunisasi';
-        $page_description = 'Data Cakupan Imunisasi Kecamatan ' . $this->nama_kecamatan;
+        $page_description = 'Data Cakupan Imunisasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.imunisasi.index', compact('page_title', 'page_description'));
     }
 
@@ -95,8 +93,8 @@ class ImunisasiController extends Controller
         ]);
 
         try {
-            (new ImporImunisasi($request))
-                ->import($request->file('file'));
+            (new ImporImunisasi($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

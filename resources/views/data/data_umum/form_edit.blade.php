@@ -2,7 +2,7 @@
     <div class="col-md-6">
         <legend>Info Wilayah</legend>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kecamatan <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! Form::hidden('kecamatan_id', $data_umum->kecamatan_id) !!}
@@ -31,43 +31,7 @@
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('luas_wilayah', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;','step'=>'0.1']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Jumlah Penduduk <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jumlah_penduduk', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Laki Laki <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_laki_laki', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Perempuan <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_perempuan', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepadatan Penduduk <span
-                        class="required">*</span></label>
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('kepadatan_penduduk', null,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;']) !!}
+                {!! Form::number('luas_wilayah', $luas_wilayah ,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;','step'=>'2.0']) !!}
             </div>
         </div>
 

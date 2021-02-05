@@ -44,41 +44,17 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="list_desa" class="control-label col-md-4 col-sm-3 col-xs-12">Desa <span class="required">*</span></label>
-
-                                <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <select class="form-control" id="list_desa" name="desa_id">
-                                        @foreach($list_desa as $desa)
-                                            <option value="{{$desa->desa_id}}">{{$desa->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="list_year" class="control-label col-md-4 col-sm-3 col-xs-12">Tahun <span class="required">*</span></label>
-
-                                <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <select class="form-control" id="list_year" name="tahun">
-                                        @foreach(years_list() as $year)
-                                            <option value="{{$year}}">{{$year}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Penduduk <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".zip, application/zip"/>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
-                                <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Penduduk.xlsx') }}">Download</a></p>
+                                <p>Instruksi Unggah Data:</p>
+                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/penduduk_22_12_2020_opendk.zip') }}">Unduh</a></p>
                             </div>
                         </div>
                     </div>
@@ -90,7 +66,7 @@
                             <a href="{{ route('data.penduduk.index') }}">
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal</button>
                             </a>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i> Import</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i> Impor</button>
                         </div>
                     </div>
                 </div>

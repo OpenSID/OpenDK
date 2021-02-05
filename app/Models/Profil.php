@@ -27,8 +27,15 @@ class Profil extends Model
         'kepsek_trantib',
         'file_struktur_organisasi',
         'file_logo',
+        'sambutan',
+        'socialmedia',
         'visi',
         'misi',
+        'foto_kepala_wilayah',
+    ];
+
+    protected $cast = [
+        'socialmedia' => 'array'
     ];
 
     public function kecamatan()
@@ -65,5 +72,10 @@ class Profil extends Model
     public function dataDesa()
     {
         return $this->hasMany(DataDesa::class, 'kecamatan_id', 'kecamatan_id');
+    }
+
+    public function dataPenduduk()
+    {
+        return $this->hasMany(Penduduk::class, 'kecamatan_id', 'kecamatan_id')->where('status_dasar', 1);
     }
 }

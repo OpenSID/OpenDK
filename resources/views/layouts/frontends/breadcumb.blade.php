@@ -1,10 +1,5 @@
 <!-- Content Header (Page header) -->
 <div class="col-md-8">
-    {{-- <section class="content-header"> --}}
-      {{-- <h1>
-        <i class="fa fa-home"> </i> {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-      </h1> --}}
       <ol class="breadcrumb">
         <a class="fa fa-home" href="{{ route('beranda') }}"></a>
         @for ($i = 1; $i <= count(Request::segments()); $i++)
@@ -19,7 +14,6 @@
       </li>
       @endfor
     </ol>
-  {{-- </section> --}}
 </div>
-  <!-- Content Header (Page header) -->
+  <!-- Content Header (Page header) -->   
 

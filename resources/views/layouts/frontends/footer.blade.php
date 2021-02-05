@@ -1,23 +1,15 @@
 <section class="footer-top">
     <div class="container no-padding">
-      <div class="col-md-2">
+      <div class="col-md-3">
         <h5 class="text-bold">IKUTI KAMI</h5>
         <ul class="social-icon list-inline m-0">
-          {{-- <li><span class="title">Ikuti Kami </span></li> --}}
-          <li><a target="_BLANK" href="https://www.facebook.com/" class="site-button-link facebook hover"><i
-                      class="fa fa-facebook"></i></a></li>
-          <li><a target="_BLANK" href="https://twitter.com/" class="site-button-link facebook hover"><i
-                      class="fa fa-twitter"></i></a></li>
-          <li><a target="_BLANK" href="https://www.instagram.com/" class="site-button-link facebook hover"><i
-                      class="fa fa-instagram"></i></a></li>
-          <li><a target="_BLANK" href="https://www.youtube.com/channel/"
-                  class="site-button-link facebook hover"><i class="fa fa-youtube"></i></a></li>
-          <li><a target="_BLANK" target="_BLANK" href="" class="site-button-link facebook hover"><i
-                      class="fa fa-rss"></i></a></li>
+          @foreach(json_decode($profil_wilayah->socialmedia) as $sosmed)
+          <li><a target="_BLANK" href="{{ $sosmed->link }}" class="site-button-link facebook hover"><i
+                      class="{{ $sosmed->icon }}"></i></a></li>
+          @endforeach
       </ul>
-      </div>
-      
-      <div class="col-md-3">
+    </div>
+      <div class="col-md-4">
         <h5 class="text-bold">Desa dan kelurahan</h5>
         <ul class=" no-padding">
           @foreach ($navdesa as $d)  
@@ -25,7 +17,7 @@
           @endforeach
           </ul>
       </div>
-      <div class="col-md-3">
+      {{-- <div class="col-md-3">
         <h5 class="text-bold">Agenda Kegiatan</h5>
         <ul class=" no-padding">
           @if(count($events) > 0)
@@ -42,8 +34,8 @@
             </li>
         @endif
           </ul>
-      </div>
-      <div class="col-md-4 col-sm-6">
+      </div> --}}
+      <div class="col-md-5 col-sm-6">
         <h5 class="text-bold">Kantor {{ $sebutan_wilayah }} {{ $nama_wilayah }}</h5>
         <ul class="no-padding">
           <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i> {{ $profil_wilayah->alamat }}</small></li>
@@ -61,11 +53,11 @@
       margin-bottom: 1rem;">
       <div class="pull-right hidden-xs no-padding">
         <ul class="navbottom"> 
-          <li class="listNavbottom"> <strong> <a href="https://yourdomain.com/feed" target="_blank"><i class="fa fa-rss"></i> </a></strong></li>
+          {{-- <li class="listNavbottom"> <strong> <a href="https://yourdomain.com/feed" target="_blank"><i class="fa fa-rss"></i> </a></strong></li> --}}
           <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li>
-          <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li>
+          {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>
-      <strong>&copy; 2017 - {{ now()->format('Y') }} <a href="https://kompak.or.id">KOMPAK.</a> All rights reserved.</strong> 
+      <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a>.</strong> Hak cipta dilindungi. 
     </div>
 </footer>

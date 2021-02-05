@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Imports\ImporToiletSanitasi;
-use App\Models\Profil;
 use App\Models\ToiletSanitasi;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,7 +12,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -23,13 +21,13 @@ use function years_list;
 
 class ToiletSanitasiController extends Controller
 {
-    public $nama_kecamatan;
+   
     public $bulan;
     public $tahun;
 
     public function __construct()
     {
-        $this->nama_kecamatan = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+       parent::__construct();
     }
 
     /**
@@ -40,7 +38,7 @@ class ToiletSanitasiController extends Controller
     public function index()
     {
         $page_title       = 'Toilet & Sanitasi';
-        $page_description = 'Data Toilet & Sanitasi Kecamatan ' . $this->nama_kecamatan;
+        $page_description = 'Data Toilet & Sanitasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.toilet_sanitasi.index', compact('page_title', 'page_description'));
     }
 
@@ -95,8 +93,8 @@ class ToiletSanitasiController extends Controller
         ]);
 
         try {
-            (new ImporToiletSanitasi($request))
-                ->import($request->file('file'));
+            (new ImporToiletSanitasi($request->all()))
+                ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

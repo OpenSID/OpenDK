@@ -20,7 +20,7 @@ class ImporTingkatPendidikan implements ToModel, WithHeadingRow, WithChunkReadin
 
     public function __construct(array $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

@@ -18,7 +18,7 @@ class ImporImunisasi implements ToModel, WithHeadingRow, WithChunkReading, Shoul
 
     public function __construct(array $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

@@ -15,8 +15,10 @@ class HomeController extends Controller
      *
      * @return void
      */
+
     public function __construct()
     {
+        parent::__construct();
     }
 
     /**
@@ -26,7 +28,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['page_title']       = 'Dashboard';
+        $data['page_description'] = $this->sebutan_wilayah;
+        return view('home')->with($data);
     }
 
     public function refresh_captcha()

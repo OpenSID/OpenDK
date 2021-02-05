@@ -18,7 +18,7 @@ class ImporAKIAKB implements ToModel, WithHeadingRow, WithChunkReading, ShouldQu
 
     public function __construct(array $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

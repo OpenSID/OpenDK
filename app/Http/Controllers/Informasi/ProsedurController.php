@@ -69,7 +69,6 @@ class ProsedurController extends Controller
             $prosedur->file_prosedur = $path . $fileName;
             $prosedur->mime_type     = $file->getClientOriginalExtension();
         }
-
         $prosedur->save();
 
         return redirect()->route('informasi.prosedur.index')->with('success', 'Prosedur berhasil ditambah!');

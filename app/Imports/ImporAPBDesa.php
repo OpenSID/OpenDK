@@ -18,7 +18,7 @@ class ImporAPBDesa implements ToModel, WithHeadingRow, WithChunkReading, ShouldQ
 
     public function __construct(array $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

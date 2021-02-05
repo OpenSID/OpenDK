@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
-use App\Models\Wilayah;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +12,6 @@ use Yajra\DataTables\DataTables;
 
 use function back;
 use function compact;
-use function config;
 use function months_list;
 use function redirect;
 use function request;
@@ -81,7 +79,7 @@ class PutusSekolahController extends Controller
             'desa_id'  => 'required|unique:das_putus_sekolah,desa_id',
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'tahun'    => 'required|unique:das_putus_sekolah',
-            'semester' => 'required|unique:das_putus_sekolah'
+            'semester' => 'required|unique:das_putus_sekolah',
         ]);
 
         try {

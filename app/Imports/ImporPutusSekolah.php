@@ -18,7 +18,7 @@ class ImporPutusSekolah implements ToModel, WithHeadingRow, WithChunkReading, Sh
 
     public function __construct(array $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

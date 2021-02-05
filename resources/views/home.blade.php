@@ -1,23 +1,41 @@
-@extends('layouts.app')
+<?php
+use Carbon\Carbon;
+
+?>
+@extends('layouts.dashboard_template')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Dashboard</div>
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+        <!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        {{ $page_title ?? "Page Title" }}
+        <small>{{ $page_description ?? '' }} {{ $nama_wilayah }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active"><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> {{$page_title}}</a></li>
+    </ol>
+</section>
 
-                    You are logged in!
-                </div>
-            </div>
+<!-- Main content -->
+<section class="content container-fluid">
+    @if ($message = Session::get('success'))
+
+        <div class="alert alert-success">
+
+            <p>{{ $message }}</p>
+
         </div>
-    </div>
-</div>
+
+    @endif
+
+    <section class="content">
+        {{-- <h1>Content Under Construction!</h1> --}}
+        <p>Jika Anda butuh bantuan untuk menggunakan Aplikasi Dashboard Kecamatan, silahkan Anda Unduh Panduan Pengguna di bawah ini.</p>
+        <br>
+            <a href="{{ asset('storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf') }}" target="_blank" class="btn btn-primary btn-lg"><i class="fa fa-download"></i> Unduh Panduan</a>
+    </section>
+
+</section>
+<!-- /.content -->
 @endsection

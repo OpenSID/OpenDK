@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\Profil;
 use App\Models\Regulasi;
 use Exception;
 use Illuminate\Http\Request;
@@ -32,11 +31,7 @@ class RegulasiController extends Controller
         $page_description = 'Kumpulan Regulasi ' .$this->sebutan_wilayah;
         $regulasi         = Regulasi::orderBy('id', 'asc')->paginate(10);
 
-        $defaultProfil = config('app.default_profile');
-
-        $profil = Profil::where(['kecamatan_id' => $defaultProfil])->first();
-
-        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi', 'defaultProfil', 'profil'));
+        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi'));
     }
 
     /**
@@ -68,7 +63,7 @@ class RegulasiController extends Controller
                 'file_regulasi' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
             ]);
 
-            $regulasi               = new Regulasi($request->all());
+            $regulasi               = new Regulasi($request->input());
             $regulasi->kecamatan_id = config('app.default_profile');
 
             if ($request->hasFile('file_regulasi')) {
@@ -81,7 +76,6 @@ class RegulasiController extends Controller
             }
 
             $regulasi->save();
-
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');

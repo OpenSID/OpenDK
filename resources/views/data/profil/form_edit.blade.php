@@ -150,7 +150,7 @@
                 <input type="file" id="file_logo" name="file_logo" accept="image/*"
                        class="validate form-control"/>
                 <br>
-                <img src="{{ asset($profil->file_logo) }}" id="showgambar2"
+                <img src="{{ asset($profil->file_logo) }}" id="showgambar3"
                      style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>

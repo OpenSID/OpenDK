@@ -102,12 +102,28 @@
             }
         }
 
+        function readURL3(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#showgambar3').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         $("#file_struktur").change(function () {
             readURL(this);
         });
 
-      $("#file_logo").change(function () {
+      $("#foto_kepala_wilayah").change(function () {
             readURL2(this);
+        });
+
+        $("#file_logo").change(function () {
+            readURL3(this);
         });
 
         $('.textarea').wysihtml5();

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 use willvincent\Feeds\Facades\FeedsFacade;
 use function compact;
 use function config;
@@ -48,7 +49,7 @@ class PageController extends Controller
                 ];
             }
                 if($req){
-                    $feeds =  collect($this->data)->where('title', 'LIKE', "%Pemilihan%")->take(5)->paginate(5);
+                    $feeds =  collect($this->data)->where('title',  $req)->take(5)->paginate(5);
                 }else{
                         $feeds =  collect($this->data)->take(30)->paginate(10);
                     }

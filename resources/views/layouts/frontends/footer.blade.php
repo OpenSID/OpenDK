@@ -56,7 +56,7 @@
       <div class="pull-right hidden-xs no-padding">
         <ul class="navbottom"> 
           {{-- <li class="listNavbottom"> <strong> <a href="https://yourdomain.com/feed" target="_blank"><i class="fa fa-rss"></i> </a></strong></li> --}}
-          <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li>
+          {{-- <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li> --}}
           {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>

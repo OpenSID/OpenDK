@@ -3,21 +3,19 @@
 namespace App\Imports;
 
 use App\Models\ToiletSanitasi;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-use function config;
-
-class ImporToiletSanitasi implements ToModel, WithHeadingRow
+class ImporToiletSanitasi implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
-    /** @var Request $request */
+    /** @var array $request */
     protected $request;
 
-<<<<<<< HEAD
     public function __construct(array $request)
     {
         $this->request = $request;
@@ -27,11 +25,8 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow
      * {@inheritdoc}
      */
     public function chunkSize(): int
-=======
-    public function __construct(Request $request)
->>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
     {
-        $this->request = $request;
+        return 1000;
     }
 
     /**
@@ -42,8 +37,8 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow
         return new ToiletSanitasi([
             'kecamatan_id' => config('app.default_profile'),
             'desa_id'      => $row['desa_id'],
-            'bulan'        => $this->request->input('bulan'),
-            'tahun'        => $this->request->input('tahun'),
+            'bulan'        => $this->request['bulan'],
+            'tahun'        => $this->request['tahun'],
             'toilet'       => $row['toilet'],
             'sanitasi'     => $row['sanitasi'],
         ]);

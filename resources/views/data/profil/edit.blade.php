@@ -5,11 +5,7 @@
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-<<<<<<< HEAD
         <small>{{ $page_description ?? '' }} </small>
-=======
-        <small>{{ $sebutan_wilayah }} : {{ $page_description ?? '' }} </small>
->>>>>>> 2890337063ab134daf3e7f211cd0f029924addf1
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>

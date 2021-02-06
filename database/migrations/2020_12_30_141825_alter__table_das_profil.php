@@ -15,9 +15,9 @@ class AlterTableDasProfil extends Migration
     {
         Schema::table('das_profil', function($table)
         {
-            $table->string('sambutan')->nullable();
+            $table->longText('sambutan')->nullable();
             $table->json('socialmedia')->nullable();
-            $table->longText('foto_pimpinan_wilayah')->nullable()
+            $table->longText('foto_kepala_wilayah')->nullable()
             ->after('misi');
         });
     }

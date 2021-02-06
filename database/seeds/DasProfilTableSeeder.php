@@ -35,6 +35,10 @@ class DasProfilTableSeeder extends Seeder
             'file_logo'                       => null,
             'visi'                            => null,
             'misi'                            => null,
+            'socialmedia'                     => json_encode(array(0=>array("icon" => "fa fa-facebook","link"=> null), 
+                                                                1 => array("icon"=> "fa fa-twitter",  "link"=> null), 
+                                                                2 => array("icon"=> "fa fa-instagram","link"=> null), 
+                                                                3 => array("icon"=> "fa fa-youtube",  "link"=> null))),
             'created_at'                      => now(),
             'updated_at'                      => now(),
         ]);

@@ -58,13 +58,11 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">File Struktur Organisasi</label>
             
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="file" id="file_struktur" name="file_struktur_organisasi" accept="image/*"
-                       class="validate form-control"/>
-                       <br>
-                       <img src="{{ asset($profil->file_struktur_organisasi) }}" id="showgambar"
-                       style="max-width:200px;max-height:200px;float:left;"/>
-                    </div>
-                </div>
+                <input type="file" id="file_struktur" name="file_struktur_organisasi" accept="image/*" class="validate form-control"/>
+                    <br>
+                    <img src="{{ asset($profil->file_struktur_organisasi) }}" id="showgambar" style="max-width:200px;max-height:200px;float:left;"/>
+            </div>
+        </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sambutan {{ $sebutan_kepala_wilayah }}</label>
                 <div class="col-md-8 col-sm-6 col-xs-12">
@@ -74,13 +72,10 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto {{ $sebutan_kepala_wilayah }}</label>
-
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <input type="file" id="foto_kepala_wilayah" name="foto_kepala_wilayah" accept="image/*"
-                       class="validate form-control"/>
+                <input type="file" id="foto_kepala_wilayah" name="foto_kepala_wilayah" accept="image/*" class="validate form-control"/>
                 <br>
-                <img src="{{ asset($profil->foto_kepala_wilayah) }}" id="showgambar2"
-                     style="max-width:200px;max-height:200px;float:left;"/>
+                <img src="{{ asset($profil->foto_kepala_wilayah) }}" id="showgambar2" style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
     </div>
@@ -156,31 +151,15 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
-           
             <div class="col-md-6 col-sm-6 col-xs-12">
+                @foreach (json_decode($profil->socialmedia, true) as $sosmed)
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
-                    <input type="text" name="socialmedia[0][link]" class="form-control" placeholder="facebook">
-                    <input type="hidden" name="socialmedia[0][icon]" value="fa fa-facebook" class="form-control" placeholder="facebook">
+                    <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>
+                    <input type="text" name="socialmedia[{{ $loop->iteration - 1 }}][link]" value="{{ $sosmed['link'] }}" class="form-control" placeholder="">
+                    <input type="hidden" name="socialmedia[{{ $loop->iteration - 1 }}][icon]" value="{{ $sosmed['icon'] }}" class="form-control" placeholder="">
                 </div>
                 <br>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
-                    <input type="text" name="socialmedia[1][link]" class="form-control" placeholder="twitter">
-                    <input type="hidden" name="socialmedia[1][icon]" value="fa fa-twitter" class="form-control" placeholder="facebook">
-                </div>
-                <br>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
-                    <input type="text" name="socialmedia[2][link]" class="form-control" placeholder="instagram">
-                    <input type="hidden" name="socialmedia[2][icon]" value="fa fa-instagram" class="form-control" placeholder="facebook">
-                </div>
-                <br>
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-youtube"></i></span>
-                    <input type="text" name="socialmedia[3][link]" class="form-control" placeholder="youtube">
-                    <input type="hidden" name="socialmedia[3][icon]" value="fa fa-youtube" class="form-control" placeholder="facebook">
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

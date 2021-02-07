@@ -24,12 +24,12 @@
                 </li>
                 <li class="col-md-4 col-sm-4">
                   <h4 class="text-bold text-center">Sambutan Kepala {{ $sebutan_wilayah }} {{ $nama_wilayah }}</h4> 
-                  <small style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
+                  <small class="" style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
-                  <img src="@if(isset($profil_wilayah->foto_kepala_wilayah)) {{ asset($profil_wilayah->foto_kepala_wilayah) }} @else  @endif" width="200px" class="img-user">
+                  <img src="@if(isset($profil_wilayah->foto_kepala_wilayah)) {{ asset($profil_wilayah->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
                   <h6 class="text-bold no-padding">{{ $profil_wilayah->nama_camat }}</h6>
-                  <h6>Kepala {{ $sebutan_wilayah }} {{ $nama_wilayah }} </h6>
+                  <h6>{{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }} </h6>
                 </li>
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>

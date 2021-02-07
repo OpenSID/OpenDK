@@ -1,3 +1,5 @@
+@if (Route::currentRouteName() === 'beranda')
+@else
 <!-- Content Header (Page header) -->
 <div class="col-md-8">
       <ol class="breadcrumb">
@@ -14,6 +16,8 @@
       </li>
       @endfor
     </ol>
-</div>
+  </div>
   <!-- Content Header (Page header) -->   
-
+  @endif
+  
+  

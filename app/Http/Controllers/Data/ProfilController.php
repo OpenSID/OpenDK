@@ -44,7 +44,7 @@ class ProfilController extends Controller
 
         $page_title       = 'Ubah Profil';
         $page_description =   ucwords(strtolower($this->sebutan_wilayah).' : ' . $profil->kecamatan->nama);
-
+        // dd($profil);
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -154,7 +154,7 @@ class ProfilController extends Controller
         }
         $page_title       = 'Ubah';
         $page_description = 'Ubah Profil Kecamatan: ' . ucwords(strtolower($profil->kecamatan->nama));
-
+        
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -166,22 +166,21 @@ class ProfilController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         request()->validate([
             'kecamatan_id'             => 'required',
-            'alamat'                   => 'required',
-            'kode_pos'                 => 'required',
-            'email'                    => 'email',
-            'nama_camat'               => 'required',
-            'file_logo'                => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024',
-            'file_struktur_organisasi' => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
-        ], []);
-
-        try {
-            // dd($request->socialmedia);
+                'alamat'                   => 'required',
+                'kode_pos'                 => 'required',
+                'email'                    => 'email',
+                'nama_camat'               => 'required',
+                'file_logo'                => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024',
+                'file_struktur_organisasi' => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
+                'foto_kepala_wilayah'      => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
+            ], []);
+            
+            try { 
             $profil = Profil::find($id);
             $profil->fill($request->all());
-            // $profil->sambutan     = $request->sambutan;
-            // $profil->socialmedia  = $request->socialmedia;
             $profil->kabupaten_id = substr($profil->kecamatan_id, 0, 5);
             $profil->provinsi_id  = substr($profil->kecamatan_id, 0, 2);
 
@@ -213,10 +212,9 @@ class ProfilController extends Controller
                 $request->file('foto_kepala_wilayah')->move("storage/profil/pegawai/", $fileFotoName);
                 $profil->foto_kepala_wilayah = 'storage/profil/pegawai/' . $fileFotoName;
             }
-
+            
             $profil->update();
             $dataumum->update();
-
             return redirect()->route('data.profil.success', $profil->dataumum->id)->with('success', 'Update Profil sukses!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Update Profil gagal!');

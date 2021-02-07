@@ -52,88 +52,30 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
-    <script type="text/javascript">
-    var $jq = jQuery.noConflict();
-        $jq(document).ready(function () {
-            $jq(".regular").slick({
-                dots: true,
-                infinite: true,
-                slidesToShow: 5,
-                slidesToScroll: 5,
-                responsive: [
-                {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
-                }
-                },
-                {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-                },
-                {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-                }
-            ]
-        });
-        });
-        </script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
     @include('partialspage.preloader')
-    
-    {{-- <script>
-     if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js').then(function(registration) {
-                console.log('Service worker registered successfully', registration);
-            }).catch(function(err) {
-                console.log('Service worker registration failed: ', err);
-            });
-        };
-        window.addEventListener("beforeinstallprompt", function(e) { 
-  // log the platforms provided as options in an install prompt 
-  console.log(e.platforms); // e.g., ["web", "android", "windows"] 
-  e.userChoice.then(function(choiceResult) { 
-    console.log(choiceResult.outcome); // either "accepted" or "dismissed"
-  }, handleError); 
-});
-    </script>  --}}
     <!-- overlay !-->
     <div class="wrapper">
         <div id="search" class="fades animated">
             <a href="#" class="close-btn" id="close-search">
                 <em class="fa fa-times"></em>
             </a>
-            <form method="get" action="" role="search">
-                <input class="form-control" placeholder="Mulai Pencarian" id="searchbox" type="search" />
+            <form method="get" action="{{ url('/') }}" role="search">
+                <input class="form-control" placeholder="Mulai Pencarian" name="cari" id="searchbox" type="text" />
             </form>
         </div>
         <!--- /overlay -->
         @include('layouts.frontends.topheader')
         @include('layouts.frontends.header')
         <div class="content-wrapper">
-            @if (Route::currentRouteName() === 'beranda')
                 @include('layouts.frontends.slider')
-            @endif
             <div class="container">
                 <!-- Main content -->
                 <section class="content">
                         <div class="row">
-                        @if (Route::currentRouteName() === 'beranda')
-                        @else
-                            @include('layouts.frontends.breadcumb')
-                        @endif
+                        @include('layouts.frontends.breadcumb')
                         @yield('content')
                         @include('layouts.frontends.sidebar')
                     </div>
@@ -169,5 +111,4 @@
     <script src="{{ asset('/js/custom.js') }}"></script>
     @stack('scripts')
 </body>
-
 </html>

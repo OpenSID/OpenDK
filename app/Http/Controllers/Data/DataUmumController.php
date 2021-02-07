@@ -128,8 +128,8 @@ class DataUmumController extends Controller
         $data_umum        = DataUmum::findOrFail($id);
         $page_title       = 'Ubah';
         $page_description = 'Data Umum Kecamatan ' . ucwords(strtolower($data_umum->kecamatan->nama));
-
-        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum'));
+        $luas_wilayah     = \DB::table('das_data_desa')->sum('luas_wilayah');
+        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum','luas_wilayah'));
     }
 
     /**

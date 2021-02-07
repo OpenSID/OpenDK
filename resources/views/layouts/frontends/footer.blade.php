@@ -1,13 +1,15 @@
 <section class="footer-top">
     <div class="container no-padding">
       <div class="col-md-3">
+        @if (isset($profil_wilayah->socialmedia))
         <h5 class="text-bold">IKUTI KAMI</h5>
         <ul class="social-icon list-inline m-0">
           @foreach(json_decode($profil_wilayah->socialmedia) as $sosmed)
-          <li><a target="_BLANK" href="{{ $sosmed->link }}" class="site-button-link facebook hover"><i
-                      class="{{ $sosmed->icon }}"></i></a></li>
+          <li><a target="_BLANK" href="{{ $sosmed->link ?? '' }}" class="site-button-link facebook hover"><i
+                      class="{{ $sosmed->icon ?? ''}}"></i></a></li>
           @endforeach
-      </ul>
+        </ul>
+        @endif
     </div>
       <div class="col-md-4">
         <h5 class="text-bold">Desa dan kelurahan</h5>
@@ -54,7 +56,7 @@
       <div class="pull-right hidden-xs no-padding">
         <ul class="navbottom"> 
           {{-- <li class="listNavbottom"> <strong> <a href="https://yourdomain.com/feed" target="_blank"><i class="fa fa-rss"></i> </a></strong></li> --}}
-          <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li>
+          {{-- <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li> --}}
           {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>

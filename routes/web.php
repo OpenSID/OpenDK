@@ -148,10 +148,6 @@ Route::group(['middleware' => 'installed'], function () {
      */
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
-        Route::post('#search',function(){
-            // return 'hello';
-            dd($request);
-        });
         
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');

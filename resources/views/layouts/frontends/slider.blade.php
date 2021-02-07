@@ -1,3 +1,4 @@
+@if (Route::currentRouteName() === 'beranda')
 <!-- Slider -->
 <div id="slider">
     <div class="slides">
@@ -81,5 +82,5 @@
     </div>
 </div>
 <div class="dk-line">
-   
 </div>
+@endif

@@ -85,7 +85,7 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
   @forelse ($feeds as $item)
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
-            <h4 > <a class="text-dark" href="#">
+            <h4 > <a class="text-dark" href="{{ $item['link'] }}">
             <strong class="d-inline-block mb-2  text-primary">{{ $item['title'] }}</strong></a>
             </h4>
             <div class="mb-1 text-muted"> <i class="fa fa-link"></i> {{ $item['feed_title'] }} | <i class="fa fa-user"></i> {{ $item['author']}}{!! $item['date'] !!}</div>

@@ -12,12 +12,12 @@ class DasMenuTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('das_menu')->delete();
-        
+
         \DB::table('das_menu')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'parent_id' => '0',
@@ -29,7 +29,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'parent_id' => '1',
@@ -41,7 +41,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'parent_id' => '1',
@@ -53,7 +53,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
                 'parent_id' => '1',
@@ -65,7 +65,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
                 'parent_id' => '1',
@@ -77,7 +77,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
                 'parent_id' => '1',
@@ -89,7 +89,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
                 'parent_id' => '1',
@@ -101,7 +101,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
                 'parent_id' => '1',
@@ -113,7 +113,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'parent_id' => '1',
@@ -125,11 +125,11 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'parent_id' => '0',
-                'name' => 'Admin Komplain',
+                'name' => 'Admin Keluhan',
                 'slug' => 'adminsikoma',
                 'icon' => 'fa-book',
                 'url' => 'admin-komplain',
@@ -137,7 +137,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'parent_id' => '0',
@@ -149,7 +149,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'parent_id' => '11',
@@ -161,7 +161,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 13,
                 'parent_id' => '11',
@@ -173,7 +173,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 14,
                 'parent_id' => '11',
@@ -185,7 +185,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 15,
                 'parent_id' => '11',
@@ -197,7 +197,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 16,
                 'parent_id' => '11',
@@ -209,7 +209,7 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 17,
                 'parent_id' => '11',
@@ -222,7 +222,7 @@ class DasMenuTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

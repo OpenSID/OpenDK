@@ -36,7 +36,7 @@ $user = Sentinel::getUser();
                             Dokumen</a></li>
                 </ul>
             </li>
-{{-- 
+{{--
             <li class="{{ (Request::is(['sistem-komplain/*', 'sistem-komplain'])? 'active' : '') }}">
                 <a href="{{ route('sistem-komplain.index') }}" title="Sistem Komplain Masyarakat"><i
                             class="fa fa-comments"></i> <span>SIKOMA</span></a>
@@ -176,14 +176,14 @@ $user = Sentinel::getUser();
                 @endif
 
                 @if($user->hasAnyAccess(['admin', 'adminsikoma']))
-                <li class="treeview {{ (Request::is(['admin-komplain/*', 'admin-komplain'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKOMA</span>
+                <li class="treeview {{ (Request::is(['admin-komplain/*', 'admin-komplain'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu">
 
-                        <li {{ (Request::is(['admin-komplain', 'admin-komplain/*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Komplain</a></li>
+                        <li {{ (Request::is(['admin-komplain', 'admin-komplain/*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Keluhan</a></li>
                         <li {{ (Request::is(['admin-komplain/statistik'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a></li>
 
                     </ul>

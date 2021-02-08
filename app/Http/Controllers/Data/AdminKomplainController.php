@@ -26,8 +26,8 @@ class AdminKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Admin Komplain';
-        $page_description = 'Data Admin Komplain';
+        $page_title       = 'Admin Keluhan';
+        $page_description = 'Data Admin Keluhan';
         return view('sistem_komplain.admin_komplain.index', compact('page_title', 'page_description'));
     }
 
@@ -168,8 +168,8 @@ class AdminKomplainController extends Controller
 
     public function statistik()
     {
-        $page_title       = 'Statsitik Komplain';
-        $page_description = 'Data Statistik Komplain Masyarakat';
+        $page_title       = 'Statistik Keluhan';
+        $page_description = 'Data Statistik Keluhan Masyarakat';
         $chart_kategori   = $this->getChartKategori();
         $chart_status     = $this->getChartStatus();
         $chart_desa       = $this->getChartDesa();

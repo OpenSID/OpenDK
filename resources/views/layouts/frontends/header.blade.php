@@ -2,7 +2,7 @@
     <nav class="navbar  navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-            <a href="{{ route('beranda')}}"  class="navbar-brand"><img  src="{{ asset("/img/logo.png")}}" style="margin-top:-5px; display:flex" alt="KD" id="logo-brand" width="180px"></a>
+            <a href="{{ route('beranda')}}"  class="navbar-brand"><img  src="{{ asset("/img/logo.png")}}" style="margin-top:-10px; display:flex" alt="KD" id="logo-brand" width="180px"></a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -10,20 +10,20 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="dropdown active @if(Request::is('/')) active @endif"><a href="{{ route('beranda') }}">BERANDA <span class="sr-only">(current)</span></a></li>
-            <li class="dropdown menu-large">
+            <li class="dropdown @if(Request::is('/')) active @endif"><a href="{{ route('beranda') }}">BERANDA <span class="sr-only">(current)</span></a></li>
+            <li class="dropdown @if(Request::is('profil/*')) active @endif menu-large">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> PROFIL <span class="caret"></span></a>
               <ul class="dropdown-menu megamenu row fadeIn animated">
                 <li class="col-md-4 col-sm-2">
                   <ul class="mega-list">
                     <li class="@if(Request::is('profil/sejarah-*')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah', ['wilayah' => (strtolower($nama_wilayah))] ) }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Sejarah</a></li>
-                    <li class="@if(Request::is('profil/letak-geografis'))active @endif"><a href="{{ route('profil.letak-geografis') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Letak Geografis</a></li>
-                    <li class="@if(Request::is('profil/struktur-pemerintahan'))active @endif"><a href="{{ route('profil.struktur-pemerintahan') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Struktur Pemerintahan</a></li>
-                    <li class="@if(Request::is('profil/visi-dan-misi'))active @endif"><a href="{{ route('profil.visi-misi') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Visi & Misi</a></li>
+                    <li class="@if(Request::is('profil/letak-geografis')) active @endif"><a href="{{ route('profil.letak-geografis') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Letak Geografis</a></li>
+                    <li class="@if(Request::is('profil/struktur-pemerintahan')) active @endif"><a href="{{ route('profil.struktur-pemerintahan') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Struktur Pemerintahan</a></li>
+                    <li class="@if(Request::is('profil/visi-dan-misi')) active @endif"><a href="{{ route('profil.visi-misi') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Visi & Misi</a></li>
                   </ul>
                 </li>
                 <li class="col-md-4 col-sm-4">
-                  <h4 class="text-bold text-center">Sambutan Kepala {{ $sebutan_wilayah }} {{ $nama_wilayah }}</h4> 
+                   <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4> 
                   <small class="" style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
@@ -34,7 +34,7 @@
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>
           </li>
-            <li class="dropdown @if(Request::is('desa-*'))active @endif">
+            <li class="dropdown @if(Request::is('desa/*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
                 @foreach ($navdesa as $d)  
@@ -42,7 +42,7 @@
                 @endforeach
                 </ul>
             </li>
-            <li class="dropdown @if(Request::is('potensi*'))active @endif">
+            <li class="dropdown @if(Request::is('potensi/*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">POTENSI <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
                 @foreach ($navpotensi as $d)  
@@ -61,7 +61,7 @@
                   <li><a href="{{ route('statistik.anggaran-desa') }}">Anggaran Desa</a></li>
                 </ul>
             </li>
-            <li class="dropdown">
+            <li class="dropdown @if(Request::is('unduhan/*'))active @endif">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">UNDUHAN <span class="caret"></span></a>
             <ul class="dropdown-menu fadeIn animated" role="menu">
                 <li><a href="{{ route('unduhan.prosedur') }}">Prosedur</a></li>

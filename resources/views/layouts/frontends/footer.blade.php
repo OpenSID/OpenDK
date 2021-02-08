@@ -1,6 +1,6 @@
 <section class="footer-top">
     <div class="container no-padding">
-      <div class="col-md-3">
+      <div class="col-md-2">
         @if (isset($profil_wilayah->socialmedia))
         <h5 class="text-bold">IKUTI KAMI</h5>
         <ul class="social-icon list-inline m-0">
@@ -11,33 +11,17 @@
         </ul>
         @endif
     </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <h5 class="text-bold">Desa dan kelurahan</h5>
-        <ul class=" no-padding">
-          @foreach ($navdesa as $d)  
-          <li><a class="footer-link" href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}"><i class="fa  fa-chevron-circle-right"></i> {{ 'Desa ' .ucfirst($d->nama) }}</a></li>
-          @endforeach
+        @foreach ($navdesa->chunk(2) as $desa)
+          @foreach ($desa as $d)
+          <ul class="no-padding">
+              <li class="col-12 col-xs-6 no-padding"><a class="footer-link" href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}"><i class="fa  fa-chevron-circle-right"></i> {{ 'Desa ' .ucfirst($d->nama) }}</a></li>
           </ul>
+          @endforeach  
+        @endforeach
       </div>
-      {{-- <div class="col-md-3">
-        <h5 class="text-bold">Agenda Kegiatan</h5>
-        <ul class=" no-padding">
-          @if(count($events) > 0)
-            @foreach($events as $key => $event)
-                @foreach($event as $value) 
-          <li><a class="footer-link" href="{{ route('event.show', ['slug' => str_slug(strtolower($value->event_name))]) }}"><i class="fa  fa-chevron-circle-right"></i> {{ ucfirst($value->event_name) }}</a></li>
-          @endforeach
-            @endforeach
-        @else
-            <li class="time-label">
-                <span>
-                    Event tidak tersedia.
-                </span>
-            </li>
-        @endif
-          </ul>
-      </div> --}}
-      <div class="col-md-5 col-sm-6">
+      <div class="col-md-4 col-xs-12">
         <h5 class="text-bold">Kantor {{ $sebutan_wilayah }} {{ $nama_wilayah }}</h5>
         <ul class="no-padding">
           <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i> {{ $profil_wilayah->alamat }}</small></li>
@@ -50,7 +34,6 @@
   </section>
   <footer class="main-footer footer-bg">
     <div class="container">
-      <div class="divider"></div>
       <hr style="border-top: 0.05em solid rgba(0, 0, 0, 0.1);margin-top: 1rem;
       margin-bottom: 1rem;">
       <div class="pull-right hidden-xs no-padding">

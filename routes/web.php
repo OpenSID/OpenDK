@@ -667,7 +667,7 @@ Route::group(['middleware' => 'installed'], function () {
     // Dashboard Kependudukan
     Route::namespace('Dashboard')->group(function () {
 
-        Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kekendudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
+        Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kependudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
     });
 
     Route::get('/api/list-peserta-penduduk', function () {

@@ -40,10 +40,10 @@ function stickyFunction() {
 	if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
 		navbar.style.fontSize = "12px";
 		navbar.style.padding = "0px";
-		logo.style.width = "100px";
+		logo.style.width = "150px";
 	} else {
 		navbar.style.fontSize = "17px";
-		logo.style.width = "130px";
+		logo.style.width = "180px";
 	}
 }
 

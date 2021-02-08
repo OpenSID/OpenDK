@@ -37,12 +37,12 @@
       <hr style="border-top: 0.05em solid rgba(0, 0, 0, 0.1);margin-top: 1rem;
       margin-bottom: 1rem;">
       <div class="pull-right hidden-xs no-padding">
-        <ul class="navbottom"> 
+        <ul class="navbottom">
           {{-- <li class="listNavbottom"> <strong> <a href="https://github.com/opeSID/openDK" target="_blank"><i class="fa fa-github"></i> </a></strong></li> --}}
           {{-- <li class="listNavbottom"> <strong> <a href="{{ url('/sitemap') }}" target="_blank"> Sitemap</a> </strong></li> --}}
           {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>
-      <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i>  <a href="https://github.com/openSID/openDK" target="_blank"> openDK </a> .</strong> Hak cipta dilindungi. 
+      <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i>  <a href="https://github.com/openSID/openDK" target="_blank"> OpenDK </a> .</strong> Hak cipta dilindungi.
     </div>
 </footer>

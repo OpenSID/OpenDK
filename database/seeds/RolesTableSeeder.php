@@ -12,12 +12,12 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('roles')->delete();
-        
+
         \DB::table('roles')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'slug' => 'super-admin',
@@ -26,7 +26,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2018-05-11 04:30:16',
                 'updated_at' => '2018-05-11 04:30:16',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'slug' => 'admin-desa',
@@ -35,7 +35,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2018-05-31 09:42:14',
                 'updated_at' => '2018-06-16 00:17:48',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'slug' => 'admin-kecamatan',
@@ -44,7 +44,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2018-05-31 09:42:29',
                 'updated_at' => '2018-06-16 00:17:20',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 5,
                 'slug' => 'admin-puskesmas',
@@ -53,7 +53,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2018-06-15 23:55:21',
                 'updated_at' => '2018-06-15 23:58:31',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 6,
                 'slug' => 'admin-pendidikan',
@@ -62,16 +62,16 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2018-06-15 23:55:44',
                 'updated_at' => '2018-06-16 00:03:38',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 7,
                 'slug' => 'admin-komplain',
-                'name' => 'Admin Komplain',
+                'name' => 'Admin Keluhan',
                 'permissions' => '{"adminsikoma":true}',
                 'created_at' => '2018-06-16 00:22:15',
                 'updated_at' => '2018-06-16 00:22:15',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 8,
                 'slug' => 'administrator-website',
@@ -81,7 +81,7 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => '2018-06-16 00:52:26',
             ),
         ));
-        
-        
+
+
     }
 }

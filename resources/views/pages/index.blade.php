@@ -11,7 +11,7 @@
   background: rgb(0, 43, 105);
 	background: linear-gradient(180deg, rgba(0, 43, 105, 1) 0%, rgba(0, 25, 142, 1) 50%, rgba(0, 43, 105, 1) 100%);
   color:white;
-} 
+}
 p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 21px; }
 .page-header strong{
   padding-left: 90px;
@@ -26,10 +26,10 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
     margin-right: 20px;
     color: white;
     text-align: left;
-    line-height: 15px; 
+    line-height: 15px;
 
   }
-  
+
   .fat-arrow:before {
     content: "";
     position: absolute;
@@ -59,7 +59,7 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
       z-index: 2;
       box-shadow: 2px 2px 3px 0px rgba(0,0,0,0.75);
   }
-    
+
   .flo-arrow:before {
     content: "";
     position: absolute;
@@ -85,7 +85,7 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
   @forelse ($feeds as $item)
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
-            <h4 > <a class="text-dark" href="{{ $item['link'] }}">
+            <h4 > <a class="text-dark" href="{{ $item['link'] }}" target="_blank">
             <strong class="d-inline-block mb-2  text-primary">{{ $item['title'] }}</strong></a>
             </h4>
             <div class="mb-1 text-muted"> <i class="fa fa-link"></i> {{ $item['feed_title'] }} | <i class="fa fa-user"></i> {{ $item['author']}}{!! $item['date'] !!}</div>

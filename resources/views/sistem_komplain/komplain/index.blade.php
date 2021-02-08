@@ -7,7 +7,7 @@
             <div class="box box-primary">
                 <div class="box-header">
                     <i class="fa fa-comments"></i>
-                    <h3 class="box-title">Daftar Komplain</h3>
+                    <h3 class="box-title">Daftar Keluhan</h3>
                 </div>
                 <div class="box-body">
                     @if(count($komplains) > 0)

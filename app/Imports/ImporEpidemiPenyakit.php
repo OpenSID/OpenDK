@@ -18,7 +18,7 @@ class ImporEpidemiPenyakit implements ToModel, WithHeadingRow, WithChunkReading,
 
     public function __construct(array $request)
     {
-        $this->request = $request;    
+        $this->request = $request;
     }
 
     /**

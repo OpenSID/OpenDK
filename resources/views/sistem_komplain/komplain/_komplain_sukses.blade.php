@@ -6,11 +6,11 @@ $komplains = Komplain::where('status', '=', 'SELESAI')->orderBy('created_at', 'd
 @endphp
 
 <!-- Success Box -->
-<div class="box box-success">
+<div class="box box-primary">
     <div class="box-header">
-        <i class="fa fa-check-square-o"></i>
+        <i class="fa fa-check-square-o text-blue"></i>
 
-        <h3 class="box-title">Komplain Selesai</h3>
+        <h4 class="box-title text-bold text-blue">KELUHAN TERJAWAB</h4>
     </div>
     <!-- /.box-header -->
     <div class="box-body no-padding">

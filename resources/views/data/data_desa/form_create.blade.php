@@ -17,7 +17,7 @@
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-         {!! Form::text('website', null, ['class' => 'form-control',  'id'=>'website', 'placeholder'=>'Website Desa']) !!}
+         {!! Form::text('website', null, ['class' => 'form-control',  'id'=>'website', 'placeholder'=>'Contoh : https://arungkeke.desa.id']) !!}
     </div>
 </div>
 <div class="form-group">

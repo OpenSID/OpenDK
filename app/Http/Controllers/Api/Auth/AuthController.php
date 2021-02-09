@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+
+use function response;
 
 class AuthController extends Controller
 {
@@ -21,13 +25,13 @@ class AuthController extends Controller
     /**
      * Get a JWT via given credentials.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function login(Request $request)
     {
         $this->validate($request, [
             'email'    => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         $credentials = $request->only(['email', 'password']);
@@ -42,7 +46,7 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function me()
     {
@@ -52,8 +56,8 @@ class AuthController extends Controller
     /**
      * Log the user out (Invalidate the token).
      *
-     * @param \Illuminate\Http\Response $response
-     * @return \Illuminate\Http\JsonResponse
+     * @param Response $response
+     * @return JsonResponse
      */
     public function logout()
     {
@@ -65,7 +69,7 @@ class AuthController extends Controller
     /**
      * Refresh a token.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function refresh()
     {
@@ -76,14 +80,14 @@ class AuthController extends Controller
      * Get the token array structure.
      *
      * @param  string $token
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     protected function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'Bearer',
-            'expires_in'   => Auth::factory()->getTTL() * 60
+            'expires_in'   => Auth::factory()->getTTL() * 60,
         ]);
     }
 }

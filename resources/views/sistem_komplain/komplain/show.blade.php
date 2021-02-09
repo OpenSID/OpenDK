@@ -1,33 +1,7 @@
-@extends('layouts.dashboard_template')
+@extends('layouts.app')
 
 @section('content')
-
-        <!-- Content Header (Page header) -->
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
-    </ol>
-</section>
-
-<!-- Main content -->
-<section class="content container-fluid">
-    @include('partials.flash_message')
-
-    <div class="row">
-        <div class="col-md-3">
-            @include('sistem_komplain.komplain._tracking')
-
-            @include('sistem_komplain.komplain._komplain_populer')
-
-            @include('sistem_komplain.komplain._komplain_sukses')
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-8">
             <!-- kirim komplain form -->
             <div class="box box-primary">
                 <div class="box-header">
@@ -44,7 +18,7 @@
                                     <div class="col-md-12">
                                         <h5 class="bg-primary" style="padding: 2px;">LAPORAN:</h5>
 
-                                        <p>Yth: Camat {!! $camat->nama !!}</p> <!-- env() -->
+                                        <p>Yth: {{ $sebutan_kepala_wilayah }} {!! $camat->nama !!}</p> <!-- env() -->
                                         <br>
                                         <p>
                                             {!! $komplain->laporan !!}
@@ -168,18 +142,12 @@
                 </div>
             </div>
         </div>
-        <!-- /.col -->
-    </div>
-    <!-- /.row -->
-
-</section>
-<!-- /.content -->
 <!-- Modal HTML -->
 <div id="modalReply" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Jawab Komplain</h4>
+                <h4 class="modal-title w-100 font-weight-bold">Jawab Keluhan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -233,7 +201,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Jawab Komplain</h4>
+                <h4 class="modal-title w-100 font-weight-bold">Jawab Keluhan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

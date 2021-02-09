@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Log;
 
 class PendudukQueueJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+    public $timeout = 0;
     /** @var array request data */
     protected $request;
 
@@ -34,7 +37,6 @@ class PendudukQueueJob implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param  Exception $e
      * @return void
      */
     public function failed(Exception $e)

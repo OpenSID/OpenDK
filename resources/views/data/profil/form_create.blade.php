@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kecamatan <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <select name="kecamatan_id" class="form-control" data-placeholder="Pilih Kecamatan" id="kecamatan_id">
+                <select name="kecamatan_id" class="form-control" data-placeholder="'Pilih ' .{{ $sebutan_wilayah }}" id="kecamatan_id">
                     @foreach(\App\Models\Kecamatan::all() as $kecamatan)
                         @if($kecamatan->id == $profil->kecamatan_id)
                             <option value="{{ $kecamatan->id }}" selected="true">{{ $kecamatan->nama }}</option>
@@ -73,18 +73,18 @@
 
     <div class="col-md-6">
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama Camat <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama {{ $sebutan_kepala_wilayah }} <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('nama_camat', null,['placeholder'=>'Nama Camat', 'class'=>'form-control', 'required']) !!}
+                {!! Form::text('nama_camat', null,['placeholder'=>'Nama '.$sebutan_kepala_wilayah, 'class'=>'form-control', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris Camat <span
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris {{ $sebutan_kepala_wilayah }} <span
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('sekretaris_camat', null,['placeholder'=>'Sekretaris Camat', 'class'=>'form-control', 'required']) !!}
+                {!! Form::text('sekretaris_camat', null,['placeholder'=>'Sekretaris '.$sebutan_kepala_wilayah, 'class'=>'form-control', 'required']) !!}
             </div>
         </div>
         <div class="form-group">

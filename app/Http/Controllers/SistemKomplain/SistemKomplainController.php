@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
+use App\Models\Wilayah;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 use function back;
 use function compact;
+use function config;
 use function mt_rand;
 use function redirect;
 use function request;
@@ -24,8 +26,8 @@ class SistemKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'SIKOMA';
-        $page_description = 'Sistem Komplain Masyarakat';
+        $page_title       = 'SIKEMA';
+        $page_description = 'Sistem Keluhan Masyarakat';
 
         $komplains = Komplain::with('kategori_komplain')
             ->where('status', '<>', 'DITOLAK')
@@ -36,8 +38,8 @@ class SistemKomplainController extends Controller
 
     public function indexKategori($slug)
     {
-        $page_title       = 'SIKOMA';
-        $page_description = 'Sistem Komplain Masyarakat';
+        $page_title       = 'SIKEMA';
+        $page_description = 'Sistem Keluhan Masyarakat';
 
         $komplains = Komplain::where('kategori', '=', $slug)->orderBy('created_at', 'desc')->paginate(10);
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
@@ -45,8 +47,8 @@ class SistemKomplainController extends Controller
 
     public function indexSukses()
     {
-        $page_title       = 'SIKOMA';
-        $page_description = 'Sistem Komplain Masyarakat';
+        $page_title       = 'SIKEMA';
+        $page_description = 'Sistem Keluhan Masyarakat';
 
         $komplains = Komplain::where('status', '=', 'Belum')->orderBy('created_at', 'desc')->paginate(10);
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
@@ -54,8 +56,8 @@ class SistemKomplainController extends Controller
 
     public function kirim()
     {
-        $page_title       = 'Kirim Komplain';
-        $page_description = 'Kirim Komplain Baru';
+        $page_title       = 'Kirim Keluhan';
+        $page_description = 'Kirim Keluhan Baru';
 
         return view('sistem_komplain.komplain.kirim', compact('page_title', 'page_description'));
     }
@@ -240,9 +242,9 @@ class SistemKomplainController extends Controller
         try {
             Komplain::findOrFail($id)->delete();
 
-            return redirect()->route('sistem-komplain.index')->with('success', 'Komplain sukses dihapus!');
+            return redirect()->route('sistem-komplain.index')->with('success', 'Keluhan sukses dihapus!');
         } catch (Exception $e) {
-            return redirect()->route('sistem-komplain.index')->with('error', 'Komplain gagal dihapus!');
+            return redirect()->route('sistem-komplain.index')->with('error', 'Keluhan gagal dihapus!');
         }
     }
 
@@ -259,11 +261,11 @@ class SistemKomplainController extends Controller
         } catch (Exception $ex) {
             return back()->withInput()->with('error', $ex);
         }
-		$camat = \App\Models\Wilayah::where('kode', '=', config('app.default_profile'))->first();
+        $camat            = Wilayah::where('kode', '=', config('app.default_profile'))->first();
         $page_title       = 'Detail Laporan';
         $page_description = $komplain->judul;
 
-        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain','camat'));
+        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain', 'camat'));
     }
 
     public function reply(Request $request, $id)

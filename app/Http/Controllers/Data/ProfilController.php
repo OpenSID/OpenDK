@@ -10,16 +10,15 @@ use App\Models\Profil;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
 
 use function back;
 use function basename;
 use function compact;
 use function config;
+use function is_img;
 use function pathinfo;
 use function redirect;
 use function request;
-use function route;
 use function strtolower;
 use function strval;
 use function substr;
@@ -37,17 +36,15 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        /*$page_title = 'Profil';
-        $page_description= 'Data Profil Kecamatan';
-        return view('data.profil.index', compact('page_title', 'page_description'));*/
         $profil = Profil::where('kecamatan_id', config('app.default_profile'))->first();
-        
+
         $profil->file_struktur_organisasi = is_img($profil->file_struktur_organisasi);
-        $profil->file_logo = is_img($profil->file_logo);
+        $profil->file_logo                = is_img($profil->file_logo);
+        $profil->foto_kepala_wilayah                = is_img($profil->foto_kepala_wilayah);
 
         $page_title       = 'Ubah Profil';
         $page_description =   ucwords(strtolower($this->sebutan_wilayah).' : ' . $profil->kecamatan->nama);
-
+        // dd($profil);
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -157,7 +154,7 @@ class ProfilController extends Controller
         }
         $page_title       = 'Ubah';
         $page_description = 'Ubah Profil Kecamatan: ' . ucwords(strtolower($profil->kecamatan->nama));
-
+        
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -169,17 +166,19 @@ class ProfilController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         request()->validate([
             'kecamatan_id'             => 'required',
-            'alamat'                   => 'required',
-            'kode_pos'                 => 'required',
-            'email'                    => 'email',
-            'nama_camat'               => 'required',
-            'file_logo'                => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024',
-            'file_struktur_organisasi' => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
-        ], []);
-
-        try {
+                'alamat'                   => 'required',
+                'kode_pos'                 => 'required',
+                'email'                    => 'email',
+                'nama_camat'               => 'required',
+                'file_logo'                => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024',
+                'file_struktur_organisasi' => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
+                'foto_kepala_wilayah'      => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
+            ], []);
+            
+            try { 
             $profil = Profil::find($id);
             $profil->fill($request->all());
             $profil->kabupaten_id = substr($profil->kecamatan_id, 0, 5);
@@ -205,10 +204,17 @@ class ProfilController extends Controller
                 $request->file('file_logo')->move("storage/profil/file_logo/", $fileLogoName);
                 $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
             }
-
+            if ($request->file('foto_kepala_wilayah') == "") {
+                $profil->foto_kepala_wilayah = $profil->foto_kepala_wilayah;
+            } else {
+                $fileFoto     = $request->file('foto_kepala_wilayah');
+                $fileFotoName = $fileFoto->getClientOriginalName();
+                $request->file('foto_kepala_wilayah')->move("storage/profil/pegawai/", $fileFotoName);
+                $profil->foto_kepala_wilayah = 'storage/profil/pegawai/' . $fileFotoName;
+            }
+            
             $profil->update();
             $dataumum->update();
-
             return redirect()->route('data.profil.success', $profil->dataumum->id)->with('success', 'Update Profil sukses!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Update Profil gagal!');

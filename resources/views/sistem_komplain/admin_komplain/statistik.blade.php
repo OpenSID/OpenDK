@@ -93,12 +93,12 @@
             "dataProvider": {!!  json_encode($chart_kategori) !!},
             "valueAxes": [{
                 "position": "left",
-                "title": "Jumlah Komplain",
+                "title": "Jumlah Keluhan",
                 "baseValue" : 0,
                 "minimum": 0
             }],
             "allLabels": [{
-                "text": "Statistik Komplain Berdasarkan Kategori",
+                "text": "Statistik Keluhan Berdasarkan Kategori",
                 "align": "center",
                 "bold": true,
                 "size": 20,
@@ -126,14 +126,14 @@
             "export": {
                 "enabled": true,
                 "pageOrigin": false,
-                "fileName":"Statistik Komplain Berdasarkan Kategori",
+                "fileName":"Statistik Keluhan Berdasarkan Kategori",
             },
             "hideCredits": true,
             "marginTop" : 50
         });
     }
 
-    //Chart Komplain Status
+    //Chart Keluhan Status
     function create_chart_status()
     {
         var chart_status = AmCharts.makeChart( "chart_status", {
@@ -149,7 +149,7 @@
             "export": {
                 "enabled": true,
                 "pageOrigin": false,
-                "fileName":"Statistik Komplain Berdasarkan Status",
+                "fileName":"Statistik Keluhan Berdasarkan Status",
             },
             "hideCredits": true,
             "legend":{
@@ -158,7 +158,7 @@
                 "autoMargins":false
             },
             "allLabels": [{
-                "text": "Statistik Komplain Berdasarkan Status",
+                "text": "Statistik Keluhan Berdasarkan Status",
                 "align": "center",
                 "bold": true,
                 "size": 20,
@@ -168,7 +168,7 @@
         } );
     }
 
-    // Chart Komplain Desa
+    // Chart Keluhan Desa
     function create_chart_desa() {
 
         AmCharts.addInitHandler( function ( chart_desa ) {
@@ -191,12 +191,12 @@
             "dataProvider": {!!  json_encode($chart_desa) !!},
             "valueAxes": [{
                 "position": "left",
-                "title": "Jumlah Komplain",
+                "title": "Jumlah Keluhan",
                 "baseValue" : 0,
                 "minimum": 0
             }],
             "allLabels": [{
-                "text": "Statistik Komplain Berdasarkan Desa",
+                "text": "Statistik Keluhan Berdasarkan Desa",
                 "align": "center",
                 "bold": true,
                 "size": 20,
@@ -224,7 +224,7 @@
             "export": {
                 "enabled": true,
                 "pageOrigin": false,
-                "fileName": "Statistik Komplain Berdasarkan Desa",
+                "fileName": "Statistik Keluhan Berdasarkan Desa",
             },
             "hideCredits": true,
             "marginTop" : 50

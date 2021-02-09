@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DataDesa;
+use App\Models\Event;
+use App\Models\Profil;
+use App\Models\TipePotensi;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use View;
+
+use function config;
 
 class Controller extends BaseController
 {
@@ -13,19 +20,20 @@ class Controller extends BaseController
     use DispatchesJobs;
     use ValidatesRequests;
 
+    /**
+     * Menampilkan Sebutan Wilayah Tingkat III (Kecamatan/Distrik)
+     */
+
     protected $nama_wilayah;
     protected $sebutan_wilayah;
     protected $sebutan_kepala_wilayah;
-
-	/**
-     * Menampilkan Sebutan Wilayah Tongkat III (Kecamatan/Distrik)
-     */
-	public function __construct()
+    
+    public function __construct()
     {
-        $getWilayah = \App\Models\Profil::where('kecamatan_id', '=', config('app.default_profile'))->first();
-        $this->nama_wilayah = $getWilayah->kecamatan->nama;
+        $defaultProfil = config('app.default_profile');
 
-        $kode_provinsi = $getWilayah->provinsi->kode;
+        $getProfilWilayah = Profil::where('kecamatan_id', $defaultProfil)->first();
+        $kode_provinsi = $getProfilWilayah->provinsi->kode;
         if (in_array($kode_provinsi, [91, 92])){
             $this->sebutan_wilayah = 'Distrik';
             $this->sebutan_kepala_wilayah = 'Kepala Distrik';
@@ -33,10 +41,20 @@ class Controller extends BaseController
             $this->sebutan_wilayah = 'Kecamatan';
             $this->sebutan_kepala_wilayah = 'Camat';
         }
-        \View::share([
-                'nama_wilayah'=> $this->nama_wilayah,
-                'sebutan_wilayah'=> $this->sebutan_wilayah,
-                'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah
+        $nama_wilayah = $getProfilWilayah->kecamatan->nama;
+        $events       = Event::getOpenEvents();
+        $navdesa      = DataDesa::orderby('nama', 'ASC')->get();
+        $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
+
+        View::share([
+            'nama_wilayah'=> $this->nama_wilayah,
+            'sebutan_wilayah'=> $this->sebutan_wilayah,
+            'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah,
+            'events'                 => $events,
+            'navdesa'                => $navdesa,
+            'navpotensi'             => $navpotensi,
+            'nama_wilayah'           => $nama_wilayah,
+            'profil_wilayah'         => $getProfilWilayah,
         ]);
     }
 }

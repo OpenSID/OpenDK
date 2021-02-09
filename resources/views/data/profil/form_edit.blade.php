@@ -177,15 +177,15 @@
                     <input type="hidden" name="socialmedia[3][icon]"  value="fa fa-youtube" class="form-control" placeholder="youtube">
                 </div>
                 <br>
-            @else 
-                @foreach (json_decode($profil->socialmedia, true) as $sosmed)
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>
-                    <input type="text" name="socialmedia[{{ $loop->iteration - 1 }}][link]" value="{{ $sosmed['link'] }}" class="form-control" placeholder="">
-                    <input type="hidden" name="socialmedia[{{ $loop->iteration - 1 }}][icon]" value="{{ $sosmed['icon'] }}" class="form-control" placeholder="">
-                </div>
-                <br>
-                @endforeach
+                @else 
+                    @foreach (json_decode($profil->socialmedia, true) as $sosmed)
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>
+                        <input type="text" name="socialmedia[{{ $loop->iteration - 1 }}][link]" value="{{ $sosmed['link'] }}" class="form-control" placeholder="">
+                        <input type="hidden" name="socialmedia[{{ $loop->iteration - 1 }}][icon]" value="{{ $sosmed['icon'] }}" class="form-control" placeholder="">
+                    </div>
+                    <br>
+                    @endforeach
                 @endif
             </div>
         </div>

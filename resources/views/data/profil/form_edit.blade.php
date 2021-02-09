@@ -152,7 +152,7 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-            @if(is_null($profil->socialmedia))
+            @if(is_null($$profil->socialmedia))
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
                     <input type="text" name="socialmedia[0][link]"  class="form-control" placeholder="facebook">

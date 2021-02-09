@@ -152,6 +152,32 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
+                @if(is_null($profil->socialmedia))
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
+                    <input type="text" name="socialmedia[0][link]"  class="form-control" placeholder="facebook">
+                    <input type="hidden" name="socialmedia[0][icon]"  value="fa fa-facebook" class="form-control" placeholder="facebook">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-twitter"></i></span>
+                    <input type="text" name="socialmedia[1][link]"  class="form-control" placeholder="twitter">
+                    <input type="hidden" name="socialmedia[1][icon]"  value="fa fa-twitter" class="form-control" placeholder="twitter">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-instagram"></i></span>
+                    <input type="text" name="socialmedia[2][link]"  class="form-control" placeholder="instagram">
+                    <input type="hidden" name="socialmedia[2][icon]"  value="fa fa-instagram" class="form-control" placeholder="instagram">
+                </div>
+                <br>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-youtube"></i></span>
+                    <input type="text" name="socialmedia[3][link]"  class="form-control" placeholder="youtube">
+                    <input type="hidden" name="socialmedia[3][icon]"  value="fa fa-youtube" class="form-control" placeholder="youtube">
+                </div>
+                <br>
+            @else 
                 @foreach (json_decode($profil->socialmedia, true) as $sosmed)
                 <div class="input-group">
                     <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>

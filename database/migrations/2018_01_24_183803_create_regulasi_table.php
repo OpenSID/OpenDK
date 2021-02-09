@@ -15,7 +15,7 @@ class CreateRegulasiTable extends Migration
     {
         Schema::create('das_regulasi', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('kecamatan_id',7);
+            $table->char('kecamatan_id',10);
             $table->string('tipe_regulasi', 30);
             $table->string('judul', 200);
             $table->text('deskripsi');

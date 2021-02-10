@@ -56,7 +56,7 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">File Struktur Organisasi</label>
-            
+
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="file" id="file_struktur" name="file_struktur_organisasi" accept="image/*" class="validate form-control"/>
                     <br>
@@ -150,7 +150,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Media Sosial</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
                 @if(is_null($profil->socialmedia))
                 <div class="input-group">
@@ -177,7 +177,7 @@
                     <input type="hidden" name="socialmedia[3][icon]"  value="fa fa-youtube" class="form-control" placeholder="youtube">
                 </div>
                 <br>
-                @else 
+                @else
                     @foreach (json_decode($profil->socialmedia, true) as $sosmed)
                     <div class="input-group">
                         <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>

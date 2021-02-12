@@ -3,9 +3,9 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda')}}"  class="navbar-brand">
-              <img  src="{{ (!$profil_wilayah->file_logo ? $profil_wilayah->file_logo : asset('img/logo_nav.png') )}}" style="margin-top:-10px; padding-right:5px; align-items:center display:flex; float:left; max-width:42px" alt="KD" id="logo-brand" width="42px">
-              <small style="margin-top:-8px; display:flex; align-items:center">{{ ucfirst($nama_wilayah_kab) }}</small>
-              <small style="font-size: clamp(12px, 2vw, 10px); margin-top:-5px; display:flex; align-items:center">{{ $sebutan_wilayah.' '.$nama_wilayah }}</small>
+              <img  src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo_nav.png')}}@endif" style="margin-top:-10px; padding-right:5px; align-items:center display:flex; float:left; max-width:42px" alt="KD" id="logo-brand" width="42px">
+              <small style="margin-top:-8px; display:flex; align-items:center; min-width:180px">{{ ucfirst($nama_wilayah_kab) }}</small>
+              <small style="font-size: clamp(12px, 2vw, 10px); margin-top:-5px; display:block; align-items:center">{{ $sebutan_wilayah.' '.$nama_wilayah }}</small>
             </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>

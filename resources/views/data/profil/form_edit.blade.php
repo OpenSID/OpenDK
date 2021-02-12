@@ -150,9 +150,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sosial Media </label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Media Sosial</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-            @if(is_null($profil->socialmedia))
+                @if(is_null($profil->socialmedia))
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-facebook"></i></span>
                     <input type="text" name="socialmedia[0][link]"  class="form-control" placeholder="facebook">
@@ -177,16 +177,16 @@
                     <input type="hidden" name="socialmedia[3][icon]"  value="fa fa-youtube" class="form-control" placeholder="youtube">
                 </div>
                 <br>
-            @else 
-                @foreach (json_decode($profil->socialmedia, true) as $sosmed)
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>
-                    <input type="text" name="socialmedia[{{ $loop->iteration - 1 }}][link]" value="{{ $sosmed['link'] }}" class="form-control" placeholder="">
-                    <input type="hidden" name="socialmedia[{{ $loop->iteration - 1 }}][icon]" value="{{ $sosmed['icon'] }}" class="form-control" placeholder="">
-                </div>
-                <br>
-                @endforeach
-            @endif
+                @else
+                    @foreach (json_decode($profil->socialmedia, true) as $sosmed)
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="{{ $sosmed['icon'] }}"></i></span>
+                        <input type="text" name="socialmedia[{{ $loop->iteration - 1 }}][link]" value="{{ $sosmed['link'] }}" class="form-control" placeholder="">
+                        <input type="hidden" name="socialmedia[{{ $loop->iteration - 1 }}][icon]" value="{{ $sosmed['icon'] }}" class="form-control" placeholder="">
+                    </div>
+                    <br>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

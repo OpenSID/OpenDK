@@ -48,9 +48,9 @@ class Controller extends BaseController
         $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
 
         View::share([
-            'nama_wilayah'           => $this->nama_wilayah,
-            'sebutan_wilayah'        => $this->sebutan_wilayah,
-            'sebutan_kepala_wilayah' => $this->sebutan_kepala_wilayah,
+            'nama_wilayah'=> $this->nama_wilayah,
+            'sebutan_wilayah'=> $this->sebutan_wilayah,
+            'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah,
             'events'                 => $events,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,

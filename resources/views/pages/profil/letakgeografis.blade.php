@@ -40,8 +40,8 @@
                     </div>
                     <!-- /.row -->
                     <div class="box-footer">
-                        <p>{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai luas {{ number_format($profil->dataumum->luas_wilayah) }} km yang mencakup {{ $profil->datadesa->count() }}  Kelurahan/Desa, 
-                            Adapun sembilan kelurahan tersebut yaitu @foreach($profil->datadesa as $desa) Desa {{ $desa->nama }} , @endforeach
+                        <p>{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai luas {{ number_format($profil->dataumum->luas_wilayah) }} km yang mencakup {{ $profil->datadesa->count() }}  Desa/Kelurahan, 
+                            Adapun Desa/Kelurahan tersebut yaitu @foreach($profil->datadesa as $desa) Desa {{ $desa->nama }} , @endforeach
                             </p>
 
                         <h4 class="text-primary">Batas wilayah {{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} meliputi :</h4>

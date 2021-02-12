@@ -139,6 +139,11 @@ body{
 	.navbar-nav .open .dropdown-menu .dropdown-header {
 		color: #fff;
 	}
+
+	.content{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
 }
 
 
@@ -291,6 +296,7 @@ body{
 	}
 }
 
+.dropdown-menu  { max-height: 180px; overflow-y: auto;background-attachment: local, local, scroll, scroll; }
 .sticky {
 	position: fixed;
 	top: 0;

@@ -48,10 +48,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
         rel="stylesheet">
-        <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" rel="stylesheet" />
+        {{-- <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script> --}}
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">

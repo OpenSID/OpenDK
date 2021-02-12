@@ -28,7 +28,7 @@ window.onscroll = function () {
 };
 
 var navbar = document.getElementById("navbar");
-var logo = document.getElementById("logo-brand");
+// var logo = document.getElementById("logo-brand");
 var sticky = navbar.offsetTop;
 
 function stickyFunction() {
@@ -40,10 +40,10 @@ function stickyFunction() {
 	if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
 		navbar.style.fontSize = "12px";
 		navbar.style.padding = "0px";
-		logo.style.width = "150px";
+		// logo.style.width = "12px";
 	} else {
 		navbar.style.fontSize = "17px";
-		logo.style.width = "180px";
+		// logo.style.width = "13px";
 	}
 }
 

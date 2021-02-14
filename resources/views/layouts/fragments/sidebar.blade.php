@@ -8,43 +8,36 @@ $user = Sentinel::getUser();
     <section class="sidebar">
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="header">DASHBOARD</li>
-            <li class="treeview {{ (Request::is(['informasi/*'])? 'active' : '') }}">
-                <a href="#"><i class="fa fa-archive"></i> <span>Informasi</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li {{ (Request::is(['informasi/prosedur/*', 'informasi/prosedur/index', 'informasi/prosedur'])? 'class=active' : '') }}>
-                        <a href="{{ route('informasi.prosedur.index') }}"><i class="fa fa-circle-o"></i>Prosedur</a>
-                    </li>
-                    <li {{ (Request::is(['informasi/regulasi/*', 'informasi/regulasi/index', 'informasi/regulasi'])? 'class=active' : '') }}>
-                        <a href="{{ route('informasi.regulasi.index') }}"><i class="fa fa-circle-o"></i>Regulasi</a>
-                    </li>
-                    <li {{ (Request::is(['informasi/layanan'])? 'class=active' : '') }}><a
-                                href="{{ route('informasi.layanan') }}"><i class="fa fa-circle-o"></i>Layanan</a></li>
-                    <li {{ (Request::is(['informasi/potensi', 'informasi/potensi/*'])? 'class=active' : '') }}><a
-                                href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a></li>
-                    <li {{ (Request::is(['informasi/event/*', 'informasi/event/index', 'informasi/event'])? 'class=active' : '') }}>
-                        <a href="{{ route('informasi.event.index') }}"><i class="fa fa-circle-o"></i>Event</a></li>
-                    <li {{ (Request::is(['informasi/faq/*', 'informasi/faq/index', 'informasi/faq'])? 'class=active' : '') }}>
-                        <a href="{{ route('informasi.faq.index') }}"><i class="fa fa-circle-o"></i>FAQ</a></li>
-                    <li {{ (Request::is(['informasi/form-dokumen/*', 'informasi/form-dokumen/index', 'informasi/form-dokumen'])? 'class=active' : '') }}>
-                        <a
-                                href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Form
-                            Dokumen</a></li>
-                </ul>
-            </li>
-{{--
-            <li class="{{ (Request::is(['sistem-komplain/*', 'sistem-komplain'])? 'active' : '') }}">
-                <a href="{{ route('sistem-komplain.index') }}" title="Sistem Komplain Masyarakat"><i
-                            class="fa fa-comments"></i> <span>SIKOMA</span></a>
-            </li> --}}
-
             @if(isset($user) && $user->hasAnyAccess(['admin', 'data-*', 'adminsikoma']))
                 <li class="header">MENU ADMINISTRATOR</li>
                 @if($user->hasAnyAccess(['admin', 'data-*']))
+                <li class="treeview {{ (Request::is(['informasi/*'])? 'active' : '') }}">
+                    <a href="#"><i class="fa fa-archive"></i> <span>Informasi</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li {{ (Request::is(['informasi/prosedur/*', 'informasi/prosedur/index', 'informasi/prosedur'])? 'class=active' : '') }}>
+                            <a href="{{ route('informasi.prosedur.index') }}"><i class="fa fa-circle-o"></i>Prosedur</a>
+                        </li>
+                        <li {{ (Request::is(['informasi/regulasi/*', 'informasi/regulasi/index', 'informasi/regulasi'])? 'class=active' : '') }}>
+                            <a href="{{ route('informasi.regulasi.index') }}"><i class="fa fa-circle-o"></i>Regulasi</a>
+                        </li>
+                        <li {{ (Request::is(['informasi/layanan'])? 'class=active' : '') }}><a
+                                    href="{{ route('informasi.layanan') }}"><i class="fa fa-circle-o"></i>Layanan</a></li>
+                        <li {{ (Request::is(['informasi/potensi', 'informasi/potensi/*'])? 'class=active' : '') }}><a
+                                    href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a></li>
+                        <li {{ (Request::is(['informasi/event/*', 'informasi/event/index', 'informasi/event'])? 'class=active' : '') }}>
+                            <a href="{{ route('informasi.event.index') }}"><i class="fa fa-circle-o"></i>Event</a></li>
+                        <li {{ (Request::is(['informasi/faq/*', 'informasi/faq/index', 'informasi/faq'])? 'class=active' : '') }}>
+                            <a href="{{ route('informasi.faq.index') }}"><i class="fa fa-circle-o"></i>FAQ</a></li>
+                        <li {{ (Request::is(['informasi/form-dokumen/*', 'informasi/form-dokumen/index', 'informasi/form-dokumen'])? 'class=active' : '') }}>
+                            <a
+                                    href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Form
+                                Dokumen</a></li>
+                    </ul>
+                </li>
                 <li class="treeview {{ (Request::is(['data/*'])? 'active' : '') }}">
                     <a href="#"><i class="fa fa-database"></i> <span>Data</span><span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i></span>

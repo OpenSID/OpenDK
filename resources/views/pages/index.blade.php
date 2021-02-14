@@ -95,10 +95,10 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
   @forelse ($feeds as $item)
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
-            <h4 > <a class="text-dark" href="{{ $item['link'] }}">
+            <h4 > <a class="text-dark" href="{{ $item['link'] }}" target="_blank">
             <strong class="d-inline-block mb-2  text-primary">{{ $item['title'] }}</strong></a>
             </h4>
-            <div class="mb-1 text-muted"> <i class="fa fa-building-o"></i> {{ $item['feed_title'] }} | <i class="fa fa-user-circle-o"></i> {{ $item['author']}}  | <i class="fa fa-calendar-o"></i> {!! date('d F Y H:i', $item['date']) !!}</div>
+            <div class="mb-1 text-muted" style="font-size: 10px"> <i class="fa fa-link"></i> {{ ucwords($item['feed_title']) }} | <i class="fa fa-user-circle-o"></i> {{ $item['author']}}  | <i class="fa fa-calendar-o"></i> {!! \Carbon\Carbon::parse($item['date'])->translatedFormat('d F Y H:i') !!}</div>
             <hr style="margin-top:0px">
             <div class="divider"></div>
             <img class="card-img-right flex-auto d-none d-lg-block" data-src="holder.js/200x250?theme=thumb" alt="Thumbnail [200x250]" style="width: 100%; height: 100%; display;block;" src="{{ get_tag_image($item['description']) }}" data-holder-rendered="true">

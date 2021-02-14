@@ -41,9 +41,10 @@ class Controller extends BaseController
             $this->sebutan_wilayah = 'Kecamatan';
             $this->sebutan_kepala_wilayah = 'Camat';
         }
-        $nama_wilayah = $getProfilWilayah->kecamatan->nama;
-        $events       = Event::getOpenEvents();
-        $navdesa      = DataDesa::orderby('nama', 'ASC')->get();
+        $nama_wilayah     = $getProfilWilayah->kecamatan->nama;
+        $nama_wilayah_kab = $getProfilWilayah->kabupaten->nama;
+        $events           = Event::getOpenEvents();
+        $navdesa        = DataDesa::orderby('nama', 'ASC')->get();
         $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
 
         View::share([
@@ -54,6 +55,7 @@ class Controller extends BaseController
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
             'nama_wilayah'           => $nama_wilayah,
+            'nama_wilayah_kab'           => $nama_wilayah_kab,
             'profil_wilayah'         => $getProfilWilayah,
         ]);
     }

@@ -2,7 +2,11 @@
     <nav class="navbar  navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-            <a href="{{ route('beranda')}}"  class="navbar-brand"><img  src="{{ asset("/img/logo.png")}}" style="margin-top:-10px; display:flex" alt="KD" id="logo-brand" width="180px"></a>
+            <a href="{{ route('beranda')}}"  class="navbar-brand">
+              <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo_nav.png')}}@endif" alt="KD" >
+              <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
+              <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
+            </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
           </button>
@@ -23,7 +27,7 @@
                   </ul>
                 </li>
                 <li class="col-md-4 col-sm-4">
-                   <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4> 
+                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4> 
                   <small class="" style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
@@ -36,13 +40,15 @@
           </li>
             <li class="dropdown @if(Request::is('desa/*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
-              <ul class="dropdown-menu fadeIn animated" role="menu">
-                @foreach ($navdesa as $d)  
-                <li><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
-                @endforeach
+                <ul class="dropdown-menu fadeIn animated" style="min-width: 400px;" role="menu">
+                  @foreach ($navdesa->chunk(2) as $desa)
+                    @foreach ($desa as $d)
+                    <li class="col-sm-6" style="white-space: normal;"><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
+                    @endforeach
+                  @endforeach
                 </ul>
             </li>
-            <li class="dropdown @if(Request::is('potensi/*'))active @endif">
+            <li class="dropdown @if(Request::is('potensi/*'))active @endif" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">POTENSI <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
                 @foreach ($navpotensi as $d)  

@@ -12,9 +12,13 @@
 	background: linear-gradient(180deg, rgba(0, 43, 105, 1) 0%, rgba(0, 25, 142, 1) 50%, rgba(0, 43, 105, 1) 100%);
   color:white;
 } 
-p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 21px; }
+p { 
+  font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 21px; 
+  }
+
 .page-header strong{
   padding-left: 90px;
+  font-family: 'Lato', sans-serif;
 }
 
 @media(max-width:980px){
@@ -81,7 +85,17 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
     border-top: 13px solid transparent;
     border-bottom: 12px solid transparent;
   }
+  .title-article{
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    /* font-family: 'Varela', sans-serif; */
+    /* font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 21px;  */
+
+  }
+
 </style>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
 @endpush
 @section('content')
 <div class="col-md-8">
@@ -96,7 +110,7 @@ p { font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
             <h4 > <a class="text-dark" href="{{ $item['link'] }}" target="_blank">
-            <strong class="d-inline-block mb-2  text-primary">{{ $item['title'] }}</strong></a>
+            <strong class="d-inline-block mb-2  text-primary title-article">{{ strtoupper($item['title']) }}</strong></a>
             </h4>
             <div class="mb-1 text-muted" style="font-size: 10px"> <i class="fa fa-link"></i> {{ ucwords($item['feed_title']) }} | <i class="fa fa-user-circle-o"></i> {{ $item['author']}}  @if(isset($item['date'])) | <i class="fa fa-calendar-o"></i> {!! \Carbon\Carbon::parse($item['date'])->translatedFormat('d F Y H:i') !!} @endif</div>
             <hr style="margin-top:0px">

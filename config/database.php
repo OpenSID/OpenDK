@@ -50,8 +50,13 @@ return [
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',
             'prefix' => '',
-            'strict' => true,
+            'strict' => false,
             'engine' => null,
+            'dump' => [
+                'dump_binary_path' => 'C:\laragon\bin\mysql\mysql-5.7.24-winx64\bin', // only the path, so without `mysqldump` or `pg_dump`
+                'use_single_transaction',
+                'timeout' => 60 * 5, // 5 minute timeout
+            ],
         ],
 
         'pgsql' => [

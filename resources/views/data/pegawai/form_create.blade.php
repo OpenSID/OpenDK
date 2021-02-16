@@ -93,7 +93,7 @@
             <label for="alamat" class="control-label col-md-4 col-sm-3 col-xs-12">Alamat<span class="required">*</span></label>
     
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('alamat', null,['placeholder'=>'Alamat ', 'class'=>'form-control', 'id'=>'alamat']) !!}
+                {!! Form::text('alamat', null,['placeholder'=>'Alamat ', 'class'=>'form-control', 'required', 'id'=>'alamat']) !!}
             </div>
         </div>
     </div>

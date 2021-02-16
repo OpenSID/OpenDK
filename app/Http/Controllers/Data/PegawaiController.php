@@ -103,7 +103,7 @@ class PegawaiController extends Controller
             'tempat_lahir'     => 'required',
             'tanggal_lahir'    => 'required',
             'status_kawin_id'  => 'required',
-            'nomor_ktp'        => 'required',
+            'nik'              => 'required',
             'pendidikan'       => 'required',
             'tamat_pendidikan' => 'required',
             'telepon'          => 'required',

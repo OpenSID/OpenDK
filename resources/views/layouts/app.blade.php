@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Cache-Control: no-store" content="public">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#1a2035">
@@ -31,7 +32,7 @@
     <meta name="twitter:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
     <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }}">
 
-    <link rel="icon" type="image/icon" href="{{ asset('/favicon.png') }}" />
+    <link rel="icon" type="image/icon" href="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{ asset('/favicon.png') }}@endif" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/icon/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/icon/favicon-16x16.png') }}">
     <link rel="mask-icon" href="{{ asset('/icon/safari-pinned-tab.svg') }}" color="#5bbad5">
@@ -48,7 +49,7 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
         rel="stylesheet">
-        {{-- <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script> --}}
+        <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">

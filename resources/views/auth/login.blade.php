@@ -29,7 +29,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <img class="" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo_nav.png')}}@endif" style="max-width:80px;white-space:normal" alt=""  width="70px">
+        <img class="" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" style="max-width:80px;white-space:normal" alt=""  width="70px">
         <h3 href="{{$app->make('url')->to('/')}}">PEMERINTAH {{ strtoupper($nama_wilayah_kab) }}<br><b>{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</b></h3>
     </div>
     <!-- /.login-logo -->

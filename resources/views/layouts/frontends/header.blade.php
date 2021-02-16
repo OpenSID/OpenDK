@@ -3,9 +3,9 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda')}}"  class="navbar-brand">
-              <img  src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo_nav.png')}}@endif" style="margin-top:-10px; padding-right:5px; align-items:center display:flex; float:left; max-width:42px" alt="KD" id="logo-brand" width="42px">
-              <small style="margin-top:-8px; display:flex; align-items:center; min-width:180px">{{ ucfirst($nama_wilayah_kab) }}</small>
-              <small style="font-size: clamp(12px, 2vw, 10px); margin-top:-5px; display:block; align-items:center">{{ $sebutan_wilayah.' '.$nama_wilayah }}</small>
+              <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD" >
+              <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
+              <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
             </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>

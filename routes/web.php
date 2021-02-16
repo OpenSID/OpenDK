@@ -381,7 +381,31 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
                 });
+                //Routes Resource Jabatan
+                Route::group(['prefix' => 'jabatan'], function () {
+                    Route::get('getdata', ['as' => 'data.jabatan.getdata', 'uses' => 'JabatanController@getJabatan']);
+                    Route::get('/', ['as' => 'data.jabatan.index', 'uses' => 'JabatanController@index']);
+                    Route::get('create', ['as' => 'data.jabatan.create', 'uses' => 'JabatanController@create']);
+                    Route::post('store', ['as' => 'data.jabatan.store', 'uses' => 'JabatanController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.jabatan.edit', 'uses' => 'JabatanController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.jabatan.update', 'uses' => 'JabatanController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.jabatan.destroy', 'uses' => 'JabatanController@destroy']);
+                });
 
+                //Routes Resource Pegawai
+                Route::group(['prefix' => 'pegawai'], function () {
+                    Route::get('getdata', ['as' => 'data.pegawai.getdata', 'uses' => 'PegawaiController@getPegawai']);
+                    Route::get('/', ['as' => 'data.pegawai.index', 'uses' => 'PegawaiController@index']);
+                    Route::get('create', ['as' => 'data.pegawai.create', 'uses' => 'PegawaiController@create']);
+                    Route::post('store', ['as' => 'data.pegawai.store', 'uses' => 'PegawaiController@store']);
+                    Route::get('show/{id}', ['as' => 'data.pegawai.show', 'uses' => 'PegawaiController@show']);
+                    Route::get('edit/{id}', ['as' => 'data.pegawai.edit', 'uses' => 'PegawaiController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.pegawai.update', 'uses' => 'PegawaiController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.pegawai.destroy', 'uses' => 'PegawaiController@destroy']);
+                    Route::get('import', ['as' => 'data.pegawai.import', 'uses' => 'PegawaiController@import']);
+                    Route::post('import-excel', ['as' => 'data.pegawai.import-excel', 'uses' => 'PegawaiController@importExcel']);
+                });
+                
                 //Routes Resource Keluarga
                 Route::group(['prefix' => 'keluarga'], function () {
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);

@@ -132,6 +132,17 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('sub_sub_coa/{type_id}/{sub_id}', ['as' => 'setting.coa.sub_sub_coa', 'uses' => 'Setting\COAController@get_sub_sub_coa']);
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
             });
+
+            // Backup Restore Database Routes
+        
+            Route::group(['prefix' => 'backup'], function () {
+                Route::post('upload', ['as' => 'backup.upload', 'uses' => 'Setting\BackupController@upload']);
+                Route::post('{fileName}/restore', ['as' => 'backup.restore', 'uses' => 'Setting\BackupController@restore']);
+                Route::get('{fileName}/dl', ['as' => 'backup.download', 'uses' => 'Setting\BackupController@download']);
+            });
+            Route::namespace('Setting')->name('setting.')->group(function () {
+                Route::resource('backup', 'BackupController', ['except' => ['create', 'show', 'edit']]);
+            });
         });
 
         /**
@@ -689,10 +700,10 @@ Route::group(['middleware' => 'installed'], function () {
     })->name('api.test');
     
     // Dashboard Kependudukan
-    Route::namespace('Dashboard')->group(function () {
+    // Route::namespace('Dashboard')->group(function () {
 
-        Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kependudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
-    });
+    //     Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kependudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
+    // });
 
     Route::get('/api/list-peserta-penduduk', function () {
         return \App\Models\Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')

@@ -37,7 +37,7 @@
         <p class="login-box-msg">Sign in to start your session</p>
         @include( 'flash::message' )
         <form method="POST" action="{{ route('login') }}">
-        {{ csrf_field() }}  
+        {{ csrf_field() }}
             <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required
                     autofocus placeholder="Email">
@@ -76,7 +76,7 @@
     <!-- /.login-box-body -->
 </div>
 <div class="login-box-footer" style="align-items: center; text-align: center">
-    <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i>  <a href="https://github.com/openSID/openDK" target="_blank"> openDK </a> .</small>
+    <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i>  <a href="https://github.com/openSID/openDK" target="_blank"> OpenDK </a> .</small>
 </div>
 <!-- /.login-box -->
 <!-- jQuery 3 -->

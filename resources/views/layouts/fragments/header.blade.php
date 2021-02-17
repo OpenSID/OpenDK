@@ -91,6 +91,16 @@
                 </li>
                 <!-- Control Sidebar Toggle Button -->
                 <li>
+                    <div>
+                        <input type="checkbox" class="checkbox" id="chk" />
+                        <label class="label" for="chk">
+                            <i class="fa fa-moon"></i>
+                            <i class="fa fa-sun"></i>
+                            <div class="ball"></div>
+                        </label>
+                    </div>
+                </li>
+                <li>
                     <a href="#" data-toggle="control-sidebar" title="Bantuan!"><i class="fa fa-question-circle fa-lg"></i></a>
                 </li>
             </ul>

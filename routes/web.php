@@ -136,9 +136,9 @@ Route::group(['middleware' => 'installed'], function () {
             // Backup Restore Database Routes
         
             Route::group(['prefix' => 'backup'], function () {
-                Route::post('upload', ['as' => 'backup.upload', 'uses' => 'Setting\BackupController@upload']);
-                Route::post('{fileName}/restore', ['as' => 'backup.restore', 'uses' => 'Setting\BackupController@restore']);
-                Route::get('{fileName}/dl', ['as' => 'backup.download', 'uses' => 'Setting\BackupController@download']);
+                Route::post('upload', ['as' => 'setting.backup.upload', 'uses' => 'Setting\BackupController@upload']);
+                Route::post('{fileName}/restore', ['as' => 'setting.backup.restore', 'uses' => 'Setting\BackupController@restore']);
+                Route::get('{fileName}/dl', ['as' => 'setting.backup.download', 'uses' => 'Setting\BackupController@download']);
             });
             Route::namespace('Setting')->name('setting.')->group(function () {
                 Route::resource('backup', 'BackupController', ['except' => ['create', 'show', 'edit']]);

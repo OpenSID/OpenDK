@@ -55,11 +55,11 @@ class BackupController extends Controller
                 new Destination('local', 'backup/database/'.$fileName),
             ], 'gzip');
 
-            flash(trans('backup.created', ['filename' => $fileName.'.gz']), 'success');
+            flash(trans('Database Berhasil dibackup', ['filename' => $fileName.'.gz']), 'success');
 
             return redirect()->route('backups.index');
         } catch (FileExistsException $e) {
-            flash(trans('backup.not_created', ['filename' => $fileName.'.gz']), 'danger');
+            flash(trans('Database Gagal dibackup', ['filename' => $fileName.'.gz']), 'danger');
 
             return redirect()->route('setting.backup.index');
         }
@@ -77,7 +77,7 @@ class BackupController extends Controller
             unlink(storage_path('app/backup/database/').$fileName);
         }
 
-        flash(trans('backup.deleted', ['filename' => $fileName]), 'warning');
+        flash(trans('Backup Database Berhasil Dihapus', ['filename' => $fileName]), 'warning');
 
         return redirect()->route('setting.backup.index');
     }
@@ -107,9 +107,9 @@ class BackupController extends Controller
         } catch (FileNotFoundException $e) {
         }
 
-        flash(trans('backup.restored', ['filename' => $fileName]), 'success');
+        flash(trans('Database Berhasil Restore', ['filename' => $fileName]), 'success');
 
-        return redirect()->route('backups.index');
+        return redirect()->route('setting.backup.index');
     }
 
     /**
@@ -133,8 +133,8 @@ class BackupController extends Controller
             $file->storeAs('backup/db', $fileName);
         }
 
-        flash(trans('backup.uploaded', ['filename' => $fileName]), 'success');
+        flash(trans('Backup Database Berhasil Diupload', ['filename' => $fileName]), 'success');
 
-        return redirect()->route('backups.index');
+        return redirect()->route('setting.backup.index');
     }
 }

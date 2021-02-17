@@ -54,7 +54,7 @@
             </div>
         </form>
         <hr>
-        <form action="{{ route('backup.upload') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('setting.backup.upload') }}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <div class="form-group">
                 <label for="backup_file" class="control-label">{{ __('Upload File Database') }}</label>

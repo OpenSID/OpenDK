@@ -280,7 +280,7 @@ body{
 	background: linear-gradient(180deg, rgba(0, 43, 105, 1) 0%, rgba(0, 25, 142, 1) 50%, rgba(0, 43, 105, 1) 100%);
 	transition: 0.4s;
 	top: 0;
-	font-size: 17px;
+	font-size: 16px;
 	/* Big font size */
 	font-weight: bold;	
 	/* position: fixed; */

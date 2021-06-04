@@ -37,6 +37,7 @@ function stickyFunction() {
 	} else {
 		navbar.classList.remove("sticky");
 	}
+
 	if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
 		navbar.style.fontSize = "12px";
 		navbar.style.padding = "0px";
@@ -47,7 +48,7 @@ function stickyFunction() {
 	}
 }
 
-//drop down menu  
+//drop down menu
 $(".drop-down").hover(function () {
 	$('.dropdown-menu').addClass('display-on');
 });

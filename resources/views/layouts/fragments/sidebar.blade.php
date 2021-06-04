@@ -64,8 +64,10 @@ $user = Sentinel::getUser();
                         </li>
                         @endif
                         @if($user->hasAnyAccess(['admin', 'data-penduduk']))
-                        <li {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk'])? 'class=active' : '') }}>
                             <a href="{{ route('data.penduduk.index') }}"><i class="fa fa-circle-o"></i>Penduduk</a></li>
+                        <li {{ (Request::is(['data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'class=active' : '') }}>
+                            <a href="{{ route('data.keluarga.index') }}"><i class="fa fa-circle-o"></i>Keluarga</a></li>
                         @endif
 
                         @if($user->hasAnyAccess(['admin', 'data-kesehatan']))

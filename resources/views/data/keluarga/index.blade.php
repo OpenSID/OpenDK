@@ -18,44 +18,41 @@
 <!-- Main content -->
 <section class="content container-fluid">
     @include('partials.flash_message')
-    <div class="nav-tabs-custom">
-        <ul class="nav nav-tabs">
-            <li><a href="{{ route('data.penduduk.index') }}">Penduduk</a></li>
-            <li class="active"><a href="{{ route('data.keluarga.index') }}" >Keluarga</a></li>
-        </ul>
-
-        <div class="tab-content active">
-            <div class="row">
-                <div class="col-md-12">
+    <div class="tab-content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
                         <a href="{{ route('data.keluarga.create') }}">
                             <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Keluarga</button>
                         </a>
                         <a href="{{ route('data.keluarga.import') }}">
                             <button type="button" class="btn btn-warning btn-sm" title="Upload Data"><i class="fa fa-upload"></i> Import</button>
                         </a>
-                </div>
-            </div>
-            <br>
-            <div class="row">
-                <div class="col-md-12">
-                    <table class="table table-striped table-bordered" id="keluarga-table">
-                        <thead>
-                        <tr>
-                            <th style="max-width: 80px;">Aksi</th>
-                            <th>No. KK</th>
-                            <th>Nama Kepala</th>
-                            <th>Tanggal Daftar</th>
-                            <th>Tanggal Cetak KK</th>
-                            <th>Alamat</th>
-                            <th>RW</th>
-                            <th>RT</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-bordered" id="keluarga-table">
+                                    <thead>
+                                    <tr>
+                                        <th style="max-width: 80px;">Aksi</th>
+                                        <th>No. KK</th>
+                                        <th>Nama Kepala</th>
+                                        <th>Tanggal Daftar</th>
+                                        <th>Tanggal Cetak KK</th>
+                                        <th>Alamat</th>
+                                        <th>RW</th>
+                                        <th>RT</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- /.nav-tabs-custom -->
     </div>
 </section>
 <!-- /.content -->

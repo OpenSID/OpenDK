@@ -78,6 +78,7 @@
           @if (Sentinel::guest())
             <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
           @else
+          <li><a href="{{ route('dashboard.profil')}}">ADMIN</a></li>
           <li><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}

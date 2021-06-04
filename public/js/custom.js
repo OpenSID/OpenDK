@@ -38,11 +38,18 @@ function stickyFunction() {
 		navbar.classList.remove("sticky");
 	}
 	if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+		let mql = window.matchMedia('(max-width: 1199px) and (min-width: 992px)'); // media query lebar 1024px
+		if (mql.matches) {
+			navbar.style.fontSize = "11px";
+			navbar.style.padding = "0px";
+			logo.style.width = "150px";
+			return;
+		}
 		navbar.style.fontSize = "12px";
 		navbar.style.padding = "0px";
 		logo.style.width = "150px";
 	} else {
-		navbar.style.fontSize = "17px";
+		navbar.style.fontSize = "16px";
 		logo.style.width = "180px";
 	}
 }

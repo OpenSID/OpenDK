@@ -37,6 +37,7 @@ function stickyFunction() {
 	} else {
 		navbar.classList.remove("sticky");
 	}
+
 	if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
 		let mql = window.matchMedia('(max-width: 1199px) and (min-width: 992px)'); // media query lebar 1024px
 		if (mql.matches) {
@@ -54,7 +55,7 @@ function stickyFunction() {
 	}
 }
 
-//drop down menu  
+//drop down menu
 $(".drop-down").hover(function () {
 	$('.dropdown-menu').addClass('display-on');
 });

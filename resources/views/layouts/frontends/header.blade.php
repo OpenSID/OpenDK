@@ -3,7 +3,7 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda')}}"  class="navbar-brand">
-              <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD" >
+              <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD" id="logo-brand" >
               <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
               <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
             </a>
@@ -27,7 +27,7 @@
                   </ul>
                 </li>
                 <li class="col-md-4 col-sm-4">
-                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4> 
+                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4>
                   <small class="" style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
@@ -51,7 +51,7 @@
             <li class="dropdown @if(Request::is('potensi/*'))active @endif" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">POTENSI <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
-                @foreach ($navpotensi as $d)  
+                @foreach ($navpotensi as $d)
                 <li><a href="{{ route('potensi.kategori', ['slug'=>$d->slug]) }}">{{ ucfirst($d->nama_kategori) }}</a></li>
                 @endforeach
                 </ul>
@@ -82,7 +82,7 @@
           <li><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}
-          </form>  
+          </form>
           @endif
         </ul>
       </div>

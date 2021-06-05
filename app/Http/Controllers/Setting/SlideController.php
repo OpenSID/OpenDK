@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\setting;
+namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,7 +8,8 @@ use App\Models\Slide;;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Response;
 use League\Flysystem\Exception;
-use Yajra\DataTables\DataTables;;
+use Yajra\DataTables\DataTables;
+
 class SlideController extends Controller
 {
     //
@@ -83,7 +84,7 @@ class SlideController extends Controller
 
         return view('setting.slide.edit', compact('page_title', 'page_description', 'slide'));
     }
-    
+
     /**
      * Update the specified resource in storage.
      *

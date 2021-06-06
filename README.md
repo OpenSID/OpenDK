@@ -1,6 +1,7 @@
 <h1 align="center">Selamat datang di OpenDK! 👋</h1>
 
-![readme-image](https://user-images.githubusercontent.com/57283157/100576066-e71e9800-330f-11eb-899c-29c06b54feaa.JPG)
+![image](https://user-images.githubusercontent.com/45786885/120922202-f08b2180-c6f1-11eb-9105-22085a73ee64.png)
+
 
 ### 🤔 Apa itu OpenDK?
 OpenDK (https://github.com/OpenSID/OpenDK) adalah aplikasi yang bisa digunakan oleh Pemerintah Kecamatan di Seluruh Indonesia. Aplikasi ini sangat berguna untuk menampilkan statistik di wilayah Kecamatan, diantaranya adalah statistik Penduduk, statistik Kesehatan, Statistik Pendidikan dan Statistik lainnya. Upaya ini adalah sebagai bentuk transparansi dan Keterbukaan Informasi Publik yang dilakukan Pemerintah Kecamatan kepada seluruh rakyat di wilayahnya.

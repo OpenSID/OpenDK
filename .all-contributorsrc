@@ -13,6 +13,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ibnuhalimm",
+      "name": "IBNU HALIM MUSTOFA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14322078?v=4",
+      "profile": "https://ibnuis.dev",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

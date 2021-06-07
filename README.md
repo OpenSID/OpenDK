@@ -44,4 +44,4 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+Daftar kontributor menggunakan spesifikasi [all-contributors](https://github.com/all-contributors/all-contributors), menggunakan @all-contributors Bot.

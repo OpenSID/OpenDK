@@ -1,6 +1,6 @@
 <h1 align="center">Selamat datang di OpenDK! 👋</h1>
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![readme-image](https://user-images.githubusercontent.com/45786885/120922202-f08b2180-c6f1-11eb-9105-22085a73ee64.png)
@@ -36,6 +36,7 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
 <table>
   <tr>
     <td align="center"><a href="https://github.com/roaddee"><img src="https://avatars.githubusercontent.com/u/45786885?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rudi Purwanto</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=roaddee" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://afa28.github.io"><img src="https://avatars.githubusercontent.com/u/57283157?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andi Fahruddin Akas</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=afa28" title="Code">💻</a></td>
   </tr>
 </table>
 

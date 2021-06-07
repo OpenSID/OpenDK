@@ -1,7 +1,4 @@
 <h1 align="center">Selamat datang di OpenDK! 👋</h1>
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![readme-image](https://user-images.githubusercontent.com/45786885/120922202-f08b2180-c6f1-11eb-9105-22085a73ee64.png)
 
@@ -54,4 +51,8 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-Daftar kontributor menggunakan spesifikasi [all-contributors](https://github.com/all-contributors/all-contributors), menggunakan @all-contributors Bot.
+Daftar kontributor sesuai spesifikasi [all-contributors](https://github.com/all-contributors/all-contributors), menggunakan @all-contributors Bot.
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->

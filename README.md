@@ -1,4 +1,7 @@
 <h1 align="center">Selamat datang di OpenDK! 👋</h1>
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![readme-image](https://user-images.githubusercontent.com/45786885/120922202-f08b2180-c6f1-11eb-9105-22085a73ee64.png)
 
@@ -28,7 +31,17 @@ Komunitas OpenDK juga bebas, bahkan diajak, untuk turut membuat kontribusi pada 
 Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-| [<img src="https://avatars.githubusercontent.com/agungsugiarto?s=150&v=1" width="200px;"/><br /><sub><b>Agung Sugiarto</b></sub>](https://github.com/agungsugiarto)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=agungsugiarto "Code") | [<img src="https://avatars.githubusercontent.com/xiaocids?s=150&v=1" width="200px;"/><br /><sub><b>R Awaludin</b></sub>](https://github.com/xiaocids)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=xiaocids "Code") | [<img src="https://avatars.githubusercontent.com/roaddee?s=150&v=1" width="200px;"/><br /><sub><b>Roaddee</b></sub>](https://github.com/roaddee)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=roaddee "Code") | [<img src="https://avatars.githubusercontent.com/afa28?s=150&v=1" width="200px;"/><br /><sub><b>Afa28</b></sub>](https://github.com/afa28)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=afa28 "Code") | [<img src="https://avatars.githubusercontent.com/mizwaruddin?s=150&v=1" width="200px;"/><br /><sub><b>Mizwaruddin</b></sub>](https://github.com/mizwaruddin)<br />[🐛](https://github.com/OpenSID/OpenDK/issues?q=author%3Amizwaruddin) | [<img src="https://avatars.githubusercontent.com/deanvhin2?s=150&v=1" width="200px;"/><br /><sub><b>Deanvhin2</b></sub>](https://github.com/deanvhin2)<br />[🐛](https://github.com/OpenSID/OpenDK/issues?q=author%3Adeanvhin2)| [<img src="https://avatars.githubusercontent.com/fusionid?s=150&v=1" width="200px;"/><br /><sub><b>Zeppy Shiddiq</b></sub>](https://github.com/fusionid)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=fusionid "Code")|
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://avatars.githubusercontent.com/u/21957159?v=4" width="200px;"/><br /><sub><b>Dirga</b></sub>](https://github.com/dirgareborn)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=dirgareborn "Code") | [<img src="https://avatars.githubusercontent.com/u/4870292?v=4" width="200px;"/><br /><sub><b>Suhendra</b></sub>](https://github.com/sayasuhendra)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=sayasuhendra "Code") | [<img src="https://avatars.githubusercontent.com/u/14322078?v=4" width="200px;"/><br /><sub><b>Ibnu Halim Mustofa</b></sub>](https://github.com/ibnuhalimm)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=ibnuhalimm "Code") | [<img src="https://avatars.githubusercontent.com/u/22321111?v=4" width="200px;"/><br /><sub><b>Lufri Rais Maulana</b></sub>](https://github.com/raismaulana)<br />[💻](https://github.com/OpenSID/OpenDK/commits?author=raismaulana "Code")||||
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/roaddee"><img src="https://avatars.githubusercontent.com/u/45786885?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rudi Purwanto</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=roaddee" title="Documentation">📖</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

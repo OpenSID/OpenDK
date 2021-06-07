@@ -8,6 +8,13 @@ OpenDK (https://github.com/OpenSID/OpenDK) adalah aplikasi yang bisa digunakan o
 ### 📃 PEDOMAN PENGGUNAAN
 Pedoman pemasangan dan penggunaan OpenDK dapat dilihat di wiki OpenDK di https://github.com/opensid/opendk/wiki.
 
+### 🔥 SERVER REQUIREMENT
+| Requirement | Version |
+| --- | --- |
+| PHP | \>= 7.2.5 |
+| Mysql | \>= 5.7.8 |
+| Mariadb | \>= 10.2.7 |
+
 ### 💻 DEMO
 Demo aplikasi OpenDK dapat dilihat di https://demo.opendk.my.id. Versi yang terlihat di demo itu adalah rilis terkini.
 

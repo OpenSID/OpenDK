@@ -13,6 +13,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ilamazuliaf",
+      "name": "Faizul Amali",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31075119?v=4",
+      "profile": "https://facebook.com/faizulamaly",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -13,6 +13,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "raismaulana",
+      "name": "Lufri Rais Maulana",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22321111?v=4",
+      "profile": "https://ocan.page.link/fbku",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

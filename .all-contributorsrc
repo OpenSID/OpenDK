@@ -15,6 +15,7 @@
       ]
     },
     {
+<<<<<<< HEAD
       "login": "dirgareborn",
       "name": "Dirga ",
       "avatar_url": "https://avatars.githubusercontent.com/u/21957159?v=4",
@@ -37,6 +38,51 @@
       "name": "Andi Fahruddin Akas",
       "avatar_url": "https://avatars.githubusercontent.com/u/57283157?v=4",
       "profile": "http://afa28.github.io",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "agungsugiarto",
+      "name": "Agung Sugiarto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10989147?v=4",
+      "profile": "https://agungsugiarto.github.io",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "xiaocids",
+      "name": "R Awaludin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4973716?v=4",
+      "profile": "https://github.com/xiaocids",
+      "contributions": [
+        "code"
+      ],
+    },
+    {
+      "login": "raismaulana",
+      "name": "Lufri Rais Maulana",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22321111?v=4",
+      "profile": "https://ocan.page.link/fbku",
+      "contributions": [
+        "code"
+      ],
+    },
+    {
+      "login": "ilamazuliaf",
+      "name": "Faizul Amali",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31075119?v=4",
+      "profile": "https://facebook.com/faizulamaly",
+      "contributions": [
+        "code"
+      ],
+    },
+    {
+      "login": "ibnuhalimm",
+      "name": "IBNU HALIM MUSTOFA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14322078?v=4",
+      "profile": "https://ibnuis.dev",
       "contributions": [
         "code"
       ]

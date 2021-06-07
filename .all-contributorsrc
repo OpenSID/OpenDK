@@ -13,6 +13,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "fusionid",
+      "name": "zeppyshiddiq",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10391199?v=4",
+      "profile": "https://github.com/fusionid",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

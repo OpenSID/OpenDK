@@ -13,6 +13,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "agungsugiarto",
+      "name": "Agung Sugiarto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10989147?v=4",
+      "profile": "https://agungsugiarto.github.io",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

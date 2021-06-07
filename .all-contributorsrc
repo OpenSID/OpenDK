@@ -13,6 +13,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "afa28",
+      "name": "Andi Fahruddin Akas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57283157?v=4",
+      "profile": "http://afa28.github.io",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

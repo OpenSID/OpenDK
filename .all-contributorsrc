@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "roaddee",
+      "name": "Rudi Purwanto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45786885?v=4",
+      "profile": "https://github.com/roaddee",
+      "contributions": [
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "OpenDK",
+  "projectOwner": "OpenSID",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

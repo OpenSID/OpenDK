@@ -42,6 +42,8 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
     <td align="center"><a href="https://agungsugiarto.github.io"><img src="https://avatars.githubusercontent.com/u/10989147?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Agung Sugiarto</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=agungsugiarto" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/xiaocids"><img src="https://avatars.githubusercontent.com/u/4973716?v=4?s=100" width="100px;" alt=""/><br /><sub><b>R Awaludin</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=xiaocids" title="Code">💻</a></td>
     <td align="center"><a href="https://ocan.page.link/fbku"><img src="https://avatars.githubusercontent.com/u/22321111?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Lufri Rais Maulana</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=raismaulana" title="Code">💻</a></td>
+  </tr>
+  <tr>
     <td align="center"><a href="https://facebook.com/faizulamaly"><img src="https://avatars.githubusercontent.com/u/31075119?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Faizul Amali</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=ilamazuliaf" title="Code">💻</a></td>
     <td align="center"><a href="https://ibnuis.dev"><img src="https://avatars.githubusercontent.com/u/14322078?v=4?s=100" width="100px;" alt=""/><br /><sub><b>IBNU HALIM MUSTOFA</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=ibnuhalimm" title="Code">💻</a></td>
   </tr>

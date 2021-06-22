@@ -56,7 +56,7 @@ class PageController extends Controller
                 
                 $feeds->all();
         return view('pages.index', [
-            'page_title'       => 'Beranda',
+            'page_title'       => 'Beranda | ' . $this->browser_title,
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
             'feeds'            => $feeds,
         ]);

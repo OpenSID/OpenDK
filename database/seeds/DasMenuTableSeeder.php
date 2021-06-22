@@ -221,6 +221,18 @@ class DasMenuTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+            17 =>
+            array (
+                'id' => 18,
+                'parent_id' => '11',
+                'name' => 'Halaman Beranda',
+                'slug' => 'setting-dashboard',
+                'icon' => 'fa-book',
+                'url' => 'setting/user',
+                'is_active' => 1,
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
         ));
 
 

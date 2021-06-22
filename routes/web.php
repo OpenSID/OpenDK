@@ -132,6 +132,11 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('sub_sub_coa/{type_id}/{sub_id}', ['as' => 'setting.coa.sub_sub_coa', 'uses' => 'Setting\COAController@get_sub_sub_coa']);
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
             });
+
+            Route::group(['prefix' => 'dashboard'], function () {
+                Route::get('/', ['as' => 'setting.dashboard.index', 'uses' => 'Setting\DashboardController@index']);
+                Route::get('/edit-browser-title', ['as' => 'setting.dashboard.edit_browser_title', 'uses' => 'Setting\DashboardController@edit_browser_title']);
+            });
         });
 
         /**

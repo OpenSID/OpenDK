@@ -8,7 +8,7 @@
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#1a2035">
 
-    <title>{{ $page_title ?? '' }} | {{ config('app.name', 'Laravel') }} </title>
+    <title>{{ $page_title ?? config('app.name', 'Laravel') }} </title>
     <meta name="description" content="{{ $page_description ?? '' }}.">
     <link rel="canonical" href="{{ Request::url() }}">
     <meta itemprop="name" content="{{ $page_title ?? '' }}">

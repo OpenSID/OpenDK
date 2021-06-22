@@ -46,6 +46,7 @@ class Controller extends BaseController
         $events           = Event::getOpenEvents();
         $navdesa        = DataDesa::orderby('nama', 'ASC')->get();
         $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
+        $this->browser_title = "Kecamatan $nama_wilayah, Kab. $nama_wilayah_kab";
 
         View::share([
             'nama_wilayah'=> $this->nama_wilayah,

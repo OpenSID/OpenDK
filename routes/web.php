@@ -136,6 +136,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::group(['prefix' => 'dashboard'], function () {
                 Route::get('/', ['as' => 'setting.dashboard.index', 'uses' => 'Setting\DashboardController@index']);
                 Route::get('/edit-browser-title', ['as' => 'setting.dashboard.edit_browser_title', 'uses' => 'Setting\DashboardController@edit_browser_title']);
+                Route::put('/update-browser-title', ['as' => 'setting.dashboard.update_browser_title', 'uses' => 'Setting\DashboardController@update_browser_title']);
             });
         });
 

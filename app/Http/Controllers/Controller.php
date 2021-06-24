@@ -27,12 +27,14 @@ class Controller extends BaseController
     protected $nama_wilayah;
     protected $sebutan_wilayah;
     protected $sebutan_kepala_wilayah;
+    protected $getProfilWilayah;
     
     public function __construct()
     {
         $defaultProfil = config('app.default_profile');
 
         $getProfilWilayah = Profil::where('kecamatan_id', $defaultProfil)->first();
+        $this->getProfilWilayah = $getProfilWilayah;
         $kode_provinsi = $getProfilWilayah->provinsi->kode;
         if (in_array($kode_provinsi, [91, 92])){
             $this->sebutan_wilayah = 'Distrik';
@@ -46,17 +48,18 @@ class Controller extends BaseController
         $events           = Event::getOpenEvents();
         $navdesa        = DataDesa::orderby('nama', 'ASC')->get();
         $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
-        $this->browser_title = "Kecamatan $nama_wilayah, Kab. $nama_wilayah_kab";
+        $this->default_browser_title = "Kecamatan $nama_wilayah, $nama_wilayah_kab";
+        $this->browser_title = $getProfilWilayah->browser_title ?? $this->default_browser_title;
 
         View::share([
-            'nama_wilayah'=> $this->nama_wilayah,
-            'sebutan_wilayah'=> $this->sebutan_wilayah,
-            'sebutan_kepala_wilayah'=> $this->sebutan_kepala_wilayah,
+            'nama_wilayah'           => $this->nama_wilayah,
+            'sebutan_wilayah'        => $this->sebutan_wilayah,
+            'sebutan_kepala_wilayah' => $this->sebutan_kepala_wilayah,
             'events'                 => $events,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
             'nama_wilayah'           => $nama_wilayah,
-            'nama_wilayah_kab'           => $nama_wilayah_kab,
+            'nama_wilayah_kab'       => $nama_wilayah_kab,
             'profil_wilayah'         => $getProfilWilayah,
         ]);
     }

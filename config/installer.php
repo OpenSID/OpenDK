@@ -73,7 +73,7 @@ return [
                 'database_port'         => 'required|numeric',
                 'database_name'         => 'required|string|max:50',
                 'database_username'     => 'required|string|max:50',
-                'database_password'     => 'required|string|max:50',
+                'database_password'     => 'string|max:50|nullable',
                 'broadcast_driver'      => 'required|string|max:50',
                 'cache_driver'          => 'required|string|max:50',
                 'session_driver'        => 'required|string|max:50',

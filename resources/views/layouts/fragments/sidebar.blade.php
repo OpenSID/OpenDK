@@ -233,9 +233,9 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/user/*', 'setting/user'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                         @endif
-                        @if($user->hasAnyAccess(['admin', 'setting-dashboard']))
-                        <li {{ (Request::is(['setting/dashboard/*', 'setting/dashboard'])? 'class=active' : '') }}><a
-                                    href="{{ route('setting.dashboard.index') }}"><i class="fa fa-circle-o"></i>Halaman Beranda</a></li>
+                        @if($user->hasAnyAccess(['admin', 'setting-aplikasi']))
+                        <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
                         @endif
                     </ul>
                 </li>

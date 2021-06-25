@@ -133,10 +133,10 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
             });
 
-            Route::group(['prefix' => 'dashboard'], function () {
-                Route::get('/', ['as' => 'setting.dashboard.index', 'uses' => 'Setting\DashboardController@index']);
-                Route::get('/edit-browser-title', ['as' => 'setting.dashboard.edit_browser_title', 'uses' => 'Setting\DashboardController@edit_browser_title']);
-                Route::put('/update-browser-title', ['as' => 'setting.dashboard.update_browser_title', 'uses' => 'Setting\DashboardController@update_browser_title']);
+            Route::group(['prefix' => 'aplikasi'], function () {
+                Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
+                Route::get('/edit-browser-title', ['as' => 'setting.aplikasi.edit_browser_title', 'uses' => 'Setting\AplikasiController@edit_browser_title']);
+                Route::put('/update-browser-title', ['as' => 'setting.aplikasi.update_browser_title', 'uses' => 'Setting\AplikasiController@update_browser_title']);
             });
         });
 

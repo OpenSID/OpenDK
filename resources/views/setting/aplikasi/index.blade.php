@@ -36,7 +36,7 @@
                             <td>Halaman Judul</td>
                             <td>{{ $browser_title }}</td>
                             <td>
-                                <a href="{{ route('setting.dashboard.edit_browser_title')}}" class="" title="Ubah" data-button="edit">
+                                <a href="{{ route('setting.aplikasi.edit_browser_title')}}" class="" title="Ubah" data-button="edit">
                                     <button type="button" class="btn btn-primary btn-xs" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i>
                                     </button>
                                 </a>

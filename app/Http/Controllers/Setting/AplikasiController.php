@@ -11,44 +11,42 @@ class AplikasiController extends Controller
 {
     public function __construct() {
         parent::__construct();
-        $this->browser_title = SettingAplikasi::query()
-            ->where('key', 'browser_title')
-            ->first()
-            ->value ?? $this->default_browser_title;
     }
 
     public function index()
     {
-        return view('setting.aplikasi.index', [
-            'page_title'    => 'Pegaturan Aplikasi', 
-            'browser_title' => $this->browser_title
-        ]);
-    }
-
-    public function edit_browser_title()
-    {
-        $setting                = SettingAplikasi::query()->where('key', 'browser_title')->first();
-        $page_title             = 'Pegaturan Judul Aplikasi';
-        $default_browser_title  = $this->default_browser_title;
-        $browser_title          = $setting->value ?? null;
-
-        return view('setting.aplikasi.edit_browser_title', compact(
-            'page_title', 'browser_title', 'default_browser_title'
-        ));
-    }
-
-    public function update_browser_title(Request $request)
-    {
-        try {
-            $setting = SettingAplikasi::firstOrNew([
-                'key'         => 'browser_title',
+        $settings = SettingAplikasi::all();
+        if ($settings->isEmpty()) {
+            $setting = SettingAplikasi::insert([
+                'key'         => SettingAplikasi::KEY_BROWSER_TITLE,
                 'value'       => $this->default_browser_title,
                 'type'        => "input",
                 'description' => "Judul halaman aplikasi.",
-                'option'      => '{}'
+                'option'      => '{"edit_route":"setting.aplikasi.edit_browser_title"}'
             ]);
             $setting->save();
-            
+            $settings = SettingAplikasi::all();
+        }
+
+        return view('setting.aplikasi.index', [
+            'page_title'    => 'Pegaturan Aplikasi', 
+            'settings'      => $settings,
+        ]);
+    }
+
+    public function edit(SettingAplikasi $setting)
+    {
+        $page_title             = 'Pegaturan Judul Aplikasi';
+        $default_browser_title  = $this->default_browser_title;
+
+        return view('setting.aplikasi.edit', compact(
+            'page_title', 'setting', 'default_browser_title'
+        ));
+    }
+
+    public function update(Request $request, SettingAplikasi $setting)
+    {
+        try {
             $browser_title = $request->input('title') ?? $this->default_browser_title;
             $setting->update([
                 'value'       => $browser_title,

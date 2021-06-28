@@ -26,7 +26,7 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                         <label for="inputTitle">Judul Aplikasi</label>
-                        <input type="text" name="title" class="form-control" id="inputTitle" aria-describedby="inputTitle" value="{{$browser_title}}">
+                        <input type="text" name="title" class="form-control" id="inputTitle" aria-describedby="inputTitle" value="{{$browser_title ?? $default_browser_title}}">
                         <small id="default_title" class="form-text text-muted">Jika kosong judul akan dirubah menjadi judul standar "{{$default_browser_title}}".</small>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>

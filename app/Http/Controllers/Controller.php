@@ -34,7 +34,6 @@ class Controller extends BaseController
         $defaultProfil = config('app.default_profile');
 
         $getProfilWilayah = Profil::where('kecamatan_id', $defaultProfil)->first();
-        $this->getProfilWilayah = $getProfilWilayah;
         $kode_provinsi = $getProfilWilayah->provinsi->kode;
         if (in_array($kode_provinsi, [91, 92])){
             $this->sebutan_wilayah = 'Distrik';
@@ -43,13 +42,13 @@ class Controller extends BaseController
             $this->sebutan_wilayah = 'Kecamatan';
             $this->sebutan_kepala_wilayah = 'Camat';
         }
-        $nama_wilayah     = $getProfilWilayah->kecamatan->nama;
-        $nama_wilayah_kab = $getProfilWilayah->kabupaten->nama;
-        $events           = Event::getOpenEvents();
-        $navdesa        = DataDesa::orderby('nama', 'ASC')->get();
-        $navpotensi   = TipePotensi::orderby('nama_kategori', 'ASC')->get();
+
+        $nama_wilayah                = $getProfilWilayah->kecamatan->nama;
+        $nama_wilayah_kab            = $getProfilWilayah->kabupaten->nama;
+        $events                      = Event::getOpenEvents();
+        $navdesa                     = DataDesa::orderby('nama', 'ASC')->get();
+        $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
         $this->default_browser_title = "Kecamatan $nama_wilayah, $nama_wilayah_kab";
-        $this->browser_title = $getProfilWilayah->browser_title ?? $this->default_browser_title;
 
         View::share([
             'nama_wilayah'           => $this->nama_wilayah,

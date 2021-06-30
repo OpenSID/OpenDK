@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DataDesa;
 use App\Models\Event;
 use App\Models\Profil;
+use App\Models\SettingAplikasi;
 use App\Models\TipePotensi;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -49,6 +50,10 @@ class Controller extends BaseController
         $navdesa                     = DataDesa::orderby('nama', 'ASC')->get();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
         $this->default_browser_title = "Kecamatan $nama_wilayah, $nama_wilayah_kab";
+        $browser_title               = SettingAplikasi::query()
+                                        ->where('key', 'browser_title')
+                                        ->first()
+                                        ->value ?? $this->default_browser_title;
 
         View::share([
             'nama_wilayah'           => $this->nama_wilayah,
@@ -60,6 +65,7 @@ class Controller extends BaseController
             'nama_wilayah'           => $nama_wilayah,
             'nama_wilayah_kab'       => $nama_wilayah_kab,
             'profil_wilayah'         => $getProfilWilayah,
+            'browser_title'          => $browser_title
         ]);
     }
 }

@@ -19,6 +19,7 @@ class CreateSettingAplikasisTable extends Migration
             $table->text('value');
             $table->string('type', 30);
             $table->string('description', 200);
+            $table->string('kategori', 200);
             $table->json('option');
         });
     }

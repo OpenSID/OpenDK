@@ -26,9 +26,9 @@
                     <table class="table table-striped table-bordered" id="user-table">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Value</th>
-                            <th>Action</th>
+                            <th>Nama Pengaturan</th>
+                            <th>Nilai</th>
+                            <th>Aksi</th>
                         </tr>
                         </thead>
                         <tbody>

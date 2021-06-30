@@ -65,6 +65,31 @@ class AppServiceProvider extends ServiceProvider
             }
             return false;
         });
+
+        Validator::extend('unique_key', function ($attribute, $value, $parameters) {
+            $query = DB::table($parameters[0])
+                ->where('key', $value)
+                ->exists();
+
+            if (!$query) {
+                return true;
+            }
+            return false;
+        });
+
+        Validator::extend('valid_json', function ($attributes, $value, $parameters) {
+            $json_string = $value;
+        
+            if(!is_string($json_string)) {
+                return false;
+            }
+            json_encode($json_string);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return false;
+            }
+            return true;
+        });
+        
     }
 
     /**

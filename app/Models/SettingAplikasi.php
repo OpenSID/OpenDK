@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SettingAplikasi extends Model
 {
-    const KEY_BROWSER_TITLE = 'browser_title';
+    const KEY_BROWSER_TITLE = 'judul_aplikasi';
 
     protected $table = 'das_setting';
 
-    protected $fillable = ['key','value','type','description','option'];
+    protected $fillable = ['key','value','type','description','option', 'category'];
 
     public $timestamps = false;
 
@@ -18,10 +18,4 @@ class SettingAplikasi extends Model
     {
         return $this->key == self::KEY_BROWSER_TITLE;
     }
-
-    public function getRouteKeyName()
-    {
-        return 'id';
-    }
-
 }

@@ -135,8 +135,8 @@ Route::group(['middleware' => 'installed'], function () {
 
             Route::group(['prefix' => 'aplikasi'], function () {
                 Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
-                Route::get('/edit/{setting}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
-                Route::put('/update/{setting}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
+                Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
+                Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
         });
 

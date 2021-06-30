@@ -24,7 +24,7 @@ class UpdateSetingAplikasiRequest extends FormRequest
     public function rules()
     {
         return [
-            'key'           => 'required|unique_key:das_setting',
+            'key'           => 'required|unique_key:das_setting,' . $this->input('id'),
             'value'         => 'required',
             'type'          => 'required|max:30|in:input,textarea',
             'description'   => 'required|max:200',
@@ -36,7 +36,7 @@ class UpdateSetingAplikasiRequest extends FormRequest
     public function messages() {
         return [
             'key.unique_key'     => 'Kata kunci harus unik',
-            'value'              => 'Nilai pengaturan tidak boleh kosong.',
+            'value.required'     => 'Nilai pengaturan tidak boleh kosong.',
             'type.in'            => 'Tipe form harus salah satu dari input atau textarea.',
             'type.max'           => 'Tipe form tidak boleh kosong dan lebih dari 30 karakter..',
             'description.max'    => 'Deskripsi tidak boleh kosong dan lebih dari 200 karakter.',

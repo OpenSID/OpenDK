@@ -69,21 +69,19 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('unique_key', function ($attribute, $value, $parameters) {
             $query = DB::table($parameters[0])
                 ->where('key', $value)
-                ->exists();
+                ->first();
 
-            if (!$query) {
+            if (!$query || $query->id == $parameters[1]) {
                 return true;
             }
             return false;
         });
 
         Validator::extend('valid_json', function ($attributes, $value, $parameters) {
-            $json_string = $value;
-        
-            if(!is_string($json_string)) {
+            if(!is_string($value)) {
                 return false;
             }
-            json_encode($json_string);
+            json_decode($value);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 return false;
             }

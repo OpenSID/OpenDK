@@ -1,3 +1,5 @@
+{{ Form::hidden('id', $aplikasi->id) }}
+
 <div class="form-group">
     <label for="key" class="control-label col-md-4 col-sm-3 col-xs-12">Kata Kunci Pengaturan <span class="required">*</span></label>
 

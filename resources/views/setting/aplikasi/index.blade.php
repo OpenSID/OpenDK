@@ -26,7 +26,8 @@
                     <table class="table table-striped table-bordered" id="user-table">
                         <thead>
                         <tr>
-                            <th>Nama Pengaturan</th>
+                            <th>Kata Kunci</th>
+                            <th>Deskripsi</th>
                             <th>Nilai</th>
                             <th>Aksi</th>
                         </tr>
@@ -34,6 +35,7 @@
                         <tbody>
                         @foreach($settings as $setting) 
                         <tr>
+                            <td>{{ $setting->key }}</td>
                             <td>{{ $setting->description }}</td>
                             <td>{{ $setting->value }}</td>
                             <td>

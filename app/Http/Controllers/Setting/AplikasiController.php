@@ -49,24 +49,13 @@ class AplikasiController extends Controller
     public function update(UpdateSetingAplikasiRequest $request, SettingAplikasi $aplikasi)
     {
         try {
-            if ($aplikasi->isBrowserTitle()) {
-                $browser_title = $request->input('value') ?? $this->default_browser_title;
-                $aplikasi->update([
-                    'value' => $browser_title
-                ]);
-        
-                return redirect()
-                    ->route('setting.aplikasi.index')
-                    ->with('success', 'Halaman aplikasi berhasil dirubah menjadi "' . $browser_title . '".');
-            }
-
             $aplikasi->update(
                 $request->validated()
             );
 
             return redirect()
                 ->route('setting.aplikasi.index')
-                ->with('success', 'Pengaturan aplikasi"' . $aplikasi->description . '" berhasil diupdate.');
+                ->with('success', 'Pengaturan aplikasi "' . $aplikasi->description . '" berhasil diupdate.');
         } catch (Exception $e) {
             return redirect()
                 ->route('setting.aplikasi.edit', $aplikasi->id)

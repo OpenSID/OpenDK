@@ -49,9 +49,12 @@ class AplikasiController extends Controller
     public function update(UpdateSetingAplikasiRequest $request, SettingAplikasi $aplikasi)
     {
         try {
-            $aplikasi->update(
-                $request->validated()
-            );
+            $data = $request->validated();
+            if ($aplikasi->isBrowserTitle() && !$request->input('value')) {
+                $data['value'] = $this->default_browser_title;
+            }
+
+            $aplikasi->update($data);
 
             return redirect()
                 ->route('setting.aplikasi.index')

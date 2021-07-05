@@ -92,7 +92,7 @@ class EpidemiPenyakitController extends Controller
         ]);
 
         try {
-            (new ImporEpidemiPenyakit($request->all()))
+            (new ImporEpidemiPenyakit($request->only('penyakit_id', 'bulan', 'tahun')))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

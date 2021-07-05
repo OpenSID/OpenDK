@@ -93,7 +93,7 @@ class ToiletSanitasiController extends Controller
         ]);
 
         try {
-            (new ImporToiletSanitasi($request->all()))
+            (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

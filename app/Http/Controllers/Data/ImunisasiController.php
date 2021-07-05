@@ -93,7 +93,7 @@ class ImunisasiController extends Controller
         ]);
 
         try {
-            (new ImporImunisasi($request->all()))
+            (new ImporImunisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

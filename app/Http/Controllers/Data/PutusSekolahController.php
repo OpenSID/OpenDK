@@ -83,7 +83,7 @@ class PutusSekolahController extends Controller
         ]);
 
         try {
-            (new ImporPutusSekolah($request->all()))
+            (new ImporPutusSekolah($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

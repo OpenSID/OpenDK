@@ -84,7 +84,7 @@ class AnggaranRealisasiController extends Controller
         ]);
 
         try {
-            (new ImporAnggaranRealisasi($request->all()))
+            (new ImporAnggaranRealisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

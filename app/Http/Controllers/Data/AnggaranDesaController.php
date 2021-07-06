@@ -92,7 +92,7 @@ class AnggaranDesaController extends Controller
         ]);
 
         try {
-            (new ImporAPBDesa($request->all()))
+            (new ImporAPBDesa($request->only(['bulan', 'tahun', 'desa'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

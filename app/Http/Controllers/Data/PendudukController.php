@@ -278,7 +278,7 @@ class PendudukController extends Controller
             $zip->close();
 
             // Proses impor excell
-            (new ImporPenduduk($request->all()))
+            (new ImporPenduduk())
                 ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

@@ -79,7 +79,7 @@ class FasilitasPaudController extends Controller
         ]);
 
         try {
-            (new ImporFasilitasPaud($request->all()))
+            (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

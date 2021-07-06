@@ -92,7 +92,7 @@ class AKIAKBController extends Controller
         ]);
 
         try {
-            (new ImporAKIAKB($request->all()))
+            (new ImporAKIAKB($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

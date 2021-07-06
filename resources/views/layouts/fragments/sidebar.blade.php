@@ -233,6 +233,10 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/user/*', 'setting/user'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                         @endif
+                        @if($user->hasAnyAccess(['admin', 'setting-aplikasi']))
+                        <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
+                        @endif
                     </ul>
                 </li>
                 @endif

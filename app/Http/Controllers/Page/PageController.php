@@ -33,28 +33,30 @@ class PageController extends Controller
         ->map(function ($website) {
             return $website->website_url_feed;
         })->all();
-        
-            $req = $request->cari;
-            $getFeeds = FeedsFacade::make($website);
-            foreach ($getFeeds->get_items() as $item) {
-                $this->data[] = [
-                    'feed_link'   => $item->get_feed()->get_permalink(),
-                    'feed_title'  => $item->get_feed()->get_title(),
-                    'link'        => $item->get_link(),
-                    'date'        => $item->get_date('U'),
-                    'author'      => $item->get_author()->get_name(),
-                    'title'       => $item->get_title(),
-                    'description' => $item->get_description(),
-                    'content'     => $item->get_content(),
-                ];
-            }
-                if($req){
-                    $feeds =  collect($this->data)->where('title',  $req)->take(5)->paginate(5);
-                }else{
-                        $feeds =  collect($this->data)->take(30)->paginate(10);
-                    }
-                
-                $feeds->all();
+    
+        $req = $request->cari;
+        $getFeeds = FeedsFacade::make($website);
+        foreach ($getFeeds->get_items() as $item) {
+            $this->data[] = [
+                'feed_link'   => $item->get_feed()->get_permalink(),
+                'feed_title'  => $item->get_feed()->get_title(),
+                'link'        => $item->get_link(),
+                'date'        => $item->get_date('U'),
+                'author'      => $item->get_author()->get_name(),
+                'title'       => $item->get_title(),
+                'description' => $item->get_description(),
+                'content'     => $item->get_content(),
+            ];
+        }
+
+        if ($req){
+            $feeds =  collect($this->data)->where('title',  $req)->take(5)->paginate(5);
+        } else {
+            $feeds =  collect($this->data)->take(30)->paginate(10);
+        }
+
+        $feeds->all();
+
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 

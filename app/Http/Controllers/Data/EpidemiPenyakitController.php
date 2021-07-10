@@ -87,8 +87,8 @@ class EpidemiPenyakitController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_epidemi_penyakit',
-            'tahun' => 'required|unique:das_epidemi_penyakit',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ]);
 
         try {

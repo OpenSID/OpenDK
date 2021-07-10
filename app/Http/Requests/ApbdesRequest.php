@@ -26,6 +26,7 @@ class ApbdesRequest extends FormRequest
         return [
             // Batch delete validation
             "hapus_apbdes.*.id_apbdes" => "present|integer",
+            "hapus_apbdes.*.nama_file" => "nullable",
             "hapus_apbdes.*.desa_id" => "present|string|exists:das_data_desa,desa_id",
         ];
     }

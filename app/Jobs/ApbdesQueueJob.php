@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
 class ApbdesQueueJob implements ShouldQueue
@@ -54,35 +55,21 @@ class ApbdesQueueJob implements ShouldQueue
         DB::beginTransaction();
 
         try {
-            // Batch insert atau update apbdes
-            foreach ($this->request['apbdes'] as $value) {
-                $insert = [
-                    'nama'                  => $value['nama'],
-                    'tahun'                 => $value['tahun'],
-                    'semester'              => $value['semester'],
-                    'tgl_upload'            => $value['tgl_upload'],
-                    'nama_file'             => $value['nama_file'],
-                    'desa_id'               => $value['desa_id'],
-                    'id_apbdes'             => $value['id'],
-                    'created_at'            => $value['created_at'],
-                    'updated_at'            => $value['updated_at'],
-                    'imported_at'           => now(),
-                ];
-
-                Apbdes::updateOrInsert([
-                    'desa_id'               => $insert['desa_id'],
-                    'id_apbdes'             => $insert['id_apbdes']
-                ], $insert);
-            }
-
-            // Batch delete apbdes
-            if (isset($this->request['hapus_apbdes'])) {
-                foreach ($this->request['hapus_apbdes'] as $item) {
+            // Batch delete Apbdes
+            if (isset($this->request['hapus_Apbdes'])) {
+                foreach ($this->request['hapus_Apbdes'] as $item) {
                     $id_apbdes[] = $item['id_apbdes'];
+                    $nama_file[] = $item['nama_file'];
                     $desa_id[] = $item['desa_id'];
                 }
 
-                Apbdes::whereIn('desa_id', $desa_id)->whereNotIn('id_apbdes', $id_apbdes)->delete();
+                // Hapus data Apbdes di database
+                Apbdes::whereIn('desa_id', $desa_id)->whereIn('id_apbdes', $id_apbdes)->delete();
+
+                // Hapus file nama_file di folder
+                foreach ($nama_file as $hapusfile) {
+                  Storage::disk('public')->delete('Apbdes/' . $hapusfile);
+                }
             }
 
             DB::commit();

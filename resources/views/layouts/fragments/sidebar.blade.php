@@ -130,8 +130,8 @@ $user = Sentinel::getUser();
                                 Bantuan</a></li>
                         @endif
 
-                        @if($user->hasAnyAccess(['admin', 'data-anggaranrealisasi', 'data-anggarandesa']))
-                        <li class="treeview {{ (Request::is(['data/anggaran-realisasi/*','data/anggaran-realisasi' ,'data/anggaran-desa/*', 'data/anggaran-desa'])? 'active' : '') }}">
+                        @if($user->hasAnyAccess(['admin', 'data-anggaranrealisasi', 'data-anggarandesa', 'data-apbdes']))
+                        <li class="treeview {{ (Request::is(['data/anggaran-realisasi/*','data/anggaran-realisasi' ,'data/anggaran-desa/*', 'data/anggaran-desa', 'data/apbdes'])? 'active' : '') }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Finansial
                         <span class="pull-right-container">
                           <i class="fa fa-angle-left pull-right"></i>
@@ -147,6 +147,12 @@ $user = Sentinel::getUser();
                                 @if($user->hasAnyAccess(['admin', 'data-anggarandesa']))
                                 <li {{ (Request::is(['data/anggaran-desa/*', 'data/anggaran-desa/index', 'data/anggaran-desa'])? 'class=active' : '') }}>
                                     <a href="{{ route('data.anggaran-desa.index') }}"><i class="fa fa-circle-o"></i>APBDes</a></li>
+                                @endif
+
+                                @if($user->hasAnyAccess(['admin', 'data-apbdes']))
+                                <li {{ (Request::is(['data/apbdes/*', 'data/apbdes/index', 'data/apbdes'])? 'class=active' : '') }}>
+                                    <a href="{{ route('data.apbdes.index') }}"><i class="fa fa-circle-o"></i>Laporan APBDes</a>
+                                </li>
                                 @endif
                             </ul>
                         </li>

@@ -565,6 +565,17 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.anggaran-desa.import', 'uses' => 'AnggaranDesaController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-desa.do_import', 'uses' => 'AnggaranDesaController@do_import']);
                 });
+
+                //Routes Resource Apbdes
+                Route::group(['prefix' => 'apbdes'], function () {
+                    Route::get('getdata', ['as' => 'data.apbdes.getdata', 'uses' => 'ApbdesController@getApbdes']);
+                    Route::get('/', ['as' => 'data.apbdes.index', 'uses' => 'ApbdesController@index']);
+                    Route::post('store', ['as' => 'data.apbdes.store', 'uses' => 'ApbdesController@store']);
+                    Route::delete('destroy/{id}', ['as' => 'data.apbdes.destroy', 'uses' => 'ApbdesController@destroy']);
+                    Route::get('download{id}', ['as' => 'data.apbdes.download', 'uses' => 'ApbdesController@download']);
+                    Route::get('import', ['as' => 'data.apbdes.import', 'uses' => 'ApbdesController@import']);
+                    Route::post('do_import', ['as' => 'data.apbdes.do_import', 'uses' => 'ApbdesController@do_import']);
+                });
             });
 
             //Routes Resource Admin SIKOMA

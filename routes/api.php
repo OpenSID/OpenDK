@@ -36,4 +36,12 @@ Route::group(['prefix' => 'v1'], function() {
         Route::post('storedata', 'Api\PendudukController@storedata');
         Route::post('test', 'Api\PendudukController@test');
     });
+
+    /**
+     * Apbdes
+     */
+    Route::group(['prefix' => 'apbdes'], function () {
+        Route::post('/', 'Api\ApbdesController@store');
+        Route::post('storedata', 'Api\ApbdesController@storedata');
+    });    
 });

@@ -82,7 +82,7 @@ class TingkatPendidikanController extends Controller
         ]);
 
         try {
-            (new ImporTingkatPendidikan($request->all()))
+            (new ImporTingkatPendidikan($request->only(['desa_id', 'tahun', 'semester'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());

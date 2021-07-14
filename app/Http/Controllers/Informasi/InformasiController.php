@@ -22,18 +22,6 @@ class InformasiController extends Controller
     }
 
     /**
-     * Menampilkan Layanan Kecamatan
-     **/
-
-    public function showLayanan()
-    {
-        $data['page_title']       = 'Layanan';
-        $data['page_description'] = 'Layanan ' .$this->sebutan_wilayah;
-
-        return view('informasi.layanan')->with($data);
-    }
-
-    /**
      * Menampilkan Data Potensi
      **/
 

@@ -24,8 +24,6 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['informasi/regulasi/*', 'informasi/regulasi/index', 'informasi/regulasi'])? 'class=active' : '') }}>
                             <a href="{{ route('informasi.regulasi.index') }}"><i class="fa fa-circle-o"></i>Regulasi</a>
                         </li>
-                        <li {{ (Request::is(['informasi/layanan'])? 'class=active' : '') }}><a
-                                    href="{{ route('informasi.layanan') }}"><i class="fa fa-circle-o"></i>Layanan</a></li>
                         <li {{ (Request::is(['informasi/potensi', 'informasi/potensi/*'])? 'class=active' : '') }}><a
                                     href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a></li>
                         <li {{ (Request::is(['informasi/event/*', 'informasi/event/index', 'informasi/event'])? 'class=active' : '') }}>
@@ -148,30 +146,6 @@ $user = Sentinel::getUser();
                                 <li {{ (Request::is(['data/anggaran-desa/*', 'data/anggaran-desa/index', 'data/anggaran-desa'])? 'class=active' : '') }}>
                                     <a href="{{ route('data.anggaran-desa.index') }}"><i class="fa fa-circle-o"></i>APBDes</a></li>
                                 @endif
-                            </ul>
-                        </li>
-                        @endif
-
-                        @if($user->hasAnyAccess(['admin', 'data-layanan']))
-                        <li class="treeview {{ (Request::is(['data/proses-ektp/*', 'data/proses-kk/*', 'data/proses-aktalahir/*','data/proses-domisili/*', 'data/proses-ektp', 'data/proses-kk', 'data/proses-aktalahir','data/proses-domisili'])? 'active' : '') }}">
-                            <a href="#"><i class="fa fa-circle-o"></i>Layanan {{ $sebutan_wilayah }}
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li {{ (Request::is(['data/proses-ektp/*', 'data/proses-ektp/index', 'data/proses-ektp'])? 'class=active' : '') }}>
-                                    <a href="{{ route('data.proses-ektp.index') }}"><i class="fa fa-circle-o"></i>e-KTP</a>
-                                </li>
-                                <li {{ (Request::is(['data/proses-kk/*', 'data/proses-kk/index', 'data/proses-kk'])? 'class=active' : '') }}>
-                                    <a href="{{ route('data.proses-kk.index') }}"><i class="fa fa-circle-o"></i>Kartu
-                                        Keluarga</a></li>
-                                <li {{ (Request::is(['data/proses-aktalahir/*', 'data/proses-aktalahir/index', 'data/proses-aktalahir'])? 'class=active' : '') }}>
-                                    <a href="{{ route('data.proses-aktalahir.index') }}"><i class="fa fa-circle-o"></i>Akta
-                                        Lahir</a></li>
-                                <li {{ (Request::is(['data/proses-domisili/*', 'data/proses-domisili/index', 'data/proses-domisili'])? 'class=active' : '') }}>
-                                    <a href="{{ route('data.proses-domisili.index') }}"><i class="fa fa-circle-o"></i>Surat
-                                        Pindah Alamat</a></li>
                             </ul>
                         </li>
                         @endif

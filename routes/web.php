@@ -321,13 +321,6 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                 Route::get('kategori', ['as' => 'informasi.potensi.kategori', 'uses' => 'PotensiController@kategori']);
             });
-            Route::get('layanan', 'InformasiController@showLayanan')->name('informasi.layanan');
-            Route::group(['prefix' => 'layanan'], function () {
-                Route::get('data_ktp', ['as' => 'layanan.proses-ektp.data_ktp', 'uses' => 'ProsesEKTPController@getDataProsesKTP']);
-                Route::get('data_kk', ['as' => 'layanan.proses-kk.data_kk', 'uses' => 'ProsesKKController@getDataProsesKK']);
-                Route::get('data_akta', ['as' => 'layanan.proses-aktalahir.data_akta', 'uses' => 'ProsesAktaLahirController@getDataProsesAktaLahir']);
-                Route::get('data_domisili', ['as' => 'layanan.proses-domisili.data_domisili', 'uses' => 'ProsesDomisiliController@getDataProsesDomisili']);
-            });
         });
     });
     /**
@@ -397,54 +390,6 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.keluarga.destroy', 'uses' => 'KeluargaController@destroy']);
                     Route::get('import', ['as' => 'data.keluarga.import', 'uses' => 'KeluargaController@import']);
                     Route::post('import-excel', ['as' => 'data.keluarga.import-excel', 'uses' => 'KeluargaController@importExcel']);
-                });
-
-                //Routes Resource Layanan e-KTP
-                Route::group(['prefix' => 'proses-ektp'], function () {
-                    Route::get('getdata', ['as' => 'data.proses-ektp.getdata', 'uses' => 'ProsesEKTPController@getDataProsesKTP']);
-                    Route::get('/', ['as' => 'data.proses-ektp.index', 'uses' => 'ProsesEKTPController@index']);
-                    Route::get('create', ['as' => 'data.proses-ektp.create', 'uses' => 'ProsesEKTPController@create']);
-                    Route::post('store', ['as' => 'data.proses-ektp.store', 'uses' => 'ProsesEKTPController@store']);
-                    Route::get('show/{id}', ['as' => 'data.proses-ektp.show', 'uses' => 'ProsesEKTPController@show']);
-                    Route::get('edit/{id}', ['as' => 'data.proses-ektp.edit', 'uses' => 'ProsesEKTPController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.proses-ektp.update', 'uses' => 'ProsesEKTPController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.proses-ektp.destroy', 'uses' => 'ProsesEKTPController@destroy']);
-                });
-
-                //Routes Resource Layanan Kartu Keluarga
-                Route::group(['prefix' => 'proses-kk'], function () {
-                    Route::get('getdata', ['as' => 'data.proses-kk.getdata', 'uses' => 'ProsesKKController@getDataProsesKK']);
-                    Route::get('/', ['as' => 'data.proses-kk.index', 'uses' => 'ProsesKKController@index']);
-                    Route::get('create', ['as' => 'data.proses-kk.create', 'uses' => 'ProsesKKController@create']);
-                    Route::post('store', ['as' => 'data.proses-kk.store', 'uses' => 'ProsesKKController@store']);
-                    Route::get('show/{id}', ['as' => 'data.proses-kk.show', 'uses' => 'ProsesKKController@show']);
-                    Route::get('edit/{id}', ['as' => 'data.proses-kk.edit', 'uses' => 'ProsesKKController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.proses-kk.update', 'uses' => 'ProsesKKController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.proses-kk.destroy', 'uses' => 'ProsesKKController@destroy']);
-                });
-
-                //Routes Resource Layanan Akta Lahir
-                Route::group(['prefix' => 'proses-aktalahir'], function () {
-                    Route::get('getdata', ['as' => 'data.proses-aktalahir.getdata', 'uses' => 'ProsesAktaLahirController@getDataProsesAktaLahir']);
-                    Route::get('/', ['as' => 'data.proses-aktalahir.index', 'uses' => 'ProsesAktaLahirController@index']);
-                    Route::get('create', ['as' => 'data.proses-aktalahir.create', 'uses' => 'ProsesAktaLahirController@create']);
-                    Route::post('store', ['as' => 'data.proses-aktalahir.store', 'uses' => 'ProsesAktaLahirController@store']);
-                    Route::get('show/{id}', ['as' => 'data.proses-aktalahir.show', 'uses' => 'ProsesAktaLahirController@show']);
-                    Route::get('edit/{id}', ['as' => 'data.proses-aktalahir.edit', 'uses' => 'ProsesAktaLahirController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.proses-aktalahir.update', 'uses' => 'ProsesAktaLahirController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.proses-aktalahir.destroy', 'uses' => 'ProsesAktaLahirController@destroy']);
-                });
-
-                //Routes Resource Surat Domisili
-                Route::group(['prefix' => 'proses-domisili'], function () {
-                    Route::get('getdata', ['as' => 'data.proses-domisili.getdata', 'uses' => 'ProsesDomisiliController@getDataProsesDomisili']);
-                    Route::get('/', ['as' => 'data.proses-domisili.index', 'uses' => 'ProsesDomisiliController@index']);
-                    Route::get('create', ['as' => 'data.proses-domisili.create', 'uses' => 'ProsesDomisiliController@create']);
-                    Route::post('store', ['as' => 'data.proses-domisili.store', 'uses' => 'ProsesDomisiliController@store']);
-                    Route::get('show/{id}', ['as' => 'data.proses-domisili.show', 'uses' => 'ProsesDomisiliController@show']);
-                    Route::get('edit/{id}', ['as' => 'data.proses-domisili.edit', 'uses' => 'ProsesDomisiliController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.proses-domisili.update', 'uses' => 'ProsesDomisiliController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.proses-domisili.destroy', 'uses' => 'ProsesDomisiliController@destroy']);
                 });
 
                 //Routes Resource AKI & AKB

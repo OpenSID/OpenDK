@@ -25,9 +25,6 @@
                     <div class="box-header with-border">
                         <div class="float-right">
                             <div class="btn-group">
-                                <a href="{{ route('data.penduduk.create') }}">
-                                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Penduduk</button>
-                                </a>
                                 <a href="{{ route('data.penduduk.import') }}">
                                     <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i> Impor</button>
                                 </a>

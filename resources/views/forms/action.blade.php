@@ -9,7 +9,7 @@
     @if( isset( $show_url ) )
             <a href="{!! empty( $show_url ) ? 'javascript:void(0)' : $show_url !!}"
                class="{!! empty( $show_url ) ? 'disabled' : '' !!}" title="Lihat" data-button="show">
-                <button type="button" class="btn btn-info btn-xs" style="width: 40px;"><i class="fa fa-search fa-fw"></i>
+                <button type="button" class="btn btn-info btn-xs" style="width: 40px;"><i class="fa fa-eye fa-fw"></i>
                 </button>
             </a>
     @endif

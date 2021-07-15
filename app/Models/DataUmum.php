@@ -13,6 +13,7 @@ class DataUmum extends Model
         'kecamatan_id',
         'tipologi',
         'ketinggian',
+        'sumber_luas_wilayah',
         'luas_wilayah',
         'bts_wil_utara',
         'bts_wil_timur',

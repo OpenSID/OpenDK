@@ -166,7 +166,9 @@ class DataUmumController extends Controller
                 'jml_balai_pertemuan'    => 'required',
             ]);
 
-            DataUmum::find($id)->update($request->all());
+            $data = $request->sumber_luas_wilayah==1?$request->all():$request->except('luas_wilayah');
+            
+            DataUmum::find($id)->update($data);
 
             return redirect()->route('data.data-umum.index')->with('success', 'Update Data Umum sukses!');
         } catch (Exception $e) {
@@ -191,4 +193,12 @@ class DataUmumController extends Controller
             return redirect()->route('data.data-umum.index')->with('error', 'Data Umum gagal dihapus!');
         }
     }
+
+    public function getDataUmumAjax(Request $request)
+    {
+        if($request->ajax()){
+            return response()->json(['data'=>DataUmum::first()]);
+        }
+    }
+
 }

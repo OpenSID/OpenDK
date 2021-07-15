@@ -40,7 +40,7 @@
                     </div>
                     <!-- /.row -->
                     <div class="box-footer">
-                        <p style="text-align: justify">{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai <b> Luas {{ number_format($profil->dataumum->luas_wilayah) }} km </b> yang mencakup <b> {{ $profil->datadesa->count() }}  Desa/Kelurahan </b>, 
+                        <p style="text-align: justify">{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai <b> Luas {{ number_format($profil->dataumum->luas_wilayah_value) }} km </b> yang mencakup <b> {{ $profil->datadesa->count() }}  Desa/Kelurahan </b>, 
                             Adapun <b> {{ terbilang($profil->datadesa->count()) }} Desa/kelurahan </b> tersebut yaitu @foreach($profil->datadesa as $desa) Desa {{ $desa->nama }}, @endforeach
                             </p>
 

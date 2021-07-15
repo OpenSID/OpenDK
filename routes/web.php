@@ -347,6 +347,7 @@ Route::group(['middleware' => 'installed'], function () {
                 //Routes Resource Data Umum
                 Route::group(['prefix' => 'data-umum'], function () {
                     Route::get('getdata', ['as' => 'data.data-umum.getdata', 'uses' => 'DataUmumController@getDataUmum']);
+                    Route::get('getdataajax', ['as' => 'data.data-umum.getdataajax', 'uses' => 'DataUmumController@getDataUmumAjax']);
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
                     Route::get('create', ['as' => 'data.data-umum.create', 'uses' => 'DataUmumController@create']);
                     Route::post('store', ['as' => 'data.data-umum.store', 'uses' => 'DataUmumController@store']);

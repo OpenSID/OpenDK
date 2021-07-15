@@ -31,7 +31,14 @@
                         class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('luas_wilayah', $luas_wilayah ,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;','step'=>'2.0']) !!}
+                <div class="row">
+                    <div class="col-md-7">
+                        {{ Form::select('sumber_luas_wilayah',['1'=>'Manual',2=>'Dari Luas Desa'],isset($data_umum->sumber_luas_wilayah)? $data_umum->sumber_luas_wilayah:null,['class'=>'form-control sumber_luas_wilayah']) }}
+                    </div>
+                    <div class="col-md-5">
+                        {!! Form::number('luas_wilayah', $luas_wilayah ,['placeholder'=>'0', 'class'=>'form-control luas_wilayah', 'required', 'style'=>'text-align:right;','step'=>'2.0']) !!}
+                    </div>
+                </div>
             </div>
         </div>
 

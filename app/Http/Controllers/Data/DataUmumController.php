@@ -30,10 +30,9 @@ class DataUmumController extends Controller
     public function index()
     {
         $data_umum        = DataUmum::where('kecamatan_id', config('app.default_profile'))->first();
-        $luas_wilayah     = \DB::table('das_data_desa')->sum('luas_wilayah');
+        $luas_wilayah     = $data_umum['sumber_luas_wilayah']==1?$data_umum['luas_wilayah']:\DB::table('das_data_desa')->sum('luas_wilayah');
         $page_title       = 'Ubah Data Umum';
         $page_description = ucwords(strtolower($this->sebutan_wilayah).' : ' . $data_umum->kecamatan->nama);
-
         return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum','luas_wilayah'));
     }
 
@@ -81,6 +80,7 @@ class DataUmumController extends Controller
             request()->validate([
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
+                'sumber_luas_wilayah'    => 'required',
                 'luas_wilayah'           => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
@@ -100,6 +100,7 @@ class DataUmumController extends Controller
                 'jml_balai_pertemuan'    => 'required',
             ]);
             $profil->save();
+
             return redirect()->route('data.data-umum.index')->with('success', 'Data Umum berhasil disimpan!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Umum gagal disimpan!');
@@ -144,6 +145,7 @@ class DataUmumController extends Controller
             request()->validate([
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
+                'sumber_luas_wilayah'    => 'required',
                 'luas_wilayah'           => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',

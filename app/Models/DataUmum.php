@@ -39,4 +39,9 @@ class DataUmum extends Model
     {
         return $this->belongsTo(Wilayah::class, 'kecamatan_id', 'kode');
     }
+
+    public function getLuasWilayahValueAttribute()
+    {
+        return $this->sumber_luas_wilayah==1?$this->luas_wilayah:\DB::table('das_data_desa')->sum('luas_wilayah');
+    }
 }

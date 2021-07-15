@@ -72,6 +72,9 @@
 @push('scripts')
 <script>
     $(function () {
+        // on page loaded
+        updateValueLuasWilayah();
+
         $('#provinsi_id').select2({
             placeholder: "Pilih Provinsi",
             allowClear: true
@@ -86,6 +89,33 @@
             placeholder: "Pilih Kecamatan",
             allowClear: true
         });
+
+        $(".sumber_luas_wilayah").change(function(){
+            updateValueLuasWilayah();
+        }); 
     })
+
+
+    function updateValueLuasWilayah(){
+        var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
+            $.ajax({
+                url: "/data/data-umum/getdataajax",
+                type: "get",
+                success: function(response) {
+                    if(sumberLuasWilayah==1)
+                    {
+                        $(".luas_wilayah").val(response.data.luas_wilayah);
+                        $(".luas_wilayah").attr('disabled', false);
+                    }else{
+                        $(".luas_wilayah").val(response.data.luas_wilayah_dari_data_desa);
+                        $(".luas_wilayah").attr('disabled', true); 
+                    }
+                },
+                error: function(xhr) {
+                    console.log('terjadi kesalahan');
+                }
+                });
+    }
 </script>
+
 @endpush

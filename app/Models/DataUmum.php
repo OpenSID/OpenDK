@@ -13,6 +13,7 @@ class DataUmum extends Model
         'kecamatan_id',
         'tipologi',
         'ketinggian',
+        'sumber_luas_wilayah',
         'luas_wilayah',
         'bts_wil_utara',
         'bts_wil_timur',
@@ -34,8 +35,20 @@ class DataUmum extends Model
         'embed_peta',
     ];
 
+    protected $appends = ['luas_wilayah_dari_data_desa'];
+
     public function kecamatan()
     {
         return $this->belongsTo(Wilayah::class, 'kecamatan_id', 'kode');
+    }
+
+    public function getLuasWilayahValueAttribute()
+    {
+        return $this->sumber_luas_wilayah==1?$this->luas_wilayah:\DB::table('das_data_desa')->sum('luas_wilayah');
+    }
+
+    public function getLuasWilayahDariDataDesaAttribute()
+    {
+        return \DB::table('das_data_desa')->sum('luas_wilayah');
     }
 }

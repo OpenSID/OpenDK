@@ -30,7 +30,7 @@ class DataUmumController extends Controller
     public function index()
     {
         $data_umum        = DataUmum::where('kecamatan_id', config('app.default_profile'))->first();
-        $luas_wilayah     = \DB::table('das_data_desa')->sum('luas_wilayah');
+        $luas_wilayah     = $data_umum['luas_wilayah_value'];
         $page_title       = 'Ubah Data Umum';
         $page_description = ucwords(strtolower($this->sebutan_wilayah).' : ' . $data_umum->kecamatan->nama);
 
@@ -81,6 +81,7 @@ class DataUmumController extends Controller
             request()->validate([
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
+                'sumber_luas_wilayah'    => 'required',
                 'luas_wilayah'           => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
@@ -144,6 +145,7 @@ class DataUmumController extends Controller
             request()->validate([
                 'kecamatan_id'           => 'required',
                 'tipologi'               => 'required',
+                'sumber_luas_wilayah'    => 'required',
                 'luas_wilayah'           => 'required',
                 'bts_wil_utara'          => 'required',
                 'bts_wil_timur'          => 'required',
@@ -164,14 +166,21 @@ class DataUmumController extends Controller
                 'jml_balai_pertemuan'    => 'required',
             ]);
 
-            DataUmum::find($id)->update($request->all());
+            $data = $request->sumber_luas_wilayah==1?$request->all():$request->except('luas_wilayah');
+            
+            DataUmum::find($id)->update($data);
 
             return redirect()->route('data.data-umum.index')->with('success', 'Update Data Umum sukses!');
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Update Data Umum gagal!');
+            return back()->withInput()->with('error', 'Update Data Umum gagal!'.$e->getMessage());
         }
     }
-
+    public function getDataUmumAjax(Request $request)
+    {
+        if($request->ajax()){
+            return response()->json(['data'=>DataUmum::first()]);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *

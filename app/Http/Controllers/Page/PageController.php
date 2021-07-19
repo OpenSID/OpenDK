@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 use willvincent\Feeds\Facades\FeedsFacade;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use function compact;
 use function config;
 use function intval;
@@ -50,13 +51,14 @@ class PageController extends Controller
         }
 
         if ($req){
-            $feeds =  collect($this->data)->where('title',  $req)->take(5)->paginate(5);
+            $feeds =  collect($this->data)->filter(function ($value, $key) use ($req) {
+                return stripos($value['title'], $req) !== false;;
+            })->take(5)->paginate(5);
         } else {
             $feeds =  collect($this->data)->take(30)->paginate(10);
         }
 
         $feeds->all();
-
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 

@@ -43,7 +43,8 @@
                     <div class="box-body">
 
 
-                        @include( 'flash::message' )
+                        @include('partials.flash_message')
+
                         @include('data.data_umum.form_edit')
 
                     </div>
@@ -86,6 +87,29 @@
             placeholder: "Pilih Kecamatan",
             allowClear: true
         });
+        $(".sumber_luas_wilayah").change(function(){
+            updateValueLuasWilayah();
+        }); 
     })
+    function updateValueLuasWilayah(){
+        var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
+        $.ajax({
+            url: "/data/data-umum/getdataajax",
+            type: "get",
+            success: function(response) {
+                if(sumberLuasWilayah==1)
+                {
+                    $(".luas_wilayah").val(response.data.luas_wilayah);
+                    $(".luas_wilayah").attr('readonly', false);
+                }else{
+                    $(".luas_wilayah").val(response.data.luas_wilayah_dari_data_desa);
+                    $(".luas_wilayah").attr('readonly', true); 
+                }
+            },
+            error: function(xhr) {
+                console.log('oops, data tidak bisa di muat');
+            }
+        });
+    }
 </script>
 @endpush

@@ -36,8 +36,7 @@ class UsersTableSeeder extends Seeder
             $user = Sentinel::registerAndActivate( [
                 'email' => $data[ 'email' ],
                 'password' => "password",
-                'first_name' => $data[ 'first_name' ],
-                'last_name' => $data[ 'last_name' ],
+                'name' => $data['name'],
                 'gender' => $data[ 'gender' ],
                 'phone' => $data[ 'phone' ],
                 'address' => $data[ 'address' ],

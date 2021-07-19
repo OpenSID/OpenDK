@@ -23,8 +23,7 @@ class UsersTableSeeder extends Seeder
         $datas = [
             [
                 'email' => 'admin@mail.com',
-                'first_name' => 'Administrator',
-                'last_name' => '',
+                'name' => 'Administrator',
                 'gender' => 'Male',
                 'role' => 'super-admin',
                 'address' => 'Jakarta',

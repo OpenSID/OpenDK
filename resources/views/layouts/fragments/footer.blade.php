@@ -5,5 +5,5 @@
         <b>Version</b> 1.0.0
     </div>
     <!-- Default to the left -->
-    <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-2020 <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i> <a href="https://github.com/openSID/openDK" target="_blank"> OpenDK </a> .</strong> Hak cipta dilindungi.
+    <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i> <a href="https://github.com/openSID/openDK" target="_blank"> OpenDK </a> .</strong> Hak cipta dilindungi.
 </footer>

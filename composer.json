@@ -29,7 +29,7 @@
         "yajra/laravel-datatables-oracle": "~9."
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.5",
+        "barryvdh/laravel-debugbar": "^3.6",
         "fakerphp/faker": "^1.10",
         "filp/whoops": "~2.0",
         "laminas/laminas-coding-standard": "^2.1",

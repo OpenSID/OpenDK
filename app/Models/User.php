@@ -30,8 +30,7 @@ class User extends SentinelModel implements Authenticatable
         'email',
         'password',
         'permissions',
-        'first_name',
-        'last_name',
+        'name',
         'image',
         'address',
         'phone',
@@ -61,7 +60,7 @@ class User extends SentinelModel implements Authenticatable
 
     public static function datatables()
     {
-        return static::select('first_name', 'address', 'status', 'id', 'email', 'created_at', 'phone')->where('id', '!=', '1');
+        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone')->where('id', '!=', '1');
     }
 
     /**

@@ -106,8 +106,8 @@ class PendudukController extends Controller
         if ($penduduk->foto == '') {
             $penduduk->file_struktur_organisasi = 'http://placehold.it/120x150';
         }
-        $page_title       = 'Detail';
-        $page_description = 'Detail Penduduk: ' . ucwords(strtolower($penduduk->nama));
+        $page_title       = 'Detail Penduduk';
+        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
         return view('data.penduduk.show', compact('page_title', 'page_description', 'penduduk'));
     }

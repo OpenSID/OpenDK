@@ -23,9 +23,6 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <a href="{{ route('data.keluarga.create') }}">
-                            <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Keluarga</button>
-                        </a>
                         <a href="{{ route('data.keluarga.import') }}">
                             <button type="button" class="btn btn-warning btn-sm" title="Upload Data"><i class="fa fa-upload"></i> Import</button>
                         </a>

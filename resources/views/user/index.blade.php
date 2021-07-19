@@ -54,7 +54,7 @@
             ajax: "{!! route( 'setting.user.getdata' ) !!}",
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'first_name', name: 'first_name'},
+                {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
                 {data: 'phone', name: 'phone'},
                 {data: 'status', name: 'status'},

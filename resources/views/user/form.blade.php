@@ -1,15 +1,8 @@
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Depan <span class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text( 'first_name', null, [ 'class' => 'form-control', 'placeholder' => 'First Name', 'pattern' => '[A-Za-z]{1,}'] ) !!}
-    </div>
-</div>
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Belakang <span class="required">*</span></label>
-
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text( 'last_name', null, [ 'class' => 'form-control', 'placeholder' => 'Last Name', 'pattern' => '[A-Za-z]{1,}'] ) !!}
+        {!! Form::text( 'name', null, [ 'class' => 'form-control', 'placeholder' => 'Nama', 'pattern' => '^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$'] ) !!}
     </div>
 </div>
 <div class="form-group">
@@ -31,7 +24,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Profil </label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Foto Profil </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="image" class="form-control">

@@ -382,12 +382,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'keluarga'], function () {
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
-                    Route::get('create', ['as' => 'data.keluarga.create', 'uses' => 'KeluargaController@create']);
-                    Route::post('store', ['as' => 'data.keluarga.store', 'uses' => 'KeluargaController@store']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
-                    Route::get('edit/{id}', ['as' => 'data.keluarga.edit', 'uses' => 'KeluargaController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.keluarga.update', 'uses' => 'KeluargaController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.keluarga.destroy', 'uses' => 'KeluargaController@destroy']);
                     Route::get('import', ['as' => 'data.keluarga.import', 'uses' => 'KeluargaController@import']);
                     Route::post('import-excel', ['as' => 'data.keluarga.import-excel', 'uses' => 'KeluargaController@importExcel']);
                 });
@@ -544,7 +539,7 @@ Route::group(['middleware' => 'installed'], function () {
     
     //Users JSON
     Route::get('/api/users', function () {
-        return \App\Models\User::where('first_name', 'LIKE', '%' . request('q') . '%')->paginate(10);
+        return \App\Models\User::where('name', 'LIKE', '%' . request('q') . '%')->paginate(10);
     });
     
     // All Provinsi Select2

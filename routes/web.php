@@ -539,7 +539,7 @@ Route::group(['middleware' => 'installed'], function () {
     
     //Users JSON
     Route::get('/api/users', function () {
-        return \App\Models\User::where('first_name', 'LIKE', '%' . request('q') . '%')->paginate(10);
+        return \App\Models\User::where('name', 'LIKE', '%' . request('q') . '%')->paginate(10);
     });
     
     // All Provinsi Select2

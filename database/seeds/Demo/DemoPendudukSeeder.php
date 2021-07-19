@@ -3,10 +3,10 @@
 namespace Database\Seeds\Demo;
 
 use App\Imports\ImporPenduduk;
-use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+
 use ZipArchive;
 
 class DemoPendudukSeeder extends Seeder
@@ -27,11 +27,11 @@ class DemoPendudukSeeder extends Seeder
         $zip->close();
 
         Excel::import(
-            new ImporPenduduk([]),
-            'penduduk/foto/penduduk_22_12_2020_opendk/penduduk_22_12_2020_opendk.xlsx',
+            new ImporPenduduk(),
+            'penduduk/foto/penduduk_22_12_2020_opendk.xlsx',
             'public'
         );
 
-        Storage::disk('public')->delete('penduduk/foto/penduduk_22_12_2020_opendk/penduduk_22_12_2020_opendk.xlsx');
+        Storage::disk('public')->delete('penduduk/foto/penduduk_22_12_2020_opendk.xlsx');
     }
 }

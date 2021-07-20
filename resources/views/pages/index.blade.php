@@ -103,9 +103,16 @@ p {
     <div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
   </div>
   <section class="page-header" style="margin:0px 0px;">
-  <strong class="">{{ $page_description }}
-  </strong>
-</section>
+        <form class="form-horizontal " method="get" action="{{ url('/') }}">
+          <span style="display: inline-flex; vertical-align: middle;"><strong class="">{{ $page_description }}</strong></span>
+          <div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
+              <input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" value="{{$cari}}"/>
+                <button type="submit" class="btn btn-info btn-block" style="width: auto;">
+                  <i class="fa fa-search"></i>
+                </button>
+          </div>
+        </form>
+  </section>
   @forelse ($feeds as $item)
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
           <div class="card-body d-flex flex-column align-items-start">

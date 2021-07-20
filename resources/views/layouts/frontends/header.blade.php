@@ -86,15 +86,5 @@
           @endif
         </ul>
       </div>
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="notifications-menu">
-              <a href='#search' tooltip="t">
-                <em class="fa fa-search"></em>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
     </nav>
   </header>

@@ -62,6 +62,7 @@ class PageController extends Controller
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
+            'cari'             => $req,
             'feeds'            => $feeds,
         ]);
     }

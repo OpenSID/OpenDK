@@ -20,6 +20,7 @@ use function semester;
 use function str_replace;
 use function view;
 use function years_list;
+use function array_column;
 
 class PageController extends Controller
 {
@@ -30,32 +31,38 @@ class PageController extends Controller
     {
         Counter::count('beranda');
         
-        $website = DataDesa::websiteUrl()->get()
-        ->map(function ($website) {
-            return $website->website_url_feed;
+        $all_desa = DataDesa::websiteUrl()->get()
+        ->map(function ($desa) {
+            return $desa->website_url_feed;
         })->all();
-    
         $req = $request->cari;
-        $getFeeds = FeedsFacade::make($website);
-        foreach ($getFeeds->get_items() as $item) {
-            $this->data[] = [
-                'feed_link'   => $item->get_feed()->get_permalink(),
-                'feed_title'  => $item->get_feed()->get_title(),
-                'link'        => $item->get_link(),
-                'date'        => $item->get_date('U'),
-                'author'      => $item->get_author()->get_name(),
-                'title'       => $item->get_title(),
-                'description' => $item->get_description(),
-                'content'     => $item->get_content(),
-            ];
+        $cari_desa = $request->desa != 'ALL' ? $request->desa : null;
+        foreach ($all_desa as $desa)
+        {
+            $getFeeds = FeedsFacade::make($desa['website']);
+            foreach ($getFeeds->get_items() as $item) {
+                $this->data[] = [
+                    'desa_id'     => $desa['desa_id'],
+                    'feed_link'   => $item->get_feed()->get_permalink(),
+                    'feed_title'  => $item->get_feed()->get_title(),
+                    'link'        => $item->get_link(),
+                    'date'        => $item->get_date('U'),
+                    'author'      => $item->get_author()->get_name(),
+                    'title'       => $item->get_title(),
+                    'description' => $item->get_description(),
+                    'content'     => $item->get_content(),
+                ];
+            }
         }
 
-        if ($req){
-            $feeds =  collect($this->data)->filter(function ($value, $key) use ($req) {
-                return stripos($value['title'], $req) !== false;;
-            })->take(5)->paginate(5);
+        if ($req || $cari_desa) {
+            $feeds = collect($this->data)->filter(function ($value, $key) use ($req, $cari_desa) {
+                $hasil = $req ? stripos($value['title'], $req) !== false : true;
+                $hasil = $hasil && ($cari_desa ? $cari_desa == $value['desa_id'] : true);
+                return $hasil;
+            })->take(30)->paginate(10);
         } else {
-            $feeds =  collect($this->data)->take(30)->paginate(10);
+            $feeds = collect($this->data)->take(30)->paginate(10);
         }
 
         $feeds->all();
@@ -63,6 +70,8 @@ class PageController extends Controller
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
             'cari'             => $req,
+            'cari_desa'        => $cari_desa,
+            'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
         ]);
     }

@@ -22,7 +22,11 @@ class DataDesa extends Model
      */
     public function getWebsiteUrlFeedAttribute()
     {
-        return $this->website . '/index.php/feed';
+        $desa = [
+            'desa_id' => $this->desa_id,
+            'website' => $this->website . '/index.php/feed'
+        ];
+        return $desa;
     }
 
     /**

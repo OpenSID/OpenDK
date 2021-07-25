@@ -27,21 +27,35 @@ class PageController extends Controller
 
     protected $data = [];
 
-    public function index(Request $request)
+    public function index()
     {
         Counter::count('beranda');
         
+        $this->data = $this->GetFeeds();
+
+        $feeds = collect($this->data)->take(30)->paginate(10);
+        $feeds->all();
+        return view('pages.index', [
+            'page_title'       => 'Beranda',
+            'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
+            'cari'             => null,
+            'cari_desa'        => null,
+            'list_desa'        => DataDesa::get(),
+            'feeds'            => $feeds,
+        ]);
+    }
+
+    private function GetFeeds()
+    {
         $all_desa = DataDesa::websiteUrl()->get()
         ->map(function ($desa) {
             return $desa->website_url_feed;
         })->all();
-        $req = $request->cari;
-        $cari_desa = $request->desa != 'ALL' ? $request->desa : null;
         foreach ($all_desa as $desa)
         {
             $getFeeds = FeedsFacade::make($desa['website']);
             foreach ($getFeeds->get_items() as $item) {
-                $this->data[] = [
+                $feeds[] = [
                     'desa_id'     => $desa['desa_id'],
                     'feed_link'   => $item->get_feed()->get_permalink(),
                     'feed_title'  => $item->get_feed()->get_title(),
@@ -54,7 +68,15 @@ class PageController extends Controller
                 ];
             }
         }
+        return $feeds;
+    }
 
+    public function FilterFeeds(Request $request)
+    {
+        $this->data = $this->GetFeeds();
+
+        $req = $request->cari;
+        $cari_desa = $request->desa != 'ALL' ? $request->desa : null;
         if ($req || $cari_desa) {
             $feeds = collect($this->data)->filter(function ($value, $key) use ($req, $cari_desa) {
                 $hasil = $req ? stripos($value['title'], $req) !== false : true;
@@ -66,14 +88,11 @@ class PageController extends Controller
         }
 
         $feeds->all();
-        return view('pages.index', [
-            'page_title'       => 'Beranda',
-            'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
-            'cari'             => $req,
-            'cari_desa'        => $cari_desa,
-            'list_desa'        => DataDesa::get(),
-            'feeds'            => $feeds,
-        ]);
+        $html =  view('pages._feeds', [
+            'feeds' => $feeds,
+        ])->render();
+
+        return response()->json(compact('html'));
     }
 
     public function PotensiByKategory($slug)

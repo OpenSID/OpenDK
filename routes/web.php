@@ -164,6 +164,7 @@ Route::group(['middleware' => 'installed'], function () {
         
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
+        Route::get('filter', 'PageController@FilterFeeds')->name('feeds.filter');
         Route::group(['prefix' => 'potensi'], function () {
         Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
         Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');

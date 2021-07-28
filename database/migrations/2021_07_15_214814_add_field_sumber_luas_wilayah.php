@@ -14,7 +14,7 @@ class AddFieldSumberLuasWilayah extends Migration
     public function up()
     {
         Schema::table('das_data_umum', function (Blueprint $table) {
-            $table->integer('sumber_luas_wilayah',null,1,)->before('luas_wilayah')->default(1)->comment('1:Input Manual,2:Dari Luas Desa');
+            $table->integer('sumber_luas_wilayah', null, 1)->after('ketinggian')->default(1)->comment('1:Input Manual,2:Dari Luas Desa');
         });
     }
 

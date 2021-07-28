@@ -29,11 +29,11 @@ class LaporanApbdesController extends Controller
     public function store(LaporanApbdesRequest $request)
     {
         // dispatch queue job apbdes
-        // LaporanApbdesQueueJob::dispatch($request->only(['judul', 'tahun', 'semester', 'nama_file', 'file', 'desa_id']));
-        LaporanApbdesQueueJob::dispatch($request->all());
+        LaporanApbdesQueueJob::dispatch($request->only(['desa_id', 'laporan_apbdes']));
 
         return response()->json([
-            'message' => 'Proses sync data apbdes OpenSID sedang berjalan',
+            'status' => 'success',
+            'message' => 'Proses sync data APBDes OpenSID sedang berjalan',
         ]);
     }
 }

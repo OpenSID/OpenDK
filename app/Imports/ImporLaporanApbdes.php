@@ -48,7 +48,12 @@ class ImporLaporanApbdes implements ToCollection, WithHeadingRow, WithChunkReadi
                 'id_apbdes'            => $insert['id_apbdes']
             ], $insert);
 
-            // Pindahkan file yang dibutuhkan saja
+            // Hapus file yang lama
+            if (Storage::exists('public/apbdes/' . $file_name)) {
+                Storage::delete('public/apbdes/' . $file_name);
+            }
+
+            // Pindahkan file yang dibutuhkan
             Storage::move('temp/apbdes/' . $value['nama_file'], 'public/apbdes/' . $file_name);
         }
 

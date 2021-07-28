@@ -55,18 +55,19 @@ class LaporanApbdesQueueJob implements ShouldQueue
         DB::beginTransaction();
 
         try {
-            // Batch delete Apbdes
+            $desa_id = $this->request['desa_id'];
+
             if (isset($this->request['laporan_apbdes'])) {
                 foreach ($this->request['laporan_apbdes'] as $value) {
                     
-                    $file_name = $value['desa_id'] . '_' . $value['id'] . '_' . $value['nama_file'];
+                    $file_name = $desa_id . '_' . $value['id'] . '_' . $value['nama_file'];
                     
                     $insert = [
                         'judul'                => $value['judul'],
                         'tahun'                => $value['tahun'],
                         'semester'             => $value['semester'],
                         'nama_file'            => $file_name,
-                        'desa_id'              => $value['desa_id'],
+                        'desa_id'              => $desa_id,
                         'id_apbdes'            => $value['id'],
                         'created_at'           => $value['created_at'],
                         'updated_at'           => $value['updated_at'],

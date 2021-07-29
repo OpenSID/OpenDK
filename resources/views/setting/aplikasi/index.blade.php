@@ -9,8 +9,7 @@
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li class="active"><i class="fa fa-dashboard"></i> Dashboard</li>
     </ol>
 </section>
 

@@ -24,7 +24,6 @@ use function array_column;
 
 class PageController extends Controller
 {
-
     protected $data = [];
 
     public function index()
@@ -51,8 +50,7 @@ class PageController extends Controller
         ->map(function ($desa) {
             return $desa->website_url_feed;
         })->all();
-        foreach ($all_desa as $desa)
-        {
+        foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
@@ -68,7 +66,7 @@ class PageController extends Controller
                 ];
             }
         }
-        return $feeds;
+        return $feeds ?? null;
     }
 
     public function FilterFeeds(Request $request)
@@ -127,5 +125,10 @@ class PageController extends Controller
 
         // dd($potensis);
         return view('pages.desa.desa_show', compact(['page_title', 'page_description', 'desa']));
+    }
+
+    public function refresh_captcha()
+    {
+        return response()->json(['captcha' => captcha_img('mini')]);
     }
 }

@@ -9,7 +9,7 @@
         <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah }} {{ $nama_wilayah }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{route('data.laporan-apbdes.index')}}">Laporan APBDes</a></li>
         <li class="active">{{$page_description}}</li>
     </ol>

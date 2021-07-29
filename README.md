@@ -44,6 +44,7 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
     <td align="center"><a href="https://facebook.com/faizulamaly"><img src="https://avatars.githubusercontent.com/u/31075119?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Faizul Amali</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=ilamazuliaf" title="Code">💻</a></td>
     <td align="center"><a href="https://ibnuis.dev"><img src="https://avatars.githubusercontent.com/u/14322078?v=4?s=100" width="100px;" alt=""/><br /><sub><b>IBNU HALIM MUSTOFA</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=ibnuhalimm" title="Code">💻</a></td>
     <td align="center"><a href="https://ahmadrosid.com"><img src="https://avatars.githubusercontent.com/u/29406408?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ahmadrosid</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=ahmadrosid" title="Code">💻</a></td>
+    <td align="center"><a href="http://belajarphp.net"><img src="https://avatars.githubusercontent.com/u/5483330?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nuris Akbar</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=nurisakbar" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -55,5 +56,5 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
 Daftar kontributor sesuai spesifikasi [all-contributors](https://github.com/all-contributors/all-contributors), menggunakan @all-contributors Bot.
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->

@@ -30,6 +30,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
+        "beyondcode/laravel-query-detector": "^1.5",
         "fakerphp/faker": "^1.10",
         "filp/whoops": "~2.0",
         "laminas/laminas-coding-standard": "^2.1",

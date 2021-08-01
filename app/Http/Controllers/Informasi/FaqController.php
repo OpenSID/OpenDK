@@ -24,8 +24,6 @@ class FaqController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.faq.index');
-
         $page_title       = 'FAQ';
         $page_description = 'Frequently Ask and Question';
 

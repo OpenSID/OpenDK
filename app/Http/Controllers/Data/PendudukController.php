@@ -6,15 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporPenduduk;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
-use Doctrine\DBAL\Query\QueryException;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
-use Barryvdh\Debugbar\Facade as Debugbar;
 
 use ZipArchive;
 
@@ -22,11 +19,8 @@ use function back;
 use function compact;
 use function config;
 use function convert_born_date_to_age;
-use function redirect;
-use function request;
 use function route;
 use function strtolower;
-use function substr;
 use function ucwords;
 use function view;
 
@@ -145,7 +139,7 @@ class PendudukController extends Controller
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
-            $extract = storage_path('app/public/penduduk/foto/');
+            $extract = storage_path('app/temp/penduduk/foto/');
 
             // Ekstrak file
             $zip = new ZipArchive;
@@ -155,15 +149,11 @@ class PendudukController extends Controller
 
             // Proses impor excell
             (new ImporPenduduk())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
+        
 
         return back()->with('success', 'Import data sukses.');
     }

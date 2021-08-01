@@ -20,51 +20,79 @@ use function semester;
 use function str_replace;
 use function view;
 use function years_list;
+use function array_column;
 
 class PageController extends Controller
 {
 
     protected $data = [];
 
-    public function index(Request $request)
+    public function index()
     {
         Counter::count('beranda');
         
-        $website = DataDesa::websiteUrl()->get()
-        ->map(function ($website) {
-            return $website->website_url_feed;
-        })->all();
-    
-        $req = $request->cari;
-        $getFeeds = FeedsFacade::make($website);
-        foreach ($getFeeds->get_items() as $item) {
-            $this->data[] = [
-                'feed_link'   => $item->get_feed()->get_permalink(),
-                'feed_title'  => $item->get_feed()->get_title(),
-                'link'        => $item->get_link(),
-                'date'        => $item->get_date('U'),
-                'author'      => $item->get_author()->get_name(),
-                'title'       => $item->get_title(),
-                'description' => $item->get_description(),
-                'content'     => $item->get_content(),
-            ];
-        }
+        $this->data = $this->GetFeeds();
 
-        if ($req){
-            $feeds =  collect($this->data)->filter(function ($value, $key) use ($req) {
-                return stripos($value['title'], $req) !== false;;
-            })->take(5)->paginate(5);
-        } else {
-            $feeds =  collect($this->data)->take(30)->paginate(10);
-        }
-
+        $feeds = collect($this->data)->take(30)->paginate(10);
         $feeds->all();
         return view('pages.index', [
             'page_title'       => 'Beranda',
-            'page_description' => 'Berita Desa ' . $this->sebutan_wilayah, 
-            'cari'             => $req,
+            'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
+            'cari'             => null,
+            'cari_desa'        => null,
+            'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
         ]);
+    }
+
+    private function GetFeeds()
+    {
+        $all_desa = DataDesa::websiteUrl()->get()
+        ->map(function ($desa) {
+            return $desa->website_url_feed;
+        })->all();
+        foreach ($all_desa as $desa)
+        {
+            $getFeeds = FeedsFacade::make($desa['website']);
+            foreach ($getFeeds->get_items() as $item) {
+                $feeds[] = [
+                    'desa_id'     => $desa['desa_id'],
+                    'feed_link'   => $item->get_feed()->get_permalink(),
+                    'feed_title'  => $item->get_feed()->get_title(),
+                    'link'        => $item->get_link(),
+                    'date'        => $item->get_date('U'),
+                    'author'      => $item->get_author()->get_name(),
+                    'title'       => $item->get_title(),
+                    'description' => $item->get_description(),
+                    'content'     => $item->get_content(),
+                ];
+            }
+        }
+        return $feeds;
+    }
+
+    public function FilterFeeds(Request $request)
+    {
+        $this->data = $this->GetFeeds();
+
+        $req = $request->cari;
+        $cari_desa = $request->desa != 'ALL' ? $request->desa : null;
+        if ($req || $cari_desa) {
+            $feeds = collect($this->data)->filter(function ($value, $key) use ($req, $cari_desa) {
+                $hasil = $req ? stripos($value['title'], $req) !== false : true;
+                $hasil = $hasil && ($cari_desa ? $cari_desa == $value['desa_id'] : true);
+                return $hasil;
+            })->take(30)->paginate(10);
+        } else {
+            $feeds = collect($this->data)->take(30)->paginate(10);
+        }
+
+        $feeds->all();
+        $html =  view('pages._feeds', [
+            'feeds' => $feeds,
+        ])->render();
+
+        return response()->json(compact('html'));
     }
 
     public function PotensiByKategory($slug)

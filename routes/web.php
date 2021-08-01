@@ -164,6 +164,7 @@ Route::group(['middleware' => 'installed'], function () {
         
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
+        Route::get('filter', 'PageController@FilterFeeds')->name('feeds.filter');
         Route::group(['prefix' => 'potensi'], function () {
         Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
         Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
@@ -346,6 +347,7 @@ Route::group(['middleware' => 'installed'], function () {
                 //Routes Resource Data Umum
                 Route::group(['prefix' => 'data-umum'], function () {
                     Route::get('getdata', ['as' => 'data.data-umum.getdata', 'uses' => 'DataUmumController@getDataUmum']);
+                    Route::get('getdataajax', ['as' => 'data.data-umum.getdataajax', 'uses' => 'DataUmumController@getDataUmumAjax']);
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
                     Route::get('create', ['as' => 'data.data-umum.create', 'uses' => 'DataUmumController@create']);
                     Route::post('store', ['as' => 'data.data-umum.store', 'uses' => 'DataUmumController@store']);
@@ -501,6 +503,16 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-desa.destroy', 'uses' => 'AnggaranDesaController@destroy']);
                     Route::get('import', ['as' => 'data.anggaran-desa.import', 'uses' => 'AnggaranDesaController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-desa.do_import', 'uses' => 'AnggaranDesaController@do_import']);
+                });
+
+                //Routes Resource Laporan Apbdes
+                Route::group(['prefix' => 'laporan-apbdes'], function () {
+                    Route::get('getdata', ['as' => 'data.laporan-apbdes.getdata', 'uses' => 'LaporanApbdesController@getApbdes']);
+                    Route::get('/', ['as' => 'data.laporan-apbdes.index', 'uses' => 'LaporanApbdesController@index']);
+                    Route::delete('destroy/{id}', ['as' => 'data.laporan-apbdes.destroy', 'uses' => 'LaporanApbdesController@destroy']);
+                    Route::get('download{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
+                    Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
+                    Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                 });
             });
 

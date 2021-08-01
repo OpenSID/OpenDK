@@ -58,7 +58,8 @@ class PendudukController extends Controller
         PendudukQueueJob::dispatch($request->all());
 
         return response()->json([
-            'message' => 'Proses sync data penduduk OpenSID sedang berjalan',
+          'status' => 'success',
+          'message' => 'Proses sync Data Penduduk OpenSID sedang berjalan',
         ]);
     }
 

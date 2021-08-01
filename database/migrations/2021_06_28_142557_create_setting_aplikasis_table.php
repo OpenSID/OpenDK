@@ -31,6 +31,6 @@ class CreateSettingAplikasisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seting_aplikasis');
+        Schema::dropIfExists('das_setting');
     }
 }

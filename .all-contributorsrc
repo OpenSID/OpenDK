@@ -94,6 +94,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "nurisakbar",
+      "name": "Nuris Akbar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5483330?v=4",
+      "profile": "http://belajarphp.net",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

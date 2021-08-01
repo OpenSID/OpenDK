@@ -27,11 +27,17 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah <span
-                        class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('luas_wilayah', $luas_wilayah ,['placeholder'=>'0', 'class'=>'form-control', 'required', 'style'=>'text-align:right;','step'=>'2.0']) !!}
+                <div class="row">
+                    <div class="col-md-5">
+                        {{ Form::select('sumber_luas_wilayah',['1'=>'Manual',2=>'Dari Luas Desa'],isset($data_umum->sumber_luas_wilayah)? $data_umum->sumber_luas_wilayah:null,['class'=>'form-control sumber_luas_wilayah']) }}
+                    </div>
+                    <div class="col-md-7">
+                        {!! Form::number('luas_wilayah', $luas_wilayah ,['placeholder'=>'0', 'class'=>'form-control luas_wilayah', 'required', 'style'=>'text-align:right;', 'placeholder'=>'Luas Wilayah Kecamatan','step' => '0.01']) !!}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -69,7 +75,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Embed Peta</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::textarea('embed_peta', null,['placeholder'=>'Embed Peta dari Google Map', 'class'=>'form-control', 'rows' => 2]) !!}
+                {!! Form::textarea('embed_peta', null,['placeholder'=>'Embed Peta dari Google Map', 'class'=>'form-control', 'rows' => 5]) !!}
             </div>
         </div>
     </div>

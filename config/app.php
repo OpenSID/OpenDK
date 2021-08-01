@@ -12,6 +12,12 @@ return [
      *  Mode Website
      */
 
+    'version' => 'v21.08.01',
+
+    /*
+     *  Mode Website
+     */
+
     'demo' => env('APP_DEMO', false),
 
     /*

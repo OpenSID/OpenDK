@@ -50,7 +50,9 @@ class PageController extends Controller
         ->map(function ($desa) {
             return $desa->website_url_feed;
         })->all();
-        foreach ($all_desa as $desa) {
+
+        foreach ($all_desa as $desa)
+        {
             $getFeeds = FeedsFacade::make($desa['website']);
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
@@ -66,7 +68,8 @@ class PageController extends Controller
                 ];
             }
         }
-        return $feeds ?? null;
+
+        return $feeds ?? NULL;
     }
 
     public function FilterFeeds(Request $request)
@@ -96,7 +99,6 @@ class PageController extends Controller
     public function PotensiByKategory($slug)
     {
         $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
-        // dd($kategori_id);
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
 

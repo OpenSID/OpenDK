@@ -2,7 +2,7 @@
     <nav class="navbar  navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-            <a href="{{ route('beranda')}}"  class="navbar-brand">
+            <a href="{{ route('beranda') }}"  class="navbar-brand">
               <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD" id="logo-brand" >
               <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
               <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
@@ -78,7 +78,7 @@
           @if (Sentinel::guest())
             <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
           @else
-          <li><a href="{{ route('dashboard.profil')}}">ADMIN</a></li>
+          <li><a href="{{ route('dashboard')}}">ADMIN</a></li>
           <li><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}

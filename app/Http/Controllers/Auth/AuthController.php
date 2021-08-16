@@ -36,14 +36,11 @@ class AuthController extends Controller
         try {
             $remember = (bool) $request->input('remember_me');
             if (! Sentinel::authenticate($request->all(), $remember)) {
-                flash()->error('Wrong email or password!');
-                return redirect()->back()->withInput();
+                return back()->withInput()->with('error', 'Email atau Password Salah!');
             }
-            flash()->success('Login success! Welcome to Bali Tower admin page!');
-            return redirect()->route('dashboard.profil');
+            return redirect()->route('dashboard');
         } catch (Exception $e) {
-            flash()->error('Error login!' . $e);
-            return redirect()->back()->withInput();
+            return back()->withInput()->with('error', 'Gagal Masuk!' . $e);
         }
     }
 

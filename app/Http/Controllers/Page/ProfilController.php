@@ -26,8 +26,6 @@ class ProfilController extends Controller
     /**
      * Menampilkan Halaman Profil Kecamatan
      **/
-
-
     public function LetakGeografis()
     {
         $defaultProfil = config('app.default_profile');
@@ -53,6 +51,7 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
+
         return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -84,6 +83,7 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
+
         return view('pages.profil.visimisi', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -96,12 +96,13 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
+        
         return view('pages.profil.sejarah', compact('page_title', 'page_description', 'profil'));
     }
 
     public function showProfile()
     {
-        Counter::count('dashboard.profil');
+        Counter::count('dashboard');
 
         $defaultProfil = config('app.default_profile');
 

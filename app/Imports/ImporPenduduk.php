@@ -2,18 +2,18 @@
 
 namespace App\Imports;
 
-use App\Models\Penduduk;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Barryvdh\Debugbar\Facade as Debugbar;
-
-use function config;
 use function now;
+use function config;
 use function substr;
+use App\Models\Penduduk;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+
+use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -98,6 +98,25 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'desa_id'      => $insert['desa_id'],
                 'id_pend_desa' => $insert['id_pend_desa']
             ], $insert);
+
+            if ($value['foto']) {
+                $temp_foto = 'temp/penduduk/foto/' . $value['foto'];
+                $public_foto = 'public/penduduk/foto/' . $value['foto'];
+                
+                // Salin file yang dibutuhkan
+                if (Storage::exists($temp_foto)) {
+
+                    // Hapus file yang lama
+                    if (Storage::exists($public_foto)) {
+                        Storage::delete($public_foto);
+                    }
+
+                    Storage::copy($temp_foto, $public_foto);
+                }
+            }
         }
+
+        // Hapus folder temp ketika sudah selesai
+        Storage::deleteDirectory('temp');
     }
 }

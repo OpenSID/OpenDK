@@ -21,7 +21,7 @@ class AnggaranRealisasiController extends Controller
      **/
     public function showAnggaranDanRealisasi()
     {
-        Counter::count('dashboard.anggaran-dan-realisasi');
+        Counter::count('statistik.anggaran-dan-realisasi');
 
         $data['page_title']       = 'Anggaran & Realisasi';
         $data['page_description'] = 'Data Anggaran & Realisasi ' .$this->sebutan_wilayah;

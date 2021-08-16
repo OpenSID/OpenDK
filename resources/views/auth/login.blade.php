@@ -9,8 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset("/favicon.png")}}"/>
-
+    <link rel="icon" type="image/png" href="{{ asset("/favicon.png") }}"/>
     <link rel="stylesheet" href="{{ asset("/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset("/bower_components/font-awesome/css/font-awesome.min.css") }}">
@@ -18,42 +17,46 @@
     <link rel="stylesheet" href="{{ asset("/bower_components/Ionicons/css/ionicons.min.css") }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset("/bower_components/admin-lte/dist/css/AdminLTE.min.css") }}">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="{{ asset("/bower_components/admin-lte/plugins/iCheck/square/blue.css") }}">
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <style>
-        html{
+        html {
             height: auto;
         }
     </style>
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-    <div class="login-logo">
-        <img class="" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" style="max-width:80px;white-space:normal" alt=""  width="70px">
-        <h3 href="{{$app->make('url')->to('/')}}">PEMERINTAH {{ strtoupper($nama_wilayah_kab) }}<br><b>{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</b></h3>
-    </div>
+<div class="login-box" style="background-color: white;">
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
-        @include( 'flash::message' )
+        <div class="login-logo" style="padding-top: 10px;">
+            <a href="{{ route('beranda') }}">
+                <img class="" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" style="max-width:80px;white-space:normal" alt=""  width="70px">
+                <h3>PEMERINTAH {{ strtoupper($nama_wilayah_kab) }}<br/><b>{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</b></h3>
+            </a>
+        </div>
+        <hr/>
+        
+        @include('partials.flash_message')
         <form method="POST" action="{{ route('login') }}">
-        {{ csrf_field() }}
+            @csrf
             <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required
-                    autofocus placeholder="Email">
+                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus placeholder="Email">
                 @if ($errors->has('email'))
                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
+                        <strong>{{ $errors->first('email') }}</strong>
+                    </span>
                 @endif
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                <input id="password" type="password" class="form-control" name="password" required fplaceholder="Password">
+                <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
                 @if ($errors->has('password'))
                     <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
+                        <strong>{{ $errors->first('password') }}</strong>
+                    </span>
                 @endif
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
@@ -61,7 +64,7 @@
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
                         <label>
-                            <input class="iCheck" type="checkbox"    name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                            <input class="iCheck" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                         </label>
                     </div>
                 </div>
@@ -72,11 +75,16 @@
                 <!-- /.col -->
             </div>
         </form>
+
+        <hr/>
+        <div class="text-center">
+            <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a>
+            <br/>
+            <b><a href="https://github.com/openSID/openDK" target="_blank">OpenDK</a></b> {{ config('app.version') }}
+            </small>
+        </div>
     </div>
     <!-- /.login-box-body -->
-</div>
-<div class="login-box-footer" style="align-items: center; text-align: center">
-    <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i>  <a href="https://github.com/openSID/openDK" target="_blank"> OpenDK </a> .</small>
 </div>
 <!-- /.login-box -->
 <!-- jQuery 3 -->
@@ -86,12 +94,18 @@
 <!-- iCheck -->
 <script src="{{ asset ("/bower_components/admin-lte/plugins/iCheck/icheck.min.js") }}"></script>
 <script>
-    $(function () {
+    $(document).ready(function() {
         $('.iCheck').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
         });
+
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 5000);
     });
 </script>
 </body>

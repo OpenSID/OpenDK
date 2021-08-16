@@ -8,7 +8,7 @@
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}jenis-penyakit"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{route('dashboard')}}jenis-penyakit"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li><a href="{{route('setting.coa.index')}}">Daftar COA</a></li>
         <li class="active">{{$page_title}}</li>
     </ol>

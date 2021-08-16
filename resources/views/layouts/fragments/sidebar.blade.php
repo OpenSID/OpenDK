@@ -11,6 +11,11 @@ $user = Sentinel::getUser();
             @if(isset($user) && $user->hasAnyAccess(['admin', 'data-*', 'adminsikoma']))
                 <li class="header">MENU ADMINISTRATOR</li>
                 @if($user->hasAnyAccess(['admin', 'data-*']))
+                <li class="{{ (Request::is(['dashboard'])? 'active' : '') }}">
+                    <a href="@if(isset($user) && $user->hasAnyAccess(['admin', 'dashboard'])){{ route('dashboard') }}@else {{ '#' }} @endif" title="Dashboard">
+                        <i class="fa fa-dashboard"></i><span>Dashboard</span>
+                    </a>
+                </li>
                 <li class="treeview {{ (Request::is(['informasi/*'])? 'active' : '') }}">
                     <a href="#"><i class="fa fa-archive"></i> <span>Informasi</span>
                 <span class="pull-right-container">
@@ -222,16 +227,14 @@ $user = Sentinel::getUser();
                 @endif
             @endif
             <li class="header">VISITOR COUNTER</li>
-            <li>
-                <a href="@if(isset($user) && $user->hasAnyAccess(['admin', 'data-*', 'adminsikoma'])){{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i
-                            class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
-                            <span class="pull-right-container">
-                <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
-              </span>
+            <li class="{{ (Request::is(['counter'])? 'active' : '') }}">
+                <a href="@if(isset($user) && $user->hasAnyAccess(['admin', 'data-*', 'adminsikoma'])){{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
+                    <span class="pull-right-container">
+                        <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
+                    </span>
                 </a>
-
             </li>
-
+            
         </ul>
         <!-- /.sidebar-menu -->
     </section>

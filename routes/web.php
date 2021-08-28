@@ -15,17 +15,21 @@
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
 /**
  * Group Routing for Front End
  */
 
 
-Route::get('/', function () {
-});
+Route::get('/',function () {
 
-// Redirect if apps not installed
+});
+/**
+ * Group Routing for Dashboard
+ */
+
+ // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
+
     Route::namespace('Auth')->group(function () {
         Route::get('login', ['as' => 'login', 'uses' => 'AuthController@index']);
         Route::post('login', ['as' => 'login', 'uses' => 'AuthController@loginProcess']);
@@ -108,9 +112,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'setting.tipe-potensi.update', 'uses' => 'Setting\TipePotensiController@update']);
                 Route::delete('destroy/{id}', ['as' => 'setting.tipe-potensi.destroy', 'uses' => 'Setting\TipePotensiController@destroy']);
             });
-
-            // Slide
-            Route::group(['prefix' => 'slide'], function () {
+            Route::group(['prefix' => 'slide'], function(){
                 Route::get('/', ['as' => 'setting.slide.index', 'uses' => 'Setting\SlideController@index']);
                 Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
                 Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
@@ -119,8 +121,8 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('show/{id}', ['as' => 'setting.slide.show', 'uses' => 'Setting\SlideController@show']);
                 Route::put('update/{id}', ['as' => 'setting.slide.update', 'uses' => 'Setting\SlideController@update']);
                 Route::delete('destroy/{id}', ['as' => 'setting.slide.destroy', 'uses' => 'Setting\SlideController@destroy']);
-            });
 
+            });
             // COA
             Route::group(['prefix' => 'coa'], function () {
                 Route::get('/', ['as' => 'setting.coa.index', 'uses' => 'Setting\COAController@index']);
@@ -144,10 +146,11 @@ Route::group(['middleware' => 'installed'], function () {
         Route::group(['prefix' => 'counter'], function () {
             Route::get('/', ['as' => 'counter.index', 'uses' => 'Counter\CounterController@index']);
         });
+
     });
 
-    /**
-     * Group Routing for Halaman Website
+    /**m 
+     * Group Routing for Dashboard / Pengunjung Website
      */
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
@@ -156,18 +159,19 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
             Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
             Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
-            Route::get('sejarah-{wilayah}', 'ProfilController@sejarah')->name('profil.sejarah');
-        });
+            Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
+        });    
         
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
         Route::get('filter', 'PageController@FilterFeeds')->name('feeds.filter');
         Route::group(['prefix' => 'potensi'], function () {
-            Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
-            Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+        Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
+        Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
         });
 
         Route::group(['prefix' => 'statistik'], function () {
+
             Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
             Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
             Route::get('chart-kependudukan', 'KependudukanController@getChartPenduduk')->name('statistik.chart-kependudukan');
@@ -199,24 +203,28 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('chart-imunisasi', 'KesehatanController@getChartImunisasi')->name('statistik.kesehatan.chart-imunisasi');
             Route::get('chart-penyakit', 'KesehatanController@getChartEpidemiPenyakit')->name('statistik.kesehatan.chart-penyakit');
             Route::get('chart-sanitasi', 'KesehatanController@getChartToiletSanitasi')->name('statistik.kesehatan.chart-sanitasi');
+        
         });
 
         Route::group(['prefix' => 'unduhan'], function () {
             Route::get('prosedur', 'DownloadController@indexProsedur')->name('unduhan.prosedur');
-            Route::get('prosedur/getdata', 'DownloadController@getDataProsedur')->name('unduhan.prosedur.getdata');
-            Route::get('prosedur/{nama_prosedur}', 'DownloadController@showProsedur')->name('unduhan.prosedur.show');
-            Route::get('prosedur/{file}/download', 'DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
+            Route::get('prosedur/getdata','DownloadController@getDataProsedur')->name('unduhan.prosedur.getdata');
+            Route::get('prosedur/{nama_prosedur}','DownloadController@showProsedur')->name('unduhan.prosedur.show');
+            Route::get('prosedur/{file}/download','DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
             
             Route::get('regulasi', 'DownloadController@indexRegulasi')->name('unduhan.regulasi');
-            Route::get('regulasi/{nama_regulasi}', 'DownloadController@showRegulasi')->name('unduhan.regulasi.show');
-            Route::get('regulasi/{file}/download', 'DownloadController@downloadRegulasi')->name('unduhan.regulasi.download');
+            Route::get('regulasi/{nama_regulasi}','DownloadController@showRegulasi')->name('unduhan.regulasi.show');
+            Route::get('regulasi/{file}/download','DownloadController@downloadRegulasi')->name('unduhan.regulasi.download');
 
             Route::get('form-dokumen', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
-            Route::get('form-dokumen/getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
+            Route::get('form-dokumen/getdata','DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
         });
-    });
-    Route::get('agenda-kegiatan/{slug}', 'Informasi\EventController@show')->name('event.show');
+
         
+    });
+    Route::get('agenda-kegiatan/{slug}','Informasi\EventController@show')->name('event.show');
+        
+   
     Route::namespace('SistemKomplain')->group(function () {
         Route::group(['prefix' => 'sistem-komplain'], function () {
             Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
@@ -233,95 +241,93 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
         });
     });
-    
-    /**
-     * Group Routing for Halaman Dahsboard
-     */
-    Route::group(['middleware' => 'sentinel_access:admin'], function () {
-        Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-        
         /**
          * Group Routing for Informasi
-         */
-        Route::namespace('Informasi')->group(function () {
-            Route::group(['prefix' => 'informasi'], function () {
+     */
 
-                //Routes for prosedur resource
-                Route::group(['prefix' => 'prosedur'], function () {
-                    Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.prosedur.show', 'uses' => 'ProsedurController@show']);
-                    Route::get('getdata', ['as' => 'informasi.prosedur.getdata', 'uses' => 'ProsedurController@getDataProsedur']);
-                    Route::get('create', ['as' => 'informasi.prosedur.create', 'uses' => 'ProsedurController@create']);
-                    Route::post('store', ['as' => 'informasi.prosedur.store', 'uses' => 'ProsedurController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.prosedur.edit', 'uses' => 'ProsedurController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.prosedur.update', 'uses' => 'ProsedurController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.prosedur.destroy', 'uses' => 'ProsedurController@destroy']);
-                    Route::get('download/{id}', ['as' => 'informasi.prosedur.download', 'uses' => 'ProsedurController@download']);
-                });
-                
-                //Routes for Regulasi resources
-                Route::group(['prefix' => 'regulasi'], function () {
-                    Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
-                    Route::get('create', ['as' => 'informasi.regulasi.create', 'uses' => 'RegulasiController@create']);
-                    Route::post('store', ['as' => 'informasi.regulasi.store', 'uses' => 'RegulasiController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.regulasi.update', 'uses' => 'RegulasiController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.regulasi.destroy', 'uses' => 'RegulasiController@destroy']);
-                });
-                
-                //Routes for FAQ resources
-                Route::group(['prefix' => 'faq'], function () {
-                    Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
-                    Route::get('create', ['as' => 'informasi.faq.create', 'uses' => 'FaqController@create']);
-                    Route::post('store', ['as' => 'informasi.faq.store', 'uses' => 'FaqController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.faq.edit', 'uses' => 'FaqController@edit']);
-                    Route::post('update/{id}', ['as' => 'informasi.faq.update', 'uses' => 'FaqController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.faq.destroy', 'uses' => 'FaqController@destroy']);
-                });
-                
-                //Routes for Events resources
-                Route::group(['prefix' => 'event'], function () {
-                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
-                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
-                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
-                    Route::post('update/{id}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
-                });
 
-                //Routes for Form Dokumen resources
-                Route::group(['prefix' => 'form-dokumen'], function () {
-                    Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.form-dokumen.show', 'uses' => 'FormDokumenController@show']);
-                    Route::get('create', ['as' => 'informasi.form-dokumen.create', 'uses' => 'FormDokumenController@create']);
-                    Route::get('getdata', ['as' => 'informasi.form-dokumen.getdata', 'uses' => 'FormDokumenController@getDataDokumen']);
-                    Route::post('store', ['as' => 'informasi.form-dokumen.store', 'uses' => 'FormDokumenController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.form-dokumen.edit', 'uses' => 'FormDokumenController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.form-dokumen.update', 'uses' => 'FormDokumenController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.form-dokumen.destroy', 'uses' => 'FormDokumenController@destroy']);
-                });
-                
-                //Routes for Potensi resources
-                Route::group(['prefix' => 'potensi'], function () {
-                    Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
-                    Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
-                    Route::post('store', ['as' => 'informasi.potensi.store', 'uses' => 'PotensiController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.potensi.update', 'uses' => 'PotensiController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.potensi.destroy', 'uses' => 'PotensiController@destroy']);
-                    Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
-                    Route::get('kategori', ['as' => 'informasi.potensi.kategori', 'uses' => 'PotensiController@kategori']);
-                });
+    Route::group(['middleware' => 'sentinel_access:admin'], function () {
+    Route::get('dashboard', 'HomeController@index')->name('dashboard.profil');
+    Route::namespace('Informasi')->group(function () {
+        Route::group(['prefix' => 'informasi'], function () {
+
+            //Routes for prosedur resource
+            Route::group(['prefix' => 'prosedur'], function () {
+                Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);
+                Route::get('show/{id}', ['as' => 'informasi.prosedur.show', 'uses' => 'ProsedurController@show']);
+                Route::get('getdata', ['as' => 'informasi.prosedur.getdata', 'uses' => 'ProsedurController@getDataProsedur']);
+                Route::get('create', ['as' => 'informasi.prosedur.create', 'uses' => 'ProsedurController@create']);
+                Route::post('store', ['as' => 'informasi.prosedur.store', 'uses' => 'ProsedurController@store']);
+                Route::get('edit/{id}', ['as' => 'informasi.prosedur.edit', 'uses' => 'ProsedurController@edit']);
+                Route::put('update/{id}', ['as' => 'informasi.prosedur.update', 'uses' => 'ProsedurController@update']);
+                Route::delete('destroy/{id}', ['as' => 'informasi.prosedur.destroy', 'uses' => 'ProsedurController@destroy']);
+                Route::get('download/{id}', ['as' => 'informasi.prosedur.download', 'uses' => 'ProsedurController@download']);
+            });
+            
+            //Routes for Regulasi resources
+            Route::group(['prefix' => 'regulasi'], function () {
+                Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
+                Route::get('show/{id}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
+                Route::get('create', ['as' => 'informasi.regulasi.create', 'uses' => 'RegulasiController@create']);
+                Route::post('store', ['as' => 'informasi.regulasi.store', 'uses' => 'RegulasiController@store']);
+                Route::get('edit/{id}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
+                Route::put('update/{id}', ['as' => 'informasi.regulasi.update', 'uses' => 'RegulasiController@update']);
+                Route::delete('destroy/{id}', ['as' => 'informasi.regulasi.destroy', 'uses' => 'RegulasiController@destroy']);
+            });
+            
+            //Routes for FAQ resources
+            Route::group(['prefix' => 'faq'], function () {
+                Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
+                Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
+                Route::get('create', ['as' => 'informasi.faq.create', 'uses' => 'FaqController@create']);
+                Route::post('store', ['as' => 'informasi.faq.store', 'uses' => 'FaqController@store']);
+                Route::get('edit/{id}', ['as' => 'informasi.faq.edit', 'uses' => 'FaqController@edit']);
+                Route::post('update/{id}', ['as' => 'informasi.faq.update', 'uses' => 'FaqController@update']);
+                Route::delete('destroy/{id}', ['as' => 'informasi.faq.destroy', 'uses' => 'FaqController@destroy']);
+            });
+            
+            //Routes for Events resources
+            Route::group(['prefix' => 'event'], function () {
+                Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
+                Route::get('show/{id}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
+                Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
+                Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
+                Route::get('edit/{id}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
+                Route::post('update/{id}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
+                Route::delete('destroy/{id}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+            });
+
+            //Routes for Form Dokumen resources
+            Route::group(['prefix' => 'form-dokumen'], function () {
+                Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);
+                Route::get('show/{id}', ['as' => 'informasi.form-dokumen.show', 'uses' => 'FormDokumenController@show']);
+                Route::get('create', ['as' => 'informasi.form-dokumen.create', 'uses' => 'FormDokumenController@create']);
+                Route::get('getdata', ['as' => 'informasi.form-dokumen.getdata', 'uses' => 'FormDokumenController@getDataDokumen']);
+                Route::post('store', ['as' => 'informasi.form-dokumen.store', 'uses' => 'FormDokumenController@store']);
+                Route::get('edit/{id}', ['as' => 'informasi.form-dokumen.edit', 'uses' => 'FormDokumenController@edit']);
+                Route::put('update/{id}', ['as' => 'informasi.form-dokumen.update', 'uses' => 'FormDokumenController@update']);
+                Route::delete('destroy/{id}', ['as' => 'informasi.form-dokumen.destroy', 'uses' => 'FormDokumenController@destroy']);
+            });
+            
+            //Routes for Potensi resources
+            Route::group(['prefix' => 'potensi'], function () {
+               
+                Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
+                Route::get('show/{id}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
+                Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
+                Route::post('store', ['as' => 'informasi.potensi.store', 'uses' => 'PotensiController@store']);
+                Route::get('edit/{id}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);
+                Route::put('update/{id}', ['as' => 'informasi.potensi.update', 'uses' => 'PotensiController@update']);
+                Route::delete('destroy/{id}', ['as' => 'informasi.potensi.destroy', 'uses' => 'PotensiController@destroy']);
+                Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
+                Route::get('kategori', ['as' => 'informasi.potensi.kategori', 'uses' => 'PotensiController@kategori']);
             });
         });
-
-        /**
-         * Group Routing for Data
-         */
+    });
+    /**
+     * Group Routing for Data
+     *
+     */   
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
 
@@ -526,7 +532,7 @@ Route::group(['middleware' => 'installed'], function () {
     /**
      * Utilities
      */
-    Route::any('refresh-captcha', 'PageController@refresh_captcha')->name('refresh-captcha');
+    Route::any('refresh-captcha', 'HomeController@refresh_captcha')->name('refresh-captcha');
 
     Route::group(['middleware' => ['web']], function () {
         if (Cookie::get(env('COUNTER_COOKIE', 'kd-counter')) == false) {
@@ -538,7 +544,7 @@ Route::group(['middleware' => 'installed'], function () {
     Route::get('/sitemap', 'SitemapController@index');
     Route::get('/sitemap/prosedur', 'SitemapController@prosedur');
 
-    /**
+      /**
      *
      * Grouep Routing API Internal for Select2
      */
@@ -615,6 +621,7 @@ Route::group(['middleware' => 'installed'], function () {
     
     // Dashboard Kependudukan
     Route::namespace('Dashboard')->group(function () {
+
         Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kependudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
     });
 
@@ -628,4 +635,5 @@ Route::group(['middleware' => 'installed'], function () {
             ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(no_kk) LIKE \'%' . strtolower(request('q')) . '%\'')
             ->where('kk_level', 1)->paginate(10);
     });
+    
 });

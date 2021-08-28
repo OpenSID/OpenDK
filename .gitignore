@@ -22,3 +22,5 @@ copy_public.sh
 .DS_Store
 **/.DS_Store
 public/error_log
+composer.lock
+.php-cs-fixer.cache

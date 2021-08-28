@@ -21,7 +21,7 @@ class CekDesa implements Rule
      */
     public function __construct()
     {
-        //
+        $this->nama_kec = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
     }
 
     /**
@@ -33,7 +33,6 @@ class CekDesa implements Rule
      */
     public function passes($attribute, $value)
     {
-        $this->nama_kec = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
         $this->value = $value;
 
         return DataDesa::where($attribute, $value)->first();

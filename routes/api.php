@@ -38,9 +38,16 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     /**
-     * Apbdes
+     * Laporan Apbdes
      */
     Route::group(['prefix' => 'laporan-apbdes'], function () {
         Route::post('/', 'Api\LaporanApbdesController@store');
+    });
+    
+    /**
+     * Laporan Penduduk
+     */
+    Route::group(['prefix' => 'laporan-penduduk'], function () {
+        Route::post('/', 'Api\LaporanPendudukController@store');
     });
 });

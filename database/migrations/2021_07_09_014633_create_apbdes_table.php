@@ -19,11 +19,10 @@ class CreateApbdesTable extends Migration
             $table->integer('tahun')->nullable();
             $table->integer('semester')->nullable();
             $table->string('nama_file', 255)->nullable(true);
-            $table->dateTime('created_at')->nullable(true);
-            $table->dateTime('updated_at')->nullable(true);
             $table->integer('id_apbdes')->nullable(true);
             $table->char('desa_id', 13)->nullable(true);
             $table->dateTime('imported_at')->nullable(true);
+            $table->timestamps();
         });
     }
 

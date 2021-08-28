@@ -67,19 +67,24 @@ $user = Sentinel::getUser();
                         </li>
                         @endif
                         @if($user->hasAnyAccess(['admin', 'data-penduduk']))
-                        <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'active' : '') }}">
-                            <a href="#"><i class="fa fa-users"></i>Kependudukan
-                        <span class="pull-right-container">
-                          <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                            </a>
-                            <ul class="treeview-menu">
-                                <li {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk'])? 'class=active' : '') }}>
-                                    <a href="{{ route('data.penduduk.index') }}"><i class="fa fa-circle-o"></i>Penduduk</a></li>
-                                <li {{ (Request::is(['data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'class=active' : '') }}>
-                                    <a href="{{ route('data.keluarga.index') }}"><i class="fa fa-circle-o"></i>Keluarga</a></li>
-                            </ul>
-                        </li>
+                            <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga', 'data/laporan-penduduk'])? 'active' : '') }}">
+                                <a href="#"><i class="fa fa-users"></i>Kependudukan
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk'])? 'class=active' : '') }}>
+                                        <a href="{{ route('data.penduduk.index') }}"><i class="fa fa-circle-o"></i>Penduduk</a>
+                                    </li>
+                                    <li {{ (Request::is(['data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'class=active' : '') }}>
+                                        <a href="{{ route('data.keluarga.index') }}"><i class="fa fa-circle-o"></i>Keluarga</a>
+                                    </li>
+                                    <li {{ (Request::is(['data/laporan-penduduk/*', 'data/laporan-penduduk/index', 'data/laporan-penduduk'])? 'class=active' : '') }}>
+                                        <a href="{{ route('data.laporan-penduduk.index') }}"><i class="fa fa-circle-o"></i>Laporan Penduduk</a>
+                                    </li>
+                                </ul>
+                            </li>
                         @endif
 
                         @if($user->hasAnyAccess(['admin', 'data-kesehatan']))

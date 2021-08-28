@@ -156,7 +156,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
             Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
             Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
-            Route::get('sejarah-{wilayah}', 'ProfilController@sejarah')->name('profil.sejarah');
+            Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
         });
 
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
@@ -526,7 +526,7 @@ Route::group(['middleware' => 'installed'], function () {
     /**
      * Utilities
      */
-    Route::any('refresh-captcha', 'PageController@refresh_captcha')->name('refresh-captcha');
+    Route::any('refresh-captcha', 'HomeController@refresh_captcha')->name('refresh-captcha');
 
     Route::group(['middleware' => ['web']], function () {
         if (Cookie::get(env('COUNTER_COOKIE', 'kd-counter')) == false) {

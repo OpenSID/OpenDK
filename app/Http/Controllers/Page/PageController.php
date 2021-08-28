@@ -87,7 +87,7 @@ class PageController extends Controller
 
     public function PotensiByKategory($slug)
     {
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+        $kategoriPotensi  = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
 
@@ -98,12 +98,10 @@ class PageController extends Controller
 
     public function PotensiShow($kategori, $slug)
     {
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
-        // dd($kategori_id);
+        $kategoriPotensi  = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi Kecamatan';
         $potensi          = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
-        // dd($potensis);
         return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi', 'kategoriPotensi']));
     }
 
@@ -114,7 +112,6 @@ class PageController extends Controller
         $page_description = 'Data Desa';
         $desa             = DB::table('das_data_desa')->where('nama', str_replace('-', ' ', $slug))->first();
 
-        // dd($potensis);
         return view('pages.desa.desa_show', compact(['page_title', 'page_description', 'desa']));
     }
 

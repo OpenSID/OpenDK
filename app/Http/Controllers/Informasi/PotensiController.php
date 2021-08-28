@@ -26,8 +26,6 @@ class PotensiController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.potensi.index');
-
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
         $potensis         = DB::table('das_potensi')->simplePaginate(10);
@@ -42,8 +40,6 @@ class PotensiController extends Controller
      */
     public function kategori()
     {
-        Counter::count('informasi.potensi.kategori');
-
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
         if ($_GET['id'] != null) {

@@ -21,7 +21,9 @@ class AnggaranDesaController extends Controller
    **/
     public function showAnggaranDesa()
     {
-         $data['page_title']       = 'Anggaran Desa (APBDes)';
+        Counter::count('statistik.anggaran-desa');
+
+        $data['page_title']       = 'Anggaran Desa (APBDes)';
         $data['page_description'] = 'Data Anggaran Desa (APBDes)';
         $defaultProfil            = config('app.default_profile');
         $data['defaultProfil']    = $defaultProfil;

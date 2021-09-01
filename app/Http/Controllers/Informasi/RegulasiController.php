@@ -25,6 +25,8 @@ class RegulasiController extends Controller
      */
     public function index()
     {
+        Counter::count('informasi.regulasi.index');
+
         $page_title       = 'Regulasi';
         $page_description = 'Kumpulan Regulasi ' .$this->sebutan_wilayah;
         $regulasi         = Regulasi::orderBy('id', 'asc')->paginate(10);

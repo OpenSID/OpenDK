@@ -26,12 +26,8 @@ class ProfilController extends Controller
     /**
      * Menampilkan Halaman Profil Kecamatan
      **/
-
-
     public function LetakGeografis()
     {
-        Counter::count('profil.letak-geografis');
-
         $defaultProfil = config('app.default_profile');
 
         $profil = Profil::where('kecamatan_id', $defaultProfil)->first();
@@ -46,8 +42,6 @@ class ProfilController extends Controller
 
     public function StrukturPemerintahan()
     {
-        Counter::count('profil.struktur-pemerintahan');
-
         $defaultProfil = config('app.default_profile');
         $profil        = Profil::where('kecamatan_id', $defaultProfil)->first();
 
@@ -57,6 +51,7 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
+
         return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description', 'profil'));
     }
 
@@ -79,8 +74,6 @@ class ProfilController extends Controller
 
     public function VisiMisi()
     {
-        Counter::count('profil.visi-misi');
-
         $defaultProfil = config('app.default_profile');
         $profil        = Profil::where('kecamatan_id', $defaultProfil)->first();
 
@@ -90,13 +83,12 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
+
         return view('pages.profil.visimisi', compact('page_title', 'page_description', 'profil'));
     }
 
     public function sejarah()
     {
-        Counter::count('profil.sejarah');
-
         $defaultProfil = config('app.default_profile');
 
         $profil     = Profil::where('kecamatan_id', $defaultProfil)->first();
@@ -104,11 +96,14 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
+        
         return view('pages.profil.sejarah', compact('page_title', 'page_description', 'profil'));
     }
 
     public function showProfile()
     {
+        Counter::count('dashboard');
+
         $defaultProfil = config('app.default_profile');
 
         $profil = Profil::where('kecamatan_id', $defaultProfil)->first();

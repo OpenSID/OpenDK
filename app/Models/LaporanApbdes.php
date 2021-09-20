@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LaporanApbdes extends Model
 {
     protected $table     = 'das_apbdes';
-    
+
     protected $fillable = [
         'judul',
         'tahun',
@@ -22,5 +22,4 @@ class LaporanApbdes extends Model
     /**
      * Relation Methods
      * */
-
 }

@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\Role;
 use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
+use function file_exists;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\File;
-use Image;
 
-use function file_exists;
+use Image;
 use function public_path;
 
 class User extends SentinelModel implements Authenticatable
@@ -21,7 +20,7 @@ class User extends SentinelModel implements Authenticatable
      *
      * @var string
      */
-    const DEFAULT_PASSWORD = '12345678';
+    public const DEFAULT_PASSWORD = '12345678';
 
     /**
      * {@inheritDoc}

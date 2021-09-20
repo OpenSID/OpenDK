@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\CounterVisitor;
 use Illuminate\Database\Eloquent\Model;
 
 class CounterPage extends Model

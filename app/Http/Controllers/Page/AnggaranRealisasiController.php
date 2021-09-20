@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
-use Illuminate\Support\Facades\DB;
-
 use function array_sort;
+
 use function config;
+use Illuminate\Support\Facades\DB;
 use function number_format;
 use function request;
 use function view;
@@ -126,9 +126,9 @@ class AnggaranRealisasiController extends Controller
             if ($mid != 'ALL') {
                 $query_result->where('bulan', '=', $mid);
             }
-               $query_result->where('tahun', '=', $year);
+            $query_result->where('tahun', '=', $year);
 
-                $res = $query_result->first();
+            $res = $query_result->first();
 
             if (! empty($res)) {
                 $total_anggaran         = $res->total_anggaran;

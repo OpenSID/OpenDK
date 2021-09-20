@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use function back;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
+use function flash;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
-use function back;
-use function flash;
 use function redirect;
 use function trans;
 use function view;

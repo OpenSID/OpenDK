@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-
 use App\Rules\CekDesa;
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -10,8 +10,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanApbdesQueueJob implements ShouldQueue
 {
@@ -59,9 +59,8 @@ class LaporanApbdesQueueJob implements ShouldQueue
 
             if (isset($this->request['laporan_apbdes'])) {
                 foreach ($this->request['laporan_apbdes'] as $value) {
-                    
                     $file_name = $desa_id . '_' . $value['id'] . '_' . $value['nama_file'];
-                    
+
                     $insert = [
                         'judul'                => $value['judul'],
                         'tahun'                => $value['tahun'],
@@ -73,7 +72,7 @@ class LaporanApbdesQueueJob implements ShouldQueue
                         'updated_at'           => $value['updated_at'],
                         'imported_at'          => now(),
                     ];
-        
+
                     LaporanApbdes::updateOrInsert([
                         'desa_id'              => $insert['desa_id'],
                         'id_apbdes'            => $insert['id_apbdes'],

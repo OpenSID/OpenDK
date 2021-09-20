@@ -5,7 +5,6 @@ namespace App\Imports;
 use App\Models\LogImport;
 use App\Models\TingkatPendidikan;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;

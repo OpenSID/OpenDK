@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\DataUmum;
 use App\Models\Profil;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
 use function back;
 use function compact;
 use function config;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use function json_encode;
 use function redirect;
 use function request;
@@ -19,6 +18,7 @@ use function route;
 use function strtolower;
 use function ucwords;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class DataUmumController extends Controller
 {
@@ -33,7 +33,7 @@ class DataUmumController extends Controller
         $luas_wilayah     = $data_umum['luas_wilayah_value'];
         $page_title       = 'Ubah Data Umum';
         $page_description = ucwords(strtolower($this->sebutan_wilayah).' : ' . $data_umum->kecamatan->nama);
-        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum','luas_wilayah'));
+        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah'));
     }
 
     /**
@@ -130,7 +130,7 @@ class DataUmumController extends Controller
         $page_title       = 'Ubah';
         $page_description = 'Data Umum Kecamatan ' . ucwords(strtolower($data_umum->kecamatan->nama));
         $luas_wilayah     = \DB::table('das_data_desa')->sum('luas_wilayah');
-        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum','luas_wilayah'));
+        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah'));
     }
 
     /**
@@ -166,8 +166,8 @@ class DataUmumController extends Controller
                 'jml_balai_pertemuan'    => 'required',
             ]);
 
-            $data = $request->sumber_luas_wilayah==1?$request->all():$request->except('luas_wilayah');
-            
+            $data = $request->sumber_luas_wilayah==1 ? $request->all() : $request->except('luas_wilayah');
+
             DataUmum::find($id)->update($data);
 
             return redirect()->route('data.data-umum.index')->with('success', 'Update Data Umum sukses!');
@@ -196,9 +196,8 @@ class DataUmumController extends Controller
 
     public function getDataUmumAjax(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             return response()->json(['data'=>DataUmum::first()]);
         }
     }
-
 }

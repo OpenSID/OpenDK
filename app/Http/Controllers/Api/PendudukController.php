@@ -4,35 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PendudukRequest;
-use App\Jobs\PendudukQueueJob;
-use Illuminate\Http\JsonResponse;
-
-use function response;
-
-use Illuminate\Http\Request;
-use App\Imports\ImporPenduduk;
 use App\Imports\SinkronPenduduk;
+
+use App\Jobs\PendudukQueueJob;
+
 use App\Models\Penduduk;
-use Doctrine\DBAL\Query\QueryException;
+use function back;
 use Exception;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Yajra\DataTables\DataTables;
-use ZipArchive;
+use function response;
 
-use function back;
-use function compact;
-use function config;
-use function convert_born_date_to_age;
-use function redirect;
-use function request;
-use function route;
-use function strtolower;
-use function substr;
-use function ucwords;
-use function view;
+use ZipArchive;
 
 class PendudukController extends Controller
 {
@@ -70,38 +54,38 @@ class PendudukController extends Controller
      */
     public function storedata(Request $request)
     {
-      $this->validate($request, [
+        $this->validate($request, [
         'file' => 'file|mimes:zip|max:5120',
       ]);
 
-      try {
-        // Upload file zip temporary.
-        $file = $request->file('file');
-        $file->storeAs('temp', $name = $file->getClientOriginalName());
+        try {
+            // Upload file zip temporary.
+            $file = $request->file('file');
+            $file->storeAs('temp', $name = $file->getClientOriginalName());
 
-        // Temporary path file
-        $path = storage_path("app/temp/{$name}");
-        $extract = storage_path('app/public/penduduk/foto/');
+            // Temporary path file
+            $path = storage_path("app/temp/{$name}");
+            $extract = storage_path('app/public/penduduk/foto/');
 
-        // Ekstrak file
-        $zip = new ZipArchive;
-        $zip->open($path);
-        $zip->extractTo($extract);
-        $zip->close();
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
 
-        // Proses impor excell
-        (new SinkronPenduduk())
+            // Proses impor excell
+            (new SinkronPenduduk())
           ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
-      } catch (Exception $e) {
-        return back()->with('error', 'Import data gagal. ' . $e->getMessage());
-      }
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        }
 
-      // Hapus folder temp ketika sudah selesai
-      Storage::deleteDirectory('temp');
-      // Hapus file excell temp ketika sudah selesai
-      Storage::disk('public')->delete('penduduk/foto/' . $excellName);
+        // Hapus folder temp ketika sudah selesai
+        Storage::deleteDirectory('temp');
+        // Hapus file excell temp ketika sudah selesai
+        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
 
-      return response()->json([
+        return response()->json([
         "message" => "Data Foto Telah Berhasil di Sinkronkan",
       ]);
     }

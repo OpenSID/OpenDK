@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Validation\Rule;
 
 return [
 
@@ -20,7 +19,7 @@ return [
     'final' => [
         'key' => true,
         'publish' => false
-    ],    
+    ],
     'requirements' => [
         'php' => [
             'openssl',

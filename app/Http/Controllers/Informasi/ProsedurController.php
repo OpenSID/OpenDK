@@ -5,18 +5,18 @@ namespace App\Http\Controllers\Informasi;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Prosedur;
+use function back;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use function compact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use League\Flysystem\Exception;
-use Yajra\DataTables\DataTables;
 
-use function back;
-use function compact;
+use League\Flysystem\Exception;
 use function redirect;
 use function request;
 use function route;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller
 {

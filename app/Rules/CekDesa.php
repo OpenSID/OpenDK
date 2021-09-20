@@ -2,13 +2,12 @@
 
 namespace App\Rules;
 
-use App\Models\Profil;
 use App\Models\DataDesa;
+use App\Models\Profil;
 use Illuminate\Contracts\Validation\Rule;
 
 class CekDesa implements Rule
 {
-    
     /**
      * @var int
      */

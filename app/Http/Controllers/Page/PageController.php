@@ -5,22 +5,12 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use function compact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Collection;
-use willvincent\Feeds\Facades\FeedsFacade;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use function compact;
-use function config;
-use function intval;
-use function kuartal_bulan;
-use function request;
-use function rtrim;
-use function semester;
 use function str_replace;
 use function view;
-use function years_list;
-use function array_column;
+use willvincent\Feeds\Facades\FeedsFacade;
 
 class PageController extends Controller
 {
@@ -29,7 +19,7 @@ class PageController extends Controller
     public function index()
     {
         Counter::count('beranda');
-        
+
         $this->data = $this->GetFeeds();
 
         $feeds = collect($this->data)->take(30)->paginate(10);
@@ -51,8 +41,7 @@ class PageController extends Controller
             return $desa->website_url_feed;
         })->all();
 
-        foreach ($all_desa as $desa)
-        {
+        foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
@@ -69,7 +58,7 @@ class PageController extends Controller
             }
         }
 
-        return $feeds ?? NULL;
+        return $feeds ?? null;
     }
 
     public function FilterFeeds(Request $request)

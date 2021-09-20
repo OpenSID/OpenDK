@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateSetingAplikasiRequest;
-use Illuminate\Http\Request;
 use App\Models\SettingAplikasi;
 use Exception;
 
 class AplikasiController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -30,7 +30,7 @@ class AplikasiController extends Controller
         }
 
         return view('setting.aplikasi.index', [
-            'page_title'    => 'Pegaturan Aplikasi', 
+            'page_title'    => 'Pegaturan Aplikasi',
             'settings'      => $settings,
         ]);
     }
@@ -42,7 +42,10 @@ class AplikasiController extends Controller
         $default_browser_title  = $this->default_browser_title;
 
         return view('setting.aplikasi.edit', compact(
-            'page_title', 'aplikasi', 'default_browser_title', 'page_description'
+            'page_title',
+            'aplikasi',
+            'default_browser_title',
+            'page_description'
         ));
     }
 

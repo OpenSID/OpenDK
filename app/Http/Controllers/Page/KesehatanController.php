@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-
 use function array_add;
+
 use function compact;
 use function config;
+use Illuminate\Support\Facades\DB;
 use function kuartal_bulan;
 use function request;
 use function rtrim;
@@ -115,7 +115,7 @@ class KesehatanController extends Controller
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_akiakb_1', compact('data_tabel'))->render();
-            //$tabel_kesehatan = $data_tabel;
+        //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'ALL' && $did != 'ALL') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
@@ -208,7 +208,7 @@ class KesehatanController extends Controller
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_imunisasi_1', compact('data_tabel'))->render();
-            //$tabel_kesehatan = $data_tabel;
+        //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'ALL' && $did != 'ALL') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
@@ -411,7 +411,7 @@ class KesehatanController extends Controller
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_sanitasi_1', compact('data_tabel'))->render();
-            //$tabel_kesehatan = $data_tabel;
+        //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'ALL' && $did != 'ALL') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {

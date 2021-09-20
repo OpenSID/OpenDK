@@ -17,7 +17,7 @@ class DataDesa extends Model
 
     /**
      * Getter untuk menambahkan url ke /feed.
-     * 
+     *
      * @return string
      */
     public function getWebsiteUrlFeedAttribute()

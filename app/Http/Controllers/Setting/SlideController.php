@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Slide;;
+use App\Models\Slide;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+
+;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use League\Flysystem\Exception;
 use Yajra\DataTables\DataTables;
@@ -13,10 +15,11 @@ use Yajra\DataTables\DataTables;
 class SlideController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $page_title       = 'Slide';
         $page_description = 'Daftar Slide';
-        return view('setting.slide.index', compact('page_title','page_description'));
+        return view('setting.slide.index', compact('page_title', 'page_description'));
     }
 
     /**
@@ -130,12 +133,12 @@ class SlideController extends Controller
         Slide::find($id)->delete();
         return redirect()->route('setting.slide.index')->with('success', 'Slide Berhasil dihapus!');
     }
-     /**
-     * Get datatable
-     */
+    /**
+    * Get datatable
+    */
     public function getData()
     {
-        return DataTables::of(Slide::select('id', 'judul','deskripsi'))
+        return DataTables::of(Slide::select('id', 'judul', 'deskripsi'))
             ->addColumn('action', function ($row) {
                 // $show_url   = route('setting.slide.show', $row->id);
                 $edit_url   = route('setting.slide.edit', $row->id);

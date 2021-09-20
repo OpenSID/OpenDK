@@ -4,18 +4,18 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipePotensi;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
-
 use function back;
 use function compact;
+use Exception;
+use Illuminate\Http\Request;
+
+use Illuminate\Http\Response;
 use function redirect;
 use function request;
 use function route;
 use function str_slug;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class TipePotensiController extends Controller
 {

@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Informasi;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Potensi;
+use function back;
+use function compact;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-
-use function back;
-use function compact;
 use function redirect;
 use function request;
 use function view;

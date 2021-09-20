@@ -6,19 +6,19 @@ use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\CoaType;
 use App\Models\Profil;
-use Illuminate\Support\Facades\DB;
-
 use function compact;
+
 use function config;
+use Illuminate\Support\Facades\DB;
 use function request;
 use function view;
 use function years_list;
 
 class AnggaranDesaController extends Controller
 {
-  /**
-   * Menampilkan Data Anggaran Dan realisasi Kecamatan
-   **/
+    /**
+     * Menampilkan Data Anggaran Dan realisasi Kecamatan
+     **/
     public function showAnggaranDesa()
     {
         Counter::count('statistik.anggaran-desa');

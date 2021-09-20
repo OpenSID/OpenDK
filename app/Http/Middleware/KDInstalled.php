@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-
 use function file_exists;
+
+use Illuminate\Http\Request;
 use function redirect;
 use function storage_path;
 

@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\PesertaProgram;
 use App\Models\Program;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
-
 use function back;
 use function compact;
+use Illuminate\Database\QueryException;
+
+use Illuminate\Http\Request;
 use function redirect;
 use function request;
 use function route;
 use function view;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
 {

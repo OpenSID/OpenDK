@@ -7,22 +7,22 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
+use function back;
+use function bcrypt;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use function compact;
 use Exception;
+use function flash;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
-use Yajra\DataTables\DataTables;
-
-use function back;
-use function bcrypt;
-use function compact;
-use function flash;
 use function public_path;
 use function redirect;
 use function route;
 use function trans;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -116,9 +116,9 @@ class UserController extends Controller
 
             $user = Sentinel::update($user_find, $request->all());
             if ($request->hasFile('image')) {
-                 $path = public_path('uploads/user/');
-                 File::delete($path . $user_find->image);
-                 $user->uploadImage($request->image);
+                $path = public_path('uploads/user/');
+                File::delete($path . $user_find->image);
+                $user->uploadImage($request->image);
             }
             if (! empty($request->role)) {
                 Sentinel::findRoleBySlug($user_find->roles()->first()->slug)->users()->detach($user);

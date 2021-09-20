@@ -7,18 +7,18 @@ use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
 use App\Models\Role;
 use App\Models\RoleUser;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
-
 use function back;
 use function compact;
+use Exception;
 use function flash;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use function redirect;
 use function route;
 use function trans;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
 {

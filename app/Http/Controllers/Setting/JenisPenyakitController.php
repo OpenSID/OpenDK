@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\JenisPenyakit;
-use Exception;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-
 use function back;
 use function compact;
+use Exception;
+
+use Illuminate\Http\Request;
 use function redirect;
 use function request;
 use function route;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class JenisPenyakitController extends Controller
 {

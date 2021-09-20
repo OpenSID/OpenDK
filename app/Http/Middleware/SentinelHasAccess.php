@@ -2,12 +2,12 @@
 
 namespace App\Http\Middleware;
 
+use function abort;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Closure;
-use Illuminate\Http\Request;
 
-use function abort;
 use function flash;
+use Illuminate\Http\Request;
 use function redirect;
 use function response;
 

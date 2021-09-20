@@ -4,27 +4,26 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\Profil;
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
-
+use App\Models\Profil;
 use function array_merge;
 use function array_sort;
+
 use function config;
 use function convert_born_date_to_age;
 use function date;
 use function env;
+use Illuminate\Support\Facades\DB;
 use function number_format;
 use function random_color;
 use function request;
 use function strtolower;
 use function ucfirst;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class KependudukanController extends Controller
 {
-
     protected $profil;
     protected $penduduk;
 
@@ -32,7 +31,7 @@ class KependudukanController extends Controller
     {
         $this->profil = $profil;
         $this->penduduk = $penduduk;
-        parent::__construct();   
+        parent::__construct();
     }
     /**
      * Menampilkan Data Kependudukan
@@ -105,14 +104,14 @@ class KependudukanController extends Controller
             ->count();
 
         $data['total_lakilaki'] = number_format($total_laki_laki);
-        
+
         // Get Total Perempuan
         $total_perempuan = (clone $query_total_penduduk_aktif)
             ->where('sex', 2)
             ->count();
 
         $data['total_perempuan'] = number_format($total_perempuan);
-        
+
         // Get Total Disabilitas
         $total_disabilitas = (clone $query_total_penduduk_aktif)
             ->where('cacat_id', '<>', 7)
@@ -133,7 +132,7 @@ class KependudukanController extends Controller
             $data['aktanikah_persen_terpenuhi'] = 0;
         } else {
             // Get Data KTP Penduduk Terpenuhi
-            $ktp_wajib = (clone $query_total_penduduk_aktif) 
+            $ktp_wajib = (clone $query_total_penduduk_aktif)
                 ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 >= ? ', 17)
                 ->orWhere('status_kawin', '<>', 1) // Status Selain Belum Kawin
                 ->count();
@@ -196,7 +195,7 @@ class KependudukanController extends Controller
             $query = $this->penduduk->getPendudukAktif($kid, $did, $yearls);
             $query_result_laki = (clone $query)->where('sex', 1)->count();
             $query_result_perempuan = (clone $query)->where('sex', 2)->count();
-            
+
             $data[] = ['year' => $yearls, 'value_lk' => $query_result_laki, 'value_pr' => $query_result_perempuan];
         }
         return $data;
@@ -240,7 +239,7 @@ class KependudukanController extends Controller
                 $total_sd = (clone $query_pendidikan)
                     ->where('pendidikan_kk_id', 3)
                     ->count();
-                
+
                 // SMP
                 $total_sltp = (clone $query_pendidikan)
                 ->where('pendidikan_kk_id', 4)
@@ -255,7 +254,7 @@ class KependudukanController extends Controller
                 $total_diploma = (clone $query_pendidikan)
                     ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
                     ->count();
-                
+
                 // SARJANA
                 $total_sarjana = (clone $query_pendidikan)
                     ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
@@ -271,34 +270,34 @@ class KependudukanController extends Controller
                 ];
             }
         } else {
-                $query_pendidikan = $this->penduduk->getPendudukAktif($kid, $did, $year)
+            $query_pendidikan = $this->penduduk->getPendudukAktif($kid, $did, $year)
                     ->leftJoin('ref_pendidikan_kk', 'pendidikan_kk_id', '=', 'ref_pendidikan_kk.id');
-                // SD
-                $total_sd = (clone $query_pendidikan)
+            // SD
+            $total_sd = (clone $query_pendidikan)
                     ->where('pendidikan_kk_id', 3)
                     ->count();
-                
-                // SMP
-                $total_sltp = (clone $query_pendidikan)
+
+            // SMP
+            $total_sltp = (clone $query_pendidikan)
                 ->where('pendidikan_kk_id', 4)
                 ->count();
 
-                //SMA
-                $total_slta = (clone $query_pendidikan)
+            //SMA
+            $total_slta = (clone $query_pendidikan)
                     ->where('pendidikan_kk_id', 5)
                     ->count();
 
-                // DIPLOMA
-                $total_diploma = (clone $query_pendidikan)
+            // DIPLOMA
+            $total_diploma = (clone $query_pendidikan)
                     ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
                     ->count();
-                
-                // SARJANA
-                $total_sarjana = (clone $query_pendidikan)
+
+            // SARJANA
+            $total_sarjana = (clone $query_pendidikan)
                     ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
                     ->count();
 
-                $data_pendidikan[] = [
+            $data_pendidikan[] = [
                     'year'    => $year,
                     'SD'      => $total_sd,
                     'SLTP'    => $total_sltp,

@@ -12,10 +12,10 @@
 namespace App\Classes\MenuNav;
 
 use App\Models\Menu;
-use Sentinel;
-
 use function array_push;
+
 use function count;
+use Sentinel;
 
 class MenuNav
 {
@@ -52,7 +52,7 @@ class MenuNav
             if ($menu['url'] == '#' || empty($menu['url'])) {
                 $url_menu = 'javascript:void(0)';
             } else {
-                 $url_menu = $url . '/' . $menu['url'];
+                $url_menu = $url . '/' . $menu['url'];
             }
 
             if ($user->hasAnyAccess([$menu['slug'], 'admin']) || $menu['slug'] == 'dashboard') {

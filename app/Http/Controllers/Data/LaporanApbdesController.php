@@ -6,21 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanApbdes;
 use App\Models\DataDesa;
 use App\Models\LaporanApbdes;
+use function back;
+use function compact;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Yajra\DataTables\DataTables;
 
-use Exception;
-use ZipArchive;
-
-use function back;
-use function compact;
 use function redirect;
 use function route;
 use function view;
+use Yajra\DataTables\DataTables;
+use ZipArchive;
 
 class LaporanApbdesController extends Controller
 {
@@ -74,7 +74,7 @@ class LaporanApbdesController extends Controller
                 $data['download_url'] = $download_url;
 
                 return view('forms.action', $data);
-              })->make();
+            })->make();
     }
 
     /**
@@ -86,7 +86,7 @@ class LaporanApbdesController extends Controller
     {
         try {
             $apbdes = LaporanApbdes::findOrFail($id);
-            
+
             // Hapus file apbdes
             Storage::disk('public')->delete('apbdes/' . $apbdes->nama_file);
 
@@ -104,10 +104,10 @@ class LaporanApbdesController extends Controller
      * @return Response
      */
     public function import()
-    {  
+    {
         $page_title       = 'Laporan APBDes';
         $page_description = 'Import Data';
-        
+
         return view('data.laporan-apbdes.import', compact('page_title', 'page_description'));
     }
 
@@ -133,7 +133,7 @@ class LaporanApbdesController extends Controller
             $extract = storage_path('app/temp/apbdes/');
 
             // Ekstrak file
-            $zip = new ZipArchive;
+            $zip = new ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
@@ -147,5 +147,4 @@ class LaporanApbdesController extends Controller
 
         return back()->with('success', 'Import data sukses.');
     }
-
 }

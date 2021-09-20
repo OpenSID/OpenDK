@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SettingAplikasi extends Model
 {
-    const KEY_BROWSER_TITLE = 'judul_aplikasi';
+    public const KEY_BROWSER_TITLE = 'judul_aplikasi';
 
     protected $table = 'das_setting';
 

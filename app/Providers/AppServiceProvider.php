@@ -78,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('valid_json', function ($attributes, $value, $parameters) {
-            if(!is_string($value)) {
+            if (!is_string($value)) {
                 return false;
             }
             json_decode($value);
@@ -87,7 +87,6 @@ class AppServiceProvider extends ServiceProvider
             }
             return true;
         });
-        
     }
 
     /**

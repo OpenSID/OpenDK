@@ -125,7 +125,7 @@ return [
                     'redis_host' => 'Redis Host',
                     'redis_password' => 'Redis Şifre',
                     'redis_port' => 'Redis Port',
-                    
+
                     'mail_label' => 'Mail',
                     'mail_driver_label' => 'Posta Sürücüsü',
                     'mail_driver_placeholder' => 'Posta Sürücüsü',
@@ -139,7 +139,7 @@ return [
                     'mail_password_placeholder' => 'Posta Parolası',
                     'mail_encryption_label' => 'Posta Güvenlik Türü',
                     'mail_encryption_placeholder' => 'Posta Güvenlik Türü',
-                    
+
                     'pusher_label' => 'Pusher',
                     'pusher_app_id_label' => 'İtici Uygulama Kimliği',
                     'pusher_app_id_palceholder' => 'İtici Uygulama Kimliği',

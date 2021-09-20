@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Informasi;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
 use function back;
 use function compact;
+use Exception;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use function redirect;
 use function request;
 use function view;

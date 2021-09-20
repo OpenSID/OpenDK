@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Counter;
 
 use App\Http\Controllers\Controller;
 use App\Models\CounterPage;
-use Illuminate\Support\Facades\DB;
-
 use function compact;
+
+use Illuminate\Support\Facades\DB;
 use function route;
 use function view;
 

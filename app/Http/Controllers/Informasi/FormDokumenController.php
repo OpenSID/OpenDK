@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\FormDokumen;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
-
 use function asset;
 use function back;
 use function base_path;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use function compact;
+
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use function redirect;
 use function request;
 use function route;
 use function unlink;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class FormDokumenController extends Controller
 {
@@ -35,13 +35,13 @@ class FormDokumenController extends Controller
         $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
         return DataTables::of($query)
             ->addColumn('action', function ($row) {
-               // $show_url = route('informasi.form-dokumen.show', $row->id);
+                // $show_url = route('informasi.form-dokumen.show', $row->id);
                 $edit_url     = route('informasi.form-dokumen.edit', $row->id);
                 $delete_url   = route('informasi.form-dokumen.destroy', $row->id);
                 $download_url = asset($row->file_dokumen);
 
                 $data['download_url'] = $download_url;
-               // $data['show_url'] = $show_url;
+                // $data['show_url'] = $show_url;
                 if (! Sentinel::guest()) {
                     $data['edit_url']   = $edit_url;
                     $data['delete_url'] = $delete_url;

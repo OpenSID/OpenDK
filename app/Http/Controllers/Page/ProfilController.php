@@ -5,17 +5,12 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
-use Illuminate\Support\Facades\DB;
-use SimpleXMLElement;
-
 use function array_merge;
+
 use function compact;
 use function config;
 use function date;
-use function env;
-use function file_get_contents;
-use function number_format;
-use function request;
+use Illuminate\Support\Facades\DB;
 use function strtolower;
 use function ucwords;
 use function view;
@@ -96,7 +91,7 @@ class ProfilController extends Controller
         if (isset($profil)) {
             $page_description = ucwords(strtolower($profil->kecamatan->nama));
         }
-        
+
         return view('pages.profil.sejarah', compact('page_title', 'page_description', 'profil'));
     }
 

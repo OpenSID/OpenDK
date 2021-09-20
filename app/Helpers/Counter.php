@@ -9,13 +9,13 @@ namespace App\Helpers;
 use App\Models\CounterPage;
 use App\Models\CounterVisitor;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
-
 use function config;
 use function env;
 use function hash;
+
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use function number_format;
 
 class Counter
@@ -33,29 +33,29 @@ class Counter
      * @var bool
      */
     private static $ignore_bots = true;
-/**
- * Check to determine if we will count hits
- * from visitors that send a DO NOT TRACK header.
- *
- * @var bool
- */
+    /**
+     * Check to determine if we will count hits
+     * from visitors that send a DO NOT TRACK header.
+     *
+     * @var bool
+     */
     private static $honor_do_not_track = false;
-/**
- * Singleton for the $page in question
- *
- * @var null|object
- */
+    /**
+     * Singleton for the $page in question
+     *
+     * @var null|object
+     */
     private static $current_page;
-/**
- * Show view count for the requested page.
- *
- * Use this when you just want to show the current view count
- * for the page in question. Does not add counts.
- *
- * @param string $identifier A unique string to the page you are tracking
- * @param null|integer $id A unique identifier for dynamic page tracking
- * @return string Unique view count for requested resource
- */
+    /**
+     * Show view count for the requested page.
+     *
+     * Use this when you just want to show the current view count
+     * for the page in question. Does not add counts.
+     *
+     * @param string $identifier A unique string to the page you are tracking
+     * @param null|integer $id A unique identifier for dynamic page tracking
+     * @return string Unique view count for requested resource
+     */
     public function show($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);

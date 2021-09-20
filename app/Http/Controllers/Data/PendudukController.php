@@ -6,23 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporPenduduk;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Yajra\DataTables\DataTables;
-
-use ZipArchive;
-
 use function back;
 use function compact;
 use function config;
 use function convert_born_date_to_age;
+use Exception;
+use Illuminate\Http\Request;
+
+use Illuminate\Http\Response;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use function route;
 use function strtolower;
 use function ucwords;
 use function view;
+use Yajra\DataTables\DataTables;
+use ZipArchive;
 
 class PendudukController extends Controller
 {
@@ -142,7 +142,7 @@ class PendudukController extends Controller
             $extract = storage_path('app/temp/penduduk/foto/');
 
             // Ekstrak file
-            $zip = new ZipArchive;
+            $zip = new ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
@@ -153,7 +153,7 @@ class PendudukController extends Controller
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
-        
+
 
         return back()->with('success', 'Import data sukses.');
     }

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use function array_push;
 use Cartalyst\Sentinel\Roles\EloquentRole as Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Builder;
 
-use function array_push;
+use Illuminate\Database\Eloquent\Builder;
 
 class Role extends Model
 {

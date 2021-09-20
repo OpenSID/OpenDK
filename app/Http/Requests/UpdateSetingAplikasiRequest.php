@@ -32,7 +32,8 @@ class UpdateSetingAplikasiRequest extends FormRequest
         ];
     }
 
-    public function messages() {
+    public function messages()
+    {
         return [
             'key.unique_key'     => 'Kata kunci harus unik',
             'type.in'            => 'Tipe form harus salah satu dari input atau textarea.',
@@ -42,5 +43,4 @@ class UpdateSetingAplikasiRequest extends FormRequest
             'kategori.required'  => 'Kategori tidak boleh kosong.'
         ];
     }
-
 }

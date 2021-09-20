@@ -7,20 +7,20 @@ use App\Models\DataDesa;
 use App\Models\KategoriKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
+use function back;
+use function compact;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
 
-use function back;
-use function compact;
+use Illuminate\Support\Facades\DB;
 use function redirect;
 use function request;
 use function route;
 use function strtolower;
 use function ucfirst;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class AdminKomplainController extends Controller
 {

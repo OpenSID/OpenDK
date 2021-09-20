@@ -7,18 +7,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Profil;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
-use Illuminate\Support\Facades\DB;
-use Yajra\DataTables\DataTables;
-
 use function asset;
 use function compact;
+
 use function config;
+use Illuminate\Support\Facades\DB;
 use function request;
 use function response;
 use function route;
 use function str_replace;
 use function str_slug;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class DownloadController extends Controller
 {
@@ -103,7 +103,7 @@ class DownloadController extends Controller
         $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
         return DataTables::of($query->get())
             ->addColumn('action', function ($row) {
-               // $show_url = route('informasi.form-dokumen.show', $row->id);
+                // $show_url = route('informasi.form-dokumen.show', $row->id);
                 $download_url         = asset($row->file_dokumen);
                 $data['download_url'] = $download_url;
                 return view('forms.action', $data);

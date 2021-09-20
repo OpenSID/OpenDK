@@ -2,18 +2,18 @@
 
 namespace App\Imports;
 
-use function now;
-use function config;
-use function substr;
 use App\Models\Penduduk;
+use function config;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use function now;
+use function substr;
 
 class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -102,7 +102,7 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
             if ($value['foto']) {
                 $temp_foto = 'temp/penduduk/foto/' . $value['foto'];
                 $public_foto = 'public/penduduk/foto/' . $value['foto'];
-                
+
                 // Salin file yang dibutuhkan
                 if (Storage::exists($temp_foto)) {
 

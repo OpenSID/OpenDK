@@ -5,20 +5,16 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
-use Exception;
-use Illuminate\Http\Request;
+use function compact;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
-use Yajra\DataTables\DataTables;
-
-use function back;
-use function compact;
 use function ini_set;
+
+use Maatwebsite\Excel\Facades\Excel;
 use function redirect;
-use function request;
 use function route;
 use function view;
+use Yajra\DataTables\DataTables;
 
 class KeluargaController extends Controller
 {

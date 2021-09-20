@@ -5,29 +5,28 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
-
 use function back;
 use function compact;
+use Exception;
+use Illuminate\Http\Request;
+
+use Illuminate\Http\Response;
 use function months_list;
 use function redirect;
 use function request;
 use function route;
 use function view;
+use Yajra\DataTables\DataTables;
 use function years_list;
 
 class TingkatPendidikanController extends Controller
 {
-
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
     }
     public function index()
     {
-       
         $page_title       = 'Tingkat Pendidikan';
         $page_description = 'Data Tingkat Pendidikan ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
         return view('data.tingkat_pendidikan.index', compact('page_title', 'page_description'));

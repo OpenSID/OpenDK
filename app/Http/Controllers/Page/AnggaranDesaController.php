@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Page;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\CoaType;
 use App\Models\Profil;
@@ -21,7 +20,7 @@ class AnggaranDesaController extends Controller
      **/
     public function showAnggaranDesa()
     {
-         $data['page_title']       = 'Anggaran Desa (APBDes)';
+        $data['page_title']       = 'Anggaran Desa (APBDes)';
         $data['page_description'] = 'Data Anggaran Desa (APBDes)';
         $defaultProfil            = config('app.default_profile');
         $data['defaultProfil']    = $defaultProfil;

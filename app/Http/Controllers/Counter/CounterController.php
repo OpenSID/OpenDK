@@ -38,7 +38,7 @@ class CounterController extends Controller
                 'total' => $item->total,
             ];
         }
-        
+
         return $data;
     }
 }

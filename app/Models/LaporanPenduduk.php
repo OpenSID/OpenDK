@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LaporanPenduduk extends Model
 {
     protected $table     = 'das_laporan_penduduk';
-    
+
     protected $fillable = [
         'judul',
         'bulan',

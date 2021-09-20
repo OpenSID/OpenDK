@@ -2,17 +2,17 @@
 
 namespace App\Imports;
 
-use Exception;
 use App\Models\LaporanPenduduk;
+use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -32,7 +32,7 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
     public function collection(Collection $collection)
     {
         DB::beginTransaction();
-        
+
         try {
             foreach ($collection as $value) {
                 $file_name = $value['desa_id'] . '_laporan_penduduk_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
@@ -56,11 +56,11 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
                 if (Storage::exists('public/laporan_penduduk/' . $file_name)) {
                     Storage::delete('public/laporan_penduduk/' . $file_name);
                 }
-                
+
                 // Pindahkan file yang dibutuhkan saja
                 Storage::move('temp/laporan_penduduk/' . $value['nama_file'], 'public/laporan_penduduk/' . $file_name);
             }
-            
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();

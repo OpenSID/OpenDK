@@ -10,8 +10,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanPendudukQueueJob implements ShouldQueue
 {
@@ -57,14 +57,12 @@ class LaporanPendudukQueueJob implements ShouldQueue
         DB::beginTransaction();
 
         try {
-
             $desa_id = $this->request['desa_id'];
 
             if (isset($this->request['laporan_penduduk'])) {
                 foreach ($this->request['laporan_penduduk'] as $value) {
-                    
                     $file_name = $desa_id . '_laporan_penduduk_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
-                    
+
                     $insert = [
                         'judul'                => $value['judul'],
                         'bulan'                => $value['bulan'],

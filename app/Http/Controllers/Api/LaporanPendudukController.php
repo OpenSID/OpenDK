@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\LaporanPendudukQueueJob;
 use App\Http\Requests\LaporanPendudukRequest;
+use App\Jobs\LaporanPendudukQueueJob;
 
 class LaporanPendudukController extends Controller
 {

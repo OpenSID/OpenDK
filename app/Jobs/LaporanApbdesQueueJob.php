@@ -61,9 +61,8 @@ class LaporanApbdesQueueJob implements ShouldQueue
 
             if (isset($this->request['laporan_apbdes'])) {
                 foreach ($this->request['laporan_apbdes'] as $value) {
-
                     $file_name = $desa_id . '_laporan_apbdes_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
-                    
+
                     $insert = [
                         'judul'                => $value['judul'],
                         'tahun'                => $value['tahun'],

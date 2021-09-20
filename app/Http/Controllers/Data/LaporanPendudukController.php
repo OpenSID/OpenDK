@@ -6,21 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanPenduduk;
 use App\Models\DataDesa;
 use App\Models\LaporanPenduduk;
+use function back;
+use function compact;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Yajra\DataTables\DataTables;
 
-use Exception;
-use ZipArchive;
-
-use function back;
-use function compact;
 use function redirect;
 use function route;
 use function view;
+use Yajra\DataTables\DataTables;
+use ZipArchive;
 
 class LaporanPendudukController extends Controller
 {
@@ -67,7 +67,6 @@ class LaporanPendudukController extends Controller
 
         return DataTables::of($query)
             ->addColumn('action', function ($row) {
-
                 $delete_url = route('data.laporan-penduduk.destroy', $row->id);
                 $download_url = asset('storage/laporan_penduduk/' . $row->nama_file);
 
@@ -84,7 +83,7 @@ class LaporanPendudukController extends Controller
     {
         try {
             $penduduk = LaporanPenduduk::findOrFail($id);
-            
+
             // Hapus file penduduk
             Storage::disk('public')->delete('laporan_penduduk/' . $penduduk->nama_file);
 
@@ -102,10 +101,10 @@ class LaporanPendudukController extends Controller
      * @return Response
      */
     public function import()
-    {  
+    {
         $page_title       = 'Laporan Penduduk';
         $page_description = 'Import Data';
-        
+
         return view('data.laporan-penduduk.import', compact('page_title', 'page_description'));
     }
 
@@ -130,7 +129,7 @@ class LaporanPendudukController extends Controller
             $extract = storage_path('app/temp/laporan_penduduk/');
 
             // Ekstrak file
-            $zip = new ZipArchive;
+            $zip = new ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
@@ -144,5 +143,4 @@ class LaporanPendudukController extends Controller
 
         return redirect()->route('data.laporan-penduduk.index')->with('success', 'Import data sukses');
     }
-
 }

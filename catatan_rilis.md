@@ -5,7 +5,7 @@ Di rilis v21.08.15, menyediakan [untuk diisi]. Rilis ini juga berisi penambahan 
 Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada [untuk diisi] yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
-1. [untuk diisi]
+1. [#187](https://github.com/OpenSID/OpenDK/issues/183) Sediakan API untuk menerima Buku Rekapitulasi Jumlah Penduduk dari OpenSID.
 
 #### Perbaikan BUG
 1. [#197](https://github.com/OpenSID/OpenDK/issues/197) Sesuikan foto yang tersimpan saat melakukan impor penduduk.

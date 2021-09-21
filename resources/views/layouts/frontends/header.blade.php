@@ -20,7 +20,7 @@
               <ul class="dropdown-menu megamenu row fadeIn animated">
                 <li class="col-md-4 col-sm-2">
                   <ul class="mega-list">
-                    <li class="@if(Request::is('profil/sejarah-*')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah', ['wilayah' => (strtolower($nama_wilayah))] ) }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Sejarah</a></li>
+                    <li class="@if(Request::is('profil/sejarah')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Sejarah</a></li>
                     <li class="@if(Request::is('profil/letak-geografis')) active @endif"><a href="{{ route('profil.letak-geografis') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Letak Geografis</a></li>
                     <li class="@if(Request::is('profil/struktur-pemerintahan')) active @endif"><a href="{{ route('profil.struktur-pemerintahan') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Struktur Pemerintahan</a></li>
                     <li class="@if(Request::is('profil/visi-dan-misi')) active @endif"><a href="{{ route('profil.visi-misi') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Visi & Misi</a></li>

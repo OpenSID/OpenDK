@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Prosedur;
 use function back;
@@ -27,8 +26,6 @@ class ProsedurController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.prosedur.index');
-
         $page_title       = 'Prosedur';
         $page_description = 'Kumpulan SOP ' .$this->sebutan_wilayah;
         $prosedurs        = Prosedur::latest()->paginate(10);

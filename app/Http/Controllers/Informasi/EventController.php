@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use function back;
@@ -24,8 +23,6 @@ class EventController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.event.index');
-
         $page_title       = 'Event';
         $page_description = 'Kumpulan Event ' .$this->sebutan_wilayah;
         $events           = Event::getOpenEvents();

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 
 use function view;
@@ -27,7 +26,6 @@ class InformasiController extends Controller
 
     public function showPotensi()
     {
-        Counter::count('informasi.potensi');
         $data['page_title']       = 'Potensi Kecamatan';
         $data['page_description'] = 'Menampilkan Data Potensi Kecamatan';
 

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use function back;
@@ -24,8 +23,6 @@ class FaqController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.faq.index');
-
         $page_title       = 'FAQ';
         $page_description = 'Frequently Ask and Question';
 

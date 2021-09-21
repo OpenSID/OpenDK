@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Regulasi;
 use function back;
@@ -25,8 +24,6 @@ class RegulasiController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.regulasi.index');
-
         $page_title       = 'Regulasi';
         $page_description = 'Kumpulan Regulasi ' .$this->sebutan_wilayah;
         $regulasi         = Regulasi::orderBy('id', 'asc')->paginate(10);

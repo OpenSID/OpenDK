@@ -39,10 +39,10 @@ use Exception;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use function redirect;
 use function request;
 use function view;
-use Illuminate\Support\Str;
 
 class EventController extends Controller
 {

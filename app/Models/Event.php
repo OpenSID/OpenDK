@@ -46,6 +46,7 @@ class Event extends Model
         'attendants',
         'status',
         'attachment',
+        'slug'
     ];
 
     public static function getOpenEvents()
@@ -54,4 +55,6 @@ class Event extends Model
             return Carbon::parse($item->start)->format('d-M-y');
         });
     }
+
+    protected $dates = ['start', 'end'];
 }

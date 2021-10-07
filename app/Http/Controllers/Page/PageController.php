@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use App\Models\Event;
 use function compact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -147,5 +148,13 @@ class PageController extends Controller
     public function refresh_captcha()
     {
         return response()->json(['captcha' => captcha_img('mini')]);
+    }
+
+    public function eventDetail($slug)
+    {
+        $event = Event::where('slug', $slug)->firstOrFail();
+        $page_title       = $event->event_name;
+        $page_description = $event->description;
+        return view('pages.event.event_detail', compact(['page_title', 'page_description','event']));
     }
 }

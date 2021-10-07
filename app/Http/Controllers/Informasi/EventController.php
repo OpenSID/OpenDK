@@ -42,6 +42,7 @@ use Illuminate\Http\Response;
 use function redirect;
 use function request;
 use function view;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
@@ -88,6 +89,7 @@ class EventController extends Controller
                 'attendants' => 'required',
             ]);
             $event->status = 'OPEN';
+            $event->slug = str::slug($request->event_name, '-');
             $event->save();
             return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
         } catch (Exception $e) {
@@ -147,7 +149,7 @@ class EventController extends Controller
                 $request->file('attachment')->move($path, $fileName);
                 $event->attachment = $path . $fileName;
             }
-
+            $event->slug = str::slug($request->event_name, '-');
             $event->save();
 
             return redirect()->route('informasi.event.index')->with('success', 'Update Event sukses!');

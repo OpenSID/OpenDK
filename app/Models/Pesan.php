@@ -10,11 +10,11 @@ class Pesan extends Model
 
     public function detailPesan()
     {
-        $this->hasMany(PesanDetail::class, 'id', 'pesan_id');
+        return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');
     }
 
     public function dataDesa()
     {
-        $this->hasOne(DataDesa::class, "id", "das_data_desa_id");
+        return $this->hasOne(DataDesa::class, "id", "das_data_desa_id");
     }
 }

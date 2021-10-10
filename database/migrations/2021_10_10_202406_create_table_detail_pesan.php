@@ -17,15 +17,10 @@ class CreateTableDetailPesan extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('pesan_id');
             $table->text('text');
-            $table->unsignedInteger('desa_id');
+            $table->unsignedInteger('desa_id')->nullable();
             $table->foreign('pesan_id')
                 ->references('id')
                 ->on('das_pesan')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-            $table->foreign('desa_id')
-                ->references('id')
-                ->on('das_data_desa')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->timestamps();

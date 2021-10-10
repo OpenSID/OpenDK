@@ -27,7 +27,7 @@ class PesanDetailSeeder extends Seeder
         $faker = Factory::create("id-ID");
         $pesan = Pesan::skip(0)->take(20);
         $pesan_id = $pesan->pluck('id');
-        $desa_id = $pesan->pluck('das_data_desa_id');
+        $desa_id = $pesan->pluck('das_data_desa_id')->push(null);
 
         for ($i = 1; $i <= $defaultCounter; $i++) {
             DB::table("das_pesan_detail")->insert([

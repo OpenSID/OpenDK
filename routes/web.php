@@ -548,6 +548,18 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
             });
         });
+
+        /**
+         * Group Routing for Pesan
+         */
+        Route::namespace('Pesan')->group(function () {
+            //Routes Resource Pesan
+            Route::group(['prefix' => 'pesan'], function(){
+                Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
+                Route::get('/keluar', ['as' => 'pesan.keluar', 'uses' => 'PesanController@loadPesanKeluar']);
+                Route::get('/arsip', ['as' => 'pesan.arsip', 'uses' => 'PesanController@loadPesanArsip']);
+            });
+        });
     });
 
     /**

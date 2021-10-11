@@ -53,6 +53,7 @@ class PesanController extends Controller
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_MASUK)
             ->orderBy('sudah_dibaca', 'ASC')
+            ->orderBy('created_at', 'DESC')
             ->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
@@ -91,6 +92,7 @@ class PesanController extends Controller
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_KELUAR)
+            ->orderBy('created_at', 'DESC')
             ->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
@@ -105,6 +107,7 @@ class PesanController extends Controller
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('diarsipkan', self::MASUK_ARSIP)
+            ->orderBy('created_at', 'DESC')
             ->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);

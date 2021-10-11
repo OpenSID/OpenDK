@@ -40,7 +40,7 @@ class PesanController extends Controller
     public const PESAN_KELUAR = "Pesan Keluar";
     public const BELUM_DIBACA = 0;
     public const MASUK_ARSIP = 1;
-    public const PER_PAGE = 3;
+    public const PER_PAGE = 10;
 
     public function index()
     {

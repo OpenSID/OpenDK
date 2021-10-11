@@ -1,3 +1,4 @@
+<a href="{{route('pesan.compose')}}" class="btn btn-primary btn-block margin-bottom">Buat Pesan</a>
 <div class="box box-solid">
     <div class="box-header with-border">
         <h3 class="box-title">Kategori</h3>

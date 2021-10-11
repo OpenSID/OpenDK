@@ -13,7 +13,6 @@
     <section class="content">
         <div class="row">
             <div class="col-md-3">
-                <a href="mailbox.html" class="btn btn-primary btn-block margin-bottom">Buat Pesan</a>
                 @include('pesan.partial_pesan_menu')
             </div>
 
@@ -101,10 +100,12 @@
                 <!-- /. box -->
             </div>
         </div>
-        <style>
-            .unread{
-                background: lightyellow;
-            }
-        </style>
     </section>
 @endsection
+@push('css')
+    <style>
+        .unread{
+            background: lightyellow;
+        }
+    </style>
+@endpush

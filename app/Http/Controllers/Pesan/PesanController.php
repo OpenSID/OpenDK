@@ -32,8 +32,14 @@
 namespace App\Http\Controllers\Pesan;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\Pesan;
+use App\Models\PesanDetail;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
 {
@@ -42,7 +48,7 @@ class PesanController extends Controller
     public const BELUM_DIBACA = 0;
     public const SUDAH_DIBACA = 1;
     public const MASUK_ARSIP = 1;
-    public const NON_ARSIP = 1;
+    public const NON_ARSIP = 0;
     public const PER_PAGE = 10;
 
     public function index()
@@ -136,5 +142,59 @@ class PesanController extends Controller
         $data->put('pesan', $pesan);
         $data = $data->merge($this->loadCounter());
         return view('pesan.read_pesan', $data->all());
+    }
+
+    public function composePesan()
+    {
+        $data = collect([]);
+        $data->put('page_title', 'Buat Pesan');
+        $data->put('page_description', 'Managemen Pesan');
+        $list_desa = DataDesa::get();
+        $data = $data->merge($this->loadCounter());
+        $data->put('list_desa', $list_desa);
+        return view('pesan.compose_pesan', $data->all());
+    }
+
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function storeComposePesan(Request $request)
+    {
+        try {
+            $status = $this->validate($request, [
+                'judul'    => 'required',
+                'das_data_desa_id' => 'required',
+                'text' => 'required'
+            ]);
+
+            if (!$status) {
+                throw new \Exception(
+                    collect($this->errors()->all())->implode(", "),
+                    ResponseAlias::HTTP_BAD_REQUEST
+                );
+            }
+
+            DB::transaction(function () use ($request) {
+                $id = Pesan::insertGetId([
+                    'das_data_desa_id' => $request->get('das_data_desa_id'),
+                    'judul' => $request->get('judul'),
+                    'jenis' => self::PESAN_KELUAR,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+
+                PesanDetail::insert([
+                    'pesan_id' => $id,
+                    'text' => $request->get('text'),
+                    'desa_id' => null,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]);
+            });
+
+            return redirect()->route('pesan.keluar')->with('success', 'Pesan berhasil dikirim!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: ' . $e->getMessage());
+        }
     }
 }

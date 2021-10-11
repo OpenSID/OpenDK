@@ -40,6 +40,7 @@ class PesanController extends Controller
     public const PESAN_MASUK = "Pesan Masuk";
     public const PESAN_KELUAR = "Pesan Keluar";
     public const BELUM_DIBACA = 0;
+    public const SUDAH_DIBACA = 1;
     public const MASUK_ARSIP = 1;
     public const PER_PAGE = 10;
 
@@ -51,6 +52,7 @@ class PesanController extends Controller
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_MASUK)
+            ->orderBy('sudah_dibaca', 'ASC')
             ->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
@@ -66,7 +68,6 @@ class PesanController extends Controller
             'first_data' => $first_data,
             'last_data'=> $last_data
         ];
-
     }
 
     protected function loadCounter()
@@ -113,12 +114,15 @@ class PesanController extends Controller
     public function readPesan($id_pesan)
     {
         $pesan  = Pesan::with(['dataDesa', 'detailPesan'])->findOrFail($id_pesan);
+        if ($pesan->sudah_dibaca === 0) {
+            $pesan->sudah_dibaca = self::SUDAH_DIBACA;
+            $pesan->save();
+        }
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('page_description', 'Managemen Pesan');
         $data->put('pesan', $pesan);
         $data = $data->merge($this->loadCounter());
         return view('pesan.read_pesan', $data->all());
-
     }
 }

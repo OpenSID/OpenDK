@@ -64,10 +64,10 @@
                             <!-- /.pull-right -->
                         </div>
                         <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
+                            <table class="table table-hover">
                                 <tbody>
                                 @foreach($list_pesan as $pesan)
-                                    <tr>
+                                    <tr class="{{ $pesan->sudah_dibaca === 1 ? '' : 'unread' }}">
                                         <td style="width: 5%">
                                             <div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false"
                                                  style="position: relative;"><input type="checkbox"
@@ -101,5 +101,10 @@
                 <!-- /. box -->
             </div>
         </div>
+        <style>
+            .unread{
+                background: lightyellow;
+            }
+        </style>
     </section>
 @endsection

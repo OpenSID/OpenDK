@@ -18,8 +18,8 @@ class CreateTablePesan extends Migration
             $table->string('judul', 255);
             $table->unsignedInteger('das_data_desa_id');
             $table->enum('jenis', ['Pesan Masuk', 'Pesan Keluar']);
-            $table->tinyInteger('sudah_dibaca');
-            $table->tinyInteger('diarsipkan');
+            $table->boolean('sudah_dibaca')->default(0);
+            $table->boolean('diarsipkan')->default(0);
             $table->foreign('das_data_desa_id')
                 ->references('id')
                 ->on('das_data_desa')

@@ -53,6 +53,7 @@ class PesanController extends Controller
 
     public function index(Request $request)
     {
+        $flag_include_arsip = false;
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('desa_id', null);
@@ -61,19 +62,24 @@ class PesanController extends Controller
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_MASUK)
-            ->where('diarsipkan', self::NON_ARSIP)
             ->orderBy('sudah_dibaca', 'ASC')
             ->orderBy('created_at', 'DESC');
 
         if (!empty($request->get('desa_id'))) {
+            $flag_include_arsip = true;
             $pesan->where('das_data_desa_id', $request->get('desa_id'));
             $data->put('desa_id', $request->get('desa_id'));
         }
 
         if (!empty($request->get('q'))) {
+            $flag_include_arsip = true;
             $query = $request->get('q');
             $pesan->where('judul', 'LIKE', "%{$query}%");
             $data->put('search_query', $request->get('q'));
+        }
+
+        if (!$flag_include_arsip) {
+            $pesan->where('diarsipkan', self::NON_ARSIP);
         }
 
         $pesan = $pesan->paginate(self::PER_PAGE);

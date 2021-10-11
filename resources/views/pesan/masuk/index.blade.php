@@ -79,7 +79,11 @@
                                                     href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
                                         <td style="width: 65%" class="mailbox-subject">
                                             <div>
-                                                <b>{{ $pesan->judul }}</b> -
+                                                <b>
+                                                @if($pesan->diarsipkan === 1)
+                                                    [ARSIP]
+                                                @endif
+                                                {{ $pesan->judul }}</b> -
                                                 @if($pesan->detailPesan->count() > 0)
                                                     {{ \Illuminate\Support\Str::limit($pesan->detailPesan->last()->text, 50) }}
                                                 @endif

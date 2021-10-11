@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Pesan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pesan;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class PesanController extends Controller
 {
@@ -49,15 +50,23 @@ class PesanController extends Controller
         $data->put('page_description', 'Managemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
-            ->where('jenis', 'Pesan Masuk')
+            ->where('jenis', self::PESAN_MASUK)
             ->paginate(self::PER_PAGE);
+        $data = $data->merge($this->getPaginationAttribute($pesan));
+        $data->put('list_pesan', $pesan);
+        return view('pesan.masuk.index', $data->all());
+    }
+
+    public function getPaginationAttribute(LengthAwarePaginator $pesan): array
+    {
         $first_data = (($pesan->currentPage() * $pesan->perPage()) - $pesan->perPage()) + 1;
         $last_data = $pesan->perPage() * $pesan->currentPage();
         $last_data = $pesan->total() < $last_data ? $pesan->total() : $last_data;
-        $data->put('list_pesan', $pesan);
-        $data->put('first_data', $first_data);
-        $data->put('last_data', $last_data);
-        return view('pesan.masuk.index', $data->all());
+        return [
+            'first_data' => $first_data,
+            'last_data'=> $last_data
+        ];
+
     }
 
     protected function loadCounter()
@@ -75,15 +84,29 @@ class PesanController extends Controller
 
     public function loadPesanKeluar()
     {
-        $page_title = 'Pesan Keluar';
-        $page_description =   'Managemen Pesan';
-        return view('pesan.keluar.index', compact('page_title', 'page_description'));
+        $data = collect([]);
+        $data->put('page_title', 'Pesan Keluar');
+        $data->put('page_description', 'Managemen Pesan');
+        $data = $data->merge($this->loadCounter());
+        $pesan = Pesan::with(['dataDesa', 'detailPesan'])
+            ->where('jenis', self::PESAN_KELUAR)
+            ->paginate(self::PER_PAGE);
+        $data = $data->merge($this->getPaginationAttribute($pesan));
+        $data->put('list_pesan', $pesan);
+        return view('pesan.keluar.index', $data->all());
     }
 
     public function loadPesanArsip()
     {
-        $page_title = 'Pesan Arsip';
-        $page_description =   'Managemen Pesan';
-        return view('pesan.arsip.index', compact('page_title', 'page_description'));
+        $data = collect([]);
+        $data->put('page_title', 'Pesan Arsip');
+        $data->put('page_description', 'Managemen Pesan');
+        $data = $data->merge($this->loadCounter());
+        $pesan = Pesan::with(['dataDesa', 'detailPesan'])
+            ->where('diarsipkan', self::MASUK_ARSIP)
+            ->paginate(self::PER_PAGE);
+        $data = $data->merge($this->getPaginationAttribute($pesan));
+        $data->put('list_pesan', $pesan);
+        return view('pesan.arsip.index', $data->all());
     }
 }

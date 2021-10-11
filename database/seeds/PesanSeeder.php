@@ -26,7 +26,7 @@ class PesanSeeder extends Seeder
 
         $faker = Factory::create("id-ID");
         $das_desa = DataDesa::skip(0)->take(20)->pluck('id');
-        $sample_enum = ["Surat Masuk", "Surat Keluar"];
+        $sample_enum = ["Pesan Masuk", "Pesan Keluar"];
 
         for ($i = 1; $i <= $defaultCounter; $i++) {
             DB::table("das_pesan")->insert([

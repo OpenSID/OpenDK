@@ -51,20 +51,36 @@ class PesanController extends Controller
     public const NON_ARSIP = 0;
     public const PER_PAGE = 10;
 
-    public function index()
+    public function index(Request $request)
     {
         $data = collect([]);
         $data->put('page_title', 'Pesan');
+        $data->put('desa_id', null);
+        $data->put('search_query', '');
         $data->put('page_description', 'Managemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_MASUK)
             ->where('diarsipkan', self::NON_ARSIP)
             ->orderBy('sudah_dibaca', 'ASC')
-            ->orderBy('created_at', 'DESC')
-            ->paginate(self::PER_PAGE);
+            ->orderBy('created_at', 'DESC');
+
+        if (!empty($request->get('desa_id'))) {
+            $pesan->where('das_data_desa_id', $request->get('desa_id'));
+            $data->put('desa_id', $request->get('desa_id'));
+        }
+
+        if (!empty($request->get('q'))) {
+            $query = $request->get('q');
+            $pesan->where('judul', 'LIKE', "%{$query}%");
+            $data->put('search_query', $request->get('q'));
+        }
+
+        $pesan = $pesan->paginate(self::PER_PAGE);
+        $list_desa = DataDesa::get();
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
+        $data->put('list_desa', $list_desa);
         return view('pesan.masuk.index', $data->all());
     }
 

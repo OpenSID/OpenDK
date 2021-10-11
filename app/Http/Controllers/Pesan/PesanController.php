@@ -42,6 +42,7 @@ class PesanController extends Controller
     public const BELUM_DIBACA = 0;
     public const SUDAH_DIBACA = 1;
     public const MASUK_ARSIP = 1;
+    public const NON_ARSIP = 1;
     public const PER_PAGE = 10;
 
     public function index()
@@ -52,6 +53,7 @@ class PesanController extends Controller
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_MASUK)
+            ->where('diarsipkan', self::NON_ARSIP)
             ->orderBy('sudah_dibaca', 'ASC')
             ->orderBy('created_at', 'DESC')
             ->paginate(self::PER_PAGE);
@@ -73,9 +75,15 @@ class PesanController extends Controller
 
     protected function loadCounter()
     {
-        $counter_unread =  Pesan::where(['jenis' => self::PESAN_MASUK, 'sudah_dibaca' => self::BELUM_DIBACA])->count();
-        $counter_pesan_keluar =  Pesan::where(['jenis' => self::PESAN_KELUAR])->count();
-        $counter_arsip =  Pesan::where(['diarsipkan' => self::MASUK_ARSIP])->count();
+        $counter_unread =  Pesan::where([
+            'jenis' => self::PESAN_MASUK,
+            'diarsipkan' => self::NON_ARSIP,
+            'sudah_dibaca' => self::BELUM_DIBACA])->count();
+        $counter_pesan_keluar =  Pesan::where([
+            'jenis' => self::PESAN_KELUAR,
+            'diarsipkan' => self::NON_ARSIP])->count();
+        $counter_arsip =  Pesan::where([
+            'diarsipkan' => self::MASUK_ARSIP])->count();
 
         return [
             'counter_unread' => $counter_unread,
@@ -93,6 +101,7 @@ class PesanController extends Controller
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_KELUAR)
             ->orderBy('created_at', 'DESC')
+            ->where('diarsipkan', self::NON_ARSIP)
             ->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);

@@ -109,4 +109,16 @@ class PesanController extends Controller
         $data->put('list_pesan', $pesan);
         return view('pesan.arsip.index', $data->all());
     }
+
+    public function readPesan($id_pesan)
+    {
+        $pesan  = Pesan::with(['dataDesa', 'detailPesan'])->findOrFail($id_pesan);
+        $data = collect([]);
+        $data->put('page_title', 'Pesan');
+        $data->put('page_description', 'Managemen Pesan');
+        $data->put('pesan', $pesan);
+        $data = $data->merge($this->loadCounter());
+        return view('pesan.read_pesan', $data->all());
+
+    }
 }

@@ -554,10 +554,11 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Pesan')->group(function () {
             //Routes Resource Pesan
-            Route::group(['prefix' => 'pesan'], function(){
+            Route::group(['prefix' => 'pesan'], function () {
                 Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
                 Route::get('/keluar', ['as' => 'pesan.keluar', 'uses' => 'PesanController@loadPesanKeluar']);
                 Route::get('/arsip', ['as' => 'pesan.arsip', 'uses' => 'PesanController@loadPesanArsip']);
+                Route::get('/{id_pesan}', ['as' => 'pesan.read', 'uses' => 'PesanController@readPesan']);
             });
         });
     });

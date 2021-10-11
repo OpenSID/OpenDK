@@ -77,7 +77,7 @@
                                             </div>
                                         </td>
                                         <td style="width: 10%" class="mailbox-name"><a
-                                                    href="#">{{ $pesan->dataDesa->nama }}</a></td>
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
                                         <td style="width: 65%" class="mailbox-subject">
                                             <div>
                                                 <b>{{ $pesan->judul }}</b> -

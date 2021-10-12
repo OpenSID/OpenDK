@@ -561,6 +561,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::post('/arsip', ['as' => 'pesan.arsip.post', 'uses' => 'PesanController@setArsipPesan']);
                 Route::get('/compose', ['as' => 'pesan.compose', 'uses' => 'PesanController@composePesan']);
                 Route::post('/compose/post', ['as' => 'pesan.compose.post', 'uses' => 'PesanController@storeComposePesan']);
+                Route::post('/read/multiple', ['as' => 'pesan.read.multiple', 'uses' => 'PesanController@setMultipleReadPesanStatus']);
                 Route::get('/{id_pesan}', ['as' => 'pesan.read', 'uses' => 'PesanController@readPesan']);
             });
         });

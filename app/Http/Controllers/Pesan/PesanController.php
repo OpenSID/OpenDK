@@ -270,4 +270,18 @@ class PesanController extends Controller
             return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
         }
     }
+
+    public function setMultipleReadPesanStatus(Request $request)
+    {
+        $array = json_decode($request->get('array_id'));
+        $pesan = Pesan::whereIn('id', $array)->update([
+            'sudah_dibaca' => self::SUDAH_DIBACA
+        ]);
+
+        if ($pesan > 0) {
+            return redirect()->route('pesan.index')->with('success', 'Pesan berhasil ditandai!');
+        } else {
+            return back()->withInput()->with('error', 'Pesan gagal ditandai!');
+        }
+    }
 }

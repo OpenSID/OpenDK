@@ -11,6 +11,7 @@
         </ol>
     </section>
     <section class="content">
+        @include('partials.flash_message')
         <div class="row">
             <div class="col-md-3">
                 @include('pesan.partial_pesan_menu')
@@ -44,7 +45,11 @@
                             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
                                         class="fa fa-square-o"></i>
                             </button>
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
+                            {!! Form::open( [ 'route' => 'pesan.read.multiple', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-multiple-read-pesan'] ) !!}
+                                {!! Form::text('array_id', null, ['hidden' => true, "id" => "array_multiple_id"]) !!}
+                                <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
+                            {!! Form::close() !!}
                             <div class="pull-right">
                                 {{ $first_data }} - {{ $last_data }}/{{ $list_pesan->total() }}
                                 <div class="btn-group">
@@ -68,12 +73,7 @@
                                 @foreach($list_pesan as $pesan)
                                     <tr class="{{ $pesan->sudah_dibaca === 1 ? '' : 'unread' }}">
                                         <td style="width: 5%">
-                                            <div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false"
-                                                 style="position: relative;"><input type="checkbox"
-                                                                                    style="position: absolute; opacity: 0;">
-                                                <ins class="iCheck-helper"
-                                                     style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
-                                            </div>
+                                            <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
                                         </td>
                                         <td style="width: 10%" class="mailbox-name"><a
                                                     href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
@@ -177,6 +177,42 @@
                     window.location = window.location.origin +
                         window.location.pathname +  '?' + $.param({page, desa_id})
                 }
+
+            });
+
+
+            $(function () {
+                //Enable iCheck plugin for checkboxes
+                //iCheck for checkbox and radio inputs
+                $('.mailbox-messages input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_flat-blue',
+                    radioClass: 'iradio_flat-blue'
+                });
+
+                //Enable check and uncheck all functionality
+                $(".checkbox-toggle").click(function () {
+                    var clicks = $(this).data('clicks');
+                    if (clicks) {
+                        //Uncheck all checkboxes
+                        $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                        $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+                    } else {
+                        //Check all checkboxes
+                        $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                        $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                    }
+                    $(this).data("clicks", !clicks);
+                });
+
+                $("#read-multiple-action").click(function (e){
+                    e.preventDefault();
+                    let data = $.map($('.mailbox-messages input[type="checkbox"]:checked').toArray(), function (el, index) {
+                        return $(el).data('id');
+                    })
+                    if(data.length <= 0) return;
+                    $("#array_multiple_id").val(JSON.stringify(data))
+                    $('#form-multiple-read-pesan').submit()
+                })
 
             });
         });

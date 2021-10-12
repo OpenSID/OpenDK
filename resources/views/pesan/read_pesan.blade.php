@@ -44,7 +44,7 @@
                                 <button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
                                 {!! Form::open( [ 'route' => 'pesan.arsip.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-arisp-pesan'] ) !!}
                                 {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
-                                <button type="submit" class="btn btn-default"><i class="fa fa-archive"></i> Arsipkan</button>
+                                <button id="arsip-action" type="submit" class="btn btn-default"><i class="fa fa-archive"></i> Arsipkan</button>
                                 {!! Form::close() !!}
                             @endif
                         </div>
@@ -56,3 +56,16 @@
         </div>
     </section>
 @endsection
+@push('scripts')
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $('#arsip-action').click(function (e){
+                e.preventDefault();
+                let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
+                if(response){
+                    $('#form-arisp-pesan').submit()
+                }
+            })
+        })
+    </script>
+@endpush

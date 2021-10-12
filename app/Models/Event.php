@@ -49,12 +49,14 @@ class Event extends Model
         'attachment',
     ];
 
-    function setEventNameAttribute($value) {
+    public function setEventNameAttribute($value)
+    {
         $this->attributes['event_name'] = $value;
         $this->attributes['slug'] = Str::slug($value);
     }
 
-    public static function getOpenEvents() {
+    public static function getOpenEvents()
+    {
         return self::get()->groupBy(function ($item) {
             return Carbon::parse($item->start)->format('d-M-y');
         });

@@ -194,7 +194,7 @@ class PesanController extends Controller
     public function readPesan($id_pesan)
     {
         $pesan  = Pesan::with(['dataDesa', 'detailPesan'])->findOrFail($id_pesan);
-        if ($pesan->sudah_dibaca === 0) {
+        if ($pesan->sudah_dibaca === self::BELUM_DIBACA) {
             $pesan->sudah_dibaca = self::SUDAH_DIBACA;
             $pesan->save();
         }
@@ -257,6 +257,17 @@ class PesanController extends Controller
             return redirect()->route('pesan.keluar')->with('success', 'Pesan berhasil dikirim!');
         } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: ' . $e->getMessage());
+        }
+    }
+
+    public function setArsipPesan(Request $request)
+    {
+        $pesan = Pesan::findOrFail($request->get('id'));
+        $pesan->diarsipkan = self::MASUK_ARSIP;
+        if ($pesan->save()) {
+            return redirect()->route('pesan.arsip')->with('success', 'Pesan berhasil diarsipkan!');
+        } else {
+            return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
         }
     }
 }

@@ -25,7 +25,7 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-read-info">
                             <h3>{{ $pesan->judul }}</h3>
-                            <h5>Dari: Desa {{ $pesan->dataDesa->nama }}
+                            <h5>@if($pesan->jenis === "Pesan Masuk") Dari @else Ditujukan untuk @endif: Desa {{ $pesan->dataDesa->nama }}
                                 <span class="mailbox-read-time pull-right">{{ $pesan->custom_date }}</span></h5>
                         </div>
                         <!-- /.mailbox-controls -->
@@ -40,7 +40,13 @@
                     <!-- /.box-footer -->
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
+                            @if($pesan->diarsipkan === 0)
+                                <button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
+                                {!! Form::open( [ 'route' => 'pesan.arsip.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-arisp-pesan'] ) !!}
+                                {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
+                                <button type="submit" class="btn btn-default"><i class="fa fa-archive"></i> Arsipkan</button>
+                                {!! Form::close() !!}
+                            @endif
                         </div>
                     </div>
                     <!-- /.box-footer -->

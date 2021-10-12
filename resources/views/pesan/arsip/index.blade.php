@@ -11,6 +11,7 @@
         </ol>
     </section>
     <section class="content">
+        @include('partials.flash_message')
         <div class="row">
             <div class="col-md-3">
                 @include('pesan.partial_pesan_menu')
@@ -75,7 +76,7 @@
                                             </div>
                                         </td>
                                         <td style="width: 10%" class="mailbox-name"><a
-                                                    href="#">{{ $pesan->dataDesa->nama }}</a></td>
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
                                         <td style="width: 65%" class="mailbox-subject">
                                             <div>
                                                 <b>

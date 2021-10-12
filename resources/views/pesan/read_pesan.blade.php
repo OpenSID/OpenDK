@@ -25,7 +25,8 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-read-info">
                             <h3>{{ $pesan->judul }}</h3>
-                            <h5>@if($pesan->jenis === "Pesan Masuk") Dari @else Ditujukan untuk @endif: Desa {{ $pesan->dataDesa->nama }}
+                            <h5>@if($pesan->jenis === "Pesan Masuk") Dari @else Ditujukan untuk @endif:
+                                Desa {{ $pesan->dataDesa->nama }}
                                 <span class="mailbox-read-time pull-right">{{ $pesan->custom_date }}</span></h5>
                         </div>
                         <!-- /.mailbox-controls -->
@@ -37,19 +38,40 @@
                         </div>
                         <!-- /.mailbox-read-message -->
                     </div>
-                    <!-- /.box-footer -->
+                    @if($pesan->detailPesan->count() > 1)
+                        @foreach($pesan->detailPesan->slice(0)->sortBy('created_at') as $single_pesan )
+                            <div class="box-footer box-comments">
+                                <div class="box-comment">
+                                    <div>
+                                <span class="username">
+                                    @if(!is_null($single_pesan->dataDesa))
+                                        {{ $single_pesan->dataDesa->nama }}
+                                    @else
+                                        Anda
+                                    @endif
+                                    <span class="text-muted pull-right">{{ $single_pesan->custom_date }}</span>
+                                </span><!-- /.username -->
+                                        {{$single_pesan->text}}
+                                    </div>
+                                    <!-- /.comment-text -->
+                                </div>
+                                <!-- /.box-comment -->
+                            </div>
+                        @endforeach
+                    @endif
                     <div class="box-footer">
                         <div class="pull-right">
                             @if($pesan->diarsipkan === 0)
                                 <button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
                                 {!! Form::open( [ 'route' => 'pesan.arsip.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-arisp-pesan'] ) !!}
                                 {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
-                                <button id="arsip-action" type="submit" class="btn btn-default"><i class="fa fa-archive"></i> Arsipkan</button>
+                                <button id="arsip-action" type="submit" class="btn btn-default"><i
+                                            class="fa fa-archive"></i> Arsipkan
+                                </button>
                                 {!! Form::close() !!}
                             @endif
                         </div>
                     </div>
-                    <!-- /.box-footer -->
                 </div>
                 <!-- /. box -->
             </div>
@@ -59,10 +81,10 @@
 @push('scripts')
     <script type="application/javascript">
         $(document).ready(function () {
-            $('#arsip-action').click(function (e){
+            $('#arsip-action').click(function (e) {
                 e.preventDefault();
                 let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
-                if(response){
+                if (response) {
                     $('#form-arisp-pesan').submit()
                 }
             })

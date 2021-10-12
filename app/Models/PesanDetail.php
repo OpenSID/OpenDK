@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class PesanDetail extends Model
@@ -16,5 +17,11 @@ class PesanDetail extends Model
     public function dataDesa()
     {
         return $this->hasOne(DataDesa::class, "id", "desa_id");
+    }
+
+    public function getCustomDateAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('d-m-Y H:i');
+
     }
 }

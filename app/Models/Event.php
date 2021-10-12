@@ -33,6 +33,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
@@ -47,6 +48,12 @@ class Event extends Model
         'status',
         'attachment',
     ];
+
+    public function setEventNameAttribute($value)
+    {
+        $this->attributes['event_name'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
 
     public static function getOpenEvents()
     {

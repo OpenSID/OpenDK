@@ -176,7 +176,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
         });
 
-        Route::get('event/{slug}', 'PageController@eventDetail');
+        Route::get('event/{slug}', 'PageController@eventDetail')->name('event.detail');
 
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 

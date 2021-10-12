@@ -33,6 +33,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
@@ -46,11 +47,14 @@ class Event extends Model
         'attendants',
         'status',
         'attachment',
-        'slug'
     ];
 
-    public static function getOpenEvents()
-    {
+    function setEventNameAttribute($value) {
+        $this->attributes['event_name'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
+    }
+
+    public static function getOpenEvents() {
         return self::get()->groupBy(function ($item) {
             return Carbon::parse($item->start)->format('d-M-y');
         });

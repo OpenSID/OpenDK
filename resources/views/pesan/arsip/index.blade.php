@@ -85,7 +85,7 @@
                                                 @endif
                                                 {{ $pesan->judul }}</b> -
                                                 @if($pesan->detailPesan->count() > 0)
-                                                    {{ \Illuminate\Support\Str::limit($pesan->detailPesan->last()->text, 50) }}
+                                                    {{ \Illuminate\Support\Str::limit(strip_tags($pesan->detailPesan->last()->text), 50) }}
                                                 @endif
                                             </div>
                                         </td>

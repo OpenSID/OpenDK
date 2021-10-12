@@ -31,7 +31,7 @@
                         <!-- /.mailbox-controls -->
                         <div class="mailbox-read-message">
                             @if($pesan->detailPesan->count() > 0)
-                                {{ $pesan->detailPesan->first()->text }}
+                                {!! $pesan->detailPesan->first()->text !!}
                             @endif
 
                         </div>

@@ -39,6 +39,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Stevebauman\Purify\Facades\Purify;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
@@ -247,7 +248,7 @@ class PesanController extends Controller
 
                 PesanDetail::insert([
                     'pesan_id' => $id,
-                    'text' => $request->get('text'),
+                    'text' => Purify::clean($request->get('text')),
                     'desa_id' => null,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
@@ -279,7 +280,7 @@ class PesanController extends Controller
         ]);
 
         if ($pesan > 0) {
-            return redirect()->route('pesan.index')->with('success', 'Pesan berhasil ditandai!');
+            return back()->with('success', 'Pesan berhasil ditandai!');
         } else {
             return back()->withInput()->with('error', 'Pesan gagal ditandai!');
         }
@@ -293,7 +294,7 @@ class PesanController extends Controller
         ]);
 
         if ($pesan > 0) {
-            return redirect()->route('pesan.index')->with('success', 'Pesan berhasil diarsipkan!');
+            return back()->with('success', 'Pesan berhasil ditandai!');
         } else {
             return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
         }

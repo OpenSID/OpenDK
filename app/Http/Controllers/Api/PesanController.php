@@ -39,6 +39,11 @@ use App\Models\PesanDetail;
 
 class PesanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     public function store(PesanRequest $request)
     {
         if ($request->has('pesan_id')) {

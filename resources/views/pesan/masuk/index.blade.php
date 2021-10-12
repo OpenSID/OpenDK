@@ -45,7 +45,11 @@
                             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
                                         class="fa fa-square-o"></i>
                             </button>
-                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
+                            {!! Form::open( [ 'route' => 'pesan.arsip.multiple', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-multiple-arsip-pesan'] ) !!}
+                                <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
+                            {!! Form::text('array_id', null, ['hidden' => true, "id" => "array_multiple_id_arsip"]) !!}
+                            {!! Form::close() !!}
+
                             {!! Form::open( [ 'route' => 'pesan.read.multiple', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-multiple-read-pesan'] ) !!}
                                 {!! Form::text('array_id', null, ['hidden' => true, "id" => "array_multiple_id"]) !!}
                                 <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
@@ -73,7 +77,7 @@
                                 @foreach($list_pesan as $pesan)
                                     <tr class="{{ $pesan->sudah_dibaca === 1 ? '' : 'unread' }}">
                                         <td style="width: 5%">
-                                            <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
+                                            <input data-read="{{ $pesan->sudah_dibaca }}" data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
                                         </td>
                                         <td style="width: 10%" class="mailbox-name"><a
                                                     href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
@@ -210,8 +214,22 @@
                         return $(el).data('id');
                     })
                     if(data.length <= 0) return;
+                    let response = window.confirm("Apakah Anda yakin akan menandai pesan?")
+                    if(!response) return;
                     $("#array_multiple_id").val(JSON.stringify(data))
                     $('#form-multiple-read-pesan').submit()
+                })
+
+                $("#arsip-action").click(function (e) {
+                    e.preventDefault()
+                    let data = $.map($('.mailbox-messages input[type="checkbox"]:checked').toArray(), function (el, index) {
+                        return $(el).data('id');
+                    })
+                    if(data.length <= 0) return;
+                    let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
+                    if(!response) return;
+                    $("#array_multiple_id_arsip").val(JSON.stringify(data))
+                    $('#form-multiple-arsip-pesan').submit()
                 })
 
             });

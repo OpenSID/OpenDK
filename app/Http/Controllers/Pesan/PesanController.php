@@ -284,4 +284,18 @@ class PesanController extends Controller
             return back()->withInput()->with('error', 'Pesan gagal ditandai!');
         }
     }
+
+    public function setMultipleArsipPesanStatus(Request $request)
+    {
+        $array = json_decode($request->get('array_id'));
+        $pesan = Pesan::whereIn('id', $array)->update([
+            'diarsipkan' => self::MASUK_ARSIP
+        ]);
+
+        if ($pesan > 0) {
+            return redirect()->route('pesan.index')->with('success', 'Pesan berhasil diarsipkan!');
+        } else {
+            return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
+        }
+    }
 }

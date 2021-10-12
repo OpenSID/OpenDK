@@ -42,7 +42,7 @@ class PesanController extends Controller
     {
         $this->middleware('auth:api');
     }
-    
+
     public function store(PesanRequest $request)
     {
         if ($request->has('pesan_id')) {

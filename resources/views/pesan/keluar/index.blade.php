@@ -20,12 +20,20 @@
             <div class="col-md-9">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Pesan Masuk</h3>
+                        <h3 class="box-title">{{ $page_title }}</h3>
 
-                        <div class="box-tools pull-right">
-                            <div class="has-feedback">
-                                <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                                <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                        <div class="pull-right">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    {!! Form::open( [ 'route' => 'pesan.keluar', 'method' => 'get','id' => 'form-search-desa'] ) !!}
+                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id,['placeholder' => 'pilih desa', 'class'=>'form-control', 'id'=>'list_desa', 'required']) !!}
+                                    {!! Form::close() !!}
+                                </div>
+                                <div class="col-md-6">
+                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
+                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+
                             </div>
                         </div>
                         <!-- /.box-tools -->
@@ -41,23 +49,15 @@
                             <div class="pull-right">
                                 {{ $first_data }} - {{ $last_data }}/{{ $list_pesan->total() }}
                                 <div class="btn-group">
-                                    @if($list_pesan->onFirstPage())
-                                        <a href="#" type="button" class="btn btn-default btn-sm"><i
-                                                    class="fa fa-chevron-left"></i></a>
-                                    @else
-                                        <a href="{{ $list_pesan->previousPageUrl() }}" type="button"
-                                           class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></a>
-                                    @endif
-
-                                    @if($list_pesan->hasMorePages())
-
-                                        <a href="{{ $list_pesan->nextPageUrl() }}" type="button"
-                                           class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></a>
-                                    @else
-                                        <a href="#" type="button"
-                                           class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></a>
-                                    @endif
-
+                                    <a type="button"
+                                       id="prev-links"
+                                       data-current-page="{{ $list_pesan->currentPage() }}"
+                                       class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></a>
+                                    <a type="button"
+                                       id="next-links"
+                                       data-last-page="{{ $list_pesan->lastPage() }}"
+                                       data-current-page="{{ $list_pesan->currentPage() }}"
+                                       class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></a>
                                 </div>
                                 <!-- /.btn-group -->
                             </div>
@@ -80,7 +80,11 @@
                                                     href="#">{{ $pesan->dataDesa->nama }}</a></td>
                                         <td style="width: 65%" class="mailbox-subject">
                                             <div>
-                                                <b>{{ $pesan->judul }}</b> -
+                                                <b>
+                                                @if($pesan->diarsipkan === 1)
+                                                    [ARSIP]
+                                                @endif
+                                                {{ $pesan->judul }}</b> -
                                                 @if($pesan->detailPesan->count() > 0)
                                                     {{ \Illuminate\Support\Str::limit($pesan->detailPesan->last()->text, 50) }}
                                                 @endif
@@ -103,3 +107,72 @@
         </div>
     </section>
 @endsection
+@include('partials.asset_select2')
+@push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#list_desa').select2({
+                placeholder: "Pilih Desa",
+                allowClear: true
+            });
+
+            $('#prev-links').click(function () {
+                let page = $(this).data('currentPage');
+                let desa_id = $('#list_desa').val();
+                let q = $('#cari-pesan').val();
+                if(page <= 1){
+                    return;
+                }else{
+                    window.location = window.location.origin +
+                        window.location.pathname + '?' + $.param({page: page - 1, desa_id, q})
+                }
+            })
+
+            $('#next-links').click(function () {
+                let last = $(this).data('lastPage');
+                let page = $(this).data('currentPage');
+                let q = $('#cari-pesan').val();
+                let desa_id = $('#list_desa').val();
+                if(last <= page){
+                    return;
+                }else{
+                    window.location = window.location.origin +
+                        window.location.pathname +  '?' + $.param({page: page + 1, desa_id, q})
+                }
+            })
+
+            $('#list_desa').on('select2:select', function (e) {
+                let page = $('#next-links').data('currentPage');
+                let q = $('#cari-pesan').val();
+                window.location = window.location.origin +
+                    window.location.pathname +  '?' + $.param({page, desa_id: $(this).val(), q})
+            });
+
+            $('#list_desa').on('select2:unselect', function (e) {
+                let page = $('#next-links').data('currentPage');
+                let q = $('#cari-pesan').val();
+                window.location = window.location.origin +
+                    window.location.pathname +  '?' + $.param({page, q})
+            });
+
+            $('#cari-pesan').keypress(function (e) {
+                var key = e.which;
+                let desa_id = $('#list_desa').val();
+                if(key === 13)  // the enter key code
+                {
+                    let page = $('#next-links').data('currentPage');
+                    window.location = window.location.origin +
+                        window.location.pathname +  '?' + $.param({page, desa_id, q: $(this).val()})
+                }
+            }).focusout(function () {
+                let page = $('#next-links').data('currentPage');
+                let desa_id = $('#list_desa').val();
+                if($(this).val() === ''){
+                    window.location = window.location.origin +
+                        window.location.pathname +  '?' + $.param({page, desa_id})
+                }
+
+            });
+        });
+    </script>
+@endpush

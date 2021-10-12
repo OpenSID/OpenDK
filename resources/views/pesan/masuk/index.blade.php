@@ -19,7 +19,7 @@
             <div class="col-md-9">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Pesan Masuk</h3>
+                        <h3 class="box-title">{{ $page_title }}</h3>
 
                         <div class="pull-right">
                             <div class="row">

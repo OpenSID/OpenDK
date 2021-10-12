@@ -120,34 +120,74 @@ class PesanController extends Controller
         ];
     }
 
-    public function loadPesanKeluar()
+    public function loadPesanKeluar(Request $request)
     {
+        $flag_include_arsip = false;
         $data = collect([]);
+        $data->put('desa_id', null);
+        $data->put('search_query', '');
         $data->put('page_title', 'Pesan Keluar');
         $data->put('page_description', 'Managemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_KELUAR)
-            ->orderBy('created_at', 'DESC')
-            ->where('diarsipkan', self::NON_ARSIP)
-            ->paginate(self::PER_PAGE);
+            ->orderBy('created_at', 'DESC');
+
+        if (!empty($request->get('desa_id'))) {
+            $flag_include_arsip = true;
+            $pesan->where('das_data_desa_id', $request->get('desa_id'));
+            $data->put('desa_id', $request->get('desa_id'));
+        }
+
+        if (!empty($request->get('q'))) {
+            $flag_include_arsip = true;
+            $query = $request->get('q');
+            $pesan->where('judul', 'LIKE', "%{$query}%");
+            $data->put('search_query', $request->get('q'));
+        }
+
+        if (!$flag_include_arsip) {
+            $pesan->where('diarsipkan', self::NON_ARSIP);
+        }
+
+        $list_desa = DataDesa::get();
+        $pesan = $pesan->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
+        $data->put('list_desa', $list_desa);
         return view('pesan.keluar.index', $data->all());
     }
 
-    public function loadPesanArsip()
+    public function loadPesanArsip(Request $request)
     {
         $data = collect([]);
+        $data->put('desa_id', null);
+        $data->put('search_query', '');
         $data->put('page_title', 'Pesan Arsip');
         $data->put('page_description', 'Managemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('diarsipkan', self::MASUK_ARSIP)
-            ->orderBy('created_at', 'DESC')
-            ->paginate(self::PER_PAGE);
+            ->orderBy('created_at', 'DESC');
+
+        if (!empty($request->get('desa_id'))) {
+            $flag_include_arsip = true;
+            $pesan->where('das_data_desa_id', $request->get('desa_id'));
+            $data->put('desa_id', $request->get('desa_id'));
+        }
+
+        if (!empty($request->get('q'))) {
+            $flag_include_arsip = true;
+            $query = $request->get('q');
+            $pesan->where('judul', 'LIKE', "%{$query}%");
+            $data->put('search_query', $request->get('q'));
+        }
+
+        $list_desa = DataDesa::get();
+        $pesan = $pesan->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
+        $data->put('list_desa', $list_desa);
         return view('pesan.arsip.index', $data->all());
     }
 

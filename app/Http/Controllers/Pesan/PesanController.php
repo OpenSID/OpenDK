@@ -299,4 +299,21 @@ class PesanController extends Controller
             return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
         }
     }
+
+    public function replyPesan(Request $request)
+    {
+        $pesan = PesanDetail::insert([
+            'pesan_id' => $request->get('id'),
+            'text' => Purify::clean($request->get('text')),
+            'desa_id' => null,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        if ($pesan) {
+            return back()->with('success', 'Pesan berhasil dibalas!');
+        } else {
+            return back()->withInput()->with('error', 'Pesan gagal disimpan!');
+        }
+    }
 }

@@ -19,8 +19,10 @@ class AddSlugEvent extends Migration
         });
 
         // Tambahkan slug pada data yg sudah ada
-        foreach (DB::table('das_events')->get() as $value) {
-            DB::table('das_events')->where('id', $value->id)->update(['slug' => Str::slug($value->event_name)]);
+        if ($event = DB::table('das_events')->get()) {
+            foreach ($event as $value) {
+                DB::table('das_events')->where('id', $value->id)->update(['slug' => Str::slug($value->event_name)]);
+            }
         }
     }
 

@@ -10,3 +10,4 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 #### Perbaikan BUG
 
 #### Perubahan Teknis
+1. Perbaiki error query jika desa tidak ditemuka di halaman website

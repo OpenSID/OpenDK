@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class DataDesa extends Model
 {
@@ -56,6 +57,11 @@ class DataDesa extends Model
             'website' => $this->website . '/index.php/feed'
         ];
         return $desa;
+    }
+
+    public function scopeNama($query, $value)
+    {
+        return $query->where('nama', str_replace('-', ' ', $value));
     }
 
     /**

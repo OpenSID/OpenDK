@@ -138,11 +138,12 @@ class PageController extends Controller
     public function DesaShow($slug)
     {
         // Counter::count('desa.show');
+
         $page_title       = 'Desa';
         $page_description = 'Data Desa';
-        $desa             = DB::table('das_data_desa')->where('nama', str_replace('-', ' ', $slug))->first();
+        $desa             = DataDesa::nama($slug)->firstOrFail();
 
-        return view('pages.desa.desa_show', compact(['page_title', 'page_description', 'desa']));
+        return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
     }
 
     public function refresh_captcha()

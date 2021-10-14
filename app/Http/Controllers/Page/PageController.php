@@ -152,9 +152,10 @@ class PageController extends Controller
 
     public function eventDetail($slug)
     {
-        $event = Event::where('slug', $slug)->firstOrFail();
+        $event            = Event::slug($slug)->firstOrFail();
         $page_title       = $event->event_name;
         $page_description = $event->description;
-        return view('pages.event.event_detail', compact(['page_title', 'page_description','event']));
+
+        return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));
     }
 }

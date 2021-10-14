@@ -55,6 +55,11 @@ class Event extends Model
         $this->attributes['slug'] = Str::slug($value);
     }
 
+    public function scopeSlug($query, $value)
+    {
+        return $query->where('slug', $value);
+    }
+
     public static function getOpenEvents()
     {
         return self::get()->groupBy(function ($item) {

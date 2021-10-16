@@ -1,0 +1,153 @@
+<?php
+
+namespace App\Http\Controllers\Informasi;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Article;
+use Yajra\DataTables\DataTables;
+use App\Http\Requests\ArticleStoreRequest;
+use App\Http\Requests\ArticleUpdateRequest;
+use Exception;
+use illuminate\Support\Str;
+
+class ArticleController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('informasi.artikel.index');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('informasi.artikel.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ArticleStoreRequest $request)
+    {
+        try {
+            $input = $request->all();
+            $input['slug'] = Str::slug($request->name_article);
+
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $fileName = $file->getClientOriginalName();    
+                $destinationPath = 'artikel';
+                $file->move($destinationPath,$file->getClientOriginalName());
+
+                $input['image'] = $fileName;
+            }
+
+            Article::create($input);
+
+            return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil disimpan!');
+        }catch (Exception $e) {
+            return back()->withInput()->with('error', 'Simpan artikel gagal!');
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $data['article'] = Article::find($id);
+        return view('informasi.artikel.show', $data);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        $data['article'] = Article::find($id);
+        return view('informasi.artikel.edit', $data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ArticleUpdateRequest $request, $id)
+    { 
+        try {
+            $model = Article::find($id);
+
+            $input = $request->all();
+            $input['slug'] = Str::slug($request->name_article);
+
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $fileName = $file->getClientOriginalName();    
+                $destinationPath = 'artikel';
+                $file->move($destinationPath,$file->getClientOriginalName());
+
+                $input['image'] = $fileName;
+            }
+
+            $model->update($input);
+
+            return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil diubah!');
+        }catch (Exception $e) {
+            return back()->withInput()->with('error', 'Ubah artikel gagal!');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        try {
+            Article::findOrFail($id)->delete();
+
+            return redirect()->route('informasi.artikel.index')->with('success', 'Artikel sukses dihapus!');
+        } catch (Exception $e) {
+            return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
+        }
+    }
+
+    public function getDataArtikel(Request $request)
+    {
+        return DataTables::of(Article::all())
+            ->addColumn('action', function ($row) {
+                $btn = \Form::open(['url' => 'informasi/artikel/destroy/' . $row->id, 'method' => 'DELETE', 'style' => 'float:right;margin-right:45px']);
+                $btn .= "<button type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash' aria-hidden='true'></i></button>";
+                $btn .= \Form::close();
+                $btn .= '<a class="btn btn-warning btn-sm" href="/informasi/artikel/edit/' . $row->id . '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ';
+                $btn .= '<a class="btn btn-primary btn-sm" href="/informasi/artikel/show/' . $row->id . '"><i class="fa fa-eye" aria-hidden="true"></i></a> ';
+                return $btn;
+            })
+            ->rawColumns(['action','code'])
+            ->addIndexColumn()
+            ->make(true);
+    }
+}

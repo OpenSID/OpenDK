@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use App\Models\Article;
 use function compact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +54,7 @@ class PageController extends Controller
 
         $feeds = collect($this->data)->take(30)->paginate(10);
         $feeds->all();
+        $articles = Article::paginate(6);
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
@@ -60,6 +62,7 @@ class PageController extends Controller
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
+            'articles' => $articles,
         ]);
     }
 
@@ -147,5 +150,13 @@ class PageController extends Controller
     public function refresh_captcha()
     {
         return response()->json(['captcha' => captcha_img('mini')]);
+    }
+
+    public function detailBerita($slug)
+    {
+        $data['article']          = Article::where('slug', $slug)->first();
+        $data['list_desa']        = DataDesa::get();
+
+        return view('pages.berita.detail', $data);
     }
 }

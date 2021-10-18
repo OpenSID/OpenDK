@@ -316,6 +316,7 @@ Route::group(['middleware' => 'installed'], function () {
 
                 //Routes for Articles resources
                 Route::group(['prefix' => 'artikel'], function () {
+                    '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()';
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArticleController@index']);
                     Route::get('show/{id}', ['as' => 'informasi.artikel.show', 'uses' => 'ArticleController@show']);
                     Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArticleController@create']);

@@ -54,7 +54,7 @@ class PageController extends Controller
 
         $feeds = collect($this->data)->take(30)->paginate(10);
         $feeds->all();
-        $articles = Article::paginate(6);
+        $articles = Article::paginate(4);
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
@@ -156,6 +156,7 @@ class PageController extends Controller
     {
         $data['article']          = Article::where('slug', $slug)->first();
         $data['list_desa']        = DataDesa::get();
+        $data['path']             = \Storage::url('artikel/'.$data['article']->image);
 
         return view('pages.berita.detail', $data);
     }

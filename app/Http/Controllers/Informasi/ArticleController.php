@@ -10,6 +10,7 @@ use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use Exception;
 use illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ArticleController extends Controller
 {
@@ -47,11 +48,9 @@ class ArticleController extends Controller
 
             if($request->hasFile('image')){
                 $file = $request->file('image');
-                $fileName = $file->getClientOriginalName();    
-                $destinationPath = 'artikel';
-                $file->move($destinationPath,$file->getClientOriginalName());
+                $path = Storage::putFile('public/artikel',$file);
 
-                $input['image'] = $fileName;
+                $input['image'] = substr($path,15) ;
             }
 
             Article::create($input);
@@ -71,6 +70,7 @@ class ArticleController extends Controller
     public function show($id)
     {
         $data['article'] = Article::find($id);
+        $data['path'] = Storage::url('artikel/'.$data['article']->image);
         return view('informasi.artikel.show', $data);
     }
 
@@ -103,11 +103,9 @@ class ArticleController extends Controller
 
             if($request->hasFile('image')){
                 $file = $request->file('image');
-                $fileName = $file->getClientOriginalName();    
-                $destinationPath = 'artikel';
-                $file->move($destinationPath,$file->getClientOriginalName());
+                $path = Storage::putFile('public/artikel',$file);
 
-                $input['image'] = $fileName;
+                $input['image'] = substr($path,15) ;
             }
 
             $model->update($input);

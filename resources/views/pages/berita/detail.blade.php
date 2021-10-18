@@ -137,7 +137,7 @@
         <div class="card flex-md-row mb-4 box-shadow h-md-250">
 			<div class="card-body d-flex flex-column align-items-start">
                 <div style="padding-bottom: 10px">
-                    <img src="{{ asset('artikel/'.$article->image) }}" alt="">
+                    <img src="{{ url($path)}}" alt="">
                 </div>
                 <div style="padding-bottom: 10px">
                     <h3 class="card-title">{{ $article->name_article }}</h3>

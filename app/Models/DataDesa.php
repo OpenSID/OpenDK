@@ -58,6 +58,11 @@ class DataDesa extends Model
         return $desa;
     }
 
+    public function scopeNama($query, $value)
+    {
+        return $query->where('nama', str_replace('-', ' ', $value));
+    }
+
     /**
      * Scope query untuk website desa.
      *

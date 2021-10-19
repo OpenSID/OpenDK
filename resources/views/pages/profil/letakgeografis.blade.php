@@ -40,9 +40,15 @@
                     </div>
                     <!-- /.row -->
                     <div class="box-footer">
-                        <p style="text-align: justify">{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai <b> Luas {{ number_format($profil->dataumum->luas_wilayah_value) }} km </b> yang mencakup <b> {{ $profil->datadesa->count() }}  Desa/Kelurahan </b>, 
-                            Adapun <b> {{ terbilang($profil->datadesa->count()) }} Desa/kelurahan </b> tersebut yaitu @foreach($profil->datadesa as $desa) Desa {{ $desa->nama }}, @endforeach
-                            </p>
+                        <p style="text-align: justify">{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai <b> Luas {{ number_format($profil->dataumum->luas_wilayah_value) }} km<sup>2</sup></b> yang mencakup<b> {{ $profil->datadesa->count() }}  Desa/Kelurahan</b>.  Adapun <b> {{ terbilang($profil->datadesa->count()) }} Desa/Kelurahan </b> tersebut yaitu :
+                            <ul>
+                                @foreach($profil->datadesa as $desa)
+                                <li>Desa {{ $desa->nama }}</li>
+                                @endforeach
+                            </ul>
+                        </p>
+
+                        <br/>
 
                         <h4 class="text-primary">Batas wilayah {{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} meliputi :</h4>
                         <table>
@@ -92,12 +98,9 @@
 <script type="application/javascript" src="{{ asset('js/html2canvas.min.js') }}"></script>
 <script type="application/javascript">
     document.querySelector("#btn_peta").addEventListener("click", function() {
-
         html2canvas(document.iframe).then(function(canvas) {
             document.body.appendChild(canvas);
         });
-
     }, false);
-
 </script>
 @endpush

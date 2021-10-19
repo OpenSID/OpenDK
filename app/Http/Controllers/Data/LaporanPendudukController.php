@@ -43,7 +43,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 use function redirect;
 use function route;
@@ -163,9 +162,11 @@ class LaporanPendudukController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
+            $fileExtracted = glob($extract.'*.xlsx');
+
             // Proses impor excell
             (new ImporLaporanPenduduk())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

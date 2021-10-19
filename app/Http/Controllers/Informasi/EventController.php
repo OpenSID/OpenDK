@@ -3,11 +3,11 @@
 /*
  * File ini bagian dari:
  *
- * PBB Desa
+ * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -53,7 +53,7 @@ class EventController extends Controller
     public function index()
     {
         $page_title       = 'Event';
-        $page_description = 'Kumpulan Event ' .$this->sebutan_wilayah;
+        $page_description = 'Daftar Event';
         $events           = Event::getOpenEvents();
 
         return view('informasi.event.index', compact('page_title', 'page_description', 'events'));
@@ -66,8 +66,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Tambah';
-        $page_description = 'Tambah event baru';
+        $page_title       = 'Event';
+        $page_description = 'Tambah Data';
 
         return view('informasi.event.create', compact('page_title', 'page_description'));
     }
@@ -113,9 +113,9 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        $page_title       = 'Ubah';
-        $page_description = 'Edit Event';
-        $event            = Event::find($id);
+        $page_title       = 'Event';
+        $page_description = 'Ubah Data';
+        $event            = Event::FindOrFail($id);
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }
@@ -137,7 +137,7 @@ class EventController extends Controller
                 'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
             ]);
 
-            $event = Event::findOrFail($id);
+            $event = Event::FindOrFail($id);
             $event->fill($request->all());
 
             if ($request->hasFile('attachment')) {
@@ -147,7 +147,6 @@ class EventController extends Controller
                 $request->file('attachment')->move($path, $fileName);
                 $event->attachment = $path . $fileName;
             }
-
             $event->save();
 
             return redirect()->route('informasi.event.index')->with('success', 'Update Event sukses!');
@@ -165,7 +164,7 @@ class EventController extends Controller
     public function destroy($id)
     {
         try {
-            Event::findOrFail($id)->delete();
+            Event::destroy($id);
 
             return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
         } catch (Exception $e) {

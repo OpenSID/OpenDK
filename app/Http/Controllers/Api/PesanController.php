@@ -3,13 +3,11 @@
 /*
  * File ini bagian dari:
  *
-
  * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
  * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
-
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -26,44 +24,38 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
-
  * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
-
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PesanRequest;
+use App\Models\Pesan;
+use App\Models\PesanDetail;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-
-class PesanDetail extends Model
+class PesanController extends Controller
 {
-    protected $table     = 'das_pesan_detail';
-
-
-    protected $fillable = ['pesan','pesan_id','desa_id'];
-
-    public function headerPesan()
+    public function __construct()
     {
-        return $this->hasOne(Pesan::class, 'pesan_id', 'id');
-
-    public function headerPesan()
-    {
-        return $this->hasOne(Pesan::class, 'id', 'pesan_id');
-
+        $this->middleware('auth:api');
     }
 
-    public function dataDesa()
+    public function store(PesanRequest $request)
     {
-        return $this->hasOne(DataDesa::class, "id", "desa_id");
-    }
+        if ($request->has('pesan_id')) {
+            // insert percakapan
+            $response = PesanDetail::create($request->all());
+        } else {
+            $request['das_data_desa_id'] = 1;
+            // insert subject pesan
+            $pesan = Pesan::create($request->all());
+            // insert percakapan
+            $response = $pesan->detailPesan()->create($request->all());
+        }
 
-
-    public function getCustomDateAttribute()
-    {
-        return Carbon::parse($this->created_at)->format('d-m-Y H:i');
+        return response()->json(['result'=>$response]);
     }
 }

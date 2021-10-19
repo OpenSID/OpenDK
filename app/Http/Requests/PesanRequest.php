@@ -3,13 +3,11 @@
 /*
  * File ini bagian dari:
  *
-
  * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
  * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
-
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -26,44 +24,45 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
-
  * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
-
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-
-class PesanDetail extends Model
+class PesanRequest extends FormRequest
 {
-    protected $table     = 'das_pesan_detail';
-
-
-    protected $fillable = ['pesan','pesan_id','desa_id'];
-
-    public function headerPesan()
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        return $this->hasOne(Pesan::class, 'pesan_id', 'id');
-
-    public function headerPesan()
-    {
-        return $this->hasOne(Pesan::class, 'id', 'pesan_id');
-
+        return true;
     }
 
-    public function dataDesa()
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
-        return $this->hasOne(DataDesa::class, "id", "desa_id");
-    }
+        $rules = [];
 
+        if (Request::has('pesan_id')) {
+            $rules['pesan']     = 'required';
+            $rules['pesan_id']  = 'required|exists:das_pesan,id';
+        } else {
+            $rules['pesan']     = 'required';
+            $rules['judul']     = 'required';
+        }
 
-    public function getCustomDateAttribute()
-    {
-        return Carbon::parse($this->created_at)->format('d-m-Y H:i');
+        return $rules;
     }
 }

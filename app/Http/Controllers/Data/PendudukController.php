@@ -45,7 +45,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use function route;
 use function strtolower;
 use function ucwords;
@@ -176,14 +175,15 @@ class PendudukController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
+            $fileExtracted = glob($extract.'*.xlsx');
+
             // Proses impor excell
             (new ImporPenduduk())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
-
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
     }
 }

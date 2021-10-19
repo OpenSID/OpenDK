@@ -41,9 +41,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 use function redirect;
 use function route;
@@ -167,13 +165,15 @@ class LaporanApbdesController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
+            $fileExtracted = glob($extract.'*.xlsx');
+
             // Proses impor excell
             (new ImporLaporanApbdes())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.laporan-apbdes.index')->with('success', 'Import data sukses.');
     }
 }

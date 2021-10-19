@@ -3,11 +3,11 @@
 /*
  * File ini bagian dari:
  *
- * PBB Desa
+ * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -90,7 +90,7 @@ class LaporanApbdesQueueJob implements ShouldQueue
 
             if (isset($this->request['laporan_apbdes'])) {
                 foreach ($this->request['laporan_apbdes'] as $value) {
-                    $file_name = $desa_id . '_laporan_apbdes_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
+                    $file_name = $desa_id . '_laporan_apbdes_' . $value['semester'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
 
                     $insert = [
                         'judul'                => $value['judul'],

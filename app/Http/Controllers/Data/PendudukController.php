@@ -3,11 +3,11 @@
 /*
  * File ini bagian dari:
  *
- * PBB Desa
+ * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -45,7 +45,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use function route;
 use function strtolower;
 use function ucwords;
@@ -176,14 +175,15 @@ class PendudukController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
+            $fileExtracted = glob($extract.'*.xlsx');
+
             // Proses impor excell
             (new ImporPenduduk())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
-
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
     }
 }

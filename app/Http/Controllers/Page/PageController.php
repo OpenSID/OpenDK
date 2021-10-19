@@ -3,11 +3,11 @@
 /*
  * File ini bagian dari:
  *
- * PBB Desa
+ * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use App\Models\Event;
 use function compact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -137,15 +138,25 @@ class PageController extends Controller
     public function DesaShow($slug)
     {
         // Counter::count('desa.show');
+
         $page_title       = 'Desa';
         $page_description = 'Data Desa';
-        $desa             = DB::table('das_data_desa')->where('nama', str_replace('-', ' ', $slug))->first();
+        $desa             = DataDesa::nama($slug)->firstOrFail();
 
-        return view('pages.desa.desa_show', compact(['page_title', 'page_description', 'desa']));
+        return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
     }
 
     public function refresh_captcha()
     {
         return response()->json(['captcha' => captcha_img('mini')]);
+    }
+
+    public function eventDetail($slug)
+    {
+        $event            = Event::slug($slug)->firstOrFail();
+        $page_title       = $event->event_name;
+        $page_description = $event->description;
+
+        return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));
     }
 }

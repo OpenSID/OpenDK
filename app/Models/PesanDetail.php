@@ -3,11 +3,13 @@
 /*
  * File ini bagian dari:
  *
- * PBB Desa
+
+ * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,28 +26,44 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
 
 namespace App\Models;
 
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class PesanDetail extends Model
 {
     protected $table     = 'das_pesan_detail';
 
+
     protected $fillable = ['pesan','pesan_id','desa_id'];
 
     public function headerPesan()
     {
         return $this->hasOne(Pesan::class, 'pesan_id', 'id');
+
+    public function headerPesan()
+    {
+        return $this->hasOne(Pesan::class, 'id', 'pesan_id');
+
     }
 
     public function dataDesa()
     {
         return $this->hasOne(DataDesa::class, "id", "desa_id");
+    }
+
+
+    public function getCustomDateAttribute()
+    {
+        return Carbon::parse($this->created_at)->format('d-m-Y H:i');
     }
 }

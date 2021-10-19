@@ -3,11 +3,11 @@
 /*
  * File ini bagian dari:
  *
- * PBB Desa
+ * OpenDK
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2016 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -175,6 +175,8 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
             Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
         });
+
+        Route::get('event/{slug}', 'PageController@eventDetail')->name('event.detail');
 
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
@@ -546,6 +548,25 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::delete('destroy/{id}', ['as' => 'admin-komplain.destroy', 'uses' => 'AdminKomplainController@destroy']);
                 Route::put('setuju/{id}', ['as' => 'admin-komplain.setuju', 'uses' => 'AdminKomplainController@disetujui']);
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
+            });
+        });
+
+        /**
+         * Group Routing for Pesan
+         */
+        Route::namespace('Pesan')->group(function () {
+            //Routes Resource Pesan
+            Route::group(['prefix' => 'pesan'], function () {
+                Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
+                Route::get('/keluar', ['as' => 'pesan.keluar', 'uses' => 'PesanController@loadPesanKeluar']);
+                Route::get('/arsip', ['as' => 'pesan.arsip', 'uses' => 'PesanController@loadPesanArsip']);
+                Route::post('/arsip', ['as' => 'pesan.arsip.post', 'uses' => 'PesanController@setArsipPesan']);
+                Route::get('/compose', ['as' => 'pesan.compose', 'uses' => 'PesanController@composePesan']);
+                Route::post('/compose/post', ['as' => 'pesan.compose.post', 'uses' => 'PesanController@storeComposePesan']);
+                Route::post('/read/multiple', ['as' => 'pesan.read.multiple', 'uses' => 'PesanController@setMultipleReadPesanStatus']);
+                Route::post('/arsip/multiple', ['as' => 'pesan.arsip.multiple', 'uses' => 'PesanController@setMultipleArsipPesanStatus']);
+                Route::post('/reply', ['as' => 'pesan.reply.post', 'uses' => 'PesanController@replyPesan']);
+                Route::get('/{id_pesan}', ['as' => 'pesan.read', 'uses' => 'PesanController@readPesan']);
             });
         });
     });

@@ -12,7 +12,7 @@
          <div class="card">
 			<div class="card-body">
 				<a href="berita/{{ $item->slug }}">
-				   <h4 class="card-title text-black" style="margin-top: -5px;">{{ $item->name_article }}</h4>
+				   <h4 class="card-title text-black" style="margin-top: -5px;">{{ $item->title }}</h4>
 				</a>
 				<span class="card-text">{!! strip_tags(substr($item->description,0,250)) !!}</span>
 			 </div>

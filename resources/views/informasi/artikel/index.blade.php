@@ -29,10 +29,10 @@
                         <table class="table table-striped table-bordered" id="articles-table">
                             <thead>
                             <tr>
-                                <th width="10">No</th>
+                                <th style="max-width: 150px;">Aksi</th>
                                 <th>Nama artikel</th>
                                 <th>Url</th>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 100px;">Status</th>
                             </tr>
                             </thead>
                         </table>
@@ -54,10 +54,10 @@
             serverSide: false,
             ajax: "{!! route( 'informasi.artikel.getdata' ) !!}",
             columns: [
-                {data: 'DT_RowIndex', orderable: false, searchable: false},
-                {data: 'name_article', name: 'name_article'},
-                {data: 'slug', name: 'slug'},
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'title', name: 'title'},
+                {data: 'slug', name: 'slug'},
+                {data: 'is_active', name: 'is_active'},
             ],
         });
     });

@@ -9,8 +9,8 @@ use Yajra\DataTables\DataTables;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
 use Exception;
-use illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class ArticleController extends Controller
 {
@@ -44,8 +44,6 @@ class ArticleController extends Controller
     {
         try {
             $input = $request->all();
-            $input['slug'] = Str::slug($request->name_article);
-
             if($request->hasFile('image')){
                 $file = $request->file('image');
                 $path = Storage::putFile('public/artikel',$file);
@@ -83,6 +81,7 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $data['article'] = Article::find($id);
+        $data['path'] = Storage::url('artikel/'.$data['article']->image);
         return view('informasi.artikel.edit', $data);
     }
 
@@ -99,8 +98,6 @@ class ArticleController extends Controller
             $model = Article::find($id);
 
             $input = $request->all();
-            $input['slug'] = Str::slug($request->name_article);
-
             if($request->hasFile('image')){
                 $file = $request->file('image');
                 $path = Storage::putFile('public/artikel',$file);
@@ -137,15 +134,26 @@ class ArticleController extends Controller
     {
         return DataTables::of(Article::all())
             ->addColumn('action', function ($row) {
-                $btn = \Form::open(['url' => 'informasi/artikel/destroy/' . $row->id, 'method' => 'DELETE', 'style' => 'float:right;margin-right:45px']);
-                $btn .= "<button type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash' aria-hidden='true'></i></button>";
-                $btn .= \Form::close();
-                $btn .= '<a class="btn btn-warning btn-sm" href="/informasi/artikel/edit/' . $row->id . '"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> ';
-                $btn .= '<a class="btn btn-primary btn-sm" href="/informasi/artikel/show/' . $row->id . '"><i class="fa fa-eye" aria-hidden="true"></i></a> ';
-                return $btn;
+                $show_url   = route('informasi.artikel.show', $row->id);
+                $edit_url   = route('informasi.artikel.edit', $row->id);
+                $delete_url = route('informasi.artikel.destroy', $row->id);
+
+                $data['show_url'] = $show_url;
+
+                if (! Sentinel::guest()) {
+                    $data['edit_url']   = $edit_url;
+                    $data['delete_url'] = $delete_url;
+                }
+
+                return view('forms.action', $data);
             })
-            ->rawColumns(['action','code'])
-            ->addIndexColumn()
-            ->make(true);
+            ->editColumn('is_active', function ($row) {
+                if($row->is_active == 0 || $row->is_active == null) {
+                    $status = 'Tidak Aktif';
+                }else{
+                    $status = 'Aktif';
+                }
+                return $status;
+            })->make();
     }
 }

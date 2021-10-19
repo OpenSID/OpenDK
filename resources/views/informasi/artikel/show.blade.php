@@ -22,7 +22,7 @@
                     <div class="form-group row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Nama artikel</label>
                         <div class="col-sm-10">
-                            {{ $article->name_article }}
+                            {{ $article->title }}
                        </div>
                     </div>
 

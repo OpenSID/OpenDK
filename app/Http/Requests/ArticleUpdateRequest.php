@@ -24,7 +24,7 @@ class ArticleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_article'      => 'required',
+            'title'             => 'required',
             'description'       => 'required',
         ];
     }
@@ -32,7 +32,7 @@ class ArticleUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'name_article.required'      => 'Nama artikel tidak boleh kosong',
+            'title.required'             => 'Nama artikel tidak boleh kosong',
             'description.required'       => 'Deskripsi tidak boleh kosong',
         ];
     }

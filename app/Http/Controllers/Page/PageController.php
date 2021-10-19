@@ -54,7 +54,7 @@ class PageController extends Controller
 
         $feeds = collect($this->data)->take(30)->paginate(10);
         $feeds->all();
-        $articles = Article::paginate(4);
+        $articles = Article::orderBy('created_at', 'DESC')->where('is_active',1)->paginate(4);
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,

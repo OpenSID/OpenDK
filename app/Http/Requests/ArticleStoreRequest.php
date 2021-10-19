@@ -24,7 +24,7 @@ class ArticleStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_article'      => 'required|unique:das_articles',
+            'title'             => 'required',
             'image'             => 'required',
             'description'       => 'required',
         ];
@@ -33,8 +33,8 @@ class ArticleStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            'name_article.required'      => 'Nama artikel tidak boleh kosong',
-            'name_article.unique'        => 'Nama artikel tersebut sudah ada',
+            'title.required'             => 'Nama artikel tidak boleh kosong',
+            'title.unique'               => 'Nama artikel tersebut sudah ada',
             'image.required'             => 'Gambar tidak boleh kosong',
             'description.required'       => 'Deskripsi tidak boleh kosong',
         ];

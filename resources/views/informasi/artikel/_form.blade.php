@@ -4,8 +4,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama artikel <span class="required text-danger">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('name_article', null, ['placeholder' => 'Nama artikel','class' => 'form-control']) !!}
-        @if ($errors->has('name_article')) <span class="help-block" style="color:red">{{ $errors->first('name_article') }}</span> @endif
+        {!! Form::text('title', null, ['placeholder' => 'Nama artikel','class' => 'form-control']) !!}
+        @if ($errors->has('title')) <span class="help-block" style="color:red">{{ $errors->first('title') }}</span> @endif
     </div>
 </div>
 <div class="form-group">
@@ -16,7 +16,7 @@
         @if ($errors->has('image')) <span class="help-block" style="color:red">{{ $errors->first('image') }}</span> @endif
         <br>
         @if(isset($article->image))
-            <img class="" src="{{ asset('artikel/'.$article->image.'') }}" id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
+            <img class="" src="{{ url($path) }}" id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
         @else
             <img class="hide" src=""  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
         @endif
@@ -30,6 +30,14 @@
         {!! Form::textarea('description', null,['class'=>'my-editor', 'placeholder'=>'Deskripsi kegiatan', 'style'=>'width: 100%;
          height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
         @if ($errors->has('description')) <span class="help-block" style="color:red">{{ $errors->first('description') }}</span> @endif
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Status <span class="required text-danger">*</span></label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::select('is_active', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null,['class' => 'form-control']) !!}
+        @if ($errors->has('title')) <span class="help-block" style="color:red">{{ $errors->first('title') }}</span> @endif
     </div>
 </div>
 

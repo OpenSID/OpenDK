@@ -140,7 +140,8 @@
                     <img src="{{ url($path)}}" alt="">
                 </div>
                 <div style="padding-bottom: 10px">
-                    <h3 class="card-title">{{ $article->title }}</h3>
+					<h3 class="card-title">{{ $article->title }}</h3>
+					<p>Diposting Pada {{$article->created_at->format('d M Y') }}</p>
                 </div>
                 <div>
                     <p class="description-article">{!! $article->description !!}</p>

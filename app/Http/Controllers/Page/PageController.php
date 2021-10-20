@@ -55,7 +55,7 @@ class PageController extends Controller
 
         $feeds = collect($this->data)->take(30)->paginate(10);
         $feeds->all();
-        $articles = Article::orderBy('created_at', 'DESC')->where('is_active',1)->paginate(4);
+        $articles = Article::orderBy('created_at', 'DESC')->where('is_active', 1)->paginate(4);
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
@@ -161,6 +161,7 @@ class PageController extends Controller
         $data['path']             = \Storage::url('artikel/'.$data['article']->image);
 
         return view('pages.berita.detail', $data);
+    }
 
     public function eventDetail($slug)
     {
@@ -169,6 +170,5 @@ class PageController extends Controller
         $page_description = $event->description;
 
         return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));
-
     }
 }

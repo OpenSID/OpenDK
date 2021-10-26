@@ -1,20 +1,22 @@
 <?php
 
-use Database\Seeds\Demo\ContohDasDataDesaTableSeeder;
+use Illuminate\Database\Seeder;
+use Database\Seeds\Demo\DemoPesanSeeder;
+use Database\Seeds\Demo\DemoAKIAKBSeeder;
+use Database\Seeds\Demo\DemoAPBDesaSeeder;
+use Database\Seeds\Demo\DemoPendudukSeeder;
+use Database\Seeds\Demo\DemoImunisasiSeeder;
+use Database\Seeds\Demo\DemoPesanDetailSeeder;
+use Database\Seeds\Demo\DemoPutusSekolahSeeder;
+use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
+use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
+use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
 use Database\Seeds\Demo\ContohDasProfilTableSeeder;
+use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
+use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
+use Database\Seeds\Demo\ContohDasDataDesaTableSeeder;
 use Database\Seeds\Demo\ContohDasDataUmumTableSeeder;
 use Database\Seeds\Demo\ContohDasKeluargaTableSeeder;
-use Database\Seeds\Demo\DemoAKIAKBSeeder;
-use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
-use Database\Seeds\Demo\DemoAPBDesaSeeder;
-use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
-use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
-use Database\Seeds\Demo\DemoImunisasiSeeder;
-use Database\Seeds\Demo\DemoPendudukSeeder;
-use Database\Seeds\Demo\DemoPutusSekolahSeeder;
-use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
-use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
-use Illuminate\Database\Seeder;
 
 class ContohDatabaseSeeder extends Seeder
 {
@@ -40,5 +42,7 @@ class ContohDatabaseSeeder extends Seeder
         $this->call(DemoPutusSekolahSeeder::class);
         $this->call(DemoTingkatPendidikanSeeder::class);
         $this->call(DemoToiletSanitasiSeeder::class);
+        $this->call(DemoPesanSeeder::class);
+        $this->call(DemoPesanDetailSeeder::class);
     }
 }

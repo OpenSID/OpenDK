@@ -39,7 +39,5 @@ class DatabaseSeeder extends Seeder
         $this->call(DasProfilTableSeeder::class);
         $this->call(DasDataUmumTableSeeder::class);
         $this->call(DasDataDesaTableSeeder::class);
-        $this->call(PesanSeeder::class);
-        $this->call(PesanDetailSeeder::class);
     }
 }

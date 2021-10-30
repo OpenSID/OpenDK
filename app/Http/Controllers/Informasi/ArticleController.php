@@ -1,16 +1,45 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Article;
-use Yajra\DataTables\DataTables;
 use App\Http\Requests\ArticleStoreRequest;
 use App\Http\Requests\ArticleUpdateRequest;
-use Exception;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Article;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
 class ArticleController extends Controller
 {
@@ -44,17 +73,17 @@ class ArticleController extends Controller
     {
         try {
             $input = $request->all();
-            if($request->hasFile('image')){
+            if ($request->hasFile('image')) {
                 $file = $request->file('image');
-                $path = Storage::putFile('public/artikel',$file);
+                $path = Storage::putFile('public/artikel', $file);
 
-                $input['image'] = substr($path,15) ;
+                $input['image'] = substr($path, 15) ;
             }
 
             Article::create($input);
 
             return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil disimpan!');
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
     }
@@ -93,22 +122,22 @@ class ArticleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(ArticleUpdateRequest $request, $id)
-    { 
+    {
         try {
             $model = Article::find($id);
 
             $input = $request->all();
-            if($request->hasFile('image')){
+            if ($request->hasFile('image')) {
                 $file = $request->file('image');
-                $path = Storage::putFile('public/artikel',$file);
+                $path = Storage::putFile('public/artikel', $file);
 
-                $input['image'] = substr($path,15) ;
+                $input['image'] = substr($path, 15) ;
             }
 
             $model->update($input);
 
             return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil diubah!');
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Ubah artikel gagal!');
         }
     }
@@ -148,9 +177,9 @@ class ArticleController extends Controller
                 return view('forms.action', $data);
             })
             ->editColumn('is_active', function ($row) {
-                if($row->is_active == 0 || $row->is_active == null) {
+                if ($row->is_active == 0 || $row->is_active == null) {
                     $status = 'Tidak Aktif';
-                }else{
+                } else {
                     $status = 'Aktif';
                 }
                 return $status;

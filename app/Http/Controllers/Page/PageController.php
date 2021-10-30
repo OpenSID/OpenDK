@@ -33,8 +33,8 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\DataDesa;
 use App\Models\Article;
+use App\Models\DataDesa;
 use App\Models\Event;
 use function compact;
 use Illuminate\Http\Request;

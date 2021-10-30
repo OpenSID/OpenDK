@@ -41,6 +41,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 });
 
+Route::get('berita', function () {
+    return redirect('/');
+});
+
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
@@ -168,6 +172,7 @@ Route::group(['middleware' => 'installed'], function () {
      */
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
+        Route::get('berita/{slug}', ['as' => 'informasi.berita.detail', 'uses' => 'PageController@detailBerita']);
 
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
@@ -309,6 +314,19 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
                     Route::post('update/{id}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                });
+
+                //Routes for Articles resources
+                Route::group(['prefix' => 'artikel'], function () {
+                    '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()';
+                    Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArticleController@index']);
+                    Route::get('show/{id}', ['as' => 'informasi.artikel.show', 'uses' => 'ArticleController@show']);
+                    Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArticleController@create']);
+                    Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArticleController@store']);
+                    Route::get('edit/{id}', ['as' => 'informasi.artikel.edit', 'uses' => 'ArticleController@edit']);
+                    Route::post('update/{id}', ['as' => 'informasi.artikel.update', 'uses' => 'ArticleController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArticleController@destroy']);
+                    Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArticleController@getDataArtikel']);
                 });
 
                 //Routes for Form Dokumen resources

@@ -98,9 +98,13 @@
 	}
 
 	.card-horizontal {
-  display: flex;
-  flex: 1 1 auto;
-}
+        display: flex;
+        flex: 1 1 auto;
+    }
+
+    img{
+        width: 100%;
+    }
 </style>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
@@ -112,17 +116,17 @@
 	</div>
 	<form class="form-horizontal" id="form_filter" method="get" action="{{ route('feeds.filter') }}">
 		<div class="page-header" style="margin:0px 0px;">
-			<span style="display: inline-flex; vertical-align: middle;"><strong class="">{{ $page_description }}</strong></span>
+			<span style="display: inline-flex; vertical-align: middle;"><strong class="">sample</strong></span>
 		</div>
 		<div class="page-header" style="margin:0px 0px; padding: 0px;">
 			<select class="form-control" id="list_desa" name="desa" style="width: auto;">
 				<option value="ALL">Semua Desa</option>
 				@foreach($list_desa as $desa)
-						<option value="{{$desa->desa_id}}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
+						<option value="{{$desa->desa_id}}" <?php null == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
 				@endforeach
 			</select>
 			<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
-				<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" value="{{$cari}}"/>
+				<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" />
 				<button type="submit" class="btn btn-info btn-block" style="width: auto;">
 					<i class="fa fa-search"></i>
 				</button>
@@ -130,9 +134,23 @@
 		</div>
 	</form>
 	<div id="feeds">
-		@include('pages._feeds')
-	</div>
+        <div class="card flex-md-row mb-4 box-shadow h-md-250">
+			<div class="card-body d-flex flex-column align-items-start">
+                <div style="padding-bottom: 10px">
+                    <img src="{{ url($path)}}" alt="">
+                </div>
+                <div style="padding-bottom: 10px">
+					<h3 class="card-title">{{ $article->title }}</h3>
+					<p>Diposting Pada {{$article->created_at->format('d M Y') }}</p>
+                </div>
+                <div>
+                    <p class="description-article">{!! $article->description !!}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 @endsection
 @include('partials.asset_select2')
 
@@ -162,4 +180,3 @@
 	});
 </script>
 @endpush
-

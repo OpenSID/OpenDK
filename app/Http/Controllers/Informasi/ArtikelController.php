@@ -32,16 +32,16 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleStoreRequest;
-use App\Http\Requests\ArticleUpdateRequest;
-use App\Models\Article;
+use App\Http\Requests\ArtikelStoreRequest;
+use App\Http\Requests\ArtikelUpdateRequest;
+use App\Models\Artikel;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
-class ArticleController extends Controller
+class ArtikelController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -51,6 +51,33 @@ class ArticleController extends Controller
     public function index()
     {
         return view('informasi.artikel.index');
+    }
+
+    public function getDataArtikel(Request $request)
+    {
+        if ($request->ajax()) {
+            return DataTables::of(Artikel::all())
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $data['show_web'] = route('berita.detail', $row->slug);
+
+                    if (! Sentinel::guest()) {
+                        $data['edit_url']   = route('informasi.artikel.edit', $row->id);
+                        $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
+                    }
+
+                    return view('forms.action', $data);
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 0) {
+                        return '<span class="label label-danger">Tidak Aktif</span>';
+                    } else {
+                        return '<span class="label label-success">Aktif</span>';
+                    }
+                })
+                ->rawColumns(['status'])
+                ->make(true);
+        }
     }
 
     /**
@@ -69,36 +96,23 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArticleStoreRequest $request)
+    public function store(ArtikelStoreRequest $request)
     {
         try {
             $input = $request->all();
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
-                $input['image'] = substr($path, 15) ;
+                $input['gambar'] = substr($path, 15) ;
             }
 
-            Article::create($input);
-
-            return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil disimpan!');
+            Artikel::create($input);
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $data['article'] = Article::find($id);
-        $data['path'] = Storage::url('artikel/'.$data['article']->image);
-        return view('informasi.artikel.show', $data);
+        return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil disimpan!');
     }
 
     /**
@@ -109,9 +123,9 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $data['article'] = Article::find($id);
-        $data['path'] = Storage::url('artikel/'.$data['article']->image);
-        return view('informasi.artikel.edit', $data);
+        return view('informasi.artikel.edit', [
+            'artikel' => Artikel::findOrFail($id),
+        ]);
     }
 
     /**
@@ -121,25 +135,25 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArticleUpdateRequest $request, $id)
+    public function update(ArtikelUpdateRequest $request, $id)
     {
         try {
-            $model = Article::find($id);
+            $model = Artikel::findOrFail($id);
 
             $input = $request->all();
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
-                $input['image'] = substr($path, 15) ;
+                $input['gambar'] = substr($path, 15) ;
             }
 
             $model->update($input);
-
-            return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil diubah!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Ubah artikel gagal!');
         }
+
+        return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil diubah!');
     }
 
     /**
@@ -151,38 +165,11 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         try {
-            Article::findOrFail($id)->delete();
-
-            return redirect()->route('informasi.artikel.index')->with('success', 'Artikel sukses dihapus!');
+            Artikel::findOrFail($id)->delete();
         } catch (Exception $e) {
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }
-    }
 
-    public function getDataArtikel(Request $request)
-    {
-        return DataTables::of(Article::all())
-            ->addColumn('action', function ($row) {
-                $show_url   = route('informasi.artikel.show', $row->id);
-                $edit_url   = route('informasi.artikel.edit', $row->id);
-                $delete_url = route('informasi.artikel.destroy', $row->id);
-
-                $data['show_url'] = $show_url;
-
-                if (! Sentinel::guest()) {
-                    $data['edit_url']   = $edit_url;
-                    $data['delete_url'] = $delete_url;
-                }
-
-                return view('forms.action', $data);
-            })
-            ->editColumn('is_active', function ($row) {
-                if ($row->is_active == 0 || $row->is_active == null) {
-                    $status = 'Tidak Aktif';
-                } else {
-                    $status = 'Aktif';
-                }
-                return $status;
-            })->make();
+        return redirect()->route('informasi.artikel.index')->with('success', 'Artikel sukses dihapus!');
     }
 }

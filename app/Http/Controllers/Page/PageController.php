@@ -33,7 +33,7 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\Article;
+use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\Event;
 use function compact;
@@ -55,15 +55,13 @@ class PageController extends Controller
 
         $feeds = collect($this->data)->take(30)->paginate(10);
         $feeds->all();
-        $articles = Article::orderBy('created_at', 'DESC')->where('is_active', 1)->paginate(4);
         return view('pages.index', [
             'page_title'       => 'Beranda',
-            'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
             'cari'             => null,
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'articles' => $articles,
+            'artikel'          => Artikel::latest()->status()->paginate(10),
         ]);
     }
 
@@ -156,11 +154,9 @@ class PageController extends Controller
 
     public function detailBerita($slug)
     {
-        $data['article']          = Article::where('slug', $slug)->first();
-        $data['list_desa']        = DataDesa::get();
-        $data['path']             = \Storage::url('artikel/'.$data['article']->image);
-
-        return view('pages.berita.detail', $data);
+        return view('pages.berita.detail', [
+            'artikel' => Artikel::where('slug', $slug)->status()->firstOrFail()
+        ]);
     }
 
     public function eventDetail($slug)

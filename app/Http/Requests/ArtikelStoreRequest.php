@@ -33,7 +33,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArticleUpdateRequest extends FormRequest
+class ArtikelStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -53,16 +53,10 @@ class ArticleUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'             => 'required',
-            'description'       => 'required',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'title.required'             => 'Nama artikel tidak boleh kosong',
-            'description.required'       => 'Deskripsi tidak boleh kosong',
+            'judul'     => 'required',
+            'gambar'    => 'required',
+            'isi'       => 'required',
+            'status'    => 'required',
         ];
     }
 }

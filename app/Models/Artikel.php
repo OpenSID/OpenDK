@@ -29,43 +29,43 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Models;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
-class ArticleStoreRequest extends FormRequest
+class Artikel extends Model
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    protected $table = 'das_artikel';
+
+    protected $fillable = [
+        'judul',
+        'gambar',
+        'isi',
+        'status'
+    ];
+
+    public function setJudulAttribute($value)
     {
-        return true;
+        $this->attributes['judul'] = $value;
+        $this->attributes['slug'] = $this->uniqueSlug($value);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function getGambarAttribute()
     {
-        return [
-            'title'             => 'required',
-            'image'             => 'required',
-            'description'       => 'required',
-        ];
+        return Storage::url('artikel/' . $this->attributes['gambar']);
     }
 
-    public function messages()
+    public function scopeStatus($query, $value = 1)
     {
-        return [
-            'title.required'             => 'Nama artikel tidak boleh kosong',
-            'title.unique'               => 'Nama artikel tersebut sudah ada',
-            'image.required'             => 'Gambar tidak boleh kosong',
-            'description.required'       => 'Deskripsi tidak boleh kosong',
-        ];
+        return $query->where('status', $value);
+    }
+
+    private function uniqueSlug($value)
+    {
+        $slug = str_slug($value);
+        $count = Artikel::where('slug', $slug)->count();
+        $newCount = $count > 0 ? ++$count : '';
+        return $newCount > 0 ? "$slug-$newCount" : $slug;
     }
 }

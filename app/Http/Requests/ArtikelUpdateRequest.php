@@ -29,27 +29,33 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Article extends Model
+class ArtikelUpdateRequest extends FormRequest
 {
-    protected $table = 'das_articles';
-
-    protected $fillable = ['title','slug','image','description','is_active'];
-
-    public function setTitleAttribute($value)
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = $this->uniqueSlug($value);
+        return true;
     }
 
-    private function uniqueSlug($value)
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
-        $slug = str_slug($value);
-        $count = Article::where('slug', $slug)->count();
-        $newCount = $count > 0 ? ++$count : '';
-        return $newCount > 0 ? "$slug-$newCount" : $slug;
+        return [
+            'judul'     => 'required',
+            'isi'       => 'required',
+            'status'    => 'required',
+        ];
     }
 }

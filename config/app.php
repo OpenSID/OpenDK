@@ -41,7 +41,7 @@ return [
      *  Mode Website
      */
 
-    'version' => 'v21.10.15',
+    'version' => 'v21.11.01',
 
     /*
      *  Mode Website

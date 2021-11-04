@@ -10,8 +10,7 @@
             <table class="table table-bordered table-hover dataTable" id="datadesa-table">
                 <thead>
                     <tr>
-                        {{-- <th style="max-width: 100px;">Aksi</th> --}}
-                        <th>ID</th>
+                        <th>Kode Desa</th>
                         <th>Nama Desa</th>
                         <th>Website</th>
                         <th>Luas Wilayah (km<sup>2</sup>)</th>
@@ -22,7 +21,11 @@
                         <td>{!! $desa->desa_id !!}</td>
                         <td>{!! $desa->nama !!}</td>
                         <td><a href="{!! $desa->website !!}" target="_blank">{!! $desa->website !!}</a></td>
-                        <td>{!! $desa->luas_wilayah !!} </td>
+                        <td>
+                            @if ($desa->luas_wilayah)
+                            {!! $desa->luas_wilayah !!} Km<sup>2</sup>
+                            @endif                            
+                        </td>
                     </tr>
                 </tbody>
             </table>

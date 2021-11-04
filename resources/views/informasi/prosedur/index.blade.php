@@ -1,14 +1,14 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li class="active">{!! $page_title !!}</li>
     </ol>
 </section>
@@ -22,9 +22,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{route('informasi.prosedur.create')}}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i
-                    class="fa fa-plus"></i> Tambah Prosedur</a>
-
+                    <a href="{{ route('informasi.prosedur.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp; Tambah</a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -40,26 +38,8 @@
                     </div>
                     <!-- /.table-responsive -->
                 </div>
-                <!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    {!! $prosedurs->links() !!}
-                </div>
-                <!-- /.box-footer -->
             </div>
         </div>
-
-       {{-- <div class="col-md-4">
-            <div class="box box-primary limit-p-width">
-                <div class="box-body">
-                    <div class="caption">
-
-
-                        <h3></h3>
-                    </div>
-
-                </div>
-            </div>
-        </div>--}}
         <!-- /.col -->
     </div>
     <!-- /.row -->
@@ -81,7 +61,7 @@
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
                 {data: 'judul_prosedur', name: 'judul_prosedur'},
             ],
-            order: [[0, 'desc']]
+            order: [[1, 'asc']]
         });
     });
 </script>

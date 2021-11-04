@@ -12,6 +12,8 @@
 <!-- Main content -->
 <section class="content container-fluid">
 
+    @include( 'partials.flash_message' )
+
     <div class="row">
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-aqua">

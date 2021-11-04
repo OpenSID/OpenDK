@@ -34,15 +34,9 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
-use function compact;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Request as RequestFacade;
-use function ini_set;
-
 use Maatwebsite\Excel\Facades\Excel;
-use function redirect;
-use function route;
-use function view;
 use Yajra\DataTables\DataTables;
 
 class KeluargaController extends Controller
@@ -55,7 +49,7 @@ class KeluargaController extends Controller
     public function index()
     {
         $page_title       = 'Keluarga';
-        $page_description = 'Data Keluarga';
+        $page_description = 'Daftar Keluarga';
 
         return view('data.keluarga.index', compact('page_title', 'page_description'));
     }
@@ -63,13 +57,11 @@ class KeluargaController extends Controller
     /**
      * Return datatable Data Keluarga
      */
-
     public function getKeluarga()
     {
         return DataTables::of(Keluarga::query())
             ->addColumn('action', function ($row) {
-                $show_url   = route('data.keluarga.show', $row->id);
-                $data['show_url']   = $show_url;
+                $data['show_url']   = route('data.keluarga.show', $row->id);
 
                 return view('forms.action', $data);
             })

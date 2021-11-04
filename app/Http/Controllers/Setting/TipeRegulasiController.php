@@ -33,16 +33,8 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\TipeRegulasi;
-use function back;
-use function compact;
 use Exception;
-
 use Illuminate\Http\Request;
-use function redirect;
-use function request;
-use function route;
-use function str_slug;
-use function view;
 use Yajra\DataTables\DataTables;
 
 class TipeRegulasiController extends Controller
@@ -51,19 +43,17 @@ class TipeRegulasiController extends Controller
     {
         $page_title       = 'Tipe Regulasi';
         $page_description = 'Daftar TIpe Regulasi';
+
         return view('setting.tipe_regulasi.index', compact('page_title', 'page_description'));
     }
 
     // Get Data Kategori Komplain
     public function getData()
     {
-        return DataTables::of(TipeRegulasi::select(['id', 'nama'])->orderBy('id'))
+        return DataTables::of(TipeRegulasi::all())
             ->addColumn('action', function ($row) {
-                $edit_url   = route('setting.tipe-regulasi.edit', $row->id);
-                $delete_url = route('setting.tipe-regulasi.destroy', $row->id);
-
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
+                $data['edit_url']   = route('setting.tipe-regulasi.edit', $row->id);
+                $data['delete_url'] = route('setting.tipe-regulasi.destroy', $row->id);
 
                 return view('forms.action', $data);
             })
@@ -73,7 +63,7 @@ class TipeRegulasiController extends Controller
     // Create Action
     public function create()
     {
-        $page_title       = 'Tambah';
+        $page_title       = 'Tipe Regulasi';
         $page_description = 'Tambah Tipe Regulasi';
 
         return view('setting.tipe_regulasi.create', compact('page_title', 'page_description'));
@@ -82,55 +72,55 @@ class TipeRegulasiController extends Controller
     // Store Data
     public function store(Request $request)
     {
+        request()->validate([
+            'nama' => 'required',
+        ]);
+
         try {
             $tipe       = new TipeRegulasi($request->all());
             $tipe->slug = str_slug($tipe->nama);
-
-            request()->validate([
-                'nama' => 'required',
-            ]);
-
             $tipe->save();
-            return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dikirim!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dikirim!');
         }
+
+        return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dikirim!');
     }
 
     public function edit($id)
     {
         $tipe             = TipeRegulasi::findOrFail($id);
-        $page_title       = 'Edit';
-        $page_description = 'Edit Tipe Regulasi' . $tipe->nama;
+        $page_title       = 'Tipe Regulasi';
+        $page_description = 'Ubah Tipe Regulasi : ' . $tipe->nama;
+
         return view('setting.tipe_regulasi.edit', compact('page_title', 'page_description', 'tipe'));
     }
 
     public function update(Request $request, $id)
     {
-        // Save Request
+        request()->validate([
+            'nama' => 'required',
+        ]);
+
         try {
             $tipe = TipeRegulasi::findOrFail($id);
             $tipe->fill($request->all());
-
-            request()->validate([
-                'nama' => 'required',
-            ]);
-
             $tipe->save();
-            return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil diupdate!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal diupdate!');
         }
+
+        return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil diupdate!');
     }
 
     public function destroy($id)
     {
         try {
             TipeRegulasi::findOrFail($id)->delete();
-
-            return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dihapus!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dihapus!');
         }
+
+        return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dihapus!');
     }
 }

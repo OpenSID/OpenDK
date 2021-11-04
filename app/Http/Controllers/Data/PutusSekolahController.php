@@ -34,31 +34,18 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
-use function back;
-use function compact;
 use Exception;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\Response;
-use function months_list;
-use function redirect;
-use function request;
-use function route;
-use function view;
 use Yajra\DataTables\DataTables;
-use function years_list;
 
 class PutusSekolahController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function index()
     {
-        $page_title       = 'Anak Putus Sekolah';
-        $page_description = 'Data Anak Putus Sekolah ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_title       = 'Siswa Putus Sekolah';
+        $page_description = 'Daftar Siswa Putus Sekolah';
+
         return view('data.putus_sekolah.index', compact('page_title', 'page_description'));
     }
 
@@ -70,16 +57,13 @@ class PutusSekolahController extends Controller
     public function getDataPutusSekolah()
     {
         return DataTables::of(PutusSekolah::with(['desa']))
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('data.putus-sekolah.edit', $row->id);
-                $delete_url = route('data.putus-sekolah.destroy', $row->id);
-
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url']   = route('data.putus-sekolah.edit', $row->id);
+                $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
 
                 return view('forms.action', $data);
             })
-            ->rawColumns(['actions'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     /**
@@ -89,10 +73,11 @@ class PutusSekolahController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Anak Putus Sekolah';
+        $page_title       = 'Siswa Putus Sekolah';
+        $page_description = 'Import Siswa Putus Sekolah ';
         $years_list       = years_list();
         $months_list      = months_list();
+
         return view('data.putus_sekolah.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
@@ -128,9 +113,10 @@ class PutusSekolahController extends Controller
      */
     public function edit($id)
     {
-        $siswa            = PutusSekolah::findOrFail($id);
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Data Anak Putus Sekolah';
+        $siswa            = PutusSekolah::with(['desa'])->findOrFail($id);
+        $page_title       = 'Siswa Putus Sekolah';
+        $page_description = 'Ubah Siswa Putus Sekolah : Desa ' . $siswa->desa->nama;
+
         return view('data.putus_sekolah.edit', compact('page_title', 'page_description', 'siswa'));
     }
 
@@ -142,26 +128,26 @@ class PutusSekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'siswa_paud'     => 'required',
+            'anak_usia_paud' => 'required',
+            'siswa_sd'       => 'required',
+            'anak_usia_sd'   => 'required',
+            'siswa_smp'      => 'required',
+            'anak_usia_smp'  => 'required',
+            'siswa_sma'      => 'required',
+            'anak_usia_sma'  => 'required',
+            'semester'       => 'required',
+            'tahun'          => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'siswa_paud'     => 'required',
-                'anak_usia_paud' => 'required',
-                'siswa_sd'       => 'required',
-                'anak_usia_sd'   => 'required',
-                'siswa_smp'      => 'required',
-                'anak_usia_smp'  => 'required',
-                'siswa_sma'      => 'required',
-                'anak_usia_sma'  => 'required',
-                'bulan'          => 'required',
-                'tahun'          => 'required',
-            ]);
-
-            PutusSekolah::find($id)->update($request->all());
-
-            return redirect()->route('data.putus-sekolah.index')->with('success', 'Data berhasil disimpan!');
+            PutusSekolah::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+            return back()->withInput()->with('error', 'Data gagal diubah!');
         }
+
+        return redirect()->route('data.putus-sekolah.index')->with('success', 'Data berhasil diubah!');
     }
 
     /**
@@ -174,10 +160,10 @@ class PutusSekolahController extends Controller
     {
         try {
             PutusSekolah::findOrFail($id)->delete();
-
-            return redirect()->route('data.putus-sekolah.index')->with('success', 'Data sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('data.putus-sekolah.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.putus-sekolah.index')->with('success', 'Data sukses dihapus!');
     }
 }

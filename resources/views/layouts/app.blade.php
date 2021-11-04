@@ -21,7 +21,7 @@
     <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ Request::url() }}">
-    <meta property="og:site_name" content="{{ \URL::to('')}}">
+    <meta property="og:site_name" content="{{ \URL::to('') }}">
     <meta property="og:title" content="{{ $page_title ?? '' }}">
     <meta property="og:description" content="{{ $page_description ?? '' }}. ">
     <meta property="og:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">

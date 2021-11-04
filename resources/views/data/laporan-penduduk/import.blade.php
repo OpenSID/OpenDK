@@ -6,11 +6,11 @@
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah }} {{ $nama_wilayah }}</small>
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('data.laporan-penduduk.index')}}">Laporan Penduduk</a></li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.laporan-penduduk.index') }}">Laporan Penduduk</a></li>
         <li class="active">{{$page_description}}</li>
     </ol>
 </section>

@@ -36,11 +36,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\Event;
-use function compact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function str_replace;
-use function view;
 use willvincent\Feeds\Facades\FeedsFacade;
 
 class PageController extends Controller
@@ -97,7 +94,7 @@ class PageController extends Controller
         $this->data = $this->GetFeeds();
 
         $req = $request->cari;
-        $cari_desa = $request->desa != 'ALL' ? $request->desa : null;
+        $cari_desa = $request->desa != 'Semua' ? $request->desa : null;
         if ($req || $cari_desa) {
             $feeds = collect($this->data)->filter(function ($value, $key) use ($req, $cari_desa) {
                 $hasil = $req ? stripos($value['title'], $req) !== false : true;
@@ -120,7 +117,7 @@ class PageController extends Controller
     {
         $kategoriPotensi  = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
         $page_title       = 'Potensi';
-        $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
+        $page_description = 'Potensi-Potensi';
 
         $potensis = DB::table('das_potensi')->where('kategori_id', $kategoriPotensi->id)->simplePaginate(10);
 
@@ -133,6 +130,7 @@ class PageController extends Controller
         $page_title       = 'Potensi';
         $page_description = 'Potensi-Potensi Kecamatan';
         $potensi          = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
+
         return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi', 'kategoriPotensi']));
     }
 
@@ -140,9 +138,9 @@ class PageController extends Controller
     {
         // Counter::count('desa.show');
 
-        $page_title       = 'Desa';
-        $page_description = 'Data Desa';
         $desa             = DataDesa::nama($slug)->firstOrFail();
+        $page_title       = 'Desa ' . $desa->nama;
+        $page_description = 'Data Desa';
 
         return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
     }

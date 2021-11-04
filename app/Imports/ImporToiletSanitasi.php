@@ -64,7 +64,6 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow, WithChunkReading, 
     public function model(array $row)
     {
         return new ToiletSanitasi([
-            'kecamatan_id' => config('app.default_profile'),
             'desa_id'      => $row['desa_id'],
             'bulan'        => $this->request['bulan'],
             'tahun'        => $this->request['tahun'],

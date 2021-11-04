@@ -12,68 +12,54 @@ class RefHubunganKeluargaTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('ref_hubungan_keluarga')->delete();
+        DB::table('ref_hubungan_keluarga')->truncate();
         
-        \DB::table('ref_hubungan_keluarga')->insert(array (
-            0 => 
-            array (
+        DB::table('ref_hubungan_keluarga')->insert(array (
+            0 => array (
                 'id' => 1,
                 'nama' => 'KEPALA KELUARGA',
             ),
-            1 => 
-            array (
+            1 => array (
                 'id' => 2,
                 'nama' => 'SUAMI',
             ),
-            2 => 
-            array (
+            2 => array (
                 'id' => 3,
                 'nama' => 'ISTRI',
             ),
-            3 => 
-            array (
+            3 => array (
                 'id' => 4,
                 'nama' => 'ANAK',
             ),
-            4 => 
-            array (
+            4 => array (
                 'id' => 5,
                 'nama' => 'MENANTU',
             ),
-            5 => 
-            array (
+            5 => array (
                 'id' => 6,
                 'nama' => 'CUCU',
             ),
-            6 => 
-            array (
+            6 => array (
                 'id' => 7,
                 'nama' => 'ORANGTUA',
             ),
-            7 => 
-            array (
+            7 => array (
                 'id' => 8,
                 'nama' => 'MERTUA',
             ),
-            8 => 
-            array (
+            8 => array (
                 'id' => 9,
                 'nama' => 'FAMILI LAIN',
             ),
-            9 => 
-            array (
+            9 => array (
                 'id' => 10,
                 'nama' => 'PEMBANTU',
             ),
-            10 => 
-            array (
+            10 => array (
                 'id' => 11,
                 'nama' => 'LAINNYA',
             ),
         ));
-        
-        
     }
 }

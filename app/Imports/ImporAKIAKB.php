@@ -64,7 +64,6 @@ class ImporAKIAKB implements ToModel, WithHeadingRow, WithChunkReading, ShouldQu
     public function model(array $row)
     {
         return new AkiAkb([
-            'kecamatan_id' => config('app.default_profile'),
             'desa_id'      => $row['desa_id'],
             'bulan'        => $this->request['bulan'],
             'tahun'        => $this->request['tahun'],

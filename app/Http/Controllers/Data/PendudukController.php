@@ -35,20 +35,10 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporPenduduk;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
-use function back;
-use function compact;
-use function config;
-use function convert_born_date_to_age;
 use Exception;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\Response;
-
 use Illuminate\Support\Facades\DB;
-use function route;
-use function strtolower;
-use function ucwords;
-use function view;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
 
@@ -97,7 +87,7 @@ class PendudukController extends Controller
                 'ref_pekerjaan.nama as pekerjaan',
             ])
             ->when($desa, function ($query) use ($desa) {
-                return $desa === 'ALL'
+                return $desa === 'Semua'
                     ? $query
                     : $query->where('das_data_desa.desa_id', $desa);
             })
@@ -105,9 +95,7 @@ class PendudukController extends Controller
 
         return DataTables::of($query)
             ->addColumn('action', function ($row) {
-                $show_url   = route('data.penduduk.show', $row->id);
-
-                $data['show_url']   = $show_url;
+                $data['show_url']   = route('data.penduduk.show', $row->id);
 
                 return view('forms.action', $data);
             })
@@ -124,7 +112,7 @@ class PendudukController extends Controller
      */
     public function show($id)
     {
-        $penduduk = Penduduk::findOrFail($id);
+        $penduduk         = Penduduk::findOrFail($id);
         $page_title       = 'Detail Penduduk';
         $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
@@ -140,8 +128,8 @@ class PendudukController extends Controller
     {
         $page_title       = 'Impor';
         $page_description = 'Impor Data Penduduk';
+        $list_desa        = DataDesa::all();
 
-        $list_desa = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', config('app.default_profile'))->get();
         return view('data.penduduk.import', compact('page_title', 'page_description', 'list_desa'));
     }
 

@@ -33,15 +33,8 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\Profil;
-use function array_sort;
-
-use function config;
+use App\Models\DataDesa;
 use Illuminate\Support\Facades\DB;
-use function number_format;
-use function request;
-use function view;
-use function years_list;
 
 class AnggaranRealisasiController extends Controller
 {
@@ -53,12 +46,9 @@ class AnggaranRealisasiController extends Controller
         Counter::count('statistik.anggaran-dan-realisasi');
 
         $data['page_title']       = 'Anggaran & Realisasi';
-        $data['page_description'] = 'Data Anggaran & Realisasi ' .$this->sebutan_wilayah;
-        $defaultProfil            = config('app.default_profile');
-        $data['defaultProfil']    = $defaultProfil;
+        $data['page_description'] = 'Data Anggaran & Realisasi';
         $data['year_list']        = years_list();
-        $data['list_kecamatan']   = Profil::with('kecamatan')->orderBy('kecamatan_id', 'desc')->get();
-        /*$data['list_desa'] = DB::table('ref_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();*/
+        $data['list_desa']        = DataDesa::all();
 
         return view('pages.anggaran_realisasi.show_anggaran_realisasi')->with($data);
     }
@@ -70,7 +60,7 @@ class AnggaranRealisasiController extends Controller
 
         // Grafik Data Pendidikan
         $data_pendidikan = [];
-        if ($year == 'ALL') {
+        if ($year == 'Semua') {
             $total_anggaran         = 0;
             $total_belanja          = 0;
             $belanja_pegawai        = 0;
@@ -82,7 +72,7 @@ class AnggaranRealisasiController extends Controller
                 $query_result = DB::table('das_anggaran_realisasi')
                     ->select('*')
                     ->where('kecamatan_id', '=', config('app.default_profile'));
-                if ($mid != 'ALL') {
+                if ($mid != 'Semua') {
                     $query_result->where('bulan', '=', $mid);
                 }
                 $query_result->where('tahun', '=', $yearls);
@@ -152,7 +142,7 @@ class AnggaranRealisasiController extends Controller
                 sum(belanja_modal) as belanja_modal, sum(belanja_tidak_langsung) as belanja_tidak_langsung')
                 ->where('kecamatan_id', '=', config('app.default_profile'));
 
-            if ($mid != 'ALL') {
+            if ($mid != 'Semua') {
                 $query_result->where('bulan', '=', $mid);
             }
             $query_result->where('tahun', '=', $year);

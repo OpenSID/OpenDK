@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ config('app.name', 'Laravel')}} | {{$page_title ?? ''}}</title>
+    <title>{{ config('app.name', 'Laravel') }} | {{$page_title ?? ''}}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- CSRF Token -->
@@ -134,7 +134,7 @@ desired effect
         });
 
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $("#notifikasi").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 5000);

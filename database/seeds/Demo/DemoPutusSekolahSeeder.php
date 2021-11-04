@@ -2,11 +2,12 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporPutusSekolah;
 use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Request;
+use App\Imports\ImporPutusSekolah;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Request;
 
 class DemoPutusSekolahSeeder extends Seeder
 {
@@ -17,6 +18,9 @@ class DemoPutusSekolahSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::table('das_putus_sekolah')->truncate();
+
         Excel::import(
             new ImporPutusSekolah([
                 'semester' => 1,

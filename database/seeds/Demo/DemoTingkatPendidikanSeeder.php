@@ -2,11 +2,12 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporTingkatPendidikan;
 use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImporTingkatPendidikan;
+use Illuminate\Support\Facades\Request;
 
 class DemoTingkatPendidikanSeeder extends Seeder
 {
@@ -17,6 +18,9 @@ class DemoTingkatPendidikanSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::table('das_tingkat_pendidikan')->truncate();
+
         Excel::import(
             new ImporTingkatPendidikan([
                 'semester' => 1,

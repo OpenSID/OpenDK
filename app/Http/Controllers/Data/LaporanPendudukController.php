@@ -35,18 +35,11 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanPenduduk;
 use App\Models\DataDesa;
 use App\Models\LaporanPenduduk;
-use function back;
-use function compact;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-
 use Illuminate\Support\Facades\Storage;
-
-use function redirect;
-use function route;
-use function view;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
 
@@ -60,7 +53,7 @@ class LaporanPendudukController extends Controller
     public function index(LaporanPenduduk $penduduk)
     {
         $page_title       = 'Laporan Penduduk';
-        $page_description = 'Data Penduduk';
+        $page_description = 'Daftar Laporan Penduduk';
         $list_desa        = DataDesa::get();
 
         return view('data.laporan-penduduk.index', compact('page_title', 'page_description', 'list_desa'));
@@ -88,17 +81,17 @@ class LaporanPendudukController extends Controller
                 'das_laporan_penduduk.imported_at',
             ])
             ->when($desa, function ($query) use ($desa) {
-                return $desa === 'ALL'
+                return $desa === 'Semua'
                     ? $query
                     : $query->where('das_data_desa.desa_id', $desa);
             });
 
         return DataTables::of($query)
             ->addColumn('action', function ($row) {
-                $delete_url = route('data.laporan-penduduk.destroy', $row->id);
-                $download_url = asset('storage/laporan_penduduk/' . $row->nama_file);
+                $data['delete_url'] = route('data.laporan-penduduk.destroy', $row->id);
+                $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
 
-                return view('forms.action', compact('delete_url', 'download_url'));
+                return view('forms.action', $data);
             })->make();
     }
 
@@ -116,11 +109,11 @@ class LaporanPendudukController extends Controller
             Storage::disk('public')->delete('laporan_penduduk/' . $penduduk->nama_file);
 
             $penduduk->delete();
-
-            return redirect()->route('data.laporan-penduduk.index')->with('success', 'Data sukses dihapus!');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.laporan-penduduk.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.laporan-penduduk.index')->with('success', 'Data sukses dihapus!');
     }
 
     /**
@@ -131,7 +124,7 @@ class LaporanPendudukController extends Controller
     public function import()
     {
         $page_title       = 'Laporan Penduduk';
-        $page_description = 'Import Data';
+        $page_description = 'Import Laporan Penduduk';
 
         return view('data.laporan-penduduk.import', compact('page_title', 'page_description'));
     }

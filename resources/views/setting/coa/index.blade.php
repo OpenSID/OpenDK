@@ -1,15 +1,15 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        {{ $page_title or "Page Title" }}
-        <small>{{ $page_description or null }}</small>
+        {{ $page_title ?? "Page Title" }}
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -60,7 +60,7 @@
                                             <td colspan="2"><strong>{{ $sub_sub_coa->id }}</strong></td>
                                             <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong></td>
                                         </tr>
-                                       {{-- @foreach(\App\Models\Coa::where('sub_sub_id', $sub_sub_coa->id)->get() as $coa)
+                                        {{-- @foreach(\App\Models\Coa::where('sub_sub_id', $sub_sub_coa->id)->get() as $coa)
                                             <tr>
                                                 <td class="icon-class"></td>
                                                 <td>{{ 4 }}</td>
@@ -192,27 +192,3 @@
 </section>
 <!-- /.content -->
 @endsection
-
-@include('partials.asset_datatables')
-
-@push('scripts')
-<script type="text/javascript">
-    $(document).ready(function () {
-        /*$('[data-toggle="collapse"]').on('click', function() {
-         $(this).toggleClass('collapsed');
-         });*/
-    });
-</script>
-
-@endpush
-
-@push('css')
-<style type="text/css">
-    /* .collapsed .icon-class:before {
-         content: '>';
-     }
-     .icon-class:before {
-         content: 'v';
-     }*/
-</style>
-@endpush

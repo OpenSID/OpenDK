@@ -73,7 +73,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h5 class="bg-primary" style="padding: 2px;">TINDAK LANJUT:</h5>
-                                        {{ Form::hidden('komplain_id', $komplain->komplain_id,['id'=>'komplain_id']) }}
+                                        {{ Form::hidden('komplain_id', $komplain->komplain_id, ['id' => 'komplain_id']) }}
                                         <div id="jawabans"></div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                                         <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                         <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
                                            class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
-                                        {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style'=>'display:inline']) !!}
+                                        {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style' => 'display:inline']) !!}
 
                                         <button type="submit" class="btn btn-sm btn-danger"
                                                 onclick="return confirm('Yakin akan menghapus data tersebut?')"><i
@@ -158,7 +158,7 @@
                 <div class="md-form mb-4">
                     <label>Jawaban</label>
                     {{ csrf_field() }}
-                    {{ Form::textarea('jawaban', null, ['class'=>'form-control', 'id'=>'jawab', 'required']) }}
+                    {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab', 'required']) }}
                 </div>
 
                 <legend>Verifikasi Data Penjawab</legend>
@@ -166,7 +166,7 @@
                 <div class="md-form mb-4{{ $errors->has('nik') ? ' has-error' : '' }}">
                     <label class="control-label">NIK <span class="required">*</span></label>
 
-                    {!! Form::text('nik', null,['placeholder'=>'NIK', 'class'=>'form-control', 'required', 'id'=>'nik']) !!}
+                    {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required', 'id' => 'nik']) !!}
                     @if ($errors->has('nik'))
                         <span class="help-block">
                         <strong>{{ $errors->first('nik') }}</strong>
@@ -178,7 +178,7 @@
                     <label class="control-label">Tanggal Lahir <span class="required">*</span></label>
 
 
-                    {!! Form::text('tanggal_lahir', null,['placeholder'=>'1990-01-01', 'class'=>'form-control datepicker', 'required', 'id'=>'tanggal_lahir']) !!}
+                    {!! Form::text('tanggal_lahir', null, ['placeholder' => '1990-01-01', 'class' => 'form-control datepicker', 'required', 'id' => 'tanggal_lahir']) !!}
                     @if ($errors->has('tanggal_lahir'))
                         <span class="help-block">
                         <strong>{{ $errors->first('tanggal_lahir') }}</strong>
@@ -211,7 +211,7 @@
                 <div id="form-errors-admin"></div>
                 <div class="md-form mb-4">
                     <label>Jawaban</label>
-                    {{ Form::textarea('jawaban', null, ['class'=>'form-control', 'id'=>'jawab-admin', 'required']) }}
+                    {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab-admin', 'required']) }}
                     {{ Form::hidden('nik', '999') }}
                 </div>
 

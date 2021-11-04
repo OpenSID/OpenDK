@@ -3,16 +3,16 @@
 @section('content')
 
 
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('data.profil.index')}}">Profil</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.profil.index') }}">Profil</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -33,7 +33,7 @@
                 </div>
                 <div class="box-footer">
                     <div class="pull-right">
-                        <a href="{{ route('data.data-umum.edit', $id) }}" class="btn btn-primary">Lanjut</a>
+                        <a href="{{ route('data.data-umum.index', $id) }}" class="btn btn-primary">Lanjut</a>
                         <a href="{{ route('data.profil.index') }}" class="btn btn-default">Lewati</a>
                     </div>
                 </div>

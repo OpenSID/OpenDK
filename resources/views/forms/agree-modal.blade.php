@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <p>Silahkan pilih status di bawah ini?</p>
-                {{ Form::select('status', ['BELUM'=>'Setujui', 'DITOLAK'=>'Ditolak'], null,['class'=>'form-control']) }}
+                {{ Form::select('status', ['BELUM' => 'Setujui', 'DITOLAK' => 'Ditolak'], null, ['class' => 'form-control']) }}
             </div>
             <div class="modal-footer">
                     <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>

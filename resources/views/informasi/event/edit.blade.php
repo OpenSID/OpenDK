@@ -9,7 +9,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('informasi.faq.index') }}">{{ $page_title }}</a></li>
+        <li><a href="{{ route('informasi.event.index') }}">Daftar Event</a></li>
         <li class="active">{{ $page_description }}</li>
     </ol>
 </section>
@@ -22,7 +22,7 @@
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
-                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                        <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -45,9 +45,9 @@
                         <div class="pull-right">
                             <div class="control-group">
                                 <a href="{{ route('informasi.event.index') }}">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal</button>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
                                 </a>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Simpan</button>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
                             </div>
                         </div>
                     </div>

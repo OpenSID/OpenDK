@@ -6,11 +6,11 @@
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah }} {{ $nama_wilayah }}</small>
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -37,9 +37,9 @@
                             <div class="form-group">
                                 <label>Desa</label>
                                 <select class="form-control" id="list_desa">
-                                    <option value="ALL">ALL</option>
+                                    <option value="Semua">Semua Desa</option>
                                     @foreach($list_desa as $desa)
-                                        <option value="{{$desa->desa_id}}">{{$desa->nama}}</option>
+                                        <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -52,7 +52,7 @@
                                 <table class="table table-striped table-bordered" id="table-data">
                                     <thead>
                                         <tr>
-                                            <th width="100px">Aksi</th>
+                                            <th style="max-width: 100px;">Aksi</th>
                                             <th>Desa</th>
                                             <th>Nama</th>
                                             <th>Bulan</th>
@@ -97,7 +97,7 @@
                 {data: 'imported_at', name: 'imported_at'},
                 
             ],
-            order: [[0, 'nama_desa']]
+            order: [[1, 'asc']]
         });
         $('#list_desa').on('select2:select', function (e) {
             data.ajax.reload();

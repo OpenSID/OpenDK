@@ -2,7 +2,7 @@
 <!-- Slider -->
 <div id="slider">
     <div class="slides">
-       @php $slides  = \App\Models\Slide::orderBy('created_at','DESC')->take(4)->get(); @endphp
+        @php $slides  = \App\Models\Slide::orderBy('created_at','DESC')->take(4)->get(); @endphp
         @forelse ($slides as $slide)
         
         <div class="slider-class">

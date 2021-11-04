@@ -46,9 +46,8 @@ class LaporanPenduduk extends Model
         'imported_at'
     ];
 
-    protected $guarded   = [];
-
-    /**
-     * Relation Methods
-     * */
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+    }
 }

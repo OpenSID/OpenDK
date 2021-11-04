@@ -25,9 +25,11 @@ class ContohDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ContohDasDataDesaTableSeeder::class);
-        $this->call(ContohDasDataUmumTableSeeder::class);
+        $this->call(DatabaseSeeder::class);
+        
         $this->call(ContohDasProfilTableSeeder::class);
+        $this->call(ContohDasDataUmumTableSeeder::class);
+        $this->call(ContohDasDataDesaTableSeeder::class);
         $this->call(ContohDasKeluargaTableSeeder::class);
 
         $this->call(DemoAKIAKBSeeder::class);

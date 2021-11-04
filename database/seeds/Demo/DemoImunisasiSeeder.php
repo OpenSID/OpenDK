@@ -4,8 +4,9 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporImunisasi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Request;
 
 class DemoImunisasiSeeder extends Seeder
 {
@@ -16,6 +17,9 @@ class DemoImunisasiSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::table('das_imunisasi')->truncate();
+
         Excel::import(
             new ImporImunisasi([
                 'bulan' => now()->month,

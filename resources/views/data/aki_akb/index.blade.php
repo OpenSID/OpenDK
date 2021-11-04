@@ -1,16 +1,15 @@
 @extends('layouts.dashboard_template')
 
-
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah  }} {{ $nama_wilayah }}</small>
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -57,14 +56,14 @@
             serverSide: true,
             ajax: "{!! route( 'data.aki-akb.getdata' ) !!}",
             columns: [
-                {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'aki', name: 'aki'},
                 {data: 'akb', name: 'akb'},
                 {data: 'bulan', name: 'bulan', searchable: false,},
                 {data: 'tahun', name: 'tahun', searchable: false,},
             ],
-            order: [[0, 'desc']]
+            order: [[1, 'desc']]
         });
     });
 </script>

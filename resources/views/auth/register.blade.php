@@ -60,7 +60,7 @@ desired effect
 <body class="hold-transition register-page">
 <div class="register-box">
     <div class="register-logo">
-        <a href="{{$app->make('url')->to('/')}}"><b>Kecamatan</b>Dashboard</a>
+        <a href="{{ $app->make('url')->to('/') }}"><b>Kecamatan</b>Dashboard</a>
     </div>
 
     <div class="register-box-body">
@@ -102,7 +102,7 @@ desired effect
             </div>
         </form>
 
-        <a href="{{$app->make('url')->to('login')}}" class="text-center">I already have a membership</a>
+        <a href="{{ $app->make('url')->to('login') }}" class="text-center">I already have a membership</a>
     </div>
     <!-- /.form-box -->
 </div>

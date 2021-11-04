@@ -32,16 +32,22 @@
 return [
 
     /*
-     *  Default Profil
-     */
-
-    'default_profile' => env('KD_DEFAULT_PROFIL', '13.07.04'),
-
-    /*
      *  Mode Website
      */
 
     'version' => 'v21.12.01',
+
+    /*
+     *  Host TrackSID / Pantau
+     */
+
+    'host_pantau' => env('HOST_PANTAU', 'https://pantau.opensid.my.id/'),
+
+    /*
+     *  Token TrackSID / Pantau
+     */
+
+    'token_pantau' => env('TOKEN_PANTAU', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6bnVsbCwidGltZXN0YW1wIjoxNjAzNDY2MjM5fQ.HVCNnMLokF2tgHwjQhSIYo6-2GNXB4-Kf28FSIeXnZw'),
 
     /*
      *  Mode Website
@@ -60,7 +66,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Dashboard Kecamatan'),
 
     /*
     |--------------------------------------------------------------------------

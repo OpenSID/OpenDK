@@ -1,16 +1,15 @@
 @extends('layouts.dashboard_template')
 
-
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah }} {{ $nama_wilayah }}</small>
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -52,9 +51,7 @@
 </section>
 <!-- /.content -->
 @endsection
-
 @include('partials.asset_datatables')
-
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function () {
@@ -63,7 +60,7 @@
             serverSide: true,
             ajax: "{!! route( 'data.putus-sekolah.getdata' ) !!}",
             columns: [
-                {data: 'actions', name: 'actions', class:'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class:'text-center', searchable: false, orderable: false},
                 {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'siswa_paud', name: 'siswa_paud'},
                 {data: 'anak_usia_paud', name: 'anak_usia_paud'},
@@ -76,11 +73,10 @@
                 {data: 'semester', name: 'semester'},
                 {data: 'tahun', name: 'tahun'},
             ],
-            order: [[0, 'desc']]
+            order: [[1, 'asc']]
         });
     });
 </script>
 @include('forms.datatable-vertical')
 @include('forms.delete-modal')
-
 @endpush

@@ -6,32 +6,25 @@
 </div>
 
 <div id="kecamatan">
-  @forelse ($artikel as $item)
-  <div class="card flex-md-row mb-4 box-shadow h-md-250">
-    <div class="card-body d-flex flex-column align-items-start">
-      <div class="card-horizontal">
-        <div class="img-square-wrapper">
-          <a href="berita/{{ $item->slug }}">
-            <img class="" src="{{ url($item->gambar) }}" alt="Card image cap" style="width: 235px;height: 150px;object-fit: cover;">
-          </a>
+  <div class="post clearfix">
+    @forelse ($artikel as $item)
+    <div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
+      <div class="row">
+        <div class="col-sm-4">
+          <img class="img-responsive" src="{{ url($item->gambar) }}" alt="{{ $item->slug }}">
         </div>
-        <div class="card">
-          <div class="card-body">
-            <a href="berita/{{ $item->slug }}">
-              <h4 class="card-title text-black" style="margin-top: -5px;">{{ $item->judul }}</h4>
-            </a>
-            <p class="card-text mb-auto" style=" text-align: justify;">{{ strip_tags(substr($item->isi, 0, 250)) }}</p>
-            <a href="berita/{{ $item->slug }}" target="_blank">Selengkapnya</a>
-          </div>
+        <div class="col-sm-8">
+          <h5 style="margin-top: 5px; text-align: justify;"><b><a href="berita/{{ $item->slug }}">{{ $item->judul }}</a></b></h5>
+          <p style="text-align: justify;">{{ strip_tags(substr($item->isi, 0, 250)) }}...</p>
+          <a href="berita/{{ $item->slug }}" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>
         </div>
       </div>
     </div>
+    @empty
+      <div class="callout callout-info">
+        <p class="text-bold">Tidak ada berita kecamatan yang ditampilkan!</p>
+      </div>
+    @endforelse
+    {{ $artikel->links() }}
   </div>
-  <br>
-  @empty
-    <div class="callout callout-info">
-			<p class="text-bold">Tidak ada berita kecamatan yang ditampilkan!</p>
-		</div>
-  @endforelse
-  {{ $artikel->links() }}
 </div>

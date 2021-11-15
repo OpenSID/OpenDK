@@ -109,7 +109,7 @@ class PageController extends Controller
         }
 
         $feeds->all();
-        $html =  view('pages._feeds', [
+        $html =  view('pages.berita.feeds', [
             'feeds' => $feeds,
         ])->render();
 

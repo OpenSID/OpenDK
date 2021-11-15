@@ -9,7 +9,7 @@
 		<select class="form-control" id="list_desa" name="desa" style="width: auto;">
 			<option value="ALL">Semua Desa</option>
 			@foreach($list_desa as $desa)
-					<option value="{{$desa->desa_id}}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
+					<option value="{{ $desa->desa_id }}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
 			@endforeach
 		</select>
 		<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
@@ -21,34 +21,27 @@
 	</div>
 </form>
 <div id="feeds">
-	@forelse ($feeds as $item)
-	<div class="card flex-md-row mb-4 box-shadow h-md-250">
-    <div class="card-body d-flex flex-column align-items-start">
-      <div class="card-horizontal">
-        <div class="img-square-wrapper">
-          <a href="{{ $item['link'] }}">
-            <img class="" src="{{ get_tag_image($item['description']) }}" alt="Card image cap" style="width: 235px;height: 150px;object-fit: cover;">
-          </a>
+	<div class="post clearfix">
+    @forelse ($feeds as $item)
+    <div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
+      <div class="row">
+        <div class="col-sm-4">
+          <img class="img-responsive" src="{{ get_tag_image($item['description']) }}" alt="{{ $item['title'] }}">
         </div>
-        <div class="card">
-          <div class="card-body">
-            <a href="{{ $item['link'] }}">
-              <h4 class="card-title text-black" style="margin-top: -5px;">{{ strtoupper($item['title']) }}</h4>
-            </a>
-            <p class="card-text mb-auto" style=" text-align: justify;">{{ strip_tags(substr($item['description'], 0, 250)) }}</p>
-            <a href="{{ $item['link'] }}" target="_blank">Selengkapnya</a>
-          </div>
+        <div class="col-sm-8">
+          <h5 style="margin-top: 5px; text-align: justify;"><b><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></b></h5>
+          <p style="text-align: justify;">{{ strip_tags(substr($item['description'], 0, 250)) }}...</p>
+          <a href="{{ $item['link'] }}" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>
         </div>
       </div>
     </div>
+    @empty
+      <div class="callout callout-info">
+        <p class="text-bold">Tidak ada berita desa yang ditampilkan!</p>
+      </div>
+    @endforelse
+    {{ $feeds->links() }}
   </div>
-	<br>
-	@empty
-		<div class="callout callout-info">
-			<p class="text-bold">Tidak ada berita desa yang ditampilkan!</p>
-		</div>
-	@endforelse
-	{{ $feeds->links() }}
 </div>
 
 @include('partials.asset_select2')

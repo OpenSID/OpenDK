@@ -68,13 +68,14 @@
         @include('layouts.frontends.topheader')
         @include('layouts.frontends.header')
         <div class="content-wrapper">
-                @include('layouts.frontends.slider')
+            @include('layouts.frontends.slider')
             <div class="container">
                 <!-- Main content -->
                 <section class="content">
-                        <div class="row">
-                        @include('layouts.frontends.breadcumb')
+                    <div class="row">
+
                         @yield('content')
+
                         @include('layouts.frontends.sidebar')
                     </div>
                 </section>
@@ -87,9 +88,9 @@
     </div>
     <!-- ./wrapper -->
     <div class="scroll-top-wrapper ">
-       <span class="scroll-top-inner">
-                <i class="fa fa-2x fa-arrow-circle-up"></i>
-            </span>
+        <span class="scroll-top-inner">
+            <i class="fa fa-2x fa-arrow-circle-up"></i>
+        </span>
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED JS SCRIPTS -->

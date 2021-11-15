@@ -1,16 +1,14 @@
-#### [v21.11.01]
+#### [v21.12.01]
 
-Di rilis v21.11.01, menyediakan [untuk diisi]. Rilis ini juga berisi penambahan fitur dan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v21.12.01, menyediakan [untuk diisi]. Rilis ini juga berisi penambahan fitur dan perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada [untuk diisi] yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
-1. [#152](https://github.com/OpenSID/OpenDK/issues/152) Sediakan lihat rincian agenda pada halaman web OpenDK.
-2. [#223](https://github.com/OpenSID/OpenDK/issues/223) Sediakan modul untuk mengelola artikel/berita kecamatan.
+
 
 #### Perbaikan BUG
-1. [#237](https://github.com/OpenSID/OpenDK/issues/237) Perbaiki error error impor data dengan fotmat file zip yg nama filenya .zip tdk sesuai dengan isi file .xlsx.
+1. [#252](https://github.com/OpenSID/OpenDK/issues/252) Perbaiki tampilan mobile untuk halaman artikel.
+
 
 #### Perubahan Teknis
-1. Sesuaikan error jika desa tidak ditemuka di halaman website.
-2. Sesuaikan penamaan kolom yang salah pada laporan apbdes

@@ -111,8 +111,10 @@
 	<!-- Berita Kecamatan -->
 	@include('pages.berita.index')
 
+	<hr/>
+	
 	<!-- Berita Desa -->
-	@include('pages._feeds')
+	@include('pages.berita.feeds')
 		
 </div>
 @endsection

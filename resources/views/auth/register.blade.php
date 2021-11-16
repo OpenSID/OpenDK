@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset("/favicon.png")}}"/>
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
     <link rel="stylesheet" href="{{ asset("/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset("/bower_components/font-awesome/css/font-awesome.min.css") }}">

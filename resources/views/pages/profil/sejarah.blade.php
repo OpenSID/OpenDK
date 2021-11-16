@@ -8,7 +8,7 @@
         </div>
         <div class="box-body">
             <center>
-                <img class="img-circle" style="display:block;margin:auto" src="{{ is_logo($profil_wilayah->file_logo) }}">
+                <img class="img-circle" style="display:block;margin:auto" src="{{ is_logo($profil->file_logo) }}">
             </center>
             <p> {!! $profil->dataumum->tipologi !!}</p>
         </div>

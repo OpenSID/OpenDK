@@ -15,9 +15,8 @@
 
 <section class="content container-fluid">
             
-    {!! Form::open(['url' =>route('informasi.artikel.store'), 'files' => true])!!}
-
-        @include( 'flash::message' )
+    {!! Form::open(['url' => route('informasi.artikel.store'), 'files' => true]) !!}
+        
         @include('informasi.artikel._form')
     
     {!! Form::close() !!}

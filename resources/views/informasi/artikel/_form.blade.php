@@ -1,5 +1,3 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js" referrerpolicy="origin"></script>
-
 <div class="row">
     <div class="col-md-9">
         <div class="box box-primary">
@@ -30,11 +28,8 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="gambar">Gambar</label>
-                    
-                    @if(isset($artikel->gambar))
-                        <br>
-                        <img class="" src="{{ url($artikel->gambar) }}" id="showgambar" style="width:100%;max-height:250px;float:left;"/>
-                    @endif
+
+                    <img @isset ($artikel->gambar) src="{{ url($artikel->gambar) }}" @endisset id="showgambar" style="width:100%; max-height:250px; float:left;"/>
 
                     {!! Form::file('gambar', ['placeholder' => 'Gambar', 'class' => 'form-control', 'id' => 'file-artikel']) !!}
                     @if ($errors->has('gambar')) <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span> @endif
@@ -57,6 +52,7 @@
 </div>
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js" referrerpolicy="origin"></script>
 <script>
     $(function () {
 
@@ -73,15 +69,9 @@
                     var reader = new FileReader();
                     reader.onload = function (e) {
 
-                        if(extension != 'pdf') {
-                            $('#showgambar').attr('src', e.target.result);
-                            $('#showgambar').removeClass('hide');
-                            $('#showpdf').addClass('hide');
-                        } else {
-                            $('#showpdf').attr('data', e.target.result);
-                            $('#showpdf').removeClass('hide');
-                            $('#showgambar').addClass('hide');
-                        }
+                        $('#showgambar').attr('src', e.target.result);
+                        $('#showgambar').removeClass('hide');
+                        $('#showpdf').addClass('hide');
 
                     }
 

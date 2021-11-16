@@ -33,9 +33,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Artikel extends Model
 {
+
+    use Sluggable;
+
     protected $table = 'das_artikel';
 
     protected $fillable = [
@@ -45,10 +49,18 @@ class Artikel extends Model
         'status'
     ];
 
-    public function setJudulAttribute($value)
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
     {
-        $this->attributes['judul'] = $value;
-        $this->attributes['slug'] = $this->uniqueSlug($value);
+        return [
+            'slug' => [
+                'source' => 'judul',
+            ],
+        ];
     }
 
     public function getGambarAttribute()
@@ -59,13 +71,5 @@ class Artikel extends Model
     public function scopeStatus($query, $value = 1)
     {
         return $query->where('status', $value);
-    }
-
-    private function uniqueSlug($value)
-    {
-        $slug = str_slug($value);
-        $count = Artikel::where('slug', $slug)->count();
-        $newCount = $count > 0 ? ++$count : '';
-        return $newCount > 0 ? "$slug-$newCount" : $slug;
     }
 }

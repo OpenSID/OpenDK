@@ -26,6 +26,7 @@
         "spatie/laravel-collection-macros": "^6.1",
         "stevebauman/purify": "^4.0",
         "tymon/jwt-auth": "^1.0",
+        "unisharp/laravel-filemanager": "~1.8",
         "willvincent/feeds": "^2.2",
         "yajra/laravel-datatables-oracle": "~9."
     },

@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
+use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\Event;
 use function compact;
@@ -56,11 +57,11 @@ class PageController extends Controller
         $feeds->all();
         return view('pages.index', [
             'page_title'       => 'Beranda',
-            'page_description' => 'Berita Desa ' . $this->sebutan_wilayah,
             'cari'             => null,
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
+            'artikel'          => Artikel::latest()->status()->paginate(10),
         ]);
     }
 
@@ -108,7 +109,7 @@ class PageController extends Controller
         }
 
         $feeds->all();
-        $html =  view('pages._feeds', [
+        $html =  view('pages.berita.feeds', [
             'feeds' => $feeds,
         ])->render();
 
@@ -149,6 +150,13 @@ class PageController extends Controller
     public function refresh_captcha()
     {
         return response()->json(['captcha' => captcha_img('mini')]);
+    }
+
+    public function detailBerita($slug)
+    {
+        return view('pages.berita.detail', [
+            'artikel' => Artikel::where('slug', $slug)->status()->firstOrFail()
+        ]);
     }
 
     public function eventDetail($slug)

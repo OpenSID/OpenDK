@@ -42,11 +42,11 @@ use Illuminate\Support\Carbon;
 if (! function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
-        if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
+        if (preg_match('/<img.+?src="(.+?)"/', $img, $match)) {
             return $match[1];
         }
 
-        return 'http://placehold.it/500x300';
+        return asset('img/no-image.png');
     }
 }
 
@@ -297,13 +297,14 @@ function is_wajib_ktp($umur, $status_kawin)
     return $wajib_ktp;
 }
 
-function is_img($img)
+function is_img($url, $img = '/img/no-image.png')
 {
-    if ($img == '' || ! is_file($img)) {
-        $img = '/img/no-image.png';
-    }
+    return asset(($url == '' || ! is_file($url)) ? $img : $url);
+}
 
-    return $img;
+function is_logo($url, $file = '/img/logo.png')
+{
+    return is_img($url, $file);
 }
 
 if (! function_exists('divnum')) {

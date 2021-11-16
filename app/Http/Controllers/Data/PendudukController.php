@@ -125,9 +125,6 @@ class PendudukController extends Controller
     public function show($id)
     {
         $penduduk = Penduduk::findOrFail($id);
-        if ($penduduk->foto == '') {
-            $penduduk->file_struktur_organisasi = 'http://placehold.it/120x150';
-        }
         $page_title       = 'Detail Penduduk';
         $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 

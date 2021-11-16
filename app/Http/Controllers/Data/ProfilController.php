@@ -44,7 +44,6 @@ use function config;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function is_img;
 use function pathinfo;
 use const PATHINFO_EXTENSION;
 use function redirect;
@@ -66,11 +65,6 @@ class ProfilController extends Controller
     public function index()
     {
         $profil = Profil::where('kecamatan_id', config('app.default_profile'))->first();
-
-        $profil->file_struktur_organisasi = is_img($profil->file_struktur_organisasi);
-        $profil->file_logo                = is_img($profil->file_logo);
-        $profil->foto_kepala_wilayah                = is_img($profil->foto_kepala_wilayah);
-
         $page_title       = 'Ubah Profil';
         $page_description =   ucwords(strtolower($this->sebutan_wilayah).' : ' . $profil->kecamatan->nama);
         // dd($profil);
@@ -178,9 +172,6 @@ class ProfilController extends Controller
     public function edit($id)
     {
         $profil = Profil::findOrFail($id);
-        if ($profil->file_struktur_organisasi == '') {
-            $profil->file_struktur_organisasi = 'http://placehold.it/600x400';
-        }
         $page_title       = 'Ubah';
         $page_description = 'Ubah Profil Kecamatan: ' . ucwords(strtolower($profil->kecamatan->nama));
 

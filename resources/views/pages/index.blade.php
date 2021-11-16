@@ -90,72 +90,32 @@
 		border-top: 13px solid transparent;
 		border-bottom: 12px solid transparent;
 	}
-	.title-article{
+	.title-artikel{
 		font-size: 14px;
 		font-family: 'Lato', sans-serif;
 		/* font-family: 'Varela', sans-serif; */
 		/* font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 21px;  */
 	}
 
+	.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
+}
 </style>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
 @endpush
 @section('content')
 <div class="col-md-8">
-	<div class="fat-arrow">
-		<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
-	</div>
-	<form class="form-horizontal" id="form_filter" method="get" action="{{ route('feeds.filter') }}">
-		<div class="page-header" style="margin:0px 0px;">
-			<span style="display: inline-flex; vertical-align: middle;"><strong class="">{{ $page_description }}</strong></span>
-		</div>
-		<div class="page-header" style="margin:0px 0px; padding: 0px;">
-			<select class="form-control" id="list_desa" name="desa" style="width: auto;">
-				<option value="ALL">Semua Desa</option>
-				@foreach($list_desa as $desa)
-						<option value="{{$desa->desa_id}}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
-				@endforeach
-			</select>
-			<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
-				<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" value="{{$cari}}"/>
-				<button type="submit" class="btn btn-info btn-block" style="width: auto;">
-					<i class="fa fa-search"></i>
-				</button>
-			</div>
-		</div>
-	</form>
-	<div id="feeds">
-		@include('pages._feeds')
-	</div>
+
+	<!-- Berita Kecamatan -->
+	@include('pages.berita.index')
+
+	<hr/>
+	
+	<!-- Berita Desa -->
+	@include('pages.berita.feeds')
+		
 </div>
 @endsection
-@include('partials.asset_select2')
-
-@push('scripts')
-<script type="text/javascript">
-	$(document).ready(function () {
-		$( '#list_desa' ).select2();
-		$( "#list_desa" ).change(function() {
-			$( "#form_filter" ).submit();
-		});
-
-		$(function($){
-			$(document).on('submit', '#form_filter', function(event){
-				$.ajax({
-					url: "{{ route('feeds.filter') }}",
-					type: 'get',
-					dataType:'json',
-					data:$("#form_filter").serialize(),
-					success: function(data){
-						$("#feeds").html(data.html);
-					}
-				});
-		    event.preventDefault();
-			})
-		})
-
-	});
-</script>
-@endpush
 

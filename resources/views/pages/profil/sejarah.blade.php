@@ -8,7 +8,7 @@
         </div>
         <div class="box-body">
 
-            <img class="img-circle" style="display:block;margin:auto" src="@if(! $profil->file_logo =='') {{ asset($profil->file_logo) }} @else {{ 'http://placehold.it/154x154' }} @endif">
+            <img class="img-circle" style="display:block;margin:auto" src="{{ is_logo($profil_wilayah->file_logo) }}">
             <p> {!! $profil->dataumum->tipologi !!}</p>
         </div>
     </div>

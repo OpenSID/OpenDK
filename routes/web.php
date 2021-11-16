@@ -41,6 +41,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 });
 
+Route::get('berita', function () {
+    return redirect('/');
+});
+
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
@@ -168,6 +172,7 @@ Route::group(['middleware' => 'installed'], function () {
      */
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
+        Route::get('berita/{slug}', 'PageController@detailBerita')->name('berita.detail');
 
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
@@ -309,6 +314,18 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
                     Route::post('update/{id}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                });
+
+                //Routes for artikel resources
+                Route::group(['prefix' => 'artikel'], function () {
+                    '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()';
+                    Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
+                    Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArtikelController@create']);
+                    Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArtikelController@store']);
+                    Route::get('edit/{id}', ['as' => 'informasi.artikel.edit', 'uses' => 'ArtikelController@edit']);
+                    Route::post('update/{id}', ['as' => 'informasi.artikel.update', 'uses' => 'ArtikelController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArtikelController@destroy']);
+                    Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArtikelController@getDataArtikel']);
                 });
 
                 //Routes for Form Dokumen resources

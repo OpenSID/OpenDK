@@ -3,15 +3,15 @@
 @section('title') Data Profil @endsection
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -38,9 +38,9 @@
                                 <div class="form-group">
                                     <label>Desa</label>
                                         <select class="form-control" id="list_desa">
-                                            <option value="ALL">ALL</option>
+                                            <option value="Semua">Semua Desa</option>
                                             @foreach($list_desa as $desa)
-                                                <option value="{{$desa->desa_id}}">{{$desa->nama}}</option>
+                                                <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
                                             @endforeach
                                         </select>
                                 </div>
@@ -120,7 +120,7 @@
                 {data: 'pekerjaan', name: 'ref_pekerjaan.nama'},
                 {data: 'status_kawin', name: 'ref_kawin.nama'},
             ],
-            order: [[0, 'desc']]
+            order: [[3, 'asc']]
         });
 
         $('#list_desa').on('select2:select', function (e) {

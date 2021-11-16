@@ -32,24 +32,19 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateSetingAplikasiRequest;
 use App\Models\SettingAplikasi;
 use Exception;
+use Illuminate\Http\Request;
 
 class AplikasiController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function index()
     {
         $settings = SettingAplikasi::all();
         if ($settings->isEmpty()) {
             SettingAplikasi::insert([
                 'key'         => SettingAplikasi::KEY_BROWSER_TITLE,
-                'value'       => $this->default_browser_title,
+                'value'       => $this->browser_title,
                 'type'        => "input",
                 'description' => "Judul halaman aplikasi.",
                 'kategori'    => "-",
@@ -58,43 +53,36 @@ class AplikasiController extends Controller
             $settings = SettingAplikasi::all();
         }
 
-        return view('setting.aplikasi.index', [
-            'page_title'    => 'Pegaturan Aplikasi',
-            'settings'      => $settings,
-        ]);
+        $page_title       = 'Pegaturan Aplikasi';
+        $page_description = 'Daftar Pegaturan Aplikasi';
+
+        return view('setting.aplikasi.index', compact('page_title', 'page_description', 'settings'));
     }
 
     public function edit(SettingAplikasi $aplikasi)
     {
-        $page_title             = 'Update Aplikasi';
-        $page_description       = 'Edit Pengaturan Aplikasi Lainnya';
-        $default_browser_title  = $this->default_browser_title;
+        $page_title             = 'Pengaturan Aplikasi';
+        $page_description       = 'Ubah Pengaturan Aplikasi';
 
-        return view('setting.aplikasi.edit', compact(
-            'page_title',
-            'aplikasi',
-            'default_browser_title',
-            'page_description'
-        ));
+        return view('setting.aplikasi.edit', compact('page_title', 'page_description', 'aplikasi'));
     }
 
-    public function update(UpdateSetingAplikasiRequest $request, SettingAplikasi $aplikasi)
+    public function update(Request $request, $id)
     {
+        request()->validate([
+            'value' => 'required',
+        ]);
+
         try {
-            $data = $request->validated();
-            if ($aplikasi->isBrowserTitle() && !$request->input('value')) {
-                $data['value'] = $this->default_browser_title;
-            }
+            $penyakit = SettingAplikasi::findOrFail($id);
+            $penyakit->fill($request->only(['value']));
+            $penyakit->save();
 
-            $aplikasi->update($data);
-
-            return redirect()
-                ->route('setting.aplikasi.index')
-                ->with('success', 'Pengaturan aplikasi "' . $aplikasi->description . '" berhasil diupdate.');
+            $this->browser_title = $request->input('value');
         } catch (Exception $e) {
-            return redirect()
-                ->route('setting.aplikasi.edit', $aplikasi->id)
-                ->with('error', 'Gagal mengupdate pengaturan ' . $aplikasi->description . ', error: "' . $e->getMessage() . '".');
+            return back()->with('error', 'Pengaturan aplikasi gagal diubah!' . $e->getMessage());
         }
+
+        return redirect()->route('setting.aplikasi.index')->with('success', 'Pengaturan aplikasi berhasil diubah!.');
     }
 }

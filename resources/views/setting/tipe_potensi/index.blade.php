@@ -1,15 +1,15 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -30,8 +30,7 @@
             <table class="table table-striped table-bordered" id="data_tipe_potensi">
                 <thead>
                 <tr>
-                    <th style="max-width: 80px;">Aksi</th>
-                    <th>ID</th>
+                    <th style="max-width: 100px;">Aksi</th>
                     <th>Kategori Potensi</th>
                 </tr>
                 </thead>
@@ -54,10 +53,9 @@
             ajax: "{!! route( 'setting.tipe-potensi.getdata' ) !!}",
             columns: [
                 {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
-                {data: 'id', name: 'id'},
                 {data: 'nama_kategori', name: 'nama_kategori'}
             ],
-            order: [[0, 'desc']]
+            order: [[1, 'asc']]
         });
     });
 </script>

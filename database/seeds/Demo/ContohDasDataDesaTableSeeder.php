@@ -2,6 +2,7 @@
 
 namespace Database\Seeds\Demo;
 
+use App\Models\Profil;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,135 +16,114 @@ class ContohDasDataDesaTableSeeder extends Seeder
     public function run()
     {
 
-        $kecamatan_id = config('app.default_profile');
+        $profil = Profil::first();
 
-        DB::table('das_data_desa')->delete();
+        DB::table('das_data_desa')->truncate();
 
         DB::table('das_data_desa')->insert(array (
-            0 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2001',
-                'kecamatan_id' => $kecamatan_id,
+            0 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2001',
                 'nama' => 'Bedalewun',
             ),
-            1 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2002',
-                'kecamatan_id' => $kecamatan_id,
+            1 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2002',
                 'nama' => 'Lebanuba',
             ),
-            2 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2003',
-                'kecamatan_id' => $kecamatan_id,
+            2 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2003',
                 'nama' => 'Rianwale',
             ),
-            3 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2004',
-                'kecamatan_id' => $kecamatan_id,
+            3 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2004',
                 'nama' => 'Bungalawan',
             ),
-            4 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2005',
-                'kecamatan_id' => $kecamatan_id,
+            4 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2005',
                 'nama' => 'Lamawolo',
             ),
-            5 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2006',
-                'kecamatan_id' => $kecamatan_id,
+            5 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2006',
                 'nama' => 'Helanlangowuyo',
             ),
-            6 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2007',
-                'kecamatan_id' => $kecamatan_id,
+            6 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2007',
                 'nama' => 'Lewopao',
             ),
-            7 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2008',
-                'kecamatan_id' => $kecamatan_id,
+            7 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2008',
                 'nama' => 'Nelereren',
             ),
-            8 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2009',
-                'kecamatan_id' => $kecamatan_id,
+            8 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2009',
                 'nama' => 'Boleng',
             ),
-            9 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2010',
-                'kecamatan_id' => $kecamatan_id,
+            9 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2010',
                 'nama' => 'Neleblolong',
             ),
-            10 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2011',
-                'kecamatan_id' => $kecamatan_id,
+            10 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2011',
                 'nama' => 'Duablolong',
             ),
-            11 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2012',
-                'kecamatan_id' => $kecamatan_id,
+            11 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2012',
                 'nama' => 'Lewokeleng',
             ),
-            12 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2013',
-                'kecamatan_id' => $kecamatan_id,
+            12 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2013',
                 'nama' => 'Nelelamawangi',
             ),
-            13 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2014',
-                'kecamatan_id' => $kecamatan_id,
+            13 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2014',
                 'nama' => 'Harubala',
             ),
-            14 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2015',
-                'kecamatan_id' => $kecamatan_id,
+            14 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2015',
                 'nama' => 'Nelelamadike',
             ),
-            15 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2016',
-                'kecamatan_id' => $kecamatan_id,
+            15 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2016',
                 'nama' => 'Lamabayung',
             ),
-            16 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2017',
-                'kecamatan_id' => $kecamatan_id,
+            16 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2017',
                 'nama' => 'Lewat',
             ),
-            17 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2018',
-                'kecamatan_id' => $kecamatan_id,
+            17 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2018',
                 'nama' => 'Dokeng',
             ),
-            18 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2019',
-                'kecamatan_id' => $kecamatan_id,
+            18 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2019',
                 'nama' => 'Bayuntaa',
             ),
-            19 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2020',
-                'kecamatan_id' => $kecamatan_id,
+            19 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2020',
                 'nama' => 'Nobo',
             ),
-            20 =>
-            array (
-                'desa_id' => $kecamatan_id . '.2021',
-                'kecamatan_id' => $kecamatan_id,
+            20 => array (
+                'profil_id' => $profil->id,
+                'desa_id' => $profil->kecamatan_id . '.2021',
                 'nama' => 'Nelelamawangi Dua',
             ),
         ));

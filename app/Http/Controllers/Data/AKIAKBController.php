@@ -34,30 +34,14 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
-use function back;
-use function compact;
 use Exception;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\Response;
-use function months_list;
-use function redirect;
-use function request;
-use function route;
-use function view;
+
 use Yajra\DataTables\Facades\DataTables;
-use function years_list;
 
 class AKIAKBController extends Controller
 {
-    public $bulan;
-    public $tahun;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -66,7 +50,8 @@ class AKIAKBController extends Controller
     public function index()
     {
         $page_title       = 'AKI & AKB';
-        $page_description = 'Data Kematian Ibu & Bayi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_description = 'Daftar Kematian Ibu & Bayi';
+
         return view('data.aki_akb.index', compact('page_title', 'page_description'));
     }
 
@@ -78,19 +63,16 @@ class AKIAKBController extends Controller
     public function getDataAKIAKB()
     {
         return DataTables::of(AkiAkb::with(['desa']))
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('data.aki-akb.edit', $row->id);
-                $delete_url = route('data.aki-akb.destroy', $row->id);
-
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url']   = route('data.aki-akb.edit', $row->id);
+                $data['delete_url'] = route('data.aki-akb.destroy', $row->id);
 
                 return view('forms.action', $data);
             })
             ->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })
-            ->rawColumns(['actions'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     /**
@@ -100,10 +82,11 @@ class AKIAKBController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data AKI & AKB';
+        $page_title       = 'AKI & AKB';
+        $page_description = 'Import AKI & AKB';
         $years_list       = years_list();
         $months_list      = months_list();
+
         return view('data.aki_akb.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
@@ -139,8 +122,8 @@ class AKIAKBController extends Controller
     public function edit($id)
     {
         $akib             = AkiAkb::findOrFail($id);
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Data AKI & AKB: ' . $akib->id;
+        $page_title       = 'AKI & AKB';
+        $page_description = 'Ubah AKI & AKB : ' . $akib->id;
 
         return view('data.aki_akb.edit', compact('page_title', 'page_description', 'akib'));
     }
@@ -153,18 +136,18 @@ class AKIAKBController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'aki' => 'required',
+            'akb' => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'aki' => 'required',
-                'akb' => 'required',
-            ]);
-
-            AkiAkb::find($id)->update($request->all());
-
-            return redirect()->route('data.aki-akb.index')->with('success', 'Data berhasil disimpan!');
+            AkiAkb::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
+
+        return redirect()->route('data.aki-akb.index')->with('success', 'Data berhasil disimpan!');
     }
 
     /**
@@ -177,10 +160,10 @@ class AKIAKBController extends Controller
     {
         try {
             AkiAkb::findOrFail($id)->delete();
-
-            return redirect()->route('data.aki-akb.index')->with('success', 'Data sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('data.aki-akb.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.aki-akb.index')->with('success', 'Data sukses dihapus!');
     }
 }

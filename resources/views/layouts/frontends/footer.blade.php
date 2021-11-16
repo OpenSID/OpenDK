@@ -1,10 +1,10 @@
 <section class="footer-top">
     <div class="container no-padding">
       <div class="col-md-2">
-        @if (isset($profil_wilayah->socialmedia))
+        @if (isset($profil->socialmedia))
         <h5 class="text-bold">IKUTI KAMI</h5>
         <ul class="social-icon list-inline m-0">
-          @foreach(json_decode($profil_wilayah->socialmedia) as $sosmed)
+          @foreach(json_decode($profil->socialmedia) as $sosmed)
           <li><a target="_BLANK" href="{{ $sosmed->link ?? '' }}" class="site-button-link facebook hover"><i
                       class="{{ $sosmed->icon ?? ''}}"></i></a></li>
           @endforeach
@@ -22,12 +22,12 @@
         @endforeach
       </div>
       <div class="col-md-4 col-xs-12">
-        <h5 class="text-bold">Kantor {{ $sebutan_wilayah }} {{ $nama_wilayah }}</h5>
+        <h5 class="text-bold">Kantor {{ $sebutan_wilayah }} {{ $profil->nama_kecamatan }}</h5>
         <ul class="no-padding">
-          <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i> {{ $profil_wilayah->alamat }}</small></li>
-          <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-fax"></i> {{ $profil_wilayah->kode_pos }}</small></li>
-          <li><small style="text-indent: 0px ;font-size:15px"><a href="http://mailto:{{ $profil_wilayah->email }}" target="_blank"><i class="fa fa-envelope"></i> {{ $profil_wilayah->email }}</a></small></li>
-          <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i> {{ $profil_wilayah->telepon }}</small></li>
+          <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i> {{ $profil->alamat }}</small></li>
+          <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-fax"></i> {{ $profil->kode_pos }}</small></li>
+          <li><small style="text-indent: 0px ;font-size:15px"><a href="http://mailto:{{ $profil->email }}" target="_blank"><i class="fa fa-envelope"></i> {{ $profil->email }}</a></small></li>
+          <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i> {{ $profil->telepon }}</small></li>
         </ul>
       </div>
     </div>

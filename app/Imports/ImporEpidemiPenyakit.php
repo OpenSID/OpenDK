@@ -64,7 +64,6 @@ class ImporEpidemiPenyakit implements ToModel, WithHeadingRow, WithChunkReading,
     public function model(array $row)
     {
         return new EpidemiPenyakit([
-            'kecamatan_id'      => config('app.default_profile'),
             'desa_id'           => $row['desa_id'],
             'jumlah_penderita'  => $row['jumlah_penderita'],
             'penyakit_id'       => $this->request['penyakit_id'],

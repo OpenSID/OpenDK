@@ -38,7 +38,6 @@ class AkiAkb extends Model
     protected $table = 'das_akib';
 
     protected $fillable = [
-        'kecamatan_id',
         'desa_id',
         'aki',
         'akb',
@@ -46,13 +45,8 @@ class AkiAkb extends Model
         'tahun',
     ];
 
-    public function kecamatan()
-    {
-        return $this->hasOne(Wilayah::class, 'kode', 'kecamatan_id');
-    }
-
     public function desa()
     {
-        return $this->hasOne(Wilayah::class, 'kode', 'desa_id');
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
 }

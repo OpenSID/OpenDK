@@ -11,7 +11,7 @@ use Carbon\Carbon;
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
@@ -53,8 +53,7 @@ use Carbon\Carbon;
                                 <div class="timeline-body">
                                     {!! $value->description !!}
                                     @if($value->status== 'CLOSED' && !$value->attachment=="")
-                                        <label class="control-label">Attachment: </label>
-                                        <a href="{{ asset($value->attachment) }}" target="_blank">Download</a>
+                                        <label class="control-label">Attachment: </label><a href="{{ asset($value->attachment) }}" target="_blank">&nbsp; Download</a>
                                     @endif
                                 </div>
 
@@ -73,11 +72,11 @@ use Carbon\Carbon;
                                             <div class="pull-right">
                                                 @if($value->status== 'OPEN')
                                                     @if(Sentinel::check())
-                                                        <a href="{!! route('event.detail', $value->slug) !!}" class="btn btn-xs btn-info" title="Lihat" data-button="lihat"><i class="fa fa-eye"></i> Lihat </a>
-                                                        <a href="{!! route('informasi.event.edit', $value->id) !!}" class="btn btn-xs btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i> Ubah </a>
+                                                        <a href="{!! route('event.detail', $value->slug) !!}" class="btn btn-xs btn-info" title="Lihat" data-button="lihat"><i class="fa fa-eye"></i>&nbsp; Lihat</a>
+                                                        <a href="{!! route('informasi.event.edit', $value->id) !!}" class="btn btn-xs btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
 
                                                         <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.event.destroy', $value->id) !!}" data-button="delete" id="deleteModal">
-                                                            <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash" aria-hidden="true"></i> Hapus </button>
+                                                            <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp; Hapus</button>
                                                         </a>
                                                     @else
                                                         <span class="time label label-success">OPEN</span>
@@ -97,7 +96,7 @@ use Carbon\Carbon;
                     @else
                         <li class="time-label">
                             <span class="bg-gray">
-                                Event tidak tersedia.
+                                Data tidak ditemukan.
                             </span>
                         </li>
                 @endif
@@ -114,16 +113,7 @@ use Carbon\Carbon;
                 <div class="box box-primary limit-p-width">
                     <div class="box-body">
                         <div class="caption">
-                            {{-- <form class="form-horizontal">
-                                <div class="input-group input-group-sm">
-                                    <input class="form-control" type="text" name="cari" placeholder="Cari">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-primary btn-flat">Cari</button>
-                                    </span>
-                                </div>
-                            </form>--}}
-
-                            <a href="{{route('informasi.event.create')}}" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Tambah Event</a>
+                            <a href="{{route('informasi.event.create')}}" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp; Tambah</a>
                         </div>
 
                     </div>

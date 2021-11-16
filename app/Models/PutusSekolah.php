@@ -36,8 +36,8 @@ use Illuminate\Database\Eloquent\Model;
 class PutusSekolah extends Model
 {
     protected $table    = 'das_putus_sekolah';
+
     protected $fillable = [
-        'kecamatan_id',
         'desa_id',
         'siswa_paud',
         'anak_usia_paud',
@@ -47,7 +47,7 @@ class PutusSekolah extends Model
         'anak_usia_smp',
         'siswa_sma',
         'anak_usia_sma',
-        'bulan',
+        'semester',
         'tahun',
         'semester',
     ];

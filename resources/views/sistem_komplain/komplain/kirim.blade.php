@@ -15,7 +15,7 @@
                 <div class="box-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -33,7 +33,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null,['class'=>'form-control', 'id'=>'kategori', 'required']) !!}
+                                    {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null, ['class' => 'form-control', 'id' => 'kategori', 'required']) !!}
                                     @if ($errors->has('kategori'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('kategori') }}</strong>
@@ -46,7 +46,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-8 col-xs-12">
-                                    {!! Form::text('judul', null,['placeholder'=>'Judul', 'class'=>'form-control', 'required']) !!}
+                                    {!! Form::text('judul', null, ['placeholder' => 'Judul', 'class' => 'form-control', 'required']) !!}
                                     @if ($errors->has('judul'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('judul') }}</strong>
@@ -59,7 +59,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-8 col-xs-12">
-                                    {!! Form::textArea('laporan', null,['placeholder'=>'Laporan', 'class'=>'form-control', 'required']) !!}
+                                    {!! Form::textArea('laporan', null, ['placeholder' => 'Laporan', 'class' => 'form-control', 'required']) !!}
                                     @if ($errors->has('laporan'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('laporan') }}</strong>
@@ -124,7 +124,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Form::text('nik', null,['placeholder'=>'NIK', 'class'=>'form-control', 'required']) !!}
+                                    {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required']) !!}
                                     @if ($errors->has('nik'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('nik') }}</strong>
@@ -136,7 +136,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Tanggal Lahir <span class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Form::text('tanggal_lahir', null,['placeholder'=>'1990-01-01', 'class'=>'form-control datepicker', 'required' ]) !!}
+                                    {!! Form::text('tanggal_lahir', null, ['placeholder' => '1990-01-01', 'class' => 'form-control datepicker', 'required' ]) !!}
                                     @if ($errors->has('tanggal_lahir'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('tanggal_lahir') }}</strong>

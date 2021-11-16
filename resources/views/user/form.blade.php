@@ -30,7 +30,9 @@
         <input type="file" name="image" class="form-control">
     </div>
 </div>
+
 @if(empty($user))
+
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
 
@@ -41,7 +43,9 @@
             <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
         </div>
     </div>
+
 @endif
+
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
 
@@ -51,6 +55,7 @@
 </div>
 
 @if(empty($user))
+
     <div class="form-group">
         <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
@@ -58,8 +63,10 @@
             {{ Form::select('role', $item, null, ['class' => 'form-control']) }}
         </div>
     </div>
+
 @elseif(Sentinel::getUser()->id == 1)
     @if($user->id !=1)
+
         <div class="form-group">
             <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
@@ -67,21 +74,9 @@
                 {{ Form::select('role', $item, !empty(old('role'))?old('role'):$user->role->first()->slug, ['class' => 'form-control']) }}
             </div>
         </div>
-        @endif
-        @endif
 
-                <!-- @if(empty($user))
-                <div class="form-group">
-                  <label class="col-md-3 col-sm-3 col-xs-12 control-label">Active</label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="checkbox">
-                      <label>
-                        {!! Form::checkbox( 'status', !empty( $user ) ? $user->is_active : 0),null  !!}
-                </label>
-              </div>
-            </div>
-          </div>
-          @endif -->
+    @endif
+@endif
 
         <div class="ln_solid"></div>
         <div class="form-group">

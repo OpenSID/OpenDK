@@ -32,17 +32,13 @@
 namespace App\Imports;
 
 use App\Models\Penduduk;
-use function config;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
-
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use function now;
-use function substr;
 
 class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {

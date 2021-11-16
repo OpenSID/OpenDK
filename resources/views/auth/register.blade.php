@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset("/favicon.png")}}"/>
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
     <link rel="stylesheet" href="{{ asset("/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset("/bower_components/font-awesome/css/font-awesome.min.css") }}">
@@ -60,7 +60,7 @@ desired effect
 <body class="hold-transition register-page">
 <div class="register-box">
     <div class="register-logo">
-        <a href="{{$app->make('url')->to('/')}}"><b>Kecamatan</b>Dashboard</a>
+        <a href="{{ $app->make('url')->to('/') }}"><b>Kecamatan</b>Dashboard</a>
     </div>
 
     <div class="register-box-body">
@@ -102,7 +102,7 @@ desired effect
             </div>
         </form>
 
-        <a href="{{$app->make('url')->to('login')}}" class="text-center">I already have a membership</a>
+        <a href="{{ $app->make('url')->to('login') }}" class="text-center">I already have a membership</a>
     </div>
     <!-- /.form-box -->
 </div>

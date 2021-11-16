@@ -73,7 +73,7 @@ function define_child($parent_id)
  */
 function permission_val($id, $permission)
 {
-    $role = Role::find($id);
+    $role = Role::findOrFail($id);
     $format = json_decode(json_encode($role), true);
     $result = (isset($format['permissions'][$permission]) && $format['permissions'][$permission] != '' ? 1 : 0);
     return $result;
@@ -297,12 +297,12 @@ function is_wajib_ktp($umur, $status_kawin)
     return $wajib_ktp;
 }
 
-function is_img($url, $img = '/img/no-image.png')
+function is_img($url = '', $img = '/img/no-image.png')
 {
-    return asset(($url == '' || ! is_file($url)) ? $img : $url);
+    return asset(file_exists(public_path($url)) ? $url : $img);
 }
 
-function is_logo($url, $file = '/img/logo.png')
+function is_logo($url = '', $file = '/img/logo.png')
 {
     return is_img($url, $file);
 }

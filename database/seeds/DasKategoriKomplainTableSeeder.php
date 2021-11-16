@@ -14,51 +14,44 @@ class DasKategoriKomplainTableSeeder extends Seeder
     {
         
 
-        \DB::table('das_kategori_komplain')->delete();
+        DB::table('das_kategori_komplain')->delete();
         
-        \DB::table('das_kategori_komplain')->insert(array (
-            0 => 
-            array (
+        DB::table('das_kategori_komplain')->insert(array (
+            0 => array (
                 'id' => '1',
                 'slug' => 'infrastruktur-sanitasi-air',
-            'nama' => 'Infrastruktur (Sanitasi & Air)',
-                'created_at' => '2018-04-25 16:49:07',
-                'updated_at' => '2018-04-25 16:49:07',
+                'nama' => 'Infrastruktur (Sanitasi & Air)',
+                'created_at' => now(),
+                'updated_at' => now(),
             ),
-            1 => 
-            array (
+            1 => array (
                 'id' => '3',
                 'slug' => 'pendidikan',
                 'nama' => 'Pendidikan',
-                'created_at' => '2018-04-25 17:04:27',
-                'updated_at' => '2018-04-25 17:04:27',
+                'created_at' => now(),
+                'updated_at' => now(),
             ),
-            2 => 
-            array (
+            2 => array (
                 'id' => '4',
                 'slug' => 'kesehatan',
                 'nama' => 'Kesehatan',
-                'created_at' => '2018-04-25 17:04:41',
-                'updated_at' => '2018-04-25 18:21:05',
+                'created_at' => now(),
+                'updated_at' => now(),
             ),
-            3 => 
-            array (
+            3 => array (
                 'id' => '5',
                 'slug' => 'anggaran-desa',
                 'nama' => 'Anggaran Desa',
-                'created_at' => '2018-04-25 17:04:51',
-                'updated_at' => '2018-04-25 17:04:51',
+                'created_at' => now(),
+                'updated_at' => now(),
             ),
-            4 => 
-            array (
+            4 => array (
                 'id' => '6',
                 'slug' => 'lainnya',
                 'nama' => 'Lainnya',
-                'created_at' => '2018-04-25 17:05:00',
-                'updated_at' => '2018-04-25 17:05:00',
+                'created_at' => now(),
+                'updated_at' => now(),
             ),
         ));
-        
-        
     }
 }

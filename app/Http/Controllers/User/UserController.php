@@ -36,21 +36,11 @@ use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
-use function back;
-use function bcrypt;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use function compact;
 use Exception;
-use function flash;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
-use function public_path;
-use function redirect;
-use function route;
-use function trans;
-use function view;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -62,8 +52,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $page_title = 'Pengguna';
-        return view('user.index', compact('page_title'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Daftar Data';
+
+        return view('user.index', compact('page_title', 'page_description'));
     }
 
     /**
@@ -73,9 +65,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $page_title = 'Tambah Pengguna';
-        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.create', compact('item', 'page_title'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Tambah Data';
+        $item             = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+
+        return view('user.create', compact('page_title', 'page_description', 'item'));
     }
 
     /**
@@ -112,7 +106,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         return view('user.show', compact('user'));
     }
 
@@ -124,11 +118,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $page_title = 'Ubah Pengguna';
-        $user       = User::find($id);
-        $title      = ['title' => 'Pengguna'];
-        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.edit', compact('page_title', 'user', 'title', 'item'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Ubah Data';
+        $user             = User::findOrFail($id);
+        $item             = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+
+        return view('user.edit', compact('page_title', 'page_description', 'user', 'item'));
     }
 
     /**
@@ -141,7 +136,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user_find = User::find($id);
+            $user_find = User::findOrFail($id);
 
             $user = Sentinel::update($user_find, $request->all());
             if ($request->hasFile('image')) {
@@ -173,7 +168,7 @@ class UserController extends Controller
     {
         // dd($request->all());
         try {
-            $user_find = User::find($id);
+            $user_find = User::findOrFail($id);
 
             $user = Sentinel::update($user_find, $request->all());
             $user->update([
@@ -241,19 +236,15 @@ class UserController extends Controller
         })
         ->addColumn('action', function ($user) {
             if ($user->id != 1) {
-                $edit_url = route('setting.user.edit', $user->id);
                 if ($user->status == 1) {
-                    $suspend_url         = route('setting.user.destroy', $user->id);
-                    $data['suspend_url'] = $suspend_url;
+                    $data['suspend_url'] = route('setting.user.destroy', $user->id);
                 } else {
-                    $active_url         = route('setting.user.active', $user->id);
-                    $data['active_url'] = $active_url;
+                    $data['active_url'] = route('setting.user.active', $user->id);
                 }
 
-                $data['edit_url'] = $edit_url;
+                $data['edit_url'] = route('setting.user.edit', $user->id);
             } else {
-                $edit_url         = route('setting.user.edit', $user->id);
-                $data['edit_url'] = $edit_url;
+                $data['edit_url'] = route('setting.user.edit', $user->id);
             }
 
             return view('forms.action', $data);

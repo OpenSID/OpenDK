@@ -64,7 +64,6 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
     public function model(array $row)
     {
         return new FasilitasPAUD([
-            'kecamatan_id'      => config('app.default_profile'),
             'desa_id'           => $this->request['desa_id'],
             'jumlah_paud'       => $row['jumlah_paud_ra'],
             'jumlah_guru_paud'  => $row['jumlah_guru_paud_ra'],

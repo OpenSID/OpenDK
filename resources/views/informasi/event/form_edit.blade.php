@@ -17,7 +17,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('description', null,['class' => 'textarea', 'placeholder' => 'Deskripsi kegiatan', 'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;', 'required' => 'required']) !!}
+        {!! Form::textarea('description', null, ['class' => 'textarea', 'placeholder' => 'Deskripsi kegiatan', 'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;', 'required' => 'required']) !!}
     </div>
 </div>
 <div class="form-group">

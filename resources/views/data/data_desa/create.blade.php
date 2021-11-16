@@ -1,16 +1,16 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('data.data-desa.index')}}">Data Desa</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.data-desa.index') }}">Data Desa</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -19,12 +19,7 @@
     <div class="row">
         <div class="col-md-12">
             @include( 'partials.flash_message' )
-            <div class="box box-primary">
-                {{-- <div class="box-header with-border">
-                     <h3 class="box-title">Aksi</h3>
-                 </div>--}}
-                <!-- /.box-header -->
-
+            
                 <!-- form start -->
                 {!! Form::open( [ 'route' => 'data.data-desa.store', 'method' => 'post','id' => 'datadesa-ektp', 'class' => 'form-horizontal form-label-left'] ) !!}
 
@@ -66,66 +61,16 @@
 </section>
 <!-- /.content -->
 @endsection
-@include(('partials.asset_select2'))
-@include('partials.asset_datetimepicker')
+@include('partials.asset_select2')
 @push('scripts')
+@include('partials.desa_select2')
 <script>
     $(function () {
-        $('#penduduk_id').select2({
-            ajax: {
-                url: '{!! route('api.penduduk') !!}',
-                dataType: 'json',
-                delay: 200,
-                data: function (params) {
-                    return {
-                        q: params.term,
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: data.data,
-                        pagination: {
-                            more: (params.page * 10) < data.total
-                        }
-                    };
-                }
-            },
-            minimumInputLength: 1,
-            templateResult: function (repo) {
-                if (repo.loading) return repo.nama;
-                var markup = repo.nama;
-                return markup;
-            },
-            templateSelection: function (repo) {
-                return repo.nama;
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            placeholder: "Nama Penduduk",
-            allowClear: true,
+
+        $('#list_desa').change(function () {
+            $("#desa_id").val($('#list_desa').val());
+            $("#nama").val($('#list_desa option:selected').text());
         });
-
-        $('#penduduk_id').on('select2:select', function (e) {
-            var data = e.params.data;
-
-            console.log(data);
-            $('#alamat').val(data.alamat_sekarang);
-
-        });
-
-        //Datetimepicker
-        $('.datepicker').each(function () {
-            var $this = $(this);
-            $this.datetimepicker({
-                format: 'YYYY-MM-D'
-            });
-        });
-
     })
-
-
 </script>
 @endpush

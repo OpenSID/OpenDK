@@ -15,20 +15,21 @@ class ContohDasProfilTableSeeder extends Seeder
     public function run()
     {
 
-        $kecamatan_id = config('app.default_profile');
-
         DB::table('das_profil')->truncate();
 
         DB::table('das_profil')->insert([
             'id'                              => 1,
-            'provinsi_id'                     => substr($kecamatan_id, 0, 2),
-            'kabupaten_id'                    => substr($kecamatan_id, 0, 5),
-            'kecamatan_id'                    => $kecamatan_id,
+            'provinsi_id'                     => '53',
+            'nama_provinsi'                   => 'Nusa Tenggara Timur',
+            'kabupaten_id'                    => '53.06',
+            'nama_kabupaten'                  => 'FLORES TIMUR',
+            'kecamatan_id'                    => '53.06.13',
+            'nama_kecamatan'                  => 'Ile Boleng',
             'alamat'                          => 'Jl. Koperasi No. 1, Kab Lombok Barat, Provinsi Nusa Tenggara Barat',
             'kode_pos'                        => '83653',
-            'telepon'                         => '021-2345234',
+            'telepon'                         => '0212345234',
             'email'                           => 'admin@mail.com',
-            'tahun_pembentukan'               => 1990,
+            'tahun_pembentukan'               => now()->year,
             'dasar_pembentukan'               => 'PEREGUB No 4 1990',
             'nama_camat'                      => 'H. Hadi Fathurrahman, S.Sos, M.AP',
             'sekretaris_camat'                => 'Drs. Zaenal Abidin',
@@ -41,8 +42,8 @@ class ContohDasProfilTableSeeder extends Seeder
             'file_logo'                       => NULL,
             'visi'                            => NULL,
             'misi'                            => NULL,
-            'created_at'                      => '2018-02-03 06:57:26',
-            'updated_at'                      => '2018-07-19 01:29:57',
+            'created_at'                      => now(),
+            'updated_at'                      => now(),
         ]);
     }
 }

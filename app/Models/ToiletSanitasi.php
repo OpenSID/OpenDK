@@ -38,7 +38,6 @@ class ToiletSanitasi extends Model
     protected $table = 'das_toilet_sanitasi';
 
     protected $fillable = [
-        'kecamatan_id',
         'desa_id',
         'toilet',
         'sanitasi',
@@ -48,6 +47,6 @@ class ToiletSanitasi extends Model
 
     public function desa()
     {
-        return $this->hasOne(Wilayah::class, 'kode', 'desa_id');
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
 }

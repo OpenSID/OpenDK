@@ -33,11 +33,7 @@ namespace App\Http\Controllers\Counter;
 
 use App\Http\Controllers\Controller;
 use App\Models\CounterPage;
-use function compact;
-
 use Illuminate\Support\Facades\DB;
-use function route;
-use function view;
 
 class CounterController extends Controller
 {
@@ -60,7 +56,7 @@ class CounterController extends Controller
 
         $data = [];
         foreach ($sql as $item) {
-            $page = CounterPage::find($item->page_id);
+            $page = CounterPage::findOrFail($item->page_id);
             $data[] = [
                 'id'    => $item->page_id,
                 'url'   => route($page->page),

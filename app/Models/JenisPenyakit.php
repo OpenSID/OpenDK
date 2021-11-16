@@ -37,5 +37,7 @@ class JenisPenyakit extends Model
 {
     protected $table = 'ref_penyakit';
 
-    protected $fillable = ['nama'];
+    protected $fillable = [
+        'nama'
+    ];
 }

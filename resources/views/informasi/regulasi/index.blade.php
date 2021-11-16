@@ -2,15 +2,15 @@
 
 @section('content')
 
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -22,15 +22,10 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Data Regulasi</h3>
-
-                    <div class="box-tools pull-right">
-                        <a href="{{route('informasi.regulasi.create')}}"
-                           class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}"><i class="fa fa-plus"></i> Tambah</a>
-                    </div>
+                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
                 </div>
                 <!-- /.box-header -->
-                @if(isset($regulasi))
+                @if (count($regulasi) > 0)
                     <div class="box-body no-padding">
 
                         <table class="table table-striped">
@@ -38,35 +33,30 @@
                                 <th>Judul Regulasi</th>
                                 <th style="width: 150px">Aksi</th>
                             </tr>
+
                             @foreach($regulasi as $item)
                             <tr>
 
-                                <td><a href="{{ route('informasi.regulasi.show', $item->id) }}">{{ $item->judul }}</a></td>
+                                <td>{{ $item->judul }}</td>
 
-                                    @unless(!Sentinel::check())
-                                    <td>
-                                            <a href="{{ route('informasi.regulasi.edit', $item->id) }}">
-                                                <button type="submit"
-                                                        class="btn btn-xs btn-primary"><i class="fa fa-pencil"></i> Ubah
-                                                </button>
-                                            </a>&nbsp;
-                                            <a href="javascript:void(0)" class="" title="Hapus"
-                                               data-href="{!! route('informasi.regulasi.destroy', $item->id) !!}"
-                                               data-button="delete"
-                                               id="deleteModal">
-                                                <button type="button" class="btn btn-icon btn-danger btn-xs"><i class="fa fa-trash"
-                                                                                                                aria-hidden="true"></i>
-                                                    Hapus
-                                                </button>
-                                            </a>
-                                    </td>
-                                    @endunless
+                                @unless(!Sentinel::check())
+                                <td>
+                                    <?php
+
+                                        // TODO : Pindahkan ke controller dan gunakan datatable
+                                        $data['show_url']   = route('informasi.regulasi.show', $item->id);
+                                        $data['edit_url']   = route('informasi.regulasi.edit', $item->id);
+                                        $data['delete_url'] = route('informasi.regulasi.destroy', $item->id);
+
+                                        echo view('forms.action', $data);
+                                    ?>
+                                </td>
+                                @endunless
 
                             </tr>
                             @endforeach
                         </table>
                     </div>
-
 
                     <!-- /.box-body -->
                     <div class="box-footer clearfix">
@@ -74,17 +64,10 @@
                     </div>
                 @else
                     <div class="box-body">
-                        <h3>Data not found.</h3>
-                        Sorry no data available right now!
+                        <h3>Data tidak ditemukan.</h3>
                     </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer clearfix">
-                        <div class="pull-right">
-
-                        </div>
-                    </div>
-                    @endif
-                            <!-- /.box-footer -->
+                @endif
+                    <!-- /.box-footer -->
             </div>
         </div>
         <!-- /.col -->
@@ -95,66 +78,7 @@
 <!-- /.content -->
 @endsection
 
-
-
-@include('partials.asset_select2')
-
 @push('scripts')
-<script>
-    $(function () {
-
-        $('#kecamatan').select2({
-            placeholder: "Pilih Kecamatan",
-            allowClear: true,
-            ajax: {
-                url: '{!! route('api.profil') !!}',
-                dataType: 'json',
-                delay: 200,
-                data: function (params) {
-                    return {
-                        q: params.term,
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    return {
-                        results: data.data,
-                        pagination: {
-                            more: (params.page * 10) < data.total
-                        }
-                    };
-                }
-            },
-            minimumInputLength: 1,
-            templateResult: function (repo) {
-                if (repo.loading) return repo.nama;
-                var markup = repo.nama;
-                return markup;
-            },
-            templateSelection: function (repo) {
-                return repo.nama;
-            },
-            escapeMarkup: function (markup) {
-                return markup;
-            },
-            initSelection: function (element, callback) {
-
-                //var id = $(element).val();
-                var id = $('#defaultProfil').val();
-                if (id !== "") {
-                    $.ajax('{!! route('api.profil-byid') !!}', {
-                        data: {id: id},
-                        dataType: "json"
-                    }).done(function (data) {
-                        callback(data);
-                    });
-                }
-            }
-        });
-    });
-</script>
-
 @include('forms.delete-modal')
 @endpush
 

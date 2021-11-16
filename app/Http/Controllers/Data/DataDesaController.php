@@ -151,7 +151,7 @@ class DataDesaController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
-            'desa_id'      => 'required|regex:/^[0-9.]+$/|min:13|max:13|unique:das_data_desa,desa_id,'.$id,
+            'desa_id'      => "required|unique:das_data_desa,desa_id,{$id}|regex:/^[0-9.]+$/|min:13|max:13",
             'nama'         => 'required',
             'luas_wilayah' => 'required|numeric',
         ]);
@@ -190,16 +190,14 @@ class DataDesaController extends Controller
         $host = config('app.host_pantau');
         $token = config('app.token_pantau');
 
-        $response = $this->client->get("{$host}wilayah/list_wilayah", [
-            'query' => [
-                'token' => $token,
-                'kode' => $this->profil->kecamatan_id,
-            ]
-        ]);
-
-        // dd(collect(json_decode($response->getBody(), true)));
-
         try {
+            $response = $this->client->get("{$host}wilayah/list_wilayah", [
+                'query' => [
+                    'token' => $token,
+                    'kode' => $this->profil->kecamatan_id,
+                ]
+            ]);
+
             if ($response->getStatusCode() === 200) {
                 $daftar_desa = collect(json_decode($response->getBody(), true));
 
@@ -208,9 +206,11 @@ class DataDesaController extends Controller
                         'profil_id' => $this->profil->id,
                         'desa_id' => $value['kode_desa'],
                         'nama' => $value['nama_desa'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
                     ];
 
-                    DataDesa::updateOrInsert([
+                    DataDesa::query()->updateOrInsert([
                         'desa_id' => $value['kode_desa']
                     ], $insert);
                 }

@@ -3,7 +3,7 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda') }}"  class="navbar-brand">
-              <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD" id="logo-brand" >
+              <img class="logo-kab" src="{{ is_logo($profil_wilayah->file_logo) }}" alt="KD" id="logo-brand" >
               <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
               <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
             </a>

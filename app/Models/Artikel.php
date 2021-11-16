@@ -31,13 +31,12 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Cviebrock\EloquentSluggable\Sluggable;
 
 class Artikel extends Model
 {
-
     use Sluggable;
 
     protected $table = 'das_artikel';

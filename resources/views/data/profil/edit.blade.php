@@ -117,8 +117,8 @@
         $("#file_struktur").change(function () {
             readURL(this);
         });
-
-      $("#foto_kepala_wilayah").change(function () {
+        
+        $("#foto_kepala_wilayah").change(function () {
             readURL2(this);
         });
 

@@ -65,8 +65,7 @@ class KesehatanController extends Controller
             foreach (years_list() as $yearl) {
                 // SD
                 $query_aki = DB::table('das_akib')
-                    ->where('tahun', '=', $yearl)
-                    ->where('kecamatan_id', '=', $pid);
+                    ->where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query_aki->where('desa_id', '=', $did);
                 }
@@ -107,7 +106,7 @@ class KesehatanController extends Controller
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                       = DB::table('das_akib')
+                $query = DB::table('das_akib')
                     ->whereRaw('bulan in (' . $this->getIdsQuartal($key) . ')')
                     ->where('tahun', $year);
                 $data_tabel['quartal'][$key] = [
@@ -132,7 +131,7 @@ class KesehatanController extends Controller
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                       = DB::table('das_akib')
+                $query = DB::table('das_akib')
                     ->whereRaw('bulan in (' . $this->getIdsQuartal($key) . ')')
                     ->where('tahun', $year)
                     ->where('desa_id', $did);
@@ -164,8 +163,7 @@ class KesehatanController extends Controller
             foreach (years_list() as $yearl) {
                 // SD
                 $query = DB::table('das_imunisasi')
-                    ->where('tahun', '=', $yearl)
-                    ->where('kecamatan_id', '=', $pid);
+                    ->where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query->where('desa_id', '=', $did);
                 }
@@ -200,7 +198,7 @@ class KesehatanController extends Controller
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                       = DB::table('das_imunisasi')
+                $query = DB::table('das_imunisasi')
                     ->whereRaw('bulan in (' . $this->getIdsQuartal($key) . ')')
                     ->where('tahun', $year);
                 $data_tabel['quartal'][$key] = [
@@ -224,7 +222,7 @@ class KesehatanController extends Controller
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                       = DB::table('das_imunisasi')
+                $query = DB::table('das_imunisasi')
                     ->whereRaw('bulan in (' . $this->getIdsQuartal($key) . ')')
                     ->where('tahun', $year)
                     ->where('desa_id', $did);
@@ -256,8 +254,7 @@ class KesehatanController extends Controller
             foreach (years_list() as $yearl) {
                 // SD
                 $query = DB::table('das_epidemi_penyakit')
-                    ->where('tahun', '=', $yearl)
-                    ->where('kecamatan_id', '=', $pid);
+                    ->where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query->where('desa_id', '=', $did);
                 }
@@ -360,8 +357,7 @@ class KesehatanController extends Controller
         if ($year == 'Semua') {
             foreach (years_list() as $yearl) {
                 $query = DB::table('das_toilet_sanitasi')
-                    ->where('tahun', '=', $yearl)
-                    ->where('kecamatan_id', '=', $pid);
+                    ->where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query->where('desa_id', '=', $did);
                 }
@@ -400,7 +396,7 @@ class KesehatanController extends Controller
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                       = DB::table('das_toilet_sanitasi')
+                $query = DB::table('das_toilet_sanitasi')
                     ->whereRaw('bulan in (' . $this->getIdsQuartal($key) . ')')
                     ->where('tahun', $year);
                 $data_tabel['quartal'][$key] = [
@@ -411,7 +407,7 @@ class KesehatanController extends Controller
 
             // Detail Desa
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                    = DB::table('das_toilet_sanitasi')
+                $query = DB::table('das_toilet_sanitasi')
                     ->join('das_data_desa', 'das_toilet_sanitasi.desa_id', '=', 'das_data_desa.desa_id')
                     ->selectRaw('das_data_desa.nama, sum(das_toilet_sanitasi.toilet) as toilet, sum(das_toilet_sanitasi.sanitasi) as sanitasi')
                     ->whereRaw('das_toilet_sanitasi.bulan in (' . $this->getIdsQuartal($key) . ')')
@@ -425,7 +421,7 @@ class KesehatanController extends Controller
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query                       = DB::table('das_toilet_sanitasi')
+                $query = DB::table('das_toilet_sanitasi')
                     ->whereRaw('bulan in (' . $this->getIdsQuartal($key) . ')')
                     ->where('tahun', $year)
                     ->where('desa_id', $did);

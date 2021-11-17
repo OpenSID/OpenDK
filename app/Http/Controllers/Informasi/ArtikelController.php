@@ -31,17 +31,15 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use Exception;
-use App\Models\Artikel;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ArtikelStoreRequest;
 use App\Http\Requests\ArtikelUpdateRequest;
+use App\Models\Artikel;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
 class ArtikelController extends Controller
 {

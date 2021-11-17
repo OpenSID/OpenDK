@@ -38,7 +38,7 @@ use App\Models\Program;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function __invoke()
     {
         $page_title = 'Dashboard';
         $data = [

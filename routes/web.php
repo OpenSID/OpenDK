@@ -264,7 +264,7 @@ Route::group(['middleware' => 'installed'], function () {
      * Group Routing for Halaman Dahsboard
      */
     Route::group(['middleware' => 'sentinel_access:admin'], function () {
-        Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+        Route::get('/dashboard', 'DashboardController')->name('dashboard');
 
         /**
          * Group Routing for Informasi
@@ -584,11 +584,6 @@ Route::group(['middleware' => 'installed'], function () {
     // Semua Desa
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
-    });
-
-    // Dashboard Kependudukan
-    Route::namespace('Dashboard')->group(function () {
-        Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kependudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
     });
 
     Route::get('/api/list-penduduk', function () {

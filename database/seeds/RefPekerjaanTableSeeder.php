@@ -1,10 +1,38 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 use Illuminate\Database\Seeder;
 
 class RefPekerjaanTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -12,366 +40,365 @@ class RefPekerjaanTableSeeder extends Seeder
      */
     public function run()
     {
-
         DB::table('ref_pekerjaan')->truncate();
-        
-        DB::table('ref_pekerjaan')->insert(array (
-            0 => array (
+
+        DB::table('ref_pekerjaan')->insert([
+            0 => [
                 'id' => 1,
                 'nama' => 'BELUM/TIDAK BEKERJA',
-            ),
-            1 => array (
+            ],
+            1 => [
                 'id' => 2,
                 'nama' => 'MENGURUS RUMAH TANGGA',
-            ),
-            2 => array (
+            ],
+            2 => [
                 'id' => 3,
                 'nama' => 'PELAJAR/MAHASISWA',
-            ),
-            3 => array (
+            ],
+            3 => [
                 'id' => 4,
                 'nama' => 'PENSIUNAN',
-            ),
-            4 => array (
+            ],
+            4 => [
                 'id' => 5,
             'nama' => 'PEGAWAI NEGERI SIPIL (PNS)',
-            ),
-            5 => array (
+            ],
+            5 => [
                 'id' => 6,
             'nama' => 'TENTARA NASIONAL INDONESIA (TNI)',
-            ),
-            6 => array (
+            ],
+            6 => [
                 'id' => 7,
             'nama' => 'KEPOLISIAN RI (POLRI)',
-            ),
-            7 => array (
+            ],
+            7 => [
                 'id' => 8,
                 'nama' => 'PERDAGANGAN',
-            ),
-            8 => array (
+            ],
+            8 => [
                 'id' => 9,
                 'nama' => 'PETANI/PERKEBUNAN',
-            ),
-            9 => array (
+            ],
+            9 => [
                 'id' => 10,
                 'nama' => 'PETERNAK',
-            ),
-            10 => array (
+            ],
+            10 => [
                 'id' => 11,
                 'nama' => 'NELAYAN/PERIKANAN',
-            ),
-            11 => array (
+            ],
+            11 => [
                 'id' => 12,
                 'nama' => 'INDUSTRI',
-            ),
-            12 => array (
+            ],
+            12 => [
                 'id' => 13,
                 'nama' => 'KONSTRUKSI',
-            ),
-            13 => array (
+            ],
+            13 => [
                 'id' => 14,
                 'nama' => 'TRANSPORTASI',
-            ),
-            14 => array (
+            ],
+            14 => [
                 'id' => 15,
                 'nama' => 'KARYAWAN SWASTA',
-            ),
-            15 => array (
+            ],
+            15 => [
                 'id' => 16,
                 'nama' => 'KARYAWAN BUMN',
-            ),
-            16 => array (
+            ],
+            16 => [
                 'id' => 17,
                 'nama' => 'KARYAWAN BUMD',
-            ),
-            17 => array (
+            ],
+            17 => [
                 'id' => 18,
                 'nama' => 'KARYAWAN HONORER',
-            ),
-            18 => array (
+            ],
+            18 => [
                 'id' => 19,
                 'nama' => 'BURUH HARIAN LEPAS',
-            ),
-            19 => array (
+            ],
+            19 => [
                 'id' => 20,
                 'nama' => 'BURUH TANI/PERKEBUNAN',
-            ),
-            20 => array (
+            ],
+            20 => [
                 'id' => 21,
                 'nama' => 'BURUH NELAYAN/PERIKANAN',
-            ),
-            21 => array (
+            ],
+            21 => [
                 'id' => 22,
                 'nama' => 'BURUH PETERNAKAN',
-            ),
-            22 => array (
+            ],
+            22 => [
                 'id' => 23,
                 'nama' => 'PEMBANTU RUMAH TANGGA',
-            ),
-            23 => array (
+            ],
+            23 => [
                 'id' => 24,
                 'nama' => 'TUKANG CUKUR',
-            ),
-            24 => array (
+            ],
+            24 => [
                 'id' => 25,
                 'nama' => 'TUKANG LISTRIK',
-            ),
-            25 => array (
+            ],
+            25 => [
                 'id' => 26,
                 'nama' => 'TUKANG BATU',
-            ),
-            26 => array (
+            ],
+            26 => [
                 'id' => 27,
                 'nama' => 'TUKANG KAYU',
-            ),
-            27 => array (
+            ],
+            27 => [
                 'id' => 28,
                 'nama' => 'TUKANG SOL SEPATU',
-            ),
-            28 => array (
+            ],
+            28 => [
                 'id' => 29,
                 'nama' => 'TUKANG LAS/PANDAI BESI',
-            ),
-            29 => array (
+            ],
+            29 => [
                 'id' => 30,
                 'nama' => 'TUKANG JAHIT',
-            ),
-            30 => array (
+            ],
+            30 => [
                 'id' => 31,
                 'nama' => 'TUKANG GIGI',
-            ),
-            31 => array (
+            ],
+            31 => [
                 'id' => 32,
                 'nama' => 'PENATA RIAS',
-            ),
-            32 => array (
+            ],
+            32 => [
                 'id' => 33,
                 'nama' => 'PENATA BUSANA',
-            ),
-            33 => array (
+            ],
+            33 => [
                 'id' => 34,
                 'nama' => 'PENATA RAMBUT',
-            ),
-            34 => array (
+            ],
+            34 => [
                 'id' => 35,
                 'nama' => 'MEKANIK',
-            ),
-            35 => array (
+            ],
+            35 => [
                 'id' => 36,
                 'nama' => 'SENIMAN',
-            ),
-            36 => array (
+            ],
+            36 => [
                 'id' => 37,
                 'nama' => 'TABIB',
-            ),
-            37 => array (
+            ],
+            37 => [
                 'id' => 38,
                 'nama' => 'PARAJI',
-            ),
-            38 => array (
+            ],
+            38 => [
                 'id' => 39,
                 'nama' => 'PERANCANG BUSANA',
-            ),
-            39 => array (
+            ],
+            39 => [
                 'id' => 40,
                 'nama' => 'PENTERJEMAH',
-            ),
-            40 => array (
+            ],
+            40 => [
                 'id' => 41,
                 'nama' => 'IMAM MASJID',
-            ),
-            41 => array (
+            ],
+            41 => [
                 'id' => 42,
                 'nama' => 'PENDETA',
-            ),
-            42 => array (
+            ],
+            42 => [
                 'id' => 43,
                 'nama' => 'PASTOR',
-            ),
-            43 => array (
+            ],
+            43 => [
                 'id' => 44,
                 'nama' => 'WARTAWAN',
-            ),
-            44 => array (
+            ],
+            44 => [
                 'id' => 45,
                 'nama' => 'USTADZ/MUBALIGH',
-            ),
-            45 => array (
+            ],
+            45 => [
                 'id' => 46,
                 'nama' => 'JURU MASAK',
-            ),
-            46 => array (
+            ],
+            46 => [
                 'id' => 47,
                 'nama' => 'PROMOTOR ACARA',
-            ),
-            47 => array (
+            ],
+            47 => [
                 'id' => 48,
                 'nama' => 'ANGGOTA DPR-RI',
-            ),
-            48 => array (
+            ],
+            48 => [
                 'id' => 49,
                 'nama' => 'ANGGOTA DPD',
-            ),
-            49 => array (
+            ],
+            49 => [
                 'id' => 50,
                 'nama' => 'ANGGOTA BPK',
-            ),
-            50 => array (
+            ],
+            50 => [
                 'id' => 51,
                 'nama' => 'PRESIDEN',
-            ),
-            51 => array (
+            ],
+            51 => [
                 'id' => 52,
                 'nama' => 'WAKIL PRESIDEN',
-            ),
-            52 => array (
+            ],
+            52 => [
                 'id' => 53,
                 'nama' => 'ANGGOTA MAHKAMAH KONSTITUSI',
-            ),
-            53 => array (
+            ],
+            53 => [
                 'id' => 54,
                 'nama' => 'ANGGOTA KABINET KEMENTERIAN',
-            ),
-            54 => array (
+            ],
+            54 => [
                 'id' => 55,
                 'nama' => 'DUTA BESAR',
-            ),
-            55 => array (
+            ],
+            55 => [
                 'id' => 56,
                 'nama' => 'GUBERNUR',
-            ),
-            56 => array (
+            ],
+            56 => [
                 'id' => 57,
                 'nama' => 'WAKIL GUBERNUR',
-            ),
-            57 => array (
+            ],
+            57 => [
                 'id' => 58,
                 'nama' => 'BUPATI',
-            ),
-            58 => array (
+            ],
+            58 => [
                 'id' => 59,
                 'nama' => 'WAKIL BUPATI',
-            ),
-            59 => array (
+            ],
+            59 => [
                 'id' => 60,
                 'nama' => 'WALIKOTA',
-            ),
-            60 => array (
+            ],
+            60 => [
                 'id' => 61,
                 'nama' => 'WAKIL WALIKOTA',
-            ),
-            61 => array (
+            ],
+            61 => [
                 'id' => 62,
                 'nama' => 'ANGGOTA DPRD PROVINSI',
-            ),
-            62 => array (
+            ],
+            62 => [
                 'id' => 63,
                 'nama' => 'ANGGOTA DPRD KABUPATEN/KOTA',
-            ),
-            63 => array (
+            ],
+            63 => [
                 'id' => 64,
                 'nama' => 'DOSEN',
-            ),
-            64 => array (
+            ],
+            64 => [
                 'id' => 65,
                 'nama' => 'GURU',
-            ),
-            65 => array (
+            ],
+            65 => [
                 'id' => 66,
                 'nama' => 'PILOT',
-            ),
-            66 => array (
+            ],
+            66 => [
                 'id' => 67,
                 'nama' => 'PENGACARA',
-            ),
-            67 => array (
+            ],
+            67 => [
                 'id' => 68,
                 'nama' => 'NOTARIS',
-            ),
-            68 => array (
+            ],
+            68 => [
                 'id' => 69,
                 'nama' => 'ARSITEK',
-            ),
-            69 => array (
+            ],
+            69 => [
                 'id' => 70,
                 'nama' => 'AKUNTAN',
-            ),
-            70 => array (
+            ],
+            70 => [
                 'id' => 71,
                 'nama' => 'KONSULTAN',
-            ),
-            71 => array (
+            ],
+            71 => [
                 'id' => 72,
                 'nama' => 'DOKTER',
-            ),
-            72 => array (
+            ],
+            72 => [
                 'id' => 73,
                 'nama' => 'BIDAN',
-            ),
-            73 => array (
+            ],
+            73 => [
                 'id' => 74,
                 'nama' => 'PERAWAT',
-            ),
-            74 => array (
+            ],
+            74 => [
                 'id' => 75,
                 'nama' => 'APOTEKER',
-            ),
-            75 => array (
+            ],
+            75 => [
                 'id' => 76,
                 'nama' => 'PSIKIATER/PSIKOLOG',
-            ),
-            76 => array (
+            ],
+            76 => [
                 'id' => 77,
                 'nama' => 'PENYIAR TELEVISI',
-            ),
-            77 => array (
+            ],
+            77 => [
                 'id' => 78,
                 'nama' => 'PENYIAR RADIO',
-            ),
-            78 => array (
+            ],
+            78 => [
                 'id' => 79,
                 'nama' => 'PELAUT',
-            ),
-            79 => array (
+            ],
+            79 => [
                 'id' => 80,
                 'nama' => 'PENELITI',
-            ),
-            80 => array (
+            ],
+            80 => [
                 'id' => 81,
                 'nama' => 'SOPIR',
-            ),
-            81 => array (
+            ],
+            81 => [
                 'id' => 82,
                 'nama' => 'PIALANG',
-            ),
-            82 => array (
+            ],
+            82 => [
                 'id' => 83,
                 'nama' => 'PARANORMAL',
-            ),
-            83 => array (
+            ],
+            83 => [
                 'id' => 84,
                 'nama' => 'PEDAGANG',
-            ),
-            84 => array (
+            ],
+            84 => [
                 'id' => 85,
                 'nama' => 'PERANGKAT DESA',
-            ),
-            85 => array (
+            ],
+            85 => [
                 'id' => 86,
                 'nama' => 'KEPALA DESA',
-            ),
-            86 => array (
+            ],
+            86 => [
                 'id' => 87,
                 'nama' => 'BIARAWATI',
-            ),
-            87 => array (
+            ],
+            87 => [
                 'id' => 88,
                 'nama' => 'WIRASWASTA',
-            ),
-            88 => array (
+            ],
+            88 => [
                 'id' => 89,
                 'nama' => 'LAINNYA',
-            ),
-        ));
+            ],
+        ]);
     }
 }

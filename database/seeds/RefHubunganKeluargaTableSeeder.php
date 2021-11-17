@@ -1,10 +1,38 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 use Illuminate\Database\Seeder;
 
 class RefHubunganKeluargaTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -12,54 +40,53 @@ class RefHubunganKeluargaTableSeeder extends Seeder
      */
     public function run()
     {
-
         DB::table('ref_hubungan_keluarga')->truncate();
-        
-        DB::table('ref_hubungan_keluarga')->insert(array (
-            0 => array (
+
+        DB::table('ref_hubungan_keluarga')->insert([
+            0 => [
                 'id' => 1,
                 'nama' => 'KEPALA KELUARGA',
-            ),
-            1 => array (
+            ],
+            1 => [
                 'id' => 2,
                 'nama' => 'SUAMI',
-            ),
-            2 => array (
+            ],
+            2 => [
                 'id' => 3,
                 'nama' => 'ISTRI',
-            ),
-            3 => array (
+            ],
+            3 => [
                 'id' => 4,
                 'nama' => 'ANAK',
-            ),
-            4 => array (
+            ],
+            4 => [
                 'id' => 5,
                 'nama' => 'MENANTU',
-            ),
-            5 => array (
+            ],
+            5 => [
                 'id' => 6,
                 'nama' => 'CUCU',
-            ),
-            6 => array (
+            ],
+            6 => [
                 'id' => 7,
                 'nama' => 'ORANGTUA',
-            ),
-            7 => array (
+            ],
+            7 => [
                 'id' => 8,
                 'nama' => 'MERTUA',
-            ),
-            8 => array (
+            ],
+            8 => [
                 'id' => 9,
                 'nama' => 'FAMILI LAIN',
-            ),
-            9 => array (
+            ],
+            9 => [
                 'id' => 10,
                 'nama' => 'PEMBANTU',
-            ),
-            10 => array (
+            ],
+            10 => [
                 'id' => 11,
                 'nama' => 'LAINNYA',
-            ),
-        ));
+            ],
+        ]);
     }
 }

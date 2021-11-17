@@ -37,7 +37,6 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__)
     ->exclude([
         'bootstrap',
-        'database', // Timeout
         'public',
         'storage',
         'test',

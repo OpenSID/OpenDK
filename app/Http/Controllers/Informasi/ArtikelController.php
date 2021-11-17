@@ -31,15 +31,17 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use Exception;
+use App\Models\Artikel;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ArtikelStoreRequest;
 use App\Http\Requests\ArtikelUpdateRequest;
-use App\Models\Artikel;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
 
 class ArtikelController extends Controller
 {
@@ -138,17 +140,19 @@ class ArtikelController extends Controller
     public function update(ArtikelUpdateRequest $request, $id)
     {
         try {
-            $model = Artikel::findOrFail($id);
+            $artikel = Artikel::findOrFail($id);
 
             $input = $request->all();
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
+                Storage::delete('public/artikel/' . $artikel->getOriginal('gambar'));
+
                 $input['gambar'] = substr($path, 15) ;
             }
 
-            $model->update($input);
+            $artikel->update($input);
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Ubah artikel gagal!');
         }
@@ -165,7 +169,11 @@ class ArtikelController extends Controller
     public function destroy($id)
     {
         try {
-            Artikel::findOrFail($id)->delete();
+            if ($artikel = Artikel::findOrFail($id)) {
+                Storage::delete('public/artikel/' . $artikel->getOriginal('gambar'));
+
+                $artikel->delete();
+            }
         } catch (Exception $e) {
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }

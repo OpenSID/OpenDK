@@ -1,20 +1,20 @@
 <?php
 
-use Database\Seeds\Demo\DemoDasDataDesaTableSeeder;
+use Illuminate\Database\Seeder;
+use Database\Seeds\Demo\DemoAKIAKBSeeder;
+use Database\Seeds\Demo\DemoAPBDesaSeeder;
+use Database\Seeds\Demo\DemoPendudukSeeder;
+use Database\Seeds\Demo\DemoImunisasiSeeder;
+use Database\Seeds\Demo\DemoPutusSekolahSeeder;
+use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
 use Database\Seeds\Demo\DemoDasProfilTableSeeder;
+use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
+use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
+use Database\Seeds\Demo\DemoDasDataDesaTableSeeder;
 use Database\Seeds\Demo\DemoDasDataUmumTableSeeder;
 use Database\Seeds\Demo\DemoDasKeluargaTableSeeder;
-use Database\Seeds\Demo\DemoAKIAKBSeeder;
 use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
-use Database\Seeds\Demo\DemoAPBDesaSeeder;
-use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
-use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
-use Database\Seeds\Demo\DemoImunisasiSeeder;
-use Database\Seeds\Demo\DemoPendudukSeeder;
-use Database\Seeds\Demo\DemoPutusSekolahSeeder;
 use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
-use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
-use Illuminate\Database\Seeder;
 
 class DemoDatabaseSeeder extends Seeder
 {

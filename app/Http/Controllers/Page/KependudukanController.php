@@ -68,23 +68,16 @@ class KependudukanController extends Controller
     }
 
     /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
-    protected function years_list()
+    protected function years_list($max_tahun = null)
     {
-        if (DB::table('das_penduduk')->first() == null) {
-            return [];
+        $min_tahun = collect(Penduduk::select(DB::raw('YEAR(created_at) as tahun'))->get());
+        $min_tahun = $min_tahun->min('tahun') ?? date('Y');
+
+        $daftar_tahun = [];
+        for ($y = $min_tahun; $y <= ($max_tahun ?? date('Y')); $y++) {
+            $daftar_tahun[] = $y;
         }
-        $tahun_tertua = DB::table('das_penduduk')
-            ->select(DB::raw('YEAR(created_at) as tahun'))
-            ->distinct()
-            ->orderBy('tahun', 'desc')
-            ->limit(1)
-            ->get()->first()->tahun;
-        $tahun_tertua = $tahun_tertua ?: date("Y");
-        $years = [];
-        for ($y = $tahun_tertua; $y <= date("Y"); $y++) {
-            $years[] = $y;
-        }
-        return array_reverse($years);
+        return $daftar_tahun;
     }
 
     public function showKependudukanPartial()
@@ -93,7 +86,7 @@ class KependudukanController extends Controller
         $data['page_description'] = 'Statistik Kependudukan';
         $data['year_list']        = $this->years_list();
 
-        if (! empty(request('did')) && request('y')) {
+        if (request('did') && request('y')) {
             $data = array_merge($data, $this->createDashboardKependudukan(request('did'), request('y')));
         }
 
@@ -202,7 +195,7 @@ class KependudukanController extends Controller
 
         // Data Grafik Pertumbuhan
         $data = [];
-        foreach (array_sort($this->years_list()) as $yearls) {
+        foreach (array_sort($this->years_list($year)) as $yearls) {
             $query = $this->penduduk->getPendudukAktif($did, $yearls);
             $query_result_laki = (clone $query)->where('sex', 1)->count();
             $query_result_perempuan = (clone $query)->where('sex', 2)->count();
@@ -240,81 +233,41 @@ class KependudukanController extends Controller
 
         // Grafik Data Pendidikan
         $data_pendidikan = [];
-        if ($year == 'Semua') {
-            foreach ($this->years_list() as $yearl) {
-                $query_pendidikan = $this->penduduk->getPendudukAktif($did, $yearl)
-                    ->leftJoin('ref_pendidikan_kk', 'pendidikan_kk_id', '=', 'ref_pendidikan_kk.id');
-                // SD
-                $total_sd = (clone $query_pendidikan)
-                    ->where('pendidikan_kk_id', 3)
-                    ->count();
-
-                // SMP
-                $total_sltp = (clone $query_pendidikan)
-                ->where('pendidikan_kk_id', 4)
+        $query_pendidikan = $this->penduduk->getPendudukAktif($did, $year)
+            ->leftJoin('ref_pendidikan_kk', 'pendidikan_kk_id', '=', 'ref_pendidikan_kk.id');
+        // SD
+        $total_sd = (clone $query_pendidikan)
+                ->where('pendidikan_kk_id', 3)
                 ->count();
 
-                //SMA
-                $total_slta = (clone $query_pendidikan)
-                    ->where('pendidikan_kk_id', 5)
-                    ->count();
+        // SMP
+        $total_sltp = (clone $query_pendidikan)
+            ->where('pendidikan_kk_id', 4)
+            ->count();
 
-                // DIPLOMA
-                $total_diploma = (clone $query_pendidikan)
-                    ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
-                    ->count();
-
-                // SARJANA
-                $total_sarjana = (clone $query_pendidikan)
-                    ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
-                    ->count();
-
-                $data_pendidikan[] = [
-                    'year'    => $yearl,
-                    'SD'      => $total_sd,
-                    'SLTP'    => $total_sltp,
-                    'SLTA'    => $total_slta,
-                    'DIPLOMA' => $total_diploma,
-                    'SARJANA' => $total_sarjana,
-                ];
-            }
-        } else {
-            $query_pendidikan = $this->penduduk->getPendudukAktif($did, $year)
-                    ->leftJoin('ref_pendidikan_kk', 'pendidikan_kk_id', '=', 'ref_pendidikan_kk.id');
-            // SD
-            $total_sd = (clone $query_pendidikan)
-                    ->where('pendidikan_kk_id', 3)
-                    ->count();
-
-            // SMP
-            $total_sltp = (clone $query_pendidikan)
-                ->where('pendidikan_kk_id', 4)
+        //SMA
+        $total_slta = (clone $query_pendidikan)
+                ->where('pendidikan_kk_id', 5)
                 ->count();
 
-            //SMA
-            $total_slta = (clone $query_pendidikan)
-                    ->where('pendidikan_kk_id', 5)
-                    ->count();
+        // DIPLOMA
+        $total_diploma = (clone $query_pendidikan)
+                ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
+                ->count();
 
-            // DIPLOMA
-            $total_diploma = (clone $query_pendidikan)
-                    ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
-                    ->count();
+        // SARJANA
+        $total_sarjana = (clone $query_pendidikan)
+                ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
+                ->count();
 
-            // SARJANA
-            $total_sarjana = (clone $query_pendidikan)
-                    ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
-                    ->count();
-
-            $data_pendidikan[] = [
-                    'year'    => $year,
-                    'SD'      => $total_sd,
-                    'SLTP'    => $total_sltp,
-                    'SLTA'    => $total_slta,
-                    'DIPLOMA' => $total_diploma,
-                    'SARJANA' => $total_sarjana,
-                ];
-        }
+        $data_pendidikan[] = [
+                'year'    => $year,
+                'SD'      => $total_sd,
+                'SLTP'    => $total_sltp,
+                'SLTA'    => $total_slta,
+                'DIPLOMA' => $total_diploma,
+                'SARJANA' => $total_sarjana,
+            ];
 
         return $data_pendidikan;
     }

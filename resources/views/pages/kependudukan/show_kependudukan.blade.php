@@ -25,7 +25,7 @@
                         <label for="list_year" class="col-sm-4 control-label">Tahun</label>
                         <div class="col-sm-8">
                             <select class="form-control" id="list_year">
-                                @foreach($year_list as $year)
+                                @foreach(array_reverse($year_list) as $year)
                                     <option value="{{ $year }}">{{ $year }}</option>
                                 @endforeach
                             </select>
@@ -127,7 +127,7 @@
                                 <strong></strong>
                             </p>
 
-                            <div id="chart_pertumbuhan_penduduk" style="width: 100%; height: 500px; overflow: visible; text-align: left;"></div>
+                            <div id="chart_pertumbuhan_penduduk" style="width: 100%; min-height: 500px; overflow: visible; text-align: left;"></div>
                         </div>
                     </div>
                 </div>
@@ -430,12 +430,13 @@
             var colorField = chart_pertumbuhan_penduduk.graphs[0].lineColorField || chart_pertumbuhan_penduduk.graphs[0].fillColorsField || chart_pertumbuhan_penduduk.graphs[0].colorField;
             var legendData =  chart_pertumbuhan_penduduk.dataProvider.map(function(data, idx) {
                 var markerData = {
-                    "title": data[categoryField] + ": " + data[chart_pertumbuhan_penduduk.graphs[0].valueField],
+                    "title": data[categoryField] + " : " + (data[chart_pertumbuhan_penduduk.graphs[0].valueField] + data[chart_pertumbuhan_penduduk.graphs[0].valueField]),
                     "color": data[colorField],
                     "dataIdx": idx //store a copy of the index of where this appears in the dataProvider array for ease of removal/re-insertion
                 };
                 if (!markerData.color) {
-                    markerData.color = chart_pertumbuhan_penduduk.graphs[1].lineColor;
+                    markerData.color = chart_pertumbuhan_penduduk.graphs[0].lineColor;
+                    // markerData.color = '#' + Math.floor(Math.random()*16777215).toString(16);
                 }
                 data.dataIdx = idx; //also store it in the dataProvider object itself
                 return markerData;
@@ -1284,12 +1285,12 @@
                     "orderable":false,
                     "render": function (data, type, row) {
                         if ( !row.foto == '') {
-                          return "<img src=\"{{ asset('storage/penduduk/foto') }}" + "/" + data + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
+                            return "<img src=\"{{ asset('storage/penduduk/foto') }}" + "/" + data + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
                         }
                         else {
-                          return "<img src=\"{{ asset('storage/penduduk/foto/kuser.png') }}" + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
+                            return "<img src=\"{{ asset('storage/penduduk/foto/kuser.png') }}" + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
                         }
-                      }
+                    }
                     },
                     {data: 'nama', name: 'nama'},
                     {data: 'no_kk', name: 'no_kk'},

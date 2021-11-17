@@ -12,6 +12,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 2. [#226](https://github.com/OpenSID/OpenDK/issues/225) Sediakan pengaturan secara dinamis data kecamatan pada modul profil.
 3. [#226](https://github.com/OpenSID/OpenDK/issues/226) Sediakan data wilayah dari server pantau pada modul profil dan data desa.
 4. Perbaiki statistik program bantuan yang tidak tampil dengan benar.
+5. Perbaiki statistik penduduk > grafik pertumbuhan yang tidak tampil dengan benar.
 
 
 #### Perubahan Teknis

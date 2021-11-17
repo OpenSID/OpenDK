@@ -297,9 +297,9 @@ function is_wajib_ktp($umur, $status_kawin)
     return $wajib_ktp;
 }
 
-function is_img($url = NULL, $img = '/img/no-image.png')
+function is_img($url = null, $img = '/img/no-image.png')
 {
-    return asset($url != NULL && file_exists(public_path($url)) ? $url : $img);
+    return asset($url != null && file_exists(public_path($url)) ? $url : $img);
 }
 
 function is_logo($url = '', $file = '/img/logo.png')

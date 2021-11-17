@@ -56,72 +56,38 @@ class ProgramBantuanController extends Controller
 
     public function getChartBantuanPenduduk()
     {
-        $did  = request('did');
-        $year = request('y');
-
-        // Data Grafik Bantuan Penduduk/Perorangan
-        $data    = [];
-        $program = Program::where('sasaran', 1)->get();
-
-        foreach ($program as $prog) {
-            $query_result = DB::table('das_peserta_program')
-                ->join('das_penduduk', 'das_peserta_program.peserta', '=', 'das_penduduk.nik')
-                ->where('das_penduduk.kecamatan_id', '=', $pid)
-                ->where('das_peserta_program.sasaran', '=', 1)
-                ->where('das_peserta_program.program_id', '=', $prog->id);
-            if ($year == 'Semua') {
-                $query_result->whereRaw('YEAR(das_peserta_program.created_at) in (?)', $this->where_year_helper());
-            } else {
-                $query_result->where('das_penduduk.tahun', $year);
-            }
-
-            if ($did != 'Semua') {
-                $query_result->where('das_penduduk.desa_id', '=', $did);
-            }
-
-            $data[] = ['program' => $prog->nama, 'value' => $query_result->count()];
-        }
-        return $data;
+        return $this->get_data(1);
     }
 
     public function getChartBantuanKeluarga()
     {
-        $pid  = config('app.default_profile');
+        return $this->get_data(2);
+    }
+
+    // TODO : Gunakan relasi antar tabel.
+    private function get_data(int $sasaran = 1)
+    {
         $did  = request('did');
         $year = request('y');
-
-        // Data Grafik Bantuan Penduduk/Perorangan
         $data    = [];
-        $program = Program::where('sasaran', 2)->get();
+        $program = Program::where('sasaran', $sasaran)->get();
 
         foreach ($program as $prog) {
             $query_result = DB::table('das_peserta_program')
-                ->join('das_penduduk', 'das_peserta_program.peserta', '=', 'das_penduduk.no_kk')
-                ->where('das_penduduk.kecamatan_id', '=', $pid)
-                ->where('das_peserta_program.sasaran', '=', 2)
+                ->join('das_penduduk', 'das_peserta_program.kartu_nik', '=', 'das_penduduk.nik')
+                ->where('das_peserta_program.sasaran', '=', $sasaran)
                 ->where('das_peserta_program.program_id', '=', $prog->id);
-            if ($year == 'Semua') {
-                $query_result->whereRaw('YEAR(das_peserta_program.created_at) in (?)', $this->where_year_helper());
-            } else {
-                $query_result->where('das_penduduk.tahun', $year);
+
+            if ($year != 'Semua') {
+                $query_result->whereYear('das_peserta_program.created_at', '=', $year);
             }
 
             if ($did != 'Semua') {
                 $query_result->where('das_penduduk.desa_id', '=', $did);
             }
-            $query_result->groupBy('das_penduduk.no_kk');
 
             $data[] = ['program' => $prog->nama, 'value' => $query_result->count()];
         }
         return $data;
-    }
-
-    protected function where_year_helper()
-    {
-        $str = '';
-        foreach (years_list() as $year) {
-            $str .= $year . ',';
-        }
-        return rtrim($str, ',');
     }
 }

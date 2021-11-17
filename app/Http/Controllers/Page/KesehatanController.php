@@ -55,7 +55,6 @@ class KesehatanController extends Controller
     // Get Data Chart AKI & AKB
     public function getChartAKIAKB()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
         $data = [];
@@ -155,7 +154,6 @@ class KesehatanController extends Controller
     // Get Data Chart Cakupan Imunisasi
     public function getChartImunisasi()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
         $data = [];
@@ -248,7 +246,6 @@ class KesehatanController extends Controller
     // Get Chart Epidemi Penyakit
     public function getChartEpidemiPenyakit()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
         $data = [];
@@ -354,7 +351,6 @@ class KesehatanController extends Controller
     // Get Chart Toilet & Sanitasi
     public function getChartToiletSanitasi()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
         $data = [];

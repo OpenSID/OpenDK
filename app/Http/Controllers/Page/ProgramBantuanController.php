@@ -56,7 +56,6 @@ class ProgramBantuanController extends Controller
 
     public function getChartBantuanPenduduk()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 

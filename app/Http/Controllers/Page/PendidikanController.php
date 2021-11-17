@@ -56,7 +56,6 @@ class PendidikanController extends Controller
 
     public function getChartTingkatPendidikan()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -154,7 +153,6 @@ class PendidikanController extends Controller
 
     public function getChartPutusSekolah()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -256,7 +254,6 @@ class PendidikanController extends Controller
 
     public function getChartFasilitasPAUD()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 

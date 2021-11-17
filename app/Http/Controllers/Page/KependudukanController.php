@@ -93,7 +93,7 @@ class KependudukanController extends Controller
         $data['page_description'] = 'Statistik Kependudukan';
         $data['year_list']        = $this->years_list();
 
-        if (! empty(request('pid')) && ! empty(request('did')) && request('y')) {
+        if (! empty(request('did')) && request('y')) {
             $data = array_merge($data, $this->createDashboardKependudukan(request('did'), request('y')));
         }
 
@@ -197,7 +197,6 @@ class KependudukanController extends Controller
 
     public function getChartPenduduk()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -215,7 +214,6 @@ class KependudukanController extends Controller
 
     public function getChartPendudukUsia()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -237,7 +235,6 @@ class KependudukanController extends Controller
 
     public function getChartPendudukPendidikan()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -324,7 +321,6 @@ class KependudukanController extends Controller
 
     public function getChartPendudukGolDarah()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -356,7 +352,6 @@ class KependudukanController extends Controller
 
     public function getChartPendudukKawin()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -376,7 +371,6 @@ class KependudukanController extends Controller
 
     public function getChartPendudukAgama()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -397,7 +391,6 @@ class KependudukanController extends Controller
 
     public function getChartPendudukKelamin()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -432,7 +425,6 @@ class KependudukanController extends Controller
     public function getDataPenduduk()
     {
         $type = request('t');
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('year');
 

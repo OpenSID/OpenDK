@@ -60,10 +60,10 @@ class KeluargaController extends Controller
     public function getKeluarga()
     {
         return DataTables::of(Keluarga::query())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['show_url']   = route('data.keluarga.show', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('nik_kepala', function ($row) {
                 if (isset($row->nik_kepala)) {

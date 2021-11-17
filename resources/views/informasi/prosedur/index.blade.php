@@ -58,7 +58,7 @@
             serverSide: false,
             ajax: "{!! route( 'informasi.prosedur.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'judul_prosedur', name: 'judul_prosedur'},
             ],
             order: [[1, 'asc']]

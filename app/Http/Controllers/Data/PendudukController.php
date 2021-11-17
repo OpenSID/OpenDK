@@ -94,10 +94,10 @@ class PendudukController extends Controller
             ->where('status_dasar', 1);
 
         return DataTables::of($query)
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['show_url']   = route('data.penduduk.show', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->addColumn('tanggal_lahir', function ($row) {
                 return convert_born_date_to_age($row->tanggal_lahir);

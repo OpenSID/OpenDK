@@ -52,7 +52,7 @@
             //serverSide: true,
             ajax: "{!! route( 'setting.tipe-potensi.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama_kategori', name: 'nama_kategori'}
             ],
             order: [[1, 'asc']]

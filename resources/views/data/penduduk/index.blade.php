@@ -97,7 +97,7 @@
                 }
             },
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'foto', name: 'foto',
                 "searchable": false,
                 "orderable":false,

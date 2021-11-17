@@ -54,7 +54,7 @@
             serverSide: false,
             ajax: "{!! route( 'informasi.artikel.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'judul', name: 'judul'},
                 {data: 'created_at', name: 'created_at', class: 'text-center', searchable: false, orderable: false},
                 {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},

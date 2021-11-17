@@ -65,18 +65,18 @@ class DataDesaController extends Controller
     public function getDataDesa()
     {
         return DataTables::of(DataDesa::all())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 if ($this->profil->kecamatan_id) {
                     $data['edit_url']   = route('data.data-desa.edit', $row->id);
                 }
                 $data['delete_url'] = route('data.data-desa.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('website', function ($row) {
                 return '<a href="' . $row->website . '" target="_blank">' . $row->website . '</a>';
             })
-            ->rawColumns(['website', 'action'])->make();
+            ->rawColumns(['website', 'aksi'])->make();
     }
 
     /**

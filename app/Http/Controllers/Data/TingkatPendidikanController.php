@@ -61,7 +61,7 @@ class TingkatPendidikanController extends Controller
                 $data['edit_url']   = route('data.tingkat-pendidikan.edit', $row->id);
                 $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->rawColumns(['aksi'])->make();
     }

@@ -57,7 +57,7 @@
             serverSide: true,
             ajax: "{!! route( 'data.program-bantuan.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama', name: 'nama'},
                 {data: 'masa_berlaku', name: 'masa_berlaku'},
                 {data: 'sasaran', name: 'sasaran'},

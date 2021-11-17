@@ -59,7 +59,7 @@
                 @if($program->sasaran == 1)
                     <thead>
                     <tr>
-                        <th style="max-width: 150px;" rowspan="2" valign="center">Aksi</th>
+                        <th style="max-width: 150px;" rowspan="2" valign="center">No</th>
                         <th rowspan="2">NIK</th>
                         <th rowspan="2">No. Kartu Peserta</th>
                         <th rowspan="2">Nama Peserta</th>
@@ -97,7 +97,7 @@
                 @if(count($peserta) > 0)
                     @foreach($peserta as $row)
                     <tr>
-                        <td>Aksi</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $row->peserta  }}</td>
                         <td>{!! $row->kartu_peserta !!}</td>
                         <td>{!! $row->penduduk->nama !!}</td>

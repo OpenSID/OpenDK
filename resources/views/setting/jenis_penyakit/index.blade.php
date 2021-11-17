@@ -52,7 +52,7 @@
             //serverSide: true,
             ajax: "{!! route( 'setting.jenis-penyakit.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
 
                 {data: 'nama', name: 'nama'}
             ],

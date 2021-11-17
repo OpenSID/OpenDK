@@ -89,7 +89,7 @@
                 }
             },
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', "searchable": false, "orderable":false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', "searchable": false, "orderable":false},
                 {data: 'nama_desa', name: 'nama_desa'},
                 {data: 'judul', name: 'judul'},
                 {data: 'bulan', name: 'bulan'},

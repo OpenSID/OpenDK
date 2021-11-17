@@ -63,11 +63,11 @@ class RoleController extends Controller
     public function getData()
     {
         return DataTables::of(Role::datatables())
-        ->addColumn('action', function ($role) {
+        ->addColumn('aksi', function ($role) {
             $data['edit_url']   = route('setting.role.edit', $role->id);
             $data['delete_url'] = route('setting.role.destroy', $role->id);
 
-            return view('forms.action', $data);
+            return view('forms.aksi', $data);
         })
         ->make(true);
     }

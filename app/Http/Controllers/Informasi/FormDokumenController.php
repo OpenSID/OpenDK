@@ -51,7 +51,7 @@ class FormDokumenController extends Controller
     public function getDataDokumen()
     {
         return DataTables::of(FormDokumen::all())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 if (! Sentinel::guest()) {
                     $data['edit_url']   = route('informasi.form-dokumen.edit', $row->id);
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
@@ -59,7 +59,7 @@ class FormDokumenController extends Controller
 
                 $data['download_url'] = asset($row->file_dokumen);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->make();
     }
 

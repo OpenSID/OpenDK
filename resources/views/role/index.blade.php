@@ -55,7 +55,7 @@
             columns: [
                 {data: 'name', name: 'name'},
                 {data: 'slug', name: 'slug'},
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false}
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false}
             ]
         });
     });

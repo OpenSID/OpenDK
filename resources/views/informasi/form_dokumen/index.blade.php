@@ -62,7 +62,7 @@
             serverSide: true,
             ajax: "{!! route( 'informasi.form-dokumen.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama_dokumen', name: 'nama_dokumen'},
             ],
             order: [[0, 'desc']]

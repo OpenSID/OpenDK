@@ -52,12 +52,12 @@ class ProgramBantuanController extends Controller
     public function getaProgramBantuan()
     {
         return DataTables::of(Program::all())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['detail_url'] = route('data.program-bantuan.show', $row->id);
                 $data['edit_url']   = route('data.program-bantuan.edit', $row->id);
                 $data['delete_url'] = route('data.program-bantuan.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->addColumn('masa_berlaku', function ($row) {
                 return $row->start_date . ' - ' . $row->end_date;
@@ -66,7 +66,7 @@ class ProgramBantuanController extends Controller
                 $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
                 return $sasaran[$row->sasaran];
             })
-            ->rawColumns(['action'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     public function create()

@@ -68,7 +68,7 @@ class AnggaranDesaController extends Controller
                 $data['edit_url']   = route('data.anggaran-desa.edit', $row->id);
                 $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })

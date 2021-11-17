@@ -240,7 +240,7 @@
         var url = '';
         $(document).on('click', '#btn-reply', function(e) {
             url = $(this).attr('data-href');
-            $('#form-reply').attr('action', url );
+            $('#form-reply').attr('aksi', url );
             $('#modalReply').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -250,7 +250,7 @@
 
         $(document).on('click', '#btn-reply-admin', function(e) {
             url = $(this).attr('data-href');
-            $('#form-reply-admin').attr('action', url );
+            $('#form-reply-admin').attr('aksi', url );
             $('#modalReplyAdmin').modal({
                 backdrop: 'static',
                 keyboard: false

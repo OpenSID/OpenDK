@@ -87,11 +87,11 @@ class LaporanPendudukController extends Controller
             });
 
         return DataTables::of($query)
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.laporan-penduduk.destroy', $row->id);
                 $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->make();
     }
 

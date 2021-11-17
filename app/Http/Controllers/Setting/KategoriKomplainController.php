@@ -51,11 +51,11 @@ class KategoriKomplainController extends Controller
     public function getData()
     {
         return DataTables::of(KategoriKomplain::all())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['edit_url']   = route('setting.komplain-kategori.edit', $row->id);
                 $data['delete_url'] = route('setting.komplain-kategori.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->make();
     }

@@ -61,7 +61,7 @@ class PutusSekolahController extends Controller
                 $data['edit_url']   = route('data.putus-sekolah.edit', $row->id);
                 $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->rawColumns(['aksi'])->make();
     }

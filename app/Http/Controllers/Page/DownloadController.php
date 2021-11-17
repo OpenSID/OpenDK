@@ -33,20 +33,9 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
-use App\Models\Profil;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
-use function asset;
-use function compact;
-
-use function config;
 use Illuminate\Support\Facades\DB;
-use function request;
-use function response;
-use function route;
-use function str_replace;
-use function str_slug;
-use function view;
 use Yajra\DataTables\DataTables;
 
 class DownloadController extends Controller
@@ -56,19 +45,18 @@ class DownloadController extends Controller
         Counter::count('unduhan.prosedur');
 
         $page_title       = 'Prosedur';
-        $page_description = 'Kumpulan SOP Kecamatan';
-        $prosedurs        = Prosedur::latest()->paginate(10);
+        $page_description = 'Daftar SOP Kecamatan';
+        $prosedurs        = Prosedur::all();
 
-        return view('pages.unduhan.prosedur', compact(['page_title', 'page_description', 'prosedurs']))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('pages.unduhan.prosedur', compact(['page_title', 'page_description', 'prosedurs']));
     }
 
     public function getDataProsedur()
     {
-        return DataTables::of(Prosedur::select('id', 'judul_prosedur'))
+        return DataTables::of(Prosedur::all())
             ->addColumn('action', function ($row) {
-                $show_url         = route('unduhan.prosedur.show', ['nama_prosedur' => str_slug($row->judul_prosedur)]);
-                $data['show_url'] = $show_url;
+                $data['show_url'] = route('unduhan.prosedur.show', ['nama_prosedur' => str_slug($row->judul_prosedur)]);
+
                 return view('forms.action', $data);
             })
             ->editColumn('judul_prosedur', function ($row) {
@@ -78,9 +66,9 @@ class DownloadController extends Controller
 
     public function showProsedur($nama_prosedur)
     {
-        // $prosedur   = Prosedur::find($id);
         $prosedur   = Prosedur::where('judul_prosedur', str_replace('-', ' ', $nama_prosedur))->first();
         $page_title = 'Detail Prosedur :' . $prosedur->judul_prosedur;
+
         return view('pages.unduhan.prosedur_show', compact('page_title', 'prosedur'));
     }
 
@@ -94,21 +82,19 @@ class DownloadController extends Controller
     {
         Counter::count('unduhan.regulasi');
 
+        // TODO: Gunakan datatables
         $page_title       = 'Regulasi';
-        $page_description = 'Kumpulan regulasi Kecamatan';
+        $page_description = 'Daftar regulasi Kecamatan';
         $regulasi         = Regulasi::orderBy('id', 'asc')->paginate(10);
 
-        $defaultProfil = config('app.default_profile');
-
-        $profil = Profil::where(['kecamatan_id' => $defaultProfil])->first();
-
-        return view('pages.unduhan.regulasi', compact('page_title', 'page_description', 'regulasi', 'defaultProfil', 'profil'));
+        return view('pages.unduhan.regulasi', compact('page_title', 'page_description', 'regulasi'));
     }
 
     public function showRegulasi($nama_regulasi)
     {
         $regulasi   = Regulasi::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
         $page_title = 'Detail Regulasi :' . $regulasi->judul;
+
         return view('pages.unduhan.regulasi_show', compact('page_title', 'regulasi'));
     }
 
@@ -123,7 +109,8 @@ class DownloadController extends Controller
         Counter::count('unduhan.form-dokumen');
 
         $page_title       = 'Dokumen';
-        $page_description = 'Kumpulan Formulir Dokumen';
+        $page_description = 'Daftar Formulir Dokumen';
+
         return view('pages.unduhan.form-dokumen', compact('page_title', 'page_description'));
     }
 
@@ -132,9 +119,8 @@ class DownloadController extends Controller
         $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
         return DataTables::of($query->get())
             ->addColumn('action', function ($row) {
-                // $show_url = route('informasi.form-dokumen.show', $row->id);
-                $download_url         = asset($row->file_dokumen);
-                $data['download_url'] = $download_url;
+                $data['download_url'] = asset($row->file_dokumen);
+
                 return view('forms.action', $data);
             })->make();
     }

@@ -33,15 +33,9 @@ namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\Program;
-use function compact;
-
-use function config;
 use Illuminate\Support\Facades\DB;
-use function request;
-use function rtrim;
-use function view;
-use function years_list;
 
 class ProgramBantuanController extends Controller
 {
@@ -54,15 +48,15 @@ class ProgramBantuanController extends Controller
 
         $page_title       = 'Program Bantuan';
         $page_description = 'Data Program Bantuan';
-        $defaultProfil    = config('app.default_profile');
         $year_list        = years_list();
-        $list_desa        = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', $defaultProfil)->get();
-        return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'defaultProfil', 'year_list', 'list_desa'));
+        $list_desa        = DataDesa::all();
+
+        return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'year_list', 'list_desa'));
     }
 
     public function getChartBantuanPenduduk()
     {
-        $kid  = config('app.default_profile');
+        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -73,16 +67,16 @@ class ProgramBantuanController extends Controller
         foreach ($program as $prog) {
             $query_result = DB::table('das_peserta_program')
                 ->join('das_penduduk', 'das_peserta_program.peserta', '=', 'das_penduduk.nik')
-                ->where('das_penduduk.kecamatan_id', '=', $kid)
+                ->where('das_penduduk.kecamatan_id', '=', $pid)
                 ->where('das_peserta_program.sasaran', '=', 1)
                 ->where('das_peserta_program.program_id', '=', $prog->id);
-            if ($year == 'ALL') {
+            if ($year == 'Semua') {
                 $query_result->whereRaw('YEAR(das_peserta_program.created_at) in (?)', $this->where_year_helper());
             } else {
                 $query_result->where('das_penduduk.tahun', $year);
             }
 
-            if ($did != 'ALL') {
+            if ($did != 'Semua') {
                 $query_result->where('das_penduduk.desa_id', '=', $did);
             }
 
@@ -93,7 +87,7 @@ class ProgramBantuanController extends Controller
 
     public function getChartBantuanKeluarga()
     {
-        $kid  = config('app.default_profile');
+        $pid  = config('app.default_profile');
         $did  = request('did');
         $year = request('y');
 
@@ -104,16 +98,16 @@ class ProgramBantuanController extends Controller
         foreach ($program as $prog) {
             $query_result = DB::table('das_peserta_program')
                 ->join('das_penduduk', 'das_peserta_program.peserta', '=', 'das_penduduk.no_kk')
-                ->where('das_penduduk.kecamatan_id', '=', $kid)
+                ->where('das_penduduk.kecamatan_id', '=', $pid)
                 ->where('das_peserta_program.sasaran', '=', 2)
                 ->where('das_peserta_program.program_id', '=', $prog->id);
-            if ($year == 'ALL') {
+            if ($year == 'Semua') {
                 $query_result->whereRaw('YEAR(das_peserta_program.created_at) in (?)', $this->where_year_helper());
             } else {
                 $query_result->where('das_penduduk.tahun', $year);
             }
 
-            if ($did != 'ALL') {
+            if ($did != 'Semua') {
                 $query_result->where('das_penduduk.desa_id', '=', $did);
             }
             $query_result->groupBy('das_penduduk.no_kk');

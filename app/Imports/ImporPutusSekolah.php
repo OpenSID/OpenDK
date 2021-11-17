@@ -64,7 +64,6 @@ class ImporPutusSekolah implements ToModel, WithHeadingRow, WithChunkReading, Sh
     public function model(array $row)
     {
         return new PutusSekolah([
-            'kecamatan_id'   => config('app.default_profile'),
             'desa_id'        => $this->request['desa_id'],
             'siswa_paud'     => $row['siswa_paud_ra'],
             'anak_usia_paud' => $row['anak_usia_paud_ra'],

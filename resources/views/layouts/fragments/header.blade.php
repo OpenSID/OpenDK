@@ -3,13 +3,13 @@
     <!-- Logo -->
     <a href="{{$app->make('url')->to('/')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="{{ is_logo($profil_wilayah->file_logo) }}" alt="KD"  width="42px"></span>
+        <span class="logo-mini"><img src="{{ is_logo($profil->file_logo) }}" alt="KD"  width="42px"></span>
         <!-- logo for regular state and mobile devices -->
         <div class="logo-lg" style="justify-content: flex-start; height: 100%; width:100%; display: flex;">
-            <div><img class="user-image" src="{{ is_logo($profil_wilayah->file_logo) }}" style="padding-right:5px; max-width:42px" alt="KD" width="42px"></div>
+            <div><img class="user-image" src="{{ is_logo($profil->file_logo) }}" style="padding-right:5px; max-width:42px" alt="KD" width="42px"></div>
             <div style="text-align: left; line-height: 20px; margin-bottom: auto; margin-top: auto;">
-                <div class="" style="font-size:11px;">{{ ucfirst($nama_wilayah_kab) }}</div>
-                <div class="" style="font-size: clamp(10px, 2vw, 10px); font-weight:600; ">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</div>
+                <div class="" style="font-size:11px;">{{ ucfirst($profil->nama_kabupaten) }}</div>
+                <div class="" style="font-size: clamp(10px, 2vw, 10px); font-weight:600; ">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</div>
             </div>
         </div>
     </a>

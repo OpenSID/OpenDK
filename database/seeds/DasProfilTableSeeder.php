@@ -12,12 +12,35 @@ class DasProfilTableSeeder extends Seeder
      */
     public function run()
     {
-        $kecamatan_id = config('app.default_profile');
+        $socialmedia = array(
+            0 => array (
+                "icon" => "fa fa-facebook",
+                "link"=> null
+            ), 
+            1 => array (
+                "icon"=> "fa fa-twitter",
+                "link"=> null
+            ), 
+            2 => array (
+                "icon"=> "fa fa-instagram",
+                "link"=> null
+            ), 
+            3 => array (
+                "icon"=> "fa fa-youtube",
+                "link"=> null
+            ),
+        );
+
+        DB::table('das_profil')->truncate();
 
         DB::table('das_profil')->insert([
-            'provinsi_id'                     => substr($kecamatan_id, 0, 2),
-            'kabupaten_id'                    => substr($kecamatan_id, 0, 5),
-            'kecamatan_id'                    => $kecamatan_id,
+            'id'                              => 1,
+            'provinsi_id'                     => '00',
+            'nama_provinsi'                   => '',
+            'kabupaten_id'                    => '00.00',
+            'nama_kabupaten'                  => '',
+            'kecamatan_id'                    => '00.00.00',
+            'nama_kecamatan'                  => '',
             'alamat'                          => null,
             'kode_pos'                        => null,
             'telepon'                         => null,
@@ -35,10 +58,7 @@ class DasProfilTableSeeder extends Seeder
             'file_logo'                       => null,
             'visi'                            => null,
             'misi'                            => null,
-            'socialmedia'                     => json_encode(array(0=>array("icon" => "fa fa-facebook","link"=> null), 
-                                                                1 => array("icon"=> "fa fa-twitter",  "link"=> null), 
-                                                                2 => array("icon"=> "fa fa-instagram","link"=> null), 
-                                                                3 => array("icon"=> "fa fa-youtube",  "link"=> null))),
+            'socialmedia'                     => json_encode($socialmedia),
             'created_at'                      => now(),
             'updated_at'                      => now(),
         ]);

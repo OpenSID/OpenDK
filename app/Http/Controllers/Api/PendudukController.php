@@ -34,17 +34,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PendudukRequest;
 use App\Imports\SinkronPenduduk;
-
 use App\Jobs\PendudukQueueJob;
-
 use App\Models\Penduduk;
-use function back;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use function response;
 
+use Illuminate\Support\Str;
 use ZipArchive;
 
 class PendudukController extends Controller

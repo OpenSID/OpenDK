@@ -21,7 +21,7 @@
     <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ Request::url() }}">
-    <meta property="og:site_name" content="{{ \URL::to('')}}">
+    <meta property="og:site_name" content="{{ \URL::to('') }}">
     <meta property="og:title" content="{{ $page_title ?? '' }}">
     <meta property="og:description" content="{{ $page_description ?? '' }}. ">
     <meta property="og:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
@@ -32,9 +32,7 @@
     <meta name="twitter:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
     <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }}">
 
-    <link rel="icon" type="image/icon" href="{{ is_logo($profil_wilayah->file_logo) }}" />
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/icon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/icon/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
     <link rel="mask-icon" href="{{ asset('/icon/safari-pinned-tab.svg') }}" color="#5bbad5">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}" />
     

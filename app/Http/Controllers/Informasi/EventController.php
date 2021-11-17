@@ -33,15 +33,10 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
-use function back;
-use function compact;
 use Exception;
-
 use Illuminate\Http\Request;
+
 use Illuminate\Http\Response;
-use function redirect;
-use function request;
-use function view;
 
 class EventController extends Controller
 {
@@ -79,30 +74,22 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'event_name' => 'required',
+            'start'      => 'required',
+            'end'        => 'required',
+            'attendants' => 'required',
+        ]);
+
         try {
             $event = new Event($request->input());
-            request()->validate([
-                'event_name' => 'required',
-                'start'      => 'required',
-                'end'        => 'required',
-                'attendants' => 'required',
-            ]);
             $event->status = 'OPEN';
             $event->save();
-            return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
+        return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
     }
 
     /**
@@ -128,16 +115,16 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            request()->validate([
-                'event_name' => 'required',
-                'start'      => 'required',
-                'end'        => 'required',
-                'attendants' => 'required',
-                'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
-            ]);
+        request()->validate([
+            'event_name' => 'required',
+            'start'      => 'required',
+            'end'        => 'required',
+            'attendants' => 'required',
+            'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
+        ]);
 
-            $event = Event::FindOrFail($id);
+        try {
+            $event = Event::findOrFail($id);
             $event->fill($request->all());
 
             if ($request->hasFile('attachment')) {
@@ -148,11 +135,11 @@ class EventController extends Controller
                 $event->attachment = $path . $fileName;
             }
             $event->save();
-
-            return redirect()->route('informasi.event.index')->with('success', 'Update Event sukses!');
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Update Event gagal!');
+            return back()->withInput()->with('error', 'Ubah Event gagal!');
         }
+
+        return redirect()->route('informasi.event.index')->with('success', 'Ubah Event sukses!');
     }
 
     /**
@@ -164,11 +151,11 @@ class EventController extends Controller
     public function destroy($id)
     {
         try {
-            Event::destroy($id);
-
-            return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
+            Event::findOrFail($id)->delete();
         } catch (Exception $e) {
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
+
+        return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
     }
 }

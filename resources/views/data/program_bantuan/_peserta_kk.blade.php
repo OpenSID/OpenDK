@@ -1,11 +1,9 @@
 <div class="form-group">
-    <label for="peserta" class="control-label col-md-3 col-sm-3 col-xs-12">NO. KK / Nama Kepala Keluarga <span
-                class="required">*</span></label>
-
+    <label for="peserta" class="control-label col-md-3 col-sm-3 col-xs-12">NO. KK / Nama Kepala Keluarga <span class="required">*</span></label>
     <div class="col-md-4 col-sm-6 col-xs-12">
         {!! Form::hidden('program_id', $program->id) !!}
         {!! Form::hidden('sasaran', $program->sasaran) !!}
-        {!! Form::select('peserta', [], null, ['class' => 'form-control', 'required'=>true, 'id'=>'peserta']) !!}
+        {!! Form::select('peserta', [], null, ['class' => 'form-control', 'required'=>true, 'id' => 'peserta']) !!}
     </div>
 </div>
 <div id="identitas"></div>
@@ -13,7 +11,7 @@
     <label for="kartu_peserta" class="control-label col-md-3 col-sm-3 col-xs-12">No Kartu</label>
 
     <div class="col-md-2 col-sm-3 col-xs-12">
-        {!! Form::text('kartu_peserta', null,['placeholder'=>'No Kartu',  'class' => 'form-control', 'id'=>'kartu_peserta']) !!}
+        {!! Form::text('kartu_peserta', null, ['placeholder' => 'No Kartu',  'class' => 'form-control', 'id' => 'kartu_peserta']) !!}
     </div>
 </div>
 
@@ -22,21 +20,21 @@
     <label for="kartu_nik" class="control-label col-md-3 col-sm-3 col-xs-12">NIK</label>
 
     <div class="col-md-4 col-sm-3 col-xs-12">
-        {!! Form::text('kartu_nik', null,['placeholder'=>'NIK', 'class' => 'form-control', 'id'=>'kartu_nik']) !!}
+        {!! Form::text('kartu_nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'id' => 'kartu_nik']) !!}
     </div>
 </div>
 <div class="form-group">
     <label for="kartu_nama" class="control-label col-md-3 col-sm-3 col-xs-12">Nama</label>
 
     <div class="col-md-4 col-sm-3 col-xs-12">
-        {!! Form::text('kartu_nama', null,['placeholder'=>'Nama',  'class' => 'form-control', 'id'=>'kartu_nama']) !!}
+        {!! Form::text('kartu_nama', null, ['placeholder' => 'Nama',  'class' => 'form-control', 'id' => 'kartu_nama']) !!}
     </div>
 </div>
 <div class="form-group">
     <label for="kartu_tempat_lahir" class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir</label>
 
     <div class="col-md-4 col-sm-3 col-xs-12">
-        {!! Form::text('kartu_tempat_lahir', null,['placeholder'=>'Tempat Lahir', 'class' => 'form-control', 'id'=>'kartu_tempat_lahir']) !!}
+        {!! Form::text('kartu_tempat_lahir', null, ['placeholder' => 'Tempat Lahir', 'class' => 'form-control', 'id' => 'kartu_tempat_lahir']) !!}
     </div>
 </div>
 <div class="form-group">
@@ -44,7 +42,7 @@
 
     <div class="row">
         <div class="col-md-2 col-sm-2 col-xs-3">
-            {!! Form::text('kartu_tanggal_lahir', null, ['placeholder' => 'Tanggal Lahir','class' => 'form-control datepicker',  'id'=>'kartu_tanggal_lahir']) !!}
+            {!! Form::text('kartu_tanggal_lahir', null, ['placeholder' => 'Tanggal Lahir','class' => 'form-control datepicker',  'id' => 'kartu_tanggal_lahir']) !!}
         </div>
     </div>
 </div>
@@ -66,7 +64,7 @@
 
         $('#peserta').select2({
             ajax : {
-                url : '{{ url('/api/list-peserta-kk')}}',
+                url : '{{ url('/api/list-kk') }}',
                 dataType : 'json',
                 delay : 200,
                 data : function(params){
@@ -114,9 +112,6 @@
                 format: 'YYYY-MM-DD'
             });
         });
-
     })
-
-
 </script>
 @endpush

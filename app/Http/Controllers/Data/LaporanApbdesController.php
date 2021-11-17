@@ -35,17 +35,11 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanApbdes;
 use App\Models\DataDesa;
 use App\Models\LaporanApbdes;
-use function back;
-use function compact;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
-use function redirect;
-use function route;
-use function view;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
 
@@ -59,7 +53,7 @@ class LaporanApbdesController extends Controller
     public function index(LaporanApbdes $apbdes)
     {
         $page_title       = 'Laporan APBDes';
-        $page_description = 'Data APBDes';
+        $page_description = 'Daftar Laporan APBDes';
         $list_desa        = DataDesa::get();
 
         return view('data.laporan-apbdes.index', compact('page_title', 'page_description', 'list_desa'));
@@ -87,18 +81,15 @@ class LaporanApbdesController extends Controller
                 'das_apbdes.imported_at',
             ])
             ->when($desa, function ($query) use ($desa) {
-                return $desa === 'ALL'
+                return $desa === 'Semua'
                     ? $query
                     : $query->where('das_data_desa.desa_id', $desa);
             });
 
         return DataTables::of($query)
             ->addColumn('action', function ($row) {
-                $delete_url = route('data.laporan-apbdes.destroy', $row->id);
-                $download_url = asset('storage/apbdes/' . $row->nama_file);
-
-                $data['delete_url'] = $delete_url;
-                $data['download_url'] = $download_url;
+                $data['delete_url'] = asset('storage/apbdes/' . $row->nama_file);
+                $data['download_url'] = route('data.laporan-apbdes.destroy', $row->id);
 
                 return view('forms.action', $data);
             })->make();
@@ -118,11 +109,11 @@ class LaporanApbdesController extends Controller
             Storage::disk('public')->delete('apbdes/' . $apbdes->nama_file);
 
             $apbdes->delete();
-
-            return redirect()->route('data.laporan-apbdes.index')->with('success', 'Data sukses dihapus!');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.laporan-apbdes.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.laporan-apbdes.index')->with('success', 'Data sukses dihapus!');
     }
 
     /**
@@ -133,7 +124,7 @@ class LaporanApbdesController extends Controller
     public function import()
     {
         $page_title       = 'Laporan APBDes';
-        $page_description = 'Import Data';
+        $page_description = 'Import Laporan APBDes';
 
         return view('data.laporan-apbdes.import', compact('page_title', 'page_description'));
     }

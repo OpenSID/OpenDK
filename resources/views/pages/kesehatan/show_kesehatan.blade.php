@@ -9,11 +9,11 @@
                     <div class="form-group">
                         <label for="list_desa" class="col-sm-4 control-label">Desa</label>
                         <div class="col-sm-8">
-                            <input type="hidden" id="defaultProfil" value="{{ $defaultProfil }}">
+                            <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                             <select class="form-control" id="list_desa">
-                                <option value="ALL">ALL</option>
+                                <option value="Semua">Semua Desa</option>
                                 @foreach($list_desa as $desa)
-                                    <option value="{{$desa->desa_id}}">{{$desa->nama}}</option>
+                                    <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -26,9 +26,9 @@
 
                         <div class="col-sm-8">
                             <select class="form-control" id="list_year">
-                                <option value="ALL">ALL</option>
+                                <option value="Semua">Semua</option>
                                 @foreach($year_list as $year)
-                                    <option value="{{$year}}">{{$year}}</option>
+                                    <option value="{{ $year }}">{{ $year }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -110,41 +110,41 @@
         $('#list_year').select2();
         // Change Dashboard when Lsit Desa changed
         $('#list_desa').on('select2:select', function (e) {
-            var kid = $('#defaultProfil').val();
+            var pid = $('#profil_id').val();
             var did = e.params.data;
             var year = $('#list_year').find(":selected").text();
 
-            change_das_kesehatan(kid, did.id, year);
+            change_das_kesehatan(pid, did.id, year);
         });
 
         // Change Dashboard when List Year changed
         $('#list_year').on('select2:select', function (e) {
-            var kid = $('#defaultProfil').val();
+            var pid = $('#profil_id').val();
             var did = $('#list_desa').find(":selected").val();
             var year = this.value;
-            change_das_kesehatan(kid, did, year);
+            change_das_kesehatan(pid, did, year);
         });
 
 
         /*
-         Initial Dashboard
+         * Initial Dashboard
          */
-        var kid = $('#defaultProfil').val();
-        if (kid == null) {
-            kid = $('#defaultProfil').val();
+        var pid = $('#profil_id').val();
+        if (pid == null) {
+            pid = $('#profil_id').val();
         }
         var did = $('#list_desa').find(":selected").val();
         var year = $('#list_year').find(":selected").text();
 
-        change_das_kesehatan(kid, did, year);
+        change_das_kesehatan(pid, did, year);
         /*
-         End Initial Dashboard
+         * End Initial Dashboard
          */
     });
 
-    function change_das_kesehatan(kid, did, year) {
+    function change_das_kesehatan(pid, did, year) {
         $.ajax('{!! route('statistik.kesehatan.chart-akiakb') !!}', {
-            data: {kid: kid, did: did, y: year}
+            data: {pid: pid, did: did, y: year}
         }).done(function (data) {
             create_chart_akiakb(data['grafik']);
             $('#tabel_aki_akb').html(data['tabel']);
@@ -176,7 +176,7 @@
         });
 
         $.ajax('{!! route('statistik.kesehatan.chart-imunisasi') !!}', {
-            data: {kid: kid, did: did, y: year}
+            data: {pid: pid, did: did, y: year}
         }).done(function (data) {
             create_chart_imunisasi(data['grafik']);
             $('#tabel_imunisasi').html(data['tabel']);
@@ -208,19 +208,19 @@
         });
 
         $.ajax('{!! route('statistik.kesehatan.chart-penyakit') !!}', {
-            data: {kid: kid, did: did, y: year}
+            data: {pid: pid, did: did, y: year}
         }).done(function (data) {
-             if (year=='ALL'){
+            if (year == 'Semua') {
                 create_chart_penyakit(data['grafik']);
-             }else{
-                 create_chart_penyakit2(data['grafik']);
-             }
+            } else {
+                create_chart_penyakit2(data['grafik']);
+            }
 
             $('#tabel_penyakit').html(data['tabel']);
         });
 
         $.ajax('{!! route('statistik.kesehatan.chart-sanitasi') !!}', {
-            data: {kid: kid, did: did, y: year}
+            data: {pid: pid, did: did, y: year}
         }).done(function (data) {
             create_chart_sanitasi(data['grafik']);
             $('#tabel_sanitasi').html(data['tabel']);

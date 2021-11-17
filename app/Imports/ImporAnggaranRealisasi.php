@@ -32,6 +32,7 @@
 namespace App\Imports;
 
 use App\Models\AnggaranRealisasi;
+use App\Models\Profil;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -64,7 +65,7 @@ class ImporAnggaranRealisasi implements ToModel, WithHeadingRow, WithChunkReadin
     public function model(array $row)
     {
         return new AnggaranRealisasi([
-            'kecamatan_id'           => config('app.default_profile'),
+            'profil_id'              => Profil::first()->id,
             'total_anggaran'         => $row['total_anggaran'],
             'total_belanja'          => $row['total_belanja'],
             'belanja_pegawai'        => $row['belanja_pegawai'],

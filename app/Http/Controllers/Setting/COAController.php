@@ -35,49 +35,39 @@ use App\Http\Controllers\Controller;
 use App\Models\Coa;
 use App\Models\SubCoa;
 use App\Models\SubSubCoa;
-use function back;
-use function compact;
 use Exception;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function intval;
-use function redirect;
-use function request;
-use function str_pad;
-use const STR_PAD_LEFT;
-
-use function view;
 
 class COAController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Daftar Akun';
-        $page_description = 'Daftar Akun COA';
+        $page_title       = 'COA';
+        $page_description = 'Daftar COA';
 
         return view('setting.coa.index', compact('page_title', 'page_description'));
     }
 
     public function create()
     {
-        $page_title       = "Tambah";
-        $page_description = 'Tambah COA Baru';
+        $page_title       = "COA";
+        $page_description = 'Tambah COA';
 
         return view('setting.coa.create', compact('page_title', 'page_description'));
     }
 
     public function store(Request $request)
     {
-        try {
-            request()->validate([
-                'type_id'    => 'required',
-                'sub_id'     => 'required',
-                'sub_sub_id' => 'required',
-                'coa_name'   => 'required',
-                'id'         => 'required',
-            ]);
+        request()->validate([
+            'type_id'    => 'required',
+            'sub_id'     => 'required',
+            'sub_sub_id' => 'required',
+            'coa_name'   => 'required',
+            'id'         => 'required',
+        ]);
 
+        try {
             $data = [
                 'type_id'    => $request->input('type_id'),
                 'sub_id'     => $request->input('sub_id'),
@@ -85,14 +75,12 @@ class COAController extends Controller
                 'coa_name'   => $request->input('coa_name'),
                 'id'         => $request->input('id'),
             ];
-            DB::table('ref_coa')->insert(
-                $data
-            );
-
-            return redirect()->route('setting.coa.index')->with('success', 'Akun COA berhasil disimpan!');
+            DB::table('ref_coa')->insert($data);
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }
+
+        return redirect()->route('setting.coa.index')->with('success', 'Akun COA berhasil disimpan!');
     }
 
     public function get_sub_coa($type_id)

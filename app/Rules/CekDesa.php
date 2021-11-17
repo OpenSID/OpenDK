@@ -37,10 +37,7 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CekDesa implements Rule
 {
-    /**
-     * @var int
-     */
-    protected $nama_kec;
+    protected $nama_kecamatan;
     protected $value;
 
     /**
@@ -50,7 +47,7 @@ class CekDesa implements Rule
      */
     public function __construct()
     {
-        $this->nama_kec = Profil::where('kecamatan_id', config('app.default_profile'))->first()->kecamatan->nama;
+        $this->nama_kecamatan = Profil::first()->nama_kecamatan;
     }
 
     /**
@@ -74,6 +71,6 @@ class CekDesa implements Rule
      */
     public function message()
     {
-        return 'Kode desa ' . $this->value . ' tidak dikenal di OpenDK Kecamatan ' . $this->nama_kec;
+        return 'Kode desa ' . $this->value . ' tidak dikenal di OpenDK Kecamatan ' . $this->nama_kecamatan;
     }
 }

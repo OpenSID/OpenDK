@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset("/favicon.png") }}"/>
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
     <link rel="stylesheet" href="{{ asset("/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset("/bower_components/font-awesome/css/font-awesome.min.css") }}">
@@ -33,8 +33,8 @@
     <div class="login-box-body">
         <div class="login-logo" style="padding-top: 10px;">
             <a href="{{ route('beranda') }}">
-                <img class="" src="{{ is_logo($profil_wilayah->file_logo) }}" style="max-width:80px;white-space:normal" alt=""  width="70px">
-                <h3>PEMERINTAH {{ strtoupper($nama_wilayah_kab) }}<br/><b>{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</b></h3>
+                <img class="" src="{{ is_logo($profil->file_logo) }}" style="max-width:80px;white-space:normal" alt=""  width="70px">
+                <h3>PEMERINTAH {{ strtoupper($profil->nama_kabupaten) }}<br/><b>{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</b></h3>
             </a>
         </div>
         <hr/>
@@ -102,7 +102,7 @@
         });
 
         window.setTimeout(function() {
-            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+            $("#notifikasi").fadeTo(500, 0).slideUp(500, function(){
                 $(this).remove();
             });
         }, 5000);

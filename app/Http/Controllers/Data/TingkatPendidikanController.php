@@ -34,30 +34,18 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
-use function back;
-use function compact;
 use Exception;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\Response;
-use function months_list;
-use function redirect;
-use function request;
-use function route;
-use function view;
 use Yajra\DataTables\DataTables;
-use function years_list;
 
 class TingkatPendidikanController extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
     public function index()
     {
         $page_title       = 'Tingkat Pendidikan';
-        $page_description = 'Data Tingkat Pendidikan ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_description = 'Daftar Tingkat Pendidikan';
+
         return view('data.tingkat_pendidikan.index', compact('page_title', 'page_description'));
     }
 
@@ -66,19 +54,16 @@ class TingkatPendidikanController extends Controller
      *
      * @return Response
      */
-    public function getDataTingkatPendidikan()
+    public function getData()
     {
         return DataTables::of(TingkatPendidikan::with(['desa']))
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('data.tingkat-pendidikan.edit', $row->id);
-                $delete_url = route('data.tingkat-pendidikan.destroy', $row->id);
-
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url']   = route('data.tingkat-pendidikan.edit', $row->id);
+                $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
 
                 return view('forms.action', $data);
             })
-            ->rawColumns(['actions'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     /**
@@ -88,10 +73,11 @@ class TingkatPendidikanController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Tingkat Pendidikan';
+        $page_title       = 'Tingkat Pendidikan';
+        $page_description = 'Import Tingkat Pendidikan';
         $years_list       = years_list();
         $months_list      = months_list();
+
         return view('data.tingkat_pendidikan.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
@@ -127,9 +113,10 @@ class TingkatPendidikanController extends Controller
      */
     public function edit($id)
     {
-        $pendidikan       = TingkatPendidikan::findOrFail($id);
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Data Tingkat Pendidikan';
+        $pendidikan       = TingkatPendidikan::with(['desa'])->findOrFail($id);
+        $page_title       = 'Tingkat Pendidikan';
+        $page_description = 'Ubah Tingkat Pendidikan : Desa ' .  $pendidikan->desa->nama;
+
         return view('data.tingkat_pendidikan.edit', compact('page_title', 'page_description', 'pendidikan'));
     }
 
@@ -141,23 +128,23 @@ class TingkatPendidikanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'tidak_tamat_sekolah'     => 'required',
+            'tamat_sd'                => 'required',
+            'tamat_smp'               => 'required',
+            'tamat_sma'               => 'required',
+            'tamat_diploma_sederajat' => 'required',
+            'semester'                => 'required',
+            'tahun'                   => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'tidak_tamat_sekolah'     => 'required',
-                'tamat_sd'                => 'required',
-                'tamat_smp'               => 'required',
-                'tamat_sma'               => 'required',
-                'tamat_diploma_sederajat' => 'required',
-                'bulan'                   => 'required',
-                'tahun'                   => 'required',
-            ]);
-
-            TingkatPendidikan::find($id)->update($request->all());
-
-            return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil disimpan!');
+            TingkatPendidikan::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+            return back()->withInput()->with('error', 'Data gagal diubah!' . $e->getMessage());
         }
+
+        return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil diubah!');
     }
 
     /**
@@ -170,10 +157,10 @@ class TingkatPendidikanController extends Controller
     {
         try {
             TingkatPendidikan::findOrFail($id)->delete();
-
-            return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data sukses dihapus!');
     }
 }

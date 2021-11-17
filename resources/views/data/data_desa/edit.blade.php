@@ -1,16 +1,16 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('data.data-desa.index')}}">Data Desa</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.data-desa.index') }}">Data Desa</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -19,12 +19,7 @@
     <div class="row">
         <div class="col-md-12">
             @include('partials.flash_message')
-            <div class="box box-primary">
-                {{-- <div class="box-header with-border">
-                     <h3 class="box-title">Aksi</h3>
-                 </div>--}}
-                <!-- /.box-header -->
-
+            
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <strong>Oops!</strong> Ada kesalahan pada inputan Anda..<br><br>
@@ -66,21 +61,16 @@
 </section>
 <!-- /.content -->
 @endsection
-@include('partials.asset_datetimepicker')
+@include('partials.asset_select2')
 @push('scripts')
+@include('partials.desa_select2')
 <script>
     $(function () {
 
-        //Datetimepicker
-        $('.datepicker').each(function () {
-            var $this = $(this);
-            $this.datetimepicker({
-                format: 'YYYY-MM-D'
-            });
+        $('#list_desa').change(function () {
+            $("#desa_id").val($('#list_desa').val());
+            $("#nama").val($('#list_desa option:selected').text());
         });
-
     })
-
-
 </script>
 @endpush

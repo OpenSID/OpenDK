@@ -12,21 +12,18 @@ class DasTipeRegulasiTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('das_tipe_regulasi')->delete();
+        DB::table('das_tipe_regulasi')->truncate();
         
-        \DB::table('das_tipe_regulasi')->insert(array (
-            0 => 
-            array (
+        DB::table('das_tipe_regulasi')->insert(array (
+            0 => array (
                 'id' => 2,
                 'nama' => 'Regulasi Nasional',
                 'slug' => 'regulasi-nasional',
                 'created_at' => '2018-04-25 19:26:51',
                 'updated_at' => '2018-04-25 19:26:51',
             ),
-            1 => 
-            array (
+            1 => array (
                 'id' => 3,
                 'nama' => 'Regulasi Daerah',
                 'slug' => 'regulasi-daerah',
@@ -34,7 +31,5 @@ class DasTipeRegulasiTableSeeder extends Seeder
                 'updated_at' => '2018-04-25 19:27:00',
             ),
         ));
-        
-        
     }
 }

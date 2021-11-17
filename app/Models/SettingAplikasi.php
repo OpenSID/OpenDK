@@ -39,7 +39,9 @@ class SettingAplikasi extends Model
 
     protected $table = 'das_setting';
 
-    protected $fillable = ['key','value','type','description','option','category'];
+    protected $fillable = [
+        'value',
+    ];
 
     public $timestamps = false;
 

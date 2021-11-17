@@ -1,33 +1,38 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipe <span class="required">*</span></label>
-
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('tipe_regulasi', \App\Models\TipeRegulasi::pluck('nama', 'id'), null,['class'=>'form-control', 'id'=>'tipe', 'required']) !!}
+        {!! Form::select('tipe_regulasi', \App\Models\TipeRegulasi::pluck('nama', 'id'), null, ['class' => 'form-control', 'id' => 'tipe', 'required']) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text( 'judul', null, [ 'class' => 'form-control', 'placeholder' => 'Judul Regulasi' ,'required'=>'required'] ) !!}
+        {!! Form::text( 'judul', null, ['class' => 'form-control', 'placeholder' => 'Judul Regulasi' ,'required' => 'required'] ) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
-
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('deskripsi', null,['class'=>'form-control', 'placeholder'=>'Deskripsi', 'required'=>'required']) !!}
+        {!! Form::textarea('deskripsi', null, ['class' => 'form-control', 'placeholder' => 'Deskripsi', 'required' => 'required']) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">File Regulasi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input accept="image/*, application/pdf" type="file" id="file_regulasi" name="file_regulasi" class="form-control" @if(isset($regulasi->file_regulasi)) required @else {{ " " }}@endif>
-       <br>
+        <input accept="image/*, application/pdf" type="file" id="file_regulasi" name="file_regulasi" class="form-control" required>
+        <br>
 
-            <img class="hide" src="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar"
-             style="max-width:400px;max-height:250px;float:left;"/>
+        @if(isset($regulasi->file_regulasi) && $regulasi->mime_type != 'pdf')
+            <img class="" src="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ "http://placehold.it/1000x600" }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
+        @endif
 
-            <object data="" type="application/pdf" width="500" height="400" class="hide" id="showpdf"> </object>
+        @if(isset($regulasi->file_regulasi) && $regulasi->mime_type == 'pdf')
+            <object data="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @endif" type="application/pdf" width="500" height="400" class="" id="showpdf"> </object>
+        @endif
+
+        <img class="hide" src="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
+
+        <object data="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @endif" type="application/pdf" width="500" height="400" class="hide" id="showpdf"> </object>
     </div>
 </div>
 
@@ -61,26 +66,13 @@
                     }
 
                     reader.readAsDataURL(input.files[0]);
-                }
-                else { //no
+                } else { //no
                     //warning
                     $("#file_regulasi").val('');
                     alert('File tersebut tidak diperbolehkan.');
                 }
             }
         }
-
-        /*function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#showgambar').attr('src', e.target.result);
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }*/
 
         $("#file_regulasi").change(function () {
             readURL(this);

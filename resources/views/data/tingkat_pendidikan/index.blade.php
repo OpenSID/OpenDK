@@ -2,15 +2,15 @@
 
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }} {{ $sebutan_wilayah }} {{ $nama_wilayah }}</small>
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -28,10 +28,11 @@
         </div>
         <div class="box-body">
             @include( 'flash::message' )
-            <table class="table table-bordered table-hover dataTable" id="aki-table">
+            <table class="table table-bordered table-hover dataTable" id="tingkat-pendidikan">
                 <thead>
                 <tr>
                     <th style="max-width: 100px;">Aksi</th>
+                    <!-- <th>ID</th> -->
                     <th>Desa</th>
                     <th>Tidak Tamat Sekolah</th>
                     <th>Tamat SD Sederajat</th>
@@ -49,18 +50,17 @@
 </section>
 <!-- /.content -->
 @endsection
-
 @include('partials.asset_datatables')
-
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function () {
-        var data = $('#aki-table').DataTable({
+        var data = $('#tingkat-pendidikan').DataTable({
             processing: true,
             serverSide: true,
             ajax: "{!! route( 'data.tingkat-pendidikan.getdata' ) !!}",
             columns: [
-                {data: 'actions', name: 'actions', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                // {data: 'id', id: 'id'},
                 {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'tidak_tamat_sekolah', name: 'tidak_tamat_sekolah'},
                 {data: 'tamat_sd', name: 'tamat_sd'},
@@ -70,11 +70,10 @@
                 {data: 'semester', name: 'semester'},
                 {data: 'tahun', name: 'tahun'},
             ],
-            order: [[0, 'desc']]
+            order: [[1, 'asc']]
         });
     });
 </script>
 @include('forms.datatable-vertical')
 @include('forms.delete-modal')
-
 @endpush

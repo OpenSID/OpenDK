@@ -1,16 +1,16 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}jenis-penyakit"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('setting.tipe-regulasi.index')}}">Jenis Penyakit</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}jenis-penyakit"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('setting.tipe-regulasi.index') }}">Jenis Penyakit</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -19,12 +19,7 @@
     <div class="row">
         <div class="col-md-12">
             @include( 'partials.flash_message' )
-            <div class="box box-primary">
-                {{-- <div class="box-header with-border">
-                     <h3 class="box-title">Aksi</h3>
-                 </div>--}}
-                <!-- /.box-header -->
-
+            
                 <!-- form start -->
                 {!! Form::open( [ 'route' => 'setting.jenis-penyakit.store', 'method' => 'post','id' => 'form-jenis-penyakit', 'class' => 'form-horizontal form-label-left'] ) !!}
 

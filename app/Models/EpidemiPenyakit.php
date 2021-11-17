@@ -38,7 +38,6 @@ class EpidemiPenyakit extends Model
     protected $table = 'das_epidemi_penyakit';
 
     protected $fillable = [
-        'kecamatan_id',
         'desa_id',
         'jumlah_penderita',
         'penyakit_id',
@@ -53,6 +52,6 @@ class EpidemiPenyakit extends Model
 
     public function desa()
     {
-        return $this->hasOne(Wilayah::class, 'kode', 'desa_id');
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
 }

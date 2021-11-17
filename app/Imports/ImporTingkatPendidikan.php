@@ -72,15 +72,14 @@ class ImporTingkatPendidikan implements ToModel, WithHeadingRow, WithChunkReadin
         ]);
 
         return new TingkatPendidikan([
-            'kecamatan_id'            => config('app.default_profile'),
             'desa_id'                 => $this->request['desa_id'],
+            'semester'                => $this->request['semester'],
             'tahun'                   => $this->request['tahun'],
             'tidak_tamat_sekolah'     => $row['tidak_tamat_sekolah'],
             'tamat_sd'                => $row['tamat_sd_sederajat'],
             'tamat_smp'               => $row['tamat_smp_sederajat'],
             'tamat_sma'               => $row['tamat_sma_sederajat'],
             'tamat_diploma_sederajat' => $row['tamat_diploma_sederajat'],
-            'semester'                => $this->request['semester'],
             'import_id'               => $import->id,
         ]);
     }

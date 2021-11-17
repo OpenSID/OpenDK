@@ -38,7 +38,7 @@ class AnggaranRealisasi extends Model
     protected $table = 'das_anggaran_realisasi';
 
     protected $fillable = [
-        'kecamatan_id',
+        'profil_id',
         'bulan',
         'tahun',
         'total_anggaran',

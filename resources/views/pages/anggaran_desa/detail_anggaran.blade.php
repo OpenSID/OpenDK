@@ -16,13 +16,13 @@
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                             <h4>@php
                                 $query_pendapatan = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '4%');
-                                if($did != 'ALL'){
+                                if($did != 'Semua'){
                                     $query_pendapatan->where('desa_id', $did);
                                 }
-                                if($mid != 'ALL'){
+                                if($mid != 'Semua'){
                                     $query_pendapatan->where('bulan', $mid);
                                 }
-                                if($year != 'ALL'){
+                                if($year != 'Semua'){
                                     $query_pendapatan->where('tahun', $year);
                                 }
                                 $total_pendapatan = $query_pendapatan->sum('jumlah');
@@ -52,13 +52,13 @@
                                     <td align="right">
                                         <strong><?php
                                             $query_pendapatan_sub = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '4'.$sub_coa->id.'%');
-                                            if($did != 'ALL'){
+                                            if($did != 'Semua'){
                                                 $query_pendapatan_sub->where('desa_id', $did);
                                             }
-                                            if($mid != 'ALL'){
+                                            if($mid != 'Semua'){
                                                 $query_pendapatan_sub->where('bulan', $mid);
                                             }
-                                            if($year != 'ALL'){
+                                            if($year != 'Semua'){
                                                 $query_pendapatan_sub->where('tahun', $year);
                                             }
                                             $total_pendapatan_sub = $query_pendapatan_sub->sum('jumlah');
@@ -77,13 +77,13 @@
                                         <td align="right">
                                             <strong><?php
                                                 $query_pendapatan_sub_sub = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '4'.$sub_coa->id.$sub_sub_coa->id.'%');
-                                                if($did != 'ALL'){
+                                                if($did != 'Semua'){
                                                     $query_pendapatan_sub_sub->where('desa_id', $did);
                                                 }
-                                                if($mid != 'ALL'){
+                                                if($mid != 'Semua'){
                                                     $query_pendapatan_sub_sub->where('bulan', $mid);
                                                 }
-                                                if($year != 'ALL'){
+                                                if($year != 'Semua'){
                                                     $query_pendapatan_sub_sub->where('tahun', $year);
                                                 }
                                                 $total_pendapatan_sub_sub = $query_pendapatan_sub_sub->sum('jumlah');
@@ -111,13 +111,13 @@
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                             <h4>@php
                                 $query_belanja = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '5%');
-                                if($did != 'ALL'){
+                                if($did != 'Semua'){
                                 $query_belanja->where('desa_id', $did);
                                 }
-                                if($mid != 'ALL'){
+                                if($mid != 'Semua'){
                                 $query_belanja->where('bulan', $mid);
                                 }
-                                if($year != 'ALL'){
+                                if($year != 'Semua'){
                                 $query_belanja->where('tahun', $year);
                                 }
                                 $total_belanja = $query_belanja->sum('jumlah');
@@ -148,13 +148,13 @@
                                     <td align="right">
                                         <strong><?php
                                             $query_belanja_sub = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '5'.$sub_coa->id.'%');
-                                            if($did != 'ALL'){
+                                            if($did != 'Semua'){
                                                 $query_belanja_sub->where('desa_id', $did);
                                             }
-                                            if($mid != 'ALL'){
+                                            if($mid != 'Semua'){
                                                 $query_belanja_sub->where('bulan', $mid);
                                             }
-                                            if($year != 'ALL'){
+                                            if($year != 'Semua'){
                                                 $query_belanja_sub->where('tahun', $year);
                                             }
                                             $total_belanja_sub = $query_belanja_sub->sum('jumlah');
@@ -173,13 +173,13 @@
                                         <td align="right">
                                             <strong><?php
                                                 $query_belanja_sub_sub = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '5'.$sub_coa->id.$sub_sub_coa->id.'%');
-                                                if($did != 'ALL'){
+                                                if($did != 'Semua'){
                                                     $query_belanja_sub_sub->where('desa_id', $did);
                                                 }
-                                                if($mid != 'ALL'){
+                                                if($mid != 'Semua'){
                                                     $query_belanja_sub_sub->where('bulan', $mid);
                                                 }
-                                                if($year != 'ALL'){
+                                                if($year != 'Semua'){
                                                     $query_belanja_sub_sub->where('tahun', $year);
                                                 }
                                                 $total_belanja_sub_sub = $query_belanja_sub_sub->sum('jumlah');
@@ -207,13 +207,13 @@
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
                             <h4>@php
                                 $query_biaya = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '6%');
-                                if($did != 'ALL'){
+                                if($did != 'Semua'){
                                 $query_biaya->where('desa_id', $did);
                                 }
-                                if($mid != 'ALL'){
+                                if($mid != 'Semua'){
                                 $query_biaya->where('bulan', $mid);
                                 }
-                                if($year != 'ALL'){
+                                if($year != 'Semua'){
                                 $query_biaya->where('tahun', $year);
                                 }
                                 $total_biaya = $query_biaya->sum('jumlah');
@@ -244,13 +244,13 @@
                                     <td align="right">
                                         <strong><?php
                                             $query_biaya_sub = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '6'.$sub_coa->id.'%');
-                                            if($did != 'ALL'){
+                                            if($did != 'Semua'){
                                                 $query_biaya_sub->where('desa_id', $did);
                                             }
-                                            if($mid != 'ALL'){
+                                            if($mid != 'Semua'){
                                                 $query_biaya_sub->where('bulan', $mid);
                                             }
-                                            if($year != 'ALL'){
+                                            if($year != 'Semua'){
                                                 $query_biaya_sub->where('tahun', $year);
                                             }
                                             $total_biaya_sub = $query_biaya_sub->sum('jumlah');
@@ -269,13 +269,13 @@
                                         <td align="right">
                                             <strong><?php
                                                 $query_biaya_sub_sub = \App\Models\AnggaranDesa::where('no_akun', 'LIKE', '6'.$sub_coa->id.$sub_sub_coa->id.'%');
-                                                if($did != 'ALL'){
+                                                if($did != 'Semua'){
                                                     $query_biaya_sub_sub->where('desa_id', $did);
                                                 }
-                                                if($mid != 'ALL'){
+                                                if($mid != 'Semua'){
                                                     $query_biaya_sub_sub->where('bulan', $mid);
                                                 }
-                                                if($year != 'ALL'){
+                                                if($year != 'Semua'){
                                                     $query_biaya_sub_sub->where('tahun', $year);
                                                 }
                                                 $total_biaya_sub_sub = $query_biaya_sub_sub->sum('jumlah');

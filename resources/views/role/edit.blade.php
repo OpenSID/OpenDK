@@ -1,16 +1,16 @@
-@extends( 'layouts.dashboard_template' )
+@extends('layouts.dashboard_template')
 
-@section('title') Create Role @endsection
-
-@section( 'content' )
+@section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
-	Role Management
+		{{ $page_title ?? "Page Title" }}
+		<small>{{ $page_description ?? '' }}</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> Administrator</a></li>
-		<li><a href="#">Roles</a></li>
-		<li class="active">Edit</li>
+		<li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+		<li><a href="{{ route('setting.role.index') }}">{{ $page_title }}</a></li>
+		<li class="active">{{ $page_description }}</li>
 	</ol>
 </section>
 
@@ -20,11 +20,10 @@
 		<h3 class="box-title">Roles</h3>
 	</div>
 	<div class="box-body">
-		{!! Form::model($role, ['route'=>['setting.role.update', $role->id], 'method' => 'put', 'autocomplete'=>'off', 'id'=>'form-role']) !!}
+		{!! Form::model($role, ['route'=>['setting.role.update', $role->id], 'method' => 'put', 'autocomplete' => 'off', 'id' => 'form-role']) !!}
 			@include('role.form')
 		{!! Form::close() !!}
 	</div>
 </div>
 </section>
-
 @endsection

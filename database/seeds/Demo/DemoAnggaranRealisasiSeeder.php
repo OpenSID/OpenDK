@@ -2,9 +2,10 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImporAnggaranRealisasi;
 
 class DemoAnggaranRealisasiSeeder extends Seeder
 {
@@ -15,6 +16,9 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::table('das_anggaran_realisasi')->truncate();
+
         Excel::import(
             new ImporAnggaranRealisasi([
                 'bulan' => now()->month,

@@ -35,8 +35,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LaporanApbdesRequest;
 use App\Jobs\LaporanApbdesQueueJob;
 
-use function response;
-
 class LaporanApbdesController extends Controller
 {
     /**

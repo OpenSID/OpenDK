@@ -33,15 +33,9 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use function back;
-use function compact;
 use Exception;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use function redirect;
-use function request;
-use function view;
 
 class FaqController extends Controller
 {
@@ -53,9 +47,9 @@ class FaqController extends Controller
     public function index()
     {
         $page_title       = 'FAQ';
-        $page_description = 'Frequently Ask and Question';
+        $page_description = 'Daftar FAQ';
+        $faqs             = Faq::latest()->paginate(10);
 
-        $faqs = Faq::latest()->paginate(10);
         return view('informasi.faq.index', compact('page_title', 'page_description', 'faqs'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -67,8 +61,8 @@ class FaqController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Tambah FAQ';
-        $page_description = '';
+        $page_title       = 'FAQ';
+        $page_description = 'Tambah FAQ';
 
         return view('informasi.faq.create', compact('page_title', 'page_description'));
     }
@@ -84,19 +78,14 @@ class FaqController extends Controller
             'question' => 'required',
             'answer'   => 'required',
         ]);
-        Faq::create($request->all());
+
+        try {
+            Faq::create($request->all());
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'FAQ gagal ditambah!');
+        }
 
         return redirect()->route('informasi.faq.index')->with('success', 'FAQ berhasil ditambah!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
     }
 
     /**
@@ -107,9 +96,9 @@ class FaqController extends Controller
      */
     public function edit($id)
     {
-        $faq              = Faq::find($id);
-        $page_title       = 'Ubah FAQ';
-        $page_description = $faq->question;
+        $faq              = Faq::findOrFail($id);
+        $page_title       = 'FAQ';
+        $page_description = 'Ubah FAQ : ' . $faq->question;
 
         return view('informasi.faq.edit', compact('page_title', 'page_description', 'faq'));
     }
@@ -123,18 +112,18 @@ class FaqController extends Controller
 
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'question' => 'required',
+            'answer'   => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'question' => 'required',
-                'answer'   => 'required',
-            ]);
-
-            Faq::find($id)->update($request->all());
-
-            return redirect()->route('informasi.faq.index')->with('success', 'Update FAQ sukses!');
+            Faq::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Update FAQ gagal!');
+            return back()->withInput()->with('error', 'FAQ gagal diubah!');
         }
+
+        return redirect()->route('informasi.faq.index')->with('success', 'FAQ berhasil diubah!');
     }
 
     /**
@@ -147,10 +136,10 @@ class FaqController extends Controller
     {
         try {
             Faq::findOrFail($id)->delete();
-
-            return redirect()->route('informasi.faq.index')->with('success', 'FAQ sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('informasi.faq.index')->with('error', 'FAQ gagal dihapus!');
         }
+
+        return redirect()->route('informasi.faq.index')->with('success', 'FAQ berhasil dihapus!');
     }
 }

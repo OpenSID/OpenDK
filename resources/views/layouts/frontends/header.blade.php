@@ -3,9 +3,9 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda') }}"  class="navbar-brand">
-              <img class="logo-kab" src="{{ is_logo($profil_wilayah->file_logo) }}" alt="KD" id="logo-brand" >
-              <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
-              <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
+              <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="KD" id="logo-brand" >
+              <small class="text-kab">PEMERINTAH {{ ucwords($profil->nama_kabupaten) }}</small>
+              <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</small>
             </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
@@ -27,13 +27,13 @@
                   </ul>
                 </li>
                 <li class="col-md-4 col-sm-4">
-                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4>
-                  <small class="" style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
+                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }}</h4>
+                  <small class="" style="text-align:justify;">{{ strip_tags($profil->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
-                  <img src="@if(isset($profil_wilayah->foto_kepala_wilayah)) {{ asset($profil_wilayah->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
-                  <h6 class="text-bold no-padding">{{ $profil_wilayah->nama_camat }}</h6>
-                  <h6>{{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }} </h6>
+                  <img src="@if(isset($profil->foto_kepala_wilayah)) {{ asset($profil->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
+                  <h6 class="text-bold no-padding">{{ $profil->nama_camat }}</h6>
+                  <h6>{{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }} </h6>
                 </li>
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>

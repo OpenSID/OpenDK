@@ -1,16 +1,16 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('informasi.prosedur.index')}}">Prosedur</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('informasi.prosedur.index') }}">Daftar Prosedur</a></li>
+        <li class="active">{{ $page_description ?? '' }}</li>
     </ol>
 </section>
 
@@ -19,10 +19,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                {{-- <div class="box-header with-border">
-                     <h3 class="box-title">Aksi</h3>
-                 </div>--}}
-                <!-- /.box-header -->
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -32,7 +28,6 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-
                     </div>
 
                     @endif
@@ -50,9 +45,9 @@
                         <div class="pull-right">
                             <div class="control-group">
                                 <a href="{{ route('informasi.prosedur.index') }}">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal</button>
+                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
                                 </a>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Simpan</button>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
                             </div>
                         </div>
                     </div>
@@ -94,8 +89,7 @@
                     }
 
                     reader.readAsDataURL(input.files[0]);
-                }
-                else { //no
+                } else { //no
                     //warning
                     $("#file_prosedur").val('');
                     alert('File tersebut tidak diperbolehkan.');

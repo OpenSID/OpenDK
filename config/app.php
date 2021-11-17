@@ -32,26 +32,34 @@
 return [
 
     /*
-     *  Mode Website
-     */
+    |--------------------------------------------------------------------------
+    | Versi Aplikasi
+    |--------------------------------------------------------------------------
+    */
 
     'version' => 'v21.12.01',
 
     /*
-     *  Host TrackSID / Pantau
-     */
+    |--------------------------------------------------------------------------
+    | Host Pantau
+    |--------------------------------------------------------------------------
+    */
 
-    'host_pantau' => env('HOST_PANTAU', 'https://pantau.opensid.my.id/'),
+    'host_pantau' => env('HOST_PANTAU', 'https://pantau.opensid.my.id/index.php/api/'),
 
     /*
-     *  Token TrackSID / Pantau
-     */
+    |--------------------------------------------------------------------------
+    | Token  Pantau
+    |--------------------------------------------------------------------------
+    */
 
     'token_pantau' => env('TOKEN_PANTAU', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6bnVsbCwidGltZXN0YW1wIjoxNjAzNDY2MjM5fQ.HVCNnMLokF2tgHwjQhSIYo6-2GNXB4-Kf28FSIeXnZw'),
 
     /*
-     *  Mode Website
-     */
+    |--------------------------------------------------------------------------
+    | Mode Website
+    |--------------------------------------------------------------------------
+    */
 
     'demo' => env('APP_DEMO', false),
 

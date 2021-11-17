@@ -4,7 +4,7 @@
         <div class="navbar-header">
             <a href="{{ route('beranda') }}"  class="navbar-brand">
               <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="KD" id="logo-brand" >
-              <small class="text-kab">PEMERINTAH {{ ucwords($profil->nama_kabupaten) }}</small>
+              <small class="text-kab">{{ strtoupper('PEMERINTAH KAB. ' . $profil->nama_kabupaten) }}</small>
               <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</small>
             </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">

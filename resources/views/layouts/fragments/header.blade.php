@@ -8,7 +8,7 @@
         <div class="logo-lg" style="justify-content: flex-start; height: 100%; width:100%; display: flex;">
             <div><img class="user-image" src="{{ is_logo($profil->file_logo) }}" style="padding-right:5px; max-width:42px" alt="KD" width="42px"></div>
             <div style="text-align: left; line-height: 20px; margin-bottom: auto; margin-top: auto;">
-                <div class="" style="font-size:11px;">{{ ucfirst($profil->nama_kabupaten) }}</div>
+                <div class="" style="font-size:11px;">{{ strtoupper('Pemerintah Kab. ' . $profil->nama_kabupaten) }}</div>
                 <div class="" style="font-size: clamp(10px, 2vw, 10px); font-weight:600; ">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</div>
             </div>
         </div>

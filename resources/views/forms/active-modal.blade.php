@@ -22,7 +22,7 @@
 
          $(document).on('click', '#activeModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#active').attr('action', url );
+            $('#active').attr('aksi', url );
             $('#import').attr( 'method', 'post' );
             $('#active-modal').modal('show');
             e.preventDefault();

@@ -89,47 +89,42 @@
 
         // Change Dashboard when Lsit Desa changed
         $('#list_desa').on('select2:select', function (e) {
-            var pid = $('#profil_id').val();
             var did = e.params.data;
             var year = $('#list_year').find(":selected").text();
 
-            change_das_bantuan(pid, did.id, year);
+            change_das_bantuan(did.id, year);
         });
 
         // Change Dashboard when List Year changed
         $('#list_year').on('select2:select', function (e) {
-            var pid = $('#profil_id').val();
             var did = $('#list_desa').find(":selected").val();
             var year = this.value;
-            change_das_bantuan(pid, did, year);
+            change_das_bantuan(did, year);
         });
 
 
         /*
          * Initial Dashboard
          */
-        if (pid == null) {
-            pid = $('#profil_id').val();
-        }
         var did = $('#list_desa').find(":selected").val();
         var year = $('#list_year').find(":selected").text();
 
-        change_das_bantuan(pid, did, year);
+        change_das_bantuan(did, year);
         /*
          * End Initial Dashboard
          */
     });
 
-    function change_das_bantuan(pid, did, year)
+    function change_das_bantuan(did, year)
     {
         $.ajax('{!! route('statistik.program-bantuan.chart-penduduk') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_bantuan_penduduk(data);
         });
 
         $.ajax('{!! route('statistik.program-bantuan.chart-keluarga') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_bantuan_keluarga(data);
         });

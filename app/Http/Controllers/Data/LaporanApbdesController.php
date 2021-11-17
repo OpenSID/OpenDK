@@ -87,11 +87,11 @@ class LaporanApbdesController extends Controller
             });
 
         return DataTables::of($query)
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = asset('storage/apbdes/' . $row->nama_file);
                 $data['download_url'] = route('data.laporan-apbdes.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->make();
     }
 

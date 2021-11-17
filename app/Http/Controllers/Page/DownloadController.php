@@ -54,10 +54,10 @@ class DownloadController extends Controller
     public function getDataProsedur()
     {
         return DataTables::of(Prosedur::all())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('unduhan.prosedur.show', ['nama_prosedur' => str_slug($row->judul_prosedur)]);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('judul_prosedur', function ($row) {
                 return $row->judul_prosedur;
@@ -118,10 +118,10 @@ class DownloadController extends Controller
     {
         $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
         return DataTables::of($query->get())
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['download_url'] = asset($row->file_dokumen);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->make();
     }
 

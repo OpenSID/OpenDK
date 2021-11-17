@@ -22,7 +22,7 @@
 
          $(document).on('click', '#deleteModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#destroy').attr('action', url );
+            $('#destroy').attr('aksi', url );
             $('#import').attr( 'method', 'delete' );
             $('#delete-modal').modal('show');
             e.preventDefault();

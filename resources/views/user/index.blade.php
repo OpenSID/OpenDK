@@ -52,7 +52,7 @@
                 {data: 'email', name: 'email'},
                 {data: 'phone', name: 'phone'},
                 {data: 'status', name: 'status'},
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false}
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false}
             ],
             order: [[0, 'desc']]
         });

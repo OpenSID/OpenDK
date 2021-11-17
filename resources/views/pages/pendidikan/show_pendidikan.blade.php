@@ -10,7 +10,6 @@
                     <div class="form-group">
                         <label for="list_desa" class="col-sm-4 control-label">Desa</label>
                         <div class="col-sm-8">
-                            <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                             <select class="form-control" id="list_desa">
                                 <option value="Semua">Semua Desa</option>
                                 @foreach($list_desa as $desa)
@@ -82,17 +81,13 @@
         $('#list_desa').select2();
         $('#list_year').select2();
 
-        var pid = $('#profil_id').find(":selected").val();
-        if (pid == null) {
-            pid = $('#profil_id').val();
-        }
         var did = $('#list_desa').find(":selected").val();
         var year = $('#list_year').find(":selected").val();
 
         /*
          * Initial Chart Dashboard Pendidikan
          */
-        change_das_pendidikan(pid, did, year);
+        change_das_pendidikan(did, year);
         /*
          * End Initial
          */
@@ -100,43 +95,35 @@
         // Change div das_kependudukan when Kecamatan changed
 
         $('#list_desa').on('select2:select', function (e) {
-            var pid = $('#profil_id').find(":selected").val();
-            if (pid == null) {
-                pid = $('#profil_id').val();
-            }
             var did = $('#list_desa').find(":selected").val();
             var year = $('#list_year').find(":selected").val();
-            change_das_pendidikan(pid, did, year);
+            change_das_pendidikan(did, year);
         });
 
         $('#list_year').on('select2:select', function (e) {
-            var pid = $('#profil_id').find(":selected").val();
-            if (pid == null) {
-                pid = $('#profil_id').val();
-            }
             var did = $('#list_desa').find(":selected").val();
             var year = $('#list_year').find(":selected").val();
 
-            change_das_pendidikan(pid, did, year);
+            change_das_pendidikan(did, year);
         });
     });
 
-    function change_das_pendidikan(pid, did, year) {
+    function change_das_pendidikan(did, year) {
 
         $.ajax('{!! route('statistik.pendidikan.chart-tingkat-pendidikan') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_tingkat_pendidikan(data['grafik']);
         });
 
         $.ajax('{!! route('statistik.pendidikan.chart-putus-sekolah') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_putus_sekolah(data['grafik']);
         });
 
         $.ajax('{!! route('statistik.pendidikan.chart-fasilitas-paud') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_fasilitas_sekolah(data['grafik']);
         });
@@ -157,19 +144,19 @@
 
             var did = $('#list_desa').find(":selected").val();
             var year = $('#list_year').find(":selected").val();
-            if(did == "ALL" && year == "ALL"){
+            if(did == "Semua" && year == "Semua"){
                 chart_penduduk_pendidikan.categoryAxis.title = "Tahun";
                 categoryWidth = 250;
             }
-            if(did != "ALL" && year == "ALL"){
+            if(did != "Semua" && year == "Semua"){
                 chart_penduduk_pendidikan.categoryAxis.title = "Tahun";
                 categoryWidth = 250;
             }
-            if(did == "ALL" && year != "ALL"){
+            if(did == "Semua" && year != "Semua"){
                 chart_penduduk_pendidikan.categoryAxis.title = "Desa";
                 categoryWidth = 190;
             }
-            if(did != "ALL" && year != "ALL"){
+            if(did != "Semua" && year != "Semua"){
                 chart_penduduk_pendidikan.categoryAxis.title = "Semester";
                 categoryWidth = 280;
             }
@@ -356,19 +343,19 @@
 
             var did = $('#list_desa').find(":selected").val();
             var year = $('#list_year').find(":selected").val();
-            if(did == "ALL" && year == "ALL"){
+            if(did == "Semua" && year == "Semua"){
                 chart_putus_sekolah.categoryAxis.title = "Tahun";
                 categoryWidth = 350;
             }
-            if(did == "ALL" && year != "ALL"){
+            if(did == "Semua" && year != "Semua"){
                 chart_putus_sekolah.categoryAxis.title = "Desa";
                 categoryWidth = 350;
             }
-            if(did != "ALL" && year == "ALL"){
+            if(did != "Semua" && year == "Semua"){
                 chart_putus_sekolah.categoryAxis.title = "Desa";
                 categoryWidth = 350;
             }
-            if(did != "ALL" && year != "ALL"){
+            if(did != "Semua" && year != "Semua"){
                 chart_putus_sekolah.categoryAxis.title = "Semester";
                 categoryWidth = 390;
             }
@@ -592,19 +579,19 @@
 
             var did = $('#list_desa').find(":selected").val();
             var year = $('#list_year').find(":selected").val();
-            if(did == "ALL" && year == "ALL"){
+            if(did == "Semua" && year == "Semua"){
                 chart_fasilitas.categoryAxis.title = "Tahun";
                 categoryWidth = 150;
             }
-            if(did == "ALL" && year != "ALL"){
+            if(did == "Semua" && year != "Semua"){
                 chart_fasilitas.categoryAxis.title = "Desa";
                 categoryWidth = 230;
             }
-            if(did != "ALL" && year == "ALL"){
+            if(did != "Semua" && year == "Semua"){
                 chart_fasilitas.categoryAxis.title = "Desa";
                 categoryWidth = 150;
             }
-            if(did != "ALL" && year != "ALL"){
+            if(did != "Semua" && year != "Semua"){
                 chart_fasilitas.categoryAxis.title = "Semester";
                 categoryWidth = 230;
             }

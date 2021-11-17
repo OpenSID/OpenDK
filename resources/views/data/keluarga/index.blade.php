@@ -65,7 +65,7 @@
             serverSide: true,
             ajax: "{!! route( 'data.keluarga.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'no_kk', name: 'no_kk'},
                 {data: 'nik_kepala', name: 'nik_kepala'},
                 {data: 'tgl_daftar', name: 'tgl_daftar'},

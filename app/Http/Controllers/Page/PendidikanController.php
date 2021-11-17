@@ -56,7 +56,6 @@ class PendidikanController extends Controller
 
     public function getChartTingkatPendidikan()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -66,8 +65,7 @@ class PendidikanController extends Controller
             foreach (years_list() as $yearl) {
                 // SD
                 $query_pendidikan = DB::table('das_tingkat_pendidikan')
-                    ->where('tahun', '=', $yearl)
-                    ->where('profil', '=', $pid);
+                    ->where('tahun', '=', $yearl);
 
                 $data_pendidikan[] = [
                     'year'                    => $yearl,
@@ -129,7 +127,6 @@ class PendidikanController extends Controller
                 // SD
                 $query_pendidikan = DB::table('das_tingkat_pendidikan')
                     ->where('tahun', '=', $yearl)
-                    ->where('profil_id', '=', $pid)
                     ->where('desa_id', $did);
 
                 $data_pendidikan[] = [
@@ -154,7 +151,6 @@ class PendidikanController extends Controller
 
     public function getChartPutusSekolah()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -164,8 +160,7 @@ class PendidikanController extends Controller
             foreach (years_list() as $yearl) {
                 // SD
                 $query_pendidikan = DB::table('das_putus_sekolah')
-                    ->where('tahun', '=', $yearl)
-                    ->where('profil_id', '=', $pid);
+                    ->where('tahun', '=', $yearl);
 
                 $data_pendidikan[] = [
                     'year'           => $yearl,
@@ -184,7 +179,6 @@ class PendidikanController extends Controller
                 // SD
                 $query_pendidikan = DB::table('das_putus_sekolah')
                     ->where('tahun', '=', $yearl)
-                    ->where('profil_id', '=', $pid)
                     ->where('desa_id', $did);
 
                 $data_pendidikan[] = [
@@ -205,7 +199,6 @@ class PendidikanController extends Controller
                 // SD
                 $query_pendidikan = DB::table('das_putus_sekolah')
                     ->where('tahun', '=', $year)
-                    ->where('profil_id', '=', $pid)
                     ->where('desa_id', $value->desa_id);
 
                 $data_pendidikan[] = [
@@ -247,7 +240,6 @@ class PendidikanController extends Controller
 
         // Data Tabel AKI & AKB
         $tabel_kesehatan = [];
-
         return [
             'grafik' => $data_pendidikan,
             'tabel'  => $tabel_kesehatan,
@@ -256,7 +248,6 @@ class PendidikanController extends Controller
 
     public function getChartFasilitasPAUD()
     {
-        $pid  = request('pid');
         $did  = request('did');
         $year = request('y');
 
@@ -266,8 +257,7 @@ class PendidikanController extends Controller
             foreach (years_list() as $yearl) {
                 // SD
                 $query_pendidikan = DB::table('das_fasilitas_paud')
-                    ->where('tahun', '=', $yearl)
-                    ->where('profil_id', '=', $pid);
+                    ->where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query_pendidikan->where('desa_id', '=', $did);
                 }

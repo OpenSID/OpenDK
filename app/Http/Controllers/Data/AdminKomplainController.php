@@ -67,7 +67,7 @@ class AdminKomplainController extends Controller
                 $data['edit_url']   = route('admin-komplain.edit', $row->id);
                 $data['delete_url'] = route('admin-komplain.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('kategori', function ($row) {
                 return $row->kategori_komplain->nama;

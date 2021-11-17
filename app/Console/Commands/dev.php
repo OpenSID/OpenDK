@@ -66,7 +66,7 @@ class dev extends Command
         Artisan::call('migrate');
         $this->line('Menambahkan migrasi');
 
-        Artisan::call('db:seed --class="ContohDatabaseSeeder"');
-        $this->line('Menambahkan contoh data');
+        Artisan::call('db:seed --class="DemoDatabaseSeeder"');
+        $this->line('Menambahkan data demo');
     }
 }

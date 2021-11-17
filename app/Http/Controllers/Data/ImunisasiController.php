@@ -66,7 +66,7 @@ class ImunisasiController extends Controller
                 $data['edit_url']   = route('data.imunisasi.edit', $row->id);
                 $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];

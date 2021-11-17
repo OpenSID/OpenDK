@@ -83,14 +83,14 @@ class PotensiController extends Controller
     // public function getDataPotensi()
     // {
     //     return DataTables::of(Potensi::select('id', 'nama_potensi', 'lokasi'))
-    //         ->addColumn('action', function($row) {
+    //         ->addColumn('aksi', function($row) {
     //
     //             if(!Sentinel::guest()) {
     //                 $data['edit_url'] = route('informasi.potensi.edit', $row->id);
     //                 $data['delete_url'] = route('informasi.potensi.destroy', $row->id);
     //             }
     //
-    //             return view('forms.action', $data);
+    //             return view('forms.aksi', $data);
     //         })->make();
     // }
 

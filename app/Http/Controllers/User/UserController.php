@@ -234,7 +234,7 @@ class UserController extends Controller
         ->editColumn('status', function ($user) {
             return $user->status == 1 ? 'Active' : 'Not Active';
         })
-        ->addColumn('action', function ($user) {
+        ->addColumn('aksi', function ($user) {
             if ($user->id != 1) {
                 if ($user->status == 1) {
                     $data['suspend_url'] = route('setting.user.destroy', $user->id);
@@ -247,7 +247,7 @@ class UserController extends Controller
                 $data['edit_url'] = route('setting.user.edit', $user->id);
             }
 
-            return view('forms.action', $data);
+            return view('forms.aksi', $data);
         })
         ->make(true);
     }

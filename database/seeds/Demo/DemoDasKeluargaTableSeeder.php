@@ -6,7 +6,7 @@ use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ContohDasKeluargaTableSeeder extends Seeder
+class DemoDasKeluargaTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

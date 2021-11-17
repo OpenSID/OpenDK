@@ -61,7 +61,7 @@ class FasilitasPaudController extends Controller
                 $data['edit_url']   = route('data.fasilitas-paud.edit', $row->id);
                 $data['delete_url'] = route('data.fasilitas-paud.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->rawColumns(['aksi'])->make();
     }

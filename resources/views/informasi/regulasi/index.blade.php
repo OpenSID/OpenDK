@@ -48,7 +48,7 @@
                                         $data['edit_url']   = route('informasi.regulasi.edit', $item->id);
                                         $data['delete_url'] = route('informasi.regulasi.destroy', $item->id);
 
-                                        echo view('forms.action', $data);
+                                        echo view('forms.aksi', $data);
                                     ?>
                                 </td>
                                 @endunless

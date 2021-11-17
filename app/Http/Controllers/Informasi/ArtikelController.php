@@ -58,7 +58,7 @@ class ArtikelController extends Controller
         if ($request->ajax()) {
             return DataTables::of(Artikel::all())
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
+                ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
                     if (! Sentinel::guest()) {
@@ -66,7 +66,7 @@ class ArtikelController extends Controller
                         $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }
 
-                    return view('forms.action', $data);
+                    return view('forms.aksi', $data);
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {

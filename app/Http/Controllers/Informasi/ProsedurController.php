@@ -61,7 +61,7 @@ class ProsedurController extends Controller
     public function getDataProsedur()
     {
         return DataTables::of(Prosedur::select('id', 'judul_prosedur'))
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('informasi.prosedur.show', $row->id);
 
                 if (! Sentinel::guest()) {
@@ -69,7 +69,7 @@ class ProsedurController extends Controller
                     $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
                 }
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('judul_prosedur', function ($row) {
                 return $row->judul_prosedur;

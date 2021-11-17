@@ -61,7 +61,7 @@
             serverSide: true,
             ajax: "{!! route( 'data.data-desa.getdata' ) !!}",
             columns: [
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'desa_id', name: 'desa_id'},
                 {data: 'nama', name: 'nama'},
                 {data: 'website', name: 'website'},

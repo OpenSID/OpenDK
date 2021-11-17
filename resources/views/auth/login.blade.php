@@ -34,7 +34,7 @@
         <div class="login-logo" style="padding-top: 10px;">
             <a href="{{ route('beranda') }}">
                 <img class="" src="{{ is_logo($profil->file_logo) }}" style="max-width:80px;white-space:normal" alt=""  width="70px">
-                <h3>PEMERINTAH {{ strtoupper($profil->nama_kabupaten) }}<br/><b>{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</b></h3>
+                <h3>PEMERINTAH KAB. {{ strtoupper($profil->nama_kabupaten) }}<br/><b>{{ strtoupper($sebutan_wilayah . ' ' . $profil->nama_kecamatan) }}</b></h3>
             </a>
         </div>
         <hr/>

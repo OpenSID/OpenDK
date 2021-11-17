@@ -28,9 +28,9 @@ class AlterTableDashPenduduk extends Migration
     public function down()
     {
         Schema::table('das_penduduk', function (Blueprint $table) {
-            $table->char('kecamatan_id', 8)->nullable(true);
-            $table->char('kabupaten_id', 5)->nullable(true);            
-            $table->char('provinsi_id', 2)->nullable(true);
+            $table->char('kecamatan_id', 8)->nullable();
+            $table->char('kabupaten_id', 5)->nullable();            
+            $table->char('provinsi_id', 2)->nullable();
         });
 
         // Isi data

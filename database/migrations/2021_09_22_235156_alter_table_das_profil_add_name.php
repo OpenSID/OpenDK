@@ -16,9 +16,10 @@ class AlterTableDasProfilAddName extends Migration
     public function up()
     {
         Schema::table('das_profil', function (Blueprint $table) {
-            $table->string('nama_provinsi', 255)->after('provinsi_id');
-            $table->string('nama_kabupaten', 255)->after('kabupaten_id');
-            $table->string('nama_kecamatan', 255)->after('kecamatan_id');
+            $table->string('nama_provinsi', 255)->after('provinsi_id')->nullable();
+            $table->string('nama_kabupaten', 255)->after('kabupaten_id')->nullable();
+            $table->string('nama_kecamatan', 255)->after('kecamatan_id')->nullable();
+            $table->string('kecamatan_id', 8)->nullable()->change();
         });
 
         // Isi data dari pengguna versi sebelumnya

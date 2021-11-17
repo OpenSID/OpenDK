@@ -37,7 +37,7 @@
                     
                     @else
                     
-                        <h4 class="text-center"><span class="fa fa-times"></span> Data {{ $kategoriPotensi->nama_kategori }} Belum Tersedia</h4>
+                        <h4 class="text-center"><span class="fa fa-times"></span> Data tidak ditemukan.</h4>
                     @endif
                     <!-- /.box-body -->
                 </div>

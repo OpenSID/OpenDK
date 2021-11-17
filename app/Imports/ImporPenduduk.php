@@ -44,18 +44,6 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
 {
     use Importable;
 
-    /** @var string */
-    protected $provinsi_id;
-    protected $kabupaten_id;
-    protected $kecamatan_id;
-
-    public function __construct()
-    {
-        $this->kecamatan_id = config('app.default_profile');
-        $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
-        $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
-    }
-
     /**
      * {@inheritdoc}
      */

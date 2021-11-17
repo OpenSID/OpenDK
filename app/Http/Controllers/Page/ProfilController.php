@@ -103,7 +103,7 @@ class ProfilController extends Controller
         $data['year_list']        = years_list();
         $data['list_desa']        = DataDesa::all();
 
-        $data = array_merge($data, $this->createDashboardKependudukan($this->profil->id, 'Semua', date('Y')));
+        $data = array_merge($data, $this->createDashboardKependudukan('Semua', date('Y')));
 
         return view('pages.kependudukan.show_kependudukan')->with($data);
     }

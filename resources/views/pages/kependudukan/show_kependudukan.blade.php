@@ -258,50 +258,44 @@
 
         // Change Dashboard when Lsit Desa changed
         $('#list_desa').on('select2:select', function (e) {
-            var pid = $('#profil_id').val();
             var did = e.params.data;
             var year = $('#list_year').find(":selected").text();
 
-            change_das_kependudukan(pid, did.id, year);
+            change_das_kependudukan(did.id, year);
         });
 
         // Change Dashboard when List Year changed
         $('#list_year').on('select2:select', function (e) {
-            var pid = $('#profil_id').val();
             var did = $('#list_desa').find(":selected").val();
             var year = this.value;
-            change_das_kependudukan(pid, did, year);
+            change_das_kependudukan(did, year);
         });
 
 
         /*
         Initial Dashboard
          */
-        var pid = $('#profil_id').val();
-        if (pid == null) {
-            pid = $('#profil_id').val();
-        }
         var did = $('#list_desa').find(":selected").val();
         var year = $('#list_year').find(":selected").text();
 
-        change_das_kependudukan(pid, did, year);
+        change_das_kependudukan(did, year);
         /*
         End Initial Dashboard
          */
 
     });
 
-    function change_das_kependudukan(pid, did, year) {
+    function change_das_kependudukan(did, year) {
 
         // Load ajax data penduduk
         $.ajax('{!! route('statistik.show-kependudukan') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
 
            /* if(data.total_penduduk==0){
                 alert("Data penduduk di tahun " + year + " adalah 0. Data dialihkan ke tahun sebelumnya.");
                 $("#list_year").val(year - 1);
-                change_das_kependudukan(pid, did, year-1);
+                change_das_kependudukan(did, year-1);
             }else{*/
                 $('#total_penduduk').html(data.total_penduduk);
                 $('#total_lakilaki').html(data.total_lakilaki);
@@ -326,49 +320,49 @@
 
         // Load Ajax Chart Pertumbuhan Penduduk
         $.ajax('{!! route('statistik.chart-kependudukan') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_penduduk(data);
         });
 
         // Load Ajax Chart Penduduk By Usia
         $.ajax('{!! route('statistik.chart-kependudukan-usia') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_usia(data);
         });
 
         // Load Ajax Chart Penduduk By Pendidikan
         $.ajax('{!! route('statistik.chart-kependudukan-pendidikan') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_pendidikan(data);
         });
 
         // Load Ajax Chart Penduduk By Golongan Darah
         $.ajax('{!! route('statistik.chart-kependudukan-goldarah') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_goldarah(data);
         });
 
         // Load Ajax Chart Penduduk By Status Kawin
         $.ajax('{!! route('statistik.chart-kependudukan-kawin') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_kawin(data);
         });
 
         // Load Ajax Chart Penduduk By Agama
         $.ajax('{!! route('statistik.chart-kependudukan-agama') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_agama(data);
         });
 
         // Load Ajax Chart Penduduk By Jenis Kelamin
        /* $.ajax('{!! route('statistik.chart-kependudukan-kelamin') !!}', {
-            data: {pid: pid, did: did, y: year}
+            data: {did: did, y: year}
         }).done(function (data) {
             create_chart_kelamin(data);
         }); */
@@ -1271,10 +1265,6 @@
         $("#detail-modal").on("show.bs.modal", function (e) {
 
             var id = $(e.relatedTarget).data('target-id');
-            var pid = $('#profil_id').val();
-            if (pid == null) {
-                pid = $('#profil_id').val();
-            }
             var did = $('#list_desa').find(":selected").val();
             var year = $('#list_year').find(":selected").text();
 
@@ -1284,7 +1274,7 @@
                 ajax: {
                     url: "{!! route( 'statistik.data-penduduk' ) !!}",
                     type: 'GET',
-                    data: {t:type, pid:pid, did:did, year:year},
+                    data: {t:type, did:did, year:year},
                 },
                 columns: [
                     // {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},

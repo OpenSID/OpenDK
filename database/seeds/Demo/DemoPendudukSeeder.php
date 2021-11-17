@@ -6,7 +6,6 @@ use ZipArchive;
 use Illuminate\Support\Str;
 use App\Imports\ImporPenduduk;
 use Illuminate\Database\Seeder;
-
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;

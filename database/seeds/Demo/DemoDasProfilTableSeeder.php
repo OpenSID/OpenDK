@@ -5,7 +5,7 @@ namespace Database\Seeds\Demo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ContohDasProfilTableSeeder extends Seeder
+class DemoDasProfilTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -38,7 +38,7 @@ class ContohDasProfilTableSeeder extends Seeder
             'kepsek_pemberdayaan_masyarakat'  => 'Asrarudin, SE',
             'kepsek_pelayanan_umum'           => 'Masturi, ST',
             'kepsek_trantib'                  => 'Mastur Idris, SH',
-            'file_struktur_organisasi'        => 'Lighthouse.jpg',
+            'file_struktur_organisasi'        => NULL,
             'file_logo'                       => NULL,
             'visi'                            => NULL,
             'misi'                            => NULL,

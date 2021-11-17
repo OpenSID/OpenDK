@@ -35,12 +35,12 @@ class DasProfilTableSeeder extends Seeder
 
         DB::table('das_profil')->insert([
             'id'                              => 1,
-            'provinsi_id'                     => '00',
-            'nama_provinsi'                   => '',
-            'kabupaten_id'                    => '00.00',
-            'nama_kabupaten'                  => '',
-            'kecamatan_id'                    => '00.00.00',
-            'nama_kecamatan'                  => '',
+            'provinsi_id'                     => null,
+            'nama_provinsi'                   => null,
+            'kabupaten_id'                    => null,
+            'nama_kabupaten'                  => null,
+            'kecamatan_id'                    => null,
+            'nama_kecamatan'                  => null,
             'alamat'                          => null,
             'kode_pos'                        => null,
             'telepon'                         => null,

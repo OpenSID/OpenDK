@@ -86,12 +86,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">File Struktur Organisasi</label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Struktur Organisasi</label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
                 <input type="file" id="file_struktur" name="file_struktur_organisasi" accept="image/*" class="validate form-control"/>
                     <br>
-                    <img src="{{ asset($profil->file_struktur_organisasi) }}" id="showgambar" style="max-width:200px;max-height:200px;float:left;"/>
+                    <img src="{{ is_img($profil->file_struktur_organisasi) }}" id="showgambar" style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
         <div class="form-group">
@@ -102,11 +102,11 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto {{ $sebutan_kepala_wilayah }}</label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $profil->foto_kepala_wilayah }} Foto {{ $sebutan_kepala_wilayah }}</label>
             <div class="col-md-7 col-sm-6 col-xs-12">
                 <input type="file" id="foto_kepala_wilayah" name="foto_kepala_wilayah" accept="image/*" class="validate form-control"/>
                 <br>
-                <img src="{{ asset($profil->foto_kepala_wilayah) }}" id="showgambar2" style="max-width:200px;max-height:200px;float:left;"/>
+                <img src="{{ is_img($profil->foto_kepala_wilayah) }}" id="showgambar2" style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
     </div>
@@ -156,12 +156,12 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">File Logo</label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Logo</label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
                 <input type="file" id="file_logo" name="file_logo" accept="image/*" class="validate form-control"/>
                 <br>
-                <img src="{{ asset($profil->file_logo) }}" id="showgambar3" style="max-width:200px;max-height:200px;float:left;"/>
+                <img src="{{ is_logo($profil->file_logo) }}" id="showgambar3" style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
         <div class="form-group">

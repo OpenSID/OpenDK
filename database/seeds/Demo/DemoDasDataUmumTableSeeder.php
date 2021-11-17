@@ -6,7 +6,7 @@ use App\Models\Profil;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ContohDasDataUmumTableSeeder extends Seeder
+class DemoDasDataUmumTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

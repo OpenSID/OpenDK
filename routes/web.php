@@ -191,6 +191,8 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
         });
 
+        Route::any('refresh-captcha', 'PageController@refresh_captcha')->name('refresh-captcha');
+
         Route::group(['prefix' => 'statistik'], function () {
             Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
             Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
@@ -569,11 +571,6 @@ Route::group(['middleware' => 'installed'], function () {
             });
         });
     });
-
-    /**
-     * Utilities
-     */
-    Route::any('refresh-captcha', 'HomeController@refresh_captcha')->name('refresh-captcha');
 
     Route::group(['middleware' => ['web']], function () {
         if (Cookie::get(env('COUNTER_COOKIE', 'kd-counter')) == false) {

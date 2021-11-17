@@ -29,33 +29,32 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+use App\Models\Artikel;
+use Faker\Factory;
+use Illuminate\Database\Seeder;
 
-class CreateWilayahsTable extends Migration
+class ArtikelSeeder extends Seeder
 {
     /**
-     * Run the migrations.
+     * Run the database seeds.
      *
      * @return void
      */
-    public function up()
+    public function run()
     {
-        Schema::create('ref_wilayah', function (Blueprint $table) {
-            $table->string('kode', 13)->nullable(false)->primary();
-            $table->string('nama', 100)->nullable(false);
-            $table->char('tahun', 4)->nullable(false)->default('2018');
-        });
-    }
+        Artikel::truncate();
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('ref_wilayah');
+        $faker = Factory::create("id-ID");
+
+        foreach (range(1, 50) as $index) {
+            Artikel::create([
+                'judul' => $faker->sentence(),
+                'gambar' => '/img/no-image.png',
+                'isi' => $faker->paragraph(),
+                'status' => 1, //$faker->randomElement([0, 1]),
+                'created_at' => $faker->dateTimeThisYear(),
+                'updated_at' => $faker->dateTimeThisYear(),
+            ]);
+        }
     }
 }

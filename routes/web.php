@@ -191,6 +191,8 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
         });
 
+        Route::any('refresh-captcha', 'PageController@refresh_captcha')->name('refresh-captcha');
+
         Route::group(['prefix' => 'statistik'], function () {
             Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
             Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
@@ -262,7 +264,7 @@ Route::group(['middleware' => 'installed'], function () {
      * Group Routing for Halaman Dahsboard
      */
     Route::group(['middleware' => 'sentinel_access:admin'], function () {
-        Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+        Route::get('/dashboard', 'DashboardController')->name('dashboard');
 
         /**
          * Group Routing for Informasi
@@ -589,11 +591,6 @@ Route::group(['middleware' => 'installed'], function () {
         });
     });
 
-    /**
-     * Utilities
-     */
-    Route::any('refresh-captcha', 'HomeController@refresh_captcha')->name('refresh-captcha');
-
     Route::group(['middleware' => ['web']], function () {
         if (Cookie::get(env('COUNTER_COOKIE', 'kd-counter')) == false) {
             Cookie::queue(env('COUNTER_COOKIE', 'kd-counter'), str_random(80), 2628000); // Forever aka 5 years
@@ -606,11 +603,6 @@ Route::group(['middleware' => 'installed'], function () {
     // Semua Desa
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
-    });
-
-    // Dashboard Kependudukan
-    Route::namespace('Dashboard')->group(function () {
-        Route::get('/api/dashboard/kependudukan', ['as' => 'dashboard.kependudukan.getdata', 'uses' => 'DashboardController@getDashboardKependudukan']);
     });
 
     Route::get('/api/list-penduduk', function () {

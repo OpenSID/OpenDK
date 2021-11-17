@@ -1,10 +1,38 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 use Illuminate\Database\Seeder;
 
 class RefCoaTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -12,1067 +40,1066 @@ class RefCoaTableSeeder extends Seeder
      */
     public function run()
     {
-
         DB::table('ref_coa')->truncate();
-        
-        DB::table('ref_coa')->insert(array (
-            0 => array (
+
+        DB::table('ref_coa')->insert([
+            0 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Bagi Hasil BUMDes',
-            ),
-            1 => array (
+            ],
+            1 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Lain-lain',
-            ),
-            2 => array (
+            ],
+            2 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Pengelolaan Tanah Kas Desa',
-            ),
-            3 => array (
+            ],
+            3 => [
                 'id' => '02',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Tambatan Perahu',
-            ),
-            4 => array (
+            ],
+            4 => [
                 'id' => '03',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Pasar Desa',
-            ),
-            5 => array (
+            ],
+            5 => [
                 'id' => '04',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Tempat Pemandian Umum',
-            ),
-            6 => array (
+            ],
+            6 => [
                 'id' => '05',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Jaringan Irigasi Desa',
-            ),
-            7 => array (
+            ],
+            7 => [
                 'id' => '06',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Pelelangan Ikan Milik Desa',
-            ),
-            8 => array (
+            ],
+            8 => [
                 'id' => '07',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Kios Milik Desa',
-            ),
-            9 => array (
+            ],
+            9 => [
                 'id' => '08',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Pemanfaatan Lapangan/Prasarana Olah raga Milik Desa',
-            ),
-            10 => array (
+            ],
+            10 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Lain-lain',
-            ),
-            11 => array (
+            ],
+            11 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Swadaya, partisipasi dan gotong royong',
-            ),
-            12 => array (
+            ],
+            12 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Lain-lain Swadaya, Partisipasi dan Gotong Royong',
-            ),
-            13 => array (
+            ],
+            13 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Hasil Pungutan Desa',
-            ),
-            14 => array (
+            ],
+            14 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 1,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Lain-lain',
-            ),
-            15 => array (
+            ],
+            15 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Dana Desa',
-            ),
-            16 => array (
+            ],
+            16 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Bagian dari Hasil Pajak dan Retribusi Daerah Kabupaten/kota',
-            ),
-            17 => array (
+            ],
+            17 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Alokasi Dana Desa',
-            ),
-            18 => array (
+            ],
+            18 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Bantuan Keuangan dari APBD Provinsi',
-            ),
-            19 => array (
+            ],
+            19 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Lain-lain Bantuan Keuangan dari APBD Provinsi',
-            ),
-            20 => array (
+            ],
+            20 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Bantuan Keuangan APBD Kabupaten/Kota',
-            ),
-            21 => array (
+            ],
+            21 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Lain-lain Bantuan Keuangan dari APBD Kabupaten/Kota',
-            ),
-            22 => array (
+            ],
+            22 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Penerimaan dari Hasil Kerjasama antar Desa ',
-            ),
-            23 => array (
+            ],
+            23 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Penerimaan dari Hasil Kerjasama Desa dengan Pihak Ketiga',
-            ),
-            24 => array (
+            ],
+            24 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Penerimaan dari Bantuan Perusahaan yang berlokasi di Desa',
-            ),
-            25 => array (
+            ],
+            25 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Hibah dan sumbangan dari Pihak Ketiga',
-            ),
-            26 => array (
+            ],
+            26 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Koreksi kesalahan belanja tahun-tahun anggaran sebelumnya yang mengakibatkan penerimaan di kas Desa pada tahun anggaran berjalan',
-            ),
-            27 => array (
+            ],
+            27 => [
                 'id' => '01',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Bunga Bank',
-            ),
-            28 => array (
+            ],
+            28 => [
                 'id' => '90-99',
                 'type_id' => 4,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Lain-lain pendapatan Desa yang sah',
-            ),
-            29 => array (
+            ],
+            29 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Penghasilan Tetap Kepala Desa',
-            ),
-            30 => array (
+            ],
+            30 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Tunjangan Kepala Desa',
-            ),
-            31 => array (
+            ],
+            31 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Penerimaan Lain Kepala Desa yang Sah',
-            ),
-            32 => array (
+            ],
+            32 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Penghasilan Tetap Perangkat Desa',
-            ),
-            33 => array (
+            ],
+            33 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Tunjangan Perangkat Desa',
-            ),
-            34 => array (
+            ],
+            34 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Penerimaan Lain Perangkat Desa yang Sah',
-            ),
-            35 => array (
+            ],
+            35 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Jaminan Kesehatan Kepala Desa',
-            ),
-            36 => array (
+            ],
+            36 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Jaminan Kesehatan Perangkat Desa',
-            ),
-            37 => array (
+            ],
+            37 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Jaminan Ketenagakerjaan Kepala Desa',
-            ),
-            38 => array (
+            ],
+            38 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Jaminan Ketenagakerjaan Perangkat Desa',
-            ),
-            39 => array (
+            ],
+            39 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Tunjangan Kedudukan BPD',
-            ),
-            40 => array (
+            ],
+            40 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 1,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Tunjangan Kinerja BPD',
-            ),
-            41 => array (
+            ],
+            41 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Perlengkapan Alat Tulis Kantor dan Benda Pos',
-            ),
-            42 => array (
+            ],
+            42 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Perlengkapan Alat-alat Listrik',
-            ),
-            43 => array (
+            ],
+            43 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Perlengkapan Alat-alat Rumah Tangga/Peralatan dan Bahan Kebersihan',
-            ),
-            44 => array (
+            ],
+            44 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Bahan Bakar Minyak/Gas/Isi Ulang Tabung Pemadam Kebakaran',
-            ),
-            45 => array (
+            ],
+            45 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Perlengkapan Cetak/Penggandaan - Belanja Barang Cetak dan Penggandaan',
-            ),
-            46 => array (
+            ],
+            46 => [
                 'id' => '06',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
             'coa_name' => 'Belanja Perlengkapan Barang Konsumsi (Makan/minum) - Belanja Barang Konsumsi',
-            ),
-            47 => array (
+            ],
+            47 => [
                 'id' => '07',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Bahan/Material',
-            ),
-            48 => array (
+            ],
+            48 => [
                 'id' => '08',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Bendera/Umbul-umbul/Spanduk',
-            ),
-            49 => array (
+            ],
+            49 => [
                 'id' => '09',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Pakaian Dinas/Seragam/Atribut',
-            ),
-            50 => array (
+            ],
+            50 => [
                 'id' => '10',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Obat-obatan',
-            ),
-            51 => array (
+            ],
+            51 => [
                 'id' => '11',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Pakan Hewan/Ikan, Obat-obatan Hewan',
-            ),
-            52 => array (
+            ],
+            52 => [
                 'id' => '12',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Pupuk/Obat-obatan Pertanian',
-            ),
-            53 => array (
+            ],
+            53 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Barang Perlengkapan Lainnya',
-            ),
-            54 => array (
+            ],
+            54 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Jasa Honorarium Tim yang Melaksanakan Kegiatan',
-            ),
-            55 => array (
+            ],
+            55 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Jasa Honorarium Pembantu Tugas Umum Desa/Operator',
-            ),
-            56 => array (
+            ],
+            56 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Jasa Honorarium/Insentif Pelayanan Desa',
-            ),
-            57 => array (
+            ],
+            57 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Jasa Honorarium Ahli/Profesi/Konsultan/Narasumber',
-            ),
-            58 => array (
+            ],
+            58 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Jasa Honorarium Petugas',
-            ),
-            59 => array (
+            ],
+            59 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Jasa Honorarium Lainnya',
-            ),
-            60 => array (
+            ],
+            60 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Perjalanan Dinas Dalam Kabupaten/Kota',
-            ),
-            61 => array (
+            ],
+            61 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Perjalanan Dinas Luar Kabupaten/Kota',
-            ),
-            62 => array (
+            ],
+            62 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Kursus/Pelatihan',
-            ),
-            63 => array (
+            ],
+            63 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Jasa Sewa Bangunan/Gedung/Ruang',
-            ),
-            64 => array (
+            ],
+            64 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Jasa Sewa Peralatan/Perlengkapan',
-            ),
-            65 => array (
+            ],
+            65 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Jasa Sewa Sarana Mobilitas',
-            ),
-            66 => array (
+            ],
+            66 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Jasa Sewa Lainnya',
-            ),
-            67 => array (
+            ],
+            67 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Langganan Listrik',
-            ),
-            68 => array (
+            ],
+            68 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Langganan Air Bersih',
-            ),
-            69 => array (
+            ],
+            69 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Langganan Majalah/Surat Kabar',
-            ),
-            70 => array (
+            ],
+            70 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Langganan Telepon',
-            ),
-            71 => array (
+            ],
+            71 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Langganan Internet',
-            ),
-            72 => array (
+            ],
+            72 => [
                 'id' => '06',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Kurir/Pos/Giro',
-            ),
-            73 => array (
+            ],
+            73 => [
                 'id' => '07',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Jasa Perpanjangan Ijin/Pajak',
-            ),
-            74 => array (
+            ],
+            74 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Operasional Perkantoran Lainnya',
-            ),
-            75 => array (
+            ],
+            75 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Mesin dan Peralatan Berat',
-            ),
-            76 => array (
+            ],
+            76 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Kendaraan Bermotor',
-            ),
-            77 => array (
+            ],
+            77 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Peralatan',
-            ),
-            78 => array (
+            ],
+            78 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Bangunan',
-            ),
-            79 => array (
+            ],
+            79 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Jalan',
-            ),
-            80 => array (
+            ],
+            80 => [
                 'id' => '06',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Jembatan',
-            ),
-            81 => array (
+            ],
+            81 => [
                 'id' => '07',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Irigasi/Saluran Sungai/Embung/Air Bersih, jaringan Air Limbah, Persampahan, dll)',
-            ),
-            82 => array (
+            ],
+            82 => [
                 'id' => '08',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
             'coa_name' => 'Belanja Pemeliharaan Jaringan dan Instalasi (Listrik, Telepon, Internet, Komunikasi, dll)',
-            ),
-            83 => array (
+            ],
+            83 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Pemeliharaan Lainnya',
-            ),
-            84 => array (
+            ],
+            84 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Bahan Perlengkapan yang Diserahkan ke masyarakat',
-            ),
-            85 => array (
+            ],
+            85 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Bantuan Mesin/Kendaraaan bermotor/Peralatan yang diserahkan ke masyarakat',
-            ),
-            86 => array (
+            ],
+            86 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Bantuan Bangunan yang diserahkan ke masyarakat',
-            ),
-            87 => array (
+            ],
+            87 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Beasiswa Berprestasi/Masyarakat Miskin',
-            ),
-            88 => array (
+            ],
+            88 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Bantuan Bibit Tanaman/Hewan/Ikan',
-            ),
-            89 => array (
+            ],
+            89 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Barang dan Jasa yang Diserahkan kepada Masyarakat Lainnya',
-            ),
-            90 => array (
+            ],
+            90 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Modal Pembebasan/Pembelian Tanah',
-            ),
-            91 => array (
+            ],
+            91 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Modal Pembayaran Honorarium Tim Tanah',
-            ),
-            92 => array (
+            ],
+            92 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Modal Pengukuran dan Pembuatan Sertifikat Tanah',
-            ),
-            93 => array (
+            ],
+            93 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Modal Pengurukan dan Pematangan Tanah',
-            ),
-            94 => array (
+            ],
+            94 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Modal Perjalanan Pengadaan Tanah',
-            ),
-            95 => array (
+            ],
+            95 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Modal Pengadaan Tanah Lainnya',
-            ),
-            96 => array (
+            ],
+            96 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            97 => array (
+            ],
+            97 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan Elektronik dan Alat Studio',
-            ),
-            98 => array (
+            ],
+            98 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan Komputer',
-            ),
-            99 => array (
+            ],
+            99 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan Mebeulair dan Aksesori Ruangan',
-            ),
-            100 => array (
+            ],
+            100 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan Dapur',
-            ),
-            101 => array (
+            ],
+            101 => [
                 'id' => '06',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan Alat Ukur/Rambu-rambu',
-            ),
-            102 => array (
+            ],
+            102 => [
                 'id' => '07',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan Rambu-rambu/Patok Tanah',
-            ),
-            103 => array (
+            ],
+            103 => [
                 'id' => '08',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan khusus Kesehatan',
-            ),
-            104 => array (
+            ],
+            104 => [
                 'id' => '09',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan khusus Pertanian/Perikanan/Peternakan',
-            ),
-            105 => array (
+            ],
+            105 => [
                 'id' => '10',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Mesin',
-            ),
-            106 => array (
+            ],
+            106 => [
                 'id' => '11',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Pengadaan Alat-Alat Berat',
-            ),
-            107 => array (
+            ],
+            107 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Belanja Modal Peralatan, Mesin, dan Alat Berat Lainnya',
-            ),
-            108 => array (
+            ],
+            108 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            109 => array (
+            ],
+            109 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Modal Kendaraan Darat Bermotor',
-            ),
-            110 => array (
+            ],
+            110 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Modal Angkutan Darat Tidak Bermotor',
-            ),
-            111 => array (
+            ],
+            111 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Modal Kendaraan Air Bermotor',
-            ),
-            112 => array (
+            ],
+            112 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Modal Angkutan Air Tidak Bermotor',
-            ),
-            113 => array (
+            ],
+            113 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Belanja Modal Kendaraan Lainnya',
-            ),
-            114 => array (
+            ],
+            114 => [
                 'id' => '',
                 'type_id' => 5,
                 'sub_id' => 0,
                 'sub_sub_id' => 0,
                 'coa_name' => '',
-            ),
-            115 => array (
+            ],
+            115 => [
                 'id' => '1',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Modal Gedung dan Bangunan',
-            ),
-            116 => array (
+            ],
+            116 => [
                 'id' => '',
                 'type_id' => 5,
                 'sub_id' => 0,
                 'sub_sub_id' => 0,
                 'coa_name' => '',
-            ),
-            117 => array (
+            ],
+            117 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            118 => array (
+            ],
+            118 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Modal Upah Tenaga Kerja',
-            ),
-            119 => array (
+            ],
+            119 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Modal Bahan Baku ',
-            ),
-            120 => array (
+            ],
+            120 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 4,
                 'coa_name' => 'Belanja Modal Sewa Peralatan  ',
-            ),
-            121 => array (
+            ],
+            121 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            122 => array (
+            ],
+            122 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Modal Upah Tenaga Kerja',
-            ),
-            123 => array (
+            ],
+            123 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Modal Bahan Baku ',
-            ),
-            124 => array (
+            ],
+            124 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 5,
                 'coa_name' => 'Belanja Modal Sewa Peralatan  ',
-            ),
-            125 => array (
+            ],
+            125 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            126 => array (
+            ],
+            126 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Modal Upah Tenaga Kerja',
-            ),
-            127 => array (
+            ],
+            127 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Modal Bahan Baku ',
-            ),
-            128 => array (
+            ],
+            128 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 6,
                 'coa_name' => 'Belanja Modal Sewa Peralatan  ',
-            ),
-            129 => array (
+            ],
+            129 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            130 => array (
+            ],
+            130 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Modal Upah Tenaga Kerja',
-            ),
-            131 => array (
+            ],
+            131 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Modal Bahan Baku ',
-            ),
-            132 => array (
+            ],
+            132 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 7,
                 'coa_name' => 'Belanja Modal Sewa Peralatan  ',
-            ),
-            133 => array (
+            ],
+            133 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 8,
                 'coa_name' => 'Belanja Modal Honor Tim yang Melaksanakan Kegiatan',
-            ),
-            134 => array (
+            ],
+            134 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 8,
                 'coa_name' => 'Belanja Modal Upah Tenaga Kerja',
-            ),
-            135 => array (
+            ],
+            135 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 8,
                 'coa_name' => 'Belanja Modal Bahan Baku ',
-            ),
-            136 => array (
+            ],
+            136 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 8,
                 'coa_name' => 'Belanja Modal Sewa Peralatan  ',
-            ),
-            137 => array (
+            ],
+            137 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Belanja Modal khusus Pendidikan dan Perpustakaan',
-            ),
-            138 => array (
+            ],
+            138 => [
                 'id' => '02',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Belanja Modal khusus Olahraga',
-            ),
-            139 => array (
+            ],
+            139 => [
                 'id' => '03',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Belanja Modal khusus Kesenian/Kebudayaan/keagamaan',
-            ),
-            140 => array (
+            ],
+            140 => [
                 'id' => '04',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Belanja Modal Tumbuhan/Tanaman',
-            ),
-            141 => array (
+            ],
+            141 => [
                 'id' => '05',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Belanja Modal Hewan',
-            ),
-            142 => array (
+            ],
+            142 => [
                 'id' => '90-99',
                 'type_id' => 5,
                 'sub_id' => 3,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Belanja Modal Lainnya',
-            ),
-            143 => array (
+            ],
+            143 => [
                 'id' => '01',
                 'type_id' => 5,
                 'sub_id' => 4,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Belanja Tak Terduga',
-            ),
-            144 => array (
+            ],
+            144 => [
                 'id' => '01',
                 'type_id' => 6,
                 'sub_id' => 1,
                 'sub_sub_id' => 1,
                 'coa_name' => 'SILPA Tahun Sebelumnya',
-            ),
-            145 => array (
+            ],
+            145 => [
                 'id' => '01',
                 'type_id' => 6,
                 'sub_id' => 1,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Pencairan Dana Cadangan',
-            ),
-            146 => array (
+            ],
+            146 => [
                 'id' => '01',
                 'type_id' => 6,
                 'sub_id' => 1,
                 'sub_sub_id' => 3,
                 'coa_name' => 'Hasil Penjualan Kekayaan Desa yang Dipisahkan',
-            ),
-            147 => array (
+            ],
+            147 => [
                 'id' => '90-99',
                 'type_id' => 6,
                 'sub_id' => 1,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Penerimaan Pembiayaan Lainnya',
-            ),
-            148 => array (
+            ],
+            148 => [
                 'id' => '01',
                 'type_id' => 6,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
                 'coa_name' => 'Pembentukan Dana Cadangan',
-            ),
-            149 => array (
+            ],
+            149 => [
                 'id' => '01',
                 'type_id' => 6,
                 'sub_id' => 2,
                 'sub_sub_id' => 2,
                 'coa_name' => 'Penyertaan Modal Desa',
-            ),
-            150 => array (
+            ],
+            150 => [
                 'id' => '90-99',
                 'type_id' => 6,
                 'sub_id' => 2,
                 'sub_sub_id' => 9,
                 'coa_name' => 'Pengeluaran Pembiayaan lainnya',
-            ),
-        ));
+            ],
+        ]);
     }
 }

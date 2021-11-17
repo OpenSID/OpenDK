@@ -33,7 +33,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWilayahsTable extends Migration
+class AlterTableArtikeChangeFieldGambar extends Migration
 {
     /**
      * Run the migrations.
@@ -42,10 +42,8 @@ class CreateWilayahsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ref_wilayah', function (Blueprint $table) {
-            $table->string('kode', 13)->nullable(false)->primary();
-            $table->string('nama', 100)->nullable(false);
-            $table->char('tahun', 4)->nullable(false)->default('2018');
+        Schema::table('das_artikel', function (Blueprint $table) {
+            $table->string('gambar')->nullable()->change();
         });
     }
 
@@ -56,6 +54,8 @@ class CreateWilayahsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ref_wilayah');
+        Schema::table('das_artikel', function (Blueprint $table) {
+            $table->string('gambar')->nullable(false)->change();
+        });
     }
 }

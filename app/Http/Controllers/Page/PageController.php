@@ -107,6 +107,7 @@ class PageController extends Controller
 
         $feeds->all();
         $html =  view('pages.berita.feeds', [
+            'list_desa' => DataDesa::get(),
             'feeds' => $feeds,
         ])->render();
 

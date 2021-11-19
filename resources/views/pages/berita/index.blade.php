@@ -8,6 +8,7 @@
         </div>
         <div class="col-sm-8">
           <h5 style="margin-top: 5px; text-align: justify;"><b><a href="berita/{{ $item->slug }}">{{ $item->judul }}</a></b></h5>
+          <p style="font-size:11px;"><i class="fa fa-calendar"></i>&ensp;{{ $item->created_at->format('d M Y') }}&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>
           <p style="text-align: justify;">{{ strip_tags(substr($item->isi, 0, 250)) }}...</p>
           <a href="berita/{{ $item->slug }}" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>
         </div>

@@ -74,6 +74,7 @@ class PageController extends Controller
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
                     'desa_id'     => $desa['desa_id'],
+                    'nama_desa'   => $desa['nama'],
                     'feed_link'   => $item->get_feed()->get_permalink(),
                     'feed_title'  => $item->get_feed()->get_title(),
                     'link'        => $item->get_link(),

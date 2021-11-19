@@ -53,6 +53,7 @@ class DataDesa extends Model
     {
         $desa = [
             'desa_id' => $this->desa_id,
+            'nama' => 'Desa ' . $this->nama,
             'website' => $this->website . '/index.php/feed'
         ];
         return $desa;

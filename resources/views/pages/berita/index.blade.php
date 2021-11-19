@@ -18,6 +18,8 @@
         <p class="text-bold">Tidak ada berita kecamatan yang ditampilkan!</p>
       </div>
     @endforelse
-    {{ $artikel->links() }}
+    <div class="text-center">
+      {{ $artikel->links() }}
+    </div>
   </div>
 </div>

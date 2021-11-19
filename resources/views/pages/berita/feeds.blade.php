@@ -18,7 +18,9 @@
         <p class="text-bold">Tidak ada berita desa yang ditampilkan!</p>
       </div>
     @endforelse
-    {{ $feeds->links() }}
+		<div class="text-center">
+			{{ $feeds->links() }}
+		</div>
   </div>
 </div>
 

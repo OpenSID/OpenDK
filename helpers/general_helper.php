@@ -42,7 +42,7 @@ use Illuminate\Support\Carbon;
 if (! function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
-        if (preg_match('/<img.+?src="(.+?)"/', $img, $match)) {
+        if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
             return $match[1];
         }
 

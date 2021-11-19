@@ -1,10 +1,3 @@
-<div class="fat-arrow">
-	<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
-</div>
-<div class="page-header" style="margin:0px 0px;">
-  <span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
-</div>
-
 <div id="kecamatan">
   <div class="post clearfix">
     @forelse ($artikel as $item)

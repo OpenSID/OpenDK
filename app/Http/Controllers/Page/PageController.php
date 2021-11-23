@@ -50,7 +50,7 @@ class PageController extends Controller
 
         $this->data = $this->GetFeeds();
 
-        $feeds = collect($this->data)->take(30)->paginate(10);
+        $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
         return view('pages.index', [
             'page_title'       => 'Beranda',
@@ -58,7 +58,7 @@ class PageController extends Controller
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10),
+            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
         ]);
     }
 
@@ -93,19 +93,19 @@ class PageController extends Controller
     public function FilterFeeds(Request $request)
     {
         $this->data = $this->GetFeeds();
+        $feeds = collect($this->data);
 
         $req = $request->cari;
         $cari_desa = $request->desa != 'Semua' ? $request->desa : null;
         if ($req || $cari_desa) {
-            $feeds = collect($this->data)->filter(function ($value, $key) use ($req, $cari_desa) {
+            $feeds = $feeds->filter(function ($value, $key) use ($req, $cari_desa) {
                 $hasil = $req ? stripos($value['title'], $req) !== false : true;
                 $hasil = $hasil && ($cari_desa ? $cari_desa == $value['desa_id'] : true);
                 return $hasil;
-            })->take(30)->paginate(10);
-        } else {
-            $feeds = collect($this->data)->take(30)->paginate(10);
+            });
         }
 
+        $feeds = $feeds->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
         $html =  view('pages.berita.feeds', [
             'page_title'       => 'Beranda',
@@ -113,7 +113,7 @@ class PageController extends Controller
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10),
+            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
         ])->render();
 
         return response()->json(compact('html'));

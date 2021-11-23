@@ -9,7 +9,7 @@
         <div class="col-sm-8">
           <h5 style="margin-top: 5px; text-align: justify;"><b><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></b></h5>
 					<p style="font-size:11px;">
-						<i class="fa fa-calendar"></i>&ensp;{{ \Carbon\Carbon::parse($item['date'])->translatedFormat('Y H:i') }}&ensp;|&ensp;
+						<i class="fa fa-calendar"></i>&ensp;{{ \Carbon\Carbon::parse($item['date'])->translatedFormat('d F Y') }}&ensp;|&ensp;
 						<i class="fa fa-user"></i>&ensp;{{ $item['author'] ?? 'Administrator'}}&ensp;|&ensp;
 						<i class="fa fa-globe"></i>&ensp;{{ $item['nama_desa'] }}
 					</p>

@@ -1,25 +1,3 @@
-<div class="fat-arrow">
-	<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
-</div>
-<form class="form-horizontal" id="form_filter" method="get" action="{{ route('feeds.filter') }}">
-	<div class="page-header" style="margin:0px 0px;">
-		<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Desa</strong></span>
-	</div>
-	<div class="page-header" style="margin:0px 0px; padding: 0px;">
-		<select class="form-control" id="list_desa" name="desa" style="width: auto;">
-			<option value="ALL">Semua Desa</option>
-			@foreach($list_desa as $desa)
-					<option value="{{ $desa->desa_id }}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
-			@endforeach
-		</select>
-		<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
-			<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" value="{{$cari}}"/>
-			<button type="submit" class="btn btn-info btn-block" style="width: auto;">
-				<i class="fa fa-search"></i>
-			</button>
-		</div>
-	</div>
-</form>
 <div id="feeds">
 	<div class="post clearfix">
     @forelse ($feeds as $item)
@@ -30,6 +8,11 @@
         </div>
         <div class="col-sm-8">
           <h5 style="margin-top: 5px; text-align: justify;"><b><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></b></h5>
+					<p style="font-size:11px;">
+						<i class="fa fa-calendar"></i>&ensp;{{ \Carbon\Carbon::parse($item['date'])->translatedFormat('d F Y') }}&ensp;|&ensp;
+						<i class="fa fa-user"></i>&ensp;{{ $item['author'] ?? 'Administrator'}}&ensp;|&ensp;
+						<i class="fa fa-globe"></i>&ensp;{{ $item['nama_desa'] }}
+					</p>
           <p style="text-align: justify;">{{ strip_tags(substr($item['description'], 0, 250)) }}...</p>
           <a href="{{ $item['link'] }}" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>
         </div>
@@ -40,7 +23,9 @@
         <p class="text-bold">Tidak ada berita desa yang ditampilkan!</p>
       </div>
     @endforelse
-    {{ $feeds->links() }}
+		<div class="text-center">
+			{{ $feeds->links() }}
+		</div>
   </div>
 </div>
 

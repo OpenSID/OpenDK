@@ -6,7 +6,7 @@
 		<img class="img-responsive" src="{{ is_img($artikel->gambar) }}" alt="{{ $artikel->slug }}">
 		<br/>
 		<h4 style="margin-top: 5px; text-align: justify;"><b>{{ $artikel->judul }}</b></h4>
-		<p><i class="fa fa-calendar"></i>&ensp;{{ $artikel->created_at->format('d M Y') }}&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Admin</p>
+		<p><i class="fa fa-calendar"></i>&ensp;{{ $artikel->created_at->format('d M Y') }}&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>
 		<p>{!! $artikel->isi !!}</p>
 	</div>	
 </div>

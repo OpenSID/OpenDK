@@ -49,12 +49,12 @@ class PesanDetail extends Model
     public function headerPesan()
     {
         return $this->hasOne(Pesan::class, 'pesan_id', 'id');
-
-    public function headerPesan()
-    {
-        return $this->hasOne(Pesan::class, 'id', 'pesan_id');
-
     }
+
+    // public function headerPesan()
+    // {
+    //     return $this->hasOne(Pesan::class, 'id', 'pesan_id');
+    // }
 
     public function dataDesa()
     {

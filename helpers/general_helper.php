@@ -307,6 +307,17 @@ function is_logo($url = '', $file = '/img/logo.png')
     return is_img($url, $file);
 }
 
+function is_user($url = null, $sex = 1)
+{
+    if ($url) {
+        $url = 'storage/penduduk/foto/' . $url;
+    }
+
+    $default = 'img/pengguna/' . (($sex == 2) ? 'wuser.png' : 'kuser.png');
+
+    return is_img($url, $default);
+}
+
 if (! function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {

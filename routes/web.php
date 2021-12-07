@@ -294,6 +294,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
                     Route::put('update/{id}', ['as' => 'informasi.regulasi.update', 'uses' => 'RegulasiController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.regulasi.destroy', 'uses' => 'RegulasiController@destroy']);
+                    Route::get('download/{id}', ['as' => 'informasi.regulasi.download', 'uses' => 'RegulasiController@download']);
                 });
 
                 //Routes for FAQ resources

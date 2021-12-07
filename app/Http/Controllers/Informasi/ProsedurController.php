@@ -36,7 +36,6 @@ use App\Models\Prosedur;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use League\Flysystem\Exception;
 use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller
@@ -68,6 +67,8 @@ class ProsedurController extends Controller
                     $data['edit_url']   = route('informasi.prosedur.edit', $row->id);
                     $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
                 }
+
+                $data['download_url'] = route('informasi.prosedur.download', $row->id);
 
                 return view('forms.aksi', $data);
             })
@@ -114,7 +115,7 @@ class ProsedurController extends Controller
             }
 
             $prosedur->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Prosedur gagal disimpan!' . $e->getMessage());
         }
 
@@ -178,7 +179,7 @@ class ProsedurController extends Controller
             }
 
             $prosedur->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Prosedur gagal disimpan!' . $e->getMessage());
         }
 
@@ -195,10 +196,29 @@ class ProsedurController extends Controller
     {
         try {
             Prosedur::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Prosedur gagal dihapus!');
         }
 
         return redirect()->route('setting.komplain-kategori.index')->with('success', 'Prosedur berhasil dihapus!');
+    }
+
+    /**
+     * Download the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function download($id)
+    {
+        try {
+
+            $getFile = Prosedur::findOrFail($id);
+
+            return response()->download($getFile->file_prosedur);
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Dokumen tidak ditemukan');
+        }
     }
 }

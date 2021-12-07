@@ -6,12 +6,12 @@
     @endif
     @if( isset( $show_url ) )
             <a href="{!! empty( $show_url ) ? 'javascript:void(0)' : $show_url !!}" class="{!! empty( $show_url ) ? 'disabled' : '' !!}" title="Lihat" data-button="show">
-                <button type="button" class="btn btn-info btn-xs" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
+                <button type="button" class="btn btn-warning btn-xs" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
             </a>
     @endif
     @if( isset( $edit_url ) )
         <a href="{!! empty( $edit_url ) ? 'javascript:void(0)' : $edit_url !!}" class="{!! empty( $edit_url ) ? 'disabled' : '' !!}" title="Ubah" data-button="edit">
-            <button type="button" class="btn btn-primary btn-xs" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-success btn-xs" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
         </a>
     @endif
     @if( isset( $reply_url ) )
@@ -53,7 +53,7 @@
     @endif
     @if( isset( $show_web ) )
         <a href="{!! empty( $edit_url ) ? 'javascript:void(0)' : $show_web !!}" class="{!! empty( $show_web ) ? 'disabled' : '' !!}" title="Detail" data-button="detail" target="_blank">
-            <button type="button" class="btn btn-info btn-xs" style="width: 40px;"><i class="fa fa-eye" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-warning btn-xs" style="width: 40px;"><i class="fa fa-eye" aria-hidden="true"></i></button>
         </a>
     @endif
 </div>

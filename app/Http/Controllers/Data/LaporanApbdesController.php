@@ -89,7 +89,7 @@ class LaporanApbdesController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = asset('storage/apbdes/' . $row->nama_file);
-                $data['download_url'] = route('data.laporan-apbdes.destroy', $row->id);
+                $data['download_url'] = route('data.laporan-apbdes.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -166,5 +166,24 @@ class LaporanApbdesController extends Controller
         }
 
         return redirect()->route('data.laporan-apbdes.index')->with('success', 'Import data sukses.');
+    }
+
+    /**
+     * Download the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function download($id)
+    {
+        try {
+
+            $getFile = LaporanApbdes::findOrFail($id);
+
+            return Storage::download('public/apbdes/' . $getFile->nama_file);
+
+        } catch (Exception $e) {
+            return back()->with('error', 'Dokumen tidak ditemukan');
+        }
     }
 }

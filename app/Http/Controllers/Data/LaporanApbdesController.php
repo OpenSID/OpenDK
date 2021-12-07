@@ -177,11 +177,9 @@ class LaporanApbdesController extends Controller
     public function download($id)
     {
         try {
-
             $getFile = LaporanApbdes::findOrFail($id);
 
             return Storage::download('public/apbdes/' . $getFile->nama_file);
-
         } catch (Exception $e) {
             return back()->with('error', 'Dokumen tidak ditemukan');
         }

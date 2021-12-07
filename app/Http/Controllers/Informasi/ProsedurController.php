@@ -212,11 +212,9 @@ class ProsedurController extends Controller
     public function download($id)
     {
         try {
-
             $getFile = Prosedur::findOrFail($id);
 
             return response()->download($getFile->file_prosedur);
-
         } catch (\Exception $e) {
             return back()->with('error', 'Dokumen tidak ditemukan');
         }

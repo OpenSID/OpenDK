@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Models\FormDokumen;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -57,7 +56,7 @@ class FormDokumenController extends Controller
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }
 
-                $data['download_url'] = asset($row->file_dokumen);
+                $data['download_url'] = route('informasi.form-dokumen.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -90,7 +89,7 @@ class FormDokumenController extends Controller
             }
 
             $dokumen->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Dokumen gagal disimpan!' . $e->getMessage());
         }
 
@@ -126,7 +125,7 @@ class FormDokumenController extends Controller
             }
 
             $dokumen->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Dokumen gagal diubah!' . $e->getMessage());
         }
 
@@ -138,13 +137,25 @@ class FormDokumenController extends Controller
         try {
             $dokumen = FormDokumen::findOrFail($id);
 
-            unlink(base_path('public/' . $dokumen->file_dokumen));
-
-            $dokumen->delete();
-        } catch (Exception $e) {
+            if ($dokumen->delete()) {
+                unlink(base_path('public/' . $dokumen->file_dokumen));
+            }
+        } catch (\Exception $e) {
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Dokumen gagal dihapus!');
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil dihapus!');
+    }
+
+    /**
+     * Download the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function download($id)
+    {
+        $getFile = FormDokumen::findOrFail($id);
+        return response()->download($getFile->file_dokumen);
     }
 }

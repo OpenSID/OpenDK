@@ -341,6 +341,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.form-dokumen.edit', 'uses' => 'FormDokumenController@edit']);
                     Route::put('update/{id}', ['as' => 'informasi.form-dokumen.update', 'uses' => 'FormDokumenController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.form-dokumen.destroy', 'uses' => 'FormDokumenController@destroy']);
+                    Route::get('download/{id}', ['as' => 'informasi.form-dokumen.download', 'uses' => 'FormDokumenController@download']);
                 });
 
                 //Routes for Potensi resources

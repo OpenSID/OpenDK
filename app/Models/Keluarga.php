@@ -52,7 +52,7 @@ class Keluarga extends Model
     {
         return $this->hasOne(WilClusterDesa::class, 'id', 'id_cluster');
     }
-    
+
     public function kepala_kk()
     {
         return $this->hasOne(Penduduk::class, 'nik', 'nik_kepala');

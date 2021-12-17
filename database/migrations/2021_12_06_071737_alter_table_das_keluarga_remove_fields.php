@@ -43,7 +43,6 @@ class AlterTableDasKeluargaRemoveFields extends Migration
     public function up()
     {
         Schema::table('das_keluarga', function (Blueprint $table) {
-            $table->dropColumn('id_cluster');
             $table->dropColumn('provinsi_id');
             $table->dropColumn('kabupaten_id');
             $table->dropColumn('kecamatan_id');
@@ -60,7 +59,6 @@ class AlterTableDasKeluargaRemoveFields extends Migration
     public function down()
     {
         Schema::table('das_keluarga', function (Blueprint $table) {
-            $table->integer('id_cluster');
             $table->char('provinsi_id', 2);
             $table->char('kabupaten_id', 5);
             $table->char('kecamatan_id', 8);

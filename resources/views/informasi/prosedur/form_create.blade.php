@@ -12,7 +12,7 @@
 
         <img class="hide" src="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
 
-        <object data="" type="application/pdf" width="500" height="400" class="hide" id="showpdf"> </object>
+        <object data="" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
 
     </div>
 </div>

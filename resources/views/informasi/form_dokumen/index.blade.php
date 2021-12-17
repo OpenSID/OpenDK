@@ -22,9 +22,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.form-dokumen.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Dokumen"><i
-                    class="fa fa-plus"></i>&ensp; Tambah</a>
-
+                    <a href="{{ route('informasi.form-dokumen.create') }}" class="btn btn-success btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp; Tambah</a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -32,7 +30,7 @@
                         <table class="table table-striped table-bordered" id="dokumen-table">
                             <thead>
                             <tr>
-                                <th style="max-width: 160px;">Aksi</th>
+                                <th class="text-center text-nowrap" style="max-width: 160px;">Aksi</th>
                                 <th>Nama Dokumen</th>
                             </tr>
                             </thead>
@@ -62,10 +60,10 @@
             serverSide: true,
             ajax: "{!! route( 'informasi.form-dokumen.getdata' ) !!}",
             columns: [
-                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center text-nowrap', searchable: false, orderable: false},
                 {data: 'nama_dokumen', name: 'nama_dokumen'},
             ],
-            order: [[0, 'desc']]
+            order: [[1, 'desc']]
         });
     });
 </script>

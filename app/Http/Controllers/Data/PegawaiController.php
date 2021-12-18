@@ -1,22 +1,49 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Data;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Exception;
-use App\Models\Pegawai;
 use App\Models\Jabatan;
+use App\Models\Pegawai;
+use function convert_born_date_to_age;
+use Doctrine\DBAL\Query\QueryException;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
-use Yajra\DataTables\DataTables;
-use Doctrine\DBAL\Query\QueryException;
 
-use function config;
-use function convert_born_date_to_age;
+use Yajra\DataTables\DataTables;
+
 class PegawaiController extends Controller
 {
     /**
@@ -56,7 +83,7 @@ class PegawaiController extends Controller
             ->when($pegawai, function ($query) use ($pegawai) {
                 $query->where('nama_pegawai', $pegawai);
             });
-            // ->where('status','aktif');
+        // ->where('status','aktif');
 
         return DataTables::of($query)
             ->addColumn('action', function ($row) {
@@ -82,8 +109,8 @@ class PegawaiController extends Controller
     {
         $page_title       = 'Tambah';
         $page_description = 'Tambah Data Pegawai';
-        $jabatan = Jabatan::pluck('nama_jabatan','id');
-        return view('data.pegawai.create', compact('page_title','jabatan', 'page_description'));
+        $jabatan = Jabatan::pluck('nama_jabatan', 'id');
+        return view('data.pegawai.create', compact('page_title', 'jabatan', 'page_description'));
     }
 
     /**
@@ -111,7 +138,7 @@ class PegawaiController extends Controller
             'foto'             => 'nullable|mimes:jpg,png,jpeg|max:1024',
             'foto.*'           => 'mimes:jpg,png,jpeg',
             ]);
-            
+
             // dd($request);
             if ($request->hasFile('foto')) {
                 $file     = $request->file('foto');
@@ -119,7 +146,7 @@ class PegawaiController extends Controller
                 $request->file('foto')->move("storage/pegawai/foto/", $fileName);
                 $pegawai->foto = $fileName;
             }
-             $pegawai->save();
+            $pegawai->save();
             return redirect()->route('data.pegawai.index')->with('success', 'Pegawai berhasil disimpan!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Pegawai gagal disimpan!');
@@ -135,14 +162,14 @@ class PegawaiController extends Controller
     public function edit($id)
     {
         $pegawai = Pegawai::findOrFail($id);
-        $jabatan = Jabatan::pluck('nama_jabatan','id');
+        $jabatan = Jabatan::pluck('nama_jabatan', 'id');
         if ($pegawai->foto == '') {
             $pegawai->foto = 'http://placehold.it/120x150';
         }
         $page_title       = 'Ubah';
         $page_description = 'Ubah Pegawai: ' . ucwords(strtolower($pegawai->nama_pegawai));
 
-        return view('data.pegawai.edit', compact('page_title', 'jabatan','page_description', 'pegawai'));
+        return view('data.pegawai.edit', compact('page_title', 'jabatan', 'page_description', 'pegawai'));
     }
 
     /**
@@ -205,5 +232,4 @@ class PegawaiController extends Controller
             return redirect()->route('data.pegawai.index')->with('error', 'Pegawai gagal dihapus!');
         }
     }
-
 }

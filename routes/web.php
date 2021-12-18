@@ -30,6 +30,7 @@
  */
 
 use App\Models\Penduduk;
+use App\Models\DataDesa;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
@@ -157,6 +158,8 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
+
+            Route::get('file-logs', ['as' => 'setting.file-logs', 'uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index']);
         });
 
         /**

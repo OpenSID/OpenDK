@@ -226,6 +226,10 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
                         @endif
+                        @if($user->hasAnyAccess(['admin', 'setting-file-logs']))
+                        <li {{ (Request::is(['setting/file-logs/*', 'setting/file-logs'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.file-logs') }}"><i class="fa fa-circle-o"></i>File Logs</a></li>
+                        @endif
                     </ul>
                 </li>
                 @endif

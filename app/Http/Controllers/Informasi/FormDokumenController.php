@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
@@ -7,54 +36,37 @@ use App\Models\FormDokumen;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
-
-use function asset;
-use function back;
-use function base_path;
-use function compact;
-use function redirect;
-use function request;
-use function route;
-use function unlink;
-use function view;
 
 class FormDokumenController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Form Dokumen';
-        $page_description = 'Upload Form Dokumen';
+        $page_title       = 'Dokumen';
+        $page_description = 'Daftar Dokumen';
 
         return view('informasi.form_dokumen.index', compact('page_title', 'page_description'));
     }
 
     public function getDataDokumen()
     {
-        $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
-        return DataTables::of($query)
-            ->addColumn('action', function ($row) {
-               // $show_url = route('informasi.form-dokumen.show', $row->id);
-                $edit_url     = route('informasi.form-dokumen.edit', $row->id);
-                $delete_url   = route('informasi.form-dokumen.destroy', $row->id);
-                $download_url = asset($row->file_dokumen);
-
-                $data['download_url'] = $download_url;
-               // $data['show_url'] = $show_url;
+        return DataTables::of(FormDokumen::all())
+            ->addColumn('aksi', function ($row) {
                 if (! Sentinel::guest()) {
-                    $data['edit_url']   = $edit_url;
-                    $data['delete_url'] = $delete_url;
+                    $data['edit_url']   = route('informasi.form-dokumen.edit', $row->id);
+                    $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }
 
-                return view('forms.action', $data);
+                $data['download_url'] = asset($row->file_dokumen);
+
+                return view('forms.aksi', $data);
             })->make();
     }
 
     public function create()
     {
-        $page_title       = 'Tambah';
-        $page_description = 'Upload Form Dokumen Baru';
+        $page_title       = 'Dokumen';
+        $page_description = 'Tambah Dokumen';
 
         return view('informasi.form_dokumen.create', compact('page_title', 'page_description'));
     }
@@ -65,40 +77,9 @@ class FormDokumenController extends Controller
             'nama_dokumen' => 'required',
             'file_dokumen' => 'required|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
         ]);
-        $dokumen = new FormDokumen($request->input());
 
-        if ($request->hasFile('file_dokumen')) {
-            $file     = $request->file('file_dokumen');
-            $fileName = $file->getClientOriginalName();
-            $path     = "storage/form_dokumen/";
-            $request->file('file_dokumen')->move($path, $fileName);
-            $dokumen->file_dokumen = $path . $fileName;
-        }
-
-        $dokumen->save();
-
-        return redirect()->route('informasi.form-dokumen.index')->with('success', 'Form Dokumen berhasil ditambah!');
-    }
-
-    public function edit($id)
-    {
-        $dokumen          = FormDokumen::findOrFail($id);
-        $page_title       = 'Edit';
-        $page_description = 'Edit Form Dokumen ' . $dokumen->nama_dokumen;
-
-        return view('informasi.form_dokumen.edit', compact('page_title', 'page_description', 'dokumen'));
-    }
-
-    public function update(Request $request, $id)
-    {
         try {
-            $dokumen = FormDokumen::findOrFail($id);
-            $dokumen->fill($request->all());
-
-            request()->validate([
-                'nama_dokumen' => 'required',
-                'file_dokumen' => 'required|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
-            ]);
+            $dokumen = new FormDokumen($request->input());
 
             if ($request->hasFile('file_dokumen')) {
                 $file     = $request->file('file_dokumen');
@@ -109,22 +90,61 @@ class FormDokumenController extends Controller
             }
 
             $dokumen->save();
-
-            return redirect()->route('informasi.form-dokumen.index')->with('success', 'Form Dokumen berhasil disimpan!');
         } catch (Exception $e) {
-            return back()->with('error', 'Form Dokumen gagal disimpan!' . $e->getMessage());
+            return back()->with('error', 'Dokumen gagal disimpan!' . $e->getMessage());
         }
+
+        return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil ditambah!');
+    }
+
+    public function edit($id)
+    {
+        $dokumen          = FormDokumen::findOrFail($id);
+        $page_title       = 'Dokumen';
+        $page_description = 'Ubah Dokumen ' . $dokumen->nama_dokumen;
+
+        return view('informasi.form_dokumen.edit', compact('page_title', 'page_description', 'dokumen'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        request()->validate([
+            'nama_dokumen' => 'required',
+            'file_dokumen' => 'mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
+        ]);
+
+        try {
+            $dokumen = FormDokumen::findOrFail($id);
+            $dokumen->fill($request->all());
+
+            if ($request->hasFile('file_dokumen')) {
+                $file     = $request->file('file_dokumen');
+                $fileName = $file->getClientOriginalName();
+                $path     = "storage/form_dokumen/";
+                $request->file('file_dokumen')->move($path, $fileName);
+                $dokumen->file_dokumen = $path . $fileName;
+            }
+
+            $dokumen->save();
+        } catch (Exception $e) {
+            return back()->with('error', 'Dokumen gagal diubah!' . $e->getMessage());
+        }
+
+        return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil diubah!');
     }
 
     public function destroy($id)
     {
         try {
             $dokumen = FormDokumen::findOrFail($id);
+
             unlink(base_path('public/' . $dokumen->file_dokumen));
+
             $dokumen->delete();
-            return redirect()->route('informasi.form-dokumen.index')->with('success', 'Form Dokumen berhasil dihapus!');
         } catch (Exception $e) {
-            return redirect()->route('informasi.form-dokumen.index')->with('error', 'Form Dokumen gagal dihapus!');
+            return redirect()->route('informasi.form-dokumen.index')->with('error', 'Dokumen gagal dihapus!');
         }
+
+        return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil dihapus!');
     }
 }

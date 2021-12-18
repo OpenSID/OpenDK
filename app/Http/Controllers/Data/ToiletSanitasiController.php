@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
@@ -8,28 +37,11 @@ use App\Models\ToiletSanitasi;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Yajra\DataTables\Facades\DataTables;
 
-use function back;
-use function compact;
-use function months_list;
-use function redirect;
-use function request;
-use function route;
-use function view;
-use function years_list;
+use Yajra\DataTables\Facades\DataTables;
 
 class ToiletSanitasiController extends Controller
 {
-   
-    public $bulan;
-    public $tahun;
-
-    public function __construct()
-    {
-       parent::__construct();
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +50,8 @@ class ToiletSanitasiController extends Controller
     public function index()
     {
         $page_title       = 'Toilet & Sanitasi';
-        $page_description = 'Data Toilet & Sanitasi ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_description = 'Daftar Toilet & Sanitasi';
+
         return view('data.toilet_sanitasi.index', compact('page_title', 'page_description'));
     }
 
@@ -50,19 +63,16 @@ class ToiletSanitasiController extends Controller
     public function getDataAKIAKB()
     {
         return DataTables::of(ToiletSanitasi::with(['desa']))
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('data.toilet-sanitasi.edit', $row->id);
-                $delete_url = route('data.toilet-sanitasi.destroy', $row->id);
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url']   = route('data.toilet-sanitasi.edit', $row->id);
+                $data['delete_url'] = route('data.toilet-sanitasi.destroy', $row->id);
 
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
-
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })
-            ->rawColumns(['actions'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     /**
@@ -72,10 +82,11 @@ class ToiletSanitasiController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Toilet & Sanitasi';
+        $page_title       = 'Toilet & Sanitasi';
+        $page_description = 'Import Toilet & Sanitasi';
         $years_list       = years_list();
         $months_list      = months_list();
+
         return view('data.toilet_sanitasi.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
@@ -93,7 +104,7 @@ class ToiletSanitasiController extends Controller
         ]);
 
         try {
-            (new ImporToiletSanitasi($request->all()))
+            (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
@@ -110,9 +121,9 @@ class ToiletSanitasiController extends Controller
      */
     public function edit($id)
     {
-        $toilet           = ToiletSanitasi::findOrFail($id);
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Data Toilet & Sanitasi: ' . $toilet->id;
+        $toilet           = ToiletSanitasi::with(['desa'])->findOrFail($id);
+        $page_title       = 'Toilet & Sanitasi';
+        $page_description = 'Ubah Toilet & Sanitasi : ' . $toilet->desa->nama;
 
         return view('data.toilet_sanitasi.edit', compact('page_title', 'page_description', 'toilet'));
     }
@@ -125,18 +136,18 @@ class ToiletSanitasiController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'toilet'   => 'required',
+            'sanitasi' => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'toilet'   => 'required',
-                'sanitasi' => 'required',
-            ]);
-
-            ToiletSanitasi::find($id)->update($request->all());
-
-            return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data berhasil disimpan!');
+            ToiletSanitasi::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+            return back()->withInput()->with('error', 'Data gagal diubah!');
         }
+
+        return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data berhasil diubah!');
     }
 
     /**
@@ -149,10 +160,10 @@ class ToiletSanitasiController extends Controller
     {
         try {
             ToiletSanitasi::findOrFail($id)->delete();
-
-            return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data sukses dihapus!');
     }
 }

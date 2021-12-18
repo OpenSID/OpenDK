@@ -1,21 +1,43 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Potensi;
+use App\Models\TipePotensi;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
-use function back;
-use function compact;
-use function redirect;
-use function request;
-use function view;
+use Illuminate\Http\Response;
 
 class PotensiController extends Controller
 {
@@ -26,11 +48,9 @@ class PotensiController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.potensi.index');
-
         $page_title       = 'Potensi';
-        $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
-        $potensis         = DB::table('das_potensi')->simplePaginate(10);
+        $page_description = 'Daftar Potensi';
+        $potensis         = Potensi::latest()->paginate(10);
 
         return view('informasi.potensi.index', compact(['page_title', 'page_description', 'potensis']));
     }
@@ -42,18 +62,37 @@ class PotensiController extends Controller
      */
     public function kategori()
     {
-        Counter::count('informasi.potensi.kategori');
-
         $page_title       = 'Potensi';
-        $page_description = 'Potensi-Potensi ' .$this->sebutan_wilayah;
+
         if ($_GET['id'] != null) {
-            $potensis = DB::table('das_potensi')->where('kategori_id', $_GET['id'])->simplePaginate(10);
+            $potensis = Potensi::where('kategori_id', $_GET['id'])->latest()->paginate(10);
+            $kategori = TipePotensi::findOrFail($_GET['id'])->nama_kategori;
         } else {
-            $potensis = DB::table('das_potensi')->simplePaginate(10);
+            $potensis = Potensi::latest()->paginate(10);
+            $kategori = 'Semua';
         }
+
+        $page_description = 'Kategori Potensi : ' . $kategori;
 
         return view('informasi.potensi.index', compact(['page_title', 'page_description', 'potensis']));
     }
+
+    /**
+     * Get datatable
+     */
+    // public function getDataPotensi()
+    // {
+    //     return DataTables::of(Potensi::select('id', 'nama_potensi', 'lokasi'))
+    //         ->addColumn('aksi', function($row) {
+    //
+    //             if(!Sentinel::guest()) {
+    //                 $data['edit_url'] = route('informasi.potensi.edit', $row->id);
+    //                 $data['delete_url'] = route('informasi.potensi.destroy', $row->id);
+    //             }
+    //
+    //             return view('forms.aksi', $data);
+    //         })->make();
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -62,7 +101,9 @@ class PotensiController extends Controller
      */
     public function create()
     {
-        $page_title = 'Tambah Potensi';
+        $page_title = 'Potensi';
+        $page_description = 'Tambah Potensi';
+
         return view('informasi.potensi.create', compact('page_title'));
     }
 
@@ -73,13 +114,14 @@ class PotensiController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'kategori_id'  => 'required',
+            'nama_potensi' => 'required',
+            'deskripsi'    => 'required',
+            'file_gambar'  => 'image|mimes:bmp,jpg,jpeg,gif,png|max:1024',
+        ]);
+
         try {
-            request()->validate([
-                'kategori_id'  => 'required',
-                'nama_potensi' => 'required',
-                'deskripsi'    => 'required',
-                'file_gambar'  => 'image|mimes:bmp,jpg,jpeg,gif,png|max:1024',
-            ]);
             $potensi = new Potensi($request->input());
 
             if ($request->hasFile('file_gambar')) {
@@ -91,11 +133,11 @@ class PotensiController extends Controller
             }
 
             $potensi->save();
-
-            return redirect()->route('informasi.potensi.index')->with('success', 'Potensi berhasil disimpan!');
-        } catch (QueryException $e) {
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Simpan Event gagal! ' . $e->getMessage());
         }
+
+        return redirect()->route('informasi.potensi.index')->with('success', 'Potensi berhasil disimpan!');
     }
 
     /**
@@ -106,8 +148,9 @@ class PotensiController extends Controller
      */
     public function show($id)
     {
-        $potensi    = Potensi::find($id);
-        $page_title = 'Potensi :' . $potensi->nama_potensi;
+        $potensi          = Potensi::findOrFail($id);
+        $page_title       = 'Potensi';
+        $page_description = 'Potensi : ' . $potensi->nama_potensi;
 
         return view('informasi.potensi.show', compact('page_title', 'potensi'));
     }
@@ -121,20 +164,10 @@ class PotensiController extends Controller
     public function edit($id)
     {
         $potensi          = Potensi::findOrFail($id);
-        $page_title       = 'Ubah';
+        $page_title       = 'Potensi';
         $page_description = 'Ubah Potensi : ' . $potensi->nama_potensi;
 
         return view('informasi.potensi.edit', compact('page_title', 'page_description', 'potensi'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function download($id)
-    {
     }
 
     /**
@@ -145,14 +178,14 @@ class PotensiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            request()->validate([
-                'kategori_id'  => 'required',
-                'nama_potensi' => 'required',
-                'deskripsi'    => 'required',
-                'file_gambar'  => 'image|mimes:bmp,jpg,jpeg,gif,png|max:1024',
-            ]);
+        request()->validate([
+            'kategori_id'  => 'required',
+            'nama_potensi' => 'required',
+            'deskripsi'    => 'required',
+            'file_gambar'  => 'image|mimes:bmp,jpg,jpeg,gif,png|max:1024',
+        ]);
 
+        try {
             $potensi = Potensi::findOrFail($id);
             $potensi->fill($request->all());
 
@@ -165,11 +198,11 @@ class PotensiController extends Controller
             }
 
             $potensi->save();
-
-            return redirect()->route('informasi.potensi.index')->with('success', 'Data Potensi berhasil disimpan!');
         } catch (Exception $e) {
             return back()->with('error', 'Data Potensi gagal disimpan!' . $e->getMessage());
         }
+
+        return redirect()->route('informasi.potensi.index')->with('success', 'Data Potensi berhasil disimpan!');
     }
 
     /**
@@ -180,29 +213,12 @@ class PotensiController extends Controller
      */
     public function destroy($id)
     {
-        Potensi::find($id)->delete();
+        try {
+            Potensi::findOrFail($id)->delete();
+        } catch (Exception $e) {
+            return redirect()->route('informasi.form-dokumen.index')->with('error', 'Potensi gagal dihapus!');
+        }
+
         return redirect()->route('informasi.potensi.index')->with('success', 'Potensi Berhasil dihapus!');
     }
-
-    /**
-     * Get datatable
-     */
-    // public function getDataPotensi()
-    // {
-    //     return DataTables::of(Potensi::select('id', 'nama_potensi', 'lokasi'))
-    //         ->addColumn('action', function($row){
-    //             $show_url = route('informasi.potensi.show', $row->id);
-    //             $edit_url = route('informasi.potensi.edit', $row->id);
-    //             $delete_url = route('informasi.potensi.destroy', $row->id);
-    //
-    //             $data['show_url'] = $show_url;
-    //
-    //             if(!Sentinel::guest()){
-    //                 $data['edit_url'] = $edit_url;
-    //                 $data['delete_url'] = $delete_url;
-    //             }
-    //
-    //             return view('forms.action', $data);
-    //         })->make();
-    // }
 }

@@ -4,14 +4,18 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ config('app.name', 'Laravel')}} | {{$page_title ?? ''}}</title>
+    <title>{{ $page_title ?? config('app.name', 'Laravel') }} | {{ $browser_title }}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
+<<<<<<< HEAD
     <link rel="icon" type="image/png"
         href="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{ asset('/favicon.png') }}@endif" />
+=======
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
+>>>>>>> upstream/master
     <link rel="stylesheet" href="{{ asset("/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset("/bower_components/font-awesome/css/font-awesome.min.css") }}">
@@ -182,12 +186,18 @@ desired effect
                 }
             });
 
+<<<<<<< HEAD
             //Click event to scroll to top
             $('.scrollToTop').click(function () {
                 $('html, body').animate({
                     scrollTop: 0
                 }, 800);
                 return false;
+=======
+        window.setTimeout(function() {
+            $("#notifikasi").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+>>>>>>> upstream/master
             });
 
             window.setTimeout(function () {

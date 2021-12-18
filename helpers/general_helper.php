@@ -1,11 +1,32 @@
 <?php
 
-/* -----------------------------------------------------
- | Function Helpers.
- | -----------------------------------------------------
- |
- | Create basic function to easier developing
- | Yoga <thetaramolor@gmail.com>
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
  */
 
 use App\Models\Menu;
@@ -25,7 +46,7 @@ if (! function_exists('get_tag_image')) {
             return $match[1];
         }
 
-        return 'http://placehold.it/500x300';
+        return asset('img/no-image.png');
     }
 }
 
@@ -52,7 +73,7 @@ function define_child($parent_id)
  */
 function permission_val($id, $permission)
 {
-    $role = Role::find($id);
+    $role = Role::findOrFail($id);
     $format = json_decode(json_encode($role), true);
     $result = (isset($format['permissions'][$permission]) && $format['permissions'][$permission] != '' ? 1 : 0);
     return $result;
@@ -111,10 +132,10 @@ function generate_password($length = 6)
  */
 function respon_meta($code, $message)
 {
-    $meta = array(
+    $meta = [
         'code' => $code,
         'message' => $message
-    );
+    ];
     return $meta;
 }
 
@@ -133,7 +154,7 @@ function convert_xml_to_array($filename)
             "FILE" => $e->getFile()
         ]);
         return false;
-    // throw new \UnexpectedValueException(trans('message.news.import-error'), 1);
+        // throw new \UnexpectedValueException(trans('message.news.import-error'), 1);
     }
 }
 
@@ -147,13 +168,11 @@ function convert_born_date_to_age($date)
 
 function random_color_part()
 {
-
     return str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
 }
 
 function random_color()
 {
-
     return random_color_part() . random_color_part() . random_color_part();
 }
 
@@ -172,7 +191,7 @@ function years_list()
 
 function months_list()
 {
-    return array(
+    return [
         1 => 'Januari',
         2 => 'Februari',
         3 => 'Maret',
@@ -185,12 +204,11 @@ function months_list()
         10 => 'Oktober',
         11 => 'November',
         12 => 'Desember',
-    );
+    ];
 }
 
 function get_words($sentence, $count = 10)
 {
-
     preg_match("/(?:\w+(?:\W+|$)){0,$count}/", $sentence, $matches);
     return $matches[0];
 }
@@ -209,55 +227,55 @@ function format_date($date)
 
 function kuartal_bulan()
 {
-    return array(
-        'q1' => array(
+    return [
+        'q1' => [
             1 => 'Januari',
             2 => 'Februari',
             3 => 'Maret',
-        ),
-        'q2' => array(
+        ],
+        'q2' => [
             4 => 'April',
             5 => 'Mei',
             6 => 'Juni',
-        ),
-        'q3' => array(
+        ],
+        'q3' => [
             7 => 'Juli',
             8 => 'Agustus',
             9 => 'September',
-        ),
-        'q4' => array(
+        ],
+        'q4' => [
             10 => 'Oktober',
             11 => 'November',
             12 => 'Desember',
-        )
-    );
+        ]
+    ];
 }
 
 function semester()
 {
-    return array(
-        1 => array(
+    return [
+        1 => [
             1 => 'Januari',
             2 => 'Februari',
             3 => 'Maret',
             4 => 'April',
             5 => 'Mei',
             6 => 'Juni',
-        ),
-        2 => array(
+        ],
+        2 => [
             7 => 'Juli',
             8 => 'Agustus',
             9 => 'September',
             10 => 'Oktober',
             11 => 'November',
             12 => 'Desember',
-        )
-    );
+        ]
+    ];
 }
 
 function status_rekam()
 {
-    return array(
+    return [
         1 => 'BELUM WAJIB',
         2 => 'BELUM REKAM',
         3 => 'SUDAH REKAM',
@@ -266,7 +284,7 @@ function status_rekam()
         6 => 'CARD SHIPPED',
         7 => 'SENT FOR CARD PRINTING',
         8 => 'CARD ISSUED'
-    );
+    ];
 }
 
 function is_wajib_ktp($umur, $status_kawin)
@@ -279,53 +297,45 @@ function is_wajib_ktp($umur, $status_kawin)
     return $wajib_ktp;
 }
 
-function is_img($img)
+function is_img($url = null, $img = '/img/no-image.png')
 {
-    if ($img == '' || ! is_file($img)) {
-        $img = '/img/no-image.png';
-    }
+    return asset($url != null && file_exists(public_path($url)) ? $url : $img);
+}
 
-    return $img;
+function is_logo($url = '', $file = '/img/logo.png')
+{
+    return is_img($url, $file);
 }
 
 if (! function_exists('divnum')) {
-
-        function divnum($numerator, $denominator)
-        {
-            return $denominator == 0 ? 0 : ($numerator / $denominator);
-        }
-
+    function divnum($numerator, $denominator)
+    {
+        return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
-    function terbilang($angka) {
+}
+    function terbilang($angka)
+    {
         $angka=abs($angka);
-        $baca =array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
-    
+        $baca =["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+
         $terbilang="";
-        if ($angka < 12){
+        if ($angka < 12) {
             $terbilang= " " . $baca[$angka];
-        }
-        else if ($angka < 20){
+        } elseif ($angka < 20) {
             $terbilang= terbilang($angka - 10) . " Belas";
-        }
-        else if ($angka < 100){
+        } elseif ($angka < 100) {
             $terbilang= terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
-        }
-        else if ($angka < 200){
+        } elseif ($angka < 200) {
             $terbilang= " seratus" . terbilang($angka - 100);
-        }
-        else if ($angka < 1000){
+        } elseif ($angka < 1000) {
             $terbilang= terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
-        }
-        else if ($angka < 2000){
+        } elseif ($angka < 2000) {
             $terbilang= " seribu" . terbilang($angka - 1000);
-        }
-        else if ($angka < 1000000){
+        } elseif ($angka < 1000000) {
             $terbilang= terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
+        } elseif ($angka < 1000000000) {
+            $terbilang= terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
         }
-        else if ($angka < 1000000000){
-        $terbilang= terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
-        }
-    
+
         return $terbilang;
     }
-    

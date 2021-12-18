@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
@@ -7,21 +36,10 @@ use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
 use App\Models\DataDesa;
 use Exception;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Yajra\DataTables\Facades\DataTables;
 
-use function back;
-use function compact;
-use function config;
-use function months_list;
-use function number_format;
-use function redirect;
-use function request;
-use function route;
-use function view;
-use function years_list;
+use Yajra\DataTables\Facades\DataTables;
 
 class AnggaranDesaController extends Controller
 {
@@ -33,7 +51,8 @@ class AnggaranDesaController extends Controller
     public function index()
     {
         $page_title       = 'APBDes';
-        $page_description = 'Data Anggran Desa';
+        $page_description = 'Data APBDes';
+
         return view('data.anggaran_desa.index', compact('page_title', 'page_description'));
     }
 
@@ -45,21 +64,18 @@ class AnggaranDesaController extends Controller
     public function getDataAnggaran()
     {
         return DataTables::of(AnggaranDesa::with('desa'))
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('data.anggaran-desa.edit', $row->id);
-                $delete_url = route('data.anggaran-desa.destroy', $row->id);
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url']   = route('data.anggaran-desa.edit', $row->id);
+                $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
-
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })
             ->editColumn('jumlah', function ($row) {
                 return number_format($row->jumlah, 2);
             })
-            ->rawColumns(['actions'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     /**
@@ -69,11 +85,12 @@ class AnggaranDesaController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Anggaran Desa';
+        $page_title       = 'APBDes';
+        $page_description = 'Import APBDes';
         $years_list       = years_list();
         $months_list      = months_list();
-        $list_desa        = DataDesa::where('kecamatan_id', config('app.default_profile'))->get();
+        $list_desa        = DataDesa::all();
+
         return view('data.anggaran_desa.import', compact('page_title', 'page_description', 'years_list', 'months_list', 'list_desa'));
     }
 
@@ -92,7 +109,7 @@ class AnggaranDesaController extends Controller
         ]);
 
         try {
-            (new ImporAPBDesa($request->all()))
+            (new ImporAPBDesa($request->only(['bulan', 'tahun', 'desa'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
@@ -110,8 +127,8 @@ class AnggaranDesaController extends Controller
     public function edit($id)
     {
         $anggaran         = AnggaranDesa::findOrFail($id);
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Data Anggaran Desa: ' . $anggaran->id;
+        $page_title       = 'APBDes';
+        $page_description = 'Ubah APBDes : ' . $anggaran->id;
 
         return view('data.anggaran_desa.edit', compact('page_title', 'page_description', 'anggaran'));
     }
@@ -124,21 +141,21 @@ class AnggaranDesaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'bulan'     => 'required',
+            'tahun'     => 'required',
+            'no_akun'   => 'required',
+            'nama_akun' => 'required',
+            'jumlah'    => 'required|numeric',
+        ]);
+
         try {
-            request()->validate([
-                'bulan'     => 'required',
-                'tahun'     => 'required',
-                'no_akun'   => 'required',
-                'nama_akun' => 'required',
-                'jumlah'    => 'required|numeric',
-            ]);
-
-            AnggaranDesa::find($id)->update($request->all());
-
-            return redirect()->route('data.anggaran-desa.index')->with('success', 'Data berhasil disimpan!');
-        } catch (QueryException $e) {
+            AnggaranDesa::findOrFail($id)->update($request->all());
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
+
+        return redirect()->route('data.anggaran-desa.index')->with('success', 'Data berhasil disimpan!');
     }
 
     /**
@@ -151,10 +168,10 @@ class AnggaranDesaController extends Controller
     {
         try {
             AnggaranDesa::findOrFail($id)->delete();
-
-            return redirect()->route('data.anggaran-desa.index')->with('success', 'Data sukses dihapus!');
-        } catch (QueryException $e) {
+        } catch (Exception $e) {
             return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.anggaran-desa.index')->with('success', 'Data sukses dihapus!');
     }
 }

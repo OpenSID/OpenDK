@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Imports;
 
 use App\Models\Penduduk;
@@ -10,24 +39,9 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-use function config;
-use function substr;
-
 class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
-
-    /** @var string */
-    protected $provinsi_id;
-    protected $kabupaten_id;
-    protected $kecamatan_id;
-
-    public function __construct()
-    {
-        $this->kecamatan_id = config('app.default_profile');
-        $this->provinsi_id  = substr($this->kecamatan_id, 0, 2);
-        $this->kabupaten_id = substr($this->kecamatan_id, 0, 5);
-    }
 
     /**
      * {@inheritdoc}
@@ -81,9 +95,6 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
                 'dusun'           => $value['dusun'],
                 'rw'              => $value['rw'],
                 'rt'              => $value['rt'],
-                'provinsi_id'     => $this->provinsi_id,
-                'kabupaten_id'    => $this->kabupaten_id,
-                'kecamatan_id'    => $this->kecamatan_id,
                 'desa_id'         => $value['desa_id'],
                 'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],

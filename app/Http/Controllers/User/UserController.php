@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
@@ -14,16 +43,6 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\DataTables;
 
-use function back;
-use function bcrypt;
-use function compact;
-use function flash;
-use function public_path;
-use function redirect;
-use function route;
-use function trans;
-use function view;
-
 class UserController extends Controller
 {
     /**
@@ -33,8 +52,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $page_title = 'Pengguna';
-        return view('user.index', compact('page_title'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Daftar Data';
+
+        return view('user.index', compact('page_title', 'page_description'));
     }
 
     /**
@@ -44,9 +65,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        $page_title = 'Tambah Pengguna';
-        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.create', compact('item', 'page_title'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Tambah Data';
+        $item             = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+
+        return view('user.create', compact('page_title', 'page_description', 'item'));
     }
 
     /**
@@ -83,7 +106,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         return view('user.show', compact('user'));
     }
 
@@ -95,11 +118,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $page_title = 'Ubah Pengguna';
-        $user       = User::find($id);
-        $title      = ['title' => 'Pengguna'];
-        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.edit', compact('page_title', 'user', 'title', 'item'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Ubah Data';
+        $user             = User::findOrFail($id);
+        $item             = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+
+        return view('user.edit', compact('page_title', 'page_description', 'user', 'item'));
     }
 
     /**
@@ -112,13 +136,13 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user_find = User::find($id);
+            $user_find = User::findOrFail($id);
 
             $user = Sentinel::update($user_find, $request->all());
             if ($request->hasFile('image')) {
-                 $path = public_path('uploads/user/');
-                 File::delete($path . $user_find->image);
-                 $user->uploadImage($request->image);
+                $path = public_path('uploads/user/');
+                File::delete($path . $user_find->image);
+                $user->uploadImage($request->image);
             }
             if (! empty($request->role)) {
                 Sentinel::findRoleBySlug($user_find->roles()->first()->slug)->users()->detach($user);
@@ -144,7 +168,7 @@ class UserController extends Controller
     {
         // dd($request->all());
         try {
-            $user_find = User::find($id);
+            $user_find = User::findOrFail($id);
 
             $user = Sentinel::update($user_find, $request->all());
             $user->update([
@@ -210,24 +234,20 @@ class UserController extends Controller
         ->editColumn('status', function ($user) {
             return $user->status == 1 ? 'Active' : 'Not Active';
         })
-        ->addColumn('action', function ($user) {
+        ->addColumn('aksi', function ($user) {
             if ($user->id != 1) {
-                $edit_url = route('setting.user.edit', $user->id);
                 if ($user->status == 1) {
-                    $suspend_url         = route('setting.user.destroy', $user->id);
-                    $data['suspend_url'] = $suspend_url;
+                    $data['suspend_url'] = route('setting.user.destroy', $user->id);
                 } else {
-                    $active_url         = route('setting.user.active', $user->id);
-                    $data['active_url'] = $active_url;
+                    $data['active_url'] = route('setting.user.active', $user->id);
                 }
 
-                $data['edit_url'] = $edit_url;
+                $data['edit_url'] = route('setting.user.edit', $user->id);
             } else {
-                $edit_url         = route('setting.user.edit', $user->id);
-                $data['edit_url'] = $edit_url;
+                $data['edit_url'] = route('setting.user.edit', $user->id);
             }
 
-            return view('forms.action', $data);
+            return view('forms.aksi', $data);
         })
         ->make(true);
     }

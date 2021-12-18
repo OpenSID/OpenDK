@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
@@ -10,27 +39,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 
-use function back;
-use function compact;
-use function months_list;
-use function redirect;
-use function request;
-use function route;
-use function view;
-use function years_list;
-
 class PutusSekolahController extends Controller
 {
-
-    public function __construct(){
-        parent::__construct();
-    }
-    
     public function index()
     {
-        
-        $page_title       = 'Anak Putus Sekolah';
-        $page_description = 'Data Anak Putus Sekolah ' . $this->sebutan_wilayah. ' ' .$this->nama_wilayah;
+        $page_title       = 'Siswa Putus Sekolah';
+        $page_description = 'Daftar Siswa Putus Sekolah';
+
         return view('data.putus_sekolah.index', compact('page_title', 'page_description'));
     }
 
@@ -42,16 +57,13 @@ class PutusSekolahController extends Controller
     public function getDataPutusSekolah()
     {
         return DataTables::of(PutusSekolah::with(['desa']))
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('data.putus-sekolah.edit', $row->id);
-                $delete_url = route('data.putus-sekolah.destroy', $row->id);
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url']   = route('data.putus-sekolah.edit', $row->id);
+                $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
 
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
-
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
-            ->rawColumns(['actions'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     /**
@@ -61,10 +73,11 @@ class PutusSekolahController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Anak Putus Sekolah';
+        $page_title       = 'Siswa Putus Sekolah';
+        $page_description = 'Import Siswa Putus Sekolah ';
         $years_list       = years_list();
         $months_list      = months_list();
+
         return view('data.putus_sekolah.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
 
@@ -83,7 +96,7 @@ class PutusSekolahController extends Controller
         ]);
 
         try {
-            (new ImporPutusSekolah($request->all()))
+            (new ImporPutusSekolah($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
@@ -100,9 +113,10 @@ class PutusSekolahController extends Controller
      */
     public function edit($id)
     {
-        $siswa            = PutusSekolah::findOrFail($id);
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Data Anak Putus Sekolah';
+        $siswa            = PutusSekolah::with(['desa'])->findOrFail($id);
+        $page_title       = 'Siswa Putus Sekolah';
+        $page_description = 'Ubah Siswa Putus Sekolah : Desa ' . $siswa->desa->nama;
+
         return view('data.putus_sekolah.edit', compact('page_title', 'page_description', 'siswa'));
     }
 
@@ -114,26 +128,26 @@ class PutusSekolahController extends Controller
      */
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'siswa_paud'     => 'required',
+            'anak_usia_paud' => 'required',
+            'siswa_sd'       => 'required',
+            'anak_usia_sd'   => 'required',
+            'siswa_smp'      => 'required',
+            'anak_usia_smp'  => 'required',
+            'siswa_sma'      => 'required',
+            'anak_usia_sma'  => 'required',
+            'semester'       => 'required',
+            'tahun'          => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'siswa_paud'     => 'required',
-                'anak_usia_paud' => 'required',
-                'siswa_sd'       => 'required',
-                'anak_usia_sd'   => 'required',
-                'siswa_smp'      => 'required',
-                'anak_usia_smp'  => 'required',
-                'siswa_sma'      => 'required',
-                'anak_usia_sma'  => 'required',
-                'bulan'          => 'required',
-                'tahun'          => 'required',
-            ]);
-
-            PutusSekolah::find($id)->update($request->all());
-
-            return redirect()->route('data.putus-sekolah.index')->with('success', 'Data berhasil disimpan!');
+            PutusSekolah::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+            return back()->withInput()->with('error', 'Data gagal diubah!');
         }
+
+        return redirect()->route('data.putus-sekolah.index')->with('success', 'Data berhasil diubah!');
     }
 
     /**
@@ -146,10 +160,10 @@ class PutusSekolahController extends Controller
     {
         try {
             PutusSekolah::findOrFail($id)->delete();
-
-            return redirect()->route('data.putus-sekolah.index')->with('success', 'Data sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('data.putus-sekolah.index')->with('error', 'Data gagal dihapus!');
         }
+
+        return redirect()->route('data.putus-sekolah.index')->with('success', 'Data sukses dihapus!');
     }
 }

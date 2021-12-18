@@ -1,19 +1,42 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
-use function back;
-use function compact;
-use function redirect;
-use function request;
-use function view;
+use Illuminate\Http\Response;
 
 class EventController extends Controller
 {
@@ -24,10 +47,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.event.index');
-
         $page_title       = 'Event';
-        $page_description = 'Kumpulan Event ' .$this->sebutan_wilayah;
+        $page_description = 'Daftar Event';
         $events           = Event::getOpenEvents();
 
         return view('informasi.event.index', compact('page_title', 'page_description', 'events'));
@@ -40,8 +61,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Tambah';
-        $page_description = 'Tambah event baru';
+        $page_title       = 'Event';
+        $page_description = 'Tambah Data';
 
         return view('informasi.event.create', compact('page_title', 'page_description'));
     }
@@ -53,30 +74,22 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        request()->validate([
+            'event_name' => 'required',
+            'start'      => 'required',
+            'end'        => 'required',
+            'attendants' => 'required',
+        ]);
+
         try {
             $event = new Event($request->input());
-            request()->validate([
-                'event_name' => 'required',
-                'start'      => 'required',
-                'end'        => 'required',
-                'attendants' => 'required',
-            ]);
             $event->status = 'OPEN';
             $event->save();
-            return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
+        return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
     }
 
     /**
@@ -87,9 +100,9 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        $page_title       = 'Ubah';
-        $page_description = 'Edit Event';
-        $event            = Event::find($id);
+        $page_title       = 'Event';
+        $page_description = 'Ubah Data';
+        $event            = Event::FindOrFail($id);
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }
@@ -102,15 +115,15 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        try {
-            request()->validate([
-                'event_name' => 'required',
-                'start'      => 'required',
-                'end'        => 'required',
-                'attendants' => 'required',
-                'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
-            ]);
+        request()->validate([
+            'event_name' => 'required',
+            'start'      => 'required',
+            'end'        => 'required',
+            'attendants' => 'required',
+            'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
+        ]);
 
+        try {
             $event = Event::findOrFail($id);
             $event->fill($request->all());
 
@@ -121,13 +134,12 @@ class EventController extends Controller
                 $request->file('attachment')->move($path, $fileName);
                 $event->attachment = $path . $fileName;
             }
-
             $event->save();
-
-            return redirect()->route('informasi.event.index')->with('success', 'Update Event sukses!');
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Update Event gagal!');
+            return back()->withInput()->with('error', 'Ubah Event gagal!');
         }
+
+        return redirect()->route('informasi.event.index')->with('success', 'Ubah Event sukses!');
     }
 
     /**
@@ -140,10 +152,10 @@ class EventController extends Controller
     {
         try {
             Event::findOrFail($id)->delete();
-
-            return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
+
+        return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
     }
 }

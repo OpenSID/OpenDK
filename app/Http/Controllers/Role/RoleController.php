@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Role;
 
 use App\Http\Controllers\Controller;
@@ -7,18 +36,9 @@ use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
 use App\Models\Role;
 use App\Models\RoleUser;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-
-use function back;
-use function compact;
-use function flash;
-use function redirect;
-use function route;
-use function trans;
-use function view;
 
 class RoleController extends Controller
 {
@@ -29,8 +49,27 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $page_title = 'Grup Pengguna';
-        return view('role.index', compact('page_title'));
+        $page_title       = 'Group Pengguna';
+        $page_description = 'Daftar Data';
+
+        return view('role.index', compact('page_title', 'page_description'));
+    }
+
+    /**
+     * Gets the data.
+     *
+     * @return     <type>  The data.
+     */
+    public function getData()
+    {
+        return DataTables::of(Role::datatables())
+        ->addColumn('aksi', function ($role) {
+            $data['edit_url']   = route('setting.role.edit', $role->id);
+            $data['delete_url'] = route('setting.role.destroy', $role->id);
+
+            return view('forms.aksi', $data);
+        })
+        ->make(true);
     }
 
     /**
@@ -41,7 +80,10 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Role::getListPermission();
-        return view('role.create', compact('permissions'));
+        $page_title       = 'Group Pengguna';
+        $page_description = 'Tambah Group Pengguna';
+
+        return view('role.create', compact('page_title', 'page_description', 'permissions'));
     }
 
     /**
@@ -78,16 +120,6 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -95,10 +127,13 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role        = Role::find($id);
-        $permissions = Role::getListPermission();
-        $menu        = Menu::get();
-        return view('role.edit', compact('role', 'permissions', 'menu'));
+        $role             = Role::findOrFail($id);
+        $permissions      = Role::getListPermission();
+        $menu             = Menu::get();
+        $page_title       = 'Group Pengguna';
+        $page_description = 'Ubah Data';
+
+        return view('role.edit', compact('page_title', 'page_description', 'role', 'permissions', 'menu'));
     }
 
     /**
@@ -116,14 +151,14 @@ class RoleController extends Controller
                 }
 
                 $request['permissions'] = $temp;
-                Role::find($id)->update($request->all());
-                $role = Role::find($id);
+                Role::findOrFail($id)->update($request->all());
+                $role = Role::findOrFail($id);
                 flash()->success(trans('message.role.update-success', [
                     'attribute' => trans('island.role'),
                     'detail'    => '#' . $role->id . ' | ' . $role->slug,
                 ]));
             } else {
-                Role::find($id)->update(['name' => $request->name, 'permissions' => []]);
+                Role::findOrFail($id)->update(['name' => $request->name, 'permissions' => []]);
             }
             return redirect()->route('setting.role.index');
         } catch (Exception $e) {
@@ -163,25 +198,5 @@ class RoleController extends Controller
 
             return back();
         }
-    }
-
-    /**
-     * Gets the data.
-     *
-     * @return     <type>  The data.
-     */
-    public function getData()
-    {
-        return DataTables::of(Role::datatables())
-        ->addColumn('action', function ($role) {
-            $edit_url   = route('setting.role.edit', $role->id);
-            $delete_url = route('setting.role.destroy', $role->id);
-
-            $data['edit_url']   = $edit_url;
-            $data['delete_url'] = $delete_url;
-
-            return view('forms.action', $data);
-        })
-        ->make(true);
     }
 }

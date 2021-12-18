@@ -8,7 +8,7 @@
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#1a2035">
 
-    <title>{{ $page_title ?? '' }} | {{ config('app.name', 'Laravel') }} </title>
+    <title>{{ $page_title ?? config('app.name', 'Laravel') }} | {{ $browser_title }}</title>
     <meta name="description" content="{{ $page_description ?? '' }}.">
     <link rel="canonical" href="{{ Request::url() }}">
     <meta itemprop="name" content="{{ $page_title ?? '' }}">
@@ -21,7 +21,7 @@
     <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ Request::url() }}">
-    <meta property="og:site_name" content="{{ \URL::to('')}}">
+    <meta property="og:site_name" content="{{ \URL::to('') }}">
     <meta property="og:title" content="{{ $page_title ?? '' }}">
     <meta property="og:description" content="{{ $page_description ?? '' }}. ">
     <meta property="og:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
@@ -32,9 +32,7 @@
     <meta name="twitter:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
     <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }}">
 
-    <link rel="icon" type="image/icon" href="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{ asset('/favicon.png') }}@endif" />
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/icon/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/icon/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
     <link rel="mask-icon" href="{{ asset('/icon/safari-pinned-tab.svg') }}" color="#5bbad5">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}" />
     
@@ -68,13 +66,14 @@
         @include('layouts.frontends.topheader')
         @include('layouts.frontends.header')
         <div class="content-wrapper">
-                @include('layouts.frontends.slider')
+            @include('layouts.frontends.slider')
             <div class="container">
                 <!-- Main content -->
                 <section class="content">
-                        <div class="row">
-                        @include('layouts.frontends.breadcumb')
+                    <div class="row">
+
                         @yield('content')
+
                         @include('layouts.frontends.sidebar')
                     </div>
                 </section>
@@ -87,9 +86,9 @@
     </div>
     <!-- ./wrapper -->
     <div class="scroll-top-wrapper ">
-       <span class="scroll-top-inner">
-                <i class="fa fa-2x fa-arrow-circle-up"></i>
-            </span>
+        <span class="scroll-top-inner">
+            <i class="fa fa-2x fa-arrow-circle-up"></i>
+        </span>
     </div>
     <!-- ./wrapper -->
     <!-- REQUIRED JS SCRIPTS -->

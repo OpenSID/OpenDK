@@ -14,7 +14,7 @@
                     <div class="form-group">
                         <label for="{{ $sebutan_wilayah }}" class="col-sm-2 control-label">{{ $sebutan_wilayah }}</label>
                         <div class="col-sm-4">
-                            <input type="hidden" id="defaultProfil" value="{{ $defaultProfil }}">
+                            <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                             <select class="form-control" id="{{ $sebutan_wilayah }}" name="{{ $sebutan_wilayah }}" onchange=""></select>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                 <div class="col-md-8 col-sm-8">
                     <div class="box box-primary">
                         <div class="box-header with-border text-bold">
-                            <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> LETAK GEOGRAFIS {{ strtoupper($sebutan_wilayah) }} {{ strtoupper($profil->kecamatan->nama) }}</h3>
+                            <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> LETAK GEOGRAFIS {{ strtoupper($sebutan_wilayah) }} {{ strtoupper($profil->nama_kecamatan) }}</h3>
                         </div>
                         <div class="box-body">
                             <div  id="canvas_peta">
@@ -40,11 +40,17 @@
                     </div>
                     <!-- /.row -->
                     <div class="box-footer">
-                        <p style="text-align: justify">{{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} mempunyai <b> Luas {{ number_format($profil->dataumum->luas_wilayah) }} km </b> yang mencakup <b> {{ $profil->datadesa->count() }}  Desa/Kelurahan </b>, 
-                            Adapun <b> {{ terbilang($profil->datadesa->count()) }} Desa/kelurahan </b> tersebut yaitu @foreach($profil->datadesa as $desa) Desa {{ $desa->nama }}, @endforeach
-                            </p>
+                        <p style="text-align: justify">{{ ucwords(strtolower($sebutan_wilayah . ' ' . $profil->nama_kecamatan . ', Kabupaten ' . $profil->nama_kabupaten . ', Provinsi ' . $profil->nama_provinsi)) }} mempunyai <b> Luas {{ number_format($profil->dataumum->luas_wilayah_value) }} km<sup>2</sup></b> yang mencakup<b> {{ $profil->datadesa->count() }}  Desa/Kelurahan</b>.  Adapun <b> {{ terbilang($profil->datadesa->count()) }} Desa/Kelurahan </b> tersebut yaitu :
+                            <ul>
+                                @foreach($profil->datadesa as $desa)
+                                <li>Desa {{ $desa->nama }}</li>
+                                @endforeach
+                            </ul>
+                        </p>
 
-                        <h4 class="text-primary">Batas wilayah {{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->kecamatan->nama)) }} meliputi :</h4>
+                        <br/>
+
+                        <h4 class="text-primary">Batas wilayah {{ $sebutan_wilayah }} {{ ucwords(strtolower($profil->nama_kecamatan)) }} meliputi :</h4>
                         <table>
                             <tbody>
                             <tr>
@@ -92,12 +98,9 @@
 <script type="application/javascript" src="{{ asset('js/html2canvas.min.js') }}"></script>
 <script type="application/javascript">
     document.querySelector("#btn_peta").addEventListener("click", function() {
-
         html2canvas(document.iframe).then(function(canvas) {
             document.body.appendChild(canvas);
         });
-
     }, false);
-
 </script>
 @endpush

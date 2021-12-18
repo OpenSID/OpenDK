@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <p>Silahkan pilih status di bawah ini?</p>
-                {{ Form::select('status', ['BELUM'=>'Setujui', 'DITOLAK'=>'Ditolak'], null,['class'=>'form-control']) }}
+                {{ Form::select('status', ['BELUM' => 'Setujui', 'DITOLAK' => 'Ditolak'], null, ['class' => 'form-control']) }}
             </div>
             <div class="modal-footer">
                     <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
@@ -23,7 +23,7 @@
 
          $(document).on('click', '#agreeModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#agree').attr('action', url );
+            $('#agree').attr('aksi', url );
             $('#import').attr( 'method', 'post' );
             $('#agree-modal').modal('show');
             e.preventDefault();

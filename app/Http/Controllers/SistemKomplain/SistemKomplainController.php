@@ -1,26 +1,45 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\SistemKomplain;
 
 use App\Http\Controllers\Controller;
 use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use App\Models\Wilayah;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 
-use function back;
-use function compact;
-use function config;
-use function mt_rand;
-use function redirect;
-use function request;
-use function response;
-use function str_slug;
-use function view;
+use Illuminate\Support\Facades\Validator;
 
 class SistemKomplainController extends Controller
 {
@@ -33,6 +52,7 @@ class SistemKomplainController extends Controller
             ->where('status', '<>', 'DITOLAK')
             ->where('status', '<>', 'REVIEW')
             ->orderBy('created_at', 'desc')->paginate(10);
+
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
@@ -40,8 +60,8 @@ class SistemKomplainController extends Controller
     {
         $page_title       = 'SIKEMA';
         $page_description = 'Sistem Keluhan Masyarakat';
-
         $komplains = Komplain::where('kategori', '=', $slug)->orderBy('created_at', 'desc')->paginate(10);
+
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
@@ -49,8 +69,8 @@ class SistemKomplainController extends Controller
     {
         $page_title       = 'SIKEMA';
         $page_description = 'Sistem Keluhan Masyarakat';
-
         $komplains = Komplain::where('status', '=', 'Belum')->orderBy('created_at', 'desc')->paginate(10);
+
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
@@ -75,15 +95,15 @@ class SistemKomplainController extends Controller
     protected function generateID()
     {
         $id  = mt_rand(100000, 999999);
-        $kid = '';
+        $pid = '';
 
         if (! Komplain::where('komplain_id', '=', $id)->exists()) {
-            $kid = $id;
+            $pid = $id;
         } else {
             $this->generateID();
         }
 
-        return $kid;
+        return $pid;
     }
 
     public function store(Request $request)
@@ -151,10 +171,11 @@ class SistemKomplainController extends Controller
             }
 
             $komplain->save();
-            return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim. Tunggu Admin untuk di review terlebih dahulu!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim. Tunggu Admin untuk di review terlebih dahulu!');
     }
 
     /**
@@ -166,8 +187,9 @@ class SistemKomplainController extends Controller
     public function edit($id)
     {
         $komplain         = Komplain::where('komplain_id', '=', $id)->first();
-        $page_title       = 'Edit Komplain';
-        $page_description = 'Komplain ' . $komplain->komplain_id;
+        $page_title       = 'Komplain';
+        $page_description = 'Ubah Komplain : ' . $komplain->komplain_id;
+
         return view('sistem_komplain.komplain.edit', compact('page_title', 'page_description', 'komplain'));
     }
 
@@ -178,15 +200,14 @@ class SistemKomplainController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Save Request
-        try {
-            request()->validate([
-                'nik'      => 'required|numeric',
-                'judul'    => 'required',
-                'kategori' => 'required',
-                'laporan'  => 'required',
-            ], ['captcha.captcha' => 'Invalid captcha code.']);
+        request()->validate([
+            'nik'      => 'required|numeric',
+            'judul'    => 'required',
+            'kategori' => 'required',
+            'laporan'  => 'required',
+        ], ['captcha.captcha' => 'Invalid captcha code.']);
 
+        try {
             $komplain = Komplain::findOrFail($id);
             $komplain->fill($request->all());
             $komplain->nama = Penduduk::where('nik', $komplain->nik)->first()->nama;
@@ -225,10 +246,11 @@ class SistemKomplainController extends Controller
             }
 
             $komplain->save();
-            return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim!');
         } catch (Exception $e) {
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim!');
     }
 
     /**
@@ -241,11 +263,11 @@ class SistemKomplainController extends Controller
     {
         try {
             Komplain::findOrFail($id)->delete();
-
-            return redirect()->route('sistem-komplain.index')->with('success', 'Keluhan sukses dihapus!');
         } catch (Exception $e) {
             return redirect()->route('sistem-komplain.index')->with('error', 'Keluhan gagal dihapus!');
         }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Keluhan sukses dihapus!');
     }
 
     /**
@@ -261,9 +283,9 @@ class SistemKomplainController extends Controller
         } catch (Exception $ex) {
             return back()->withInput()->with('error', $ex);
         }
-        $camat            = Wilayah::where('kode', '=', config('app.default_profile'))->first();
-        $page_title       = 'Detail Laporan';
-        $page_description = $komplain->judul;
+        $camat            = Profil::first();
+        $page_title       = 'Laporan';
+        $page_description = 'Detail Laporan : ' . $komplain->judul;
 
         return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain', 'camat'));
     }
@@ -317,6 +339,7 @@ class SistemKomplainController extends Controller
     public function getJawabans(Request $request)
     {
         $jawabans = JawabKomplain::where('komplain_id', $request->input('id'))->orderBy('id', 'desc')->get();
+
         return view('sistem_komplain.komplain.jawabans', compact('jawabans'))->render();
     }
 }

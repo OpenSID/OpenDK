@@ -1,34 +1,46 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPenduduk;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
-use Doctrine\DBAL\Query\QueryException;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
-use Barryvdh\Debugbar\Facade as Debugbar;
-
 use ZipArchive;
-
-use function back;
-use function compact;
-use function config;
-use function convert_born_date_to_age;
-use function redirect;
-use function request;
-use function route;
-use function strtolower;
-use function substr;
-use function ucwords;
-use function view;
 
 class PendudukController extends Controller
 {
@@ -75,21 +87,17 @@ class PendudukController extends Controller
                 'ref_pekerjaan.nama as pekerjaan',
             ])
             ->when($desa, function ($query) use ($desa) {
-                return $desa === 'ALL'
+                return $desa === 'Semua'
                     ? $query
                     : $query->where('das_data_desa.desa_id', $desa);
             })
             ->where('status_dasar', 1);
 
         return DataTables::of($query)
-            ->addColumn('action', function ($row) {
-                $edit_url   = route('data.penduduk.edit', $row->id);
-                $delete_url = route('data.penduduk.destroy', $row->id);
+            ->addColumn('aksi', function ($row) {
+                $data['show_url']   = route('data.penduduk.show', $row->id);
 
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
-
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->addColumn('tanggal_lahir', function ($row) {
                 return convert_born_date_to_age($row->tanggal_lahir);
@@ -97,143 +105,18 @@ class PendudukController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create(Penduduk $penduduk)
-    {
-        $page_title       = 'Tambah';
-        $page_description = 'Tambah Data Penduduk';
-
-        return view('data.penduduk.create', compact('page_title', 'page_description'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        // Save Request
-        try {
-            $penduduk                = new Penduduk($request->all());
-            $penduduk->id_rtm        = 0;
-            $penduduk->rtm_level     = 0;
-            $penduduk->pendidikan_id = 0;
-            $penduduk->id_cluster    = 0;
-            $penduduk->status_dasar  = 1;
-            $penduduk->kecamatan_id  = config('app.default_profile');
-            $penduduk->provinsi_id   = substr($penduduk->kecamatan_id, 0, 2);
-            $penduduk->kabupaten_id  = substr($penduduk->kecamatan_id, 0, 5);
-
-            request()->validate([
-                'nama'                 => 'required',
-                'nik'                  => 'required',
-                'kk_level'             => 'required',
-                'sex'                  => 'required',
-                'tempat_lahir'         => 'required',
-                'tanggal_lahir'        => 'required',
-                'agama_id'             => 'required',
-                'pendidikan_kk_id'     => 'required',
-                'pendidikan_sedang_id' => 'required',
-                'pekerjaan_id'         => 'required',
-                'status_kawin'         => 'required',
-                'warga_negara_id'      => 'required',
-            ]);
-
-            if ($request->hasFile('foto')) {
-                $file     = $request->file('foto');
-                $fileName = $file->getClientOriginalName();
-                $request->file('foto')->move("storage/penduduk/foto/", $fileName);
-                $penduduk->foto = $fileName;
-            }
-
-            $penduduk->save();
-            return redirect()->route('data.penduduk.index')->with('success', 'Penduduk berhasil disimpan!');
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Penduduk gagal disimpan!');
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Show the specified resource.
      *
      * @param Penduduk $penduduk
      * @return Response
      */
-    public function edit($id)
+    public function show($id)
     {
-        $penduduk = Penduduk::findOrFail($id);
-        if ($penduduk->foto == '') {
-            $penduduk->file_struktur_organisasi = 'http://placehold.it/120x150';
-        }
-        $page_title       = 'Ubah';
-        $page_description = 'Ubah Penduduk: ' . ucwords(strtolower($penduduk->nama));
+        $penduduk         = Penduduk::findOrFail($id);
+        $page_title       = 'Detail Penduduk';
+        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
-        return view('data.penduduk.edit', compact('page_title', 'page_description', 'penduduk'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        // Save Request
-        try {
-            $penduduk = Penduduk::where('id', $id)->first();
-            $penduduk->fill($request->all());
-
-            request()->validate([
-                'nama'                 => 'required',
-                'nik'                  => 'required',
-                'kk_level'             => 'required',
-                'sex'                  => 'required',
-                'tempat_lahir'         => 'required',
-                'tanggal_lahir'        => 'required',
-                'agama_id'             => 'required',
-                'pendidikan_kk_id'     => 'required',
-                'pendidikan_sedang_id' => 'required',
-                'pekerjaan_id'         => 'required',
-                'status_kawin'         => 'required',
-                'warga_negara_id'      => 'required',
-                'foto'                 => 'image|mimes:png,bmp,gif,jpg,jpeg|max:1024',
-            ]);
-
-            if ($request->file('foto') == "") {
-                $penduduk->foto = $penduduk->foto;
-            } else {
-                $file     = $request->file('foto');
-                $fileName = $file->getClientOriginalName();
-                $request->file('foto')->move("storage/penduduk/foto/", $fileName);
-                $penduduk->foto = $fileName;
-            }
-
-            $penduduk->update();
-
-            return redirect()->route('data.penduduk.index')->with('success', 'Penduduk berhasil disimpan!');
-        } catch (QueryException $e) {
-            return back()->withInput()->with('error', 'Penduduk gagal disimpan!');
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        try {
-            Penduduk::findOrFail($id)->delete();
-
-            return redirect()->route('data.penduduk.index')->with('success', 'Penduduk sukses dihapus!');
-        } catch (\Illuminate\Database\QueryException $e) {
-            return redirect()->route('data.penduduk.index')->with('error', 'Penduduk gagal dihapus!');
-        }
+        return view('data.penduduk.show', compact('page_title', 'page_description', 'penduduk'));
     }
 
     /**
@@ -245,8 +128,8 @@ class PendudukController extends Controller
     {
         $page_title       = 'Impor';
         $page_description = 'Impor Data Penduduk';
+        $list_desa        = DataDesa::all();
 
-        $list_desa = DB::table('das_data_desa')->select('*')->where('kecamatan_id', '=', config('app.default_profile'))->get();
         return view('data.penduduk.import', compact('page_title', 'page_description', 'list_desa'));
     }
 
@@ -269,26 +152,23 @@ class PendudukController extends Controller
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
-            $extract = storage_path('app/public/penduduk/foto/');
+            $extract = storage_path('app/temp/penduduk/foto/');
 
             // Ekstrak file
-            $zip = new ZipArchive;
+            $zip = new ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
 
+            $fileExtracted = glob($extract.'*.xlsx');
+
             // Proses impor excell
-            (new ImporPenduduk($request->all()))
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+            (new ImporPenduduk())
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
-
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
     }
 }

@@ -2,16 +2,16 @@
 
 
 @section('content')
-        <!-- Content Header (Page header) -->
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('data.program-bantuan.index')}}">Program Bantuan</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.program-bantuan.index') }}">Program Bantuan</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -59,7 +59,7 @@
                 @if($program->sasaran == 1)
                     <thead>
                     <tr>
-                        <th style="max-width: 150px;" rowspan="2" valign="center">Aksi</th>
+                        <th style="max-width: 150px;" rowspan="2" valign="center">No</th>
                         <th rowspan="2">NIK</th>
                         <th rowspan="2">No. Kartu Peserta</th>
                         <th rowspan="2">Nama Peserta</th>
@@ -97,7 +97,7 @@
                 @if(count($peserta) > 0)
                     @foreach($peserta as $row)
                     <tr>
-                        <td>Aksi</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $row->peserta  }}</td>
                         <td>{!! $row->kartu_peserta !!}</td>
                         <td>{!! $row->penduduk->nama !!}</td>

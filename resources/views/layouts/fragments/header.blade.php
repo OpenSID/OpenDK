@@ -3,13 +3,13 @@
     <!-- Logo -->
     <a href="{{$app->make('url')->to('/')}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD"  width="42px"></span>
+        <span class="logo-mini"><img src="{{ is_logo($profil->file_logo) }}" alt="KD"  width="42px"></span>
         <!-- logo for regular state and mobile devices -->
         <div class="logo-lg" style="justify-content: flex-start; height: 100%; width:100%; display: flex;">
-            <div><img class="user-image" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" style="padding-right:5px; max-width:42px" alt="KD" width="42px"></div>
+            <div><img class="user-image" src="{{ is_logo($profil->file_logo) }}" style="padding-right:5px; max-width:42px" alt="KD" width="42px"></div>
             <div style="text-align: left; line-height: 20px; margin-bottom: auto; margin-top: auto;">
-                <div class="" style="font-size:11px;">{{ ucfirst($nama_wilayah_kab) }}</div>
-                <div class="" style="font-size: clamp(10px, 2vw, 10px); font-weight:600; ">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</div>
+                <div class="" style="font-size:11px;">{{ strtoupper('Pemerintah Kab. ' . $profil->nama_kabupaten) }}</div>
+                <div class="" style="font-size: clamp(10px, 2vw, 10px); font-weight:600; ">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</div>
             </div>
         </div>
     </a>
@@ -57,7 +57,7 @@
                         <img src="{{ asset("/bower_components/admin-lte/dist/img/user2-160x160.jpg") }}"
                              class="user-image" alt="User Image">
                         <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">{{ $user->first_name}}</span>
+                        <span class="hidden-xs">{{ $user->name}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- The user image in the menu -->
@@ -65,7 +65,7 @@
                             <img src="{{ asset("/bower_components/admin-lte/dist/img/user2-160x160.jpg") }}"
                                  class="img-circle" alt="User Image">
                             <p>
-                                {{ $user->first_name .' '.$user->last_name }}
+                                {{ $user->name }}
                                 <small>Member since {{ date('M, Y', strtotime($user->created_at)) }}</small>
                             </p>
                         </li>

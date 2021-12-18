@@ -37,17 +37,30 @@ function stickyFunction() {
 	} else {
 		navbar.classList.remove("sticky");
 	}
+
 	if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 30) {
+		let mql = window.matchMedia('(max-width: 1199px) and (min-width: 992px)'); // media query lebar 1024px
+		if (mql.matches) {
+			navbar.style.fontSize = "11px";
+			navbar.style.padding = "0px";
+			logo.style.width = "150px";
+			return;
+		}
 		navbar.style.fontSize = "12px";
 		navbar.style.padding = "0px";
 		// logo.style.width = "12px";
 	} else {
+<<<<<<< HEAD
 		navbar.style.fontSize = "17px";
 		// logo.style.width = "13px";
+=======
+		navbar.style.fontSize = "16px";
+		logo.style.width = "180px";
+>>>>>>> upstream/master
 	}
 }
 
-//drop down menu  
+//drop down menu
 $(".drop-down").hover(function () {
 	$('.dropdown-menu').addClass('display-on');
 });

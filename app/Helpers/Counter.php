@@ -1,7 +1,32 @@
 <?php
 
-/**
- * Time: 5:50 AM
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
  */
 
 namespace App\Helpers;
@@ -9,13 +34,13 @@ namespace App\Helpers;
 use App\Models\CounterPage;
 use App\Models\CounterVisitor;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
-
 use function config;
 use function env;
 use function hash;
+
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use function number_format;
 
 class Counter
@@ -33,29 +58,29 @@ class Counter
      * @var bool
      */
     private static $ignore_bots = true;
-/**
- * Check to determine if we will count hits
- * from visitors that send a DO NOT TRACK header.
- *
- * @var bool
- */
+    /**
+     * Check to determine if we will count hits
+     * from visitors that send a DO NOT TRACK header.
+     *
+     * @var bool
+     */
     private static $honor_do_not_track = false;
-/**
- * Singleton for the $page in question
- *
- * @var null|object
- */
+    /**
+     * Singleton for the $page in question
+     *
+     * @var null|object
+     */
     private static $current_page;
-/**
- * Show view count for the requested page.
- *
- * Use this when you just want to show the current view count
- * for the page in question. Does not add counts.
- *
- * @param string $identifier A unique string to the page you are tracking
- * @param null|integer $id A unique identifier for dynamic page tracking
- * @return string Unique view count for requested resource
- */
+    /**
+     * Show view count for the requested page.
+     *
+     * Use this when you just want to show the current view count
+     * for the page in question. Does not add counts.
+     *
+     * @param string $identifier A unique string to the page you are tracking
+     * @param null|integer $id A unique identifier for dynamic page tracking
+     * @return string Unique view count for requested resource
+     */
     public function show($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);

@@ -1,18 +1,42 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package	    OpenDK
+ * @author	    Tim Pengembang OpenDesa
+ * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link	    https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
-use function back;
-use function flash;
-use function redirect;
-use function trans;
-use function view;
+use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
@@ -36,14 +60,11 @@ class AuthController extends Controller
         try {
             $remember = (bool) $request->input('remember_me');
             if (! Sentinel::authenticate($request->all(), $remember)) {
-                flash()->error('Wrong email or password!');
-                return redirect()->back()->withInput();
+                return back()->withInput()->with('error', 'Email atau Password Salah!');
             }
-            flash()->success('Login success! Welcome to Bali Tower admin page!');
-            return redirect()->route('dashboard.profil');
+            return redirect()->route('dashboard');
         } catch (Exception $e) {
-            flash()->error('Error login!' . $e);
-            return redirect()->back()->withInput();
+            return back()->withInput()->with('error', 'Gagal Masuk!' . $e);
         }
     }
 

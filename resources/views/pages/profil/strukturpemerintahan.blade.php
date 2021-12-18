@@ -5,12 +5,12 @@
     <div class="box box-warning">
         <div class="box-header with-border">
             <div class="box-header with-border text-bold">
-                <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> STRUKTUR PEMERINTAHAN  {{ strtoupper($sebutan_wilayah) }} {{ strtoupper($profil->kecamatan->nama) }}</h3>
+                <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> STRUKTUR PEMERINTAHAN  {{ strtoupper($sebutan_wilayah) }} {{ strtoupper($profil->nama_kecamatan) }}</h3>
             </div>
         </div>
         <div class="box-body">
             <!-- The Modal -->
-            <img id="myImg"  style="width:97%;" src="@if(! $profil->file_struktur_organisasi =='') {{ asset($profil->file_struktur_organisasi) }} @else {{ 'http://placehold.it/700x400' }} @endif">
+            <img id="myImg"  style="width:97%;" src="{{ is_img($profil->file_struktur_organisasi) }}">
             <!-- The Modal -->
             <div class="col-md-5 col-xs-8">
                 <label for="">Nama Camat</label> 

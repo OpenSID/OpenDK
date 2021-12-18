@@ -2,10 +2,10 @@
     <nav class="navbar  navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-            <a href="{{ route('beranda')}}"  class="navbar-brand">
-              <img class="logo-kab" src="@if(isset($profil_wilayah->file_logo)) {{  asset($profil_wilayah->file_logo) }} @else {{   asset('img/logo.png')}}@endif" alt="KD" >
-              <small class="text-kab">PEMERINTAH {{ ucwords($nama_wilayah_kab) }}</small>
-              <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$nama_wilayah) }}</small>
+            <a href="{{ route('beranda') }}"  class="navbar-brand">
+              <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="KD" id="logo-brand" >
+              <small class="text-kab">{{ strtoupper('PEMERINTAH KAB. ' . $profil->nama_kabupaten) }}</small>
+              <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</small>
             </a>
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
             <i class="fa fa-bars"></i>
@@ -20,20 +20,20 @@
               <ul class="dropdown-menu megamenu row fadeIn animated">
                 <li class="col-md-4 col-sm-2">
                   <ul class="mega-list">
-                    <li class="@if(Request::is('profil/sejarah-*')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah', ['wilayah' => (strtolower($nama_wilayah))] ) }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Sejarah</a></li>
+                    <li class="@if(Request::is('profil/sejarah')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Sejarah</a></li>
                     <li class="@if(Request::is('profil/letak-geografis')) active @endif"><a href="{{ route('profil.letak-geografis') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Letak Geografis</a></li>
                     <li class="@if(Request::is('profil/struktur-pemerintahan')) active @endif"><a href="{{ route('profil.struktur-pemerintahan') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Struktur Pemerintahan</a></li>
                     <li class="@if(Request::is('profil/visi-dan-misi')) active @endif"><a href="{{ route('profil.visi-misi') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Visi & Misi</a></li>
                   </ul>
                 </li>
                 <li class="col-md-4 col-sm-4">
-                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }}</h4> 
-                  <small class="" style="text-align:justify;">{{ strip_tags($profil_wilayah->sambutan) }} </small>
+                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }}</h4>
+                  <small class="" style="text-align:justify;">{{ strip_tags($profil->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
-                  <img src="@if(isset($profil_wilayah->foto_kepala_wilayah)) {{ asset($profil_wilayah->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
-                  <h6 class="text-bold no-padding">{{ $profil_wilayah->nama_camat }}</h6>
-                  <h6>{{ $sebutan_kepala_wilayah }} {{ $nama_wilayah }} </h6>
+                  <img src="@if(isset($profil->foto_kepala_wilayah)) {{ asset($profil->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
+                  <h6 class="text-bold no-padding">{{ $profil->nama_camat }}</h6>
+                  <h6>{{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }} </h6>
                 </li>
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>
@@ -51,7 +51,7 @@
             <li class="dropdown @if(Request::is('potensi/*'))active @endif" >
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">POTENSI <span class="caret"></span></a>
               <ul class="dropdown-menu fadeIn animated" role="menu">
-                @foreach ($navpotensi as $d)  
+                @foreach ($navpotensi as $d)
                 <li><a href="{{ route('potensi.kategori', ['slug'=>$d->slug]) }}">{{ ucfirst($d->nama_kategori) }}</a></li>
                 @endforeach
                 </ul>
@@ -78,22 +78,13 @@
           @if (Sentinel::guest())
             <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
           @else
+          <li><a href="{{ route('dashboard')}}">ADMIN</a></li>
           <li><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}
-          </form>  
+          </form>
           @endif
         </ul>
-      </div>
-        <div class="navbar-custom-menu">
-          <ul class="nav navbar-nav">
-            <li class="notifications-menu">
-              <a href='#search' tooltip="t">
-                <em class="fa fa-search"></em>
-              </a>
-            </li>
-          </ul>
-        </div>
       </div>
     </nav>
   </header>

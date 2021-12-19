@@ -29,8 +29,8 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-use App\Models\Penduduk;
 use App\Models\DataDesa;
+use App\Models\Penduduk;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 

@@ -45,7 +45,6 @@ Route::get('/', function () {
 Route::get('berita', function () {
     return redirect('/');
 });
-
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
@@ -159,7 +158,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
 
-            Route::get('file-logs', ['as' => 'setting.file-logs', 'uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index']);
+            Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index']);
         });
 
         /**

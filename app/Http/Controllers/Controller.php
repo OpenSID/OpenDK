@@ -36,12 +36,11 @@ use App\Models\Event;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\TipePotensi;
+use View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-
-use View;
 
 class Controller extends BaseController
 {

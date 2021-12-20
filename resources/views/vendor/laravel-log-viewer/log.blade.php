@@ -1,5 +1,3 @@
-@extends('layouts.dashboard_template')
-@section('browser_title','File Log')
 @push('css')
 <style>
 
@@ -48,18 +46,6 @@
 
     </style>
 @endpush
-@section('content')
-<section class="content-header">
-    <h3>
-        File Logs
-        <small>Daftar File Logs</small>
-    </h3>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">File Logs</li>
-    </ol>
-</section>
-<div class="content container-fluid">
     <div class="row">
         <div class="col-md-3 table-container">
             <div class="box box-info">
@@ -155,8 +141,6 @@
                 @endif
                 </div>
             </div>
-        </div>
-@endsection
 @include('partials.asset_datatables')
  @push('scripts')
  <script type="text/javascript">

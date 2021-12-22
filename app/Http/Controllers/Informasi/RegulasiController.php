@@ -33,7 +33,6 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Regulasi;
-use Exception;
 use Illuminate\Http\Request;
 
 use Illuminate\Http\Response;
@@ -95,7 +94,7 @@ class RegulasiController extends Controller
             }
 
             $regulasi->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
@@ -162,7 +161,7 @@ class RegulasiController extends Controller
             }
 
             $regulasi->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
@@ -179,10 +178,22 @@ class RegulasiController extends Controller
     {
         try {
             Regulasi::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
 
         return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
+    }
+
+    /**
+     * Download the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function download($id)
+    {
+        $getFile = Regulasi::findOrFail($id);
+        return response()->download($getFile->file_regulasi);
     }
 }

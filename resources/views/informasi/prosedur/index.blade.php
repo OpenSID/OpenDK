@@ -22,7 +22,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.prosedur.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp; Tambah</a>
+                    <a href="{{ route('informasi.prosedur.create') }}" class="btn btn-success btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp; Tambah</a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -58,7 +58,7 @@
             serverSide: false,
             ajax: "{!! route( 'informasi.prosedur.getdata' ) !!}",
             columns: [
-                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center text-nowrap', searchable: false, orderable: false},
                 {data: 'judul_prosedur', name: 'judul_prosedur'},
             ],
             order: [[1, 'asc']]

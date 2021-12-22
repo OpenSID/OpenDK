@@ -20,10 +20,15 @@
     @stack('css')
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset("/bower_components/admin-lte/dist/css/AdminLTE.min.css") }}">
-    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-          page. However, you can choose any other skin. Make sure you
-          apply the skin class to the body tag so the changes take effect. -->
+    <!--
+        AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect.
+    -->
     <link rel="stylesheet" href="{{ asset("/bower_components/admin-lte/dist/css/skins/skin-blue.min.css") }}">
+
+    <!-- Admin style -->
+    <link rel="stylesheet" href="{{ asset("/css/admin-style.css") }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -33,29 +38,7 @@
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <style type="text/css">
-        .scrollToTop{
-
-            padding:9px 12px;
-            text-align:center;
-            background: whiteSmoke;
-            font-weight: bold;
-            font-size: 12px;
-            color: #ffffff;
-            text-decoration: none;
-            position:fixed;
-            bottom:50px;
-            right:0px;
-            display:none;
-            background: #3F3F3F;
-        }
-        .scrollToTop:hover{
-            text-decoration:none;
-            color: #8996A8;;
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <!--
 BODY TAG OPTIONS:

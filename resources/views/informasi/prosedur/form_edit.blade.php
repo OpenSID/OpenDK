@@ -15,13 +15,13 @@
         @endif
 
         @if(isset($prosedur->file_prosedur) && $prosedur->mime_type == 'pdf')
-            <object data="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur) }} @endif" type="application/pdf" width="500" height="400" class="" id="showpdf"> </object>
+            <object data="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
         @endif
 
         
         <img class="hide" src="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
 
-        <object data="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur) }} @endif" type="application/pdf" width="500" height="400" class="hide" id="showpdf"> </object>
+        <object data="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur) }} @endif" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
 
     </div>
 </div>

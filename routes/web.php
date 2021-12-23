@@ -325,9 +325,9 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
                     Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArtikelController@create']);
                     Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArtikelController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.artikel.edit', 'uses' => 'ArtikelController@edit']);
-                    Route::post('update/{id}', ['as' => 'informasi.artikel.update', 'uses' => 'ArtikelController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArtikelController@destroy']);
+                    Route::get('edit/{artikel}', ['as' => 'informasi.artikel.edit', 'uses' => 'ArtikelController@edit']);
+                    Route::post('update/{artikel}', ['as' => 'informasi.artikel.update', 'uses' => 'ArtikelController@update']);
+                    Route::delete('destroy/{artikel}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArtikelController@destroy']);
                     Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArtikelController@getDataArtikel']);
                 });
 

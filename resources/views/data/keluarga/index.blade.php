@@ -22,11 +22,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <a href="{{ route('data.keluarga.import') }}">
-                            <button type="button" class="btn btn-warning btn-sm" title="Upload Data"><i class="fa fa-upload"></i> Import</button>
-                        </a>
-                    </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
@@ -34,10 +29,12 @@
                                     <thead>
                                     <tr>
                                         <th style="max-width: 100px;">Aksi</th>
+                                        <th>Foto</th>
                                         <th>No. KK</th>
                                         <th>Nama Kepala</th>
                                         <th>Tanggal Daftar</th>
                                         <th>Tanggal Cetak KK</th>
+                                        <th>Desa</th>
                                         <th>Alamat</th>
                                         <th>RW</th>
                                         <th>RT</th>
@@ -66,10 +63,12 @@
             ajax: "{!! route( 'data.keluarga.getdata' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},
                 {data: 'no_kk', name: 'no_kk'},
-                {data: 'nik_kepala', name: 'nik_kepala'},
+                {data: 'kepala_kk.nama', name: 'kepala_kk.nama'},
                 {data: 'tgl_daftar', name: 'tgl_daftar'},
                 {data: 'tgl_cetak_kk', name: 'tgl_cetak_kk'},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'alamat', name: 'alamat'},
                 {data: 'rw', name: 'rw'},
                 {data: 'rt', name: 'rt'},

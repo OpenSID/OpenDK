@@ -36,7 +36,6 @@ use Illuminate\Database\Eloquent\Model;
 class Keluarga extends Model
 {
     protected $table   = 'das_keluarga';
-    public $timestamps = false;
 
     protected $fillable = [
         'nik_kepala',
@@ -56,6 +55,11 @@ class Keluarga extends Model
 
     public function kepala_kk()
     {
-        return $this->hasOne(Penduduk::class, 'nik_kepala', 'nik');
+        return $this->hasOne(Penduduk::class, 'nik', 'nik_kepala');
+    }
+
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
 }

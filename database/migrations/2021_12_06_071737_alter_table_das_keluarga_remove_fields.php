@@ -29,43 +29,40 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace Database\Seeds\Demo;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Imports\ImporPenduduk;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use ZipArchive;
-
-class DemoPendudukSeeder extends Seeder
+class AlterTableDasKeluargaRemoveFields extends Migration
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
-        try {
-            DB::table('das_penduduk')->truncate();
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            $table->dropColumn('provinsi_id');
+            $table->dropColumn('kabupaten_id');
+            $table->dropColumn('kecamatan_id');
+            $table->integer('profil_id')->after('id')->nullable()->default(1);
+            $table->timestamps();
+        });
+    }
 
-            $name = 'penduduk_22_12_2020_opendk.zip';
-
-            // Temporary path file
-            $path = storage_path("app/public/template_upload/{$name}");
-            $extract = storage_path('app/temp/penduduk/foto/');
-
-            // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($extract);
-            $zip->close();
-
-            // Proses impor excell
-            (new ImporPenduduk())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
-        }
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            $table->char('provinsi_id', 2);
+            $table->char('kabupaten_id', 5);
+            $table->char('kecamatan_id', 8);
+            $table->dropColumn('profil_id');
+        });
     }
 }

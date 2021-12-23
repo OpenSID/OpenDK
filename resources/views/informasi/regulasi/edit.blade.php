@@ -47,10 +47,8 @@
                     <div class="box-footer">
                         <div class="pull-right">
                             <div class="control-group">
-                                <a href="{{ route('informasi.regulasi.index') }}">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
-                                </a>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
+                                <button type="reset" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal</button>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Simpan</button>
                             </div>
                         </div>
                     </div>

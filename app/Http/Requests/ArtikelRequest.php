@@ -33,7 +33,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArtikelStoreRequest extends FormRequest
+class ArtikelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -54,7 +54,6 @@ class ArtikelStoreRequest extends FormRequest
     {
         return [
             'judul'     => 'required',
-            'gambar'    => 'required',
             'isi'       => 'required',
             'status'    => 'required',
         ];

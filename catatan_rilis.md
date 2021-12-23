@@ -11,6 +11,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 1. Perbaikan filter berita desa.
 2. [#247](https://github.com/OpenSID/OpenDK/issues/247) Perbaikan unduh dokumen tidak langsung dari file.
 3. [#248](https://github.com/OpenSID/OpenDK/issues/248) Perbaikan meta image pada artikel.
+4. [#230](https://github.com/OpenSID/OpenDK/issues/230) Perbaikan seeder import Penduduk dan Keluarga.
 
 #### Perubahan Teknis
 

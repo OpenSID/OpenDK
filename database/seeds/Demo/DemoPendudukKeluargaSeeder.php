@@ -31,13 +31,13 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporPenduduk;
+use App\Imports\ImporPendudukKeluarga;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use ZipArchive;
 
-class DemoPendudukSeeder extends Seeder
+class DemoPendudukKeluargaSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -48,6 +48,7 @@ class DemoPendudukSeeder extends Seeder
     {
         try {
             DB::table('das_penduduk')->truncate();
+            DB::table('das_keluarga')->truncate();
 
             $name = 'penduduk_22_12_2020_opendk.zip';
 
@@ -62,9 +63,9 @@ class DemoPendudukSeeder extends Seeder
             $zip->close();
 
             // Proses impor excell
-            (new ImporPenduduk())
+            (new ImporPendudukKeluarga())
                 ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
     }

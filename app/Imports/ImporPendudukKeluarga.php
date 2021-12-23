@@ -31,6 +31,7 @@
 
 namespace App\Imports;
 
+use App\Models\Keluarga;
 use App\Models\Penduduk;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
@@ -40,7 +41,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -58,7 +59,31 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
     public function collection(Collection $collection)
     {
         foreach ($collection as $value) {
-            $insert = [
+
+            // Data Keluarga
+            if ($value['hubungan_keluarga'] == 1) {
+                $keluarga = [
+                    'no_kk'                 => $value['nomor_kk'],
+                    'nik_kepala'            => $value['nomor_nik'],
+                    'tgl_daftar'            => $value['tgl_daftar'] ?? now(),
+                    'tgl_cetak_kk'          => $value['tgl_cetak_kk'] ?? now(),
+                    'alamat'                => $value['alamat'],
+                    'dusun'                 => $value['dusun'],
+                    'rw'                    => $value['rw'],
+                    'rt'                    => $value['rt'],
+                    'desa_id'               => $value['desa_id'],
+                    'created_at'            => now(),
+                    'updated_at'            => now(),
+                ];
+
+                Keluarga::updateOrInsert([
+                    'desa_id'      => $keluarga['desa_id'],
+                    'no_kk'        => $keluarga['no_kk']
+                ], $keluarga);
+            }
+
+            // Data Penduduk
+            $penduduk = [
                 'nik'                   => $value['nomor_nik'],
                 'nama'                  => $value['nama'],
                 'no_kk'                 => $value['nomor_kk'],
@@ -97,7 +122,6 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'rw'              => $value['rw'],
                 'rt'              => $value['rt'],
                 'desa_id'         => $value['desa_id'],
-                'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],
                 'created_at'      => $value['created_at'],
@@ -105,9 +129,9 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'imported_at'     => now(),
             ];
             Penduduk::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'id_pend_desa' => $insert['id_pend_desa']
-            ], $insert);
+                'desa_id'      => $penduduk['desa_id'],
+                'nik'          => $penduduk['nik'],
+            ], $penduduk);
 
             if ($value['foto']) {
                 $temp_foto = 'temp/penduduk/foto/' . $value['foto'];

@@ -29,37 +29,40 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Keluarga extends Model
+class AlterTableDasKeluargaRemoveFields extends Migration
 {
-    protected $table   = 'das_keluarga';
-
-    protected $fillable = [
-        'nik_kepala',
-        'no_kk',
-        'tgl_daftar',
-        'tgl_cetak_kk',
-        'alamat',
-        'dusun',
-        'rw',
-        'rt',
-    ];
-
-    public function cluster()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        return $this->hasOne(WilClusterDesa::class, 'id', 'id_cluster');
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            $table->dropColumn('provinsi_id');
+            $table->dropColumn('kabupaten_id');
+            $table->dropColumn('kecamatan_id');
+            $table->integer('profil_id')->after('id')->nullable()->default(1);
+            $table->timestamps();
+        });
     }
 
-    public function kepala_kk()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        return $this->hasOne(Penduduk::class, 'nik', 'nik_kepala');
-    }
-
-    public function desa()
-    {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            $table->char('provinsi_id', 2);
+            $table->char('kabupaten_id', 5);
+            $table->char('kecamatan_id', 8);
+            $table->dropColumn('profil_id');
+        });
     }
 }

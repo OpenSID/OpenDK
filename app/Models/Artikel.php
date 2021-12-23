@@ -64,7 +64,7 @@ class Artikel extends Model
 
     public function getGambarAttribute()
     {
-        return Storage::url('artikel/' . $this->attributes['gambar']);
+        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
     }
 
     public function scopeStatus($query, $value = 1)

@@ -32,8 +32,7 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArtikelStoreRequest;
-use App\Http\Requests\ArtikelUpdateRequest;
+use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
@@ -96,7 +95,7 @@ class ArtikelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ArtikelStoreRequest $request)
+    public function store(ArtikelRequest $request)
     {
         try {
             $input = $request->all();
@@ -135,7 +134,7 @@ class ArtikelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ArtikelUpdateRequest $request, $id)
+    public function update(ArtikelRequest $request, $id)
     {
         try {
             $artikel = Artikel::findOrFail($id);

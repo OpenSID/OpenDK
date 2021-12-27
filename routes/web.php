@@ -311,12 +311,12 @@ Route::group(['middleware' => 'installed'], function () {
                 //Routes for Events resources
                 Route::group(['prefix' => 'event'], function () {
                     Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
+                    Route::get('show/{event}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
                     Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
                     Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
-                    Route::post('update/{id}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
+                    Route::post('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
+                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
                 });
 
                 //Routes for artikel resources

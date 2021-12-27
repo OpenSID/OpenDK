@@ -288,13 +288,13 @@ Route::group(['middleware' => 'installed'], function () {
                 //Routes for Regulasi resources
                 Route::group(['prefix' => 'regulasi'], function () {
                     Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
-                    Route::get('show/{id}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
+                    Route::get('show/{regulasi}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
                     Route::get('create', ['as' => 'informasi.regulasi.create', 'uses' => 'RegulasiController@create']);
                     Route::post('store', ['as' => 'informasi.regulasi.store', 'uses' => 'RegulasiController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.regulasi.update', 'uses' => 'RegulasiController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.regulasi.destroy', 'uses' => 'RegulasiController@destroy']);
-                    Route::get('download/{id}', ['as' => 'informasi.regulasi.download', 'uses' => 'RegulasiController@download']);
+                    Route::get('edit/{regulasi}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
+                    Route::put('update/{regulasi}', ['as' => 'informasi.regulasi.update', 'uses' => 'RegulasiController@update']);
+                    Route::delete('destroy/{regulasi}', ['as' => 'informasi.regulasi.destroy', 'uses' => 'RegulasiController@destroy']);
+                    Route::get('download/{regulasi}', ['as' => 'informasi.regulasi.download', 'uses' => 'RegulasiController@download']);
                 });
 
                 //Routes for FAQ resources

@@ -136,10 +136,10 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
                 Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
                 Route::post('store', ['as' => 'setting.slide.store', 'uses' => 'Setting\SlideController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.slide.edit', 'uses' => 'Setting\SlideController@edit']);
-                Route::get('show/{id}', ['as' => 'setting.slide.show', 'uses' => 'Setting\SlideController@show']);
-                Route::put('update/{id}', ['as' => 'setting.slide.update', 'uses' => 'Setting\SlideController@update']);
-                Route::delete('destroy/{id}', ['as' => 'setting.slide.destroy', 'uses' => 'Setting\SlideController@destroy']);
+                Route::get('edit/{slide}', ['as' => 'setting.slide.edit', 'uses' => 'Setting\SlideController@edit']);
+                Route::get('show/{slide}', ['as' => 'setting.slide.show', 'uses' => 'Setting\SlideController@show']);
+                Route::put('update/{slide}', ['as' => 'setting.slide.update', 'uses' => 'Setting\SlideController@update']);
+                Route::delete('destroy/{slide}', ['as' => 'setting.slide.destroy', 'uses' => 'Setting\SlideController@destroy']);
             });
 
             // COA

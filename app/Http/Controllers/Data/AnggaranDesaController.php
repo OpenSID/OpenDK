@@ -32,22 +32,15 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AnggaranDesaRequest;
 use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
-use App\Models\DataDesa;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
+use App\Models\DataDesa;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnggaranDesaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         $page_title       = 'APBDes';
@@ -56,16 +49,10 @@ class AnggaranDesaController extends Controller
         return view('data.anggaran_desa.index', compact('page_title', 'page_description'));
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function getDataAnggaran()
     {
         return DataTables::of(AnggaranDesa::with('desa'))
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.anggaran-desa.edit', $row->id);
                 $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -78,11 +65,6 @@ class AnggaranDesaController extends Controller
             ->rawColumns(['aksi'])->make();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function import()
     {
         $page_title       = 'APBDes';
@@ -94,81 +76,23 @@ class AnggaranDesaController extends Controller
         return view('data.anggaran_desa.import', compact('page_title', 'page_description', 'years_list', 'months_list', 'list_desa'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function do_import(Request $request)
+    public function do_import(AnggaranDesaRequest $request)
     {
-        $this->validate($request, [
-            'desa'  => 'required|unique:das_anggaran_desa,desa_id',
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_anggaran_desa',
-            'tahun' => 'required|unique:das_anggaran_desa',
-        ]);
-
         try {
             (new ImporAPBDesa($request->only(['bulan', 'tahun', 'desa'])))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $anggaran         = AnggaranDesa::findOrFail($id);
-        $page_title       = 'APBDes';
-        $page_description = 'Ubah APBDes : ' . $anggaran->id;
-
-        return view('data.anggaran_desa.edit', compact('page_title', 'page_description', 'anggaran'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        request()->validate([
-            'bulan'     => 'required',
-            'tahun'     => 'required',
-            'no_akun'   => 'required',
-            'nama_akun' => 'required',
-            'jumlah'    => 'required|numeric',
-        ]);
-
-        try {
-            AnggaranDesa::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
-        }
-
-        return redirect()->route('data.anggaran-desa.index')->with('success', 'Data berhasil disimpan!');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
     public function destroy($id)
     {
         try {
             AnggaranDesa::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus!');
         }
 

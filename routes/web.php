@@ -543,8 +543,6 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'anggaran-desa'], function () {
                     Route::get('getdata', ['as' => 'data.anggaran-desa.getdata', 'uses' => 'AnggaranDesaController@getDataAnggaran']);
                     Route::get('/', ['as' => 'data.anggaran-desa.index', 'uses' => 'AnggaranDesaController@index']);
-                    Route::get('edit/{id}', ['as' => 'data.anggaran-desa.edit', 'uses' => 'AnggaranDesaController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.anggaran-desa.update', 'uses' => 'AnggaranDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-desa.destroy', 'uses' => 'AnggaranDesaController@destroy']);
                     Route::get('import', ['as' => 'data.anggaran-desa.import', 'uses' => 'AnggaranDesaController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-desa.do_import', 'uses' => 'AnggaranDesaController@do_import']);

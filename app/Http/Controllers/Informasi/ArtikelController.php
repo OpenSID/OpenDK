@@ -35,18 +35,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class ArtikelController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view('informasi.artikel.index');
@@ -79,22 +73,11 @@ class ArtikelController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('informasi.artikel.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(ArtikelRequest $request)
     {
         try {
@@ -107,39 +90,23 @@ class ArtikelController extends Controller
             }
 
             Artikel::create($input);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
 
         return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil disimpan!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Artikel $artikel)
     {
-        return view('informasi.artikel.edit', [
-            'artikel' => Artikel::findOrFail($id),
-        ]);
+        return view('informasi.artikel.edit', compact('artikel'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ArtikelRequest $request, $id)
+    public function update(ArtikelRequest $request, Artikel $artikel)
     {
         try {
-            $artikel = Artikel::findOrFail($id);
-
             $input = $request->all();
+
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
@@ -150,28 +117,20 @@ class ArtikelController extends Controller
             }
 
             $artikel->update($input);
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Ubah artikel gagal!');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Artikel gagal dihapus!');
         }
 
         return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil diubah!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Artikel $artikel)
     {
         try {
-            if ($artikel = Artikel::findOrFail($id)) {
+            if ($artikel->delete()) {
                 Storage::delete('public/artikel/' . $artikel->getOriginal('gambar'));
-
-                $artikel->delete();
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }
 

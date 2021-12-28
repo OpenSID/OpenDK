@@ -32,19 +32,11 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EventRequest;
 use App\Models\Event;
-use Exception;
-use Illuminate\Http\Request;
-
-use Illuminate\Http\Response;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         $page_title       = 'Event';
@@ -54,11 +46,6 @@ class EventController extends Controller
         return view('informasi.event.index', compact('page_title', 'page_description', 'events'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $page_title       = 'Event';
@@ -67,92 +54,56 @@ class EventController extends Controller
         return view('informasi.event.create', compact('page_title', 'page_description'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
-        request()->validate([
-            'event_name' => 'required',
-            'start'      => 'required',
-            'end'        => 'required',
-            'attendants' => 'required',
-        ]);
-
         try {
-            $event = new Event($request->input());
-            $event->status = 'OPEN';
-            $event->save();
-        } catch (Exception $e) {
+            $input = $request->input();
+            $event['status'] = 'OPEN';
+            Event::create($input);
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
 
         return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(Event $event)
     {
         $page_title       = 'Event';
         $page_description = 'Ubah Data';
-        $event            = Event::FindOrFail($id);
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function update(EventRequest $request, Event $event)
     {
-        request()->validate([
-            'event_name' => 'required',
-            'start'      => 'required',
-            'end'        => 'required',
-            'attendants' => 'required',
-            'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
-        ]);
-
         try {
-            $event = Event::findOrFail($id);
-            $event->fill($request->all());
+            $input = $request->all();
 
             if ($request->hasFile('attachment')) {
                 $lampiran = $request->file('attachment');
                 $fileName = $lampiran->getClientOriginalName();
                 $path     = "storage/event/" . $event->id . '/';
-                $request->file('attachment')->move($path, $fileName);
-                $event->attachment = $path . $fileName;
+                $lampiran->move($path, $fileName);
+                unlink(base_path('public/' . $event->file_dokumen));
+
+                $input['attachment'] = $path . $fileName;
             }
-            $event->save();
-        } catch (Exception $e) {
+            $event->update($input);
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Ubah Event gagal!');
         }
 
         return redirect()->route('informasi.event.index')->with('success', 'Ubah Event sukses!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(Event $event)
     {
         try {
-            Event::findOrFail($id)->delete();
-        } catch (Exception $e) {
+            if ($event->delete()) {
+                unlink(base_path('public/' . $event->file_dokumen));
+            }
+        } catch (\Exception $e) {
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
 

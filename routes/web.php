@@ -29,6 +29,7 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
+use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,6 @@ Route::get('/', function () {
 Route::get('berita', function () {
     return redirect('/');
 });
-
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
@@ -157,6 +157,8 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
+
+            Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
         });
 
         /**

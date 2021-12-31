@@ -33,6 +33,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 
 /**

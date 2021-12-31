@@ -158,7 +158,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
 
-            Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index']);
+            Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
         });
 
         /**

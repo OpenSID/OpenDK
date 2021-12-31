@@ -23,14 +23,14 @@
         </div>
 		<div class="tab-content">
             <div id="log_viewer" class="tab-pane fade in active">
-                    @include('vendor.laravel-log-viewer.log')
+                @include('vendor.laravel-log-viewer.log')
             </div>
-        <div id="ekstensi" class="tab-pane fade in active">
-                    @include('vendor.laravel-log-viewer.kebutuhan-sistem')
-                </div>
-        <div id="info_sistem" class="tab-pane fade in active">
-                    @include('vendor.laravel-log-viewer.info-sistem')
-        </div>
+            <div id="ekstensi" class="tab-pane fade in">
+                @include('vendor.laravel-log-viewer.kebutuhan-sistem')
+            </div>
+            <div id="info_sistem" class="tab-pane fade in">
+                @include('vendor.laravel-log-viewer.info-sistem')
+            </div>
         </div>
     </div>
 </div>

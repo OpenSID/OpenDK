@@ -29,46 +29,40 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-
-class Artikel extends Model
+class AlterTableDasKeluargaRemoveFields extends Migration
 {
-    use Sluggable;
-
-    protected $table = 'das_artikel';
-
-    protected $fillable = [
-        'judul',
-        'gambar',
-        'isi',
-        'status'
-    ];
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            $table->dropColumn('provinsi_id');
+            $table->dropColumn('kabupaten_id');
+            $table->dropColumn('kecamatan_id');
+            $table->integer('profil_id')->after('id')->nullable()->default(1);
+            $table->timestamps();
+        });
+    }
 
     /**
-     * Return the sluggable configuration array for this model.
+     * Reverse the migrations.
      *
-     * @return array
+     * @return void
      */
-    public function sluggable(): array
+    public function down()
     {
-        return [
-            'slug' => [
-                'source' => 'judul',
-            ],
-        ];
-    }
-
-    public function getGambarAttribute()
-    {
-        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
-    }
-
-    public function scopeStatus($query, $value = 1)
-    {
-        return $query->where('status', $value);
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            $table->char('provinsi_id', 2);
+            $table->char('kabupaten_id', 5);
+            $table->char('kecamatan_id', 8);
+            $table->dropColumn('profil_id');
+        });
     }
 }

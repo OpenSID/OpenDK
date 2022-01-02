@@ -34,12 +34,11 @@ use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
 use Database\Seeds\Demo\DemoAPBDesaSeeder;
 use Database\Seeds\Demo\DemoDasDataDesaTableSeeder;
 use Database\Seeds\Demo\DemoDasDataUmumTableSeeder;
-use Database\Seeds\Demo\DemoDasKeluargaTableSeeder;
 use Database\Seeds\Demo\DemoDasProfilTableSeeder;
 use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
 use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
 use Database\Seeds\Demo\DemoImunisasiSeeder;
-use Database\Seeds\Demo\DemoPendudukSeeder;
+use Database\Seeds\Demo\DemoPendudukKeluargaSeeder;
 use Database\Seeds\Demo\DemoPutusSekolahSeeder;
 use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
 use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
@@ -59,7 +58,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoDasProfilTableSeeder::class);
         $this->call(DemoDasDataUmumTableSeeder::class);
         $this->call(DemoDasDataDesaTableSeeder::class);
-        $this->call(DemoDasKeluargaTableSeeder::class);
 
         $this->call(DemoAKIAKBSeeder::class);
         $this->call(DemoAnggaranRealisasiSeeder::class);
@@ -67,7 +65,7 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoEpidemiPenyakitSeeder::class);
         $this->call(DemoFasilitasPaudSeeder::class);
         $this->call(DemoImunisasiSeeder::class);
-        $this->call(DemoPendudukSeeder::class);
+        $this->call(DemoPendudukKeluargaSeeder::class);
         $this->call(DemoPutusSekolahSeeder::class);
         $this->call(DemoTingkatPendidikanSeeder::class);
         $this->call(DemoToiletSanitasiSeeder::class);

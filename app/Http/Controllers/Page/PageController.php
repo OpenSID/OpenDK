@@ -158,9 +158,12 @@ class PageController extends Controller
 
     public function detailBerita($slug)
     {
-        return view('pages.berita.detail', [
-            'artikel' => Artikel::where('slug', $slug)->status()->firstOrFail()
-        ]);
+        $artikel = Artikel::where('slug', $slug)->status()->firstOrFail();
+        $page_title       = $artikel->judul;
+        $page_description = substr($artikel->isi, 0, 300) . ' ...';
+        $page_image = $artikel->gambar;
+
+        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel'));
     }
 
     public function eventDetail($slug)

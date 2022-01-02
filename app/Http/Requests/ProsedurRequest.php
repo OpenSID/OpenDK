@@ -33,7 +33,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ArtikelStoreRequest extends FormRequest
+class ProsedurRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -53,10 +53,8 @@ class ArtikelStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'judul'     => 'required',
-            'gambar'    => 'required',
-            'isi'       => 'required',
-            'status'    => 'required',
+            'judul_prosedur' => 'required|string|min:5|max:255',
+            'file_prosedur'  => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
         ];
     }
 }

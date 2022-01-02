@@ -32,10 +32,9 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DokumenRequest;
 use App\Models\FormDokumen;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
-use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
 class FormDokumenController extends Controller
@@ -57,7 +56,7 @@ class FormDokumenController extends Controller
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }
 
-                $data['download_url'] = asset($row->file_dokumen);
+                $data['download_url'] = route('informasi.form-dokumen.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -71,80 +70,78 @@ class FormDokumenController extends Controller
         return view('informasi.form_dokumen.create', compact('page_title', 'page_description'));
     }
 
-    public function store(Request $request)
+    public function store(DokumenRequest $request)
     {
-        request()->validate([
-            'nama_dokumen' => 'required',
-            'file_dokumen' => 'required|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
-        ]);
-
         try {
-            $dokumen = new FormDokumen($request->input());
+            $input = $request->input();
 
             if ($request->hasFile('file_dokumen')) {
                 $file     = $request->file('file_dokumen');
                 $fileName = $file->getClientOriginalName();
                 $path     = "storage/form_dokumen/";
-                $request->file('file_dokumen')->move($path, $fileName);
-                $dokumen->file_dokumen = $path . $fileName;
+                $file->move($path, $fileName);
+
+                $input['file_dokumen'] = $path . $fileName;
             }
 
-            $dokumen->save();
-        } catch (Exception $e) {
+            FormDokumen::create($input);
+        } catch (\Exception $e) {
             return back()->with('error', 'Dokumen gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil ditambah!');
     }
 
-    public function edit($id)
+    public function edit(FormDokumen $dokumen)
     {
-        $dokumen          = FormDokumen::findOrFail($id);
         $page_title       = 'Dokumen';
         $page_description = 'Ubah Dokumen ' . $dokumen->nama_dokumen;
 
         return view('informasi.form_dokumen.edit', compact('page_title', 'page_description', 'dokumen'));
     }
 
-    public function update(Request $request, $id)
+    public function update(DokumenRequest $request, FormDokumen $dokumen)
     {
-        request()->validate([
-            'nama_dokumen' => 'required',
-            'file_dokumen' => 'mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
-        ]);
-
         try {
-            $dokumen = FormDokumen::findOrFail($id);
-            $dokumen->fill($request->all());
+            $input = $request->all();
 
             if ($request->hasFile('file_dokumen')) {
                 $file     = $request->file('file_dokumen');
                 $fileName = $file->getClientOriginalName();
                 $path     = "storage/form_dokumen/";
-                $request->file('file_dokumen')->move($path, $fileName);
-                $dokumen->file_dokumen = $path . $fileName;
+                $file->move($path, $fileName);
+                unlink(base_path('public/' . $dokumen->file_dokumen));
+
+                $input['file_dokumen'] = $path . $fileName;
             }
 
-            $dokumen->save();
-        } catch (Exception $e) {
+            $dokumen->update($input);
+        } catch (\Exception $e) {
             return back()->with('error', 'Dokumen gagal diubah!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil diubah!');
     }
 
-    public function destroy($id)
+    public function destroy(FormDokumen $dokumen)
     {
         try {
-            $dokumen = FormDokumen::findOrFail($id);
-
-            unlink(base_path('public/' . $dokumen->file_dokumen));
-
-            $dokumen->delete();
-        } catch (Exception $e) {
+            if ($dokumen->delete()) {
+                unlink(base_path('public/' . $dokumen->file_dokumen));
+            }
+        } catch (\Exception $e) {
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Dokumen gagal dihapus!');
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil dihapus!');
+    }
+
+    public function download(FormDokumen $dokumen)
+    {
+        try {
+            return response()->download($dokumen->file_dokumen);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Dokumen tidak ditemukan');
+        }
     }
 }

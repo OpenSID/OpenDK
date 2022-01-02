@@ -32,32 +32,21 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProsedurRequest;
 use App\Models\Prosedur;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use League\Flysystem\Exception;
 use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         $page_title       = 'Prosedur';
         $page_description = 'Daftar Prosedur';
-        $prosedurs        = Prosedur::all();
 
-        return view('informasi.prosedur.index', compact('page_title', 'page_description', 'prosedurs'));
+        return view('informasi.prosedur.index', compact('page_title', 'page_description'));
     }
 
-    /**
-     * Get datatable
-     */
     public function getDataProsedur()
     {
         return DataTables::of(Prosedur::select('id', 'judul_prosedur'))
@@ -69,6 +58,8 @@ class ProsedurController extends Controller
                     $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
                 }
 
+                $data['download_url'] = route('informasi.prosedur.download', $row->id);
+
                 return view('forms.aksi', $data);
             })
             ->editColumn('judul_prosedur', function ($row) {
@@ -76,11 +67,6 @@ class ProsedurController extends Controller
             })->make();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $page_title       = 'Prosedur';
@@ -89,116 +75,91 @@ class ProsedurController extends Controller
         return view('informasi.prosedur.create', compact('page_title', 'page_description'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        request()->validate([
-            'judul_prosedur' => 'required',
-            'file_prosedur'  => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
-        ]);
 
+    public function store(ProsedurRequest $request)
+    {
         try {
-            $prosedur = new Prosedur($request->input());
+            $input = $request->all();
 
             if ($request->hasFile('file_prosedur')) {
                 $file     = $request->file('file_prosedur');
-                $fileName = $file->getClientOriginalName();
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time() . rand(100, 999) . '_' . $original_name;
                 $path     = "storage/regulasi/";
-                $request->file('file_prosedur')->move($path, $fileName);
-                $prosedur->file_prosedur = $path . $fileName;
-                $prosedur->mime_type     = $file->getClientOriginalExtension();
+                $file->move($path, $file_name);
+
+                $input['file_prosedur'] = $path . $file_name;
+                $input['mime_type'] = $file->getClientOriginalExtension();
             }
 
-            $prosedur->save();
-        } catch (Exception $e) {
+            Prosedur::create($input);
+        } catch (\Exception $e) {
             return back()->with('error', 'Prosedur gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.prosedur.index')->with('success', 'Prosedur berhasil disimpan!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
+    public function show(Prosedur $prosedur)
     {
-        $prosedur         = Prosedur::findOrFail($id);
         $page_title       = 'Prosedur';
         $page_description = 'Detail Prosedur : ' . $prosedur->judul_prosedur;
 
-        return view('informasi.prosedur.show', compact('page_title', 'prosedur', 'page_description'));
+        return view('informasi.prosedur.show', compact('page_title', 'page_description', 'prosedur'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(Prosedur $prosedur)
     {
-        $prosedur         = Prosedur::findOrFail($id);
         $page_title       = 'Prosedur';
         $page_description = 'Ubah Prosedur : ' . $prosedur->judul_prosedur;
 
         return view('informasi.prosedur.edit', compact('page_title', 'page_description', 'prosedur'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function update(Prosedur $prosedur, ProsedurRequest $request)
     {
-        request()->validate([
-            'judul_prosedur' => 'required',
-            'file_prosedur'  => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
-        ]);
-
         try {
-            $prosedur = Prosedur::findOrFail($id);
-            $prosedur->fill($request->all());
+            $input = $request->all();
 
             if ($request->hasFile('file_prosedur')) {
                 $file     = $request->file('file_prosedur');
-                $fileName = $file->getClientOriginalName();
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time() . rand(100, 999) . '_' . $original_name;
                 $path     = "storage/regulasi/";
-                $request->file('file_prosedur')->move($path, $fileName);
-                $prosedur->file_prosedur = $path . $fileName;
-                $prosedur->mime_type     = $file->getClientOriginalExtension();
+                $file->move($path, $file_name);
+                unlink(base_path('public/' . $prosedur->file_prosedur));
+
+                $input['file_prosedur'] = $path . $file_name;
+                $input['mime_type'] = $file->getClientOriginalExtension();
             }
 
-            $prosedur->save();
-        } catch (Exception $e) {
+            $prosedur->update($input);
+        } catch (\Exception $e) {
             return back()->with('error', 'Prosedur gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.prosedur.index')->with('success', 'Prosedur berhasil disimpan!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(Prosedur $prosedur)
     {
         try {
-            Prosedur::findOrFail($id)->delete();
-        } catch (Exception $e) {
+            if ($prosedur->delete()) {
+                unlink(base_path('public/' . $prosedur->file_prosedur));
+            }
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Prosedur gagal dihapus!');
         }
 
-        return redirect()->route('setting.komplain-kategori.index')->with('success', 'Prosedur berhasil dihapus!');
+        return redirect()->route('informasi.prosedur.index')->with('success', 'Prosedur berhasil disimpan!');
+    }
+
+    public function download(Prosedur $prosedur)
+    {
+        try {
+            return response()->download($prosedur->file_prosedur);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Dokumen prosedur tidak ditemukan');
+        }
     }
 }

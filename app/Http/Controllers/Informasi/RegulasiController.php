@@ -32,19 +32,11 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegulasiRequest;
 use App\Models\Regulasi;
-use Exception;
-use Illuminate\Http\Request;
-
-use Illuminate\Http\Response;
 
 class RegulasiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         $page_title       = 'Regulasi';
@@ -54,11 +46,6 @@ class RegulasiController extends Controller
         return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
     public function create()
     {
         $page_title       = 'Regulasi';
@@ -67,122 +54,89 @@ class RegulasiController extends Controller
         return view('informasi.regulasi.create', compact('page_title', 'page_description'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store(Request $request)
+    public function store(RegulasiRequest $request)
     {
-        request()->validate([
-            'tipe_regulasi' => 'required',
-            'judul'         => 'required',
-            'deskripsi'     => 'required',
-            'file_regulasi' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
-        ]);
-
         try {
-            $regulasi               = new Regulasi($request->input());
-            $regulasi->profil_id    = $this->profil->id;
+            $input = $request->input();
+            $input['profil_id'] = $this->profil->id;
 
             if ($request->hasFile('file_regulasi')) {
                 $lampiran1 = $request->file('file_regulasi');
                 $fileName1 = $lampiran1->getClientOriginalName();
                 $path      = "storage/regulasi/";
                 $request->file('file_regulasi')->move($path, $fileName1);
-                $regulasi->file_regulasi = $path . $fileName1;
-                $regulasi->mime_type     = $lampiran1->getClientOriginalExtension();
+
+                $input['file_regulasi'] = $path . $fileName1;
+                $input['mime_type'] = $lampiran1->getClientOriginalExtension();
             }
 
-            $regulasi->save();
-        } catch (Exception $e) {
+            Regulasi::create($input);
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
         return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
+    public function show(Regulasi $regulasi)
     {
-        $regulasi         = Regulasi::findOrFail($id);
         $page_title       = "Regulasi";
         $page_description = "Detail Regulasi : " . $page_title;
 
         return view('informasi.regulasi.show', compact('page_title', 'page_description', 'regulasi'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(Regulasi $regulasi)
     {
-        $regulasi         = Regulasi::findOrFail($id);
         $page_title       = 'Regulasi';
         $page_description = 'Ubah Regulasi : ' . $regulasi->judul;
 
         return view('informasi.regulasi.edit', compact('page_title', 'page_description', 'regulasi'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function update(RegulasiRequest $request, Regulasi $regulasi)
     {
-        request()->validate([
-            'tipe_regulasi' => 'required',
-            'judul'         => 'required',
-            'deskripsi'     => 'required',
-            'file_regulasi' => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
-        ]);
-
         try {
-            $regulasi = Regulasi::findOrFail($id);
-            $regulasi->fill($request->all());
-            $regulasi->profil_id    = $this->profil->id;
+            $input = $request->input();
+            $input['profil_id'] = $this->profil->id;
 
             if ($request->hasFile('file_regulasi')) {
                 $lampiran1 = $request->file('file_regulasi');
                 $fileName1 = $lampiran1->getClientOriginalName();
                 $path      = "storage/regulasi/";
-                $request->file('file_regulasi')->move($path, $fileName1);
-                $regulasi->file_regulasi = $path . $fileName1;
-                $regulasi->mime_type     = $lampiran1->getClientOriginalExtension();
-            }
+                $lampiran1->move($path, $fileName1);
+                unlink(base_path('public/' . $regulasi->file_regulasi));
 
-            $regulasi->save();
-        } catch (Exception $e) {
+                $input['file_regulasi'] = $path . $fileName1;
+                $input['mime_type'] = $lampiran1->getClientOriginalExtension();
+            }
+            $regulasi->update($input);
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
-        return redirect()->route('informasi.regulasi.show', $id)->with('success', 'Regulasi berhasil disimpan!');
+        return redirect()->route('informasi.regulasi.show', $regulasi->id)->with('success', 'Regulasi berhasil disimpan!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(Regulasi $regulasi)
     {
         try {
-            Regulasi::findOrFail($id)->delete();
-        } catch (Exception $e) {
+            if ($regulasi->delete()) {
+                unlink(base_path('public/' . $regulasi->file_regulasi));
+            }
+        } catch (\Exception $e) {
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
 
         return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
+    }
+
+    public function download(Regulasi $regulasi)
+    {
+        try {
+            return response()->download($regulasi->file_regulasi);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Dokumen regulasi tidak ditemukan');
+        }
     }
 }

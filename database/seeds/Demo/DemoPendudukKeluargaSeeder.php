@@ -29,46 +29,44 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Seeds\Demo;
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use App\Imports\ImporPendudukKeluarga;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use ZipArchive;
 
-class Artikel extends Model
+class DemoPendudukKeluargaSeeder extends Seeder
 {
-    use Sluggable;
-
-    protected $table = 'das_artikel';
-
-    protected $fillable = [
-        'judul',
-        'gambar',
-        'isi',
-        'status'
-    ];
-
     /**
-     * Return the sluggable configuration array for this model.
+     * Run the database seeds.
      *
-     * @return array
+     * @return void
      */
-    public function sluggable(): array
+    public function run()
     {
-        return [
-            'slug' => [
-                'source' => 'judul',
-            ],
-        ];
-    }
+        try {
+            DB::table('das_penduduk')->truncate();
+            DB::table('das_keluarga')->truncate();
 
-    public function getGambarAttribute()
-    {
-        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
-    }
+            $name = 'penduduk_22_12_2020_opendk.zip';
 
-    public function scopeStatus($query, $value = 1)
-    {
-        return $query->where('status', $value);
+            // Temporary path file
+            $path = storage_path("app/public/template_upload/{$name}");
+            $extract = storage_path('app/temp/penduduk/foto/');
+
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
+            (new ImporPendudukKeluarga())
+                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
+        } catch (\Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        }
     }
 }

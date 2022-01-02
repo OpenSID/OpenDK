@@ -23,6 +23,7 @@
         "orangehill/iseed": "^2.6",
         "proengsoft/laravel-jsvalidation": "^4.4",
         "rachidlaasri/laravel-installer": "^4.1",
+        "rap2hpoutre/laravel-log-viewer": "^2.0",
         "spatie/laravel-collection-macros": "^6.1",
         "tymon/jwt-auth": "^1.0",
         "unisharp/laravel-filemanager": "~1.8",

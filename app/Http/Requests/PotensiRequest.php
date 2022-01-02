@@ -29,43 +29,34 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace Database\Seeds\Demo;
+namespace App\Http\Requests;
 
-use App\Imports\ImporPenduduk;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use ZipArchive;
+use Illuminate\Foundation\Http\FormRequest;
 
-class DemoPendudukSeeder extends Seeder
+class PotensiRequest extends FormRequest
 {
     /**
-     * Run the database seeds.
+     * Determine if the user is authorized to make this request.
      *
-     * @return void
+     * @return bool
      */
-    public function run()
+    public function authorize()
     {
-        try {
-            DB::table('das_penduduk')->truncate();
+        return true;
+    }
 
-            $name = 'penduduk_22_12_2020_opendk.zip';
-
-            // Temporary path file
-            $path = storage_path("app/public/template_upload/{$name}");
-            $extract = storage_path('app/temp/penduduk/foto/');
-
-            // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($extract);
-            $zip->close();
-
-            // Proses impor excell
-            (new ImporPenduduk())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
-        }
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'kategori_id'  => 'required',
+            'nama_potensi' => 'required',
+            'deskripsi'    => 'required',
+            'file_gambar'  => 'file|mimes:bmp,jpg,jpeg,gif,png|max:1024',
+        ];
     }
 }

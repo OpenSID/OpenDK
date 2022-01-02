@@ -22,7 +22,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
+                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-success btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp; Tambah</a>
                 </div>
                 <!-- /.box-header -->
                 @if (count($regulasi) > 0)
@@ -30,28 +30,28 @@
 
                         <table class="table table-striped">
                             <tr>
-                                <th>Judul Regulasi</th>
                                 <th style="width: 150px">Aksi</th>
+                                <th>Judul Regulasi</th>
                             </tr>
 
                             @foreach($regulasi as $item)
                             <tr>
-
-                                <td>{{ $item->judul }}</td>
-
                                 @unless(!Sentinel::check())
-                                <td>
+                                <td class="text-center text-nowrap">
                                     <?php
 
                                         // TODO : Pindahkan ke controller dan gunakan datatable
                                         $data['show_url']   = route('informasi.regulasi.show', $item->id);
                                         $data['edit_url']   = route('informasi.regulasi.edit', $item->id);
                                         $data['delete_url'] = route('informasi.regulasi.destroy', $item->id);
+                                        $data['download_url'] = route('informasi.regulasi.download', $item->id);
 
                                         echo view('forms.aksi', $data);
                                     ?>
                                 </td>
                                 @endunless
+
+                                <td>{{ $item->judul }}</td>
 
                             </tr>
                             @endforeach

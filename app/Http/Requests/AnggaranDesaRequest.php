@@ -29,46 +29,34 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Artikel extends Model
+class AnggaranDesaRequest extends FormRequest
 {
-    use Sluggable;
-
-    protected $table = 'das_artikel';
-
-    protected $fillable = [
-        'judul',
-        'gambar',
-        'isi',
-        'status'
-    ];
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
-     * Return the sluggable configuration array for this model.
+     * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function sluggable(): array
+    public function rules()
     {
         return [
-            'slug' => [
-                'source' => 'judul',
-            ],
+            'desa'  => 'required',
+            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ];
-    }
-
-    public function getGambarAttribute()
-    {
-        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
-    }
-
-    public function scopeStatus($query, $value = 1)
-    {
-        return $query->where('status', $value);
     }
 }

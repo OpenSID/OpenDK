@@ -99,6 +99,7 @@ class TingkatPendidikanController extends Controller
             (new ImporTingkatPendidikan($request->only(['desa_id', 'tahun', 'semester'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
@@ -141,6 +142,7 @@ class TingkatPendidikanController extends Controller
         try {
             TingkatPendidikan::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!' . $e->getMessage());
         }
 
@@ -158,6 +160,7 @@ class TingkatPendidikanController extends Controller
         try {
             TingkatPendidikan::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
 

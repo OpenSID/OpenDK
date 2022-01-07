@@ -103,10 +103,8 @@ class PendudukQueueJob implements ShouldQueue
 
             DB::commit();
         } catch (Exception $e) {
+            report($e);
             DB::rollBack();
-
-            // debug log when fail.
-            Log::debug($e->getMessage());
         }
     }
 }

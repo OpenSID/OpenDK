@@ -88,6 +88,7 @@ class SistemKomplainController extends Controller
             $komplain = Komplain::where('komplain_id', '=', $request->post('q'))->firstOrFail();
             return redirect()->route('sistem-komplain.komplain', $komplain->slug);
         } catch (Exception $e) {
+            report($e);
             return back()->with('warning', 'Komplain tidak ditemukan!');
         }
     }
@@ -172,6 +173,7 @@ class SistemKomplainController extends Controller
 
             $komplain->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
 
@@ -247,6 +249,7 @@ class SistemKomplainController extends Controller
 
             $komplain->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
 
@@ -264,6 +267,7 @@ class SistemKomplainController extends Controller
         try {
             Komplain::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('sistem-komplain.index')->with('error', 'Keluhan gagal dihapus!');
         }
 
@@ -280,7 +284,8 @@ class SistemKomplainController extends Controller
     {
         try {
             $komplain = Komplain::where('slug', '=', $slug)->first();
-        } catch (Exception $ex) {
+        } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', $ex);
         }
         $camat            = Profil::first();
@@ -324,7 +329,8 @@ class SistemKomplainController extends Controller
                     'msg'    => 'Jawaban  berhasil disimpan!',
                 ];
                 return response()->json($response);
-            } catch (Exception $ex) {
+            } catch (Exception $e) {
+                report($e);
                 $response = [
                     'status' => 'error',
                     'msg'    => 'Jawaban  gagal disimpan!',

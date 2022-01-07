@@ -90,6 +90,7 @@ class DataUmumController extends Controller
             $data = $request->sumber_luas_wilayah==1 ? $request->all() : $request->except('luas_wilayah');
             DataUmum::findOrFail($id)->update($data);
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Update Data Umum gagal!');
         }
 

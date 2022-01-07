@@ -81,6 +81,7 @@ class TipeRegulasiController extends Controller
             $tipe->slug = str_slug($tipe->nama);
             $tipe->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dikirim!');
         }
 
@@ -107,6 +108,7 @@ class TipeRegulasiController extends Controller
             $tipe->fill($request->all());
             $tipe->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Tipe Regulasi gagal diupdate!');
         }
 
@@ -118,6 +120,7 @@ class TipeRegulasiController extends Controller
         try {
             TipeRegulasi::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dihapus!');
         }
 

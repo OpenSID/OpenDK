@@ -106,6 +106,7 @@ class ImunisasiController extends Controller
             (new ImporImunisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
@@ -142,6 +143,7 @@ class ImunisasiController extends Controller
         try {
             Imunisasi::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -159,6 +161,7 @@ class ImunisasiController extends Controller
         try {
             Imunisasi::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.imunisasi.index')->with('error', 'Data gagal dihapus!');
         }
 

@@ -80,6 +80,7 @@ class AplikasiController extends Controller
 
             $this->browser_title = $request->input('value');
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Pengaturan aplikasi gagal diubah!' . $e->getMessage());
         }
 

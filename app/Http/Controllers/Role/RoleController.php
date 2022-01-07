@@ -111,6 +111,7 @@ class RoleController extends Controller
 
             return redirect()->route('setting.role.index');
         } catch (Exception $e) {
+            report($e);
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
             ]));
@@ -162,6 +163,7 @@ class RoleController extends Controller
             }
             return redirect()->route('setting.role.index');
         } catch (Exception $e) {
+            report($e);
             flash()->error(trans('message.role.update-error', [
                 'attribute' => trans('island.role'),
             ]));
@@ -192,6 +194,7 @@ class RoleController extends Controller
                 return redirect()->route('setting.role.index');
             }
         } catch (Exception $e) {
+            report($e);
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
             ]));

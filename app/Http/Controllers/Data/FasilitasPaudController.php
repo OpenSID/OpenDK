@@ -99,6 +99,7 @@ class FasilitasPaudController extends Controller
             (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
@@ -139,6 +140,7 @@ class FasilitasPaudController extends Controller
         try {
             FasilitasPAUD::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!' . $e->getMessage());
         }
 
@@ -156,6 +158,7 @@ class FasilitasPaudController extends Controller
         try {
             FasilitasPAUD::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.fasilitas-paud.index')->with('error', 'Data gagal dihapus!');
         }
 

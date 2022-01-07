@@ -92,10 +92,8 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
 
             DB::commit();
         } catch (Exception $e) {
+            report($e);
             DB::rollBack();
-
-            // debug log when fail.
-            Log::debug($e->getMessage());
         }
 
         // Hapus folder temp ketika sudah selesai

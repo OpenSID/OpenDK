@@ -111,6 +111,7 @@ class ProfilController extends Controller
             $profil->update();
             $dataumum->update();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
 

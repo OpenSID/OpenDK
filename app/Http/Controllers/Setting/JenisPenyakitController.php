@@ -80,6 +80,7 @@ class JenisPenyakitController extends Controller
             $penyakit = new JenisPenyakit($request->all());
             $penyakit->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
@@ -106,6 +107,7 @@ class JenisPenyakitController extends Controller
             $penyakit->fill($request->all());
             $penyakit->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diupdate!');
         }
 
@@ -117,6 +119,7 @@ class JenisPenyakitController extends Controller
         try {
             JenisPenyakit::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal dihapus!');
         }
 

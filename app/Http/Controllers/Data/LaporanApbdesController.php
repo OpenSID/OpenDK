@@ -110,6 +110,7 @@ class LaporanApbdesController extends Controller
 
             $apbdes->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.laporan-apbdes.index')->with('error', 'Data gagal dihapus!');
         }
 
@@ -162,6 +163,7 @@ class LaporanApbdesController extends Controller
             (new ImporLaporanApbdes())
                 ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
@@ -181,6 +183,7 @@ class LaporanApbdesController extends Controller
 
             return Storage::download('public/apbdes/' . $getFile->nama_file);
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }

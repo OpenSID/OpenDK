@@ -107,6 +107,7 @@ class ToiletSanitasiController extends Controller
             (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
@@ -144,6 +145,7 @@ class ToiletSanitasiController extends Controller
         try {
             ToiletSanitasi::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -161,6 +163,7 @@ class ToiletSanitasiController extends Controller
         try {
             ToiletSanitasi::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }
 

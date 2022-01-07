@@ -108,6 +108,7 @@ class EpidemiPenyakitController extends Controller
             (new ImporEpidemiPenyakit($request->only('penyakit_id', 'bulan', 'tahun')))
                 ->queue($request->file('file'));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
@@ -148,6 +149,7 @@ class EpidemiPenyakitController extends Controller
         try {
             EpidemiPenyakit::findOrFail($id)->update($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -165,6 +167,7 @@ class EpidemiPenyakitController extends Controller
         try {
             EpidemiPenyakit::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.epidemi-penyakit.index')->with('error', 'Data gagal dihapus!');
         }
 

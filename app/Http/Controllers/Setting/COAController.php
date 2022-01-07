@@ -77,6 +77,7 @@ class COAController extends Controller
             ];
             DB::table('ref_coa')->insert($data);
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }
 

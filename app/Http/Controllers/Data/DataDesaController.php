@@ -116,6 +116,7 @@ class DataDesaController extends Controller
             $desa->profil_id = $this->profil->id;
             $desa->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -162,6 +163,7 @@ class DataDesaController extends Controller
             $desa->profil_id = $this->profil->id;
             $desa->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -179,6 +181,7 @@ class DataDesaController extends Controller
         try {
             DataDesa::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!');
         }
 
@@ -216,6 +219,7 @@ class DataDesaController extends Controller
                 }
             }
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan!' . $e);
         }
 

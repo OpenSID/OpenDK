@@ -89,6 +89,7 @@ class ProgramBantuanController extends Controller
         try {
             Program::create($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
         }
 
@@ -120,6 +121,7 @@ class ProgramBantuanController extends Controller
             $program->fill($request->all());
             $program->update();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
         }
 
@@ -143,6 +145,7 @@ class ProgramBantuanController extends Controller
             Program::findOrFail($id)->delete();
             PesertaProgram::where('program_id', $id)->delete();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal dihapus!' . $e->getMessage());
         }
 
@@ -169,6 +172,7 @@ class ProgramBantuanController extends Controller
         try {
             PesertaProgram::create($request->all());
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
         }
 

@@ -64,6 +64,7 @@ class AuthController extends Controller
             }
             return redirect()->route('dashboard');
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Gagal Masuk!' . $e);
         }
     }
@@ -106,6 +107,7 @@ class AuthController extends Controller
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('/');
         } catch (Exception $e) {
+            report($e);
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }

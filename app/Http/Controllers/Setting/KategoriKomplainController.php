@@ -81,6 +81,7 @@ class KategoriKomplainController extends Controller
             $kategori->slug = str_slug($kategori->nama);
             $kategori->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Komplain gagal dikirim!');
         }
 
@@ -107,6 +108,7 @@ class KategoriKomplainController extends Controller
             $kategori->fill($request->all());
             $kategori->save();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Komplain gagal diupdate!');
         }
 
@@ -118,6 +120,7 @@ class KategoriKomplainController extends Controller
         try {
             KategoriKomplain::findOrFail($id)->delete();
         } catch (Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Komplain gagal dihapus!');
         }
 

@@ -110,6 +110,7 @@ class LaporanPendudukController extends Controller
 
             $penduduk->delete();
         } catch (Exception $e) {
+            report($e);
             return redirect()->route('data.laporan-penduduk.index')->with('error', 'Data gagal dihapus!');
         }
 
@@ -161,6 +162,7 @@ class LaporanPendudukController extends Controller
             (new ImporLaporanPenduduk())
                 ->queue($extract . basename($fileExtracted[0]));
         } catch (Exception $e) {
+            report($e);
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 

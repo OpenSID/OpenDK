@@ -112,9 +112,17 @@
 	<div class="fat-arrow">
 		<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
 	</div>
-	<div class="page-header" style="margin:0px 0px;">
-		<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
-	</div>
+	<form class="form-horizontal" id="form_filter_artikel" method="get" action="{{ route('beranda') }}">
+		<div class="page-header" style="margin:0px 0px;">
+			<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
+			<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
+				<input class="form-control" style="width: 200px; height: auto;" type="text" name="keyword" placeholder="Cari berita kecamatan" value="{{Request::get('keyword')}}"/>
+				<button type="submit" class="btn btn-info btn-block" style="width: auto;">
+					<i class="fa fa-search"></i>
+				</button>
+			</div>
+		</div>
+	</form>
 	@include('pages.berita.index')
 
 	<hr/>

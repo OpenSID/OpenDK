@@ -44,9 +44,17 @@ class PageController extends Controller
 {
     protected $data = [];
 
-    public function index()
+    public function index(Request $request)
     {
         Counter::count('beranda');
+
+        $cari_artikel = $request->keyword;
+        $artikel = Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        
+        if($cari_artikel){
+            $artikel = Artikel::where('judul', 'like', "%{$cari_artikel}%")->orWhere('isi', 'like', "%{$cari_artikel}%")->latest()->status()->paginate(10, ['*'], 'pageArtikel');
+            $artikel->appends(['keyword' => $cari_artikel]);
+        }
 
         $this->data = $this->GetFeeds();
 
@@ -59,7 +67,7 @@ class PageController extends Controller
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
+            'artikel'          => $artikel,
         ]);
     }
 

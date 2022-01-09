@@ -129,7 +129,7 @@
 	</div>
 	<div class="page-header" style="margin:0px 0px; padding: 0px;">
 		<select class="form-control" id="list_desa" name="desa" style="width: auto;">
-			<option value="semua">Semua Desa</option>
+			<option value="Semua">Semua Desa</option>
 			@foreach($list_desa as $desa)
 					<option value="{{ $desa->desa_id }}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
 			@endforeach

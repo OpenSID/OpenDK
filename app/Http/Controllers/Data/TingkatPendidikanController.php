@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ImporTingkatPendidikan;
-use App\Models\TingkatPendidikan;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
+use App\Models\TingkatPendidikan;
+use App\Http\Controllers\Controller;
+use App\Imports\ImporTingkatPendidikan;
+use App\Http\Requests\TingkatPendidikanRequest;
 
 class TingkatPendidikanController extends Controller
 {
@@ -57,7 +57,6 @@ class TingkatPendidikanController extends Controller
     {
         return DataTables::of(TingkatPendidikan::with(['desa']))
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.tingkat-pendidikan.edit', $row->id);
                 $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -85,67 +84,17 @@ class TingkatPendidikanController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(TingkatPendidikanRequest $request)
     {
-        $this->validate($request, [
-            'desa_id'  => 'required|unique:das_tingkat_pendidikan,desa_id',
-            'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun'    => 'required|unique:das_tingkat_pendidikan',
-            'semester' => 'required|unique:das_tingkat_pendidikan',
-        ]);
-
         try {
             (new ImporTingkatPendidikan($request->only(['desa_id', 'tahun', 'semester'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return back()->with('error', 'Data gagal diimpor');
         }
 
-        return back()->with('success', 'Import data sukses.');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $pendidikan       = TingkatPendidikan::with(['desa'])->findOrFail($id);
-        $page_title       = 'Tingkat Pendidikan';
-        $page_description = 'Ubah Tingkat Pendidikan : Desa ' .  $pendidikan->desa->nama;
-
-        return view('data.tingkat_pendidikan.edit', compact('page_title', 'page_description', 'pendidikan'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        request()->validate([
-            'tidak_tamat_sekolah'     => 'required',
-            'tamat_sd'                => 'required',
-            'tamat_smp'               => 'required',
-            'tamat_sma'               => 'required',
-            'tamat_diploma_sederajat' => 'required',
-            'semester'                => 'required',
-            'tahun'                   => 'required',
-        ]);
-
-        try {
-            TingkatPendidikan::findOrFail($id)->update($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!');
-        }
-
-        return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil diubah!');
+        return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil diimpor!');
     }
 
     /**
@@ -163,6 +112,6 @@ class TingkatPendidikanController extends Controller
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
 
-        return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data sukses dihapus!');
+        return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil dihapus!');
     }
 }

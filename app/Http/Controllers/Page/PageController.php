@@ -115,7 +115,7 @@ class PageController extends Controller
 
         $feeds = $feeds->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
-        
+
         $html =  view('pages.berita.feeds', [
             'page_title'       => 'Beranda',
             'cari'             => null,

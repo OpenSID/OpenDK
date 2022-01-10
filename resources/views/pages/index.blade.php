@@ -116,7 +116,7 @@
 		<div class="page-header" style="margin:0px 0px;">
 			<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
 			<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
-				<input class="form-control" style="width: 200px; height: auto;" type="text" name="keyword" placeholder="Cari berita kecamatan" value="{{Request::get('keyword')}}"/>
+				<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari_artikel" placeholder="Cari berita kecamatan" value="{{Request::get('cari_artikel')}}"/>
 				<button type="submit" class="btn btn-info btn-block" style="width: auto;">
 					<i class="fa fa-search"></i>
 				</button>

@@ -48,12 +48,12 @@ class PageController extends Controller
     {
         Counter::count('beranda');
 
-        $cari_artikel = $request->keyword;
+        $cari_artikel = $request->cari_artikel;
         $artikel = Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel');
         
-        if($cari_artikel){
+        if ($cari_artikel) {
             $artikel = Artikel::where('judul', 'like', "%{$cari_artikel}%")->orWhere('isi', 'like', "%{$cari_artikel}%")->latest()->status()->paginate(10, ['*'], 'pageArtikel');
-            $artikel->appends(['keyword' => $cari_artikel]);
+            $artikel->appends(['cari_artikel' => $cari_artikel]);
         }
 
         $this->data = $this->GetFeeds();

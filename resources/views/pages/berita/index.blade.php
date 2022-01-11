@@ -24,3 +24,39 @@
     </div>
   </div>
 </div>
+
+@push('scripts')
+<script type="text/javascript">
+  $(function ($) {
+    $(document).on('submit', '#form_berita_cari', function(event){ 
+      event.preventDefault();
+      ajax_artikel()
+    })
+
+    $(document).on('click', '.pagination a', function(event){
+      event.preventDefault(); 
+      var page = $(this).attr('href').split('pageArtikel=')[1];
+      $('input[name="pageArtikel"]').val(page);
+      ajax_artikel()
+    });
+
+    var ajax_artikel = function () {
+        $('#berita-preload').show()
+        $.ajax({
+          url: "{{ route('berita.filter') }}",
+          type: 'get',
+          dataType:'json',
+          data:$("#form_berita_cari").serialize(),
+          success: function(data){
+            $('#berita-preload').hide();
+            $("#kecamatan").html(data.html);
+          },
+          error: function (jqXhr, textStatus, errorMessage) { // error callback 
+            $("#kecamatan").html('Error: ' + errorMessage);
+          }
+      });
+      event.preventDefault();
+    }
+  });
+</script>
+@endpush

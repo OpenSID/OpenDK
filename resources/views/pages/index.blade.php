@@ -112,9 +112,58 @@
 	<div class="fat-arrow">
 		<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
 	</div>
-	<div class="page-header" style="margin:0px 0px;">
-		<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
+	<div class="box-tools pull-right">
+		<form class="form-horizontal" id="form_berita_cari" method="get" > 
+			<input type="hidden" value="1" name="pageArtikel">
+			<div class="has-feedback">
+				<div class="input-group input-group-sm pull-right" style="display: inline-flex; padding: 5px;">
+					<input class="form-control" style="height: auto;" type="text" name="cari" placeholder="Cari Berita" value="{{$cari}}"/>
+					<button type="submit" class="btn btn-info btn-block" style="width: auto;">
+						<i class="fa fa-search"></i>
+					</button>
+				</div>
+			</div>
+		</form>
 	</div>
+	
+		<div class="page-header" style="margin:0px 0px;">
+			<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
+		</div>
+
+		<div id="berita-preload" style="display: none;">
+			<div class="col-lg-12" style="background-color: #ecf0f5; padding-top: 10px;">
+				<div class="row" style="background-color: #fff; ">
+					<div class="col-sm-4 ph-item" style="border: none;">
+						<div class="ph-col-12">
+							<div class="ph-picture big"></div>
+						</div>
+					</div>
+					<div class="col-sm-8 ph-item" style="border: none;">
+						<div class="ph-row">
+							<div class="col-pl-12 big"></div>
+							<div class="col-pl-12 big"></div>
+							<div class="col-pl-12 big"></div>
+ 						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row" style="background-color: #fff; ">
+					<div class="col-sm-4 ph-item" style="border: none;">
+						<div class="ph-col-12">
+							<div class="ph-picture big"></div>
+						</div>
+					</div>
+					<div class="col-sm-8 ph-item" style="border: none;">
+						<div class="ph-row">
+							<div class="col-pl-12 big"></div>
+							<div class="col-pl-12 big"></div>
+							<div class="col-pl-12 big"></div>
+ 						</div>
+					</div>
+				</div>
+				<hr>
+			</div>
+		</div>
 	@include('pages.berita.index')
 
 	<hr/>
@@ -146,4 +195,3 @@
 		
 </div>
 @endsection
-

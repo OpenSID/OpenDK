@@ -92,6 +92,23 @@ class PageController extends Controller
         return $feeds ?? null;
     }
 
+    public function FilterBerita(Request $request)
+    {
+        $req = $request->cari;
+        $artikel = Artikel::latest()->status();
+
+        if ($req != '') {
+            $artikel->where('judul', 'like', "%${req}%")
+                ->orWhere('isi', 'like', "%${req}%");
+        }
+
+        $html =  view('pages.berita.index', [
+             'artikel'          => $artikel->paginate(10, ['*'], 'pageArtikel'),
+        ])->render();
+
+        return response()->json(compact('html'));
+    }
+
     public function FilterFeeds(Request $request)
     {
         $this->data = $this->GetFeeds();

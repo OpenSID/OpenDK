@@ -58,9 +58,10 @@ class EventController extends Controller
     {
         try {
             $input = $request->input();
-            $event['status'] = 'OPEN';
+            $input['status'] = 'OPEN';
             Event::create($input);
         } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
 

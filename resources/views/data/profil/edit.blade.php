@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -13,7 +12,6 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
 
     @include( 'partials.flash_message' )
@@ -56,10 +54,7 @@
         {!! Form::close() !!}
 
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 
 @include('partials.asset_wysihtml5')

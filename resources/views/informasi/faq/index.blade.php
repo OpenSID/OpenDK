@@ -14,8 +14,8 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
     <div class="row">
         <div class="col-md-12">
@@ -57,19 +57,14 @@
                         </section>
                     </section>
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer clearfix">
                     {!! $faqs->links() !!}
                 </div>
                 <!-- /.box-footer -->
             </div>
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 @push('scripts')
 

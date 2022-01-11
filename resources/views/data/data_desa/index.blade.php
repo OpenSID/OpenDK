@@ -2,7 +2,6 @@
 
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,8 +13,8 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
 
     <div class="box box-primary">
@@ -34,29 +33,29 @@
         @endif
 
         <div class="box-body">
-            @include( 'flash::message' )
-            <table class="table table-bordered table-hover dataTable" id="datadesa-table">
-                <thead>
-                <tr>
-                    <th style="max-width: 100px;">Aksi</th>
-                    <th>Kode Desa</th>
-                    <th>Nama Desa</th>
-                    <th>Website</th>
-                    <th>Luas Wilayah (km<sup>2</sup>)</th>
-                </tr>
-                </thead>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="datadesa-table">
+                    <thead>
+                        <tr>
+                            <th style="max-width: 100px;">Aksi</th>
+                            <th>Kode Desa</th>
+                            <th>Nama Desa</th>
+                            <th>Website</th>
+                            <th>Luas Wilayah (km<sup>2</sup>)</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
-
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_datatables')
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function () {
         var data = $('#datadesa-table').DataTable({
+            responsive: true,
             processing: true,
             serverSide: true,
             ajax: "{!! route( 'data.data-desa.getdata' ) !!}",

@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     use Sluggable;
-    
+
     protected $table = 'das_events';
 
     protected $fillable = [

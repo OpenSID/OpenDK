@@ -92,6 +92,7 @@ class EventController extends Controller
             }
             $event->update($input);
         } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Ubah Event gagal!');
         }
 
@@ -105,6 +106,7 @@ class EventController extends Controller
                 unlink(base_path('public/' . $event->file_dokumen));
             }
         } catch (\Exception $e) {
+            report($e);
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
 

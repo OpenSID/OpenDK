@@ -32,14 +32,12 @@
 namespace App\Jobs;
 
 use App\Models\LaporanApbdes;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class LaporanApbdesQueueJob implements ShouldQueue
@@ -61,8 +59,6 @@ class LaporanApbdesQueueJob implements ShouldQueue
     public function __construct($request)
     {
         $this->request = $request;
-
-        Log::debug($this->request);
     }
 
     /**
@@ -70,10 +66,10 @@ class LaporanApbdesQueueJob implements ShouldQueue
      *
      * @return void
      */
-    public function failed(Exception $e)
+    public function failed(\Exception $e)
     {
         // TODO: Send notification when job failure.
-        Log::debug($e->getMessage());
+        report($e);
     }
 
     /**
@@ -114,7 +110,7 @@ class LaporanApbdesQueueJob implements ShouldQueue
             }
 
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             DB::rollBack();
         }

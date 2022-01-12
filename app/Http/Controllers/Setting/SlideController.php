@@ -84,6 +84,7 @@ class SlideController extends Controller
             }
             Slide::create($input);
         } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Slide gagal ditambah!');
         }
 
@@ -121,7 +122,8 @@ class SlideController extends Controller
             }
             $slide->update($input);
         } catch (\Exception $e) {
-            return back()->with('error', 'Data Slide gagal disimpan!' . $e->getMessage());
+            report($e);
+            return back()->with('error', 'Data Slide gagal disimpan!');
         }
 
         return redirect()->route('setting.slide.index')->with('success', 'Data Slide berhasil disimpan!');
@@ -134,6 +136,7 @@ class SlideController extends Controller
                 unlink(base_path('public/' . $slide->gambar));
             }
         } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Slide gagal dihapus!');
         }
 

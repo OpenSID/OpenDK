@@ -110,7 +110,7 @@ class RoleController extends Controller
             ]));
 
             return redirect()->route('setting.role.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
@@ -162,7 +162,7 @@ class RoleController extends Controller
                 Role::findOrFail($id)->update(['name' => $request->name, 'permissions' => []]);
             }
             return redirect()->route('setting.role.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('message.role.update-error', [
                 'attribute' => trans('island.role'),
@@ -193,7 +193,7 @@ class RoleController extends Controller
                 flash()->success(trans('general.destroy-success'));
                 return redirect()->route('setting.role.index');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),

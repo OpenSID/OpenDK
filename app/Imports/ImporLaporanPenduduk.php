@@ -32,11 +32,9 @@
 namespace App\Imports;
 
 use App\Models\LaporanPenduduk;
-use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -91,7 +89,7 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
             }
 
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             DB::rollBack();
         }

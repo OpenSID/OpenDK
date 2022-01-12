@@ -35,7 +35,6 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -107,9 +106,9 @@ class EpidemiPenyakitController extends Controller
         try {
             (new ImporEpidemiPenyakit($request->only('penyakit_id', 'bulan', 'tahun')))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -148,7 +147,7 @@ class EpidemiPenyakitController extends Controller
 
         try {
             EpidemiPenyakit::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -166,7 +165,7 @@ class EpidemiPenyakitController extends Controller
     {
         try {
             EpidemiPenyakit::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             return redirect()->route('data.epidemi-penyakit.index')->with('error', 'Data gagal dihapus!');
         }

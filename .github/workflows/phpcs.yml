@@ -1,14 +1,6 @@
-name: Fix styling
+name: Check & fix styling
 
-on:
-  push:
-    branches:
-      - master
-      - dev
-  pull_request:
-    branches:
-      - master
-      - dev
+on: [push]
 
 jobs:
   php-cs-fixer:

@@ -42,8 +42,8 @@ class CounterController extends Controller
         $page_title       = 'Statistik Pengunjung';
         $page_description = 'Jumlah Statistik Pengunjung Website';
         $top_pages        = $this->geTopPage();
+
         return view('counter.index', compact('page_title', 'page_description', 'top_pages'));
-        // dd($top_pages);
     }
 
     protected function geTopPage()

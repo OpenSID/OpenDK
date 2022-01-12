@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -98,9 +97,9 @@ class TingkatPendidikanController extends Controller
         try {
             (new ImporTingkatPendidikan($request->only(['desa_id', 'tahun', 'semester'])))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -141,9 +140,9 @@ class TingkatPendidikanController extends Controller
 
         try {
             TingkatPendidikan::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!' . $e->getMessage());
+            return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
         return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil diubah!');
@@ -159,7 +158,7 @@ class TingkatPendidikanController extends Controller
     {
         try {
             TingkatPendidikan::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }

@@ -33,9 +33,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
@@ -63,9 +61,9 @@ class AuthController extends Controller
                 return back()->withInput()->with('error', 'Email atau Password Salah!');
             }
             return redirect()->route('dashboard');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Gagal Masuk!' . $e);
+            return back()->withInput()->with('error', 'Gagal Masuk!');
         }
     }
 
@@ -106,7 +104,7 @@ class AuthController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('/');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();

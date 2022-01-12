@@ -37,7 +37,6 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -92,7 +91,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
@@ -152,7 +151,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
@@ -179,7 +178,7 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
@@ -201,7 +200,7 @@ class UserController extends Controller
 
             flash()->success(trans('general.suspend-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->success(trans('general.suspend-error'));
             return redirect()->route('setting.user.index');
@@ -223,7 +222,7 @@ class UserController extends Controller
 
             flash()->success(trans('general.active-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             report($e);
             flash()->success(trans('general.active-error'));
             return redirect()->route('setting.user.index');

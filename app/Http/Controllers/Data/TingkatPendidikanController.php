@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TingkatPendidikanRequest;
+use App\Imports\ImporTingkatPendidikan;
+use App\Models\TingkatPendidikan;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Models\TingkatPendidikan;
-use App\Http\Controllers\Controller;
-use App\Imports\ImporTingkatPendidikan;
-use App\Http\Requests\TingkatPendidikanRequest;
 
 class TingkatPendidikanController extends Controller
 {

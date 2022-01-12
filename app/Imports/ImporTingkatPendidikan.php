@@ -33,13 +33,13 @@ namespace App\Imports;
 
 use App\Models\LogImport;
 use App\Models\TingkatPendidikan;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -69,14 +69,13 @@ class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkR
         DB::beginTransaction();
 
         try {
-
             $import = LogImport::create([
                 'nama_tabel' => 'das_tingkat_pendidikan',
                 'desa_id'    => $this->request['desa_id'],
                 'bulan'      => now()->month,
                 'tahun'      => $this->request['tahun'],
             ]);
-            
+
             foreach ($collection as $value) {
                 $insert = [
                     'desa_id'                 => $this->request['desa_id'],
@@ -96,7 +95,7 @@ class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkR
                     'tahun'        => $insert['tahun'],
                 ], $insert);
             }
-            
+
             DB::commit();
         } catch (\Exception $e) {
             report($e);

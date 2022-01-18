@@ -27,6 +27,6 @@ assignees: ''
 
 | Tanya                    | Jawab
 | ----------------  | ---
-| Versi OpenSID     | 19.xx
+| Versi OpenDK     | xx.xx.xx
 | Versi PHP            | 
 | System operasi   |

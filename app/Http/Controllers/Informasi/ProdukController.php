@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProdukRequest;
 use App\Models\Produk;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 class ProdukController extends Controller
@@ -82,7 +81,6 @@ class ProdukController extends Controller
 
     public function store(ProdukRequest $request)
     {
-
         try {
             $input = $request->all();
             if ($request->hasFile('foto')) {

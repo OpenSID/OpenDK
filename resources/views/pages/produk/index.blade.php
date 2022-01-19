@@ -32,7 +32,7 @@
             <div class="separator clear-left">
                 <p class="btn-add pull-right">
                     <i class="fa fa-whatsapp fa-lg text-success"></i>
-                    <a target="_blank" href="https://api.whatsapp.com/send?phone=+6281242247435&text=Saya Ingin Beli {{ $item->produk }}" class="hidden-sm"> <strong class="text-success">Pesan</strong></a></p>
+                    <a target="_blank" href="https://api.whatsapp.com/send?phone=+{{ $item->kontak_pelapak }}&text=Saya Ingin Beli {{ $item->produk }}" class="hidden-sm"> <strong class="text-success">Pesan</strong></a></p>
                 <p class="btn-details">
                 Tersedia : {{ $item->stok }} {{ $item->satuan }}</p>
             </div>

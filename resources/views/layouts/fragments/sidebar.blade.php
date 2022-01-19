@@ -23,6 +23,9 @@ $user = Sentinel::getUser();
                 </span>
                     </a>
                     <ul class="treeview-menu">
+                        <li {{ (Request::is(['informasi/produk/*', 'informasi/produk/index', 'informasi/produk'])? 'class=active' : '') }}>
+                            <a href="{{ route('informasi.produk.index') }}"><i class="fa fa-circle-o"></i>Lapak</a>
+                        </li>
                         <li {{ (Request::is(['informasi/prosedur/*', 'informasi/prosedur/index', 'informasi/prosedur'])? 'class=active' : '') }}>
                             <a href="{{ route('informasi.prosedur.index') }}"><i class="fa fa-circle-o"></i>Prosedur</a>
                         </li>

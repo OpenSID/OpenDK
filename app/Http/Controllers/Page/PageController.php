@@ -44,12 +44,17 @@ class PageController extends Controller
 {
     protected $data = [];
 
-    public function index()
+    public function index(Request $request)
     {
         Counter::count('beranda');
 
         $this->data = $this->GetFeeds();
-
+        $req = $request->cari;
+        if ($req) {
+            $artikel          = Artikel::where('judul', 'LIKE', $req)->latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        } else {
+            $artikel          = Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        }
         $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
         return view('pages.index', [
@@ -58,16 +63,16 @@ class PageController extends Controller
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
+            'artikel'          => $artikel
         ]);
     }
 
     private function GetFeeds()
     {
         $all_desa = DataDesa::websiteUrl()->get()
-        ->map(function ($desa) {
-            return $desa->website_url_feed;
-        })->all();
+            ->map(function ($desa) {
+                return $desa->website_url_feed;
+            })->all();
 
         foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);

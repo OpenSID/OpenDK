@@ -63,7 +63,7 @@ class KependudukanController extends Controller
         $data['list_desa']        = DataDesa::all();
 
         $data = array_merge($data, $this->createDashboardKependudukan('Semua', date('Y')));
-        dd($data);
+
         return view('pages.kependudukan.show_kependudukan')->with(['data' => $data]);
     }
 

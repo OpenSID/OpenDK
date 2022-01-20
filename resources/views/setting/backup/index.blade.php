@@ -8,7 +8,7 @@
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li class="active">{{$page_title}}</li>
     </ol>
 </section>
@@ -42,7 +42,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $backup->getFilename() }}</td>
-                                <td>{{ format_size_units($backup->getSize()) }}</td>
+                                <td>{{ formatbytes($backup->getSize()) }}</td>
                                 <td>{{ date('Y-m-d H:i:s', $backup->getMTime()) }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('setting.backup.index', ['action' => 'restore', 'file_name' => $backup->getFilename()]) }}"

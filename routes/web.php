@@ -160,16 +160,15 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::post('{fileName}/restore', ['as' => 'setting.backup.restore', 'uses' => 'Setting\BackupController@restore']);
                 Route::get('{fileName}/dl', ['as' => 'setting.backup.download', 'uses' => 'Setting\BackupController@download']);
             });
-            Route::namespace('Setting')->name('setting.')->group(function () {
-                Route::resource('backup', 'BackupController', ['except' => ['create', 'show', 'edit']]);
-
+            Route::name('setting.')->group(function () {
+                Route::resource('backup', 'Setting\BackupController', ['except' => ['create', 'show', 'edit']]);
                 Route::group(['prefix' => 'aplikasi'], function () {
                     Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
                     Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
                     Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
                 });
 
-                Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
+                Route::get('info-sistem', ['as' => 'info-sistem', 'uses' => 'LogViewerController@index']);
             });
 
             /**

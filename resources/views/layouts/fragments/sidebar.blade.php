@@ -242,15 +242,9 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/user/*', 'setting/user'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                         @endif
-<<<<<<< HEAD
                         @if($user->hasAnyAccess(['admin', 'setting-database']))
                         <li {{ (Request::is(['setting/backup/*', 'setting/backup'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.backup.index') }}"><i class="fa fa-circle-o"></i>Database</a></li>
-=======
-                        @if($user->hasAnyAccess(['admin', 'setting-aplikasi']))
-                        <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
-                                    href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
->>>>>>> upstream/master
                         @endif
                         @if($user->hasAnyAccess(['admin', 'setting-info-sistem']))
                         <li {{ (Request::is(['setting/info-sistem/*', 'setting/info-sistem'])? 'class=active' : '') }}><a

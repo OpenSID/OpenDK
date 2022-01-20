@@ -43,10 +43,6 @@
           {{-- <li class="listNavbottom"> <strong><a href="https://yourdomain.com/kontak" target="_blank"> Kontak </a></strong> </li> --}}
         </ul>
       </div>
-<<<<<<< HEAD
-      <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i>  <a href="https://github.com/openSID/openDK" target="_blank"> openDK </a> .</strong> Hak cipta dilindungi. 
-    </div>
-=======
 
       <!-- To the right -->
       <div class="pull-right hidden-xs">
@@ -55,5 +51,4 @@
     <!-- Default to the left -->
     <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i></strong> Hak cipta dilindungi.
   </div>
->>>>>>> upstream/master
 </footer>

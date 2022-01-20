@@ -69,6 +69,23 @@ $user = Sentinel::getUser();
                             </ul>
                         </li>
                         @endif
+                        @if($user->hasAnyAccess(['admin', 'data-pegawai']))
+                        <li class="treeview (Request::is(['data/pegawai/*', 'data/pegawai', 'data/jabatan/*', 'data/jabatan'])? 'class=active' : '') }}">
+                            <a href="#"><i class="fa fa-circle-o"></i>Kepegawaian
+                                <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                            </a>    
+                            <ul class="treeview-menu">
+                                <li {{ (Request::is(['data/jabatan/*', 'data/jabatan'])? 'class=active' : '') }}>
+                                    <a href="{{ route('data.jabatan.index') }}"><i class="fa fa-circle-o"></i>Data Jabatan</a>
+                                </li>
+                                <li {{ (Request::is(['data/pegawai/*', 'data/pegawai'])? 'class=active' : '') }}>
+                                    <a href="{{ route('data.pegawai.index') }}"><i class="fa fa-circle-o"></i>Data Pegawai</a>
+                                </li>
+                            </ul>
+                        </li>
+                        @endif
                         @if($user->hasAnyAccess(['admin', 'data-penduduk']))
                             <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga', 'data/laporan-penduduk'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
@@ -225,9 +242,15 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/user/*', 'setting/user'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                         @endif
+<<<<<<< HEAD
+                        @if($user->hasAnyAccess(['admin', 'setting-database']))
+                        <li {{ (Request::is(['setting/backup/*', 'setting/backup'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.backup.index') }}"><i class="fa fa-circle-o"></i>Database</a></li>
+=======
                         @if($user->hasAnyAccess(['admin', 'setting-aplikasi']))
                         <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
+>>>>>>> upstream/master
                         @endif
                         @if($user->hasAnyAccess(['admin', 'setting-info-sistem']))
                         <li {{ (Request::is(['setting/info-sistem/*', 'setting/info-sistem'])? 'class=active' : '') }}><a

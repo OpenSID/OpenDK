@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -89,7 +89,7 @@ class LaporanApbdesController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = asset('storage/apbdes/' . $row->nama_file);
-                $data['download_url'] = route('data.laporan-apbdes.destroy', $row->id);
+                $data['download_url'] = route('data.laporan-apbdes.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -166,5 +166,22 @@ class LaporanApbdesController extends Controller
         }
 
         return redirect()->route('data.laporan-apbdes.index')->with('success', 'Import data sukses.');
+    }
+
+    /**
+     * Download the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function download($id)
+    {
+        try {
+            $getFile = LaporanApbdes::findOrFail($id);
+
+            return Storage::download('public/apbdes/' . $getFile->nama_file);
+        } catch (Exception $e) {
+            return back()->with('error', 'Dokumen tidak ditemukan');
+        }
     }
 }

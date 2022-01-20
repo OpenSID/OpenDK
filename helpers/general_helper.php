@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -305,6 +305,17 @@ function is_img($url = null, $img = '/img/no-image.png')
 function is_logo($url = '', $file = '/img/logo.png')
 {
     return is_img($url, $file);
+}
+
+function is_user($url = null, $sex = 1)
+{
+    if ($url) {
+        $url = 'storage/penduduk/foto/' . $url;
+    }
+
+    $default = 'img/pengguna/' . (($sex == 2) ? 'wuser.png' : 'kuser.png');
+
+    return is_img($url, $default);
 }
 
 if (! function_exists('divnum')) {

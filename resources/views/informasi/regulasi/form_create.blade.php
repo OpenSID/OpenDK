@@ -27,12 +27,12 @@
         @endif
 
         @if(isset($regulasi->file_regulasi) && $regulasi->mime_type == 'pdf')
-            <object data="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @endif" type="application/pdf" width="500" height="400" class="" id="showpdf"> </object>
+            <object data="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
         @endif
 
         <img class="hide" src="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
 
-        <object data="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @endif" type="application/pdf" width="500" height="400" class="hide" id="showpdf"> </object>
+        <object data="@if(isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
     </div>
 </div>
 
@@ -58,7 +58,7 @@
                             $('#showgambar').removeClass('hide');
                             $('#showpdf').addClass('hide');
                         }else{
-                            $('#showpdf').attr('data', e.target.result);
+                            $('#showpdf').attr('data', e.target.result + '#toolbar=1');
                             $('#showpdf').removeClass('hide');
                             $('#showgambar').addClass('hide');
                         }

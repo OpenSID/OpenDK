@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -44,12 +44,17 @@ class PageController extends Controller
 {
     protected $data = [];
 
-    public function index()
+    public function index(Request $request)
     {
         Counter::count('beranda');
 
         $this->data = $this->GetFeeds();
-
+        $req = $request->cari;
+        if ($req) {
+            $artikel          = Artikel::where('judul', 'LIKE', $req)->latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        } else {
+            $artikel          = Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        }
         $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
         return view('pages.index', [
@@ -58,16 +63,16 @@ class PageController extends Controller
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
+            'artikel'          => $artikel
         ]);
     }
 
     private function GetFeeds()
     {
         $all_desa = DataDesa::websiteUrl()->get()
-        ->map(function ($desa) {
-            return $desa->website_url_feed;
-        })->all();
+            ->map(function ($desa) {
+                return $desa->website_url_feed;
+            })->all();
 
         foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);
@@ -158,9 +163,12 @@ class PageController extends Controller
 
     public function detailBerita($slug)
     {
-        return view('pages.berita.detail', [
-            'artikel' => Artikel::where('slug', $slug)->status()->firstOrFail()
-        ]);
+        $artikel = Artikel::where('slug', $slug)->status()->firstOrFail();
+        $page_title       = $artikel->judul;
+        $page_description = substr($artikel->isi, 0, 300) . ' ...';
+        $page_image = $artikel->gambar;
+
+        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel'));
     }
 
     public function eventDetail($slug)

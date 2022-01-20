@@ -9,7 +9,6 @@ $komplains = Komplain::where('status', '=', 'SELESAI')->orderBy('created_at', 'd
 <div class="box box-primary">
     <div class="box-header">
         <i class="fa fa-check-square-o text-blue"></i>
-
         <h4 class="box-title text-bold text-blue">KELUHAN TERJAWAB</h4>
     </div>
     <!-- /.box-header -->

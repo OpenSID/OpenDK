@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -64,7 +64,7 @@ class KependudukanController extends Controller
 
         $data = array_merge($data, $this->createDashboardKependudukan('Semua', date('Y')));
 
-        return view('pages.kependudukan.show_kependudukan')->with($data);
+        return view('pages.kependudukan.show_kependudukan')->with(['data' => $data]);
     }
 
     /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
@@ -237,8 +237,8 @@ class KependudukanController extends Controller
             ->leftJoin('ref_pendidikan_kk', 'pendidikan_kk_id', '=', 'ref_pendidikan_kk.id');
         // SD
         $total_sd = (clone $query_pendidikan)
-                ->where('pendidikan_kk_id', 3)
-                ->count();
+            ->where('pendidikan_kk_id', 3)
+            ->count();
 
         // SMP
         $total_sltp = (clone $query_pendidikan)
@@ -247,27 +247,27 @@ class KependudukanController extends Controller
 
         //SMA
         $total_slta = (clone $query_pendidikan)
-                ->where('pendidikan_kk_id', 5)
-                ->count();
+            ->where('pendidikan_kk_id', 5)
+            ->count();
 
         // DIPLOMA
         $total_diploma = (clone $query_pendidikan)
-                ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
-                ->count();
+            ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
+            ->count();
 
         // SARJANA
         $total_sarjana = (clone $query_pendidikan)
-                ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
-                ->count();
+            ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
+            ->count();
 
         $data_pendidikan[] = [
-                'year'    => $year,
-                'SD'      => $total_sd,
-                'SLTP'    => $total_sltp,
-                'SLTA'    => $total_slta,
-                'DIPLOMA' => $total_diploma,
-                'SARJANA' => $total_sarjana,
-            ];
+            'year'    => $year,
+            'SD'      => $total_sd,
+            'SLTP'    => $total_sltp,
+            'SLTA'    => $total_slta,
+            'DIPLOMA' => $total_diploma,
+            'SARJANA' => $total_sarjana,
+        ];
 
         return $data_pendidikan;
     }
@@ -332,7 +332,7 @@ class KependudukanController extends Controller
         $agama  = DB::table('ref_agama')->orderBy('id')->get();
         $colors = [1 => '#dcaf1e', 2 => '#dc9f1e', 3 => '#dc8f1e', 4 => '#dc7f1e', 5 => '#dc6f1e', 6 => '#dc5f1e', 7 => '#dc4f1e'];
         foreach ($agama as $val) {
-            $total =$this->penduduk->getPendudukAktif($did, $year)
+            $total = $this->penduduk->getPendudukAktif($did, $year)
                 ->where('agama_id', $val->id)
                 ->count();
 

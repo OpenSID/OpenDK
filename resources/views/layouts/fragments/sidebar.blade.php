@@ -23,6 +23,9 @@ $user = Sentinel::getUser();
                 </span>
                     </a>
                     <ul class="treeview-menu">
+                        <li {{ (Request::is(['informasi/produk/*', 'informasi/produk/index', 'informasi/produk'])? 'class=active' : '') }}>
+                            <a href="{{ route('informasi.produk.index') }}"><i class="fa fa-circle-o"></i>Lapak</a>
+                        </li>
                         <li {{ (Request::is(['informasi/prosedur/*', 'informasi/prosedur/index', 'informasi/prosedur'])? 'class=active' : '') }}>
                             <a href="{{ route('informasi.prosedur.index') }}"><i class="fa fa-circle-o"></i>Prosedur</a>
                         </li>
@@ -248,6 +251,10 @@ $user = Sentinel::getUser();
                         <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
 >>>>>>> upstream/master
+                        @endif
+                        @if($user->hasAnyAccess(['admin', 'setting-info-sistem']))
+                        <li {{ (Request::is(['setting/info-sistem/*', 'setting/info-sistem'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
                         @endif
                     </ul>
                 </li>

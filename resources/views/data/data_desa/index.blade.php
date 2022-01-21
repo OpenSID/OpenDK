@@ -61,7 +61,7 @@
             ajax: "{!! route( 'data.data-desa.getdata' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
-                {data: 'desa_id', name: 'desa_id'},
+                {data: 'nama_desa', name: 'nama_desa'},
                 {data: 'nama', name: 'nama'},
                 {data: 'website', name: 'website'},
                 {data: 'luas_wilayah', name: 'luas_wilayah'},

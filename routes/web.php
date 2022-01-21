@@ -422,8 +422,6 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
-                    Route::get('import', ['as' => 'data.keluarga.import', 'uses' => 'KeluargaController@import']);
-                    Route::post('import-excel', ['as' => 'data.keluarga.import-excel', 'uses' => 'KeluargaController@importExcel']);
                 });
 
                 //Routes Resource Laporan Penduduk

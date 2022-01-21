@@ -48,6 +48,11 @@ class Keluarga extends Model
         'rt',
     ];
 
+    protected $with = [
+        'kepala_kk',
+        'desa',
+    ];
+
     public function cluster()
     {
         return $this->hasOne(WilClusterDesa::class, 'id', 'id_cluster');

@@ -219,9 +219,9 @@ class DataDesaController extends Controller
             }
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan!' . $e);
+            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
         }
 
-        return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan!');
+        return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan');
     }
 }

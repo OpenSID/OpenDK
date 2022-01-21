@@ -63,7 +63,7 @@ class DataDesaController extends Controller
 
     public function getDataDesa()
     {
-        return DataTables::of(DataDesa::all())
+        return DataTables::of(DataDesa::get())
             ->addColumn('aksi', function ($row) {
                 if ($this->profil->kecamatan_id) {
                     $data['edit_url']   = route('data.data-desa.edit', $row->id);
@@ -197,7 +197,8 @@ class DataDesaController extends Controller
                 'query' => [
                     'token' => $token,
                     'kode' => $this->profil->kecamatan_id,
-                ]
+                ],
+                'verify' => false,
             ]);
 
             if ($response->getStatusCode() === 200) {

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -59,20 +59,18 @@ class KeluargaController extends Controller
      */
     public function getKeluarga()
     {
-        return DataTables::of(Keluarga::query())
-            ->addColumn('aksi', function ($row) {
-                $data['show_url']   = route('data.keluarga.show', $row->id);
+        if (request()->ajax()) {
+            return DataTables::of(Keluarga::with(['kepala_kk', 'desa']))
+                ->addColumn('aksi', function ($row) {
+                    $data['show_url']   = route('data.keluarga.show', $row->id);
 
-                return view('forms.aksi', $data);
-            })
-            ->editColumn('nik_kepala', function ($row) {
-                if (isset($row->nik_kepala)) {
-                    $penduduk = Penduduk::where('nik', $row->nik_kepala)->first();
-                    return $penduduk->nama;
-                } else {
-                    return '';
-                }
-            })->make();
+                    return view('forms.aksi', $data);
+                })
+                ->addColumn('foto', function ($row) {
+                    return '<img src="' . is_user($row->kepala_kk->foto, $row->kepala_kk->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                })
+                ->rawColumns(['foto'])->make();
+        }
     }
 
     /**

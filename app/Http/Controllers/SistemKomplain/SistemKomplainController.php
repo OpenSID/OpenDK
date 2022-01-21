@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -35,7 +35,6 @@ use App\Http\Controllers\Controller;
 use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -87,7 +86,8 @@ class SistemKomplainController extends Controller
         try {
             $komplain = Komplain::where('komplain_id', '=', $request->post('q'))->firstOrFail();
             return redirect()->route('sistem-komplain.komplain', $komplain->slug);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->with('warning', 'Komplain tidak ditemukan!');
         }
     }
@@ -171,7 +171,8 @@ class SistemKomplainController extends Controller
             }
 
             $komplain->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
 
@@ -246,7 +247,8 @@ class SistemKomplainController extends Controller
             }
 
             $komplain->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
 
@@ -263,7 +265,8 @@ class SistemKomplainController extends Controller
     {
         try {
             Komplain::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('sistem-komplain.index')->with('error', 'Keluhan gagal dihapus!');
         }
 
@@ -280,7 +283,8 @@ class SistemKomplainController extends Controller
     {
         try {
             $komplain = Komplain::where('slug', '=', $slug)->first();
-        } catch (Exception $ex) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', $ex);
         }
         $camat            = Profil::first();
@@ -324,7 +328,8 @@ class SistemKomplainController extends Controller
                     'msg'    => 'Jawaban  berhasil disimpan!',
                 ];
                 return response()->json($response);
-            } catch (Exception $ex) {
+            } catch (\Exception $e) {
+                report($e);
                 $response = [
                     'status' => 'error',
                     'msg'    => 'Jawaban  gagal disimpan!',

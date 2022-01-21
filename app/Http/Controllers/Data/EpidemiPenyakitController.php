@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -35,7 +35,6 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -107,8 +106,9 @@ class EpidemiPenyakitController extends Controller
         try {
             (new ImporEpidemiPenyakit($request->only('penyakit_id', 'bulan', 'tahun')))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -147,7 +147,8 @@ class EpidemiPenyakitController extends Controller
 
         try {
             EpidemiPenyakit::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -164,7 +165,8 @@ class EpidemiPenyakitController extends Controller
     {
         try {
             EpidemiPenyakit::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('data.epidemi-penyakit.index')->with('error', 'Data gagal dihapus!');
         }
 

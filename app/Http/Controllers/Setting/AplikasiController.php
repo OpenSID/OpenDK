@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -33,7 +33,6 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\SettingAplikasi;
-use Exception;
 use Illuminate\Http\Request;
 
 class AplikasiController extends Controller
@@ -79,8 +78,9 @@ class AplikasiController extends Controller
             $penyakit->save();
 
             $this->browser_title = $request->input('value');
-        } catch (Exception $e) {
-            return back()->with('error', 'Pengaturan aplikasi gagal diubah!' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Pengaturan aplikasi gagal diubah!');
         }
 
         return redirect()->route('setting.aplikasi.index')->with('success', 'Pengaturan aplikasi berhasil diubah!.');

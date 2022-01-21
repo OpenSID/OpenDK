@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -34,9 +34,7 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\PesertaProgram;
 use App\Models\Program;
-use Exception;
 use Illuminate\Http\Request;
-
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
@@ -88,8 +86,9 @@ class ProgramBantuanController extends Controller
 
         try {
             Program::create($request->all());
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil disimpan!');
@@ -119,8 +118,9 @@ class ProgramBantuanController extends Controller
             $program = Program::findOrFail($id);
             $program->fill($request->all());
             $program->update();
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil disimpan!');
@@ -142,8 +142,9 @@ class ProgramBantuanController extends Controller
         try {
             Program::findOrFail($id)->delete();
             PesertaProgram::where('program_id', $id)->delete();
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal dihapus!' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data gagal dihapus!');
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil dihapus!');
@@ -168,8 +169,9 @@ class ProgramBantuanController extends Controller
 
         try {
             PesertaProgram::create($request->all());
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
         return redirect()->route('data.program-bantuan.show', $request->input('program_id'))->with('success', 'Data berhasil disimpan!');

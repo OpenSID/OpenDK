@@ -14,62 +14,53 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
-    @include('partials.flash_message')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <div class="float-right">
-                        <div class="btn-group">
-                            <a href="{{ route('data.laporan-apbdes.import') }}">
-                                <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i> Import</button>
-                            </a>
-                        </div>
-                    </div> 
-                </div>
 
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label>Desa</label>
-                                <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa</option>
-                                    @foreach($list_desa as $desa)
-                                        <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered" id="apbdes-table">
-                                    <thead>
-                                        <tr>
-                                            <th style="max-width: 100px;">Aksi</th>
-                                            <th>Desa</th>
-                                            <th>Nama</th>
-                                            <th>Tahun</th>
-                                            <th>Semester</th>
-                                            <th>Tgl. Lapor</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
+    @include('partials.flash_message')
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="float-right">
+                <div class="btn-group">
+                    <a href="{{ route('data.laporan-apbdes.import') }}">
+                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
+                    </a>
+                </div>
+            </div> 
+        </div>
+
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Desa</label>
+                        <select class="form-control" id="list_desa">
+                            <option value="Semua">Semua Desa</option>
+                            @foreach($list_desa as $desa)
+                                <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
+            </div>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="apbdes-table">
+                    <thead>
+                        <tr>
+                            <th style="max-width: 100px;">Aksi</th>
+                            <th>Desa</th>
+                            <th>Nama</th>
+                            <th>Tahun</th>
+                            <th>Semester</th>
+                            <th>Tgl. Lapor</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_select2')
 @include('partials.asset_datatables')

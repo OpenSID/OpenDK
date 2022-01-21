@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Main content -->
 <div class="col-md-8">
     <div class="box box-primary">
         <div class="box-header with-border">
@@ -69,7 +68,6 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <!-- /.col -->
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-red"><i class="fa fa-female"></i></span>
@@ -85,7 +83,6 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <!-- /.col -->
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span><img src="{{asset("img/cacat_logo.png")}}" style="width:90px;height:90px;float:left;">
@@ -102,11 +99,8 @@
             </div>
             <!-- /.info-box -->
         </div>
-        <!-- /.col -->
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
-        <!-- /.col -->
-        <!-- /.col -->
     </div>
     <!-- /.row -->
     <div class="row">
@@ -243,7 +237,6 @@
         <!-- /.row -->
     </div>
 </div>
-<!-- /.content -->
 @endsection
 @include('partials.asset_datatables')
 @include('partials.asset_amcharts')
@@ -1281,16 +1274,11 @@
                     // {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                     {data: 'nik', name: 'nik'},
                     {data: 'foto', name: 'foto',
-                    "searchable": false,
-                    "orderable":false,
-                    "render": function (data, type, row) {
-                        if ( !row.foto == '') {
-                            return "<img src=\"{{ asset('storage/penduduk/foto') }}" + "/" + data + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
-                        }
-                        else {
-                            return "<img src=\"{{ asset('storage/penduduk/foto/kuser.png') }}" + "\" class=\"img-rounded\" alt=\"Foto Penduduk\" height=\"50\"/>";
-                        }
-                    }
+                        "searchable": false,
+                        "orderable":false,
+                        "render": function (data, type, row) {
+                            return `<img src="{{ is_user(${data.foto}, ${data.sex}) }}" class="img-rounded" alt="Foto Penduduk" height="50"/>`;
+                        },
                     },
                     {data: 'nama', name: 'nama'},
                     {data: 'no_kk', name: 'no_kk'},

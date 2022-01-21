@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -33,7 +33,6 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
-use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -115,7 +114,8 @@ class DataDesaController extends Controller
             $desa->fill($request->all());
             $desa->profil_id = $this->profil->id;
             $desa->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -161,7 +161,8 @@ class DataDesaController extends Controller
             $desa->fill($request->all());
             $desa->profil_id = $this->profil->id;
             $desa->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -178,7 +179,8 @@ class DataDesaController extends Controller
     {
         try {
             DataDesa::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!');
         }
 
@@ -215,7 +217,8 @@ class DataDesaController extends Controller
                     ], $insert);
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan!' . $e);
         }
 

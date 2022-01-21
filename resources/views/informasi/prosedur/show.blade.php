@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,24 +13,14 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <a href="{{ route('informasi.prosedur.index') }}">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Kembali</button>
+                        <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>&nbsp; Kembali</button>
                     </a>
-                    @unless(!Sentinel::check())
-
-                        <a href="{!! route('informasi.prosedur.edit', $prosedur->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah </a>
-
-                        <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.prosedur.destroy', $prosedur->id) !!}" data-button="delete" id="deleteModal">
-                            <button type="button" class="btn btn-icon btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp; Hapus</button>
-                        </a>
-
-                    @endunless
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -44,7 +33,7 @@
                             @endif
 
                             @if(isset($prosedur->file_prosedur) && $prosedur->mime_type == 'pdf')
-                                <object data="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur) }} @endif" type="application/pdf" width="100%" height="500" class="" id="showpdf"> </object>
+                                <object data="@if(isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
                             @endif
                         </div>
                     </div>
@@ -53,10 +42,7 @@
 
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 
 @push('scripts')

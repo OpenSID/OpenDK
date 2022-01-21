@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -37,7 +37,6 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\Role;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
@@ -92,7 +91,8 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }
@@ -151,7 +151,8 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -177,7 +178,8 @@ class UserController extends Controller
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -198,7 +200,8 @@ class UserController extends Controller
 
             flash()->success(trans('general.suspend-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->success(trans('general.suspend-error'));
             return redirect()->route('setting.user.index');
         }
@@ -219,7 +222,8 @@ class UserController extends Controller
 
             flash()->success(trans('general.active-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->success(trans('general.active-error'));
             return redirect()->route('setting.user.index');
         }

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,23 +24,27 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
 
 namespace App\Imports;
 
+use App\Models\DataDesa;
+use App\Models\Keluarga;
 use App\Models\Penduduk;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -57,8 +61,39 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
      */
     public function collection(Collection $collection)
     {
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+
         foreach ($collection as $value) {
-            $insert = [
+
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                continue;
+            }
+
+            // Data Keluarga
+            if ($value['hubungan_keluarga'] == 1) {
+                $keluarga = [
+                    'no_kk'                 => $value['nomor_kk'],
+                    'nik_kepala'            => $value['nomor_nik'],
+                    'tgl_daftar'            => $value['tgl_daftar'] ?? now(),
+                    'tgl_cetak_kk'          => $value['tgl_cetak_kk'] ?? now(),
+                    'alamat'                => $value['alamat'],
+                    'dusun'                 => $value['dusun'],
+                    'rw'                    => $value['rw'],
+                    'rt'                    => $value['rt'],
+                    'desa_id'               => $value['desa_id'],
+                    'created_at'            => now(),
+                    'updated_at'            => now(),
+                ];
+
+                Keluarga::updateOrInsert([
+                    'desa_id'      => $keluarga['desa_id'],
+                    'no_kk'        => $keluarga['no_kk']
+                ], $keluarga);
+            }
+
+            // Data Penduduk
+            $penduduk = [
                 'nik'                   => $value['nomor_nik'],
                 'nama'                  => $value['nama'],
                 'no_kk'                 => $value['nomor_kk'],
@@ -97,17 +132,17 @@ class ImporPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, S
                 'rw'              => $value['rw'],
                 'rt'              => $value['rt'],
                 'desa_id'         => $value['desa_id'],
-                'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],
                 'created_at'      => $value['created_at'],
                 'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
             ];
+
             Penduduk::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'id_pend_desa' => $insert['id_pend_desa']
-            ], $insert);
+                'desa_id'      => $penduduk['desa_id'],
+                'nik'          => $penduduk['nik'],
+            ], $penduduk);
 
             if ($value['foto']) {
                 $temp_foto = 'temp/penduduk/foto/' . $value['foto'];

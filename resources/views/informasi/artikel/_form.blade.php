@@ -29,7 +29,7 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Gambar</label>
 
-                    <img src="{{ is_img($artikel->gambar) }}" id="showgambar" style="width:100%; max-height:250px; float:left;"/>
+                    <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar" style="width:100%; max-height:250px; float:left;"/>
 
                     {!! Form::file('gambar', ['placeholder' => 'Gambar', 'class' => 'form-control', 'id' => 'file-artikel']) !!}
                     @if ($errors->has('gambar')) <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span> @endif

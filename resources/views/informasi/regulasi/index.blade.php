@@ -14,68 +14,62 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
 
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
+                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-success btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp; Tambah</a>
                 </div>
-                <!-- /.box-header -->
                 @if (count($regulasi) > 0)
-                    <div class="box-body no-padding">
+                    <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th style="width: 150px">Aksi</th>
+                                    <th>Judul Regulasi</th>
+                                </tr>
 
-                        <table class="table table-striped">
-                            <tr>
-                                <th>Judul Regulasi</th>
-                                <th style="width: 150px">Aksi</th>
-                            </tr>
+                                @foreach($regulasi as $item)
+                                <tr>
+                                    @unless(!Sentinel::check())
+                                    <td class="text-center text-nowrap">
+                                        <?php
 
-                            @foreach($regulasi as $item)
-                            <tr>
+                                            // TODO : Pindahkan ke controller dan gunakan datatable
+                                            $data['show_url']   = route('informasi.regulasi.show', $item->id);
+                                            $data['edit_url']   = route('informasi.regulasi.edit', $item->id);
+                                            $data['delete_url'] = route('informasi.regulasi.destroy', $item->id);
+                                            $data['download_url'] = route('informasi.regulasi.download', $item->id);
 
-                                <td>{{ $item->judul }}</td>
+                                            echo view('forms.aksi', $data);
+                                        ?>
+                                    </td>
+                                    @endunless
 
-                                @unless(!Sentinel::check())
-                                <td>
-                                    <?php
+                                    <td>{{ $item->judul }}</td>
 
-                                        // TODO : Pindahkan ke controller dan gunakan datatable
-                                        $data['show_url']   = route('informasi.regulasi.show', $item->id);
-                                        $data['edit_url']   = route('informasi.regulasi.edit', $item->id);
-                                        $data['delete_url'] = route('informasi.regulasi.destroy', $item->id);
+                                </tr>
+                                @endforeach
+                            </table>
+                        </div>
 
-                                        echo view('forms.aksi', $data);
-                                    ?>
-                                </td>
-                                @endunless
-
-                            </tr>
-                            @endforeach
-                        </table>
-                    </div>
-
-                    <!-- /.box-body -->
-                    <div class="box-footer clearfix">
-                        {!! $regulasi->links() !!}
+                        <div class="box-footer clearfix">
+                            {!! $regulasi->links() !!}
+                        </div>
                     </div>
                 @else
                     <div class="box-body">
                         <h3>Data tidak ditemukan.</h3>
                     </div>
                 @endif
-                    <!-- /.box-footer -->
             </div>
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 
 @push('scripts')

@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,7 +13,6 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -40,14 +38,11 @@
                     @include('informasi.prosedur.form_create')
 
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
-                            <a href="{{ route('informasi.prosedur.index') }}">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
+                            <button type="reset" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
+                            <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
                         </div>
                     </div>
                 </div>
@@ -55,10 +50,7 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 
 @push('scripts')
@@ -81,7 +73,7 @@
                             $('#showgambar').removeClass('hide');
                             $('#showpdf').addClass('hide');
                         }else{
-                            $('#showpdf').attr('data', e.target.result);
+                            $('#showpdf').attr('data', e.target.result + '#toolbar=1');
                             $('#showpdf').removeClass('hide');
                             $('#showgambar').addClass('hide');
                         }

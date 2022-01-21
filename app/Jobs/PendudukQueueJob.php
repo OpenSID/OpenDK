@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -32,14 +32,12 @@
 namespace App\Jobs;
 
 use App\Models\Penduduk;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PendudukQueueJob implements ShouldQueue
@@ -68,10 +66,10 @@ class PendudukQueueJob implements ShouldQueue
      *
      * @return void
      */
-    public function failed(Exception $e)
+    public function failed(\Exception $e)
     {
         // TODO: Send notification when job failure.
-        Log::debug($e->getMessage());
+        report($e);
     }
 
     /**
@@ -102,11 +100,9 @@ class PendudukQueueJob implements ShouldQueue
             }
 
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             DB::rollBack();
-
-            // debug log when fail.
-            Log::debug($e->getMessage());
         }
     }
 }

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -32,15 +32,13 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
-use App\Imports\ImporPenduduk;
+use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
-use ZipArchive;
 
 class PendudukController extends Controller
 {
@@ -66,42 +64,49 @@ class PendudukController extends Controller
      */
     public function getPenduduk(Request $request)
     {
-        $desa = $request->input('desa');
+        if (request()->ajax()) {
+            $desa = $request->input('desa');
 
-        $query = DB::table('das_penduduk')
-            ->leftJoin('das_data_desa', 'das_penduduk.desa_id', '=', 'das_data_desa.desa_id')
-            ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
-            ->leftJoin('ref_kawin', 'das_penduduk.status_kawin', '=', 'ref_kawin.id')
-            ->leftJoin('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
-            ->select([
-                'das_penduduk.id',
-                'das_penduduk.foto',
-                'das_penduduk.nik',
-                'das_penduduk.nama',
-                'das_penduduk.no_kk',
-                'das_penduduk.alamat',
-                'das_data_desa.nama as nama_desa',
-                'ref_pendidikan_kk.nama as pendidikan',
-                'das_penduduk.tanggal_lahir',
-                'ref_kawin.nama as status_kawin',
-                'ref_pekerjaan.nama as pekerjaan',
-            ])
-            ->when($desa, function ($query) use ($desa) {
-                return $desa === 'Semua'
-                    ? $query
-                    : $query->where('das_data_desa.desa_id', $desa);
-            })
-            ->where('status_dasar', 1);
+            $query = DB::table('das_penduduk')
+                ->leftJoin('das_data_desa', 'das_penduduk.desa_id', '=', 'das_data_desa.desa_id')
+                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
+                ->leftJoin('ref_kawin', 'das_penduduk.status_kawin', '=', 'ref_kawin.id')
+                ->leftJoin('ref_pekerjaan', 'das_penduduk.pekerjaan_id', '=', 'ref_pekerjaan.id')
+                ->select([
+                    'das_penduduk.id',
+                    'das_penduduk.foto',
+                    'das_penduduk.nik',
+                    'das_penduduk.nama',
+                    'das_penduduk.no_kk',
+                    'das_penduduk.sex',
+                    'das_penduduk.alamat',
+                    'das_data_desa.nama as nama_desa',
+                    'ref_pendidikan_kk.nama as pendidikan',
+                    'das_penduduk.tanggal_lahir',
+                    'ref_kawin.nama as status_kawin',
+                    'ref_pekerjaan.nama as pekerjaan',
+                ])
+                ->when($desa, function ($query) use ($desa) {
+                    return $desa === 'Semua'
+                        ? $query
+                        : $query->where('das_data_desa.desa_id', $desa);
+                })
+                ->where('status_dasar', 1);
 
-        return DataTables::of($query)
-            ->addColumn('aksi', function ($row) {
-                $data['show_url']   = route('data.penduduk.show', $row->id);
+            return DataTables::of($query)
+                ->addColumn('aksi', function ($row) {
+                    $data['show_url']   = route('data.penduduk.show', $row->id);
 
-                return view('forms.aksi', $data);
-            })
-            ->addColumn('tanggal_lahir', function ($row) {
-                return convert_born_date_to_age($row->tanggal_lahir);
-            })->make();
+                    return view('forms.aksi', $data);
+                })
+                ->addColumn('foto', function ($row) {
+                    return '<img src="' . is_user($row->foto, $row->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                })
+                ->addColumn('tanggal_lahir', function ($row) {
+                    return convert_born_date_to_age($row->tanggal_lahir);
+                })
+                ->rawColumns(['foto'])->make();
+        }
     }
 
     /**
@@ -155,7 +160,7 @@ class PendudukController extends Controller
             $extract = storage_path('app/temp/penduduk/foto/');
 
             // Ekstrak file
-            $zip = new ZipArchive();
+            $zip = new \ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
@@ -163,10 +168,11 @@ class PendudukController extends Controller
             $fileExtracted = glob($extract.'*.xlsx');
 
             // Proses impor excell
-            (new ImporPenduduk())
+            (new ImporPendudukKeluarga())
                 ->queue($extract . basename($fileExtracted[0]));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');

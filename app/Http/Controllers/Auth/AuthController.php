@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package	    OpenDK
  * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2021 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link	    https://github.com/OpenSID/opendk
  */
@@ -33,9 +33,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
-
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
@@ -63,8 +61,9 @@ class AuthController extends Controller
                 return back()->withInput()->with('error', 'Email atau Password Salah!');
             }
             return redirect()->route('dashboard');
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Gagal Masuk!' . $e);
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Gagal Masuk!');
         }
     }
 
@@ -105,7 +104,8 @@ class AuthController extends Controller
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('/');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->error(trans('message.user.create-error'));
             return back()->withInput();
         }

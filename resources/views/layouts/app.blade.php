@@ -13,7 +13,7 @@
     <link rel="canonical" href="{{ Request::url() }}">
     <meta itemprop="name" content="{{ $page_title ?? '' }}">
     <meta itemprop="description" content="{{ $page_description ?? '' }}.">
-    <meta itemprop="image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
+    <meta itemprop="image" content="{{ is_img($page_image ?? '') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{--
@@ -24,16 +24,16 @@
     <meta property="og:site_name" content="{{ \URL::to('') }}">
     <meta property="og:title" content="{{ $page_title ?? '' }}">
     <meta property="og:description" content="{{ $page_description ?? '' }}. ">
-    <meta property="og:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
-    <meta property="og:image:alt" content>
+    <meta property="og:image" content="{{ is_img($page_image ?? '') }}?auto=format&amp;fit=max&amp;w=1200">
+    <meta property="og:image:alt" content="{{ is_img($page_image ?? '') }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $page_title ?? '' }}">
     <meta name="twitter:description" content="{{ $page_description ?? '' }}. ">
-    <meta name="twitter:image" content="{{ asset('/icon/social.png?auto=format&amp;fit=max&amp;w=1200') }}">
+    <meta name="twitter:image" content="{{ is_img($page_image ?? '') }}?auto=format&amp;fit=max&amp;w=1200">
     <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }}">
 
     <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
-    <link rel="mask-icon" href="{{ asset('/icon/safari-pinned-tab.svg') }}" color="#5bbad5">
+    <link rel="mask-icon" href="{{ is_logo($profil->file_logo) }}" color="#5bbad5">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}" />
     
     <link href="{{ asset('/css/placeholder-loading.css') }}" rel="stylesheet">

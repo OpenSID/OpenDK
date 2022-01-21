@@ -1,11 +1,19 @@
-<?php
-use Illuminate\Support\Facades\URL;
-$user = Sentinel::getUser();
-?>
+@php $user = \Cartalyst\Sentinel\Laravel\Facades\Sentinel::getUser(); @endphp
+
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
+        <center>
+        <!-- <div class="user-panel"> -->
+                <img class="user-image" src="{{ is_logo($profil->file_logo) }}" alt="KD" width="42px" style="margin: 5px;">
+                <p style="font-size: 12px; color:white">
+                    {{ strtoupper('Pemerintah Kab. ' . $profil->nama_kabupaten) }}<br>
+                    {{  strtoupper('Kecamatan ' . $profil->nama_kecamatan) }}<br>
+                </p>
+        <!-- </div> -->
+        </center>
+
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu" data-widget="tree">
             @if(isset($user) && $user->hasAnyAccess(['admin', 'data-*', 'adminsikoma']))

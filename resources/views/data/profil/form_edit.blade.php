@@ -86,15 +86,9 @@
             </div>
         </div>
         <div class="form-group">
-<<<<<<< HEAD
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">File Struktur Organisasi</label>
-            
-            <div class="col-md-6 col-sm-6 col-xs-12">
-=======
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Struktur Organisasi</label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
->>>>>>> upstream/master
                 <input type="file" id="file_struktur" name="file_struktur_organisasi" accept="image/*" class="validate form-control"/>
                     <br>
                     <img src="{{ is_img($profil->file_struktur_organisasi) }}" id="showgambar" style="max-width:200px;max-height:200px;float:left;"/>

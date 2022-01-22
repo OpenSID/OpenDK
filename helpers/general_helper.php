@@ -39,7 +39,23 @@ use Illuminate\Support\Carbon;
  * @param string $content
  * @return string
  */
-if (! function_exists('get_tag_image')) {
+
+function formatBytes($bytes, $precision = 2)
+{
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
+
+    // Uncomment one of the following alternatives
+    // $bytes /= pow(1024, $pow);
+    // $bytes /= (1 << (10 * $pow));
+
+    return round($bytes, $precision) . ' ' . $units[$pow];
+}
+
+if (!function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
         if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
@@ -318,35 +334,35 @@ function is_user($url = null, $sex = 1)
     return is_img($url, $default);
 }
 
-if (! function_exists('divnum')) {
+if (!function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
-    function terbilang($angka)
-    {
-        $angka=abs($angka);
-        $baca =["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+function terbilang($angka)
+{
+    $angka = abs($angka);
+    $baca = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
 
-        $terbilang="";
-        if ($angka < 12) {
-            $terbilang= " " . $baca[$angka];
-        } elseif ($angka < 20) {
-            $terbilang= terbilang($angka - 10) . " Belas";
-        } elseif ($angka < 100) {
-            $terbilang= terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
-        } elseif ($angka < 200) {
-            $terbilang= " seratus" . terbilang($angka - 100);
-        } elseif ($angka < 1000) {
-            $terbilang= terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
-        } elseif ($angka < 2000) {
-            $terbilang= " seribu" . terbilang($angka - 1000);
-        } elseif ($angka < 1000000) {
-            $terbilang= terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
-        } elseif ($angka < 1000000000) {
-            $terbilang= terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
-        }
-
-        return $terbilang;
+    $terbilang = "";
+    if ($angka < 12) {
+        $terbilang = " " . $baca[$angka];
+    } elseif ($angka < 20) {
+        $terbilang = terbilang($angka - 10) . " Belas";
+    } elseif ($angka < 100) {
+        $terbilang = terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
+    } elseif ($angka < 200) {
+        $terbilang = " seratus" . terbilang($angka - 100);
+    } elseif ($angka < 1000) {
+        $terbilang = terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
+    } elseif ($angka < 2000) {
+        $terbilang = " seribu" . terbilang($angka - 1000);
+    } elseif ($angka < 1000000) {
+        $terbilang = terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
+    } elseif ($angka < 1000000000) {
+        $terbilang = terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
     }
+
+    return $terbilang;
+}

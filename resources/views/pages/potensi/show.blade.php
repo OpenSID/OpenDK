@@ -16,7 +16,6 @@
                         <h3>{{ $potensi->nama_potensi }}</h3>
                         <p>{{ $potensi->deskripsi }}</p>
                     </div>
-                <!-- /.box-body -->
                 </div>
                 <div class="box-footer clearfix" style="padding:0px; margin: 0px !important;">
                     
@@ -25,5 +24,4 @@
             </div>
         </div>
     <!-- /.row -->
-<!-- /.content -->
 @endsection

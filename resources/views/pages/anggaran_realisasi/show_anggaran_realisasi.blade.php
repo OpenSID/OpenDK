@@ -183,8 +183,7 @@
         </div>
 
     </div>
-    <!-- /.content -->
-@endsection
+    @endsection
 
 @include('partials.asset_amcharts')
 @include('partials.asset_select2')

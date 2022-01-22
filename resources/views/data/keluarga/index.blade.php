@@ -3,7 +3,6 @@
 @section('title') Data Profil @endsection
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -15,41 +14,33 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
-    <div class="tab-content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-striped table-bordered" id="keluarga-table">
-                                    <thead>
-                                    <tr>
-                                        <th style="max-width: 100px;">Aksi</th>
-                                        <th>Foto</th>
-                                        <th>No. KK</th>
-                                        <th>Nama Kepala</th>
-                                        <th>Tanggal Daftar</th>
-                                        <th>Tanggal Cetak KK</th>
-                                        <th>Desa</th>
-                                        <th>Alamat</th>
-                                        <th>RW</th>
-                                        <th>RT</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+    <div class="box box-primary">
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="keluarga-table">
+                    <thead>
+                        <tr>
+                            <th style="max-width: 100px;">Aksi</th>
+                            <th>Foto</th>
+                            <th>No. KK</th>
+                            <th>Nama Kepala</th>
+                            <th>Tanggal Daftar</th>
+                            <th>Tanggal Cetak KK</th>
+                            <th>Desa</th>
+                            <th>Alamat</th>
+                            <th>RW</th>
+                            <th>RT</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection
 
 @include('partials.asset_datatables')

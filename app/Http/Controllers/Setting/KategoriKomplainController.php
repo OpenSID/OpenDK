@@ -33,7 +33,6 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\KategoriKomplain;
-use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -80,7 +79,8 @@ class KategoriKomplainController extends Controller
             $kategori       = new KategoriKomplain($request->all());
             $kategori->slug = str_slug($kategori->nama);
             $kategori->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Komplain gagal dikirim!');
         }
 
@@ -106,7 +106,8 @@ class KategoriKomplainController extends Controller
             $kategori = KategoriKomplain::findOrFail($id);
             $kategori->fill($request->all());
             $kategori->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Komplain gagal diupdate!');
         }
 
@@ -117,7 +118,8 @@ class KategoriKomplainController extends Controller
     {
         try {
             KategoriKomplain::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Komplain gagal dihapus!');
         }
 

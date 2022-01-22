@@ -32,14 +32,12 @@
 namespace App\Jobs;
 
 use App\Models\LaporanPenduduk;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class LaporanPendudukQueueJob implements ShouldQueue
@@ -61,8 +59,6 @@ class LaporanPendudukQueueJob implements ShouldQueue
     public function __construct($request)
     {
         $this->request = $request;
-
-        Log::debug($this->request);
     }
 
     /**
@@ -70,10 +66,10 @@ class LaporanPendudukQueueJob implements ShouldQueue
      *
      * @return void
      */
-    public function failed(Exception $e)
+    public function failed(\Exception $e)
     {
         // TODO: Send notification when job failure.
-        Log::debug($e->getMessage());
+        report($e);
     }
 
     /**
@@ -117,11 +113,9 @@ class LaporanPendudukQueueJob implements ShouldQueue
             }
 
             DB::commit();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             DB::rollBack();
-
-            // debug log when fail.
-            Log::debug($e->getMessage());
         }
 
         // Hapus folder temp ketika sudah selesai

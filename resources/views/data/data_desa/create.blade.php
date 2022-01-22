@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,13 +13,11 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             @include( 'partials.flash_message' )
             
-                <!-- form start -->
                 {!! Form::open( [ 'route' => 'data.data-desa.store', 'method' => 'post','id' => 'datadesa-ektp', 'class' => 'form-horizontal form-label-left'] ) !!}
 
                 <div class="box-body">
@@ -39,7 +36,6 @@
                     @include('data.data_desa.form_create')
 
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
@@ -56,10 +52,7 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_select2')
 @push('scripts')

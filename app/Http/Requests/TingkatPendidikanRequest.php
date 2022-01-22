@@ -29,45 +29,34 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace Database\Seeds\Demo;
+namespace App\Http\Requests;
 
-use App\Imports\ImporPendudukKeluarga;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use ZipArchive;
+use Illuminate\Foundation\Http\FormRequest;
 
-class DemoPendudukKeluargaSeeder extends Seeder
+class TingkatPendidikanRequest extends FormRequest
 {
     /**
-     * Run the database seeds.
+     * Determine if the user is authorized to make this request.
      *
-     * @return void
+     * @return bool
      */
-    public function run()
+    public function authorize()
     {
-        try {
-            DB::table('das_penduduk')->truncate();
-            DB::table('das_keluarga')->truncate();
+        return true;
+    }
 
-            $name = 'penduduk_22_12_2020_opendk.zip';
-
-            // Temporary path file
-            $path = storage_path("app/public/template_upload/{$name}");
-            $extract = storage_path('app/temp/penduduk/foto/');
-
-            // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($extract);
-            $zip->close();
-
-            // Proses impor excell
-            (new ImporPendudukKeluarga())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
-        } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Import data gagal.');
-        }
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'desa_id' => 'required',
+            'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'semester' => 'required',
+            'tahun'    => 'required',
+        ];
     }
 }

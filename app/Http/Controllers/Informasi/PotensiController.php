@@ -87,6 +87,7 @@ class PotensiController extends Controller
 
             Potensi::create($input);
         } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
 
@@ -126,6 +127,7 @@ class PotensiController extends Controller
 
             $potensi->update($input);
         } catch (\Exception $e) {
+            report($e);
             return back()->with('error', 'Data Potensi gagal disimpan!');
         }
 
@@ -139,6 +141,7 @@ class PotensiController extends Controller
                 unlink(base_path('public/' . $potensi->file_gambar));
             }
         } catch (\Exception $e) {
+            report($e);
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Potensi gagal dihapus!');
         }
 

@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporToiletSanitasi;
 use App\Models\ToiletSanitasi;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -106,8 +105,9 @@ class ToiletSanitasiController extends Controller
         try {
             (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -143,7 +143,8 @@ class ToiletSanitasiController extends Controller
 
         try {
             ToiletSanitasi::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -160,7 +161,8 @@ class ToiletSanitasiController extends Controller
     {
         try {
             ToiletSanitasi::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }
 

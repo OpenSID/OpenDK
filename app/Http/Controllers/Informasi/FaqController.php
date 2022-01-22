@@ -33,7 +33,6 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -81,7 +80,8 @@ class FaqController extends Controller
 
         try {
             Faq::create($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'FAQ gagal ditambah!');
         }
 
@@ -119,7 +119,8 @@ class FaqController extends Controller
 
         try {
             Faq::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'FAQ gagal diubah!');
         }
 
@@ -136,7 +137,8 @@ class FaqController extends Controller
     {
         try {
             Faq::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('informasi.faq.index')->with('error', 'FAQ gagal dihapus!');
         }
 

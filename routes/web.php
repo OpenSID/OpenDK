@@ -50,8 +50,6 @@ Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
         Route::get('login', ['as' => 'login', 'uses' => 'AuthController@index']);
         Route::post('login', ['as' => 'login', 'uses' => 'AuthController@loginProcess']);
-        //Route::get('register', ['as' => 'register', 'uses' => 'AuthController@register']);
-        //Route::post('register', ['as' => 'register', 'uses' => 'AuthController@registerProcess']);
     });
 
     Route::group(['middleware' => 'sentinel_access:admin'], function () {
@@ -161,6 +159,30 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
         });
 
+        /**
+         * Group Routing for Polling
+         */
+        $prefix = config('larapoll_config.prefix');
+        Route::group(['namespace' => 'Inani\Larapoll\Http\Controllers', 'prefix' => $prefix, 'middleware' => 'web'], function () {
+
+            $middleware = config('larapoll_config.admin_auth');
+
+            $guard = config('larapoll_config.admin_guard');
+            Route::middleware(["$middleware:$guard"])->group(function () {
+                Route::get('/admin', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@home', 'as' => 'poll.home']);
+                Route::get('/admin/polls', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@index', 'as' => 'poll.index']);
+                Route::get('/admin/polls/create', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@create', 'as' => 'poll.create']);
+                Route::get('/admin/polls/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@edit', 'as' => 'poll.edit']);
+                Route::patch('/admin/polls/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@update', 'as' => 'poll.update']);
+                Route::delete('/admin/polls/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@remove', 'as' => 'poll.remove']);
+                Route::patch('/admin/polls/{poll}/lock', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@lock', 'as' => 'poll.lock']);
+                Route::patch('/admin/polls/{poll}/unlock', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@unlock', 'as' => 'poll.unlock']);
+                Route::post('/admin/polls', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@store', 'as' => 'poll.store']);
+                Route::get('/admin/polls/result/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@result', 'as' => 'poll.result']);
+            });
+
+            Route::post('/vote/polls/{poll}', 'VoteManagerController@vote')->name('poll.vote');
+        });
         /**
          * Group Routing for COUNTER
          */

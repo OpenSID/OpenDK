@@ -23,6 +23,9 @@ $user = Sentinel::getUser();
                 </span>
                     </a>
                     <ul class="treeview-menu">
+                        <li {{ (Request::is(['informasi/polls/*'])? 'class=active' : '') }}>
+                            <a href="{{ route('poll.home') }}"><i class="fa fa-circle-o"></i>Jajak Pendapat</a>
+                        </li>
                         <li {{ (Request::is(['informasi/prosedur/*', 'informasi/prosedur/index', 'informasi/prosedur'])? 'class=active' : '') }}>
                             <a href="{{ route('informasi.prosedur.index') }}"><i class="fa fa-circle-o"></i>Prosedur</a>
                         </li>

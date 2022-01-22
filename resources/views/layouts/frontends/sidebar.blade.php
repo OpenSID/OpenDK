@@ -5,7 +5,9 @@
     <div class="box box-widget">
         @include('widgets.event')
     </div>
-
+    <div class="box box-widget">
+        @include('widgets.polling')
+    </div>
     <div class="box box-widget">
         @include('widgets.visitor')
     </div>

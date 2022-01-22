@@ -1,13 +1,13 @@
 @if (request('action') == 'delete' && Request::has('file_name'))
     <div class="panel panel-danger">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ __('Hapus Backup') }}</h3>
+            <h3 class="panel-title">{{ __('setting.backup.delete') }}</h3>
         </div>
         <div class="panel-body">
-            <p>{!! __('Yakin hapus backup Database?', ['filename' => request('file_name')]) !!}</p>
+            <p>{!! __('backup.sure_to_delete_file', ['filename' => request('file_name')]) !!}</p>
         </div>
         <div class="panel-footer">
-            <a href="{{ route('setting.backup.index') }}" class="btn btn-default">{{ __('Batal') }}</a>
+            <a href="{{ route('setting.backup.index') }}" class="btn btn-default">{{ __('backup.cancel_delete') }}</a>
             <form action="{{ route('setting.backup.destroy', request('file_name')) }}"
                 method="post"
                 class="pull-right"
@@ -15,26 +15,26 @@
                 {{ method_field('delete') }}
                 {{ csrf_field() }}
                 <input type="hidden" name="file_name" value="{{ request('file_name') }}">
-                <input type="submit" class="btn btn-danger" value="{{ __('Konfirmasi') }}">
+                <input type="submit" class="btn btn-danger" value="{{ __('backup.confirm_delete') }}">
             </form>
         </div>
     </div>
 @endif
 @if (request('action') == 'restore' && Request::has('file_name'))
     <div class="panel panel-warning">
-        <div class="panel-heading"><h3 class="panel-title">{{ __('Restore Database') }}</h3></div>
+        <div class="panel-heading"><h3 class="panel-title">{{ __('backup.restore') }}</h3></div>
         <div class="panel-body">
-            <p>{!! __('Yakin ingin merestore Database ? ', ['filename' => request('file_name')]) !!}</p>
+            <p>{!! __('backup.sure_to_restore', ['filename' => request('file_name')]) !!}</p>
         </div>
         <div class="panel-footer">
-            <a href="{{ route('setting.backup.index') }}" class="btn btn-default">{{ __('Batal') }}</a>
+            <a href="{{ route('setting.backup.index') }}" class="btn btn-default">{{ __('backup.cancel_restore') }}</a>
             <form action="{{ route('setting.backup.restore', request('file_name')) }}"
                 method="post"
                 class="pull-right"
-                onsubmit="return confirm('Klik OK Untuk Restore Database.')">
+                onsubmit="return confirm('Click OK to Restore.')">
                 {{ csrf_field() }}
                 <input type="hidden" name="file_name" value="{{ request('file_name') }}">
-                <input type="submit" class="btn btn-warning" value="{{ __('Konfirmasi') }}">
+                <input type="submit" class="btn btn-warning" value="{{ __('backup.confirm_restore') }}">
             </form>
         </div>
     </div>

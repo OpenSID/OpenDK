@@ -4,6 +4,7 @@ use Carbon\Carbon;
 @extends('layouts.dashboard_template')
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -15,8 +16,8 @@ use Carbon\Carbon;
     </ol>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
-
     @include('partials.flash_message')
 
     <section class="content">
@@ -125,6 +126,7 @@ use Carbon\Carbon;
     </section>
 
 </section>
+<!-- /.content -->
 @endsection
 
 @push('scripts')

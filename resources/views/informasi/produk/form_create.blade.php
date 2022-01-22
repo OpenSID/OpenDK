@@ -19,12 +19,7 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Kategori Produk<span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        <select name="kategori_produk" id="kategori_produk" class="form-control">
-            <option value="makanan">Makanan</option>
-            <option value="elektronik">Elektronik</option>
-            <option value="otomotif">Otomotif</option>
-
-        </select>
+        {!! Form::text( 'kategori_produk', null, [ 'class' => 'form-control', 'placeholder' => 'Kategori Produk', 'required'] ) !!}
     </div>
 </div>
 <div class="form-group">

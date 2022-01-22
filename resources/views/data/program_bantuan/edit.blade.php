@@ -1,6 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -13,6 +14,7 @@
     </ol>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -36,6 +38,7 @@
                     @include('data.program_bantuan.form_edit')
 
                 </div>
+                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
@@ -52,7 +55,10 @@
             </div>
         </div>
     </div>
+    <!-- /.row -->
+
 </section>
+<!-- /.content -->
 @endsection
 @include('partials.asset_datetimepicker')
 @push('scripts')

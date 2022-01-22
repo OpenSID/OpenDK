@@ -2,6 +2,7 @@
 
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -13,37 +14,38 @@
     </ol>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
-
     @include('partials.flash_message')
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <div class="control-group">
+            <div class="">
                 <a href="{{ route('data.fasilitas-paud.import') }}">
-                    <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
+                    <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i> Import</button>
                 </a>
             </div>
         </div>
         <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover dataTable" id="fasilitas-table">
-                    <thead>
-                        <tr>
-                            <th style="max-width: 100px;">Aksi</th>
-                            <th>Desa</th>
-                            <th>Jumlah PAUD/RA</th>
-                            <th>Jumlah Guru PAUD/RA</th>
-                            <th>Jumlah Siswa PAUD/RA</th>
-                            <th>Semester</th>
-                            <th>Tahun</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            @include( 'flash::message' )
+            <table class="table table-bordered table-hover dataTable" id="fasilitas-table">
+                <thead>
+                <tr>
+                    <th style="max-width: 100px;">Aksi</th>
+                    <th>Desa</th>
+                    <th>Jumlah PAUD/RA</th>
+                    <th>Jumlah Guru PAUD/RA</th>
+                    <th>Jumlah Siswa PAUD/RA</th>
+                    <th>Semester</th>
+                    <th>Tahun</th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </div>
+
 </section>
+<!-- /.content -->
 @endsection
 
 @include('partials.asset_datatables')

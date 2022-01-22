@@ -150,10 +150,22 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
             });
 
+
+            // Backup Restore Database Routes
+        
+            Route::group(['prefix' => 'backup'], function () {
+                Route::post('upload', ['as' => 'setting.backup.upload', 'uses' => 'Setting\BackupController@upload']);
+                Route::post('{fileName}/restore', ['as' => 'setting.backup.restore', 'uses' => 'Setting\BackupController@restore']);
+                Route::get('{fileName}/dl', ['as' => 'setting.backup.download', 'uses' => 'Setting\BackupController@download']);
+            });
+            Route::namespace('Setting')->name('setting.')->group(function () {
+                Route::resource('backup', 'BackupController', ['except' => ['create', 'show', 'edit']]);
+
             Route::group(['prefix' => 'aplikasi'], function () {
                 Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
                 Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
+
             });
 
             Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
@@ -265,6 +277,7 @@ Route::group(['middleware' => 'installed'], function () {
         });
     });
     Route::get('agenda-kegiatan/{slug}', 'Informasi\EventController@show')->name('event.show');
+    Route::get('lapak', 'Page\ProdukController@index')->name('lapak.index');
 
     //Route for Produk Page
     Route::get('lapak', 'Page\ProdukController@index')->name('lapak.index');
@@ -308,6 +321,18 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Informasi')->group(function () {
             Route::group(['prefix' => 'informasi'], function () {
+
+                //Routes for produk resource
+                Route::group(['prefix' => 'produk'], function () {
+                    Route::get('/', ['as' => 'informasi.produk.index', 'uses' => 'ProdukController@index']);
+                    Route::get('show/{produk}', ['as' => 'informasi.produk.show', 'uses' => 'ProdukController@show']);
+                    Route::get('getdata', ['as' => 'informasi.produk.getdata', 'uses' => 'ProdukController@getDataProduk']);
+                    Route::get('create', ['as' => 'informasi.produk.create', 'uses' => 'ProdukController@create']);
+                    Route::post('store', ['as' => 'informasi.produk.store', 'uses' => 'ProdukController@store']);
+                    Route::get('edit/{produk}', ['as' => 'informasi.produk.edit', 'uses' => 'ProdukController@edit']);
+                    Route::put('update/{produk}', ['as' => 'informasi.produk.update', 'uses' => 'ProdukController@update']);
+                    Route::delete('destroy/{produk}', ['as' => 'informasi.produk.destroy', 'uses' => 'ProdukController@destroy']);
+                });
 
                 //Routes for prosedur resource
                 Route::group(['prefix' => 'prosedur'], function () {
@@ -451,12 +476,38 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
                 });
+                //Routes Resource Jabatan
+                Route::group(['prefix' => 'jabatan'], function () {
+                    Route::get('getdata', ['as' => 'data.jabatan.getdata', 'uses' => 'JabatanController@getJabatan']);
+                    Route::get('/', ['as' => 'data.jabatan.index', 'uses' => 'JabatanController@index']);
+                    Route::get('create', ['as' => 'data.jabatan.create', 'uses' => 'JabatanController@create']);
+                    Route::post('store', ['as' => 'data.jabatan.store', 'uses' => 'JabatanController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.jabatan.edit', 'uses' => 'JabatanController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.jabatan.update', 'uses' => 'JabatanController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.jabatan.destroy', 'uses' => 'JabatanController@destroy']);
+                });
 
+                //Routes Resource Pegawai
+                Route::group(['prefix' => 'pegawai'], function () {
+                    Route::get('getdata', ['as' => 'data.pegawai.getdata', 'uses' => 'PegawaiController@getPegawai']);
+                    Route::get('/', ['as' => 'data.pegawai.index', 'uses' => 'PegawaiController@index']);
+                    Route::get('create', ['as' => 'data.pegawai.create', 'uses' => 'PegawaiController@create']);
+                    Route::post('store', ['as' => 'data.pegawai.store', 'uses' => 'PegawaiController@store']);
+                    Route::get('show/{id}', ['as' => 'data.pegawai.show', 'uses' => 'PegawaiController@show']);
+                    Route::get('edit/{id}', ['as' => 'data.pegawai.edit', 'uses' => 'PegawaiController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.pegawai.update', 'uses' => 'PegawaiController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.pegawai.destroy', 'uses' => 'PegawaiController@destroy']);
+                    Route::get('import', ['as' => 'data.pegawai.import', 'uses' => 'PegawaiController@import']);
+                    Route::post('import-excel', ['as' => 'data.pegawai.import-excel', 'uses' => 'PegawaiController@importExcel']);
+                });
+                
                 //Routes Resource Keluarga
                 Route::group(['prefix' => 'keluarga'], function () {
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
+                    Route::get('import', ['as' => 'data.keluarga.import', 'uses' => 'KeluargaController@import']);
+                    Route::post('import-excel', ['as' => 'data.keluarga.import-excel', 'uses' => 'KeluargaController@importExcel']);
                 });
 
                 //Routes Resource Laporan Penduduk
@@ -517,6 +568,8 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'tingkat-pendidikan'], function () {
                     Route::get('getdata', ['as' => 'data.tingkat-pendidikan.getdata', 'uses' => 'TingkatPendidikanController@getData']);
                     Route::get('/', ['as' => 'data.tingkat-pendidikan.index', 'uses' => 'TingkatPendidikanController@index']);
+                    Route::get('edit/{id}', ['as' => 'data.tingkat-pendidikan.edit', 'uses' => 'TingkatPendidikanController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.tingkat-pendidikan.update', 'uses' => 'TingkatPendidikanController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.tingkat-pendidikan.destroy', 'uses' => 'TingkatPendidikanController@destroy']);
                     Route::get('import', ['as' => 'data.tingkat-pendidikan.import', 'uses' => 'TingkatPendidikanController@import']);
                     Route::post('do_import', ['as' => 'data.tingkat-pendidikan.do_import', 'uses' => 'TingkatPendidikanController@do_import']);
@@ -633,4 +686,4 @@ Route::group(['middleware' => 'installed'], function () {
             ->where('kk_level', 1)
             ->paginate(10);
     });
-});
+    });

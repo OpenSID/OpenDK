@@ -57,7 +57,6 @@ class PageController extends Controller
         }
         $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
-
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'cari'             => null,
@@ -75,7 +74,6 @@ class PageController extends Controller
                 return $desa->website_url_feed;
             })->all();
 
-        $feeds = [];
         foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);
             foreach ($getFeeds->get_items() as $item) {
@@ -102,25 +100,18 @@ class PageController extends Controller
         $this->data = $this->GetFeeds();
         $feeds = collect($this->data);
 
-        // Filter
-        $cari_desa = $request->desa;
-        if ($cari_desa != 'Semua') {
-            $feeds = $feeds->filter(function ($value, $key) use ($cari_desa) {
-                return $cari_desa == $value['desa_id'];
-            });
-        }
-
-        // Search
         $req = $request->cari;
-        if ($req != '') {
-            $feeds = $feeds->filter(function ($value, $key) use ($req) {
-                return (stripos($value['title'], $req) || stripos($value['description'], $req));
+        $cari_desa = $request->desa != 'Semua' ? $request->desa : null;
+        if ($req || $cari_desa) {
+            $feeds = $feeds->filter(function ($value, $key) use ($req, $cari_desa) {
+                $hasil = $req ? stripos($value['title'], $req) !== false : true;
+                $hasil = $hasil && ($cari_desa ? $cari_desa == $value['desa_id'] : true);
+                return $hasil;
             });
         }
 
         $feeds = $feeds->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
-
         $html =  view('pages.berita.feeds', [
             'page_title'       => 'Beranda',
             'cari'             => null,

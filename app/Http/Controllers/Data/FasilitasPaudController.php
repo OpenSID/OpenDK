@@ -34,8 +34,10 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+
 use Yajra\DataTables\Facades\DataTables;
 
 class FasilitasPaudController extends Controller
@@ -96,9 +98,8 @@ class FasilitasPaudController extends Controller
         try {
             (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
-        } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Import data gagal.');
+        } catch (Exception $e) {
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -137,9 +138,8 @@ class FasilitasPaudController extends Controller
 
         try {
             FasilitasPAUD::findOrFail($id)->update($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!');
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Data gagal diubah!' . $e->getMessage());
         }
 
         return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil diubah!');
@@ -155,8 +155,7 @@ class FasilitasPaudController extends Controller
     {
         try {
             FasilitasPAUD::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return redirect()->route('data.fasilitas-paud.index')->with('error', 'Data gagal dihapus!');
         }
 

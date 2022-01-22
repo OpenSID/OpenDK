@@ -2,6 +2,7 @@
 
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,30 +15,34 @@
 </section>
 
 <section class="content container-fluid">
-
     @include('partials.flash_message')
 
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <a href="{{ route('setting.role.create') }}">
-                <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
-            </a>
-        </div>
-        <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="user-table">
-                    <thead>
+    <section class="content">
+        <div class="row">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <a href="{{ route('setting.role.create') }}">
+                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
+                    </a>
+                </div>
+                <div class="box-body">
+                    @include( 'flash::message' )
+                    <table class="table table-striped table-bordered" id="user-table">
+                        <thead>
                         <tr>
                             <th>Nama</th>
                             <th>Slug</th>
                             <th>Aksi</th>
                         </tr>
-                    </thead>
-                </table>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
 </section>
+<!-- /.content -->
 @endsection
 @include('partials.asset_datatables')
 @push('scripts')

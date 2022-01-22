@@ -72,7 +72,6 @@ class RegulasiController extends Controller
 
             Regulasi::create($input);
         } catch (\Exception $e) {
-            report($e);
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
@@ -113,7 +112,6 @@ class RegulasiController extends Controller
             }
             $regulasi->update($input);
         } catch (\Exception $e) {
-            report($e);
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
@@ -127,7 +125,6 @@ class RegulasiController extends Controller
                 unlink(base_path('public/' . $regulasi->file_regulasi));
             }
         } catch (\Exception $e) {
-            report($e);
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
 
@@ -139,7 +136,6 @@ class RegulasiController extends Controller
         try {
             return response()->download($regulasi->file_regulasi);
         } catch (\Exception $e) {
-            report($e);
             return back()->with('error', 'Dokumen regulasi tidak ditemukan');
         }
     }

@@ -1,6 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -8,7 +9,11 @@
     </h1>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
+
+    @include( 'partials.flash_message' )
+
     <div class="row">
         <div class="col-lg-3 col-xs-6">
             <div class="small-box bg-aqua">
@@ -70,5 +75,7 @@
             </div>
         </div>
     </div>
+
 </section>
+<!-- /.content -->
 @endsection

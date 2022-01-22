@@ -2,6 +2,7 @@
 
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,22 +15,24 @@
 </section>
 
 <section class="content container-fluid">
-
     @include('partials.flash_message')
 
-    <div class="box box-primary">
-        <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="user-table">
-                    <thead>
+    <section class="content">
+        <div class="row">
+
+            <div class="box box-primary">
+                <div class="box-body">
+                    @include( 'flash::message' )
+                    <table class="table table-striped table-bordered" id="user-table">
+                        <thead>
                         <tr>
                             <th>Judul</th>
                             <th>Isi</th>
                             <th>Deskripsi</th>
                             <th style="max-width: 100px;">Aksi</th>
                         </tr>
-                    </thead>
-                    <tbody>
+                        </thead>
+                        <tbody>
                         @foreach($settings as $setting) 
                         <tr>
                             <td>{{ ucwords(str_replace('_', ' ', $setting->key)) }}</td>
@@ -41,18 +44,15 @@
                                 </a>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="5">
-                                Data tidak tersedia
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
 </section>
+<!-- /.content -->
 @endsection
 

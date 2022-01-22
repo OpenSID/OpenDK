@@ -102,8 +102,7 @@ class AdminKomplainController extends Controller
 
         try {
             Komplain::findOrFail($id)->update($request->all());
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Status Komplain gagal disimpan!');
         }
 
@@ -178,8 +177,7 @@ class AdminKomplainController extends Controller
             }
 
             $komplain->save();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
 

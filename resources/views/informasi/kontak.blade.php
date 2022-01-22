@@ -17,6 +17,7 @@ use Carbon\Carbon;
     </ol>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
     @if ($message = Session::get('success'))
 
@@ -34,4 +35,5 @@ use Carbon\Carbon;
     </section>
 
 </section>
+<!-- /.content -->
 @endsection

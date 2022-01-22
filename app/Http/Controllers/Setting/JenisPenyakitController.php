@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\JenisPenyakit;
+use Exception;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -78,8 +79,7 @@ class JenisPenyakitController extends Controller
         try {
             $penyakit = new JenisPenyakit($request->all());
             $penyakit->save();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
@@ -105,8 +105,7 @@ class JenisPenyakitController extends Controller
             $penyakit = JenisPenyakit::findOrFail($id);
             $penyakit->fill($request->all());
             $penyakit->save();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal diupdate!');
         }
 
@@ -117,8 +116,7 @@ class JenisPenyakitController extends Controller
     {
         try {
             JenisPenyakit::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data gagal dihapus!');
         }
 

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Main content -->
 <div class="col-md-8">
     <div class="box box-primary">
         <div class="box-header with-border">
@@ -72,6 +73,7 @@
         </div>
     </div>
 </div>
+<!-- /.content -->
 @endsection
 
 @include('partials.asset_amcharts')

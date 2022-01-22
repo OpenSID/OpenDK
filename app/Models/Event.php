@@ -32,13 +32,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use Sluggable;
-
     protected $table = 'das_events';
 
     protected $fillable = [
@@ -51,18 +49,10 @@ class Event extends Model
         'attachment',
     ];
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable(): array
+    public function setEventNameAttribute($value)
     {
-        return [
-            'slug' => [
-                'source' => 'event_name',
-            ],
-        ];
+        $this->attributes['event_name'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
     }
 
     public function scopeSlug($query, $value)

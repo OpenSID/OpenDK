@@ -86,8 +86,7 @@ class FormDokumenController extends Controller
 
             FormDokumen::create($input);
         } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Dokumen gagal disimpan!');
+            return back()->with('error', 'Dokumen gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil ditambah!');
@@ -118,8 +117,7 @@ class FormDokumenController extends Controller
 
             $dokumen->update($input);
         } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Dokumen gagal diubah!');
+            return back()->with('error', 'Dokumen gagal diubah!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil diubah!');
@@ -132,7 +130,6 @@ class FormDokumenController extends Controller
                 unlink(base_path('public/' . $dokumen->file_dokumen));
             }
         } catch (\Exception $e) {
-            report($e);
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Dokumen gagal dihapus!');
         }
 
@@ -144,7 +141,6 @@ class FormDokumenController extends Controller
         try {
             return response()->download($dokumen->file_dokumen);
         } catch (\Exception $e) {
-            report($e);
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }

@@ -16,22 +16,28 @@
 
     @include('partials.flash_message')
 
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <a href="{{ route('informasi.artikel.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
-        </div>
-        <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="artikel-table">
-                    <thead>
-                        <tr>
-                            <th style="max-width: 150px;">Aksi</th>
-                            <th>Judul</th>
-                            <th style="max-width: 100px;">Status</th>
-                            <th>Tanggal Terbit</th>
-                        </tr>
-                    </thead>
-                </table>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <a href="{{ route('informasi.artikel.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i
+                    class="fa fa-plus"></i> Tambah</a>
+
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="artikel-table">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 150px;">Aksi</th>
+                                    <th>Judul</th>
+                                    <th>Tanggal Terbit</th>
+                                    <th style="max-width: 100px;">Status</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -50,10 +56,10 @@
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'judul', name: 'judul'},
-                {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},
                 {data: 'created_at', name: 'created_at', class: 'text-center', searchable: false, orderable: false},
+                {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},
             ],
-            order: [[3, 'desc']]
+            order: [[2, 'desc']]
         });
     });
 </script>

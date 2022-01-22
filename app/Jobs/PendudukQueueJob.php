@@ -32,12 +32,14 @@
 namespace App\Jobs;
 
 use App\Models\Penduduk;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class PendudukQueueJob implements ShouldQueue
@@ -66,10 +68,10 @@ class PendudukQueueJob implements ShouldQueue
      *
      * @return void
      */
-    public function failed(\Exception $e)
+    public function failed(Exception $e)
     {
         // TODO: Send notification when job failure.
-        report($e);
+        Log::debug($e->getMessage());
     }
 
     /**
@@ -100,9 +102,11 @@ class PendudukQueueJob implements ShouldQueue
             }
 
             DB::commit();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             DB::rollBack();
+
+            // debug log when fail.
+            Log::debug($e->getMessage());
         }
     }
 }

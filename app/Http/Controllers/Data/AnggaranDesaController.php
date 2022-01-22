@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AnggaranDesaRequest;
 use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
+
 use App\Models\DataDesa;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -81,7 +82,6 @@ class AnggaranDesaController extends Controller
             (new ImporAPBDesa($request->only(['bulan', 'tahun', 'desa'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
             return back()->with('error', 'Import data gagal.');
         }
 
@@ -93,7 +93,6 @@ class AnggaranDesaController extends Controller
         try {
             AnggaranDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
             return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus!');
         }
 

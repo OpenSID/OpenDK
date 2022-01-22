@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -63,7 +64,7 @@ class DataDesaController extends Controller
 
     public function getDataDesa()
     {
-        return DataTables::of(DataDesa::get())
+        return DataTables::of(DataDesa::all())
             ->addColumn('aksi', function ($row) {
                 if ($this->profil->kecamatan_id) {
                     $data['edit_url']   = route('data.data-desa.edit', $row->id);
@@ -114,8 +115,7 @@ class DataDesaController extends Controller
             $desa->fill($request->all());
             $desa->profil_id = $this->profil->id;
             $desa->save();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -161,8 +161,7 @@ class DataDesaController extends Controller
             $desa->fill($request->all());
             $desa->profil_id = $this->profil->id;
             $desa->save();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -179,8 +178,7 @@ class DataDesaController extends Controller
     {
         try {
             DataDesa::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!');
         }
 
@@ -197,8 +195,7 @@ class DataDesaController extends Controller
                 'query' => [
                     'token' => $token,
                     'kode' => $this->profil->kecamatan_id,
-                ],
-                'verify' => false,
+                ]
             ]);
 
             if ($response->getStatusCode() === 200) {
@@ -218,11 +215,10 @@ class DataDesaController extends Controller
                     ], $insert);
                 }
             }
-        } catch (\Exception $e) {
-            report($e);
-            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
+        } catch (Exception $e) {
+            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan!' . $e);
         }
 
-        return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan');
+        return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan!');
     }
 }

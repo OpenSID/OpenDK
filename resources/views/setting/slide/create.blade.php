@@ -1,6 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -13,11 +14,13 @@
     </ol>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             @include( 'partials.flash_message' )
             <div class="box box-primary">
+                <!-- form start -->
                 {!! Form::open( [ 'route' => 'setting.slide.store', 'method' => 'post', 'files' => true, 'id' => 'form-slide', 'class' => 'form-horizontal form-label-left'] ) !!}
                 @csrf
                 <div class="box-body">
@@ -36,6 +39,7 @@
                     @include('setting.slide.form')
 
                 </div>
+                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
@@ -52,5 +56,8 @@
             </div>
         </div>
     </div>
+    <!-- /.row -->
+
 </section>
+<!-- /.content -->
 @endsection

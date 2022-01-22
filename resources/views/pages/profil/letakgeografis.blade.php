@@ -3,6 +3,7 @@
 @section('title','Letak Geografis')  
 
 @section('content')
+<!-- Main content -->
 {{-- <section class="content"> --}}
     @if(!empty($profil))
     <div class="box box-primary hidden">
@@ -77,6 +78,7 @@
                         </table>    
                     </div>
                 </div>
+                <!-- /.box-body -->
             {{-- </div> --}}
     @else
         <div class="row">
@@ -90,6 +92,7 @@
         </div>
     @endif
 {{-- </section> --}}
+<!-- /.content -->
 @endsection
 @push('scripts')
 <script type="application/javascript" src="{{ asset('js/html2canvas.min.js') }}"></script>

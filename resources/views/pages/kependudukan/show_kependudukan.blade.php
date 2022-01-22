@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Main content -->
 <div class="col-md-8">
     <div class="box box-primary">
         <div class="box-header with-border">
@@ -68,6 +69,7 @@
             </div>
             <!-- /.info-box -->
         </div>
+        <!-- /.col -->
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span class="info-box-icon bg-red"><i class="fa fa-female"></i></span>
@@ -83,6 +85,7 @@
             </div>
             <!-- /.info-box -->
         </div>
+        <!-- /.col -->
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div class="info-box">
                 <span><img src="{{asset("img/cacat_logo.png")}}" style="width:90px;height:90px;float:left;">
@@ -99,8 +102,11 @@
             </div>
             <!-- /.info-box -->
         </div>
+        <!-- /.col -->
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
+        <!-- /.col -->
+        <!-- /.col -->
     </div>
     <!-- /.row -->
     <div class="row">
@@ -237,6 +243,7 @@
         <!-- /.row -->
     </div>
 </div>
+<!-- /.content -->
 @endsection
 @include('partials.asset_datatables')
 @include('partials.asset_amcharts')

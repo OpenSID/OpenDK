@@ -48,4 +48,5 @@
             </div>
         </div>
     <!-- /.row -->
+<!-- /.content -->
 @endsection

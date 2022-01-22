@@ -1,6 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -12,10 +13,7 @@
     </ol>
 </section>
 
-<section class="content container-fluid">
-
-    @include('partials.flash_message')
-
+<section class="content">
     <div class="box box-primary">
         <div class="box-header with-border">
             <a href="{{ route('setting.user.create') }}">
@@ -23,22 +21,23 @@
             </a>
         </div>
         <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="user-table">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Alamat</th>
-                            <th>Telepon</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            @include( 'flash::message' )
+            <table class="table table-striped table-bordered" id="user-table">
+                <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Telepon</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </div>
+
 </section>
+
 @endsection
 @include('partials.asset_datatables')
 @push('scripts')

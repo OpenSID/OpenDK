@@ -34,7 +34,9 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\PesertaProgram;
 use App\Models\Program;
+use Exception;
 use Illuminate\Http\Request;
+
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
@@ -86,9 +88,8 @@ class ProgramBantuanController extends Controller
 
         try {
             Program::create($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil disimpan!');
@@ -118,9 +119,8 @@ class ProgramBantuanController extends Controller
             $program = Program::findOrFail($id);
             $program->fill($request->all());
             $program->update();
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil disimpan!');
@@ -142,9 +142,8 @@ class ProgramBantuanController extends Controller
         try {
             Program::findOrFail($id)->delete();
             PesertaProgram::where('program_id', $id)->delete();
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal dihapus!');
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Data gagal dihapus!' . $e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil dihapus!');
@@ -169,9 +168,8 @@ class ProgramBantuanController extends Controller
 
         try {
             PesertaProgram::create($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
+        } catch (Exception $e) {
+            return back()->withInput()->with('error', 'Data gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.show', $request->input('program_id'))->with('success', 'Data berhasil disimpan!');

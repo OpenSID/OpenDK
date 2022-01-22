@@ -91,7 +91,6 @@ class ArtikelController extends Controller
 
             Artikel::create($input);
         } catch (\Exception $e) {
-            report($e);
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
 
@@ -119,7 +118,6 @@ class ArtikelController extends Controller
 
             $artikel->update($input);
         } catch (\Exception $e) {
-            report($e);
             return back()->withInput()->with('error', 'Artikel gagal dihapus!');
         }
 
@@ -133,7 +131,6 @@ class ArtikelController extends Controller
                 Storage::delete('public/artikel/' . $artikel->getOriginal('gambar'));
             }
         } catch (\Exception $e) {
-            report($e);
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }
 

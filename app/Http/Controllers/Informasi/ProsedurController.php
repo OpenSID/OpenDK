@@ -94,8 +94,7 @@ class ProsedurController extends Controller
 
             Prosedur::create($input);
         } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Prosedur gagal disimpan!');
+            return back()->with('error', 'Prosedur gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.prosedur.index')->with('success', 'Prosedur berhasil disimpan!');
@@ -136,8 +135,7 @@ class ProsedurController extends Controller
 
             $prosedur->update($input);
         } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Prosedur gagal disimpan!');
+            return back()->with('error', 'Prosedur gagal disimpan!' . $e->getMessage());
         }
 
         return redirect()->route('informasi.prosedur.index')->with('success', 'Prosedur berhasil disimpan!');
@@ -150,7 +148,6 @@ class ProsedurController extends Controller
                 unlink(base_path('public/' . $prosedur->file_prosedur));
             }
         } catch (\Exception $e) {
-            report($e);
             return back()->withInput()->with('error', 'Prosedur gagal dihapus!');
         }
 
@@ -162,7 +159,6 @@ class ProsedurController extends Controller
         try {
             return response()->download($prosedur->file_prosedur);
         } catch (\Exception $e) {
-            report($e);
             return back()->with('error', 'Dokumen prosedur tidak ditemukan');
         }
     }

@@ -34,7 +34,9 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\DataUmum;
 use App\Models\Profil;
+use Exception;
 use Illuminate\Http\Request;
+
 use Illuminate\Http\Response;
 
 class ProfilController extends Controller
@@ -108,8 +110,7 @@ class ProfilController extends Controller
 
             $profil->update();
             $dataumum->update();
-        } catch (\Exception $e) {
-            report($e);
+        } catch (Exception $e) {
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
 

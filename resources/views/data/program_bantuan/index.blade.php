@@ -2,6 +2,7 @@
 
 
 @section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -13,34 +14,37 @@
     </ol>
 </section>
 
+<!-- Main content -->
 <section class="content container-fluid">
-
     @include('partials.flash_message')
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <div class="control-group">
+            <div class="">
                 <a href="{{ route('data.program-bantuan.create') }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Program"><i class="fa fa-plus"></i>&ensp;Tambah Program</button>
+                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Program"><i class="fa fa-plus"></i>
+                        Tambah Program
+                    </button>
                 </a>
             </div>
         </div>
         <div class="box-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover dataTable" id="program-table">
-                    <thead>
-                        <tr>
-                            <th style="max-width: 150px;">Aksi</th>
-                            <th>Nama Program</th>
-                            <th>Masa Berlaku</th>
-                            <th>Sasaran</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+            @include( 'flash::message' )
+            <table class="table table-bordered table-hover dataTable" id="program-table">
+                <thead>
+                <tr>
+                    <th style="max-width: 150px;">Aksi</th>
+                    <th>Nama Program</th>
+                    <th>Masa Berlaku</th>
+                    <th>Sasaran</th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </div>
+
 </section>
+<!-- /.content -->
 @endsection
 
 @include('partials.asset_datatables')

@@ -13,6 +13,8 @@
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "inani/larapoll": "^3.1",
+        "itsgoingd/clockwork": "^5.1",
         "jaybizzle/crawler-detect": "1.*",
         "laracasts/flash": "^3.0",
         "laravel/framework": "6.*",
@@ -27,7 +29,7 @@
         "rap2hpoutre/laravel-log-viewer": "^2.0",
         "spatie/laravel-collection-macros": "^6.1",
         "tymon/jwt-auth": "^1.0",
-        "unisharp/laravel-filemanager": "~1.8",
+        "unisharp/laravel-filemanager": "^1.8",
         "willvincent/feeds": "^2.2",
         "yajra/laravel-datatables-oracle": "~9."
     },
@@ -81,6 +83,9 @@
     "config": {
         "preferred-install": "dist",
         "sort-packages": true,
-        "optimize-autoloader": true
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "symfony/thanks": true
+        }
     }
 }

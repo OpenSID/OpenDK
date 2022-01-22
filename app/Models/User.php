@@ -35,12 +35,14 @@ use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\File;
-
 use Image;
+
+use Inani\Larapoll\Traits\Voter;
 
 class User extends SentinelModel implements Authenticatable
 {
     use AuthenticableTrait;
+    use Voter;
 
     /**
      * Default password.
@@ -114,7 +116,7 @@ class User extends SentinelModel implements Authenticatable
         $extension = $image->getClientOriginalExtension();
         $path      = public_path('uploads/user/');
 
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             File::makeDirectory($path, 0777, true);
         }
 

@@ -255,6 +255,9 @@ return [
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
+        // Vote
+        Inani\Larapoll\LarapollServiceProvider::class,
     ],
 
     /*
@@ -316,6 +319,7 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'PollWriter' => Inani\Larapoll\PollWriterFacade::class,
     ],
 
 ];

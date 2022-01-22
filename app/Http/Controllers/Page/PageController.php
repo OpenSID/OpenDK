@@ -44,31 +44,38 @@ class PageController extends Controller
 {
     protected $data = [];
 
-    public function index()
+    public function index(Request $request)
     {
         Counter::count('beranda');
 
         $this->data = $this->GetFeeds();
-
+        $req = $request->cari;
+        if ($req) {
+            $artikel          = Artikel::where('judul', 'LIKE', $req)->latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        } else {
+            $artikel          = Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel');
+        }
         $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
+
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'cari'             => null,
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
+            'artikel'          => $artikel
         ]);
     }
 
     private function GetFeeds()
     {
         $all_desa = DataDesa::websiteUrl()->get()
-        ->map(function ($desa) {
-            return $desa->website_url_feed;
-        })->all();
+            ->map(function ($desa) {
+                return $desa->website_url_feed;
+            })->all();
 
+        $feeds = [];
         foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);
             foreach ($getFeeds->get_items() as $item) {
@@ -95,18 +102,25 @@ class PageController extends Controller
         $this->data = $this->GetFeeds();
         $feeds = collect($this->data);
 
+        // Filter
+        $cari_desa = $request->desa;
+        if ($cari_desa != 'Semua') {
+            $feeds = $feeds->filter(function ($value, $key) use ($cari_desa) {
+                return $cari_desa == $value['desa_id'];
+            });
+        }
+
+        // Search
         $req = $request->cari;
-        $cari_desa = $request->desa != 'Semua' ? $request->desa : null;
-        if ($req || $cari_desa) {
-            $feeds = $feeds->filter(function ($value, $key) use ($req, $cari_desa) {
-                $hasil = $req ? stripos($value['title'], $req) !== false : true;
-                $hasil = $hasil && ($cari_desa ? $cari_desa == $value['desa_id'] : true);
-                return $hasil;
+        if ($req != '') {
+            $feeds = $feeds->filter(function ($value, $key) use ($req) {
+                return (stripos($value['title'], $req) || stripos($value['description'], $req));
             });
         }
 
         $feeds = $feeds->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
         $feeds->all();
+
         $html =  view('pages.berita.feeds', [
             'page_title'       => 'Beranda',
             'cari'             => null,

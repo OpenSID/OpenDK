@@ -14,8 +14,8 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
     <div class="row">
         <div class="col-sm-12">
@@ -24,7 +24,7 @@
                     <div class="float-right">
                         <div class="btn-group">
                             <a href="{{ route('data.laporan-penduduk.import') }}">
-                                <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i> Import</button>
+                                <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
                             </a>
                         </div>
                     </div> 
@@ -69,7 +69,6 @@
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_select2')
 @include('partials.asset_datatables')

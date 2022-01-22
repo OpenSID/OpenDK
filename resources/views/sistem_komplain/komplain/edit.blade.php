@@ -14,8 +14,8 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
 
     <div class="row">
@@ -26,7 +26,6 @@
 
             @include('sistem_komplain.komplain._komplain_sukses')
         </div>
-        <!-- /.col -->
         <div class="col-md-9">
             <!-- kirim komplain form -->
             {!! Form::model($komplain, [ 'route' => ['sistem-komplain.update', $komplain->id], 'method' => 'put','id' => 'form-komplain', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
@@ -198,12 +197,8 @@
             </div>
             {!! Form::close() !!}
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 
 @include('partials.asset_upload_images')

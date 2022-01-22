@@ -3,8 +3,9 @@
     <div class="col-md-2 col-sm-2 col-xs-12">
         <input id="desa_id" class="form-control" placeholder="00.00.00.0000" name="desa_id" type="text" required readonly/>
     </div>
+    <input id="nama" type="hidden" name="nama"/>
     <div class="col-md-4 col-sm-4 col-xs-12">
-        <select class="form-control" id="list_desa" name="nama" data-placeholder="Pilih Desa" style="width: 100%;"></select>
+        <select class="form-control" id="list_desa" name="desa_id" data-placeholder="Pilih Desa" style="width: 100%;"></select>
     </div>
 </div>
 

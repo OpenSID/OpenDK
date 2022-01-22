@@ -35,8 +35,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Request as RequestFacade;
-use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class KeluargaController extends Controller
@@ -60,7 +58,7 @@ class KeluargaController extends Controller
     public function getKeluarga()
     {
         if (request()->ajax()) {
-            return DataTables::of(Keluarga::with(['kepala_kk', 'desa']))
+            return DataTables::of(Keluarga::get())
                 ->addColumn('aksi', function ($row) {
                     $data['show_url']   = route('data.keluarga.show', $row->id);
 
@@ -69,7 +67,8 @@ class KeluargaController extends Controller
                 ->addColumn('foto', function ($row) {
                     return '<img src="' . is_user($row->kepala_kk->foto, $row->kepala_kk->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
-                ->rawColumns(['foto'])->make();
+                ->rawColumns(['foto'])
+                ->make();
         }
     }
 
@@ -87,42 +86,5 @@ class KeluargaController extends Controller
         $keluarga         = Keluarga::findOrFail($id);
 
         return view('data.keluarga.show', compact('page_title', 'page_description', 'penduduk', 'keluarga'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function import()
-    {
-        $page_title       = 'Import';
-        $page_description = 'Import Data Keluarga';
-
-        return view('data.keluarga.import', compact('page_title', 'page_description'));
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
-    public function importExcel()
-    {
-        ini_set('max_execution_time', 300);
-        if (Input::hasFile('data_file')) {
-            $path = RequestFacade::file('data_file')->getRealPath();
-
-            Excel::filter('chunk')->load($path)->chunk(1000, function ($results) {
-                foreach ($results as $row) {
-                    Keluarga::insert($row->toArray());
-                }
-            });
-
-            $data = Excel::load($path, function ($reader) {
-            })->get();
-
-            return redirect()->route('data.keluarga.import')->with('success', 'Data Keluarga berhasil diunggah!');
-        }
     }
 }

@@ -71,7 +71,7 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="row">
-
+                        
                         @yield('content')
 
                         @include('layouts.frontends.sidebar')

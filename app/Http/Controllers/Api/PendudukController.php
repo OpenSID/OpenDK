@@ -35,11 +35,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PendudukRequest;
 use App\Imports\SinkronPenduduk;
 use App\Jobs\PendudukQueueJob;
-use App\Models\Penduduk;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
 use Illuminate\Support\Str;
 use ZipArchive;
 
@@ -101,8 +98,9 @@ class PendudukController extends Controller
             // Proses impor excell
             (new SinkronPenduduk())
           ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         // Hapus folder temp ketika sudah selesai

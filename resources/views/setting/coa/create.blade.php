@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,14 +13,12 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             @include( 'partials.flash_message' )
             <div class="box box-primary">
 
-                <!-- form start -->
                 {!! Form::open( [ 'route' => 'setting.coa.store', 'method' => 'post','id' => 'form-coa', 'class' => 'form-horizontal form-label-left'] ) !!}
 
                 <div class="box-body">
@@ -40,7 +37,6 @@
                     @include('setting.coa.form')
 
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
@@ -57,8 +53,5 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection

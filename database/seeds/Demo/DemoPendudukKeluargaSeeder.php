@@ -66,7 +66,8 @@ class DemoPendudukKeluargaSeeder extends Seeder
             (new ImporPendudukKeluarga())
                 ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
         } catch (\Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
     }
 }

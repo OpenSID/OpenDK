@@ -48,10 +48,10 @@ function stickyFunction() {
 		}
 		navbar.style.fontSize = "12px";
 		navbar.style.padding = "0px";
-		logo.style.width = "150px";
+		// logo.style.width = "12px";
 	} else {
-		navbar.style.fontSize = "16px";
-		logo.style.width = "180px";
+		navbar.style.fontSize = "17px";
+		// logo.style.width = "13px";
 	}
 }
 

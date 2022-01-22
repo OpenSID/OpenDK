@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<!-- Main content -->
 <div class="col-md-8">
     <div class="row">
         <div class="col-md-12">
@@ -30,7 +29,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer">
 
                 </div>
@@ -41,5 +39,4 @@
     <!-- /.row -->
 
 </div>
-<!-- /.content -->
 @endsection

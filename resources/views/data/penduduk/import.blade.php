@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -14,13 +13,12 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
     <div class="row">
         <div class="col-md-12">
 
-                <!-- form start -->
                 {!! Form::open( [ 'route' => 'data.penduduk.import-excel', 'method' => 'post','id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true ] ) !!}
 
                 <div class="box-body">
@@ -54,7 +52,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
@@ -69,10 +66,7 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 @include(('partials.asset_select2'))
 @include(('partials.asset_datetimepicker'))

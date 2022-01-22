@@ -1,9 +1,9 @@
 <script>
   $(function () {
 
-    const host = '<?= config('app.host_pantau'); ?>';
-    const token = '<?= config('app.token_pantau'); ?>';
-    const kode = '<?= $profil->kecamatan_id ?>';
+    const host = "{{ config('app.host_pantau') }}";
+    const token = "{{ config('app.token_pantau') }}";
+    const kode = "{{ $profil->kecamatan_id }}";
 
     $('#list_desa').select2({
       ajax: {

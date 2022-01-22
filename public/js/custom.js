@@ -50,13 +50,8 @@ function stickyFunction() {
 		navbar.style.padding = "0px";
 		// logo.style.width = "12px";
 	} else {
-<<<<<<< HEAD
-		navbar.style.fontSize = "17px";
-		// logo.style.width = "13px";
-=======
 		navbar.style.fontSize = "16px";
 		logo.style.width = "180px";
->>>>>>> upstream/master
 	}
 }
 

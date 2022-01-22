@@ -164,7 +164,6 @@ Route::group(['middleware' => 'installed'], function () {
          */
         $prefix = config('larapoll_config.prefix');
         Route::group(['namespace' => 'Inani\Larapoll\Http\Controllers', 'prefix' => $prefix, 'middleware' => 'web'], function () {
-
             $middleware = config('larapoll_config.admin_auth');
 
             $guard = config('larapoll_config.admin_guard');

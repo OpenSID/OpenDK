@@ -35,9 +35,9 @@ use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\File;
-use Inani\Larapoll\Traits\Voter;
-
 use Image;
+
+use Inani\Larapoll\Traits\Voter;
 
 class User extends SentinelModel implements Authenticatable
 {

@@ -256,7 +256,7 @@ return [
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
 
-        // Vote 
+        // Vote
         Inani\Larapoll\LarapollServiceProvider::class,
     ],
 

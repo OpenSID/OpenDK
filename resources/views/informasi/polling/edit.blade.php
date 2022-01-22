@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-            @include('larapoll::dashboard.form_edit')
+            @include('informasi.polling.form_edit')
             </div>
         </div>
     </div>

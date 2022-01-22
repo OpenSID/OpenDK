@@ -15,6 +15,7 @@ yarn-error.log
 composer.log
 /storage/installed
 /storage/framework
+/storage/clockwork
 Vagrantfile.*
 Vagrantfile
 # Shell script di cPanel > Terminal untuk menyalin folder public ke public_html

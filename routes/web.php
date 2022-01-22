@@ -170,21 +170,6 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
 
             /**
-             * Group Routing for Polling
-             */
-
-            Route::get('/admin', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@home', 'as' => 'poll.home']);
-            Route::get('/admin/polls', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@index', 'as' => 'poll.index']);
-            Route::get('/admin/polls/create', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@create', 'as' => 'poll.create']);
-            Route::get('/admin/polls/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@edit', 'as' => 'poll.edit']);
-            Route::patch('/admin/polls/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@update', 'as' => 'poll.update']);
-            Route::delete('/admin/polls/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@remove', 'as' => 'poll.remove']);
-            Route::patch('/admin/polls/{poll}/lock', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@lock', 'as' => 'poll.lock']);
-            Route::patch('/admin/polls/{poll}/unlock', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@unlock', 'as' => 'poll.unlock']);
-            Route::post('/admin/polls', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@store', 'as' => 'poll.store']);
-            Route::get('/admin/polls/result/{poll}', ['uses' => '\App\Http\Controllers\Informasi\PollManagerController@result', 'as' => 'poll.result']);
-
-            /**
              * Group Routing for COUNTER
              */
             Route::group(['prefix' => 'counter'], function () {
@@ -296,6 +281,20 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('lapak', 'Page\ProdukController@index')->name('lapak.index');
             Route::namespace('Informasi')->group(function () {
                 Route::group(['prefix' => 'informasi'], function () {
+
+                    /**
+                     * Group Routing for Polling
+                     */
+                    Route::get('/admin', ['as' => 'poll.home', 'uses' => 'PollManagerController@home']);
+                    Route::get('/admin/polls', ['as' => 'poll.index', 'uses' => 'PollManagerController@index']);
+                    Route::get('/admin/polls/create', ['as' => 'poll.create', 'uses' => 'PollManagerController@create']);
+                    Route::get('/admin/polls/{poll}', ['as' => 'poll.edit', 'uses' => 'PollManagerController@edit']);
+                    Route::patch('/admin/polls/{poll}', ['as' => 'poll.update', 'uses' => 'PollManagerController@update']);
+                    Route::delete('/admin/polls/{poll}', ['as' => 'poll.remove', 'uses' => 'PollManagerController@remove']);
+                    Route::patch('/admin/polls/{poll}/lock', ['as' => 'poll.lock', 'uses' => 'PollManagerController@lock']);
+                    Route::patch('/admin/polls/{poll}/unlock', ['as' => 'poll.unlock', 'uses' => 'PollManagerController@unlock']);
+                    Route::post('/admin/polls', ['as' => 'poll.store', 'uses' => 'PollManagerController@store']);
+                    Route::get('/admin/polls/result/{poll}', ['as' => 'poll.result', 'uses' => 'PollManagerController@result']);
 
                     //Routes for produk resource
                     Route::group(['prefix' => 'produk'], function () {

@@ -1,7 +1,5 @@
 <?php
 
-<<<<<<< HEAD
-=======
 /*
  * File ini bagian dari:
  *
@@ -31,7 +29,6 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
->>>>>>> upstream/master
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;

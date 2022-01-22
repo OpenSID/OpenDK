@@ -245,6 +245,20 @@ Route::group(['middleware' => 'installed'], function () {
     });
     Route::get('agenda-kegiatan/{slug}', 'Informasi\EventController@show')->name('event.show');
 
+    //Route for Produk Page
+    Route::get('lapak', 'Page\ProdukController@index')->name('lapak.index');
+    //Routes for produk resource
+    Route::group(['prefix' => 'produk'], function () {
+        Route::get('/', ['as' => 'informasi.produk.index', 'uses' => 'ProdukController@index']);
+        Route::get('show/{produk}', ['as' => 'informasi.produk.show', 'uses' => 'ProdukController@show']);
+        Route::get('getdata', ['as' => 'informasi.produk.getdata', 'uses' => 'ProdukController@getDataProduk']);
+        Route::get('create', ['as' => 'informasi.produk.create', 'uses' => 'ProdukController@create']);
+        Route::post('store', ['as' => 'informasi.produk.store', 'uses' => 'ProdukController@store']);
+        Route::get('edit/{produk}', ['as' => 'informasi.produk.edit', 'uses' => 'ProdukController@edit']);
+        Route::put('update/{produk}', ['as' => 'informasi.produk.update', 'uses' => 'ProdukController@update']);
+        Route::delete('destroy/{produk}', ['as' => 'informasi.produk.destroy', 'uses' => 'ProdukController@destroy']);
+    });
+
     Route::namespace('SistemKomplain')->group(function () {
         Route::group(['prefix' => 'sistem-komplain'], function () {
             Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);

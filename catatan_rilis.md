@@ -8,3 +8,4 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 #### Perbaikan BUG
 1. Perbaiki url webiste saat mengabil feed desa.
+2. Perbaiki Identitas Terhimpit / navbar dan header.

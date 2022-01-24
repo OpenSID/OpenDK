@@ -1,7 +1,7 @@
-<div class="box-header text-center  with-border bg-blue">
-    <h2 class="box-title text-bold" data-toggle="tooltip" data-placement="top" title="Sistem Keluhan Masyarakat">SIKEMA</h2>
+<div class="box-header text-center  with-border">
+    <h2 class="box-title" data-toggle="tooltip" data-placement="top" title="Sistem Keluhan Masyarakat">SIKEMA</h2>
 </div>
-   <div class="pad text-bold bg-white" >
+   <div class="pad text-bold" >
     @include('sistem_komplain.komplain._tracking')
 
             @include('sistem_komplain.komplain._komplain_populer')

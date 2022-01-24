@@ -15,8 +15,8 @@ $komplains =Komplain::leftJoin('das_jawab_komplain', 'das_komplain.komplain_id',
 <!-- Trending Box -->
 <div class="box box-widget">
     <div class="box-header">
-        <i class="fa fa-line-chart text-blue"></i>
-        <h4 class="box-title text-blue text-bold">TERPOPULER</h4>
+        <i class="fa fa-line-chart text-muted"></i>
+        <h4 class="box-title text-muted">TERPOPULER</h4>
     </div>
     <!-- /.box-header -->
     <div class="box-body ">
@@ -26,7 +26,7 @@ $komplains =Komplain::leftJoin('das_jawab_komplain', 'das_komplain.komplain_id',
                     <li><a href="{{ route('sistem-komplain.komplain', $item->slug) }}"><i class="fa fa-comment"></i> <small>{{ $item->judul }}</small></a></li>
                 @endforeach
             @else
-                <li><a href="#"><i class="fa fa-comment"></i> Data tidak ditemukan.</a></li>
+                <li><a href="#" class="text-gray"><i class="fa fa-comment"></i> Data tidak ditemukan.</a></li>
             @endif
         </ul>
     </div>

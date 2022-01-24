@@ -1,26 +1,22 @@
-<div class="box-header with-border text-center  bg-blue">
-    <h2 class="box-title text-bold">AGENDA KEGIATAN</h2>
+<div class="box-header with-border text-center">
+    <h4 class="box-title">AGENDA KEGIATAN</h4>
 </div>
 <br>
 <ul class="timeline">
-    @if(count($events) > 0)
-        @foreach($events as $key => $event)
+        @forelse($events as $key => $event)
             @foreach($event as $value)
             <li>
                 <i class="fa fa-calendar @if($value->status=='OPEN') bg-maroon @else bg-gray @endif"></i>
                 <div class="timeline-item">
-                    <h4 class="timeline-header">{{ link_to('event/' . $value->slug, strtoupper($value->event_name)) }}</h4>
+                    <h6 class="timeline-header">{{ link_to('event/' . $value->slug, strtoupper($value->event_name)) }}</h6>
                     <small class="text-yellow"><i class="fa fa-clock-o"></i> {{ Carbon\Carbon::parse($value->start)->translatedFormat('d F Y') }}</small>
                 </div>
             </li>
             <br/>
             @endforeach
-        @endforeach
-    @else
-        <li class="time-label">
-            <span class="bg-gray">
-                Event tidak tersedia.
-            </span>
-        </li>
-    @endif
+    @empty
+        <!-- <li class="time-label"> -->
+            <h6 class="text-center text-muted">Belum ada agenda kegiatan yang ditampilkan</h6>
+        <!-- </li> -->
+    @endforelse
 </ul>

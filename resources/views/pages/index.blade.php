@@ -132,7 +132,6 @@
         </div>
     </div>
     @include('pages.berita.index')
-    <hr />
 
     <!-- Berita Desa -->
     <div class="fat-arrow">

@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Artikel;
+use App\Models\Komentar;
 use App\Models\DataDesa;
 use App\Models\Event;
 use Illuminate\Http\Request;
@@ -164,11 +165,26 @@ class PageController extends Controller
     public function detailBerita($slug)
     {
         $artikel = Artikel::where('slug', $slug)->status()->firstOrFail();
+        $OtherArtikel = Artikel::latest()->status()->limit('4')->get();
         $page_title       = $artikel->judul;
         $page_description = substr($artikel->isi, 0, 300) . ' ...';
         $page_image = $artikel->gambar;
 
-        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel'));
+        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel','OtherArtikel'));
+    }
+
+    public function storeKomentar(Request $request)
+    {
+    	$request->validate([
+            'komentar'=>'required',
+        ]);
+   
+        $input = $request->all();
+        // $input['user_id'] = auth()->user()->id;
+    
+        Komentar::create($input);
+   
+        return back();
     }
 
     public function eventDetail($slug)

@@ -31,33 +31,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FormDokumen;
-use App\Models\Profil;
-use App\Models\Prosedur;
-use App\Models\Regulasi;
+use Illuminate\Support\Facades\Route;
+use App\Models\Artikel;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 class SitemapController extends Controller
 {
     public function index()
     {
-        $profil   = Profil::orderBy('updated_at', 'DESC')->first();
-        $prosedur = Prosedur::orderBy('updated_at', 'DESC')->first();
-        $regulasi = Regulasi::orderBy('updated_at', 'DESC')->first();
-        $dokumen  = FormDokumen::orderBy('updated_at', 'DESC')->first();
-
-        return response()->view('sitemap.index', [
-            'profil'   => $profil,
-            'prosedur' => $prosedur,
-            'regulasi' => $regulasi,
-            'dokumen'  => $dokumen,
-        ])->header('Content-Type', 'text/xml');
+        $sitemap = Sitemap::create()
+        ->add(Url::create('/profil/sejarah'))
+        ->add(Url::create('/profil/letak-geografis'))
+        ->add(Url::create('/profil/visi-dan-misi'))
+        ->add(Url::create('/profil/struktur-pemerintahan'))
+        ->add(Url::create('/potensi'))
+        ->add(Url::create('/desa'))
+        ->add(Url::create('/statistik/kependudukan'))
+        ->add(Url::create('/statistik/pendidikan'))
+        ->add(Url::create('/statistik/program-dan-bantuan'))
+        ->add(Url::create('/statistik/anggaran-dan-realisasi'))
+        ->add(Url::create('/statistik/anggaran-desa'))
+        ->add(Url::create('/unduhan/prosedur'))
+        ->add(Url::create('/unduhan/regulasi'))
+        ->add(Url::create('/unduhan/form-dokumen'));
+       
+        $artikel = Artikel::all();
+        foreach ($artikel as $artikel) {
+            $sitemap->add(Url::create("/berita/{$artikel->slug}"));
+        }
+        $sitemap->writeToFile(public_path('sitemap.xml'));
     }
 
-    public function prosedur()
-    {
-        $prosedurs = Prosedur::all();
-        return response()->view('sitemap.prosedur', [
-            'prosedurs' => $prosedurs,
-        ])->header('Content-Type', 'text/xml');
-    }
 }

@@ -28,7 +28,7 @@ window.onscroll = function () {
 };
 
 var navbar = document.getElementById("navbar");
-// var logo = document.getElementById("logo-brand");
+// var logo = document.getElementById("logo-brand");	
 var sticky = navbar.offsetTop;
 
 function stickyFunction() {
@@ -43,7 +43,7 @@ function stickyFunction() {
 		if (mql.matches) {
 			navbar.style.fontSize = "11px";
 			navbar.style.padding = "0px";
-			logo.style.width = "150px";
+			// logo.style.width = "150px";
 			return;
 		}
 		navbar.style.fontSize = "12px";
@@ -51,7 +51,7 @@ function stickyFunction() {
 		// logo.style.width = "12px";
 	} else {
 		navbar.style.fontSize = "16px";
-		logo.style.width = "180px";
+		// logo.style.width = "180px";
 	}
 }
 

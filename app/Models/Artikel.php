@@ -71,4 +71,10 @@ class Artikel extends Model
     {
         return $query->where('status', $value);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Komentar::class)->whereNull('parent_id');
+    }
+
 }

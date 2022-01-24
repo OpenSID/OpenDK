@@ -5,7 +5,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <img src="https://placehold.it/120x150" id="showgambar"
+                <img src="http://placehold.it/120x150" id="showgambar"
                     style="max-width:120px;max-height:150px;float:left;"/>
             </div>
         </div>

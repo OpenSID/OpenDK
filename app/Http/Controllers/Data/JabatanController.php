@@ -60,14 +60,14 @@ class JabatanController extends Controller
             ->select(['id','nama_jabatan']);
 
         return DataTables::of($query)
-            ->addColumn('action', function ($row) {
+            ->addColumn('aksi', function ($row) {
                 $edit_url   = route('data.jabatan.edit', $row->id);
                 $delete_url = route('data.jabatan.destroy', $row->id);
 
                 $data['edit_url']   = $edit_url;
                 $data['delete_url'] = $delete_url;
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })->make();
     }
 

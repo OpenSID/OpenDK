@@ -12,7 +12,7 @@ use Carbon\Carbon;
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{route('dashboard')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
         <li class="active">{{$page_title}}</li>
     </ol>
 </section>
@@ -67,7 +67,7 @@ use Carbon\Carbon;
             },
             columns: [
 
-                {data: 'action', name: 'action', class: 'text-center', searchable: false, orderable: false},
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama_jabatan', name: 'nama_jabatan'},
             ],
             order: [[0, 'desc']]

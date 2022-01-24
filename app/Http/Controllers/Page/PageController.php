@@ -34,9 +34,9 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Artikel;
-use App\Models\Komentar;
 use App\Models\DataDesa;
 use App\Models\Event;
+use App\Models\Komentar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use willvincent\Feeds\Facades\FeedsFacade;
@@ -170,20 +170,20 @@ class PageController extends Controller
         $page_description = substr($artikel->isi, 0, 300) . ' ...';
         $page_image = $artikel->gambar;
 
-        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel','OtherArtikel'));
+        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel', 'OtherArtikel'));
     }
 
     public function storeKomentar(Request $request)
     {
-    	$request->validate([
+        $request->validate([
             'komentar'=>'required',
         ]);
-   
+
         $input = $request->all();
         // $input['user_id'] = auth()->user()->id;
-    
+
         Komentar::create($input);
-   
+
         return back();
     }
 

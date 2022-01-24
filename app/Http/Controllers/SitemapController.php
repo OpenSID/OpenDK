@@ -31,7 +31,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Route;
 use App\Models\Artikel;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
@@ -55,12 +54,11 @@ class SitemapController extends Controller
         ->add(Url::create('/unduhan/prosedur'))
         ->add(Url::create('/unduhan/regulasi'))
         ->add(Url::create('/unduhan/form-dokumen'));
-       
+
         $artikel = Artikel::all();
         foreach ($artikel as $artikel) {
             $sitemap->add(Url::create("/berita/{$artikel->slug}"));
         }
         $sitemap->writeToFile(public_path('sitemap.xml'));
     }
-
 }

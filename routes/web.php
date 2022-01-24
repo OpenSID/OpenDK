@@ -29,19 +29,14 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
-   
-require __DIR__.'/web/page.php';
-require __DIR__.'/web/data.php';
-require __DIR__.'/web/informasi.php';
-require __DIR__.'/web/setting.php';
-require __DIR__.'/web/user.php';
-require __DIR__.'/web/counter.php';
-
-}); 
+    require __DIR__.'/web/page.php';
+    require __DIR__.'/web/data.php';
+    require __DIR__.'/web/informasi.php';
+    require __DIR__.'/web/setting.php';
+    require __DIR__.'/web/user.php';
+    require __DIR__.'/web/counter.php';
+});

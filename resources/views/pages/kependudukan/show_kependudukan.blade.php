@@ -13,7 +13,7 @@
                             <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                             <select class="form-control" id="list_desa">
                                 <option value="Semua">Semua Desa</option>
-                                @foreach($list_desa as $desa)
+                                @foreach($data['list_desa'] as $desa)
                                     <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
                                 @endforeach
                             </select>
@@ -25,7 +25,7 @@
                         <label for="list_year" class="col-sm-4 control-label">Tahun</label>
                         <div class="col-sm-8">
                             <select class="form-control" id="list_year">
-                                @foreach(array_reverse($year_list) as $year)
+                                @foreach(array_reverse($data['year_list']) as $year)
                                     <option value="{{ $year }}">{{ $year }}</option>
                                 @endforeach
                             </select>
@@ -44,10 +44,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Penduduk</span>
-                    <span class="info-box-number" id="total_penduduk">{!! $total_penduduk !!}</span>
-                    @if(! Sentinel::guest())
-                    <a id="hrefpenduduk" class="small-box-footer" href="#">Detail Info <i class="fa fa-arrow-circle-right"></i></a>
-                    @endif
+                    <span class="info-box-number" id="total_penduduk">{!! $data['total_penduduk'] !!}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -60,10 +57,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Laki-Laki</span>
-                    <span class="info-box-number" id="total_lakilaki">{!! $total_lakilaki !!}</span>
-                    @if(! Sentinel::guest())
-                    <a id="hrefpenduduklakilaki" class="small-box-footer" href="#">Detail Info <i class="fa fa-arrow-circle-right"></i></a>
-                    @endif
+                    <span class="info-box-number" id="total_lakilaki">{!! $data['total_lakilaki'] !!}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -76,10 +70,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Perempuan</span>
-                    <span class="info-box-number" id="total_perempuan">{!! $total_perempuan !!}</span>
-                    @if(! Sentinel::guest())
-                    <a id="hrefpendudukperempuan" class="small-box-footer" href="#">Detail Info <i class="fa fa-arrow-circle-right"></i></a>
-                    @endif
+                    <span class="info-box-number" id="total_perempuan">{!! $data['total_perempuan'] !!}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -93,10 +84,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Disabilitas</span>
-                    <span class="info-box-number" id="total_disabilitas">{!! $total_disabilitas !!}</span>
-                    @if(! Sentinel::guest())
-                    <a id="hrefpendudukcacat" class="small-box-footer" href="#">Detail Info <i class="fa fa-arrow-circle-right"></i></a>
-                    @endif
+                    <span class="info-box-number" id="total_disabilitas">{!! $data['total_disabilitas'] !!}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -177,15 +165,6 @@
                              style="width:100%; overflow: visible; text-align: left; padding: 10px;;">
                         </div>
                     </div>
-                    {{--<<div class="tab-pane" id="kelamin">
-                        <div id="chart_kelamin"
-                             style="width:100%; height: 150px; overflow: visible; text-align: left; padding: 10px;;">
-                        </div>
-                    </div>
-                    div class="tab-pane" id="status-tinggal">
-                        status tinggal
-                    </div>--}}
-
                 </div>
                 <!-- /.nav-tabs-custom -->
             </div>
@@ -196,13 +175,13 @@
                 <span class="info-box-icon"><i class="ion ion-card"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-number">KTP</span>
-                    <span class="info-box-text" id="data_ktp">{!! $ktp_terpenuhi !!} dari {!! $total_penduduk !!}
+                    <span class="info-box-text" id="data_ktp">{!! $data['ktp_terpenuhi'] !!} dari {!! $data['total_penduduk'] !!}
                         Jiwa Terpenuhi</span>
 
                     <div class="progress">
-                        <div id="ktp_persen" class="progress-bar" style="width: {!! $ktp_persen_terpenuhi !!}%"></div>
+                        <div id="ktp_persen" class="progress-bar" style="width: {!! $data['ktp_persen_terpenuhi'] !!}%"></div>
                     </div>
-                    <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                    <span id="ktp_terpenuhi" class="progress-description">{!! $data['ktp_persen_terpenuhi'] !!}% Jiwa Tidak Terpenuhi</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -211,13 +190,13 @@
                 <span class="info-box-icon"><i class="ion ion-ios-paper-outline"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-number">Akta Kelahiran</span>
-                    <span class="info-box-text" id="data_akta">{!! $akta_terpenuhi !!} dari {!! $total_penduduk !!}
+                    <span class="info-box-text" id="data_akta">{!! $data['akta_terpenuhi'] !!} dari {!! $data['total_penduduk'] !!}
                         Jiwa Terpenuhi</span>
 
                     <div class="progress">
-                        <div id="akta_persen" class="progress-bar" style="width: {!! $akta_persen_terpenuhi !!}%"></div>
+                        <div id="akta_persen" class="progress-bar" style="width: {!! $data['akta_persen_terpenuhi'] !!}%"></div>
                     </div>
-                    <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                    <span id="akta_terpenuhi" class="progress-description">{!! $data['akta_persen_terpenuhi'] !!}% Jiwa Tidak Terpenuhi</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -227,14 +206,14 @@
 
                 <div class="info-box-content">
                     <span class="info-box-number">Akta Nikah</span>
-                    <span class="info-box-text" id="data_nikah">{!! $aktanikah_terpenuhi !!}dari {!! $total_penduduk !!}
+                    <span class="info-box-text" id="data_nikah">{!! $data['aktanikah_terpenuhi'] !!} dari {!! $data['total_penduduk'] !!}
                         Jiwa Terpenuhi</span>
 
                     <div class="progress">
                         <div id="nikah_persen" class="progress-bar"
-                             style="width: {!! $aktanikah_persen_terpenuhi !!}%"></div>
+                             style="width: {!! $data['aktanikah_persen_terpenuhi'] !!}%"></div>
                     </div>
-                    <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                    <span id="nikah_terpenuhi" class="progress-description">{!! $data['aktanikah_persen_terpenuhi'] !!}% Jiwa Tidak Terpenuhi</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -1193,126 +1172,4 @@
 
 
 </script>
-
-<div id="detail-modal" class="modal fade in">
-    <div class="modal-dialog" style="width: auto; max-width: 85%">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Detail Penduduk</h4>
-            </div>
-            <div class="modal-body">
-                <table class="table table-striped table-bordered table-responsive" id="penduduk-table">
-                    <thead>
-                    <tr>
-                        <th>NIK</th>
-                        <th>Foto</th>
-                        <th>Nama</th>
-                        <th>No. KK</th>
-                        <th>Alamat</th>
-                        <th>Pendidikan dalam KK</th>
-                        <th>Umur</th>
-                        <th>Pekerjaan</th>
-                        <th>Status Kawin</th>
-                    </tr>
-                    </thead>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <a id="delete-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Keluar</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    $(document).ready(function() {
-
-        var type = '';
-        var data = null;
-
-        $(document).on('click', '#hrefpenduduk', function(e) {
-            type = 'C';
-            $('#detail-modal').find('.modal-title').html('Detail Penduduk');
-
-            $('#detail-modal').modal('show');
-            e.preventDefault();
-        });
-
-        $(document).on('click', '#hrefpenduduklakilaki', function(e) {
-            type = 'L';
-            $('#detail-modal').find('.modal-title').html('Detail Penduduk Laki-Laki');
-
-            $('#detail-modal').modal('show');
-            e.preventDefault();
-        });
-
-        $(document).on('click', '#hrefpendudukperempuan', function(e) {
-            type = 'P';
-            $('#detail-modal').find('.modal-title').html('Detail Penduduk Perempuan');
-
-            $('#detail-modal').modal('show');
-            e.preventDefault();
-        });
-
-        $(document).on('click', '#hrefpendudukcacat', function(e) {
-            type = 'D';
-            $('#detail-modal').find('.modal-title').html('Detail Penduduk Disabilitas');
-
-            $('#detail-modal').modal('show');
-            e.preventDefault();
-        });
-
-        $("#detail-modal").on("show.bs.modal", function (e) {
-
-            var id = $(e.relatedTarget).data('target-id');
-            var did = $('#list_desa').find(":selected").val();
-            var year = $('#list_year').find(":selected").text();
-
-            data = $('#penduduk-table').DataTable({
-                processing: true,
-                serverSide: false,
-                ajax: {
-                    url: "{!! route( 'statistik.data-penduduk' ) !!}",
-                    type: 'GET',
-                    data: {t:type, did:did, year:year},
-                },
-                columns: [
-                    // {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
-                    {data: 'nik', name: 'nik'},
-                    {data: 'foto', name: 'foto',
-                        "searchable": false,
-                        "orderable":false,
-                        "render": function (data, type, row) {
-                            return `<img src="{{ is_user(${data.foto}, ${data.sex}) }}" class="img-rounded" alt="Foto Penduduk" height="50"/>`;
-                        },
-                    },
-                    {data: 'nama', name: 'nama'},
-                    {data: 'no_kk', name: 'no_kk'},
-                    {data: 'alamat', name: 'alamat'},
-                    {data: 'pendidikan', name: 'pendidikan_kk'},
-                    {data: 'tanggal_lahir', name: 'tanggal_lahir'},
-                    {data: 'pekerjaan', name: 'pekerjaan'},
-                    {data: 'status_kawin', name: 'status_kawin'},
-                ],
-                order: [[0, 'desc']]
-            });
-
-            $(this).find('.modal-body').css({
-                width:'auto', //probably not needed
-                height:'auto', //probably not needed
-                margin: 'auto',
-                'max-height':'80%'
-            });
-
-        });
-
-        $('#detail-modal').on('hidden.bs.modal', function () {
-            // do something…
-            data.destroy();
-            $('#penduduk-table').empty();
-        })
-    });
-</script>
-
 @endpush

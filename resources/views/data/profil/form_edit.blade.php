@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $profil->foto_kepala_wilayah }} Foto {{ $sebutan_kepala_wilayah }}</label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto {{ $sebutan_kepala_wilayah }}</label>
             <div class="col-md-7 col-sm-6 col-xs-12">
                 <input type="file" id="foto_kepala_wilayah" name="foto_kepala_wilayah" accept="image/*" class="validate form-control"/>
                 <br>

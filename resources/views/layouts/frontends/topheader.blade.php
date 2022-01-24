@@ -8,14 +8,10 @@
         <div class="col-md-6 col-sm-6 no-padding">
             <div class="navbar-right">
                 <ul class="social-icon list-inline m-0">
-                    @if (isset($profil->socialmedia))
-                    @foreach(json_decode($profil->socialmedia) as $sosmed)
+                    @forelse(json_decode($profil->socialmedia) as $sosmed)
                     <li><a target="_BLANK" href="{{ $sosmed->link ?? ''}}" class="site-button-link facebook hover"><i class="{{ $sosmed->icon ?? '' }}"></i></a></li>
-                    @endforeach
-                    @else
-                    <li></li>
-                    </div>
-                    @endif 
+                    @empty
+                    @endforelse
                 </ul>
             </div>
         </div>

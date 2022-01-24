@@ -18,7 +18,7 @@
             <li class="dropdown @if(Request::is('profil/*')) active @endif menu-large">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> PROFIL <span class="caret"></span></a>
               <ul class="dropdown-menu megamenu row fadeIn animated">
-                <li class="col-md-4 col-sm-2">
+                <li class="col-md-4 col-sm-6">
                   <ul class="mega-list">
                     <li class="@if(Request::is('profil/sejarah')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Sejarah</a></li>
                     <li class="@if(Request::is('profil/letak-geografis')) active @endif"><a href="{{ route('profil.letak-geografis') }}"><i class="fa  fa-arrow-circle-right text-blue"></i>  Letak Geografis</a></li>
@@ -28,7 +28,7 @@
                 </li>
                 <li class="col-md-4 col-sm-4">
                   <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }}</h4>
-                  <small class="" style="text-align:justify;">{{ strip_tags($profil->sambutan) }} </small>
+                  <small class="" style="text-align:justify;font-size:8pt">{!! ($profil->sambutan) !!} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
                   <img src="@if(isset($profil->foto_kepala_wilayah)) {{ asset($profil->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
@@ -76,10 +76,9 @@
               </ul>
           </li>
           @if (Sentinel::guest())
-            <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
+            <li class="nav-log"><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
           @else
-          <li><a href="{{ route('dashboard')}}">ADMIN</a></li>
-          <li><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
+          <li class="nav-log"><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}
           </form>

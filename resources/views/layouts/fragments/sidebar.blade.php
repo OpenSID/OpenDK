@@ -23,7 +23,7 @@ $user = Sentinel::getUser();
                 </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li {{ (Request::is(['informasi/polls/*'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['informasi/admin/*'])? 'class=active' : '') }}>
                             <a href="{{ route('poll.home') }}"><i class="fa fa-circle-o"></i>Jajak Pendapat</a>
                         </li>
                         <li {{ (Request::is(['informasi/produk/*', 'informasi/produk/index', 'informasi/produk'])? 'class=active' : '') }}>
@@ -36,15 +36,18 @@ $user = Sentinel::getUser();
                             <a href="{{ route('informasi.regulasi.index') }}"><i class="fa fa-circle-o"></i>Regulasi</a>
                         </li>
                         <li {{ (Request::is(['informasi/potensi', 'informasi/potensi/*'])? 'class=active' : '') }}><a
-                                    href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a></li>
+                                    href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a>
+                        </li>
                         <li {{ (Request::is(['informasi/event/*', 'informasi/event/index', 'informasi/event'])? 'class=active' : '') }}>
                             <a href="{{ route('informasi.event.index') }}"><i class="fa fa-circle-o"></i>Event</a></li>
                         <li {{ (Request::is(['informasi/artikel/*', 'informasi/artikel/index', 'informasi/artikel'])? 'class=active' : '') }}>
-                            <a href="{{ route('informasi.artikel.index') }}"><i class="fa fa-circle-o"></i>Artikel</a></li>
+                            <a href="{{ route('informasi.artikel.index') }}"><i class="fa fa-circle-o"></i>Artikel</a>
+                        </li>
                         <li {{ (Request::is(['informasi/faq/*', 'informasi/faq/index', 'informasi/faq'])? 'class=active' : '') }}>
                             <a href="{{ route('informasi.faq.index') }}"><i class="fa fa-circle-o"></i>FAQ</a></li>
                         <li {{ (Request::is(['informasi/form-dokumen/*', 'informasi/form-dokumen/index', 'informasi/form-dokumen'])? 'class=active' : '') }}>
-                            <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a></li>
+                            <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="treeview {{ (Request::is(['data/*'])? 'active' : '') }}">

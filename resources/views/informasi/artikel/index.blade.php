@@ -20,9 +20,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.artikel.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i
-                    class="fa fa-plus"></i> Tambah</a>
-
+                    <a href="{{ route('informasi.artikel.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i> Tambah</a>
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">

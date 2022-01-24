@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Cache-Control: no-store" content="public">
+    <meta http-equiv="Cache-Control: no-store;" content="public">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#1a2035">
@@ -16,8 +16,7 @@
     <meta itemprop="image" content="{{ is_img($page_image ?? '') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{--
-    <meta name="user-token" content="{{ Auth::user()->api_token }}" /> --}}
+
     <meta property="og:locale" content="id_ID">
     <meta property="og:type" content="article">
     <meta property="og:url" content="{{ Request::url() }}">
@@ -48,6 +47,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
         rel="stylesheet">
         <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=61eeb3e9e14521001ac13912&product=inline-share-buttons" async="async"></script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
@@ -82,7 +82,7 @@
             <!-- /.container -->
         </div>
         <!-- /.content-wrapper -->
-        @include('.layouts.frontends.footer')
+        @include('layouts.frontends.footer')
     </div>
     <!-- ./wrapper -->
     <div class="scroll-top-wrapper ">

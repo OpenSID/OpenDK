@@ -76,5 +76,4 @@ class Artikel extends Model
     {
         return $this->hasMany(Komentar::class)->whereNull('parent_id');
     }
-
 }

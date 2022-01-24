@@ -1,4 +1,4 @@
-<div id="app" class="box box-body">
+<div id="app" class="box-body">
     <form>
         <div class="row form-group">
             <label class="control-label col-md-3 col-sm-6 col-xs-12">Pertanyaan<span class="required">*</span></label>

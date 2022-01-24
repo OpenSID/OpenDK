@@ -29,7 +29,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script src="https://unpkg.com/vue-toasted"></script>
-<script>
+<script type="text/javascript">
     Vue.use(Toasted)
     new Vue({
        el: '#app',

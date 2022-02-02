@@ -1,12 +1,24 @@
-#### [v22.01.01]
+#### [v22.02.01]
 
-Di rilis v22.01.01, menyediakan [untuk diisi]. Rilis ini juga berisi penambahan fitur dan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.01.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada [untuk diisi] yang baru mulai berkontribusi.
+Terima kasih pada esyede yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
 
 #### Perbaikan BUG
-1. Perbaiki url webiste saat mengabil feed desa.
-2. Perbaiki Identitas Terhimpit / navbar dan header.
-3. Perbaiki Gagal Simpan Profil.
+1. Perbaikan url webiste saat mengabil feed desa.
+2. Perbaikan Identitas terhimpit / navbar dan header.
+3. Perbaikan Gagal simpan profil.
+4. Perbaikan salah simpan nama desa.
+5. Perbaikan modul keluarga.
+6. Perbaikan event yang tidak tersimpan.
+7. Perbaikan tombol agar tidak hilang di versi mobile.
+8. Perbaikan log exception tidak bekerja.
+9. Perbaikan validasi impor data tingkat pendidikan.
+10. Perbaikan error jika slug even sama.
+
+#### TEKNIS
+1. Penyesuaian navbar dan header.
+2. Penyesuaian tabel responsive.
+

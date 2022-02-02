@@ -16,8 +16,8 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
 
     <div class="row">
@@ -42,5 +42,4 @@
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection

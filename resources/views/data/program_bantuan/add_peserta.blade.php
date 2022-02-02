@@ -1,7 +1,6 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -15,13 +14,11 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             @include( 'partials.flash_message' )
             
-                <!-- form start -->
                 {!! Form::open( [ 'route' => 'data.program-bantuan.add_peserta', 'method' => 'post','id' => 'form-peserta', 'class' => 'form-horizontal form-label-left'] ) !!}
 
                 <div class="box-body">
@@ -73,7 +70,6 @@
                     </div>
 
                 </div>
-                <!-- /.box-body -->
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="control-group">
@@ -90,10 +86,7 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_datetimepicker')
 @push('scripts')

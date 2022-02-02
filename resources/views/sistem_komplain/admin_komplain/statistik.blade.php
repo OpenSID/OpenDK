@@ -3,7 +3,6 @@
 @section('title') Data Umum @endsection
 
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -15,7 +14,6 @@
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -58,7 +56,6 @@
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_amcharts')
 

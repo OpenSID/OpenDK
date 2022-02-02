@@ -93,7 +93,8 @@ class TipePotensiController extends Controller
             $tipe       = new TipePotensi($request->all());
             $tipe->slug = str_slug($tipe->nama_kategori);
             $tipe->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Tipe Potensi gagal dikirim!');
         }
 
@@ -132,7 +133,8 @@ class TipePotensiController extends Controller
             $tipe->fill($request->all());
             $tipe->slug = str_slug($tipe->nama_kategori);
             $tipe->save();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Kategori Potensi gagal diupdate!');
         }
 
@@ -149,7 +151,8 @@ class TipePotensiController extends Controller
     {
         try {
             TipePotensi::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Tipe Potensi gagal dihapus!');
         }
 

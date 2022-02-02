@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -98,8 +97,9 @@ class PutusSekolahController extends Controller
         try {
             (new ImporPutusSekolah($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -143,7 +143,8 @@ class PutusSekolahController extends Controller
 
         try {
             PutusSekolah::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -160,7 +161,8 @@ class PutusSekolahController extends Controller
     {
         try {
             PutusSekolah::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('data.putus-sekolah.index')->with('error', 'Data gagal dihapus!');
         }
 

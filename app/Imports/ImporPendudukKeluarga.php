@@ -31,10 +31,13 @@
 
 namespace App\Imports;
 
+use App\Models\DataDesa;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -58,7 +61,13 @@ class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkRe
      */
     public function collection(Collection $collection)
     {
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+
         foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                continue;
+            }
 
             // Data Keluarga
             if ($value['hubungan_keluarga'] == 1) {
@@ -128,6 +137,7 @@ class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkRe
                 'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
             ];
+
             Penduduk::updateOrInsert([
                 'desa_id'      => $penduduk['desa_id'],
                 'nik'          => $penduduk['nik'],

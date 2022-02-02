@@ -79,7 +79,7 @@
                               </a>
                               @if(count($files) > 1)
                               <a id="delete-all-log" class="btn btn-social btn-flat btn-danger visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" href="?delall=true{{ ($current_folder) ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
-                                  <span class="fa fa-trash-alt"></span> Hapse Semua file
+                                  <span class="fa fa-trash"></span> Hapus Semua file
                               </a>
                             @endif
                             @endif

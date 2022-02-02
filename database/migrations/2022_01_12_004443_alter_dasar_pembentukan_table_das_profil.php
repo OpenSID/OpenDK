@@ -29,45 +29,33 @@
  * @link	    https://github.com/OpenSID/opendk
  */
 
-namespace Database\Seeds\Demo;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Imports\ImporPendudukKeluarga;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use ZipArchive;
-
-class DemoPendudukKeluargaSeeder extends Seeder
+class AlterDasarPembentukanTableDasProfil extends Migration
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
-        try {
-            DB::table('das_penduduk')->truncate();
-            DB::table('das_keluarga')->truncate();
+        Schema::table('das_profil', function (Blueprint $table) {
+            $table->string('dasar_pembentukan', 50)->change();
+        });
+    }
 
-            $name = 'penduduk_22_12_2020_opendk.zip';
-
-            // Temporary path file
-            $path = storage_path("app/public/template_upload/{$name}");
-            $extract = storage_path('app/temp/penduduk/foto/');
-
-            // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($extract);
-            $zip->close();
-
-            // Proses impor excell
-            (new ImporPendudukKeluarga())
-                ->queue($extract . Str::replaceLast('zip', 'xlsx', $name));
-        } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Import data gagal.');
-        }
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_profil', function (Blueprint $table) {
+            $table->string('dasar_pembentukan', 20)->change();
+        });
     }
 }

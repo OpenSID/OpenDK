@@ -1,6 +1,5 @@
 @extends('layouts.dashboard_template')
 @section('content')
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -11,9 +10,10 @@
         <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
+
     <div class="box box-primary">
         <div class="box-header with-border">
             <h3 class="box-title">Halaman Terpopuler</h3>
@@ -61,5 +61,4 @@
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection

@@ -171,7 +171,8 @@ class PendudukController extends Controller
             (new ImporPendudukKeluarga())
                 ->queue($extract . basename($fileExtracted[0]));
         } catch (\Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');

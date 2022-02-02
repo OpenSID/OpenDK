@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -105,8 +104,9 @@ class ImunisasiController extends Controller
         try {
             (new ImporImunisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
-        } catch (Exception $e) {
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -141,7 +141,8 @@ class ImunisasiController extends Controller
 
         try {
             Imunisasi::findOrFail($id)->update($request->all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -158,7 +159,8 @@ class ImunisasiController extends Controller
     {
         try {
             Imunisasi::findOrFail($id)->delete();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('data.imunisasi.index')->with('error', 'Data gagal dihapus!');
         }
 

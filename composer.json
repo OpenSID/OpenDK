@@ -3,10 +3,7 @@
     "description": "The Laravel Framework.",
     "license": "MIT",
     "type": "project",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "homepage": "https://opendk.or.id",
     "require": {
         "php": ">=7.0.0",
         "cartalyst/sentinel": "^3.0",

@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 return [
@@ -39,7 +39,6 @@ return [
     'title' => 'Procesul de instalare Laravel',
     'next' => 'Pasul următor',
 
-
     /**
      *
      * Home page translations.
@@ -50,7 +49,6 @@ return [
         'message' => 'Bun venit în configurarea asistată.',
     ],
 
-
     /**
      *
      * Requirements page translations.
@@ -60,7 +58,6 @@ return [
         'title' => 'Cerințe',
     ],
 
-
     /**
      *
      * Permissions page translations.
@@ -69,7 +66,6 @@ return [
     'permissions' => [
         'title' => 'Permisiuni',
     ],
-
 
     /**
      *
@@ -82,7 +78,6 @@ return [
         'success' => 'Setările tale au fost salvate în fișierul .env.',
         'errors' => 'Nu am putut salva fișierul .env, Te rugăm să-l creezi manual.',
     ],
-
 
     /**
      *

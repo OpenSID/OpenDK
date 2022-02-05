@@ -30,7 +30,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($settings as $setting) 
+                        @forelse($settings as $setting) 
                         <tr>
                             <td>{{ ucwords(str_replace('_', ' ', $setting->key)) }}</td>
                             <td>{{ $setting->value }}</td>

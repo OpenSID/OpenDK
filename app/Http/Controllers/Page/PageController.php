@@ -36,6 +36,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\Event;
+use App\Models\SettingAplikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use willvincent\Feeds\Facades\FeedsFacade;
@@ -48,18 +49,29 @@ class PageController extends Controller
     {
         Counter::count('beranda');
 
-        $this->data = $this->GetFeeds();
-
-        $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
-        $feeds->all();
+        $limit = SettingAplikasi::where('key', 'jumlah_artikel_kecamatan')->first()->value ?? 30;
 
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'cari'             => null,
+            'artikel'          => Artikel::latest()->status()->paginate($limit, ['*'], 'pageArtikel'),
+        ]);
+    }
+
+    public function DesaBerita()
+    {
+        $this->data = $this->GetFeeds();
+        $limit = SettingAplikasi::where('key', 'jumlah_artikel_desa')->first()->value ?? 30;
+
+        $feeds = collect($this->data)->sortByDesc('date')->take($limit)->paginate(10, 'pageDesa');
+        $feeds->all();
+
+        return view('pages.berita.desa', [
+            'page_title'       => 'Berita Desa',
+            'cari'             => null,
             'cari_desa'        => null,
             'list_desa'        => DataDesa::get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
         ]);
     }
 

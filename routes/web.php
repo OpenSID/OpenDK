@@ -174,6 +174,7 @@ Route::group(['middleware' => 'installed'], function () {
      */
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
+        Route::get('berita/desa', 'PageController@DesaBerita')->name('desa.berita');
         Route::get('berita/{slug}', 'PageController@detailBerita')->name('berita.detail');
 
         Route::group(['prefix' => 'profil'], function () {

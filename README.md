@@ -47,6 +47,7 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
     <td align="center"><a href="http://belajarphp.net"><img src="https://avatars.githubusercontent.com/u/5483330?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Nuris Akbar</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=nurisakbar" title="Code">💻</a></td>
     <td align="center"><a href="http://sayasuhendra.github.io"><img src="https://avatars.githubusercontent.com/u/4870292?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Suhendra</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=sayasuhendra" title="Code">💻</a></td>
     <td align="center"><a href="http://wahyusafrizal.xyz/"><img src="https://avatars.githubusercontent.com/u/49548492?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wahyu Safrizal</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=wahyusafrizal17" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/totoprayogo1916"><img src="https://avatars.githubusercontent.com/u/2387514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Toto</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=totoprayogo1916" title="Code">💻</a></td>
   </tr>
 </table>
 
@@ -58,5 +59,5 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
 Daftar kontributor sesuai spesifikasi [all-contributors](https://github.com/all-contributors/all-contributors), menggunakan @all-contributors Bot.
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->

@@ -113,6 +113,7 @@
 		<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
 	</div>
 	<form class="form-horizontal" id="form_filter" method="get" action="{{ route('feeds.filter') }}">
+		<input type="hidden" value="1" name="pageDesa">
 	<div class="page-header" style="margin:0px 0px;">
 		<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Desa</strong></span>
 	</div>

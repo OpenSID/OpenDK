@@ -15,6 +15,7 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown @if(Request::is('/')) active @endif"><a href="{{ route('beranda') }}">BERANDA <span class="sr-only">(current)</span></a></li>
+            <li class="dropdown @if(Request::is('berita-desa')) active @endif"><a href="{{ route('berita-desa') }}">BERITA DESA </a></li>
             <li class="dropdown @if(Request::is('profil/*')) active @endif menu-large">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> PROFIL <span class="caret"></span></a>
               <ul class="dropdown-menu megamenu row fadeIn animated">

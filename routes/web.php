@@ -174,6 +174,8 @@ Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
         Route::get('berita/{slug}', 'PageController@detailBerita')->name('berita.detail');
+        Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
+        Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
@@ -186,7 +188,6 @@ Route::group(['middleware' => 'installed'], function () {
 
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
-        Route::get('filter', 'PageController@FilterFeeds')->name('feeds.filter');
         Route::group(['prefix' => 'potensi'], function () {
             Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
             Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');

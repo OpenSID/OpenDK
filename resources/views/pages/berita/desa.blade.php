@@ -107,17 +107,32 @@
 @endpush
 @section('content')
 <div class="col-md-8">
-
-	<!-- Berita Kecamatan -->
+ 
+	<!-- Berita Desa -->
 	<div class="fat-arrow">
 		<div class="flo-arrow"><i class="fa fa-globe fa-lg fa-spin"></i></div>
 	</div>
+	<form class="form-horizontal" id="form_filter" method="get" action="{{ route('filter-berita-desa') }}">
+		<input type="hidden" value="1" name="page">
 	<div class="page-header" style="margin:0px 0px;">
-		<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Kecamatan</strong></span>
+		<span style="display: inline-flex; vertical-align: middle;"><strong class="">Berita Desa</strong></span>
 	</div>
-	@include('pages.berita.index')
-
-	 
+	<div class="page-header" style="margin:0px 0px; padding: 0px;">
+		<select class="form-control" id="list_desa" name="desa" style="width: auto;">
+			<option value="Semua">Semua Desa</option>
+			@foreach($list_desa as $desa)
+				<option value="{{ $desa->desa_id }}" <?php $cari_desa == $desa->desa_id && print('selected') ?>>{{$desa->nama}} </option>
+			@endforeach
+		</select>
+		<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
+			<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" value="{{$cari}}"/>
+			<button type="submit" class="btn btn-info btn-block" style="width: auto;">
+				<i class="fa fa-search"></i>
+			</button>
+		</div>
+	</div>
+</form>
+	@include('pages.berita.feeds')
 		
 </div>
 @endsection

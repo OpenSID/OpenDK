@@ -31,8 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class SettingAplikasi extends Model
 {
@@ -48,11 +48,11 @@ class SettingAplikasi extends Model
     {
         parent::boot();
 
-        static::saved(function() {
+        static::saved(function () {
             Cache::forget('setting');
         });
 
-        static::updated(function() {
+        static::updated(function () {
             Cache::forget('setting');
         });
     }

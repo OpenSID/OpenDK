@@ -34,11 +34,11 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -121,9 +121,10 @@ class AppServiceProvider extends ServiceProvider
         $this->getSettings();
     }
 
-    protected function getSettings() {
+    protected function getSettings()
+    {
         config([
-            'setting' => Cache::remember('setting', 24 * 60 * 60, function() {
+            'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
                 return DB::table('das_setting')
                     ->get(['key', 'value'])
                     ->keyBy('key')
@@ -132,14 +133,14 @@ class AppServiceProvider extends ServiceProvider
                     }) ?? null;
             }),
 
-            'profil' => Cache::remember('profil', 24 * 60 * 60, function() {
+            'profil' => Cache::remember('profil', 24 * 60 * 60, function () {
                 $profil = DB::table('das_profil')
                     ->get()
                     ->map(function ($item) {
                         return (array) $item;
                     })
                     ->first() ?? null;
-                    
+
                 if ($profil) {
                     if (in_array($profil['provinsi_id'], [91, 92])) {
                         $profil['sebutan_wilayah'] = 'Distrik';

@@ -31,8 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Profil extends Model
 {
@@ -103,11 +103,11 @@ class Profil extends Model
     {
         parent::boot();
 
-        static::saved(function() {
+        static::saved(function () {
             Cache::forget('profil');
         });
 
-        static::updated(function() {
+        static::updated(function () {
             Cache::forget('profil');
         });
     }

@@ -177,7 +177,7 @@ Route::group(['middleware' => 'installed'], function () {
         Route::get('berita/{slug}', 'PageController@detailBerita')->name('berita.detail');
         Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
         Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
-        
+
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
             Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');

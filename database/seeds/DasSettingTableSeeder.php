@@ -30,6 +30,7 @@
  */
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DasSettingTableSeeder extends Seeder
 {
@@ -49,25 +50,34 @@ class DasSettingTableSeeder extends Seeder
                 'value' => 'Kecamatan',
                 'type' => 'input',
                 'description' => 'Judul halaman aplikasi.',
-                'kategori' => '-',
+                'kategori' => 'sistem',
                 'option' => '{}',
             ],
             1 => [
                 'id' => 2,
-                'key' => 'jumlah_artikel_kecamatan',
+                'key' => 'artikel_kecamatan_perhalaman',
                 'value' => '10',
                 'type' => 'number',
-                'description' => 'pengaturan limit jumlah artikel kecamatan dalam satu halaman',
-                'kategori' => '-',
+                'description' => 'Jumlah artikel kecamatan dalam satu halaman yang ditampilkan',
+                'kategori' => 'web',
                 'option' => '{}',
             ],
             2 => [
                 'id' => 3,
-                'key' => 'jumlah_artikel_desa',
+                'key' => 'artikel_desa_perhalaman',
                 'value' => '10',
                 'type' => 'number',
-                'description' => 'pengaturan limit jumlah artikel desa dalam satu halaman',
-                'kategori' => '-',
+                'description' => 'Jumlah artikel desa dalam satu halaman yang ditampilkan',
+                'kategori' => 'web',
+                'option' => '{}',
+            ],
+            3 => [
+                'id' => 4,
+                'key' => 'jumlah_artikel_desa',
+                'value' => '150',
+                'type' => 'number',
+                'description' => 'Jumlah semua artikel desa yang ditampilkan',
+                'kategori' => 'web',
                 'option' => '{}',
             ],
         ]);

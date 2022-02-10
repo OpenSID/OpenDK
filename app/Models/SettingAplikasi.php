@@ -31,12 +31,11 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class SettingAplikasi extends Model
 {
-    public const KEY_BROWSER_TITLE = 'judul_aplikasi';
-
     protected $table = 'das_setting';
 
     protected $fillable = [
@@ -45,8 +44,16 @@ class SettingAplikasi extends Model
 
     public $timestamps = false;
 
-    public function isBrowserTitle()
+    protected static function boot()
     {
-        return $this->key == self::KEY_BROWSER_TITLE;
+        parent::boot();
+
+        static::saved(function() {
+            Cache::forget('setting');
+        });
+
+        static::updated(function() {
+            Cache::forget('setting');
+        });
     }
 }

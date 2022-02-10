@@ -36,7 +36,7 @@
 	$(document).ready(function () {
 		var ajax_artikel = function () {
         $.ajax({
-          url: "{{ route('feeds.filter') }}",
+          url: "{{ route('filter-berita-desa') }}",
           type: 'get',
           dataType:'json',
           data:$("#form_filter").serialize(),
@@ -57,17 +57,15 @@
 
 		$(document).on('click', '.pagination a', function(event){
       event.preventDefault(); 
-      var page = $(this).attr('href').split('pageDesa=')[1];
-      $('input[name="pageDesa"]').val(page);
+      var page = $(this).attr('href').split('page=')[1];
+      $('input[name="page"]').val(page);
       ajax_artikel()
     });
 
-		 
 		$(document).on('submit', '#form_filter', function(event){
 			ajax_artikel();
 			event.preventDefault();
 		})
-		 
 	});
 </script>
 @endpush

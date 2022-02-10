@@ -36,7 +36,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\Event;
-use App\Models\SettingAplikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use willvincent\Feeds\Facades\FeedsFacade;
@@ -49,33 +48,30 @@ class PageController extends Controller
     {
         Counter::count('beranda');
 
-        $limit = SettingAplikasi::where('key', 'jumlah_artikel_kecamatan')->first()->value ?? 30;
-
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'cari'             => null,
-            'artikel'          => Artikel::latest()->status()->paginate($limit, ['*'], 'pageArtikel'),
+            'artikel'          => Artikel::latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
         ]);
     }
 
-    public function DesaBerita()
+    public function beritaDesa()
     {
-        $this->data = $this->GetFeeds();
-        $limit = SettingAplikasi::where('key', 'jumlah_artikel_desa')->first()->value ?? 30;
+        $this->data = $this->getFeeds();
 
-        $feeds = collect($this->data)->sortByDesc('date')->take($limit)->paginate(10, 'pageDesa');
+        $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa'))->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         $feeds->all();
 
         return view('pages.berita.desa', [
             'page_title'       => 'Berita Desa',
             'cari'             => null,
             'cari_desa'        => null,
-            'list_desa'        => DataDesa::get(),
+            'list_desa'        => DataDesa::orderBy('desa_id')->get(),
             'feeds'            => $feeds,
         ]);
     }
 
-    private function GetFeeds()
+    private function getFeeds()
     {
         $all_desa = DataDesa::websiteUrl()->get()
         ->map(function ($desa) {
@@ -104,9 +100,9 @@ class PageController extends Controller
         return $feeds ?? null;
     }
 
-    public function FilterFeeds(Request $request)
+    public function filterFeeds(Request $request)
     {
-        $this->data = $this->GetFeeds();
+        $this->data = $this->getFeeds();
         $feeds = collect($this->data);
 
         // Filter
@@ -125,16 +121,14 @@ class PageController extends Controller
             });
         }
 
-        $feeds = $feeds->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
+        $feeds = $feeds->sortByDesc('date')->take(config('setting.jumlah_artikel_desa'))->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         $feeds->all();
 
         $html =  view('pages.berita.feeds', [
             'page_title'       => 'Beranda',
-            'cari'             => null,
             'cari_desa'        => null,
-            'list_desa'        => DataDesa::get(),
+            'list_desa'        => DataDesa::orderBy('desa_id')->get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
         ])->render();
 
         return response()->json(compact('html'));

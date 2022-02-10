@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@section('title','Beranda')
 @push('css')
 <style>
 	.select2-container--default {

@@ -3,7 +3,7 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda') }}"  class="navbar-brand">
-              <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="KD" id="logo-brand" >
+              <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="OpenDK" id="logo-brand" >
               <small class="text-kab">{{ strtoupper('PEMERINTAH KAB. ' . $profil->nama_kabupaten) }}</small>
               <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</small>
             </a>

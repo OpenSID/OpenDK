@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Cache-Control: no-store" content="public">
+    <meta http-equiv="Cache-Control: no-store;" content="public">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#1a2035">
@@ -82,7 +82,7 @@
             <!-- /.container -->
         </div>
         <!-- /.content-wrapper -->
-        @include('.layouts.frontends.footer')
+        @include('layouts.frontends.footer')
     </div>
     <!-- ./wrapper -->
     <div class="scroll-top-wrapper ">

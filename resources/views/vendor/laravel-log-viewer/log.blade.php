@@ -163,6 +163,9 @@
     $('#delete-log, #clean-log, #delete-all-log').click(function () {
       return confirm('Yakin Untuk Menghapus Data File log?');
     });
+    $('#run-linkstorage').click(function () {
+        return confirm('Yakin Untuk Menjalankan php artisan storage:link?');
+    });
   });
 </script>
 @include('forms.datatable-vertical')

@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Providers;
@@ -34,6 +34,7 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
@@ -116,6 +117,43 @@ class AppServiceProvider extends ServiceProvider
             }
             return true;
         });
+
+        $this->getSettings();
+    }
+
+    protected function getSettings()
+    {
+        config([
+            'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
+                return DB::table('das_setting')
+                    ->get(['key', 'value'])
+                    ->keyBy('key')
+                    ->transform(function ($setting) {
+                        return $setting->value;
+                    }) ?? null;
+            }),
+
+            'profil' => Cache::remember('profil', 24 * 60 * 60, function () {
+                $profil = DB::table('das_profil')
+                    ->get()
+                    ->map(function ($item) {
+                        return (array) $item;
+                    })
+                    ->first() ?? null;
+
+                if ($profil) {
+                    if (in_array($profil['provinsi_id'], [91, 92])) {
+                        $profil['sebutan_wilayah'] = 'Distrik';
+                        $profil['sebutan_kepala_wilayah'] = 'Kepala Distrik';
+                    } else {
+                        $profil['sebutan_wilayah'] = 'Kecamatan';
+                        $profil['sebutan_kepala_wilayah'] = 'Camat';
+                    }
+                }
+
+                return $profil;
+            }),
+        ]);
     }
 
     /**

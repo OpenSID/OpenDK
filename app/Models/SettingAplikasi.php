@@ -22,21 +22,20 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class SettingAplikasi extends Model
 {
-    public const KEY_BROWSER_TITLE = 'judul_aplikasi';
-
     protected $table = 'das_setting';
 
     protected $fillable = [
@@ -45,8 +44,16 @@ class SettingAplikasi extends Model
 
     public $timestamps = false;
 
-    public function isBrowserTitle()
+    protected static function boot()
     {
-        return $this->key == self::KEY_BROWSER_TITLE;
+        parent::boot();
+
+        static::saved(function () {
+            Cache::forget('setting');
+        });
+
+        static::updated(function () {
+            Cache::forget('setting');
+        });
     }
 }

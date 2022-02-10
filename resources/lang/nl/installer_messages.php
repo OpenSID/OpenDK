@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 return [
@@ -39,7 +39,6 @@ return [
     'title' => 'Laravel Installer',
     'next' => 'Volgende stap',
 
-
     /**
      *
      * Home page translations.
@@ -50,7 +49,6 @@ return [
         'message' => 'Welkom bij de installatiewizard',
     ],
 
-
     /**
      *
      * Requirements page translations.
@@ -60,7 +58,6 @@ return [
         'title' => 'Vereisten',
     ],
 
-
     /**
      *
      * Permissions page translations.
@@ -69,7 +66,6 @@ return [
     'permissions' => [
         'title' => 'Permissies',
     ],
-
 
     /**
      *
@@ -82,7 +78,6 @@ return [
         'success' => 'Uw .env bestand is opgeslagen.',
         'errors' => 'Het is niet mogelijk om een .env bestand aan te maken, maak a.u.b het bestand zelf aan.',
     ],
-
 
     /**
      *

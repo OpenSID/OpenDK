@@ -130,6 +130,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "apidong",
+      "name": "Afila",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20056421?v=4",
+      "profile": "https://github.com/apidong",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

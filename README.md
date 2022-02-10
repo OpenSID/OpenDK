@@ -49,6 +49,9 @@ Berikut adalah teman-teman luar biasa yang telah berkontribusi langsung mengemba
     <td align="center"><a href="http://wahyusafrizal.xyz/"><img src="https://avatars.githubusercontent.com/u/49548492?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Wahyu Safrizal</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=wahyusafrizal17" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/totoprayogo1916"><img src="https://avatars.githubusercontent.com/u/2387514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Toto</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=totoprayogo1916" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/apidong"><img src="https://avatars.githubusercontent.com/u/20056421?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Afila</b></sub></a><br /><a href="https://github.com/OpenSID/OpenDK/commits?author=apidong" title="Code">💻</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->

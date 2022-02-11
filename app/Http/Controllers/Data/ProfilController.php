@@ -22,19 +22,19 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfilRequest;
 use App\Models\DataUmum;
 use App\Models\Profil;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class ProfilController extends Controller
@@ -59,21 +59,8 @@ class ProfilController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfilRequest $request, $id)
     {
-        request()->validate([
-            'provinsi_id'              => 'required',
-            'kabupaten_id'             => 'required',
-            'kecamatan_id'             => 'required',
-            'alamat'                   => 'required',
-            'kode_pos'                 => 'required',
-            'email'                    => 'email',
-            'nama_camat'               => 'required',
-            'file_logo'                => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024',
-            'file_struktur_organisasi' => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
-            'foto_kepala_wilayah'      => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
-        ], []);
-
         try {
             $profil = Profil::findOrFail($id);
             $profil->fill($request->all());

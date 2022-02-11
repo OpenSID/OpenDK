@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Data;
@@ -63,7 +63,7 @@ class DataDesaController extends Controller
 
     public function getDataDesa()
     {
-        return DataTables::of(DataDesa::all())
+        return DataTables::of(DataDesa::get())
             ->addColumn('aksi', function ($row) {
                 if ($this->profil->kecamatan_id) {
                     $data['edit_url']   = route('data.data-desa.edit', $row->id);
@@ -197,7 +197,8 @@ class DataDesaController extends Controller
                 'query' => [
                     'token' => $token,
                     'kode' => $this->profil->kecamatan_id,
-                ]
+                ],
+                'verify' => false,
             ]);
 
             if ($response->getStatusCode() === 200) {
@@ -219,9 +220,9 @@ class DataDesaController extends Controller
             }
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan!' . $e);
+            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
         }
 
-        return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan!');
+        return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan');
     }
 }

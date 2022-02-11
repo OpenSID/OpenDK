@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 return [
@@ -40,7 +40,6 @@ return [
     'next' => 'Siguiente',
     'finish' => 'Instalar',
 
-
     /**
      *
      * Traducciones de la página principal.
@@ -51,7 +50,6 @@ return [
         'message' => 'Bienvenido al asistente de configuración',
     ],
 
-
     /**
      *
      * Tranducciones de la página de requisitos.
@@ -61,7 +59,6 @@ return [
         'title' => 'Requisitos',
     ],
 
-
     /**
      *
      * Traducciones de la pagina de permisos.
@@ -70,7 +67,6 @@ return [
     'permissions' => [
         'title' => 'Permisos',
     ],
-
 
     /**
      *
@@ -83,7 +79,6 @@ return [
         'success' => 'Los cambios en tu archivo .env han sido guardados.',
         'errors' => 'No es posible crear el archivo .env, por favor intentalo manualmente.',
     ],
-
 
     /**
      *

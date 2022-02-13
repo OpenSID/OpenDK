@@ -143,6 +143,22 @@
             </div>
 @include('partials.asset_datatables')
  @push('scripts')
+
+ @if (session('info-linkstorage'))
+     <script type="text/javascript">
+         $(document).ready(function () {
+             const logs = document.getElementsByClassName("logs");
+             for (let i = 0; i < logs.length; i++) {
+                 logs[i].classList.remove("active");
+             }
+             const log_ekstensi = document.getElementsByClassName("log_ekstensi");
+             for (let i = 0; i < log_ekstensi.length; i++) {
+                 log_ekstensi[i].classList.add("active");
+             }
+         });
+     </script>
+ @endif
+
  <script type="text/javascript">
   $(document).ready(function () {
     $('.table-container tr').on('click', function () {

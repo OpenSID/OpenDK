@@ -5,7 +5,7 @@ Di rilis v22.01.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
 Terima kasih pada esyede yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
-
+1. [#251](https://github.com/OpenSID/OpenDK/issues/251) fitur menjalankan php artisan storage:link pada halaman setting.
 #### Perbaikan BUG
 1. Perbaikan url webiste saat mengabil feed desa.
 2. Perbaikan Identitas terhimpit / navbar dan header.

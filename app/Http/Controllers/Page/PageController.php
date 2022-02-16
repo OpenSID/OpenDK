@@ -59,7 +59,7 @@ class PageController extends Controller
     {
         $this->data = $this->getFeeds();
 
-        $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa'))->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
+        $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         $feeds->all();
 
         return view('pages.berita.desa', [
@@ -121,7 +121,7 @@ class PageController extends Controller
             });
         }
 
-        $feeds = $feeds->sortByDesc('date')->take(config('setting.jumlah_artikel_desa'))->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
+        $feeds = $feeds->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         $feeds->all();
 
         $html =  view('pages.berita.feeds', [

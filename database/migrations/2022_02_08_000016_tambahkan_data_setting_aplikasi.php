@@ -29,31 +29,48 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use App\Models\SettingAplikasi;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
-
-class SettingAplikasi extends Model
+class TambahkanDataSettingAplikasi extends Migration
 {
-    protected $table = 'das_setting';
-
-    protected $fillable = [
-        'value',
-    ];
-
-    public $timestamps = false;
-
-    protected static function boot()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        parent::boot();
+        $collection = SettingAplikasi::get();
 
-        static::saved(function () {
-            Cache::forget('setting');
-        });
+        Artisan::call('db:seed', [
+            '--class' => 'DasSettingTableSeeder',
+        ]);
 
-        static::updated(function () {
-            Cache::forget('setting');
-        });
+        foreach ($collection as $value) {
+            $insert = [
+                'key'         => $value['key'],
+                'value'         => $value['value'],
+                'type'          => $value['type'],
+                'description'   => $value['type'],
+                'kategori'      => $value['kategori'],
+                'option'        => $value['option'],
+            ];
+
+            SettingAplikasi::updateOrInsert([
+                'key'              => $insert['key'],
+            ], $insert);
+        }
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        SettingAplikasi::where('key', '!=', 'judul_aplikasi')->delete();
     }
 }

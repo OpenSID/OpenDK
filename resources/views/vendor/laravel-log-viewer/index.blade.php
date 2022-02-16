@@ -16,16 +16,16 @@
     <div class="row">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#log_viewer">Logs</a></li>
-                <li><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
+                <li class="logs active"><a data-toggle="tab" href="#log_viewer">Logs</a></li>
+                <li class="log_ekstensi"><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
                 <li><a data-toggle="tab" href="#info_sistem">Info Sistem</a></li>
             </ul>
         </div>
 		<div class="tab-content">
-            <div id="log_viewer" class="tab-pane fade in active">
+            <div id="log_viewer" class="logs tab-pane fade in active">
                 @include('vendor.laravel-log-viewer.log')
             </div>
-            <div id="ekstensi" class="tab-pane fade in">
+            <div id="ekstensi" class="log_ekstensi tab-pane fade in">
                 @include('vendor.laravel-log-viewer.kebutuhan-sistem')
             </div>
             <div id="info_sistem" class="tab-pane fade in">

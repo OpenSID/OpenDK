@@ -9,7 +9,7 @@
     ],
     "homepage": "https://opendk.my.id/",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.4.0",
         "cartalyst/sentinel": "^3.0",
         "cviebrock/eloquent-sluggable": "^6.0",
         "doctrine/dbal": "^2.9",

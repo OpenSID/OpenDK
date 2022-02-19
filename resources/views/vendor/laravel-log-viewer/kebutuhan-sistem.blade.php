@@ -1,15 +1,9 @@
-@if (session('info-linkstorage'))
-    <div class="callout callout-success">
-        <h4><i class="icon fa fa-check-circle-o"></i> Info!</h4>
-        <p>{{ session('info-linkstorage') }}</p>
-    </div>
-@endif
 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
             <div class="box-header with-border">
                 <div class="p-3">
-                    <a class="btn btn-social btn-flat btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/linkstorage') }}">
+                    <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/linkstorage') }}">
                         <span class="fa fa-play-circle"></span> Jalankan php artisan storage:link
                     </a>
                 </div>

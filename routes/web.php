@@ -44,6 +44,7 @@ Route::get('/', function () {
 Route::get('berita', function () {
     return redirect('/');
 });
+
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
@@ -157,7 +158,14 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
 
-            Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
+            Route::group(['prefix' => 'info-sistem'], function () {
+                Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
+                Route::get('/linkstorage', function () {
+                    Artisan::call('storage:link'); // this will do the command line job
+                    sleep(2);
+                    return redirect('/setting/info-sistem')->with('info-linkstorage', 'Berhasil menjalankan php artisan storage:link');
+                });
+            });
         });
 
         /**

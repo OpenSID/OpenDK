@@ -24,7 +24,7 @@
 <div class="form-group">
     <label for="description" class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('description', null, ['class' => 'form-control', 'id' => 'description', 'readonly' => true]) !!}
+        {!! Form::textarea('description', null, ['class' => 'form-control', 'id' => 'description', 'rows' => 5, 'readonly' => true]) !!}
     </div>
 </div>
 

@@ -46,6 +46,7 @@ class TambahkanDataSettingAplikasi extends Migration
 
         Artisan::call('db:seed', [
             '--class' => 'DasSettingTableSeeder',
+            '--force' => true,
         ]);
 
         foreach ($collection as $value) {
@@ -53,7 +54,7 @@ class TambahkanDataSettingAplikasi extends Migration
                 'key'         => $value['key'],
                 'value'         => $value['value'],
                 'type'          => $value['type'],
-                'description'   => $value['type'],
+                'description'   => $value['description'],
                 'kategori'      => $value['kategori'],
                 'option'        => $value['option'],
             ];

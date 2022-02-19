@@ -31,10 +31,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Artisan;
-use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Illuminate\Support\Facades\Crypt;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
+use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 
 /**
  * Class LogViewerController

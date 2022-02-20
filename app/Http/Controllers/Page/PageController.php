@@ -92,7 +92,7 @@ class PageController extends Controller
                     'author'      => $item->get_author()->get_name() ?? 'Administrator',
                     'title'       => $item->get_title(),
                     'image'       => get_tag_image($item->get_description()),
-                    'description' => strip_tags(substr($item->get_description(), 0, 250) . '....'),
+                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
                     'content'     => $item->get_content(),
                 ];
             }

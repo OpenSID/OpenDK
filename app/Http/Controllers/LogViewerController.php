@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
@@ -183,5 +184,13 @@ class LogViewerController extends Controller
 
         // For laravel 4.2
         return app('\Illuminate\Support\Facades\Response')->download($data);
+    }
+
+    public function linkStorage()
+    {
+        Artisan::call('storage:link'); // this will do the command line job
+        sleep(2);
+
+        return back()->with('tab', 'ekstensi')->with('success', 'Berhasil menjalankan php artisan storage:link');
     }
 }

@@ -4,16 +4,16 @@
     <div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
       <div class="row">
         <div class="col-sm-4">
-          <img class="img-responsive" src="{{ get_tag_image($item['description']) }}" alt="{{ $item['title'] }}">
+          <img class="img-responsive" src="{{ $item['image'] }}" alt="{{ $item['title'] }}">
         </div>
         <div class="col-sm-8">
           <h5 style="margin-top: 5px; text-align: justify;"><b><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></b></h5>
 					<p style="font-size:11px;">
-						<i class="fa fa-calendar"></i>&ensp;{{ \Carbon\Carbon::parse($item['date'])->translatedFormat('d F Y') }}&ensp;|&ensp;
-						<i class="fa fa-user"></i>&ensp;{{ $item['author'] ?? 'Administrator'}}&ensp;|&ensp;
+						<i class="fa fa-calendar"></i>&ensp;{{ $item['date'] }}&ensp;|&ensp;
+						<i class="fa fa-user"></i>&ensp;{{ $item['author'] }}&ensp;|&ensp;
 						<i class="fa fa-globe"></i>&ensp;{{ $item['nama_desa'] }}
 					</p>
-          <p style="text-align: justify;">{{ strip_tags(substr($item['description'], 0, 250)) }}...</p>
+          <p style="text-align: justify;">{!! $item['description'] !!}</p>
           <a href="{{ $item['link'] }}" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>
         </div>
       </div>

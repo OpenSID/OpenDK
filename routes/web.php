@@ -160,11 +160,7 @@ Route::group(['middleware' => 'installed'], function () {
 
             Route::group(['prefix' => 'info-sistem'], function () {
                 Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
-                Route::get('/linkstorage', function () {
-                    Artisan::call('storage:link'); // this will do the command line job
-                    sleep(2);
-                    return redirect('/setting/info-sistem')->with('info-linkstorage', 'Berhasil menjalankan php artisan storage:link');
-                });
+                Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
             });
         });
 

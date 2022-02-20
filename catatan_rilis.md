@@ -16,6 +16,7 @@ Terima kasih pada esyede yang baru mulai berkontribusi.
 3. [#301](https://github.com/OpenSID/OpenDK/issues/301) Perbaikan tampilan gambar tidak responsive pada slider.
 4. Perbaikan statistik penduduk yang tidak tampil dengan benar.
 5. [#311](https://github.com/OpenSID/OpenDK/issues/311) Perbaikan informasi pada modul info sistem yang tidak konsisten dan perbaiki tampilan.
+6. [#309](https://github.com/OpenSID/OpenDK/issues/309) Perbaiki tulisan memanjang.
 
 #### TEKNIS
 1. Penyesuian composer.

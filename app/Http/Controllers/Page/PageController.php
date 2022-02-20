@@ -88,10 +88,11 @@ class PageController extends Controller
                     'feed_link'   => $item->get_feed()->get_permalink(),
                     'feed_title'  => $item->get_feed()->get_title(),
                     'link'        => $item->get_link(),
-                    'date'        => $item->get_date('U'),
-                    'author'      => $item->get_author()->get_name(),
+                    'date'        => \Carbon\Carbon::parse($item->get_date('U'))->translatedFormat('d F Y'),
+                    'author'      => $item->get_author()->get_name() ?? 'Administrator',
                     'title'       => $item->get_title(),
-                    'description' => $item->get_description(),
+                    'image'       => get_tag_image($item->get_description()),
+                    'description' => strip_tags(substr($item->get_description(), 0, 250) . '....'),
                     'content'     => $item->get_content(),
                 ];
             }

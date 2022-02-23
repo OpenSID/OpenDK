@@ -41,9 +41,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
 });
 
-Route::get('berita', function () {
-    return redirect('/');
-});
+// alias
+// Route::redirect('berita', '/', 301);
+Route::permanentRedirect('berita', '/');
 
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {

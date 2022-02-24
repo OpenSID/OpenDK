@@ -1,6 +1,6 @@
 #### [v22.02.15]
 
-Di rilis v22.02.15, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.03.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada esyede yang baru mulai berkontribusi.
 

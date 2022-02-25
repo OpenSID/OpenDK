@@ -41,10 +41,10 @@
           </li>
             <li class="dropdown @if(Request::is('desa/*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
-                <ul class="dropdown-menu fadeIn animated" style="min-width: 400px;" role="menu">
+                <ul class="dropdown-menu fadeIn animated" style="overflow-y : none" role="menu">
                   @foreach ($navdesa->chunk(2) as $desa)
                     @foreach ($desa as $d)
-                    <li class="col-sm-6" style="white-space: normal;"><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
+                    <li><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
                     @endforeach
                   @endforeach
                 </ul>

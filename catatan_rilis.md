@@ -1,8 +1,8 @@
-#### [v22.02.15]
+#### [v22.03.01]
 
-Di rilis v22.02.15, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.03.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada esyede yang baru mulai berkontribusi.
+Terima kasih pada totoprayogo1916 yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
 1. [#271](https://github.com/OpenSID/OpenDK/issues/271) Pisahkan halaman artikel berita kecamatan dengan berita desa..

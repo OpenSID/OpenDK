@@ -17,14 +17,14 @@
 <div class="form-group">
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('website', $desa->website, ['class' => 'form-control', 'id' => 'website', 'placeholder' => 'Contoh : https://arungkeke.desa.id']) !!}
+        {!! Form::input('url', 'website', $desa->website, ['class' => 'form-control',  'id' => 'website', 'placeholder' => 'Contoh : https://berputar.opensid.or.id/']) !!}
     </div>
 </div>
 
 <div class="form-group">
     <label for="luas_wilayah" class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::number('luas_wilayah', $desa->luas_wilayah, ['class' => 'form-control',  'id' => 'luas_wilayah', 'required' => true, 'placeholder' => 'Luas Wilayah Desa', 'step' => '0.1']) !!}
+        {!! Form::number('luas_wilayah', $desa->luas_wilayah ?? 0, ['class' => 'form-control',  'id' => 'luas_wilayah', 'placeholder' => 'Luas Wilayah Desa', 'step' => '0.1']) !!}
     </div>
 </div>
 

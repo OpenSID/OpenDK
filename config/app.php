@@ -251,8 +251,6 @@ return [
 
         // JWT Auth
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        // Debugbar
-        Barryvdh\Debugbar\ServiceProvider::class,
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,

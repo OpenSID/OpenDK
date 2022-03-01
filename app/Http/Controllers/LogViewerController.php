@@ -22,15 +22,16 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
@@ -183,5 +184,13 @@ class LogViewerController extends Controller
 
         // For laravel 4.2
         return app('\Illuminate\Support\Facades\Response')->download($data);
+    }
+
+    public function linkStorage()
+    {
+        Artisan::call('storage:link'); // this will do the command line job
+        sleep(2);
+
+        return back()->with('tab', 'ekstensi')->with('success', 'Berhasil menjalankan php artisan storage:link');
     }
 }

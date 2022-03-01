@@ -3,7 +3,7 @@
       <div class="container">
         <div class="navbar-header">
             <a href="{{ route('beranda') }}"  class="navbar-brand">
-              <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="KD" id="logo-brand" >
+              <img class="logo-kab" src="{{ is_logo($profil->file_logo) }}" alt="OpenDK" id="logo-brand" >
               <small class="text-kab">{{ strtoupper('PEMERINTAH KAB. ' . $profil->nama_kabupaten) }}</small>
               <small class="text-kec">{{ strtoupper($sebutan_wilayah.' '.$profil->nama_kecamatan) }}</small>
             </a>
@@ -15,6 +15,7 @@
         <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="dropdown @if(Request::is('/')) active @endif"><a href="{{ route('beranda') }}">BERANDA <span class="sr-only">(current)</span></a></li>
+            <li class="dropdown @if(Request::is('berita-desa')) active @endif"><a href="{{ route('berita-desa') }}">BERITA DESA </a></li>
             <li class="dropdown @if(Request::is('profil/*')) active @endif menu-large">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown"> PROFIL <span class="caret"></span></a>
               <ul class="dropdown-menu megamenu row fadeIn animated">
@@ -40,10 +41,10 @@
           </li>
             <li class="dropdown @if(Request::is('desa/*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
-                <ul class="dropdown-menu fadeIn animated" style="min-width: 400px;" role="menu">
+                <ul class="dropdown-menu fadeIn animated" style="overflow-y : none" role="menu">
                   @foreach ($navdesa->chunk(2) as $desa)
                     @foreach ($desa as $d)
-                    <li class="col-sm-6" style="white-space: normal;"><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
+                    <li><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
                     @endforeach
                   @endforeach
                 </ul>

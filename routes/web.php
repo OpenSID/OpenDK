@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 use App\Models\DataDesa;
@@ -38,13 +38,13 @@ use Illuminate\Support\Facades\Route;
  * Group Routing for Front End
  */
 
-
 Route::get('/', function () {
 });
 
 Route::get('berita', function () {
     return redirect('/');
 });
+
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Auth')->group(function () {
@@ -158,7 +158,10 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
 
-            Route::get('info-sistem', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
+            Route::group(['prefix' => 'info-sistem'], function () {
+                Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
+                Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
+            });
         });
 
         /**
@@ -175,6 +178,8 @@ Route::group(['middleware' => 'installed'], function () {
     Route::namespace('Page')->group(function () {
         Route::get('/', 'PageController@index')->name('beranda');
         Route::get('berita/{slug}', 'PageController@detailBerita')->name('berita.detail');
+        Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
+        Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
         Route::group(['prefix' => 'profil'], function () {
             Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
@@ -187,7 +192,6 @@ Route::group(['middleware' => 'installed'], function () {
 
         Route::get('desa/desa-{slug}', 'PageController@DesaShow')->name('desa.show');
 
-        Route::get('filter', 'PageController@FilterFeeds')->name('feeds.filter');
         Route::group(['prefix' => 'potensi'], function () {
             Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
             Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
@@ -508,7 +512,6 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.fasilitas-paud.import', 'uses' => 'FasilitasPaudController@import']);
                     Route::post('do_import', ['as' => 'data.fasilitas-paud.do_import', 'uses' => 'FasilitasPaudController@do_import']);
                 });
-
 
                 //Routes Resource Program Bantuan
                 Route::group(['prefix' => 'program-bantuan'], function () {

@@ -22,11 +22,11 @@
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
  * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
- * @package	    OpenDK
- * @author	    Tim Pengembang OpenDesa
- * @copyright	Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    	http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link	    https://github.com/OpenSID/opendk
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Page;
@@ -48,22 +48,30 @@ class PageController extends Controller
     {
         Counter::count('beranda');
 
-        $this->data = $this->GetFeeds();
-
-        $feeds = collect($this->data)->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
-        $feeds->all();
-
         return view('pages.index', [
             'page_title'       => 'Beranda',
             'cari'             => null,
-            'cari_desa'        => null,
-            'list_desa'        => DataDesa::get(),
-            'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
+            'artikel'          => Artikel::latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
         ]);
     }
 
-    private function GetFeeds()
+    public function beritaDesa()
+    {
+        $this->data = $this->getFeeds();
+
+        $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
+        $feeds->all();
+
+        return view('pages.berita.desa', [
+            'page_title'       => 'Berita Desa',
+            'cari'             => null,
+            'cari_desa'        => null,
+            'list_desa'        => DataDesa::orderBy('desa_id')->get(),
+            'feeds'            => $feeds,
+        ]);
+    }
+
+    private function getFeeds()
     {
         $all_desa = DataDesa::websiteUrl()->get()
         ->map(function ($desa) {
@@ -80,10 +88,11 @@ class PageController extends Controller
                     'feed_link'   => $item->get_feed()->get_permalink(),
                     'feed_title'  => $item->get_feed()->get_title(),
                     'link'        => $item->get_link(),
-                    'date'        => $item->get_date('U'),
-                    'author'      => $item->get_author()->get_name(),
+                    'date'        => \Carbon\Carbon::parse($item->get_date('U'))->translatedFormat('d F Y'),
+                    'author'      => $item->get_author()->get_name() ?? 'Administrator',
                     'title'       => $item->get_title(),
-                    'description' => $item->get_description(),
+                    'image'       => get_tag_image($item->get_description()),
+                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
                     'content'     => $item->get_content(),
                 ];
             }
@@ -92,9 +101,9 @@ class PageController extends Controller
         return $feeds ?? null;
     }
 
-    public function FilterFeeds(Request $request)
+    public function filterFeeds(Request $request)
     {
-        $this->data = $this->GetFeeds();
+        $this->data = $this->getFeeds();
         $feeds = collect($this->data);
 
         // Filter
@@ -113,16 +122,14 @@ class PageController extends Controller
             });
         }
 
-        $feeds = $feeds->sortByDesc('date')->take(30)->paginate(10, 'pageDesa');
+        $feeds = $feeds->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         $feeds->all();
 
         $html =  view('pages.berita.feeds', [
             'page_title'       => 'Beranda',
-            'cari'             => null,
             'cari_desa'        => null,
-            'list_desa'        => DataDesa::get(),
+            'list_desa'        => DataDesa::orderBy('desa_id')->get(),
             'feeds'            => $feeds,
-            'artikel'          => Artikel::latest()->status()->paginate(10, ['*'], 'pageArtikel'),
         ])->render();
 
         return response()->json(compact('html'));

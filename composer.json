@@ -1,14 +1,15 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "license": "MIT",
+    "name": "opendesa/opendk",
+    "description": "OpenDK adalah aplikasi yang bisa digunakan oleh Pemerintah Kecamatan di Seluruh Indonesia",
+    "license": "GPL-3.0-or-later",
     "type": "project",
     "keywords": [
-        "framework",
-        "laravel"
+        "OpenDK",
+        "Dashboard Kecamatan"
     ],
+    "homepage": "https://opendk.my.id/",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.4.0",
         "cartalyst/sentinel": "^3.0",
         "cviebrock/eloquent-sluggable": "^6.0",
         "doctrine/dbal": "^2.9",

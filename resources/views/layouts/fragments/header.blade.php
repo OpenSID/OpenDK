@@ -1,7 +1,7 @@
 <!-- Main Header -->
 <header class="main-header">
     <!-- Logo -->
-    <a href="{{$app->make('url')->to('/')}}" class="logo">
+    <a href="{{$app->make('url')->to('/')}}" target="_blank" class="logo">
         <span class="logo-mini"><b>DK</b></span>
         <span class="logo-lg"><b>OpenDK</b></span>
     </a>

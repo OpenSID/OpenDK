@@ -38,13 +38,13 @@ use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Facades\DB;
 
 class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -65,12 +65,11 @@ class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkRe
     {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
-        
+
         foreach ($collection as $value) {
             if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
 
-                
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                 Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
                 throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);

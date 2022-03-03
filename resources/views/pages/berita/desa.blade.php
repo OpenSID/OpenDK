@@ -124,7 +124,7 @@
 			@endforeach
 		</select>
 		<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
-			<input class="form-control" style="width: 200px; height: auto;" type="text" name="cari" placeholder="Ceri berita" value="{{$cari}}"/>
+			<input class="form-control" style="height: auto;" type="text" name="cari" placeholder="Cari berita" value="{{$cari}}"/>
 			<button type="submit" class="btn btn-info btn-block" style="width: auto;">
 				<i class="fa fa-search"></i>
 			</button>

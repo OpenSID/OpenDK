@@ -21,21 +21,22 @@ class RoleSpatieSeeder extends Seeder
       
 
         // // create permissions
-        // Permission::create(['name' => 'view', 'guard_name' => 'web']);
-        // Permission::create(['name' => 'create', 'guard_name' => 'web']);
-        // Permission::create(['name' => 'edit', 'guard_name' => 'web']);
-        // Permission::create(['name' => 'delete', 'guard_name' => 'web']);
+        Permission::create(['name' => 'view', 'guard_name' => 'web']);
+        Permission::create(['name' => 'create', 'guard_name' => 'web']);
+        Permission::create(['name' => 'edit', 'guard_name' => 'web']);
+        Permission::create(['name' => 'delete', 'guard_name' => 'web']);
 
-        // $role = [
-        //     ['name' =>'super_admin', 'guard_name' => 'web'],
-        //     ['name' =>'admin-puskesmas', 'guard_name' => 'web'],
-        //     ['name' =>'admin-pendidikan', 'guard_name' => 'web'],
-        //     ['name' =>'admin-komplain', 'guard_name' => 'web'],
-        //     ['name' =>'administrator-website', 'guard_name' => 'web']
-        // ];
-        // foreach ($role as $value) {
-        //     Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
-        // }
+        $role = [
+           
+            // ['name' =>'admin-puskesmas', 'guard_name' => 'web'],
+            // ['name' =>'admin-pendidikan', 'guard_name' => 'web'],
+            // ['name' =>'admin-komplain', 'guard_name' => 'web'],
+            // ['name' =>'administrator-website', 'guard_name' => 'web'],
+            ['name' =>'super_admin', 'guard_name' => 'web'],
+        ];
+        foreach ($role as $value) {
+          $cek =   Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        }
 
         // cek user
         $user = User::where('email', 'admin')->first();
@@ -49,10 +50,10 @@ class RoleSpatieSeeder extends Seeder
                 'status' => 1,
                 'password' => bcrypt('password'),
             ]);
-            $admin->assignRole('super_admin');
+            $admin->assignRole($cek);
            
         }else{
-            $user->assignRole('super_admin');
+            $user->assignRole($cek);
         }
 
 

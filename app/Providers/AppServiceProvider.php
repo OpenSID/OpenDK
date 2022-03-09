@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,6 +52,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // default lengt string
         Schema::defaultStringLength(191);
+
+        // Implicitly grant "Super Admin" role all permissions
+        // This works in the app by using gate-related functions like auth()->user->can() and @can()
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('super_admin') ? true : null;
+        });
 
         Penduduk::saved(function ($model) {
             $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();

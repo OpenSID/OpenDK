@@ -43,43 +43,51 @@ class RoleSpatieSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement("SET foreign_key_checks=0");
+        DB::table('roles')->truncate();
+        DB::table('permissions')->truncate();
+        DB::table('role_has_permissions')->truncate();
+        DB::table('model_has_roles')->truncate();
+        DB::statement("SET foreign_key_checks=1");
 
         // DB::table('roles')->truncate();
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // // create permissions
+        // create permissions
         Permission::create(['name' => 'view', 'guard_name' => 'web']);
         Permission::create(['name' => 'create', 'guard_name' => 'web']);
         Permission::create(['name' => 'edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'delete', 'guard_name' => 'web']);
-
+        
         $role = [
-
-            // ['name' =>'admin-puskesmas', 'guard_name' => 'web'],
-            // ['name' =>'admin-pendidikan', 'guard_name' => 'web'],
-            // ['name' =>'admin-komplain', 'guard_name' => 'web'],
-            // ['name' =>'administrator-website', 'guard_name' => 'web'],
-            ['name' =>'super_admin', 'guard_name' => 'web'],
+            ['name' =>'admin-desa', 'guard_name' => 'web'],
+            ['name' =>'admin-kecamatan', 'guard_name' => 'web'],
+            ['name' =>'admin-puskesmas', 'guard_name' => 'web'],
+            ['name' =>'admin-pendidikan', 'guard_name' => 'web'],
+            ['name' =>'admin-komplain', 'guard_name' => 'web'],
+            ['name' =>'administrator-website', 'guard_name' => 'web'],
         ];
         foreach ($role as $value) {
-            $cek =   Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
+           Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
         }
 
-        // cek user
-        $user = User::where('email', 'admin')->first();
+        $role_admin =   Role::create(['name' =>'super_admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        // cek user admin
+        $user = User::where('email', 'admin@mail.com')->first();
+        
         if ($user === null) {
             $admin = User::create([
                 'email' => 'admin@mail.com',
                 'name' => 'Administrator',
                 'gender' => 'Male',
                 'address' => 'Jakarta',
-                'phone'   => '622157905788',
+                'phone_nr'   => '622157905788',
                 'status' => 1,
                 'password' => bcrypt('password'),
             ]);
-            $admin->assignRole($cek);
+            $admin->assignRole($role_admin);
         } else {
-            $user->assignRole($cek);
+            $user->assignRole($role_admin);
         }
     }
 }

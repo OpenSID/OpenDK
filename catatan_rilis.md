@@ -1,23 +1,15 @@
-#### [v22.02.15]
+#### [v22.03.01]
 
-Di rilis v22.02.15, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.03.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada esyede yang baru mulai berkontribusi.
+Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
-1. [#271](https://github.com/OpenSID/OpenDK/issues/271) Pisahkan halaman artikel berita kecamatan dengan berita desa..
-2. [#273](https://github.com/OpenSID/OpenDK/issues/273) Penambahan fitur pengaturan jumlah artikel perhalaman.
-3. [#272](https://github.com/OpenSID/OpenDK/issues/272) Penambahan fitur bagikan artikel kecamatan.
-4. [#251](https://github.com/OpenSID/OpenDK/issues/251) Penambahan fitur menjalankan php artisan storage:link pada halaman setting.
 
 #### Perbaikan BUG
-1. [#301](https://github.com/OpenSID/OpenDK/issues/301) Perbaikan tampilan slider tidak responsive.
-2. [#296](https://github.com/OpenSID/OpenDK/issues/296) Perbaikan tampilan gambar tidak responsive pada halaman visi-misi.
-3. [#301](https://github.com/OpenSID/OpenDK/issues/301) Perbaikan tampilan gambar tidak responsive pada slider.
-4. Perbaikan statistik penduduk yang tidak tampil dengan benar.
-5. [#311](https://github.com/OpenSID/OpenDK/issues/311) Perbaikan informasi pada modul info sistem yang tidak konsisten dan perbaiki tampilan.
-6. [#309](https://github.com/OpenSID/OpenDK/issues/309) Perbaiki tulisan memanjang.
+1. [#289](https://github.com/OpenSID/OpenDK/issues/289) Perbaiki Class 'Barryvdh\Debugbar\ServiceProvider' not found sewaktu install/update composer dengan opsi --no-dev…aktu install/update composer dengan opsi --no-dev
+2. [#321](https://github.com/OpenSID/OpenDK/issues/321) Perbaiki tampilan header yang menutup bagian berita desa.
 
 #### TEKNIS
-1. Penyesuian composer.
-2. Perbaharui csfixer.
+1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.
+

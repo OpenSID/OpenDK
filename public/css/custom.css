@@ -835,3 +835,7 @@ x-sign:nth-of-type(5) {
 		filter: saturate(200%) hue-rotate(20deg);
 	}
 }
+
+.main-header {
+	max-height: 150px;
+}

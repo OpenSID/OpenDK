@@ -37,7 +37,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v22.02.15',
+    'version' => 'v22.03.01',
 
     /*
     |--------------------------------------------------------------------------
@@ -251,8 +251,6 @@ return [
 
         // JWT Auth
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        // Debugbar
-        Barryvdh\Debugbar\ServiceProvider::class,
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,

@@ -31,16 +31,16 @@
 
 namespace App\Models;
 
-use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\File;
+use Spatie\Permission\Traits\HasRoles;
 
 use Image;
 
-class User extends SentinelModel implements Authenticatable
+class User extends Authenticatable
 {
-    use AuthenticableTrait;
+     use HasRoles;
+
 
     /**
      * Default password.

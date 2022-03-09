@@ -226,7 +226,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -242,8 +242,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // iSeed
         Orangehill\Iseed\IseedServiceProvider::class,
-        Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
-        //Captcha
+         //Captcha
         Mews\Captcha\CaptchaServiceProvider::class,
 
         // Visitor Counter

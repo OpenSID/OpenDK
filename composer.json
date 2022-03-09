@@ -32,6 +32,7 @@
         "tymon/jwt-auth": "^1.0",
         "unisharp/laravel-filemanager": "~1.8",
         "willvincent/feeds": "^2.2",
+        "spatie/laravel-permission": "5.3",
         "yajra/laravel-datatables-oracle": "~9."
     },
     "require-dev": {

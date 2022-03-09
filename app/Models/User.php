@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\File;
 
 use Image;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     use AuthenticableTrait;
     use HasRoles;

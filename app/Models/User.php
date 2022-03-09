@@ -33,14 +33,13 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\File;
-use Spatie\Permission\Traits\HasRoles;
-
 use Image;
+
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-     use HasRoles;
-
+    use HasRoles;
 
     /**
      * Default password.

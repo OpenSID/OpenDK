@@ -58,7 +58,7 @@ class RoleSpatieSeeder extends Seeder
         Permission::create(['name' => 'create', 'guard_name' => 'web']);
         Permission::create(['name' => 'edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'delete', 'guard_name' => 'web']);
-        
+
         $role = [
             ['name' =>'admin-desa', 'guard_name' => 'web'],
             ['name' =>'admin-kecamatan', 'guard_name' => 'web'],
@@ -68,13 +68,13 @@ class RoleSpatieSeeder extends Seeder
             ['name' =>'administrator-website', 'guard_name' => 'web'],
         ];
         foreach ($role as $value) {
-           Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
+            Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
         }
 
         $role_admin =   Role::create(['name' =>'super_admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
         // cek user admin
         $user = User::where('email', 'admin@mail.com')->first();
-        
+
         if ($user === null) {
             $admin = User::create([
                 'email' => 'admin@mail.com',

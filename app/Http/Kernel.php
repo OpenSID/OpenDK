@@ -136,6 +136,6 @@ class Kernel extends HttpKernel
         AuthenticateSession::class,
         SubstituteBindings::class,
         Authorize::class,
-        
+
     ];
 }

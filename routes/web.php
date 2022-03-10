@@ -269,7 +269,7 @@ Route::group(['middleware' => 'installed'], function () {
     /**
      * Group Routing for Halaman Dahsboard
      */
-    Route::group(['middleware' => ['permission:view']], function () {
+    Route::group([], function () {
         Route::get('/dashboard', 'DashboardController')->name('dashboard');
 
         /**

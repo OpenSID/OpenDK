@@ -48,6 +48,9 @@ class User extends Authenticatable
      */
     public const DEFAULT_PASSWORD = '12345678';
 
+    protected $guard_name = 'web';
+
+
     /**
      * {@inheritDoc}
      */

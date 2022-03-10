@@ -32,7 +32,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -55,13 +55,17 @@ class AuthController extends Controller
      */
     public function loginProcess(Request $request)
     {
+        $credentials = $request->only('email', 'password');
+         
         try {
             $remember = (bool) $request->input('remember_me');
-            if (! Sentinel::authenticate($request->all(), $remember)) {
-                return back()->withInput()->with('error', 'Email atau Password Salah!');
+            if (Auth::attempt($credentials, $remember)) {
+                return redirect()->route('dashboard');
             }
-            return redirect()->route('dashboard');
+            return back()->withInput()->with('error', 'Email atau Password Salah!');
+            
         } catch (\Exception $e) {
+            dd($e);
             report($e);
             return back()->withInput()->with('error', 'Gagal Masuk!');
         }

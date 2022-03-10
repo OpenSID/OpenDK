@@ -50,7 +50,6 @@ class User extends Authenticatable
 
     protected $guard_name = 'web';
 
-
     /**
      * {@inheritDoc}
      */

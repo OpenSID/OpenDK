@@ -32,9 +32,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -56,14 +56,13 @@ class AuthController extends Controller
     public function loginProcess(Request $request)
     {
         $credentials = $request->only('email', 'password');
-         
+
         try {
             $remember = (bool) $request->input('remember_me');
             if (Auth::attempt($credentials, $remember)) {
                 return redirect()->route('dashboard');
             }
             return back()->withInput()->with('error', 'Email atau Password Salah!');
-            
         } catch (\Exception $e) {
             dd($e);
             report($e);

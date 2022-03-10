@@ -59,7 +59,11 @@ class AuthController extends Controller
 
         try {
             $remember = (bool) $request->input('remember_me');
-            if (Auth::attempt($credentials, $remember)) {
+            // dd(Auth::attempt($credentials, $remember));
+            if (Auth::attempt($credentials)) {
+                dd($this->handleUserWasAuthenticated($request)); // Dumps instance of RedirectResponse
+                dd( $user = Auth::user());
+
                 return redirect()->route('dashboard');
             }
             return back()->withInput()->with('error', 'Email atau Password Salah!');
@@ -98,19 +102,6 @@ class AuthController extends Controller
      */
     public function registerProcess(Request $request)
     {
-        try {
-            $status = ! empty($request->status) ? 1 : 1;
-            $request->merge(['status' => $status]);
-            $user = Sentinel::registerAndActivate($request->all());
-
-            Sentinel::findRoleBySlug('admin')->users()->attach($user);
-
-            flash()->success(trans('message.user.create-success'));
-            return redirect()->route('/');
-        } catch (\Exception $e) {
-            report($e);
-            flash()->error(trans('message.user.create-error'));
-            return back()->withInput();
-        }
+         
     }
 }

@@ -265,11 +265,11 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
         });
     });
-
+    
     /**
      * Group Routing for Halaman Dahsboard
      */
-    Route::group([], function () {
+    Route::group(['middleware' => ['role:administrator-website']], function () {
         Route::get('/dashboard', 'DashboardController')->name('dashboard');
 
         /**

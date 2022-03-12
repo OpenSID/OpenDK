@@ -54,7 +54,7 @@
                 <i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        @if($user->hasrole(['admin', 'data-kecamatan']))
+                        @if($user->hasrole(['super-admin', 'data-kecamatan']))
                         <li class="treeview {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil','data/data-umum/*', 'data/data-umum/index', 'data/data-umum','data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'active' : '') }}">
                             <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                         <span class="pull-right-container">

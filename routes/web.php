@@ -385,7 +385,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Data Umum
-                Route::group(['prefix' => 'data-umum', 'middleware' => ['role:administrator-website']], function () {
+                Route::group(['prefix' => 'data-umum', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
                     Route::get('getdata', ['as' => 'data.data-umum.getdata', 'uses' => 'DataUmumController@getDataUmum']);
                     Route::get('getdataajax', ['as' => 'data.data-umum.getdataajax', 'uses' => 'DataUmumController@getDataUmumAjax']);
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);

@@ -31,13 +31,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Program;
 use App\Models\DataDesa;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
-use App\Models\Program;
+ 
 
 class DashboardController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('auth');
+     }
+
     public function __invoke()
     {
         $page_title = 'Dashboard';

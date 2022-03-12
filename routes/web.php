@@ -277,8 +277,7 @@ Route::group(['middleware' => 'installed'], function () {
          * Group Routing for Informasi
          */
         Route::namespace('Informasi')->group(function () {
-            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website']], function () {
-
+            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
                 //Routes for prosedur resource
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);

@@ -53,11 +53,7 @@ class AppServiceProvider extends ServiceProvider
         // default lengt string
         Schema::defaultStringLength(191);
 
-        // Implicitly grant "Super Admin" role all permissions
-        // This works in the app by using gate-related functions like auth()->user->can() and @can()
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('super_admin') ? true : null;
-        });
+        
 
         Penduduk::saved(function ($model) {
             $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
@@ -126,6 +122,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->getSettings();
+
+        // Implicitly grant "Super Admin" role all permissions
+        // This works in the app by using gate-related functions like auth()->user->can() and @can()
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('super-admin') ? true : null;
+        });
     }
 
     protected function getSettings()

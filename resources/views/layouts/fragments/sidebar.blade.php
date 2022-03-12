@@ -54,7 +54,7 @@
                 <i class="fa fa-angle-left pull-right"></i></span>
                     </a>
                     <ul class="treeview-menu">
-                        @if($user->hasrole(['super-admin', 'data-kecamatan']))
+                        @if($user->hasrole(['super-admin', 'admin-kecamatan']))
                         <li class="treeview {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil','data/data-umum/*', 'data/data-umum/index', 'data/data-umum','data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'active' : '') }}">
                             <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                         <span class="pull-right-container">
@@ -74,7 +74,7 @@
                             </ul>
                         </li>
                         @endif
-                        @if($user->hasrole(['admin', 'data-penduduk']))
+                        @if($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan']))
                             <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga', 'data/laporan-penduduk'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
                                     <span class="pull-right-container">

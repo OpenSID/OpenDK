@@ -398,7 +398,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Data Desa
-                Route::group(['prefix' => 'data-desa', 'middleware' => ['role:administrator-website|admin-desa']], function () {
+                Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
                     Route::post('getdesa', ['as' => 'data.data-desa.getdesa', 'uses' => 'DataDesaController@getDesaKecamatan']);
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
@@ -411,7 +411,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Penduduk
-                Route::group(['prefix' => 'penduduk', 'middleware' => ['role:administrator-website|admin-desa']], function () {
+                Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.penduduk.getdata', 'uses' => 'PendudukController@getPenduduk']);
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);
                     Route::post('store', ['as' => 'data.penduduk.store', 'uses' => 'PendudukController@store']);
@@ -422,14 +422,14 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Keluarga
-                Route::group(['prefix' => 'keluarga', 'middleware' => ['role:administrator-website']], function () {
+                Route::group(['prefix' => 'keluarga', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
                 });
 
                 //Routes Resource Laporan Penduduk
-                Route::group(['prefix' => 'laporan-penduduk', 'middleware' => ['role:administrator-website|admin-desa']], function () {
+                Route::group(['prefix' => 'laporan-penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.laporan-penduduk.getdata', 'uses' => 'LaporanPendudukController@getData']);
                     Route::get('/', ['as' => 'data.laporan-penduduk.index', 'uses' => 'LaporanPendudukController@index']);
                     Route::delete('destroy/{id}', ['as' => 'data.laporan-penduduk.destroy', 'uses' => 'LaporanPendudukController@destroy']);

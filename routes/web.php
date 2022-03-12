@@ -439,7 +439,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource AKI & AKB
-                Route::group(['prefix' => 'aki-akb', 'middleware' => ['role:administrator-website|admin-puskesmas']], function () {
+                Route::group(['prefix' => 'aki-akb', 'middleware' => ['role:super-admin|admin-puskesmas']], function () {
                     Route::get('getdata', ['as' => 'data.aki-akb.getdata', 'uses' => 'AKIAKBController@getDataAKIAKB']);
                     Route::get('/', ['as' => 'data.aki-akb.index', 'uses' => 'AKIAKBController@index']);
                     Route::get('edit/{id}', ['as' => 'data.aki-akb.edit', 'uses' => 'AKIAKBController@edit']);
@@ -450,7 +450,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource AKI & AKB
-                Route::group(['prefix' => 'imunisasi', 'middleware' => ['role:administrator-website|admin-puskesmas']], function () {
+                Route::group(['prefix' => 'imunisasi', 'middleware' => ['role:super-admin|admin-puskesmas']], function () {
                     Route::get('getdata', ['as' => 'data.imunisasi.getdata', 'uses' => 'ImunisasiController@getDataAKIAKB']);
                     Route::get('/', ['as' => 'data.imunisasi.index', 'uses' => 'ImunisasiController@index']);
                     Route::get('edit/{id}', ['as' => 'data.imunisasi.edit', 'uses' => 'ImunisasiController@edit']);
@@ -461,7 +461,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Epidemi Penyakit
-                Route::group(['prefix' => 'epidemi-penyakit', 'middleware' => ['role:administrator-website|admin-puskesmas']], function () {
+                Route::group(['prefix' => 'epidemi-penyakit', 'middleware' => ['role:super-admin|admin-puskesmas']], function () {
                     Route::get('getdata', ['as' => 'data.epidemi-penyakit.getdata', 'uses' => 'EpidemiPenyakitController@getDataAKIAKB']);
                     Route::get('/', ['as' => 'data.epidemi-penyakit.index', 'uses' => 'EpidemiPenyakitController@index']);
                     Route::get('edit/{id}', ['as' => 'data.epidemi-penyakit.edit', 'uses' => 'EpidemiPenyakitController@edit']);
@@ -472,7 +472,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Toilet Sanitasi
-                Route::group(['prefix' => 'toilet-sanitasi', 'middleware' => ['role:administrator-website|admin-puskesmas']], function () {
+                Route::group(['prefix' => 'toilet-sanitasi', 'middleware' => ['role:super-admin|admin-puskesmas']], function () {
                     Route::get('getdata', ['as' => 'data.toilet-sanitasi.getdata', 'uses' => 'ToiletSanitasiController@getDataAKIAKB']);
                     Route::get('/', ['as' => 'data.toilet-sanitasi.index', 'uses' => 'ToiletSanitasiController@index']);
                     Route::get('edit/{id}', ['as' => 'data.toilet-sanitasi.edit', 'uses' => 'ToiletSanitasiController@edit']);

@@ -95,7 +95,7 @@
                             </li>
                         @endif
 
-                        @if($user->hasrole(['admin', 'data-kesehatan']))
+                        @if($user->hasrole(['super-admin', 'admin-puskesmas']))
                         <li class="treeview {{ (Request::is(['data/aki-akb/*', 'data/aki-akb','data/imunisasi/*', 'data/imunisasi','data/epidemi-penyakit/*', 'data/epidemi-penyakit','data/toilet-sanitasi/*', 'data/toilet-sanitasi'])? 'active' : '') }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Kesehatan
                         <span class="pull-right-container">

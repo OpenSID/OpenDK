@@ -61,7 +61,7 @@ Route::group(['middleware' => 'installed'], function () {
         // Prefix URL for Setting
         Route::group(['prefix' => 'setting'], function () {
             // User Management
-            Route::group(['prefix' => 'user','middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'user','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('getdata', ['as' => 'setting.user.getdata', 'uses' => 'User\UserController@getDataUser']);
                 Route::get('/', ['as' => 'setting.user.index', 'uses' => 'User\UserController@index']);
                 Route::get('create', ['as' => 'setting.user.create', 'uses' => 'User\UserController@create']);
@@ -77,7 +77,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Role Management
-            Route::group(['prefix' => 'role', 'middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'role', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('getdata', ['as' => 'setting.role.getdata', 'uses' => 'Role\RoleController@getData']);
                 Route::get('/', ['as' => 'setting.role.index', 'uses' => 'Role\RoleController@index']);
                 Route::get('create', ['as' => 'setting.role.create', 'uses' => 'Role\RoleController@create']);
@@ -88,7 +88,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Komplain Kategori
-            Route::group(['prefix' => 'komplain-kategori', 'middleware' => ['role:admin-komplain|administrator-website']], function () {
+            Route::group(['prefix' => 'komplain-kategori', 'middleware' => ['role:super-admin|admin-komplain|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.komplain-kategori.index', 'uses' => 'Setting\KategoriKomplainController@index']);
                 Route::get('getdata', ['as' => 'setting.komplain-kategori.getdata', 'uses' => 'Setting\KategoriKomplainController@getData']);
                 Route::get('create', ['as' => 'setting.komplain-kategori.create', 'uses' => 'Setting\KategoriKomplainController@create']);
@@ -99,7 +99,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Tipe Regulasi
-            Route::group(['prefix' => 'tipe-regulasi', 'middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'tipe-regulasi', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.tipe-regulasi.index', 'uses' => 'Setting\TipeRegulasiController@index']);
                 Route::get('getdata', ['as' => 'setting.tipe-regulasi.getdata', 'uses' => 'Setting\TipeRegulasiController@getData']);
                 Route::get('create', ['as' => 'setting.tipe-regulasi.create', 'uses' => 'Setting\TipeRegulasiController@create']);
@@ -110,7 +110,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Jenis Penyakit
-            Route::group(['prefix' => 'jenis-penyakit','middleware' => ['role:admin-puskesmas|administrator-website']], function () {
+            Route::group(['prefix' => 'jenis-penyakit','middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.jenis-penyakit.index', 'uses' => 'Setting\JenisPenyakitController@index']);
                 Route::get('getdata', ['as' => 'setting.jenis-penyakit.getdata', 'uses' => 'Setting\JenisPenyakitController@getData']);
                 Route::get('create', ['as' => 'setting.jenis-penyakit.create', 'uses' => 'Setting\JenisPenyakitController@create']);
@@ -121,7 +121,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Tipe Potensi
-            Route::group(['prefix' => 'tipe-potensi','middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'tipe-potensi','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.tipe-potensi.index', 'uses' => 'Setting\TipePotensiController@index']);
                 Route::get('getdata', ['as' => 'setting.tipe-potensi.getdata', 'uses' => 'Setting\TipePotensiController@getData']);
                 Route::get('create', ['as' => 'setting.tipe-potensi.create', 'uses' => 'Setting\TipePotensiController@create']);
@@ -132,7 +132,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Slide
-            Route::group(['prefix' => 'slide','middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'slide','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.slide.index', 'uses' => 'Setting\SlideController@index']);
                 Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
                 Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
@@ -144,7 +144,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // COA
-            Route::group(['prefix' => 'coa','middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'coa','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.coa.index', 'uses' => 'Setting\COAController@index']);
                 Route::get('create', ['as' => 'setting.coa.create', 'uses' => 'Setting\COAController@create']);
                 Route::post('store', ['as' => 'setting.coa.store', 'uses' => 'Setting\COAController@store']);
@@ -153,13 +153,13 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
             });
 
-            Route::group(['prefix' => 'aplikasi','middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'aplikasi','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
                 Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
 
-            Route::group(['prefix' => 'info-sistem','middleware' => ['role:administrator-website']], function () {
+            Route::group(['prefix' => 'info-sistem','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
                 Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
             });
@@ -514,7 +514,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Program Bantuan
-                Route::group(['prefix' => 'program-bantuan', 'middleware' => ['role:administrator-website|admin-desa']], function () {
+                Route::group(['prefix' => 'program-bantuan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
                     Route::get('/', ['as' => 'data.program-bantuan.index', 'uses' => 'ProgramBantuanController@index']);
                     Route::get('create', ['as' => 'data.program-bantuan.create', 'uses' => 'ProgramBantuanController@create']);
@@ -530,7 +530,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Anggaran Realisasi
-                Route::group(['prefix' => 'anggaran-realisasi', 'middleware' => ['role:administrator-website|admin-kecamatan']], function () {
+                Route::group(['prefix' => 'anggaran-realisasi', 'middleware' => ['role:super-admin|administrator-website|admin-kecamatan']], function () {
                     Route::get('getdata', ['as' => 'data.anggaran-realisasi.getdata', 'uses' => 'AnggaranRealisasiController@getDataAnggaran']);
                     Route::get('/', ['as' => 'data.anggaran-realisasi.index', 'uses' => 'AnggaranRealisasiController@index']);
                     Route::get('edit/{id}', ['as' => 'data.anggaran-realisasi.edit', 'uses' => 'AnggaranRealisasiController@edit']);
@@ -541,7 +541,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Anggaran Desa
-                Route::group(['prefix' => 'anggaran-desa', 'middleware' => ['role:administrator-website|admin-desa']], function () {
+                Route::group(['prefix' => 'anggaran-desa', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.anggaran-desa.getdata', 'uses' => 'AnggaranDesaController@getDataAnggaran']);
                     Route::get('/', ['as' => 'data.anggaran-desa.index', 'uses' => 'AnggaranDesaController@index']);
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-desa.destroy', 'uses' => 'AnggaranDesaController@destroy']);
@@ -550,7 +550,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 //Routes Resource Laporan Apbdes
-                Route::group(['prefix' => 'laporan-apbdes', 'middleware' => ['role:administrator-website|admin-desa']], function () {
+                Route::group(['prefix' => 'laporan-apbdes', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('getdata', ['as' => 'data.laporan-apbdes.getdata', 'uses' => 'LaporanApbdesController@getApbdes']);
                     Route::get('/', ['as' => 'data.laporan-apbdes.index', 'uses' => 'LaporanApbdesController@index']);
                     Route::delete('destroy/{id}', ['as' => 'data.laporan-apbdes.destroy', 'uses' => 'LaporanApbdesController@destroy']);
@@ -562,7 +562,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             //Routes Resource Admin SIKOMA
-            Route::group(['prefix' => 'admin-komplain', 'middleware' => ['role:administrator-website|admin-komplain']], function () {
+            Route::group(['prefix' => 'admin-komplain', 'middleware' => ['role:administrator-website|admin-komplain|super-admin']], function () {
                 Route::get('getdata', ['as' => 'admin-komplain.getdata', 'uses' => 'AdminKomplainController@getDataKomplain']);
                 Route::get('/', ['as' => 'admin-komplain.index', 'uses' => 'AdminKomplainController@index']);
                 Route::get('edit/{id}', ['as' => 'admin-komplain.edit', 'uses' => 'AdminKomplainController@edit']);

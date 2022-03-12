@@ -119,7 +119,7 @@
                         </li>
                         @endif
 
-                        @if($user->hasrole(['super-admin', 'data-pendidikan']))
+                        @if($user->hasrole(['super-admin', 'data-pendidikan', 'administrator-website']))
                         <li class="treeview {{ (Request::is(['data/tingkat-pendidikan/*', 'data/tingkat-pendidikan', 'data/putus-sekolah/*', 'data/putus-sekolah', 'data/fasilitas-paud/*', 'data/fasilitas-paud'])? 'active' : '') }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Pendidikan
                                 <span class="pull-right-container">
@@ -140,7 +140,7 @@
                         </li>
                         @endif
 
-                        @if($user->hasrole(['admin', 'data-programbantuan']))
+                        @if($user->hasrole(['super-admin', 'administrator-website', 'admin-desa']))
                         <li {{ (Request::is(['data/program-bantuan/*', 'data/program-bantuan/index', 'data/program-bantuan'])? 'class=active' : '') }}>
                             <a href="{{ route('data.program-bantuan.index') }}"><i class="fa fa-circle-o"></i>Program Bantuan</a></li>
                         @endif

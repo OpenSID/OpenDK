@@ -119,7 +119,7 @@
                         </li>
                         @endif
 
-                        @if($user->hasrole(['admin', 'data-pendidikan']))
+                        @if($user->hasrole(['super-admin', 'data-pendidikan']))
                         <li class="treeview {{ (Request::is(['data/tingkat-pendidikan/*', 'data/tingkat-pendidikan', 'data/putus-sekolah/*', 'data/putus-sekolah', 'data/fasilitas-paud/*', 'data/fasilitas-paud'])? 'active' : '') }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Pendidikan
                                 <span class="pull-right-container">

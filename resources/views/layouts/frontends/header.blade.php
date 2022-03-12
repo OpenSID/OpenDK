@@ -76,11 +76,11 @@
                 <li><a href="{{ route('unduhan.form-dokumen') }}">Dokumen</a></li>
               </ul>
           </li>
-          @if (Sentinel::guest())
+          @if (auth()->guest())
             <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
           @else
           <li><a href="{{ route('dashboard')}}">ADMIN</a></li>
-          <li><a href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
+          <li><a id="loggout" href="{{ route('logout') }}">LOGOUT<span class="sr-only">(current)</span></a></li>
           <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             {{ csrf_field() }}
           </form>
@@ -89,3 +89,13 @@
       </div>
     </nav>
   </header>
+  @push('scripts')
+<script type="text/javascript">
+  $(function () {
+    $('#loggout').click(function (e) { 
+      e.preventDefault();
+      $('#logout-form').submit();  
+    });
+  });
+</script>
+  @endpush

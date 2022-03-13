@@ -31,10 +31,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PesanRequest;
 use App\Models\Pesan;
+use App\Models\DataDesa;
 use App\Models\PesanDetail;
+use App\Http\Requests\PesanRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\GetPesanRequest;
 
 class PesanController extends Controller
 {
@@ -49,7 +51,12 @@ class PesanController extends Controller
             // insert percakapan
             $response = PesanDetail::create($request->all());
         } else {
-            $request['das_data_desa_id'] = 1;
+            $desa = DataDesa::where('desa_id','=',$request->kode_desa)->first();
+            if ($desa == null) {
+                return response()->json(['status ' => false, 'message' => 'kode desa tidak terdaftar' ]);
+            }
+            $request['das_data_desa_id'] = $desa->id;
+            $request['jenis'] = 'Pesan Masuk';
             // insert subject pesan
             $pesan = Pesan::create($request->all());
             // insert percakapan
@@ -57,5 +64,18 @@ class PesanController extends Controller
         }
 
         return response()->json(['result'=>$response]);
+    }
+
+    public function getpesan(GetPesanRequest $request)
+    {
+        $pesan = Pesan::whereHas('detailPesan', function($q)
+        {
+            $q->where('id','=', 2)->select('*');
+        
+        })->with(['detailPesan' => function ($query) {
+            $query->select('*');
+        }])->get();
+
+        return response()->json(['result'=>$pesan]);
     }
 }

@@ -61,6 +61,7 @@ class PesanRequest extends FormRequest
         } else {
             $rules['pesan']     = 'required';
             $rules['judul']     = 'required';
+            $rules['kode_desa']     = 'required|string|min:13|max:13';
         }
 
         return $rules;

@@ -22,7 +22,7 @@
 
          $(document).on('click', '#suspendModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#suspend').attr('aksi', url );
+            $('#suspend').attr('action', url );
             $('#import').attr( 'method', 'post' );
             $('#suspend-modal').modal('show');
             e.preventDefault();

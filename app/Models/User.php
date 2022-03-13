@@ -33,13 +33,14 @@ namespace App\Models;
 
 use Image;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
-    use  Notifiable, HasRoles;
+    use AuthenticableTrait, HasRoles, Notifiable;
 
     /**
      * Default password.
@@ -137,5 +138,15 @@ class User extends Authenticatable
     public function scopeSuspend($query, $email)
     {
         return $query->where('email', $email)->where('status', 0)->get();
+    }
+
+    /**
+     * Hash password
+     * @param $input
+     */
+    public function setPasswordAttribute($input)
+    {
+        if ($input)
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
     }
 }

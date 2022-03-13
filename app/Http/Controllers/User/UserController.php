@@ -34,13 +34,12 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\Role;
 use App\Models\User;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\DataTables;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -66,8 +65,8 @@ class UserController extends Controller
     {
         $page_title       = 'Pengguna';
         $page_description = 'Tambah Data';
-        $item             = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-
+        $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        
         return view('user.create', compact('page_title', 'page_description', 'item'));
     }
 
@@ -82,12 +81,13 @@ class UserController extends Controller
         try {
             $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
-            $user = Sentinel::registerAndActivate($request->all());
+            $user = User::create($request->all());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
             }
 
-            Sentinel::findRoleBySlug($request->role)->users()->attach($user);
+            $roles = $request->input('role') ? $request->input('role') : [];
+            $user->assignRole($roles);
 
             flash()->success(trans('message.user.create-success'));
             return redirect()->route('setting.user.index');
@@ -121,7 +121,7 @@ class UserController extends Controller
         $page_title       = 'Pengguna';
         $page_description = 'Ubah Data';
         $user             = User::findOrFail($id);
-        $item             = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
+        $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
 
         return view('user.edit', compact('page_title', 'page_description', 'user', 'item'));
     }
@@ -138,15 +138,15 @@ class UserController extends Controller
         try {
             $user_find = User::findOrFail($id);
 
-            $user = Sentinel::update($user_find, $request->all());
+            $user = $user_find->update($request->all());
             if ($request->hasFile('image')) {
                 $path = public_path('uploads/user/');
                 File::delete($path . $user_find->image);
                 $user->uploadImage($request->image);
             }
             if (! empty($request->role)) {
-                Sentinel::findRoleBySlug($user_find->roles()->first()->slug)->users()->detach($user);
-                Sentinel::findRoleBySlug($request->role)->users()->attach($user);
+                $roles = $request->input('role') ? $request->input('role') : [];
+                $user_find->syncRoles($roles);
             }
 
             flash()->success(trans('message.user.update-success'));
@@ -167,11 +167,10 @@ class UserController extends Controller
      */
     public function updatePassword(UserUpdateRequest $request, $id)
     {
-        // dd($request->all());
         try {
             $user_find = User::findOrFail($id);
 
-            $user = Sentinel::update($user_find, $request->all());
+            $user = $user_find->update($request->all());
             $user->update([
                 'password' => bcrypt($request->password),
             ]);
@@ -193,7 +192,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        try {
+         try {
             $user         = User::findOrFail($id);
             $user->status = 0;
             $user->save();

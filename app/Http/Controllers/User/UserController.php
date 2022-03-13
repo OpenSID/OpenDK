@@ -38,8 +38,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
-use Yajra\DataTables\DataTables;
 use Spatie\Permission\Models\Role;
+use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
@@ -66,7 +66,7 @@ class UserController extends Controller
         $page_title       = 'Pengguna';
         $page_description = 'Tambah Data';
         $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
-        
+
         return view('user.create', compact('page_title', 'page_description', 'item'));
     }
 
@@ -192,7 +192,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-         try {
+        try {
             $user         = User::findOrFail($id);
             $user->status = 0;
             $user->save();

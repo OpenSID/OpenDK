@@ -32,14 +32,12 @@
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Group Routing for Front End
  */
-
-
 
 Route::get('/', function () {
 });
@@ -53,7 +51,6 @@ Route::group(['middleware' => 'installed'], function () {
     Auth::routes([
         'register' => false,
     ]);
-     
 
     Route::group(['middleware' => 'auth:web'], function () {
         // Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
@@ -266,7 +263,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
         });
     });
-    
+
     /**
      * Group Routing for Halaman Dahsboard
      */

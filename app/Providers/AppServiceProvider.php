@@ -53,8 +53,6 @@ class AppServiceProvider extends ServiceProvider
         // default lengt string
         Schema::defaultStringLength(191);
 
-        
-
         Penduduk::saved(function ($model) {
             $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
 

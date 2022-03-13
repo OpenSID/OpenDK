@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProsedurRequest;
 use App\Models\Prosedur;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller

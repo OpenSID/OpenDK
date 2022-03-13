@@ -51,6 +51,7 @@
                         </ul>
                     </li>
                 @endif
+                @if(!$user->hasrole(['admin-komplain']))
                     <li class="treeview {{ (Request::is(['data/*'])? 'active' : '') }}">
                         <a href="#"><i class="fa fa-database"></i> <span>Data</span><span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i></span>
@@ -121,7 +122,7 @@
                             </li>
                             @endif
 
-                            @if($user->hasrole(['super-admin', 'data-pendidikan', 'administrator-website']))
+                            @if($user->hasrole(['super-admin', 'admin-pendidikan', 'administrator-website']))
                             <li class="treeview {{ (Request::is(['data/tingkat-pendidikan/*', 'data/tingkat-pendidikan', 'data/putus-sekolah/*', 'data/putus-sekolah', 'data/fasilitas-paud/*', 'data/fasilitas-paud'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>Pendidikan
                                     <span class="pull-right-container">
@@ -176,7 +177,7 @@
                             @endif
                         </ul>
                     </li>
-
+                @endif
                 @if($user->hasrole(['super-admin', 'admin-komplain', 'administrator-website']))
                 <li class="treeview {{ (Request::is(['admin-komplain/*', 'admin-komplain'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                     <span class="pull-right-container">
@@ -245,7 +246,7 @@
             @endif
             <li class="header">VISITOR COUNTER</li>
             <li class="{{ (Request::is(['counter'])? 'active' : '') }}">
-                <a href="@if(isset($user) && $user->hasrole(['admin', 'data-*', 'adminsikoma'])){{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
+                <a href="@if(isset($user)){{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                     <span class="pull-right-container">
                         <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
                     </span>

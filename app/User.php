@@ -34,11 +34,10 @@ namespace App;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, HasRoles;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -54,8 +53,6 @@ class User extends Authenticatable implements JWTSubject
         'phone',
         'gender',
     ];
-
-    protected $guard_name = 'web';
 
     /**
      * The attributes that should be hidden for arrays.

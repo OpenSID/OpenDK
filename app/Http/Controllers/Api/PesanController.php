@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Pesan;
-use App\Models\DataDesa;
-use App\Models\PesanDetail;
-use App\Http\Requests\PesanRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetPesanRequest;
+use App\Http\Requests\PesanRequest;
+use App\Models\DataDesa;
+use App\Models\Pesan;
+use App\Models\PesanDetail;
 
 class PesanController extends Controller
 {
@@ -51,7 +51,7 @@ class PesanController extends Controller
             // insert percakapan
             $response = PesanDetail::create($request->all());
         } else {
-            $desa = DataDesa::where('desa_id','=',$request->kode_desa)->first();
+            $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
             if ($desa == null) {
                 return response()->json(['status ' => false, 'message' => 'kode desa tidak terdaftar' ]);
             }
@@ -68,10 +68,8 @@ class PesanController extends Controller
 
     public function getpesan(GetPesanRequest $request)
     {
-        $pesan = Pesan::whereHas('detailPesan', function($q)
-        {
-            $q->where('id','=', 2)->select('*');
-        
+        $pesan = Pesan::whereHas('detailPesan', function ($q) {
+            $q->where('id', '=', 2)->select('*');
         })->with(['detailPesan' => function ($query) {
             $query->select('*');
         }])->get();

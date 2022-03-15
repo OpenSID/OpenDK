@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Pesan;
 use App\Models\DataDesa;
 use App\Models\PesanDetail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\PesanRequest;
@@ -50,14 +51,25 @@ class PesanController extends Controller
 
     public function store(PesanRequest $request)
     {
+        $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
+        if ($desa == null) {
+            return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
+        }
+
         if ($request->has('pesan_id')) {
             // insert percakapan
-            $response = PesanDetail::create($request->all());
-        } else {
-            $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
-            if ($desa == null) {
-                return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
+            try {
+                $response = PesanDetail::create([
+                    'pesan_id' => $request->pesan_id,
+                    'text' => $request->text,
+                    'pesan' => $desa->id,
+                ]);
+                return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
+            } catch (Exception $e) {
+                return response()->json(['status' => false, 'message' => 'error Exception' ]);
             }
+        } else {
+           
 
             try {
                DB::transaction(function () use ($request, $desa) {
@@ -72,7 +84,7 @@ class PesanController extends Controller
                     $id_detail = PesanDetail::insertGetId([
                         'pesan_id' => $id,
                         'text' => Purify::clean($request->get('pesan')),
-                        'desa_id' => null,
+                        'desa_id' =>  $desa->id,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ]);
@@ -107,17 +119,18 @@ class PesanController extends Controller
         return response()->json(['status' => true, 'data'=>$pesan]);
     }
 
-    public function detail(Requesst $request)
+    public function detail(Request $request)
     {
-        if (!$request->has('pesan_id')) {
-            $pesan_id = (int) $request->pesan_id;
+      
+        if ($request->has('id')) {
+            $pesan_id = (int) $request->id;
             $pesan = Pesan::with(['detailPesan' => function ($query) {
                 $query->select('*');
             }])
-            ->where('das_data_desa_id','=',$desa->id)
             ->where('id','=',$pesan_id)
-            ->get();
-            return response()->json(['status' => true, 'data'=>$pesan]);
+            ->first();
+
+             return response()->json(['status' => true, 'data'=>$pesan]);
         }
         return response()->json(['status' => true, 'message' => 'Tidak ada Pesan untuk ditampilkan' ]);
     }

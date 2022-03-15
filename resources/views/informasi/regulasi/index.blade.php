@@ -22,7 +22,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-success btn-sm {{auth()->user()->guest ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp; Tambah</a>
+                    <a href="{{ route('informasi.regulasi.create') }}" class="btn btn-success btn-sm {{auth()->guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp; Tambah</a>
                 </div>
                 @if (count($regulasi) > 0)
                     <div class="box-body">

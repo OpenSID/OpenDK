@@ -69,7 +69,6 @@ class RoleSpatieSeeder extends Seeder
                 'name' => 'Administrator',
                 'gender' => 'Male',
                 'address' => 'Jakarta',
-                'phone_nr'   => '622157905788',
                 'status' => 1,
                 'password' => bcrypt('password'),
             ]);

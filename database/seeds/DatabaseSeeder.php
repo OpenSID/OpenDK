@@ -61,7 +61,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RefSubCoaTableSeeder::class);
         $this->call(RefSubSubCoaTableSeeder::class);
         $this->call(RefCoaTableSeeder::class);
-        // $this->call(RolesTableSeeder::class);
         $this->call(DasMenuTableSeeder::class);
         $this->call(DasSettingTableSeeder::class);
 

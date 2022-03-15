@@ -51,7 +51,19 @@ class CreatePermissionTables extends Migration
         if (Schema::hasTable('role_users')) {
             Schema::drop('role_users');
         }
-        
+
+        if (Schema::hasTable('activations')) {
+            Schema::drop('activations');
+        }
+
+        if (Schema::hasTable('persistences')) {
+            Schema::drop('persistences');
+        }
+
+        if (Schema::hasTable('reminders')) {
+            Schema::drop('reminders');
+        }
+        // end cek table dari sentinel
 
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');

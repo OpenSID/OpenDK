@@ -41,9 +41,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use AuthenticableTrait;
-    use HasRoles;
-    use Notifiable;
+    use AuthenticableTrait, HasRoles, Notifiable;
+
+    protected $guard_name = 'web';
 
     /**
      * Default password.
@@ -52,7 +52,6 @@ class User extends Authenticatable
      */
     public const DEFAULT_PASSWORD = '12345678';
 
-    protected $guard_name = 'web';
 
     /**
      * {@inheritDoc}
@@ -95,20 +94,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get user's profile picture.
-     *
-     * @return string
-     */
-    public function isSuperAdmin()
-    {
-        if ($this->roles[0]->slug == 'super-admin') {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Uploads an image.
      *
      * @param      <type>  $image  The image
@@ -128,14 +113,6 @@ class User extends Authenticatable
         $img->save($path . $name);
 
         return $this->update(['image' => $name]);
-    }
-
-    /**
-     * The roles that belong to the user.
-     */
-    public function role()
-    {
-        return $this->belongsToMany(Role::class, 'role_users');
     }
 
     public function scopeSuspend($query, $email)

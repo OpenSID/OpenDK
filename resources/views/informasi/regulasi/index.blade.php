@@ -37,7 +37,7 @@
                                 <tr>
                                    
                                     <td class="text-center text-nowrap">
-                                        @if(!auth()->user()->guest) 
+                                        @if(!auth()->guest()) 
                                         <?php
 
                                             // TODO : Pindahkan ke controller dan gunakan datatable

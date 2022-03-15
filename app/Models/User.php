@@ -76,11 +76,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    public static function byEmail($email)
-    {
-        return static::whereEmail($email)->first();
-    }
-
     /**
      * The attributes that should be mutated to dates.
      *

@@ -54,7 +54,7 @@ class GetPesanRequest extends FormRequest
     {
         return [
             'kode_desa' => 'required|string|min:13|max:13',
-            'id' => 'required|integer',
+            // 'id' => 'required|integer',
         ];
     }
 }

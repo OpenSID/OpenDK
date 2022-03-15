@@ -18,7 +18,7 @@
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('informasi.potensi.create') }}" class="btn btn-primary btn-sm {{ auth()->user()->guest ? 'hidden':'' }}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
+            <a href="{{ route('informasi.potensi.create') }}" class="btn btn-primary btn-sm {{ auth()->guest() ? 'hidden':'' }}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
             <div class="box-tools pull-right col-sm-4">
                 {!! Form::select('kategori_id', \App\Models\TipePotensi::pluck('nama_kategori', 'id'), (isset($_GET['id'])? $_GET['id']:0), ['placeholder' => 'Semua Kategori', 'class' => 'form-control', 'id' => 'kategori_id', 'required'=>true, 'onchange'=>"changeCategori(this)"]) !!}
             </div>

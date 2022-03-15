@@ -52,7 +52,7 @@ class ProsedurController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('informasi.prosedur.show', $row->id);
 
-                if (!auth()->user()->guest) {
+                if (!auth()->guest()) {
                     $data['edit_url']   = route('informasi.prosedur.edit', $row->id);
                     $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
                 }

@@ -31,15 +31,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Pesan;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\GetPesanRequest;
+use App\Http\Requests\PesanRequest;
 use App\Models\DataDesa;
+use App\Models\Pesan;
 use App\Models\PesanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\PesanRequest;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\GetPesanRequest;
 use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
@@ -69,10 +69,8 @@ class PesanController extends Controller
                 return response()->json(['status' => false, 'message' => 'error Exception' ]);
             }
         } else {
-           
-
             try {
-               DB::transaction(function () use ($request, $desa) {
+                DB::transaction(function () use ($request, $desa) {
                     $id = Pesan::insertGetId([
                         'das_data_desa_id' => $desa->id,
                         'judul' => $request->get('judul'),
@@ -90,9 +88,8 @@ class PesanController extends Controller
                     ]);
                 });
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
-            }
-            catch(Exception $e) {
-               return response()->json(['status' => false, 'message' => 'error Exception' ]);
+            } catch (Exception $e) {
+                return response()->json(['status' => false, 'message' => 'error Exception' ]);
             }
         }
 
@@ -103,7 +100,6 @@ class PesanController extends Controller
     {
         // cek desa
         $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
-        
 
         if ($desa == null) {
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
@@ -114,23 +110,22 @@ class PesanController extends Controller
             // $q->where('id', '=', $desa->id)->select('*');
         })->with(['detailPesan' => function ($query) {
             $query->select('*');
-        }])->where('das_data_desa_id','=',$desa->id)->get();
+        }])->where('das_data_desa_id', '=', $desa->id)->get();
 
         return response()->json(['status' => true, 'data'=>$pesan]);
     }
 
     public function detail(Request $request)
     {
-      
         if ($request->has('id')) {
             $pesan_id = (int) $request->id;
             $pesan = Pesan::with(['detailPesan' => function ($query) {
                 $query->select('*');
             }])
-            ->where('id','=',$pesan_id)
+            ->where('id', '=', $pesan_id)
             ->first();
 
-             return response()->json(['status' => true, 'data'=>$pesan]);
+            return response()->json(['status' => true, 'data'=>$pesan]);
         }
         return response()->json(['status' => true, 'message' => 'Tidak ada Pesan untuk ditampilkan' ]);
     }

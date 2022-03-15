@@ -41,7 +41,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use AuthenticableTrait, HasRoles, Notifiable;
+    use AuthenticableTrait;
+    use HasRoles;
+    use Notifiable;
 
     protected $guard_name = 'web';
 
@@ -51,7 +53,6 @@ class User extends Authenticatable
      * @var string
      */
     public const DEFAULT_PASSWORD = '12345678';
-
 
     /**
      * {@inheritDoc}

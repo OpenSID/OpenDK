@@ -43,6 +43,16 @@ class CreatePermissionTables extends Migration
      */
     public function up()
     {
+        // cek table dari sentinel
+        if (Schema::hasTable('roles')) {
+            Schema::drop('roles');
+        }
+
+        if (Schema::hasTable('role_users')) {
+            Schema::drop('role_users');
+        }
+        
+
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
         $teams = config('permission.teams');

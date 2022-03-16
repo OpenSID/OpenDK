@@ -31,13 +31,13 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -77,7 +77,7 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
-        /**
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -136,7 +136,7 @@ class User extends Authenticatable implements JWTSubject
         }
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function getJWTIdentifier()

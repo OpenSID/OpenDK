@@ -39,7 +39,6 @@ use App\Models\Pesan;
 use App\Models\PesanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
@@ -59,14 +58,14 @@ class PesanController extends Controller
         if ($request->has('pesan_id')) {
             // insert percakapan
             try {
-                $response = PesanDetail::create([
+                  $response = PesanDetail::create([
                     'pesan_id' => $request->pesan_id,
-                    'text' => $request->text,
-                    'pesan' => $desa->id,
+                    'text' => $request->pesan,
+                    'desa_id' => $desa->id,
                 ]);
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
-                return response()->json(['status' => false, 'message' => 'error Exception' ]);
+                 return response()->json(['status' => false, 'message' => 'error Exception' ]);
             }
         } else {
             try {

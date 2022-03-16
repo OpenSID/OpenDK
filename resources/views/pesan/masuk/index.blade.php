@@ -91,6 +91,7 @@
                                                 @if($pesan->detailPesan->count() > 0)
                                                     {{ \Illuminate\Support\Str::limit(strip_tags($pesan->detailPesan->last()->text), 50) }}
                                                 @endif
+                                                @if ($pesan->sudah_dibaca === 0) <span class="label label-info">Belum Dibaca</span> @endif
                                             </div>
                                         </td>
                                         <td style="width: 20%"

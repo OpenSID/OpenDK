@@ -38,7 +38,7 @@ class PesanDetail extends Model
 {
     protected $table     = 'das_pesan_detail';
 
-    protected $fillable = ['pesan','pesan_id','desa_id'];
+    protected $fillable = ['text','pesan_id','desa_id'];
 
     public function headerPesan()
     {

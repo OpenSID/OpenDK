@@ -31,21 +31,20 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Image;
+use Intervention\Image\Facades\Image;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
     use HasRoles;
     use Notifiable;
-
-    protected $guard_name = 'web';
 
     /**
      * Default password.
@@ -75,6 +74,16 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'remember_token',
+    ];
+
+        /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -125,5 +134,21 @@ class User extends Authenticatable
         if ($input) {
             $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
         }
+    }
+
+        /**
+     * {@inheritdoc}
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

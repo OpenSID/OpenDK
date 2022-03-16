@@ -36,7 +36,6 @@ use App\Models\DataUmum;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -120,12 +119,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->getSettings();
-
-        // Implicitly grant "Super Admin" role all permissions
-        // This works in the app by using gate-related functions like auth()->user->can() and @can()
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole('super-admin') ? true : null;
-        });
     }
 
     protected function getSettings()

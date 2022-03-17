@@ -31,14 +31,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\GetPesanRequest;
-use App\Http\Requests\PesanRequest;
-use App\Models\DataDesa;
+use Exception;
 use App\Models\Pesan;
+use App\Models\DataDesa;
 use App\Models\PesanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\PesanRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\GetPesanRequest;
 use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
@@ -104,12 +106,13 @@ class PesanController extends Controller
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
         }
 
+        
+
         $pesan = Pesan::whereHas('detailPesan', function ($q) use ($request, $desa) {
-            // ambil id lebih
-            // $q->where('id', '=', $desa->id)->select('*');
-        })->with(['detailPesan' => function ($query) {
-            $query->select('*');
-        }])->where('das_data_desa_id', '=', $desa->id)->get();
+            $q->where('id','>=', $request->id);
+        })
+        ->with(['detailPesan'])
+        ->where('das_data_desa_id', $desa->id)->get();
 
         return response()->json(['status' => true, 'data'=>$pesan]);
     }

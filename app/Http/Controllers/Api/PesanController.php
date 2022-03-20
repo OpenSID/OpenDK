@@ -43,8 +43,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GetPesanRequest;
 use Stevebauman\Purify\Facades\Purify;
 
+
+
 class PesanController extends Controller
 {
+    public const PESAN_MASUK = "Pesan Masuk";
+    public const PESAN_KELUAR = "Pesan Keluar";
+    public const BELUM_DIBACA = 0;
+    public const SUDAH_DIBACA = 1;
+    public const MASUK_ARSIP = 1;
+    public const NON_ARSIP = 0;
+    public const PER_PAGE = 10;
+    
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -94,7 +104,7 @@ class PesanController extends Controller
             }
         }
 
-        return response()->json(['result'=>$response]);
+        return response()->json(['result'=>'unknow method']);
     }
 
     public function getpesan(GetPesanRequest $request)
@@ -106,12 +116,13 @@ class PesanController extends Controller
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
         }
 
-        
-
-        $pesan = Pesan::whereHas('detailPesan', function ($q) use ($request, $desa) {
-            $q->where('id','>=', $request->id);
+        $pesan = Pesan::whereHas('detailPesan', function ($q) use ($request) {
+            $q->where('id','>', $request->id);
         })
-        ->with(['detailPesan'])
+        ->with(['detailPesan' => function ($q) use ($request)
+        {
+            $q->where('id','>', $request->id);
+        }])
         ->where('das_data_desa_id', $desa->id)->get();
 
         return response()->json(['status' => true, 'data'=>$pesan]);
@@ -130,5 +141,19 @@ class PesanController extends Controller
             return response()->json(['status' => true, 'data'=>$pesan]);
         }
         return response()->json(['status' => true, 'message' => 'Tidak ada Pesan untuk ditampilkan' ]);
+    }
+
+    public function setArsipPesan(Request $request)
+    {
+        $array = json_decode($request->get('array_id'));
+        $pesan = Pesan::whereIn('id', $array)->update([
+            'diarsipkan' => self::MASUK_ARSIP
+        ]);
+
+        if ($pesan > 0) {
+            return back()->with('success', 'Pesan berhasil ditandai!');
+        } else {
+            return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
+        }
     }
 }

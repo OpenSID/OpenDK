@@ -32,7 +32,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class PesanDetail extends Model

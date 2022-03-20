@@ -31,19 +31,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\Pesan;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\GetPesanRequest;
+use App\Http\Requests\PesanRequest;
 use App\Models\DataDesa;
+use App\Models\Pesan;
 use App\Models\PesanDetail;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\PesanRequest;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\GetPesanRequest;
 use Stevebauman\Purify\Facades\Purify;
-
-
 
 class PesanController extends Controller
 {
@@ -54,7 +52,7 @@ class PesanController extends Controller
     public const MASUK_ARSIP = 1;
     public const NON_ARSIP = 0;
     public const PER_PAGE = 10;
-    
+
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -117,11 +115,10 @@ class PesanController extends Controller
         }
 
         $pesan = Pesan::whereHas('detailPesan', function ($q) use ($request) {
-            $q->where('id','>', $request->id);
+            $q->where('id', '>', $request->id);
         })
-        ->with(['detailPesan' => function ($q) use ($request)
-        {
-            $q->where('id','>', $request->id);
+        ->with(['detailPesan' => function ($q) use ($request) {
+            $q->where('id', '>', $request->id);
         }])
         ->where('das_data_desa_id', $desa->id)->get();
 

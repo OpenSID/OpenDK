@@ -31,16 +31,16 @@
 
 namespace App\Http\Controllers\Pesan;
 
-use Carbon\Carbon;
-use App\Models\Pesan;
-use App\Models\DataDesa;
-use App\Models\PesanDetail;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Stevebauman\Purify\Facades\Purify;
-use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\DataDesa;
+use App\Models\Pesan;
+use App\Models\PesanDetail;
+use Carbon\Carbon;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
+use Stevebauman\Purify\Facades\Purify;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
@@ -81,7 +81,6 @@ class PesanController extends Controller
             $data->put('search_query', $request->get('q'));
         }
 
-       
         if ($request->get('sudahdibaca') !== null) {
             $flag_include_arsip = false;
             $query = (int) $request->get('sudahdibaca');
@@ -98,7 +97,7 @@ class PesanController extends Controller
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
- 
+
         return view('pesan.masuk.index', $data->all());
     }
 
@@ -123,7 +122,7 @@ class PesanController extends Controller
             'jenis' => self::PESAN_KELUAR,
             'diarsipkan' => self::NON_ARSIP,
             'sudah_dibaca' => self::BELUM_DIBACA])->count();
-         
+
         return [
             'counter_unread' => $counter_unread,
             'counter_unread_keluar' => $counter_unread_keluar,
@@ -212,8 +211,7 @@ class PesanController extends Controller
 
     public function readPesan($id_pesan)
     {
-        $pesan  = Pesan::with(['dataDesa', 'detailPesan' =>function ($detail)
-        {
+        $pesan  = Pesan::with(['dataDesa', 'detailPesan' =>function ($detail) {
             return $detail->with(['createBy']);
         }])->findOrFail($id_pesan);
         // dd($pesan->detailPesan[0]->createBy->name);
@@ -221,7 +219,7 @@ class PesanController extends Controller
             $pesan->sudah_dibaca = self::SUDAH_DIBACA;
             $pesan->save();
         }
-        
+
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('page_description', 'Managemen Pesan');
@@ -259,8 +257,6 @@ class PesanController extends Controller
                     ResponseAlias::HTTP_BAD_REQUEST
                 );
             }
-
-            
 
             DB::transaction(function () use ($request) {
                 $id = Pesan::insertGetId([

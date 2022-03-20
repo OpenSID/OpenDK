@@ -131,11 +131,12 @@
                 let page = $(this).data('currentPage');
                 let desa_id = $('#list_desa').val();
                 let q = $('#cari-pesan').val();
+                let sudahdibaca = $('input[name="sudahdibaca"]').val();
                 if(page <= 1){
                     return;
                 }else{
                     window.location = window.location.origin +
-                        window.location.pathname + '?' + $.param({page: page - 1, desa_id, q})
+                        window.location.pathname + '?' + $.param({page: page - 1, desa_id, q, sudahdibaca})
                 }
             })
 
@@ -144,11 +145,12 @@
                 let page = $(this).data('currentPage');
                 let q = $('#cari-pesan').val();
                 let desa_id = $('#list_desa').val();
+                let sudahdibaca = $('input[name="sudahdibaca"]').val();
                 if(last <= page){
                     return;
                 }else{
                     window.location = window.location.origin +
-                        window.location.pathname +  '?' + $.param({page: page + 1, desa_id, q})
+                        window.location.pathname +  '?' + $.param({page: page + 1, desa_id, q, sudahdibaca})
                 }
             })
 
@@ -169,22 +171,23 @@
             $('#cari-pesan').keypress(function (e) {
                 var key = e.which;
                 let desa_id = $('#list_desa').val();
+                let sudahdibaca = $('input[name="sudahdibaca"]').val();
                 if(key === 13)  // the enter key code
                 {
                     let page = $('#next-links').data('currentPage');
                     window.location = window.location.origin +
-                        window.location.pathname +  '?' + $.param({page, desa_id, q: $(this).val()})
+                        window.location.pathname +  '?' + $.param({page, desa_id, q: $(this).val(), sudahdibaca})
                 }
             }).focusout(function () {
                 let page = $('#next-links').data('currentPage');
                 let desa_id = $('#list_desa').val();
+                let sudahdibaca = $('input[name="sudahdibaca"]').val();
                 if($(this).val() === ''){
                     window.location = window.location.origin +
-                        window.location.pathname +  '?' + $.param({page, desa_id})
+                        window.location.pathname +  '?' + $.param({page, desa_id, sudahdibaca});
                 }
 
             });
-
 
             $(function () {
                 //Enable iCheck plugin for checkboxes

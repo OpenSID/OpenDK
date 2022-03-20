@@ -31,15 +31,16 @@
 
 namespace App\Http\Controllers\Pesan;
 
-use App\Http\Controllers\Controller;
-use App\Models\DataDesa;
-use App\Models\Pesan;
-use App\Models\PesanDetail;
 use Carbon\Carbon;
+use App\Models\Pesan;
+use App\Models\DataDesa;
+use App\Models\PesanDetail;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Stevebauman\Purify\Facades\Purify;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
@@ -59,6 +60,7 @@ class PesanController extends Controller
         $data->put('page_title', 'Pesan');
         $data->put('desa_id', null);
         $data->put('search_query', '');
+        $data->put('sudah_dibaca', '');
         $data->put('page_description', 'Managemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
@@ -79,6 +81,14 @@ class PesanController extends Controller
             $data->put('search_query', $request->get('q'));
         }
 
+       
+        if ($request->get('sudahdibaca') !== null) {
+            $flag_include_arsip = false;
+            $query = (int) $request->get('sudahdibaca');
+            $pesan->where('sudah_dibaca', $query);
+            $data->put('sudah_dibaca', $request->get('sudahdibaca'));
+        }
+
         if (!$flag_include_arsip) {
             $pesan->where('diarsipkan', self::NON_ARSIP);
         }
@@ -88,6 +98,7 @@ class PesanController extends Controller
         $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
+ 
         return view('pesan.masuk.index', $data->all());
     }
 
@@ -108,17 +119,15 @@ class PesanController extends Controller
             'jenis' => self::PESAN_MASUK,
             'diarsipkan' => self::NON_ARSIP,
             'sudah_dibaca' => self::BELUM_DIBACA])->count();
-        $counter_pesan_keluar =  Pesan::where([
+        $counter_unread_keluar =  Pesan::where([
             'jenis' => self::PESAN_KELUAR,
-            'diarsipkan' => self::NON_ARSIP])->count();
-        $counter_arsip =  Pesan::where([
-            'diarsipkan' => self::MASUK_ARSIP])->count();
-
+            'diarsipkan' => self::NON_ARSIP,
+            'sudah_dibaca' => self::BELUM_DIBACA])->count();
+         
         return [
             'counter_unread' => $counter_unread,
-            'counter_pesan_keluar' => $counter_pesan_keluar,
-            'counter_arsip' => $counter_arsip
-        ];
+            'counter_unread_keluar' => $counter_unread_keluar,
+         ];
     }
 
     public function loadPesanKeluar(Request $request)
@@ -129,6 +138,7 @@ class PesanController extends Controller
         $data->put('search_query', '');
         $data->put('page_title', 'Pesan Keluar');
         $data->put('page_description', 'Managemen Pesan');
+        $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', self::PESAN_KELUAR)
@@ -151,6 +161,13 @@ class PesanController extends Controller
             $pesan->where('diarsipkan', self::NON_ARSIP);
         }
 
+        if ($request->get('sudahdibaca') !== null) {
+            $flag_include_arsip = false;
+            $query = (int) $request->get('sudahdibaca');
+            $pesan->where('sudah_dibaca', $query);
+            $data->put('sudah_dibaca', $request->get('sudahdibaca'));
+        }
+
         $list_desa = DataDesa::get();
         $pesan = $pesan->paginate(self::PER_PAGE);
         $data = $data->merge($this->getPaginationAttribute($pesan));
@@ -166,6 +183,7 @@ class PesanController extends Controller
         $data->put('search_query', '');
         $data->put('page_title', 'Pesan Arsip');
         $data->put('page_description', 'Managemen Pesan');
+        $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('diarsipkan', self::MASUK_ARSIP)
@@ -194,11 +212,16 @@ class PesanController extends Controller
 
     public function readPesan($id_pesan)
     {
-        $pesan  = Pesan::with(['dataDesa', 'detailPesan'])->findOrFail($id_pesan);
+        $pesan  = Pesan::with(['dataDesa', 'detailPesan' =>function ($detail)
+        {
+            return $detail->with(['createBy']);
+        }])->findOrFail($id_pesan);
+        // dd($pesan->detailPesan[0]->createBy->name);
         if ($pesan->sudah_dibaca === self::BELUM_DIBACA) {
             $pesan->sudah_dibaca = self::SUDAH_DIBACA;
             $pesan->save();
         }
+        
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('page_description', 'Managemen Pesan');
@@ -237,6 +260,8 @@ class PesanController extends Controller
                 );
             }
 
+            
+
             DB::transaction(function () use ($request) {
                 $id = Pesan::insertGetId([
                     'das_data_desa_id' => $request->get('das_data_desa_id'),
@@ -248,6 +273,7 @@ class PesanController extends Controller
 
                 PesanDetail::insert([
                     'pesan_id' => $id,
+                    'create_by' => Sentinel::getUser()->id,
                     'text' => Purify::clean($request->get('text')),
                     'desa_id' => null,
                     'created_at' => Carbon::now(),
@@ -306,6 +332,7 @@ class PesanController extends Controller
             'pesan_id' => $request->get('id'),
             'text' => Purify::clean($request->get('text')),
             'desa_id' => null,
+            'create_by' => Sentinel::getUser()->id,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

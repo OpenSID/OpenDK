@@ -50,7 +50,7 @@
                         <!-- /.mailbox-read-message -->
                     </div>
                     @if($pesan->detailPesan->count() > 1)
-                        @foreach($pesan->detailPesan->slice(1)->sortBy('created_at') as $single_pesan )
+                        @foreach($pesan->detailPesan->sortBy('created_at') as $single_pesan )
                             <div class="box-footer box-comments">
                                 <div class="box-comment">
                                     <div>
@@ -58,7 +58,7 @@
                                     @if(!is_null($single_pesan->dataDesa))
                                         {{ $single_pesan->dataDesa->nama }}
                                     @else
-                                        Anda
+                                        {{ $single_pesan->createBy->name }}
                                     @endif
                                     <span class="text-muted pull-right">{{ $single_pesan->custom_date }}</span>
                                 </span><!-- /.username -->

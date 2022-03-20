@@ -32,23 +32,24 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class PesanDetail extends Model
 {
     protected $table     = 'das_pesan_detail';
 
-    protected $fillable = ['text','pesan_id','desa_id'];
+    protected $fillable = ['text','pesan_id','create_by','desa_id'];
 
     public function headerPesan()
     {
         return $this->hasOne(Pesan::class, 'pesan_id', 'id');
     }
 
-    // public function headerPesan()
-    // {
-    //     return $this->hasOne(Pesan::class, 'id', 'pesan_id');
-    // }
+    public function createBy()
+    {
+        return $this->hasOne(User::class, "id", "create_by");
+    }
 
     public function dataDesa()
     {

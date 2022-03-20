@@ -29,9 +29,10 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateTableDetailPesan extends Migration
 {
@@ -45,8 +46,9 @@ class CreateTableDetailPesan extends Migration
         Schema::create('das_pesan_detail', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('pesan_id');
-            $table->text('text');
+            $table->text('text')->nullable();
             $table->unsignedInteger('desa_id')->nullable();
+            $table->integer('create_by');
             $table->foreign('pesan_id')
                 ->references('id')
                 ->on('das_pesan')
@@ -54,6 +56,17 @@ class CreateTableDetailPesan extends Migration
                 ->onUpdate('cascade');
             $table->timestamps();
         });
+
+        // create aksi triger saat simpan
+        DB::unprepared('
+        CREATE TRIGGER pesan_masuk AFTER INSERT ON das_pesan_detail 
+        FOR EACH ROW 
+        BEGIN 
+            IF new.desa_id IS NOT NULL THEN 
+                UPDATE das_pesan SET sudah_dibaca = 0 WHERE id = new.pesan_id ;
+            END IF;
+        END;
+        ');
     }
 
     /**
@@ -66,5 +79,6 @@ class CreateTableDetailPesan extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('das_pesan_detail');
         Schema::enableForeignKeyConstraints();
+        DB::unprepared('DROP TRIGGER `pesan_masuk`');
     }
 }

@@ -32,7 +32,7 @@
     </div>
     <!-- /.box-body -->
 </div>
-@if(!Request::is(['pesan/arsip']))
+@if(!Request::is(['pesan/arsip']) && isset($sudah_dibaca))
 <div class="box box-solid">
     <div class="box-header with-border">
         <h3 class="box-title">Label </h3>

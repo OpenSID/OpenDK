@@ -32,7 +32,6 @@
 namespace App\Http\Controllers\Page;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Faq;
 
 class WebFaqController extends Controller

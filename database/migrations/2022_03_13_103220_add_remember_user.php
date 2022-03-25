@@ -29,51 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class UsersTableSeeder extends Seeder
+class AddRememberUser extends Migration
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
-        Schema::disableForeignKeyConstraints();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('remember_token', 100)->after('password')->nullable();
+        });
+    }
 
-        DB::table('activations')->truncate();
-        DB::table('persistences')->truncate();
-        DB::table('reminders')->truncate();
-        DB::table('role_users')->truncate();
-        DB::table('throttle')->truncate();
-        DB::table('users')->truncate();
-
-        $datas = [
-            [
-                'email' => 'admin@mail.com',
-                'name' => 'Administrator',
-                'gender' => 'Male',
-                'role' => 'super-admin',
-                'address' => 'Jakarta',
-                'phone'   => '622157905788',
-                'status' => 1
-            ],
-        ];
-
-        foreach ($datas as $key => $data) {
-            $user = Sentinel::registerAndActivate([
-                'email' => $data[ 'email' ],
-                'password' => "password",
-                'name' => $data['name'],
-                'gender' => $data[ 'gender' ],
-                'phone' => $data[ 'phone' ],
-                'address' => $data[ 'address' ],
-                'status' => 1
-            ]);
-            Sentinel::findRoleBySlug($data[ 'role' ])->users()->attach($user);
-        }
-
-        Schema::enableForeignKeyConstraints();
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('remember_token');
+        });
     }
 }

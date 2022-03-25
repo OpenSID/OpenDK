@@ -10,7 +10,6 @@
     "homepage": "https://opendk.my.id/",
     "require": {
         "php": ">=7.4.0",
-        "cartalyst/sentinel": "^3.0",
         "cviebrock/eloquent-sluggable": "^6.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",
@@ -29,6 +28,7 @@
         "rachidlaasri/laravel-installer": "^4.1",
         "rap2hpoutre/laravel-log-viewer": "^2.0",
         "spatie/laravel-collection-macros": "^6.1",
+        "spatie/laravel-permission": "5.3",
         "tymon/jwt-auth": "^1.0",
         "unisharp/laravel-filemanager": "~1.8",
         "willvincent/feeds": "^2.2",

@@ -13,12 +13,11 @@
 </section>
 
 <section class="content container-fluid">
-
-    @include('partials.flash_message')
+     @include('partials.flash_message')
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('informasi.prosedur.create') }}" class="btn btn-success btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
+            <a href="{{ route('informasi.prosedur.create') }}" class="btn btn-success btn-sm {{ auth()->guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
@@ -27,7 +26,7 @@
                     <thead>
                         <tr>
                             <th style="max-width: 150px;">Aksi</th>
-                            <th>Judul Prosedur</th>
+                            <th>Judul Prosedur </th>
                         </tr>
                     </thead>
                 </table>

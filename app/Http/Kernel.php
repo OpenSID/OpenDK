@@ -36,9 +36,6 @@ use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\EncryptCookies;
 use App\Http\Middleware\KDInstalled;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Middleware\SentinelAuth;
-use App\Http\Middleware\SentinelHasAccess;
-use App\Http\Middleware\SentinelRedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
@@ -117,11 +114,11 @@ class Kernel extends HttpKernel
         'signed'           => ValidateSignature::class,
         'throttle'         => ThrottleRequests::class,
         'verified'         => EnsureEmailIsVerified::class,
-        'sentinel_auth'    => SentinelAuth::class,
-        'sentinel_access'  => SentinelHasAccess::class,
-        'sentinel_guest'   => SentinelRedirectIfAuthenticated::class,
-        'check_role'       => CheckRole::class,
+        // 'check_role'       => CheckRole::class,
         'installed'        => KDInstalled::class,
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 
     /**
@@ -139,5 +136,6 @@ class Kernel extends HttpKernel
         AuthenticateSession::class,
         SubstituteBindings::class,
         Authorize::class,
+
     ];
 }

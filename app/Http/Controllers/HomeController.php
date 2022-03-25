@@ -29,31 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Http\Controllers;
 
-use App\Classes\MenuNav\MenuNav;
-use Illuminate\Support\ServiceProvider;
-
-class MenuNavServiceProvider extends ServiceProvider
+class HomeController extends Controller
 {
     /**
-     * Bootstrap the application services.
+     * Create a new controller instance.
      *
      * @return void
      */
-    public function boot()
+    public function __construct()
     {
+        $this->middleware('auth');
     }
 
     /**
-     * Register the application services.
+     * Show the application dashboard.
      *
-     * @return void
+     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function register()
+    public function index()
     {
-        $this->app->bind('Menu', function () {
-            return new MenuNav();
-        });
+        return view('home');
     }
 }

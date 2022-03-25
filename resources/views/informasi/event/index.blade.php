@@ -70,7 +70,7 @@ use Carbon\Carbon;
                                         <div class="col-md-6">
                                             <div class="pull-right">
                                                 @if($value->status== 'OPEN')
-                                                    @if(Sentinel::check())
+                                                    @if(auth()->check())
                                                         <a href="{!! route('event.detail', $value->slug) !!}" class="btn btn-xs btn-info" title="Lihat" data-button="lihat"><i class="fa fa-eye"></i>&nbsp; Lihat</a>
                                                         <a href="{!! route('informasi.event.edit', $value->id) !!}" class="btn btn-xs btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
 
@@ -108,7 +108,7 @@ use Carbon\Carbon;
             </div>
             <!-- /.col -->
             <div class="col-md-4">
-                @if(! Sentinel::guest())
+                @if(! auth()->guest())
                 <div class="box box-primary limit-p-width">
                     <div class="box-body">
                         <div class="caption">

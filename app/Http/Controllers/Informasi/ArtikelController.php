@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -54,7 +53,7 @@ class ArtikelController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
-                    if (! Sentinel::guest()) {
+                    if (! auth()->guest()) {
                         $data['edit_url']   = route('informasi.artikel.edit', $row->id);
                         $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }

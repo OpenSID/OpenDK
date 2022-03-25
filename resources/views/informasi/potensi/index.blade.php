@@ -18,7 +18,7 @@
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('informasi.potensi.create') }}" class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
+            <a href="{{ route('informasi.potensi.create') }}" class="btn btn-primary btn-sm {{ auth()->guest() ? 'hidden':'' }}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
             <div class="box-tools pull-right col-sm-4">
                 {!! Form::select('kategori_id', \App\Models\TipePotensi::pluck('nama_kategori', 'id'), (isset($_GET['id'])? $_GET['id']:0), ['placeholder' => 'Semua Kategori', 'class' => 'form-control', 'id' => 'kategori_id', 'required'=>true, 'onchange'=>"changeCategori(this)"]) !!}
             </div>
@@ -36,7 +36,7 @@
                     <article><p>{{ str_limit($potensi->deskripsi, 200, ' ...') }}</p></article>
                     <div class="pull-right button-group" style="position:relative; bottom:0px; margin-bottom: 0px;">
                         <a href="{{ route('informasi.potensi.show', $potensi->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i>&nbsp; Detail</a>
-                        @unless(!Sentinel::check())
+                        @unless(!Auth::check())
                         
                         <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
                         

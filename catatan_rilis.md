@@ -6,6 +6,7 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
 1. [#70](https://github.com/OpenSID/OpenDK/issues/70) Refactor Autentikasi dengan packages native laravel.
+2. [#288](https://github.com/OpenSID/OpenDK/issues/288) Tampilkan FAQS pada halaman website.
 
 #### Perbaikan BUG
 1. [#289](https://github.com/OpenSID/OpenDK/issues/289) Perbaiki Class 'Barryvdh\Debugbar\ServiceProvider' not found sewaktu install/update composer dengan opsi --no-dev…aktu install/update composer dengan opsi --no-dev

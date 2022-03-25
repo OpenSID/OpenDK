@@ -95,7 +95,7 @@ class User extends Authenticatable implements JWTSubject
 
     public static function datatables()
     {
-        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone')->where('id', '!=', '1');
+        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone');
     }
 
     /**

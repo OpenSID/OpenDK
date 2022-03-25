@@ -82,12 +82,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-md"
-                                     src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}"
-                                     alt="user image">
+                                <img class="img-circle img-bordered-md" src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" alt="user image">
                                 <span class="username">
-                                  <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID
-                                      #{{ $komplain->komplain_id }}</a>
+                                    <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                 </span>
                                 <span class="description">PELAPOR : {{ $komplain->nama }}</span>
                             </div>
@@ -110,12 +107,12 @@
 
                             <div class="pull-right">
                                 <div class="control-group">
-                                    @php $user = Sentinel::getUser(); @endphp
+                                    @php $user = auth()->user(); @endphp
                                     @if(isset($user) && $user->hasAccess(['adminsikoma']))
 
                                         <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                         <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
-                                           class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
+                                            class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
                                         {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style' => 'display:inline']) !!}
 
                                         <button type="submit" class="btn btn-sm btn-danger"
@@ -135,9 +132,7 @@
                 </div>
                 <div class="box-footer clearfix">
                     <a href="{{ route('sistem-komplain.index') }}" class="pull-right">
-                        <button type="button" class="btn btn-default btn-sm"><i
-                                    class="fa fa-refresh"></i> Kembali
-                        </button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Kembali</button>
                     </a>
                 </div>
             </div>
@@ -369,7 +364,6 @@
         });
     }
 </script>
-
 
 @endpush
 @include(('partials.asset_datetimepicker'))

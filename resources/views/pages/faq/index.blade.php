@@ -1,15 +1,13 @@
 @extends('layouts.app')
-@section('title','Sejarah')
 @section('content')
 <div class="col-md-8">
   <div class="box box-primary">
     <div class="box-header with-border text-bold">
-      <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> Pertanyaan yang sering
-        diajukan</h3>
+      <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> Pertanyaan Yang Sering Diajukan</h3>
     </div>
     <div class="box-body">
       <div class="box-group" id="accordion">
-        @foreach($faq as $key => $item)
+        @forelse($faq as $key => $item)
           <div class="panel box box-success">
             <div class="box-header with-border">
               <h4 class="box-title">
@@ -20,11 +18,18 @@
             </div>
             <div id="collapse{{$key}}" class="panel-collapse collapse" aria-expanded="false" >
               <div class="box-body">
-               {!! $item->answer !!}
+                {!! $item->answer !!}
               </div>
             </div>
           </div>
-        @endforeach
+          <div class="text-center">
+            {{ $faq->links() }}
+          </div>
+        @empty
+        <div class="callout callout-info">
+          <p class="text-bold">Tidak ada data yang ditampilkan!</p>
+        </div>
+        @endforelse
       </div>
     </div>
   </div>

@@ -245,7 +245,7 @@ class UserController extends Controller
                     $data['active_url'] = route('setting.user.active', $user->id);
                 }
             }
-            
+
             $data['edit_url'] = route('setting.user.edit', $user->id);
 
             return view('forms.aksi', $data);

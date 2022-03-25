@@ -11,7 +11,7 @@
             <div class="modal-footer">
                 {!! Form::open(['id' => 'active', 'method' => 'POST']) !!}
                     <a id="active-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
-                    {!! Form::submit('Aktif', ['class' => 'btn btn-success' ]) !!}
+                    {!! Form::submit('Aktifkan', ['class' => 'btn btn-success' ]) !!}
                 {!! Form::close() !!}
             </div>
         </div>
@@ -22,7 +22,7 @@
 
         $(document).on('click', '#activeModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#active').attr('aksi', url );
+            $('#active').attr('action', url );
             $('#import').attr( 'method', 'post' );
             $('#active-modal').modal('show');
             e.preventDefault();

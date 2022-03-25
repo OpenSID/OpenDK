@@ -74,8 +74,9 @@
                 <li><a href="{{ route('unduhan.prosedur') }}">Prosedur</a></li>
                 <li><a href="{{ route('unduhan.regulasi') }}">Regulasi</a></li>
                 <li><a href="{{ route('unduhan.form-dokumen') }}">Dokumen</a></li>
-              </ul>
+            </ul>
           </li>
+          <li><a href="{{ route('faq')}}">FAQ</a></li>
           @if (auth()->guest())
             <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
           @else

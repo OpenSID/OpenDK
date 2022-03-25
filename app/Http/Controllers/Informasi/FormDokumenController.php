@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DokumenRequest;
 use App\Models\FormDokumen;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 class FormDokumenController extends Controller
@@ -51,7 +50,7 @@ class FormDokumenController extends Controller
     {
         return DataTables::of(FormDokumen::all())
             ->addColumn('aksi', function ($row) {
-                if (! Sentinel::guest()) {
+                if (! auth()->guest()) {
                     $data['edit_url']   = route('informasi.form-dokumen.edit', $row->id);
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }

@@ -18,7 +18,7 @@
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('informasi.form-dokumen.create') }}" class="btn btn-success btn-sm {{Sentinel::guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+            <a href="{{ route('informasi.form-dokumen.create') }}" class="btn btn-success btn-sm {{auth()->guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp;Tambah</a>
         </div>
         
         <div class="box-body">

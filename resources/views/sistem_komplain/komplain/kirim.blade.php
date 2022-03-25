@@ -78,7 +78,7 @@
                                             <label for="lampiran1"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview1" style="background-image: url(http://placehold.it/80x100);">
+                                            <div id="lampiranPreview1" style="background-image: url(https://via.placeholder.com/80x100);">
                                             </div>
                                         </div>
                                     </div>
@@ -89,7 +89,7 @@
                                             <label for="lampiran2"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview2" style="background-image: url(http://placehold.it/80x100);">
+                                            <div id="lampiranPreview2" style="background-image: url(https://via.placeholder.com/80x100);">
                                             </div>
                                         </div>
                                     </div>
@@ -100,7 +100,7 @@
                                             <label for="lampiran3"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview3" style="background-image: url(http://placehold.it/80x100);">
+                                            <div id="lampiranPreview3" style="background-image: url(https://via.placeholder.com/80x100);">
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +111,7 @@
                                             <label for="lampiran4"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview4" style="background-image: url(http://placehold.it/80x100);">
+                                            <div id="lampiranPreview4" style="background-image: url(https://via.placeholder.com/80x100);">
                                             </div>
                                         </div>
                                     </div>

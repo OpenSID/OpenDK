@@ -2454,7 +2454,7 @@ laravelValidation = {
                 dataType: 'json',
                 data: data,
                 context: validator.currentForm,
-                url: $(validator.currentForm).attr('aksi'),
+                url: $(validator.currentForm).attr('action'),
                 type: formMethod(validator),
                 beforeSend: function (xhr) {
                     var token = getCsrfToken(params);

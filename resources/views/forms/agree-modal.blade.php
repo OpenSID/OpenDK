@@ -23,7 +23,7 @@
 
          $(document).on('click', '#agreeModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#agree').attr('aksi', url );
+            $('#agree').attr('action', url );
             $('#import').attr( 'method', 'post' );
             $('#agree-modal').modal('show');
             e.preventDefault();

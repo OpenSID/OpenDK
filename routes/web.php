@@ -248,7 +248,7 @@ Route::group(['middleware' => 'installed'], function () {
     Route::get('agenda-kegiatan/{slug}', 'Informasi\EventController@show')->name('event.show');
 
     Route::namespace('SistemKomplain')->group(function () {
-        Route::group(['prefix' => 'sistem-komplain','middleware' => ['role:admin-komplain']], function () {
+        Route::group(['prefix' => 'sistem-komplain'], function () {
             Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
             Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
             Route::post('store', ['as' => 'sistem-komplain.store', 'uses' => 'SistemKomplainController@store']);

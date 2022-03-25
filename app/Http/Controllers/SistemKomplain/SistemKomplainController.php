@@ -37,7 +37,6 @@ use App\Models\Komplain;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 use Illuminate\Support\Facades\Validator;
 
 class SistemKomplainController extends Controller

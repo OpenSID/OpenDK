@@ -63,7 +63,7 @@ class AuthController extends Controller
 
         $credentials = $request->only(['email', 'password']);
 
-        if (! $token = Auth::attempt($credentials)) {
+        if (! $token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -77,7 +77,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(['user' => Auth::user()]);
+        return response()->json(['user' => Auth::guard('api')->user()]);
     }
 
     /**
@@ -114,7 +114,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type'   => 'Bearer',
-            'expires_in'   => Auth::factory()->getTTL() * 60,
+            'expires_in'   => Auth::guard('api')->factory()->getTTL() * 60,
         ]);
     }
 }

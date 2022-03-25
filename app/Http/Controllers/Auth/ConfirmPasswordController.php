@@ -29,11 +29,41 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Controllers\Auth;
 
-use Cartalyst\Sentinel\Roles\EloquentRole as Model;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\ConfirmsPasswords;
 
-class RoleUser extends Model
+class ConfirmPasswordController extends Controller
 {
-    protected $table = 'role_users';
+    /*
+    |--------------------------------------------------------------------------
+    | Confirm Password Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling password confirmations and
+    | uses a simple trait to include the behavior. You're free to explore
+    | this trait and override any functions that require customization.
+    |
+    */
+
+    use ConfirmsPasswords;
+
+    /**
+     * Where to redirect users when the intended url fails.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 }

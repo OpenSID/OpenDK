@@ -37,7 +37,6 @@ use App\Models\Komplain;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 use Illuminate\Support\Facades\Validator;
 
 class SistemKomplainController extends Controller
@@ -285,13 +284,13 @@ class SistemKomplainController extends Controller
             $komplain = Komplain::where('slug', '=', $slug)->first();
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', $ex);
+            return back()->withInput()->with('error', $e);
         }
-        $camat            = Profil::first();
+
         $page_title       = 'Laporan';
         $page_description = 'Detail Laporan : ' . $komplain->judul;
 
-        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain', 'camat'));
+        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain'));
     }
 
     public function reply(Request $request, $id)

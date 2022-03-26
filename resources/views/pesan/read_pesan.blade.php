@@ -54,12 +54,8 @@
                             <div class="box-footer box-comments">
                                 <div class="box-comment">
                                     <div>
-                                <span class="username">
-                                    @if(!is_null($single_pesan->dataDesa))
-                                        {{ $single_pesan->dataDesa->nama }}
-                                    @else
-                                        {{ $single_pesan->createBy->name }}
-                                    @endif
+                                <span class="username">                               
+                                       {{ $single_pesan->nama_pengirim }}
                                     <span class="text-muted pull-right">{{ $single_pesan->custom_date }}</span>
                                 </span><!-- /.username -->
                                         {!! $single_pesan->text !!}

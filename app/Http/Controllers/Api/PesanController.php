@@ -64,14 +64,15 @@ class PesanController extends Controller
         if ($desa == null) {
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
         }
-
+ 
         if ($request->has('pesan_id')) {
             // insert percakapan
             try {
                 $response = PesanDetail::create([
                     'pesan_id' => $request->pesan_id,
                     'text' => $request->pesan,
-                    'desa_id' => $desa->id,
+                    'pengirim' => $request->pengirim,
+                    'nama_pengirim' => $request->nama_pengirim
                 ]);
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
@@ -91,13 +92,15 @@ class PesanController extends Controller
                     $id_detail = PesanDetail::insertGetId([
                         'pesan_id' => $id,
                         'text' => Purify::clean($request->get('pesan')),
-                        'desa_id' =>  $desa->id,
+                        'pengirim' => $request->pengirim,
+                        'nama_pengirim' => $request->nama_pengirim,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ]);
                 });
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
+                dd($e);
                 return response()->json(['status' => false, 'message' => 'error Exception' ]);
             }
         }

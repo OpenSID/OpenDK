@@ -38,21 +38,11 @@ class PesanDetail extends Model
 {
     protected $table     = 'das_pesan_detail';
 
-    protected $fillable = ['text','pesan_id','create_by','desa_id'];
+    protected $fillable = ['text','pesan_id','pengirim', 'nama_pengirim'];
 
     public function headerPesan()
     {
         return $this->hasOne(Pesan::class, 'pesan_id', 'id');
-    }
-
-    public function createBy()
-    {
-        return $this->hasOne(User::class, "id", "create_by");
-    }
-
-    public function dataDesa()
-    {
-        return $this->hasOne(DataDesa::class, "id", "desa_id");
     }
 
     public function getCustomDateAttribute()

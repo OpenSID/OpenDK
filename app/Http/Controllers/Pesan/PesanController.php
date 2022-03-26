@@ -36,7 +36,6 @@ use App\Models\DataDesa;
 use App\Models\Pesan;
 use App\Models\PesanDetail;
 use Carbon\Carbon;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -211,9 +210,7 @@ class PesanController extends Controller
 
     public function readPesan($id_pesan)
     {
-        $pesan  = Pesan::with(['dataDesa', 'detailPesan' =>function ($detail) {
-            return $detail->with(['createBy']);
-        }])->findOrFail($id_pesan);
+        $pesan  = Pesan::findOrFail($id_pesan);
         // dd($pesan->detailPesan[0]->createBy->name);
         if ($pesan->sudah_dibaca === self::BELUM_DIBACA) {
             $pesan->sudah_dibaca = self::SUDAH_DIBACA;
@@ -266,12 +263,11 @@ class PesanController extends Controller
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ]);
-
                 PesanDetail::insert([
                     'pesan_id' => $id,
-                    'create_by' => Sentinel::getUser()->id,
                     'text' => Purify::clean($request->get('text')),
-                    'desa_id' => null,
+                    'pengirim' => 'kecamatan',
+                    'nama_pengirim' => 'kecamatan - '. auth()->user()->name,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ]);
@@ -327,16 +323,16 @@ class PesanController extends Controller
         $pesan = PesanDetail::insert([
             'pesan_id' => $request->get('id'),
             'text' => Purify::clean($request->get('text')),
-            'desa_id' => null,
-            'create_by' => Sentinel::getUser()->id,
+            'pengirim' => 'kecamatan',
+            'nama_pengirim' => auth()->user()->name,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
 
         if ($pesan) {
-            return back()->with('success', 'Pesan berhasil dibalas!');
+            return back()->with('success', 'Pesan berhasil dikirim!');
         } else {
-            return back()->withInput()->with('error', 'Pesan gagal disimpan!');
+            return back()->withInput()->with('error', 'Pesan gagal dikirim!');
         }
     }
 }

@@ -47,8 +47,8 @@ class CreateTableDetailPesan extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('pesan_id');
             $table->text('text')->nullable();
-            $table->unsignedInteger('desa_id')->nullable();
-            $table->integer('create_by');
+            $table->string('pengirim', 20);
+            $table->string('nama_pengirim', 100);
             $table->foreign('pesan_id')
                 ->references('id')
                 ->on('das_pesan')
@@ -62,7 +62,7 @@ class CreateTableDetailPesan extends Migration
         CREATE TRIGGER pesan_masuk AFTER INSERT ON das_pesan_detail 
         FOR EACH ROW 
         BEGIN 
-            IF new.desa_id IS NOT NULL THEN 
+            IF new.pengirim = "desa" THEN 
                 UPDATE das_pesan SET sudah_dibaca = 0 WHERE id = new.pesan_id ;
             END IF;
         END;

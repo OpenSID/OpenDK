@@ -48,7 +48,7 @@ Route::group(['middleware' => 'installed'], function () {
         Route::get('/', 'PageController@index')->name('beranda');
         Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
         Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
-        
+
         Route::group(['prefix' => 'berita'], function () {
             Route::permanentRedirect('/', '/');
             Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');
@@ -172,7 +172,7 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
-                
+
                 // Prosedur
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);

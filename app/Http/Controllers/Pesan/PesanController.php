@@ -324,7 +324,7 @@ class PesanController extends Controller
             'pesan_id' => $request->get('id'),
             'text' => Purify::clean($request->get('text')),
             'pengirim' => 'kecamatan',
-            'nama_pengirim' => auth()->user()->name,
+            'nama_pengirim' => 'kecamatan - '. auth()->user()->name,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

@@ -15,4 +15,4 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 
 #### TEKNIS
 1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.
-
+2. Penyesuaian routes.

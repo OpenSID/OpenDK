@@ -89,11 +89,10 @@
             url: "/data/data-umum/getdataajax",
             type: "get",
             success: function(response) {
-                if(sumberLuasWilayah==1)
-                {
+                if(sumberLuasWilayah == 1) {
                     $(".luas_wilayah").val(response.data.luas_wilayah);
                     $(".luas_wilayah").attr('readonly', false);
-                }else{
+                } else {
                     $(".luas_wilayah").val(response.data.luas_wilayah_dari_data_desa);
                     $(".luas_wilayah").attr('readonly', true); 
                 }

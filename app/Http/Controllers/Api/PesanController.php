@@ -64,7 +64,7 @@ class PesanController extends Controller
         if ($desa == null) {
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
         }
- 
+
         if ($request->has('pesan_id')) {
             // insert percakapan
             try {

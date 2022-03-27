@@ -240,4 +240,22 @@ class AdminKomplainController extends Controller
 
         return $data_chart;
     }
+
+    /**
+    * Display the specified resource.
+    *
+    * @param  int  $id
+    * @return Response
+    */
+    public function destroy($id)
+    {
+        try {
+            Komplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return redirect()->route('admin-komplain.index')->with('error', 'Keluhan gagal dihapus!');
+        }
+
+        return redirect()->route('admin-komplain.index')->with('success', 'Keluhan sukses dihapus!');
+    }
 }

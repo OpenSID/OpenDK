@@ -17,7 +17,7 @@
             </div>
         </form>
     </div>
-    @include('partials.flash_message')
+    
     <!-- /.box-body -->
 </div>
 <!-- /.box -->

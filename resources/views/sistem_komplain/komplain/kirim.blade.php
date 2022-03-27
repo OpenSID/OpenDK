@@ -13,6 +13,7 @@
                     <h3 class="box-title">{{ $page_title }}</h3>
                 </div>
                 <div class="box-body">
+                    @include('partials.flash_message')
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
@@ -185,8 +186,8 @@
 
 @include('partials.asset_upload_images')
 @include(('partials.asset_datetimepicker'))
-@push('scripts')
 
+@push('scripts')
 <script type="text/javascript">
     $(function () {
         $(".btn-refresh").click(function(){
@@ -206,8 +207,11 @@
             });
         });
 
+        setTimeout(function() {
+            $("#notifikasi").slideUp("slow");
+        }, 2000);
+
     })
 
 </script>
-
 @endpush

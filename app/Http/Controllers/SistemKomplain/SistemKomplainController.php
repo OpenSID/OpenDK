@@ -54,6 +54,7 @@ class SistemKomplainController extends Controller
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
+    // TODO : Cek digunakan dimana ?
     public function indexKategori($slug)
     {
         $page_title       = 'SIKEMA';
@@ -63,6 +64,7 @@ class SistemKomplainController extends Controller
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
+    // TODO : Cek digunakan dimana ?
     public function indexSukses()
     {
         $page_title       = 'SIKEMA';
@@ -184,6 +186,7 @@ class SistemKomplainController extends Controller
      * @param  int  $id
      * @return Response
      */
+    // TODO : Cek digunakan dimana ?
     public function edit($id)
     {
         $komplain         = Komplain::where('komplain_id', '=', $id)->first();
@@ -198,6 +201,7 @@ class SistemKomplainController extends Controller
      *
      * @return Response
      */
+    // TODO : Cek digunakan dimana ?
     public function update(Request $request, $id)
     {
         request()->validate([

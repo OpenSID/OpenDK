@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="col-md-8">
-    <!-- quick email widget -->
     @include('partials.flash_message')
     <div class="box box-primary">
         <div class="box-header">

@@ -241,12 +241,12 @@ class AdminKomplainController extends Controller
         return $data_chart;
     }
 
-     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+    /**
+    * Display the specified resource.
+    *
+    * @param  int  $id
+    * @return Response
+    */
     public function destroy($id)
     {
         try {
@@ -258,5 +258,4 @@ class AdminKomplainController extends Controller
 
         return redirect()->route('admin-komplain.index')->with('success', 'Keluhan sukses dihapus!');
     }
-
 }

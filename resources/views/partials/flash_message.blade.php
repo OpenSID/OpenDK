@@ -27,13 +27,3 @@
     </div>
 @endif
 
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        // show the alert
-        setTimeout(function() {
-            $("#notifikasi").slideUp("slow");
-        }, 2000);
-    });
-</script>
-@endpush

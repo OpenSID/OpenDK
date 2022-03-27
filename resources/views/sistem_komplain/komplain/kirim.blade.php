@@ -186,8 +186,8 @@
 
 @include('partials.asset_upload_images')
 @include(('partials.asset_datetimepicker'))
-@push('scripts')
 
+@push('scripts')
 <script type="text/javascript">
     $(function () {
         $(".btn-refresh").click(function(){
@@ -207,8 +207,11 @@
             });
         });
 
+        setTimeout(function() {
+            $("#notifikasi").slideUp("slow");
+        }, 2000);
+
     })
 
 </script>
-
 @endpush

@@ -41,3 +41,13 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function() {
+            $("#notifikasi").slideUp("slow");
+        }, 2000);
+    })
+</script>
+@endpush

@@ -2,7 +2,6 @@
 
 @section('content')
 
-<!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
@@ -23,11 +22,6 @@
             <!-- kirim komplain form -->
             {!! Form::model($komplain, [ 'route' => ['admin-komplain.update', $komplain->id], 'method' => 'put','id' => 'form-komplain', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
             <div class="box box-primary">
-                <div class="box-header">
-                    <i class="fa fa-paper-plane"></i>
-
-                    <h3 class="box-title">{{ $page_title }}</h3>
-                </div>
                 <div class="box-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -197,10 +191,7 @@
 @include('partials.asset_upload_images')
 
 @push('scripts')
-
 <script type="text/javascript">
-
-
     $(".btn-refresh").click(function(){
         $.ajax({
             type:'GET',
@@ -210,8 +201,5 @@
             }
         });
     });
-
-
 </script>
-
 @endpush

@@ -126,7 +126,7 @@
                                             <label for="lampiran1"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview1" style="background-image: url(@if(! $komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview1" style="background-image: url(@if(! $komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -137,7 +137,7 @@
                                             <label for="lampiran2"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview2" style="background-image: url(@if(! $komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview2" style="background-image: url(@if(! $komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +148,7 @@
                                             <label for="lampiran3"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview3" style="background-image: url(@if(! $komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview3" style="background-image: url(@if(! $komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -159,7 +159,7 @@
                                             <label for="lampiran4"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview4" style="background-image: url(@if(! $komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview4" style="background-image: url(@if(! $komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>

@@ -22,8 +22,7 @@
                     <h3 class="box-title">Berdasarkan Status</h3>
                 </div>
                 <div class="box-body">
-                    <div id="chart_status"
-                         style="width: 100%; height: 450px; overflow: visible; text-align: left;">
+                    <div id="chart_status" style="width: 100%; height: 450px; overflow: visible; text-align: left;">
                     </div>
                 </div>
             </div>
@@ -34,8 +33,7 @@
                     <h3 class="box-title">Berdasarkan Kategori</h3>
                 </div>
                 <div class="box-body">
-                    <div id="chart_kategori"
-                         style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
+                    <div id="chart_kategori" style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
                     </div>
                 </div>
             </div>
@@ -48,8 +46,7 @@
                     <h3 class="box-title">Berdasarkan Desa</h3>
                 </div>
                 <div class="box-body">
-                    <div id="chart_desa"
-                         style="width: 100%; height: 500px; overflow: visible; text-align: left;">
+                    <div id="chart_desa" style="width: 100%; height: 500px; overflow: visible; text-align: left;">
                     </div>
                 </div>
             </div>
@@ -226,8 +223,6 @@
             "hideCredits": true,
             "marginTop" : 50
         });
-
     }
-
 </script>
 @endpush

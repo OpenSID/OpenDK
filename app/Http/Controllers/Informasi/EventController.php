@@ -62,7 +62,6 @@ class EventController extends Controller
             $input['status'] = 'OPEN';
             Event::create($input);
         } catch (\Exception $e) {
-            dd($e);
             report($e);
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
@@ -87,9 +86,11 @@ class EventController extends Controller
                 $lampiran = $request->file('attachment');
                 $fileName = $lampiran->getClientOriginalName();
                 $path     = "event/" . $event->id . '/';
+                File::deleteDirectory(base_path('public/' . $path)); //hapus directory sebelumnya
                 $lampiran->move(base_path('public/'.$path), $fileName);
                 $input['attachment'] = $path . $fileName;
             }
+            
             $event->update($input);
         } catch (\Exception $e) {
             report($e);

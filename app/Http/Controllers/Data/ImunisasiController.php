@@ -97,8 +97,8 @@ class ImunisasiController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_imunisasi',
-            'tahun' => 'required|unique:das_imunisasi',
+            'bulan' => 'required', // noted : hapus validasi unique karena tidak bisa update data jika bulan atau tahun sudah ada
+            'tahun' => 'required',
         ]);
 
         try {
@@ -106,10 +106,10 @@ class ImunisasiController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return back()->with('error', 'Import data gagal. '. $e->getMessage());
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.imunisasi.index')->with('success', 'Import data sukses');
     }
 
     /**

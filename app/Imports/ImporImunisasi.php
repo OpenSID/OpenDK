@@ -31,14 +31,22 @@
 
 namespace App\Imports;
 
+use Exception;
+use App\Models\DataDesa;
+// use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Imunisasi;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class ImporImunisasi implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -61,13 +69,24 @@ class ImporImunisasi implements ToModel, WithHeadingRow, WithChunkReading, Shoul
     /**
      * {@inheritdoc}
      */
-    public function model(array $row)
+    public function collection(Collection $collection)
     {
-        return new Imunisasi([
-            'desa_id'           => $row['desa_id'],
-            'bulan'             => $this->request['bulan'],
-            'tahun'             => $this->request['tahun'],
-            'cakupan_imunisasi' => $row['cakupan_imunisasi'],
-        ]);
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+        DB::beginTransaction();
+
+        foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+            Imunisasi::updateOrInsert([
+                'desa_id'           => $value['desa_id'],
+                'bulan'             => $this->request['bulan'],
+                'tahun'             => $this->request['tahun'],
+                'cakupan_imunisasi' => $value['cakupan_imunisasi'],
+            ]);
+        }
+        DB::commit(); // commit data dan simpan ke dalam database
     }
 }

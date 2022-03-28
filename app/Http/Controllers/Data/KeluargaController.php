@@ -59,7 +59,7 @@ class KeluargaController extends Controller
     {
         if (request()->ajax()) {
             return DataTables::of(Keluarga::get())
-                ->editColumn('desa.nama', function($row) {
+                ->editColumn('desa.nama', function ($row) {
                     return ($row->desa != null) ? $row->desa->nama : 'Desa tidak terdaftar' ;
                 })
                 ->addColumn('aksi', function ($row) {

@@ -90,7 +90,7 @@ class EventController extends Controller
                 $lampiran->move(base_path('public/'.$path), $fileName);
                 $input['attachment'] = $path . $fileName;
             }
-            
+
             $event->update($input);
         } catch (\Exception $e) {
             report($e);

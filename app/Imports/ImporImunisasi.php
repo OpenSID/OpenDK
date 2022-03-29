@@ -31,18 +31,18 @@
 
 namespace App\Imports;
 
-use Exception;
 use App\Models\DataDesa;
 use App\Models\Imunisasi;
+use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {

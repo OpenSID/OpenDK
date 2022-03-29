@@ -31,18 +31,18 @@
 
 namespace App\Imports;
 
-use Exception;
 use App\Models\AkiAkb;
 use App\Models\DataDesa;
+use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -88,6 +88,5 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
             ]);
         }
         DB::commit(); // commit data dan simpan ke dalam database
-        
     }
 }

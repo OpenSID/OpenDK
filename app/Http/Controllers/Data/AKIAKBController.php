@@ -61,7 +61,7 @@ class AKIAKBController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(AkiAkb::with(['desa']))
+        return DataTables::of(AkiAkb::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url']   = route('data.aki-akb.edit', $row->id);
                 $data['delete_url'] = route('data.aki-akb.destroy', $row->id);
@@ -107,7 +107,7 @@ class AKIAKBController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return back()->with('error', 'Import data gagal. '. $e->getMessage());
         }
 
         return back()->with('success', 'Import data sukses.');

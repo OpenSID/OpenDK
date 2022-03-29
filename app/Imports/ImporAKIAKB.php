@@ -31,14 +31,20 @@
 
 namespace App\Imports;
 
+use Exception;
 use App\Models\AkiAkb;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\DataDesa;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class ImporAKIAKB implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -61,14 +67,27 @@ class ImporAKIAKB implements ToModel, WithHeadingRow, WithChunkReading, ShouldQu
     /**
      * {@inheritdoc}
      */
-    public function model(array $row)
-    {
-        return new AkiAkb([
-            'desa_id'      => $row['desa_id'],
-            'bulan'        => $this->request['bulan'],
-            'tahun'        => $this->request['tahun'],
-            'aki'          => $row['jumlah_aki'],
-            'akb'          => $row['jumlah_akb'],
-        ]);
+    public function collection(Collection $collection)
+    {s
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+        DB::beginTransaction(); //multai transaction
+
+        foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+
+            AkiAkb::updateOrInsert([
+                'desa_id'      => $value['desa_id'],
+                'bulan'        => $this->request['bulan'],
+                'tahun'        => $this->request['tahun'],
+                'aki'          => $value['jumlah_aki'],
+                'akb'          => $value['jumlah_akb'],
+            ]);
+        }
+        DB::commit(); // commit data dan simpan ke dalam database
+        
     }
 }

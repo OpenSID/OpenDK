@@ -61,7 +61,7 @@ class EpidemiPenyakitController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(EpidemiPenyakit::with(['penyakit', 'desa']))
+        return DataTables::of(EpidemiPenyakit::with(['penyakit', 'desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url']   = route('data.epidemi-penyakit.edit', $row->id);
                 $data['delete_url'] = route('data.epidemi-penyakit.destroy', $row->id);
@@ -108,7 +108,7 @@ class EpidemiPenyakitController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return back()->with('error', 'Import data gagal. '. $e->getMessage());
         }
 
         return back()->with('success', 'Import data sukses.');

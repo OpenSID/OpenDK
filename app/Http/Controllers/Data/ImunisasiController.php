@@ -60,7 +60,7 @@ class ImunisasiController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(Imunisasi::with(['desa']))
+        return DataTables::of(Imunisasi::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url']   = route('data.imunisasi.edit', $row->id);
                 $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
@@ -106,7 +106,7 @@ class ImunisasiController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return back()->with('success', 'Import data sukses.');
@@ -143,7 +143,7 @@ class ImunisasiController extends Controller
             Imunisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!');
+            return back()->withInput()->with('error', 'Data gagal diubah! '. $e->getMessage());
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Data berhasil diubah!');

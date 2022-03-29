@@ -71,7 +71,7 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
     {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
-        
+
         foreach ($collection as $value) {
             if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
@@ -86,6 +86,6 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'cakupan_imunisasi' => $value['cakupan_imunisasi'],
             ]);
         }
-        DB::commit(); 
+        DB::commit();
     }
 }

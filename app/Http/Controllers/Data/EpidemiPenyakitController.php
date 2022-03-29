@@ -99,8 +99,8 @@ class EpidemiPenyakitController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
+            'bulan' => 'required|unique:das_epidemi_penyakit',
+            'tahun' => 'required|unique:das_epidemi_penyakit',
         ]);
 
         try {
@@ -111,7 +111,7 @@ class EpidemiPenyakitController extends Controller
             return back()->with('error', 'Import data gagal. '. $e->getMessage());
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.epidemi-penyakit.index')->with('success', 'Import data sukses.');
     }
 
     /**

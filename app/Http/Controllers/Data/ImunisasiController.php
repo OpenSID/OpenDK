@@ -109,7 +109,7 @@ class ImunisasiController extends Controller
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.imunisasi.index')->with('success', 'Import data sukses.');
     }
 
     /**

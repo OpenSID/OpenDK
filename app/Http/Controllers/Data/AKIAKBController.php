@@ -98,14 +98,15 @@ class AKIAKBController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_akib',
-            'tahun' => 'required|unique:das_akib',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ]);
 
         try {
             (new ImporAKIAKB($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
+            dd($e);
             report($e);
             return back()->with('error', 'Import data gagal. '. $e->getMessage());
         }

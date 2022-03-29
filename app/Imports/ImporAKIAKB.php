@@ -68,7 +68,7 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
      * {@inheritdoc}
      */
     public function collection(Collection $collection)
-    {s
+    {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
 

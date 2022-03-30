@@ -31,18 +31,18 @@
 
 namespace App\Imports;
 
-use Exception;
-use App\Models\DataDesa;
-use Illuminate\Support\Arr;
 use App\Models\AnggaranDesa;
+use App\Models\DataDesa;
+use Exception;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -77,7 +77,6 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
 
         DB::beginTransaction(); //multai transaction
         foreach ($collection as $value) {
-            
             AnggaranDesa::updateOrInsert([
                 'no_akun'   => $value['no_akun'],
                 'nama_akun' => $value['nama_akun'],
@@ -88,6 +87,5 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
             ]);
         }
         DB::commit(); // commit data dan simpan ke dalam databases
-         
     }
 }

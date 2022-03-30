@@ -31,12 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
+use App\Imports\ImporPutusSekolah;
+use App\Http\Controllers\Controller;
 
 class PutusSekolahController extends Controller
 {
@@ -88,11 +89,19 @@ class PutusSekolahController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa_id'  => 'required|unique:das_putus_sekolah,desa_id',
-            'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun'    => 'required|unique:das_putus_sekolah',
-            'semester' => 'required|unique:das_putus_sekolah',
-        ]);
+                'desa_id'  => [
+                    'required',
+                    Rule::unique('das_putus_sekolah')->where(function($query) use($request)
+                    {
+                    return $query->where('tahun' , $request->tahun)->where('semester', $request->semester);
+                    })
+                ],
+                'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            ],
+            [
+                'desa_id.unique' => 'Isian Desa Sudah ada'
+            ]
+        );
 
         try {
             (new ImporPutusSekolah($request->only(['desa_id', 'semester', 'tahun'])))

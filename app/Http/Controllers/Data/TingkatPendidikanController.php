@@ -31,12 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\TingkatPendidikanRequest;
-use App\Imports\ImporTingkatPendidikan;
-use App\Models\TingkatPendidikan;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Yajra\DataTables\DataTables;
+use App\Models\TingkatPendidikan;
+use App\Http\Controllers\Controller;
+use App\Imports\ImporTingkatPendidikan;
+use App\Http\Requests\TingkatPendidikanRequest;
 
 class TingkatPendidikanController extends Controller
 {
@@ -86,6 +87,20 @@ class TingkatPendidikanController extends Controller
      */
     public function do_import(TingkatPendidikanRequest $request)
     {
+        $this->validate($request, [
+                'desa_id'  => [
+                    'required',
+                    Rule::unique('das_tingkat_pendidikan')->where(function($query) use($request)
+                    {
+                    return $query->where('tahun' , $request->tahun)->where('semester', $request->semester);
+                    })
+                ],
+                'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            ],
+            [
+                'desa_id.unique' => 'Isian Desa Sudah ada'
+            ]
+        );
         try {
             (new ImporTingkatPendidikan($request->only(['desa_id', 'tahun', 'semester'])))
                 ->queue($request->file('file'));

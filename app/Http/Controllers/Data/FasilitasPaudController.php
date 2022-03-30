@@ -31,11 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ImporFasilitasPaud;
-use App\Models\FasilitasPAUD;
 use Illuminate\Http\Request;
+use App\Models\FasilitasPAUD;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
+use App\Imports\ImporFasilitasPaud;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class FasilitasPaudController extends Controller
@@ -87,11 +88,19 @@ class FasilitasPaudController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa_id'  => 'required|unique:das_fasilitas_paud,desa_id',
+            'desa_id'  => [
+                'required',
+                Rule::unique('das_fasilitas_paud')->where(function($query) use($request)
+                {
+                return $query->where('tahun' , $request->tahun)->where('semester', $request->semester);
+                })
+            ],
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun'    => 'required|unique:das_fasilitas_paud',
-            'semester' => 'required|unique:das_fasilitas_paud',
-        ]);
+        ],
+        [
+            'desa_id.unique' => 'Isian Desa Sudah ada'
+        ]
+        );
 
         try {
             (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))

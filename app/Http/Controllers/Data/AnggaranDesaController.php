@@ -50,7 +50,7 @@ class AnggaranDesaController extends Controller
 
     public function getDataAnggaran()
     {
-        return DataTables::of(AnggaranDesa::with('desa'))
+        return DataTables::of(AnggaranDesa::with('desa')->get())
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 

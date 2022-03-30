@@ -177,6 +177,26 @@ class DataDesaController extends Controller
      */
     public function destroy($id)
     {
+        // periksa sebelum menghapus apakah data desa sudah dipakai di modul lain atau belum
+        $cek = DataDesa::where('id', $id)
+            ->where(function ($query) {
+                $query->whereHas('imunisasi')
+                ->orWhereHas('akiakb')
+                ->orWhereHas('anggarandesa')
+                ->orWhereHas('epidemipenyakit')
+                ->orWhereHas('fasilitasPAUD')
+                ->orWhereHas('laporanapbdes')
+                ->orWhereHas('laporanpenduduk')
+                ->orWhereHas('putussekolah')
+                ->orWhereHas('tingkatpendidikan')
+                ->orWhereHas('toiletsanitasi')
+                ->orWhereHas('keluarga');
+            })
+            ->count();
+        if ($cek > 0) {
+            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!. Data Desa sedang dipakai dimodul lainnya. silahkan hapus terlebih dahulu');
+        }
+
         try {
             DataDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {

@@ -74,4 +74,59 @@ class DataDesa extends Model
     {
         return $query->whereNotNull('website');
     }
+
+    public function imunisasi()
+    {
+        return $this->hasMany(imunisasi::class, 'desa_id', 'desa_id');
+    }
+
+    public function akiakb()
+    {
+        return $this->hasMany(AkiAkb::class, 'desa_id', 'desa_id');
+    }
+
+    public function anggarandesa()
+    {
+        return $this->hasMany(AnggaranDesa::class, 'desa_id', 'desa_id');
+    }
+
+    public function epidemipenyakit()
+    {
+        return $this->hasMany(EpidemiPenyakit::class, 'desa_id', 'desa_id');
+    }
+
+    public function fasilitasPAUD()
+    {
+        return $this->hasMany(fasilitasPAUD::class, 'desa_id', 'desa_id');
+    }
+
+    public function laporanapbdes()
+    {
+        return $this->hasMany(LaporanApbdes::class, 'desa_id', 'desa_id');
+    }
+
+    public function laporanpenduduk()
+    {
+        return $this->hasMany(LaporanPenduduk::class, 'desa_id', 'desa_id');
+    }
+
+    public function putussekolah()
+    {
+        return $this->hasMany(PutusSekolah::class, 'desa_id', 'desa_id');
+    }
+
+    public function tingkatpendidikan()
+    {
+        return $this->hasMany(TingkatPendidikan::class, 'desa_id', 'desa_id');
+    }
+
+    public function toiletsanitasi()
+    {
+        return $this->hasMany(ToiletSanitasi::class, 'desa_id', 'desa_id');
+    }
+
+    public function keluarga()
+    {
+        return $this->hasMany(Keluarga::class, 'desa_id', 'desa_id');
+    }
 }

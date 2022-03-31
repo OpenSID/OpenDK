@@ -70,22 +70,30 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
     public function collection(Collection $collection)
     {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
-        if (! in_array($this->request['desa'], $kode_desa)) {
-            Log::debug('Desa tidak terdaftar');
-            throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
-        }
-
         DB::beginTransaction(); //multai transaction
+
         foreach ($collection as $value) {
-            AnggaranDesa::updateOrInsert([
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+
+            $insert = [
+                'desa_id'   => $this->request['desa'],
+                'bulan'     => $this->request['bulan'],
+                'tahun'     => $this->request['tahun'],
                 'no_akun'   => $value['no_akun'],
                 'nama_akun' => $value['nama_akun'],
                 'jumlah'    => $value['jumlah'],
-                'bulan'     => $this->request['bulan'],
-                'tahun'     => $this->request['tahun'],
-                'desa_id'   => $this->request['desa'],
-            ]);
+            ];
+
+            AnggaranDesa::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'        => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+            ], $insert);
         }
-        DB::commit(); // commit data dan simpan ke dalam databases
+        DB::commit();
     }
 }

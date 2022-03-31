@@ -51,11 +51,11 @@ class AppServiceProvider extends ServiceProvider
     {
         // default lengt string
         Schema::defaultStringLength(191);
-        $this->Penduduk();
-        $this->getConfig();
+        $this->penduduk();
+        $this->config();
     }
 
-    protected function Penduduk()
+    protected function penduduk()
     {
         Penduduk::saved(function ($model) {
             $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
@@ -124,7 +124,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function getConfig()
+    protected function config()
     {
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {

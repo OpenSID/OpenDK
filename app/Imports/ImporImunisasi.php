@@ -79,12 +79,18 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
                 throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
             }
 
-            Imunisasi::updateOrInsert([
+            $insert = [
                 'desa_id'           => $value['desa_id'],
                 'bulan'             => $this->request['bulan'],
                 'tahun'             => $this->request['tahun'],
                 'cakupan_imunisasi' => $value['cakupan_imunisasi'],
-            ]);
+            ];
+
+            Imunisasi::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'        => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+            ], $insert);
         }
         DB::commit();
     }

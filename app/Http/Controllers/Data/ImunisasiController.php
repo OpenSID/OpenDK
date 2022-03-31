@@ -97,8 +97,8 @@ class ImunisasiController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_imunisasi',
-            'tahun' => 'required|unique:das_imunisasi',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ]);
 
         try {

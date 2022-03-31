@@ -12,6 +12,7 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 2. [#321](https://github.com/OpenSID/OpenDK/issues/321) Perbaiki tampilan header yang menutup bagian berita desa.
 3. [#286](https://github.com/OpenSID/OpenDK/issues/286) Perbaiki gagal import penduduk.
 4. [#331](https://github.com/OpenSID/OpenDK/issues/331) Perbaiki penempatan notifikasi sistem komplain.
+5. [#335](https://github.com/OpenSID/OpenDK/issues/335) Perbaiki notifikasi hapus event yang tidak sesuai.
 
 #### TEKNIS
 1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.

@@ -113,6 +113,6 @@ class EventController extends Controller
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
 
-        return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
+        return redirect()->route('informasi.event.index')->with('success', 'Event berhasil dihapus!');
     }
 }

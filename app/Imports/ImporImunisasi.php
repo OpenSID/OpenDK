@@ -31,14 +31,20 @@
 
 namespace App\Imports;
 
+use App\Models\DataDesa;
 use App\Models\Imunisasi;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporImunisasi implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -61,13 +67,31 @@ class ImporImunisasi implements ToModel, WithHeadingRow, WithChunkReading, Shoul
     /**
      * {@inheritdoc}
      */
-    public function model(array $row)
+    public function collection(Collection $collection)
     {
-        return new Imunisasi([
-            'desa_id'           => $row['desa_id'],
-            'bulan'             => $this->request['bulan'],
-            'tahun'             => $this->request['tahun'],
-            'cakupan_imunisasi' => $row['cakupan_imunisasi'],
-        ]);
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+        DB::beginTransaction(); //multai transaction
+
+        foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+
+            $insert = [
+                'desa_id'           => $value['desa_id'],
+                'bulan'             => $this->request['bulan'],
+                'tahun'             => $this->request['tahun'],
+                'cakupan_imunisasi' => $value['cakupan_imunisasi'],
+            ];
+
+            Imunisasi::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'        => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+            ], $insert);
+        }
+        DB::commit();
     }
 }

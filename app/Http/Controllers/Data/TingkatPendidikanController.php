@@ -55,7 +55,7 @@ class TingkatPendidikanController extends Controller
      */
     public function getData()
     {
-        return DataTables::of(TingkatPendidikan::with(['desa']))
+        return DataTables::of(TingkatPendidikan::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
 

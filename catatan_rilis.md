@@ -16,6 +16,8 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 6. [#337](https://github.com/OpenSID/OpenDK/issues/337) Perbaiki tidak bisa hapus data desa jika dimodul lain sudah digunakan.
 7. [#344](https://github.com/OpenSID/OpenDK/issues/344) Perbaiki tombol ubah dan hapus serta proses impor data modul kesehatan (AKI & AKB , epidemi penyakit).
 
+8. [#347](https://github.com/OpenSID/OpenDK/pull/347) Perbaiki tombol hapus dan uabh pada modul putus sekolah, tingkat pendidikan, fasilitas paud.
+
 #### TEKNIS
 1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.
 2. Penyesuaian routes.

@@ -79,13 +79,19 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
                 throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
             }
 
-            AkiAkb::updateOrInsert([
+            $insert = [
                 'desa_id'      => $value['desa_id'],
                 'bulan'        => $this->request['bulan'],
                 'tahun'        => $this->request['tahun'],
                 'aki'          => $value['jumlah_aki'],
                 'akb'          => $value['jumlah_akb'],
-            ]);
+            ];
+
+            AkiAkb::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'     => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+            ], $insert);
         }
         DB::commit(); // commit data dan simpan ke dalam database
     }

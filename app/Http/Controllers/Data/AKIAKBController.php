@@ -98,8 +98,8 @@ class AKIAKBController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_akib',
-            'tahun' => 'required|unique:das_akib',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ]);
 
         try {

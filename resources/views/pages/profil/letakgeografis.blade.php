@@ -55,22 +55,22 @@
                             <tr>
                                 <th class="col-md-2">Utara</th>
                                 <td class="col-md-9">
-                                    : {!! ucwords($profil->dataumum->bts_wil_utara) !!}</td>
+                                    : {{ ucwords($profil->dataumum->bts_wil_utara)  }}</td>
                             </tr>
 
                             <tr>
                                 <th class="col-md-2">Timur</th>
-                                <td class="col-md-9">: {!! $profil->dataumum->bts_wil_timur !!}</td>
+                                <td class="col-md-9">: {{ $profil->dataumum->bts_wil_timur }}</td>
                             </tr>
 
                             <tr>
                                 <th class="col-md-2">Selatan</th>
-                                <td class="col-md-9">: {!! $profil->dataumum->bts_wil_selatan!!}</td>
+                                <td class="col-md-9">: {{ $profil->dataumum->bts_wil_selatan }}</td>
                             </tr>
 
                             <tr>
                                 <th class="col-md-2">Barat</th>
-                                <td class="col-md-9">: {!! $profil->dataumum->bts_wil_barat !!}</td>
+                                <td class="col-md-9">: {{ $profil->dataumum->bts_wil_barat }}</td>
                             </tr>
 
                             </tbody>

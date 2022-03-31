@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
         // default lengt string
         Schema::defaultStringLength(191);
         $this->Penduduk();
-        $this->getSettings();
+        $this->getConfig();
     }
 
     protected function Penduduk()
@@ -124,7 +124,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function getSettings()
+    protected function getConfig()
     {
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
@@ -158,9 +158,9 @@ class AppServiceProvider extends ServiceProvider
                     }
 
                     return $profil;
-                } else {
-                    return null;
                 }
+
+                return null;
             }),
         ]);
     }

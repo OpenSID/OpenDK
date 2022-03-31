@@ -80,13 +80,20 @@ class ImporEpidemiPenyakit implements ToCollection, WithHeadingRow, WithChunkRea
                 throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
             }
 
-            EpidemiPenyakit::updateOrInsert([
+            $insert = [
                 'desa_id'           => $value['desa_id'],
-                'jumlah_penderita'  => $value['jumlah_penderita'],
-                'penyakit_id'       => $this->request['penyakit_id'],
                 'bulan'             => $this->request['bulan'],
                 'tahun'             => $this->request['tahun'],
-            ]);
+                'penyakit_id'       => $this->request['penyakit_id'],
+                'jumlah_penderita'  => $value['jumlah_penderita'],
+            ];
+
+            EpidemiPenyakit::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'        => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+                'penyakit_id'  => $insert['penyakit_id'],
+            ], $insert);
         }
         DB::commit(); // commit data dan simpan ke dalam database
     }

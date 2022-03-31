@@ -13,6 +13,7 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 3. [#286](https://github.com/OpenSID/OpenDK/issues/286) Perbaiki gagal import penduduk.
 4. [#331](https://github.com/OpenSID/OpenDK/issues/331) Perbaiki penempatan notifikasi sistem komplain.
 5. [#335](https://github.com/OpenSID/OpenDK/issues/335) Perbaiki notifikasi hapus event yang tidak sesuai.
+6. [#337](https://github.com/OpenSID/OpenDK/issues/337) Perbaiki tidak bisa hapus data desa jika dimodul lain sudah digunakan.
 
 #### TEKNIS
 1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.

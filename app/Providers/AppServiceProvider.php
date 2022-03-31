@@ -51,7 +51,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // default lengt string
         Schema::defaultStringLength(191);
+        $this->penduduk();
+        $this->config();
+    }
 
+    protected function penduduk()
+    {
         Penduduk::saved(function ($model) {
             $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
 
@@ -117,41 +122,45 @@ class AppServiceProvider extends ServiceProvider
             }
             return true;
         });
-
-        $this->getSettings();
     }
 
-    protected function getSettings()
+    protected function config()
     {
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
-                return DB::table('das_setting')
+                return  Schema::hasTable('das_setting')
+                ? DB::table('das_setting')
                     ->get(['key', 'value'])
                     ->keyBy('key')
                     ->transform(function ($setting) {
                         return $setting->value;
-                    }) ?? null;
+                    })
+                    : null;
             }),
 
             'profil' => Cache::remember('profil', 24 * 60 * 60, function () {
-                $profil = DB::table('das_profil')
-                    ->get()
-                    ->map(function ($item) {
-                        return (array) $item;
-                    })
-                    ->first() ?? null;
+                if (Schema::hasTable('das_profil')) {
+                    $profil = DB::table('das_profil')
+                        ->get()
+                        ->map(function ($item) {
+                            return (array) $item;
+                        })
+                        ->first() ?? null;
 
-                if ($profil) {
-                    if (in_array($profil['provinsi_id'], [91, 92])) {
-                        $profil['sebutan_wilayah'] = 'Distrik';
-                        $profil['sebutan_kepala_wilayah'] = 'Kepala Distrik';
-                    } else {
-                        $profil['sebutan_wilayah'] = 'Kecamatan';
-                        $profil['sebutan_kepala_wilayah'] = 'Camat';
+                    if ($profil) {
+                        if (in_array($profil['provinsi_id'], [91, 92])) {
+                            $profil['sebutan_wilayah'] = 'Distrik';
+                            $profil['sebutan_kepala_wilayah'] = 'Kepala Distrik';
+                        } else {
+                            $profil['sebutan_wilayah'] = 'Kecamatan';
+                            $profil['sebutan_kepala_wilayah'] = 'Camat';
+                        }
                     }
+
+                    return $profil;
                 }
 
-                return $profil;
+                return null;
             }),
         ]);
     }

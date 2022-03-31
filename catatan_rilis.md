@@ -1,8 +1,8 @@
-#### [v22.03.01]
+#### [v22.04.01]
 
-Di rilis v22.03.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.04.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
+Terima kasih pada totoprayogo1916 yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
 1. [#288](https://github.com/OpenSID/OpenDK/issues/288) Penambahan fitur FAQS pada halaman website.

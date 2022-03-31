@@ -122,20 +122,19 @@ class AppServiceProvider extends ServiceProvider
             }
             return true;
         });
-
     }
 
     protected function getSettings()
     {
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
-                return  Schema::hasTable('das_setting') 
+                return  Schema::hasTable('das_setting')
                 ? DB::table('das_setting')
                     ->get(['key', 'value'])
                     ->keyBy('key')
                     ->transform(function ($setting) {
                         return $setting->value;
-                    }) 
+                    })
                     : null;
             }),
 
@@ -159,10 +158,9 @@ class AppServiceProvider extends ServiceProvider
                     }
 
                     return $profil;
-                }else{
-                    return null;        
+                } else {
+                    return null;
                 }
-                
             }),
         ]);
     }

@@ -17,3 +17,4 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.
 2. Penyesuaian routes.
 3. [#70](https://github.com/OpenSID/OpenDK/issues/70) Refactor Autentikasi dengan packages native laravel.
+4. Penyesuaian config setting dan profil pada AppServiceProvider agar tidak error jika tabel belum tersedia.

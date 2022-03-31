@@ -14,6 +14,7 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 4. [#331](https://github.com/OpenSID/OpenDK/issues/331) Perbaiki penempatan notifikasi sistem komplain.
 5. [#335](https://github.com/OpenSID/OpenDK/issues/335) Perbaiki notifikasi hapus event yang tidak sesuai.
 6. [#337](https://github.com/OpenSID/OpenDK/issues/337) Perbaiki tidak bisa hapus data desa jika dimodul lain sudah digunakan.
+7. [#344](https://github.com/OpenSID/OpenDK/issues/344) Perbaiki tombol ubah dan hapus serta proses impor data modul kesehatan (AKI & AKB , epidemi penyakit).
 
 #### TEKNIS
 1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.

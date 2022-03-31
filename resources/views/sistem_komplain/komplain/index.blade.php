@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="col-md-8">
-    <!-- quick email widget -->
+    @include('partials.flash_message')
     <div class="box box-primary">
         <div class="box-header">
             <i class="fa fa-comments"></i>
@@ -40,3 +40,13 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script type="text/javascript">
+    $(function () {
+        setTimeout(function() {
+            $("#notifikasi").slideUp("slow");
+        }, 2000);
+    })
+</script>
+@endpush

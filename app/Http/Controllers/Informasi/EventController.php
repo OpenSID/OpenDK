@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Models\Event;
+use Illuminate\Support\Facades\File;
 
 class EventController extends Controller
 {
@@ -84,12 +85,12 @@ class EventController extends Controller
             if ($request->hasFile('attachment')) {
                 $lampiran = $request->file('attachment');
                 $fileName = $lampiran->getClientOriginalName();
-                $path     = "storage/event/" . $event->id . '/';
-                $lampiran->move($path, $fileName);
-                unlink(base_path('public/' . $event->file_dokumen));
-
+                $path     = "event/" . $event->id . '/';
+                File::deleteDirectory(base_path('public/' . $path)); //hapus directory sebelumnya
+                $lampiran->move(base_path('public/'.$path), $fileName);
                 $input['attachment'] = $path . $fileName;
             }
+
             $event->update($input);
         } catch (\Exception $e) {
             report($e);
@@ -103,13 +104,15 @@ class EventController extends Controller
     {
         try {
             if ($event->delete()) {
-                unlink(base_path('public/' . $event->file_dokumen));
+                if ($event->file_dokumen != null &&  File::exists(base_path('public/' . $event->file_dokumen))) {
+                    unlink(base_path('public/' . $event->file_dokumen));
+                }
             }
         } catch (\Exception $e) {
             report($e);
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
 
-        return redirect()->route('informasi.event.index')->with('success', 'Event sukses dihapus!');
+        return redirect()->route('informasi.event.index')->with('success', 'Event berhasil dihapus!');
     }
 }

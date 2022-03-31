@@ -33,7 +33,6 @@ namespace App\Imports;
 
 use App\Models\DataDesa;
 use App\Models\Imunisasi;
-// use Maatwebsite\Excel\Concerns\ToModel;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
@@ -71,7 +70,7 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
     public function collection(Collection $collection)
     {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
-        DB::beginTransaction();
+        DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $value) {
             if (! in_array($value['desa_id'], $kode_desa)) {
@@ -79,13 +78,20 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                 throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
             }
-            Imunisasi::updateOrInsert([
+
+            $insert = [
                 'desa_id'           => $value['desa_id'],
                 'bulan'             => $this->request['bulan'],
                 'tahun'             => $this->request['tahun'],
                 'cakupan_imunisasi' => $value['cakupan_imunisasi'],
-            ]);
+            ];
+
+            Imunisasi::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'        => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+            ], $insert);
         }
-        DB::commit(); // commit data dan simpan ke dalam database
+        DB::commit();
     }
 }

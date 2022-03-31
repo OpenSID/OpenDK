@@ -97,7 +97,7 @@ class ImunisasiController extends Controller
     {
         $this->validate($request, [
             'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required', // noted : hapus validasi unique karena tidak bisa update data jika bulan atau tahun sudah ada
+            'bulan' => 'required',
             'tahun' => 'required',
         ]);
 
@@ -143,7 +143,7 @@ class ImunisasiController extends Controller
             Imunisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!');
+            return back()->withInput()->with('error', 'Data gagal diubah! '. $e->getMessage());
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Data berhasil diubah!');

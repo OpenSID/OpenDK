@@ -21,7 +21,7 @@
                                         <p>Yth: {{ config('profil.sebutan_kepala_wilayah') . ' ' . config('profil.nama_kecamatan') }}</p>
                                         <br>
                                         <p>
-                                            {!! $komplain->laporan !!}
+                                            {{  $komplain->laporan  }}
                                         </p>
                                     </div>
                                 </div>

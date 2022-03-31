@@ -31,14 +31,21 @@
 
 namespace App\Imports;
 
+use App\Models\DataDesa;
+
 use App\Models\EpidemiPenyakit;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporEpidemiPenyakit implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporEpidemiPenyakit implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
 
@@ -61,14 +68,33 @@ class ImporEpidemiPenyakit implements ToModel, WithHeadingRow, WithChunkReading,
     /**
      * {@inheritdoc}
      */
-    public function model(array $row)
+    public function collection(Collection $collection)
     {
-        return new EpidemiPenyakit([
-            'desa_id'           => $row['desa_id'],
-            'jumlah_penderita'  => $row['jumlah_penderita'],
-            'penyakit_id'       => $this->request['penyakit_id'],
-            'bulan'             => $this->request['bulan'],
-            'tahun'             => $this->request['tahun'],
-        ]);
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+        DB::beginTransaction(); //multai transaction
+
+        foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+
+            $insert = [
+                'desa_id'           => $value['desa_id'],
+                'bulan'             => $this->request['bulan'],
+                'tahun'             => $this->request['tahun'],
+                'penyakit_id'       => $this->request['penyakit_id'],
+                'jumlah_penderita'  => $value['jumlah_penderita'],
+            ];
+
+            EpidemiPenyakit::updateOrInsert([
+                'desa_id'      => $insert['desa_id'],
+                'bulan'        => $insert['bulan'],
+                'tahun'        => $insert['tahun'],
+                'penyakit_id'  => $insert['penyakit_id'],
+            ], $insert);
+        }
+        DB::commit(); // commit data dan simpan ke dalam database
     }
 }

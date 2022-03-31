@@ -31,9 +31,14 @@
 
 namespace App\Imports;
 
+use App\Models\DataDesa;
 use App\Models\LaporanApbdes;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -57,7 +62,18 @@ class ImporLaporanApbdes implements ToCollection, WithHeadingRow, WithChunkReadi
      */
     public function collection(Collection $collection)
     {
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+        DB::beginTransaction(); //multai transaction
+
         foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+
             $file_name = $value['desa_id'] . '_' . $value['id'] . '_' . $value['nama_file'];
 
             $insert = [
@@ -86,6 +102,7 @@ class ImporLaporanApbdes implements ToCollection, WithHeadingRow, WithChunkReadi
             Storage::move('temp/apbdes/' . $value['nama_file'], 'public/apbdes/' . $file_name);
         }
 
+        DB::commit(); // commit data dan simpan ke dalam database
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
     }

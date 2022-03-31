@@ -55,7 +55,7 @@ class PutusSekolahController extends Controller
      */
     public function getDataPutusSekolah()
     {
-        return DataTables::of(PutusSekolah::with(['desa']))
+        return DataTables::of(PutusSekolah::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url']   = route('data.putus-sekolah.edit', $row->id);
                 $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
@@ -102,7 +102,7 @@ class PutusSekolahController extends Controller
             return back()->with('error', 'Import data gagal.');
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.putus-sekolah.index')->with('success', 'Import data sukses.');
     }
 
     /**

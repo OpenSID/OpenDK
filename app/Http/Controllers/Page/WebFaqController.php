@@ -29,11 +29,18 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Controllers\Page;
 
-use Cartalyst\Sentinel\Roles\EloquentRole as Model;
+use App\Http\Controllers\Controller;
+use App\Models\Faq;
 
-class RoleUser extends Model
+class WebFaqController extends Controller
 {
-    protected $table = 'role_users';
+    public function index()
+    {
+        $faq = Faq::latest()->paginate(10);
+        $page_title = 'Pertanyaan Yang Sering Diajukan';
+
+        return view('pages.faq.index', compact('page_title', 'faq'));
+    }
 }

@@ -29,51 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Seeder;
+namespace App\Http\Controllers;
 
-class UsersTableSeeder extends Seeder
+class HomeController extends Controller
 {
     /**
-     * Run the database seeds.
+     * Create a new controller instance.
      *
      * @return void
      */
-    public function run()
+    public function __construct()
     {
-        Schema::disableForeignKeyConstraints();
+        $this->middleware('auth');
+    }
 
-        DB::table('activations')->truncate();
-        DB::table('persistences')->truncate();
-        DB::table('reminders')->truncate();
-        DB::table('role_users')->truncate();
-        DB::table('throttle')->truncate();
-        DB::table('users')->truncate();
-
-        $datas = [
-            [
-                'email' => 'admin@mail.com',
-                'name' => 'Administrator',
-                'gender' => 'Male',
-                'role' => 'super-admin',
-                'address' => 'Jakarta',
-                'phone'   => '622157905788',
-                'status' => 1
-            ],
-        ];
-
-        foreach ($datas as $key => $data) {
-            $user = Sentinel::registerAndActivate([
-                'email' => $data[ 'email' ],
-                'password' => "password",
-                'name' => $data['name'],
-                'gender' => $data[ 'gender' ],
-                'phone' => $data[ 'phone' ],
-                'address' => $data[ 'address' ],
-                'status' => 1
-            ]);
-            Sentinel::findRoleBySlug($data[ 'role' ])->users()->attach($user);
-        }
-
-        Schema::enableForeignKeyConstraints();
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('home');
     }
 }

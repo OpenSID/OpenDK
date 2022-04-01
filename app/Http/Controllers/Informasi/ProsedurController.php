@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProsedurRequest;
 use App\Models\Prosedur;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller
@@ -53,7 +52,7 @@ class ProsedurController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('informasi.prosedur.show', $row->id);
 
-                if (! Sentinel::guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url']   = route('informasi.prosedur.edit', $row->id);
                     $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
                 }

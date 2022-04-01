@@ -29,31 +29,41 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Http\Controllers\Auth;
 
-use App\Classes\MenuNav\MenuNav;
-use Illuminate\Support\ServiceProvider;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\ConfirmsPasswords;
 
-class MenuNavServiceProvider extends ServiceProvider
+class ConfirmPasswordController extends Controller
 {
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Confirm Password Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller is responsible for handling password confirmations and
+    | uses a simple trait to include the behavior. You're free to explore
+    | this trait and override any functions that require customization.
+    |
+    */
+
+    use ConfirmsPasswords;
 
     /**
-     * Register the application services.
+     * Where to redirect users when the intended url fails.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * Create a new controller instance.
      *
      * @return void
      */
-    public function register()
+    public function __construct()
     {
-        $this->app->bind('Menu', function () {
-            return new MenuNav();
-        });
+        $this->middleware('auth');
     }
 }

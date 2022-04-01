@@ -64,14 +64,14 @@
         </div>
     </div>
 
-@elseif(Sentinel::getUser()->id == 1)
+@elseif(auth()->user()->id == 1)
     @if($user->id !=1)
 
         <div class="form-group">
-            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
+            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna  <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ Form::select('role', $item, !empty(old('role'))?old('role'):$user->role->first()->slug, ['class' => 'form-control']) }}
+                {{ Form::select('role', $item, !empty(old('role'))?old('role'):auth()->user()->roles->first()->name, ['class' => 'form-control']) }}
             </div>
         </div>
 

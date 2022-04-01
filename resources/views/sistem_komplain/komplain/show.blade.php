@@ -18,10 +18,10 @@
                                     <div class="col-md-12">
                                         <h5 class="bg-primary" style="padding: 2px;">LAPORAN:</h5>
 
-                                        <p>Yth: {{ $sebutan_kepala_wilayah }} {!! $camat->nama !!}</p> <!-- env() -->
+                                        <p>Yth: {{ config('profil.sebutan_kepala_wilayah') . ' ' . config('profil.nama_kecamatan') }}</p>
                                         <br>
                                         <p>
-                                            {!! $komplain->laporan !!}
+                                            {{  $komplain->laporan  }}
                                         </p>
                                     </div>
                                 </div>
@@ -35,35 +35,22 @@
                                         @else
                                             @if(! $komplain->lampiran1 == '')
                                                 <a data-fancybox="gallery" href="{{ asset($komplain->lampiran1) }}">
-                                                    <img src="{{ asset($komplain->lampiran1) }}"
-                                                         alt="{{ $komplain->komplain_id}}-Lampiran1"
-                                                         class="img-thumbnail"
-                                                         style="width:80px; height:100px;">
+                                                    <img src="{{ asset($komplain->lampiran1) }}" alt="{{ $komplain->komplain_id}}-Lampiran1" class="img-thumbnail" style="width:80px; height:100px;">
                                                 </a>
                                             @endif
                                             @if(! $komplain->lampiran2 == '')
                                                 <a data-fancybox="gallery" href="{{ asset($komplain->lampiran2) }}">
-                                                    <img src="{{ asset($komplain->lampiran2) }}"
-                                                         alt="{{ $komplain->komplain_id}}-Lampiran2"
-                                                         class="img-thumbnail"
-                                                         style="width:80px; height:100px">
+                                                    <img src="{{ asset($komplain->lampiran2) }}" alt="{{ $komplain->komplain_id}}-Lampiran2" class="img-thumbnail" style="width:80px; height:100px">
                                                 </a>
                                             @endif
                                             @if(! $komplain->lampiran3 == '')
                                                 <a data-fancybox="gallery" href="{{ asset($komplain->lampiran3) }}">
-                                                    <img src="{{ asset($komplain->lampiran3) }}"
-                                                         alt="{{ $komplain->komplain_id}}-Lampiran3"
-                                                         class="img-thumbnail"
-                                                         style="
-                                                     width:80px; height:100px">
+                                                    <img src="{{ asset($komplain->lampiran3) }}" alt="{{ $komplain->komplain_id}}-Lampiran3" class="img-thumbnail" style="width:80px; height:100px">
                                                 </a>
                                             @endif
                                             @if(! $komplain->lampiran4 == '')
                                                 <a data-fancybox="gallery" href="{{ asset($komplain->lampiran4) }}">
-                                                    <img src="{{ asset($komplain->lampiran4) }}"
-                                                         alt="{{ $komplain->komplain_id}}-Lampiran4"
-                                                         class="img-thumbnail"
-                                                         style="width:80px; height:100px">
+                                                    <img src="{{ asset($komplain->lampiran4) }}" alt="{{ $komplain->komplain_id}}-Lampiran4" class="img-thumbnail" style="width:80px; height:100px">
                                                 </a>
                                             @endif
                                         @endif
@@ -82,12 +69,9 @@
                         </div>
                         <div class="col-md-4">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-md"
-                                     src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}"
-                                     alt="user image">
+                                <img class="img-circle img-bordered-md" src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" alt="user image">
                                 <span class="username">
-                                  <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID
-                                      #{{ $komplain->komplain_id }}</a>
+                                    <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                 </span>
                                 <span class="description">PELAPOR : {{ $komplain->nama }}</span>
                             </div>
@@ -110,12 +94,12 @@
 
                             <div class="pull-right">
                                 <div class="control-group">
-                                    @php $user = Sentinel::getUser(); @endphp
-                                    @if(isset($user) && $user->hasAccess(['adminsikoma']))
+                                    @php $user = auth()->user(); @endphp
+                                    @if(isset($user) && $user->hasRole(['admin-komplain']))
 
                                         <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                         <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
-                                           class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
+                                            class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
                                         {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style' => 'display:inline']) !!}
 
                                         <button type="submit" class="btn btn-sm btn-danger"
@@ -135,9 +119,7 @@
                 </div>
                 <div class="box-footer clearfix">
                     <a href="{{ route('sistem-komplain.index') }}" class="pull-right">
-                        <button type="button" class="btn btn-default btn-sm"><i
-                                    class="fa fa-refresh"></i> Kembali
-                        </button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Kembali</button>
                     </a>
                 </div>
             </div>
@@ -240,7 +222,7 @@
         var url = '';
         $(document).on('click', '#btn-reply', function(e) {
             url = $(this).attr('data-href');
-            $('#form-reply').attr('aksi', url );
+            $('#form-reply').attr('action', url );
             $('#modalReply').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -250,7 +232,7 @@
 
         $(document).on('click', '#btn-reply-admin', function(e) {
             url = $(this).attr('data-href');
-            $('#form-reply-admin').attr('aksi', url );
+            $('#form-reply-admin').attr('action', url );
             $('#modalReplyAdmin').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -369,7 +351,6 @@
         });
     }
 </script>
-
 
 @endpush
 @include(('partials.asset_datetimepicker'))

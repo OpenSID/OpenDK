@@ -1,27 +1,25 @@
-#### [v22.03.01]
+#### [v22.04.01]
 
-Di rilis v22.03.01, menyediakan perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.04.01, menyediakan Penambahan fitur FAQS pada halaman website. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada totoprayogo1916 yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
-
-1. [#271](https://github.com/OpenSID/OpenDK/issues/271) Pisahkan halaman artikel berita kecamatan dengan berita desa..
-2. [#273](https://github.com/OpenSID/OpenDK/issues/273) Penambahan fitur pengaturan jumlah artikel perhalaman.
-3. [#272](https://github.com/OpenSID/OpenDK/issues/272) Penambahan fitur bagikan artikel kecamatan.
-4. [#251](https://github.com/OpenSID/OpenDK/issues/251) Penambahan fitur menjalankan php artisan storage:link pada halaman setting.
+1. [#288](https://github.com/OpenSID/OpenDK/issues/288) Penambahan fitur FAQS pada halaman website.
 
 #### Perbaikan BUG
+1. [#289](https://github.com/OpenSID/OpenDK/issues/289) Perbaiki error Class 'Barryvdh\Debugbar\ServiceProvider' not found sewaktu install/update composer dengan opsi --no-dev.
+2. [#321](https://github.com/OpenSID/OpenDK/issues/321) Perbaiki tampilan header yang menutup bagian berita desa.
+3. [#286](https://github.com/OpenSID/OpenDK/issues/286) Perbaiki gagal import penduduk.
+4. [#331](https://github.com/OpenSID/OpenDK/issues/331) Perbaiki penempatan notifikasi sistem komplain.
+5. [#335](https://github.com/OpenSID/OpenDK/issues/335) Perbaiki notifikasi hapus event yang tidak sesuai.
+6. [#337](https://github.com/OpenSID/OpenDK/issues/337) Perbaiki tidak bisa hapus data desa jika dimodul lain sudah digunakan.
+7. [#344](https://github.com/OpenSID/OpenDK/issues/344) Perbaiki tombol ubah dan hapus serta proses impor data modul kesehatan (AKI & AKB , epidemi penyakit).
 
-1. [#301](https://github.com/OpenSID/OpenDK/issues/301) Perbaikan tampilan slider tidak responsive.
-2. [#296](https://github.com/OpenSID/OpenDK/issues/296) Perbaikan tampilan gambar tidak responsive pada halaman visi-misi.
-3. [#301](https://github.com/OpenSID/OpenDK/issues/301) Perbaikan tampilan gambar tidak responsive pada slider.
-4. Perbaikan statistik penduduk yang tidak tampil dengan benar.
-5. [#311](https://github.com/OpenSID/OpenDK/issues/311) Perbaikan informasi pada modul info sistem yang tidak konsisten dan perbaiki tampilan.
-6. [#309](https://github.com/OpenSID/OpenDK/issues/309) Perbaiki tulisan memanjang.
-7. [#314](https://github.com/OpenSID/OpenDK/issues/314) Perbaiki tulisan nama desa melebar.
+8. [#341](https://github.com/OpenSID/OpenDK/pull/341) Perbaiki tombol ubah dan hapus pada modul putus sekolah, tingkat pendidikan, fasilitas paud.
+9. [#342](https://github.com/OpenSID/OpenDK/pull/342) Perbaiki tombol hapus pada modul APBDes dan Laporan APBDes tidak berfungsi.
 
 #### TEKNIS
-
-1. Penyesuian composer.
-2. Perbaharui csfixer.
+1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.
+2. Penyesuaian routes.
+3. [#70](https://github.com/OpenSID/OpenDK/issues/70) Refactor Autentikasi dengan packages native laravel.

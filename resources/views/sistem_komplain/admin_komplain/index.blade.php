@@ -25,7 +25,7 @@
                             <th style="max-width: 150px;">Aksi</th>
                             <th>Judul</th>
                             <th>Pelapor</th>
-                            <th>Kategori</th>                    
+                            <th>Kategori</th>
                             <th>Status</th>
                         </tr>
                     </thead>

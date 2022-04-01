@@ -1,4 +1,4 @@
-<?php $user = Sentinel::getUser(); ?>
+@php $user = auth()->user(); @endphp
 
 @if(isset($user) && (! $profil->kecamatan_id))
     <div class="callout callout-warning">
@@ -26,3 +26,4 @@
         <p>{{ $message }}</p>
     </div>
 @endif
+

@@ -50,7 +50,7 @@ class AnggaranDesaController extends Controller
 
     public function getDataAnggaran()
     {
-        return DataTables::of(AnggaranDesa::with('desa'))
+        return DataTables::of(AnggaranDesa::with('desa')->get())
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 
@@ -85,7 +85,7 @@ class AnggaranDesaController extends Controller
             return back()->with('error', 'Import data gagal.');
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.anggaran-desa.index')->with('success', 'Import data sukses.');
     }
 
     public function destroy($id)
@@ -94,9 +94,9 @@ class AnggaranDesaController extends Controller
             AnggaranDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus!');
+            return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus.');
         }
 
-        return redirect()->route('data.anggaran-desa.index')->with('success', 'Data sukses dihapus!');
+        return redirect()->route('data.anggaran-desa.index')->with('success', 'Data sukses dihapus.');
     }
 }

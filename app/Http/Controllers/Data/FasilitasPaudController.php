@@ -54,7 +54,7 @@ class FasilitasPaudController extends Controller
      */
     public function getDataFasilitasPAUD()
     {
-        return DataTables::of(FasilitasPAUD::with(['desa']))
+        return DataTables::of(FasilitasPAUD::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url']   = route('data.fasilitas-paud.edit', $row->id);
                 $data['delete_url'] = route('data.fasilitas-paud.destroy', $row->id);
@@ -101,7 +101,7 @@ class FasilitasPaudController extends Controller
             return back()->with('error', 'Import data gagal.');
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.fasilitas-paud.index')->with('success', 'Import data sukses.');
     }
 
     /**

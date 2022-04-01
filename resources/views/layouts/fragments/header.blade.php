@@ -6,7 +6,7 @@
         <span class="logo-lg"><b>OpenDK</b></span>
     </a>
     <!-- Header Navbar -->
-    @if (Sentinel::guest())
+    @if (Auth::guest())
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -28,7 +28,7 @@
         </div>
     </nav>
     @else
-    @php $user = Sentinel::getUser(); @endphp
+    @php $user = auth()->user(); @endphp
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -62,12 +62,13 @@
                                 {{--<a href="#" class="btn btn-default btn-flat">Profile</a>--}}
                             </div>
                             <div class="pull-right">
-                                <a class="btn btn-default btn-flat" href="{{ route('logout') }}" onclick="">
-                                    Logout
-                                </a>
+                               
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"  >
                                     {{ csrf_field() }}
+                                    <button class="btn btn-default btn-flat" type="submit">
+                                        Logout
+                                    </button>
                                 </form>
                             </div>
                         </li>

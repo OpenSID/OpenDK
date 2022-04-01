@@ -82,7 +82,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Email <span class="required">*</span></label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('email', null, ['placeholder' => '021-4567890', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('email', null, ['placeholder' => 'mail@mail.com', 'class' => 'form-control', 'required']) !!}
             </div>
         </div>
         <div class="form-group">

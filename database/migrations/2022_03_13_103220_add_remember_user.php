@@ -29,14 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Classes\MenuNav;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Support\Facades\Facade;
-
-class MenuFacade extends Facade
+class AddRememberUser extends Migration
 {
-    protected static function getFacadeAccessor()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        return 'Menu';
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('remember_token', 100)->after('password')->nullable();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('remember_token');
+        });
     }
 }

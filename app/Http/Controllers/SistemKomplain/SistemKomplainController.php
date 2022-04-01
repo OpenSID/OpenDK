@@ -37,7 +37,6 @@ use App\Models\Komplain;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 use Illuminate\Support\Facades\Validator;
 
 class SistemKomplainController extends Controller
@@ -55,6 +54,7 @@ class SistemKomplainController extends Controller
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
+    // TODO : Cek digunakan dimana ?
     public function indexKategori($slug)
     {
         $page_title       = 'SIKEMA';
@@ -64,6 +64,7 @@ class SistemKomplainController extends Controller
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
+    // TODO : Cek digunakan dimana ?
     public function indexSukses()
     {
         $page_title       = 'SIKEMA';
@@ -185,6 +186,7 @@ class SistemKomplainController extends Controller
      * @param  int  $id
      * @return Response
      */
+    // TODO : Cek digunakan dimana ?
     public function edit($id)
     {
         $komplain         = Komplain::where('komplain_id', '=', $id)->first();
@@ -199,6 +201,7 @@ class SistemKomplainController extends Controller
      *
      * @return Response
      */
+    // TODO : Cek digunakan dimana ?
     public function update(Request $request, $id)
     {
         request()->validate([
@@ -258,24 +261,6 @@ class SistemKomplainController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        try {
-            Komplain::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            report($e);
-            return redirect()->route('sistem-komplain.index')->with('error', 'Keluhan gagal dihapus!');
-        }
-
-        return redirect()->route('sistem-komplain.index')->with('success', 'Keluhan sukses dihapus!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
      * @param  int  slug
      * @return Response
      */
@@ -285,13 +270,13 @@ class SistemKomplainController extends Controller
             $komplain = Komplain::where('slug', '=', $slug)->first();
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', $ex);
+            return back()->withInput()->with('error', $e);
         }
-        $camat            = Profil::first();
+
         $page_title       = 'Laporan';
         $page_description = 'Detail Laporan : ' . $komplain->judul;
 
-        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain', 'camat'));
+        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain'));
     }
 
     public function reply(Request $request, $id)

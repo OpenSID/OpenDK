@@ -31,16 +31,20 @@
 
 namespace App\Models;
 
-use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-use Image;
-
-class User extends SentinelModel implements Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
+    use HasRoles;
+    use Notifiable;
 
     /**
      * Default password.
@@ -70,12 +74,17 @@ class User extends SentinelModel implements Authenticatable
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
-    public static function byEmail($email)
-    {
-        return static::whereEmail($email)->first();
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -86,21 +95,7 @@ class User extends SentinelModel implements Authenticatable
 
     public static function datatables()
     {
-        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone')->where('id', '!=', '1');
-    }
-
-    /**
-     * Get user's profile picture.
-     *
-     * @return string
-     */
-    public function isSuperAdmin()
-    {
-        if ($this->roles[0]->slug == 'super-admin') {
-            return true;
-        } else {
-            return false;
-        }
+        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone');
     }
 
     /**
@@ -125,16 +120,35 @@ class User extends SentinelModel implements Authenticatable
         return $this->update(['image' => $name]);
     }
 
-    /**
-     * The roles that belong to the user.
-     */
-    public function role()
-    {
-        return $this->belongsToMany(Role::class, 'role_users');
-    }
-
     public function scopeSuspend($query, $email)
     {
         return $query->where('email', $email)->where('status', 0)->get();
+    }
+
+    /**
+     * Hash password
+     * @param $input
+     */
+    public function setPasswordAttribute($input)
+    {
+        if ($input) {
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }

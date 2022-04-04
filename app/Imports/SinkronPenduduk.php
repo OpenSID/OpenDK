@@ -108,8 +108,6 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
                 'desa_id'      => $insert['desa_id'],
                 'id_pend_desa' => $insert['id_pend_desa']
             ], $insert);
-
-            
         }
     }
 }

@@ -49,7 +49,6 @@ class DashboardController extends Controller
             })->count(),
             'program_bantuan' => Program::count(),
         ];
- 
 
         return view('dashboard.index', compact('page_title', 'data'));
     }

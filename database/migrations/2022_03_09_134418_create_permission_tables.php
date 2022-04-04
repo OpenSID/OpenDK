@@ -53,7 +53,7 @@ class CreatePermissionTables extends Migration
         Schema::dropIfExists('persistences');
         Schema::dropIfExists('reminders');
 
-        // end cek table dari sentinel
+      // end cek table dari sentinel
 
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
@@ -72,7 +72,6 @@ class CreatePermissionTables extends Migration
             $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
-
             $table->unique(['name', 'guard_name']);
         });
 
@@ -83,6 +82,7 @@ class CreatePermissionTables extends Migration
                 $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
             }
+
             $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
@@ -168,7 +168,6 @@ class CreatePermissionTables extends Migration
         });
 
         DB::statement("SET foreign_key_checks=1");
-
         Artisan::call('db:seed', [
             '--class' => 'RoleSpatieSeeder',
             '--force' => true,

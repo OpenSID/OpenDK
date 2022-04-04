@@ -53,7 +53,7 @@ class CreatePermissionTables extends Migration
         Schema::dropIfExists('persistences');
         Schema::dropIfExists('reminders');
 
-      // end cek table dari sentinel
+        // end cek table dari sentinel
 
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');

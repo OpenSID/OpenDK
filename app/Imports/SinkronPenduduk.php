@@ -96,7 +96,6 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
                 'rw'              => $value['rw'],
                 'rt'              => $value['rt'],
                 'desa_id'         => $value['desa_id'],
-                'id_pend_desa'    => $value['id'],
                 'status_dasar'    => $value['status_dasar'],
                 'status_rekam'    => $value['status_rekam'],
                 'created_at'      => $value['created_at'],
@@ -105,8 +104,8 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
             ];
 
             Penduduk::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'id_pend_desa' => $insert['id_pend_desa']
+                'desa_id' => $insert['desa_id'],
+                'nik'     => $insert['nik']
             ], $insert);
         }
     }

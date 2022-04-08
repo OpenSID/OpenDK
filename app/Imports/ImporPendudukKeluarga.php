@@ -142,7 +142,6 @@ class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkRe
                 'created_at'      => $value['created_at'],
                 'updated_at'      => $value['updated_at'],
                 'imported_at'     => now(),
-                'id_pend_desa'    => $value['id'],
             ];
 
             Penduduk::updateOrInsert([

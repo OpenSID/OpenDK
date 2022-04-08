@@ -64,8 +64,8 @@ class PendudukController extends Controller
         PendudukQueueJob::dispatch($request->all());
 
         return response()->json([
-          'status' => 'success',
-          'message' => 'Proses sync Data Penduduk OpenSID sedang berjalan',
+            'status' => 'success',
+            'message' => 'Proses sync Data Penduduk OpenSID sedang berjalan',
         ]);
     }
 
@@ -77,8 +77,8 @@ class PendudukController extends Controller
     public function storedata(Request $request)
     {
         $this->validate($request, [
-        'file' => 'file|mimes:zip|max:5120',
-      ]);
+            'file' => 'file|mimes:zip|max:5120',
+        ]);
 
         try {
             // Upload file zip temporary.
@@ -97,7 +97,7 @@ class PendudukController extends Controller
 
             // Proses impor excell
             (new SinkronPenduduk())
-          ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');
@@ -109,7 +109,7 @@ class PendudukController extends Controller
         Storage::disk('public')->delete('penduduk/foto/' . $excellName);
 
         return response()->json([
-        "message" => "Data Foto Telah Berhasil di Sinkronkan",
-      ]);
+            "message" => "Data Foto Telah Berhasil di Sinkronkan",
+        ]);
     }
 }

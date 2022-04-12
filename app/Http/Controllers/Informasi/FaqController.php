@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Yajra\DataTables\DataTables;
 
 class FaqController extends Controller
 {
@@ -45,13 +46,37 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $page_title       = 'FAQ';
-        $page_description = 'Daftar FAQ';
-        $faqs             = Faq::latest()->paginate(10);
-
-        return view('informasi.faq.index', compact('page_title', 'page_description', 'faqs'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('informasi.faq.index');
     }
+    
+    public function getDataFaq(Request $request)
+    {
+        if ($request->ajax()) {
+            return DataTables::of(Faq::all())
+                ->addIndexColumn()
+                ->addColumn('aksi', function ($row) {
+                    $data['show_web'] = route('faq');
+
+                    if (! auth()->guest()) {
+                        $data['edit_url']   = route('informasi.faq.edit', $row->id);
+                        $data['delete_url'] = route('informasi.faq.destroy', $row->id);
+                    }
+
+                    return view('forms.aksi', $data);
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 0) {
+                        return '<span class="label label-danger">Tidak Aktif</span>';
+                    } else {
+                        return '<span class="label label-success">Aktif</span>';
+                    }
+                })
+                ->rawColumns(['status'])
+                ->escapeColumns([])
+                ->make(true);
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.

@@ -103,7 +103,7 @@ class AnggaranRealisasiController extends Controller
                 'selisih_anggaran_realisasi'        => (float)(0),
                 'selisih_anggaran_realisasi_persen' => (float)(0),
                 'belanja_pegawai'                   => (float)($belanja_pegawai),
-                'belanja_pegawai_persen'            => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100 ),
+                'belanja_pegawai_persen'            => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
                 'belanja_barang_jasa'               => (float)($belanja_barang_jasa),
                 'belanja_barang_jasa_persen'        => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
                 'belanja_modal'                     => (float)($belanja_modal),

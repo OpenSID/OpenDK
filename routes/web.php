@@ -170,7 +170,7 @@ Route::group(['middleware' => 'installed'], function () {
          * Group Routing for Informasi
          */
         Route::namespace('Informasi')->group(function () {
-            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
+            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
 
                 // Prosedur
                 Route::group(['prefix' => 'prosedur'], function () {
@@ -441,7 +441,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Admin SIKEMA
-            Route::group(['prefix' => 'admin-komplain', 'middleware' => ['role:administrator-website|admin-komplain|super-admin']], function () {
+            Route::group(['prefix' => 'admin-komplain', 'middleware' => ['role:administrator-website|admin-komplain|super-admin|kontributor-artikel']], function () {
                 Route::get('/', ['as' => 'admin-komplain.index', 'uses' => 'AdminKomplainController@index']);
                 Route::get('getdata', ['as' => 'admin-komplain.getdata', 'uses' => 'AdminKomplainController@getDataKomplain']);
                 Route::get('edit/{id}', ['as' => 'admin-komplain.edit', 'uses' => 'AdminKomplainController@edit']);

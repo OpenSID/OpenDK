@@ -44,13 +44,6 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
 {
-    public const PESAN_MASUK = "Pesan Masuk";
-    public const PESAN_KELUAR = "Pesan Keluar";
-    public const BELUM_DIBACA = 0;
-    public const SUDAH_DIBACA = 1;
-    public const MASUK_ARSIP = 1;
-    public const NON_ARSIP = 0;
-    public const PER_PAGE = 10;
 
     public function index(Request $request)
     {
@@ -63,64 +56,41 @@ class PesanController extends Controller
         $data->put('page_description', 'Managemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
-            ->where('jenis', self::PESAN_MASUK)
+            ->where('jenis', Pesan::PESAN_MASUK)
+            ->where('diarsipkan', Pesan::NON_ARSIP)
             ->orderBy('sudah_dibaca', 'ASC')
-            ->orderBy('created_at', 'DESC');
-
-        if (!empty($request->get('desa_id'))) {
-            $flag_include_arsip = true;
-            $pesan->where('das_data_desa_id', $request->get('desa_id'));
-            $data->put('desa_id', $request->get('desa_id'));
-        }
-
-        if (!empty($request->get('q'))) {
-            $flag_include_arsip = true;
-            $query = $request->get('q');
-            $pesan->where('judul', 'LIKE', "%{$query}%");
-            $data->put('search_query', $request->get('q'));
-        }
-
-        if ($request->get('sudahdibaca') !== null) {
-            $flag_include_arsip = false;
-            $query = (int) $request->get('sudahdibaca');
-            $pesan->where('sudah_dibaca', $query);
-            $data->put('sudah_dibaca', $request->get('sudahdibaca'));
-        }
-
-        if (!$flag_include_arsip) {
-            $pesan->where('diarsipkan', self::NON_ARSIP);
-        }
-
-        $pesan = $pesan->paginate(self::PER_PAGE);
+            ->orderBy('created_at', 'DESC')
+            ->when(!empty($request->get('desa_id')), function ($q) use ($request, &$data) {
+                $data->put('desa_id', $request->get('desa_id'));
+                return  $q->where('das_data_desa_id', $request->get('desa_id'));
+            })
+            ->when(!empty($request->get('q')), function ($q) use ($request, &$data) {
+                $data->put('search_query', $request->get('q'));
+                return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
+            })
+            ->when($request->get('sudahdibaca') !== null, function ($q) use($request, &$data) {
+                $data->put('sudah_dibaca', $request->get('sudahdibaca'));
+                return $q->where('sudah_dibaca', (int) $request->get('sudahdibaca'));
+            })
+            ->paginate(Pesan::PER_PAGE);
+ 
         $list_desa = DataDesa::get();
-        $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 
         return view('pesan.masuk.index', $data->all());
     }
 
-    public function getPaginationAttribute(LengthAwarePaginator $pesan): array
-    {
-        $first_data = (($pesan->currentPage() * $pesan->perPage()) - $pesan->perPage()) + 1;
-        $last_data = $pesan->perPage() * $pesan->currentPage();
-        $last_data = $pesan->total() < $last_data ? $pesan->total() : $last_data;
-        return [
-            'first_data' => $first_data,
-            'last_data'=> $last_data
-        ];
-    }
-
     protected function loadCounter()
     {
         $counter_unread =  Pesan::where([
-            'jenis' => self::PESAN_MASUK,
-            'diarsipkan' => self::NON_ARSIP,
-            'sudah_dibaca' => self::BELUM_DIBACA])->count();
+            'jenis' => Pesan::PESAN_MASUK,
+            'diarsipkan' => Pesan::NON_ARSIP,
+            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
         $counter_unread_keluar =  Pesan::where([
-            'jenis' => self::PESAN_KELUAR,
-            'diarsipkan' => self::NON_ARSIP,
-            'sudah_dibaca' => self::BELUM_DIBACA])->count();
+            'jenis' => Pesan::PESAN_KELUAR,
+            'diarsipkan' => Pesan::NON_ARSIP,
+            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
 
         return [
             'counter_unread' => $counter_unread,
@@ -139,38 +109,23 @@ class PesanController extends Controller
         $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
-            ->where('jenis', self::PESAN_KELUAR)
-            ->orderBy('created_at', 'DESC');
-
-        if (!empty($request->get('desa_id'))) {
-            $flag_include_arsip = true;
-            $pesan->where('das_data_desa_id', $request->get('desa_id'));
-            $data->put('desa_id', $request->get('desa_id'));
-        }
-
-        if (!empty($request->get('q'))) {
-            $flag_include_arsip = true;
-            $query = $request->get('q');
-            $pesan->where('judul', 'LIKE', "%{$query}%");
-            $data->put('search_query', $request->get('q'));
-        }
-
-        if (!$flag_include_arsip) {
-            $pesan->where('diarsipkan', self::NON_ARSIP);
-        }
-
-        if ($request->get('sudahdibaca') !== null) {
-            $flag_include_arsip = false;
-            $query = (int) $request->get('sudahdibaca');
-            $pesan->where('sudah_dibaca', $query);
-            $data->put('sudah_dibaca', $request->get('sudahdibaca'));
-        }
+            ->where('jenis', Pesan::PESAN_KELUAR)
+            ->where('diarsipkan', Pesan::NON_ARSIP)
+            ->orderBy('created_at', 'DESC')
+            ->when(!empty($request->get('desa_id')), function ($q) use ($request, &$data) {
+                $data->put('desa_id', $request->get('desa_id'));
+                return  $q->where('das_data_desa_id', $request->get('desa_id'));
+            })
+            ->when(!empty($request->get('q')), function ($q) use ($request, &$data) {
+                $data->put('search_query', $request->get('q'));
+                return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
+            })
+            ->paginate(Pesan::PER_PAGE);
 
         $list_desa = DataDesa::get();
-        $pesan = $pesan->paginate(self::PER_PAGE);
-        $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
+
         return view('pesan.keluar.index', $data->all());
     }
 
@@ -184,25 +139,19 @@ class PesanController extends Controller
         $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
-            ->where('diarsipkan', self::MASUK_ARSIP)
-            ->orderBy('created_at', 'DESC');
-
-        if (!empty($request->get('desa_id'))) {
-            $flag_include_arsip = true;
-            $pesan->where('das_data_desa_id', $request->get('desa_id'));
-            $data->put('desa_id', $request->get('desa_id'));
-        }
-
-        if (!empty($request->get('q'))) {
-            $flag_include_arsip = true;
-            $query = $request->get('q');
-            $pesan->where('judul', 'LIKE', "%{$query}%");
-            $data->put('search_query', $request->get('q'));
-        }
-
+            ->where('diarsipkan', Pesan::MASUK_ARSIP)
+            ->orderBy('created_at', 'DESC')
+            ->when(!empty($request->get('desa_id')), function ($q) use ($request, &$data) {
+                $data->put('desa_id', $request->get('desa_id'));
+                return  $q->where('das_data_desa_id', $request->get('desa_id'));
+            })
+            ->when(!empty($request->get('q')), function ($q) use ($request, &$data) {
+                $data->put('search_query', $request->get('q'));
+                return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
+            })
+            ->paginate(Pesan::PER_PAGE);
+ 
         $list_desa = DataDesa::get();
-        $pesan = $pesan->paginate(self::PER_PAGE);
-        $data = $data->merge($this->getPaginationAttribute($pesan));
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
         return view('pesan.arsip.index', $data->all());
@@ -212,8 +161,8 @@ class PesanController extends Controller
     {
         $pesan  = Pesan::findOrFail($id_pesan);
         // dd($pesan->detailPesan[0]->createBy->name);
-        if ($pesan->sudah_dibaca === self::BELUM_DIBACA) {
-            $pesan->sudah_dibaca = self::SUDAH_DIBACA;
+        if ($pesan->sudah_dibaca === Pesan::BELUM_DIBACA) {
+            $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
         }
 
@@ -259,7 +208,7 @@ class PesanController extends Controller
                 $id = Pesan::insertGetId([
                     'das_data_desa_id' => $request->get('das_data_desa_id'),
                     'judul' => $request->get('judul'),
-                    'jenis' => self::PESAN_KELUAR,
+                    'jenis' => Pesan::PESAN_KELUAR,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ]);
@@ -282,7 +231,7 @@ class PesanController extends Controller
     public function setArsipPesan(Request $request)
     {
         $pesan = Pesan::findOrFail($request->get('id'));
-        $pesan->diarsipkan = self::MASUK_ARSIP;
+        $pesan->diarsipkan = Pesan::MASUK_ARSIP;
         if ($pesan->save()) {
             return redirect()->route('pesan.arsip')->with('success', 'Pesan berhasil diarsipkan!');
         } else {
@@ -294,7 +243,7 @@ class PesanController extends Controller
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
-            'sudah_dibaca' => self::SUDAH_DIBACA
+            'sudah_dibaca' => Pesan::SUDAH_DIBACA
         ]);
 
         if ($pesan > 0) {
@@ -308,7 +257,7 @@ class PesanController extends Controller
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
-            'diarsipkan' => self::MASUK_ARSIP
+            'diarsipkan' => Pesan::MASUK_ARSIP
         ]);
 
         if ($pesan > 0) {

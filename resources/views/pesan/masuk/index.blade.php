@@ -54,22 +54,7 @@
                                 {!! Form::text('array_id', null, ['hidden' => true, "id" => "array_multiple_id"]) !!}
                                 <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
                             {!! Form::close() !!}
-                            <div class="pull-right">
-                                {{ $first_data }} - {{ $last_data }}/{{ $list_pesan->total() }}
-                                <div class="btn-group">
-                                        <a type="button"
-                                           id="prev-links"
-                                           data-current-page="{{ $list_pesan->currentPage() }}"
-                                           class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></a>
-                                        <a type="button"
-                                           id="next-links"
-                                           data-last-page="{{ $list_pesan->lastPage() }}"
-                                           data-current-page="{{ $list_pesan->currentPage() }}"
-                                           class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></a>
-                                </div>
-                                <!-- /.btn-group -->
-                            </div>
-                            <!-- /.pull-right -->
+                            {{ $list_pesan->links('vendor.pagination.pesan') }}
                         </div>
                         <div class="table-responsive mailbox-messages">
                             <table class="table table-hover">

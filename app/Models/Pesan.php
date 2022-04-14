@@ -41,6 +41,14 @@ class Pesan extends Model
 
     protected $fillable = ['judul','das_data_desa_id'];
 
+    public const PESAN_MASUK = "Pesan Masuk";
+    public const PESAN_KELUAR = "Pesan Keluar";
+    public const BELUM_DIBACA = 0;
+    public const SUDAH_DIBACA = 1;
+    public const MASUK_ARSIP = 1;
+    public const NON_ARSIP = 0;
+    public const PER_PAGE = 10;
+
     public function detailPesan()
     {
         return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');

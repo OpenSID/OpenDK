@@ -35,43 +35,45 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                         <div class="mailbox-read-info">
-                            <h3>{{ $pesan->judul }}</h3>
+                            <h3 class="text-bold">{{ $pesan->judul }}</h3>
                             <h5>@if($pesan->jenis === "Pesan Masuk") Dari @else Ditujukan untuk @endif:
                                 Desa {{ $pesan->dataDesa->nama }}
                                 <span class="mailbox-read-time pull-right">{{ $pesan->custom_date }}</span></h5>
-                        </div>
-                        <!-- /.mailbox-controls -->
-                        <div class="mailbox-read-message">
-                            @if($pesan->detailPesan->count() > 0)
-                                {!! $pesan->detailPesan->first()->text !!}
-                            @endif
-
-                        </div>
-                        <!-- /.mailbox-read-message -->
-                    </div>
-                    @if($pesan->detailPesan->count() > 1)
+                        </div>  
                         @foreach($pesan->detailPesan->sortBy('created_at') as $single_pesan )
-                            <div class="box-footer box-comments">
-                                <div class="box-comment">
-                                    <div>
-                                <span class="username">                               
-                                       {{ $single_pesan->nama_pengirim }}
-                                    <span class="text-muted pull-right">{{ $single_pesan->custom_date }}</span>
-                                </span><!-- /.username -->
+                            <div class="mailbox-read-message">
+                                <div class="row">
+                                    <div class="col-xs-1">
+                                        <div class="card img-thumbnail profil">
+                                            @if ($single_pesan->pengirim == 'kecamatan')
+                                                <img class="img-responsive" src="{{ is_logo($profil->file_logo) }}">
+                                            @else
+                                                <img class="img-responsive" src="{{ '../img/pengguna/kuser.png' }}">
+                                            @endif
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-11">
+                                        <h5>
+                                            <span class="username ">    
+                                                <span class="text-bold">{{ $single_pesan->nama_pengirim }}</span>                            
+                                                <span class="text-muted pull-right">{{ $single_pesan->custom_date }}</span>
+                                            </span>
+                                        </h5>
                                         {!! $single_pesan->text !!}
                                     </div>
-                                    <!-- /.comment-text -->
+                                    
+                                    
                                 </div>
-                                <!-- /.box-comment -->
                             </div>
                         @endforeach
-                    @endif
+                    </div>
                     <div style="padding-right: 10px; padding-left: 10px" class="box-footer form-group">
                         {!! Form::open( [ 'route' => 'pesan.reply.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-reply-pesan'] ) !!}
                         {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
                         {!! Form::textarea('text', null,['class'=>'textarea', 'id' => 'reply_message', 'placeholder'=>'Balas Pesan', 'style'=>'width: 100%;
              height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
-                        <button id="action-reply" type="submit" class="btn btn-default"><i class="fa fa-reply"></i> Reply</button>
+                        <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i class="fa fa-reply"></i> Balas</button>
                         {!! Form::close() !!}
                     </div>
                 </div>
@@ -80,7 +82,7 @@
         </div>
     </section>
 @endsection
-@include('partials.asset_wysihtml5')
+@include('partials.asset_tinymce')
 @push('scripts')
     <script type="application/javascript">
         $(document).ready(function () {
@@ -94,14 +96,37 @@
 
             $('#action-reply').click(function (e) {
                 e.preventDefault();
-                if($('#reply_message').val() === '') {
+                
+                if(tinyMCE.activeEditor.getContent() === '') {
                     window.alert("silahkan isi pesan");
                     return;
                 }
+                $('#reply_message').val(tinyMCE.activeEditor.getContent())
                 $('#form-reply-pesan').submit()
             })
 
-            $('.textarea').wysihtml5();
+            tinymce.init(
+            {
+                selector: '#reply_message',
+                height: 500,
+                theme: 'silver',
+                plugins: [
+                        "advlist autolink link image lists charmap print preview hr anchor pagebreak",
+                        "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
+                        "table contextmenu directionality emoticons paste textcolor code"
+                ],
+                toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
+                toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor | print preview code | fontselect fontsizeselect",
+                toolbar3: "| laporan_keuangan | penerima_bantuan | sotk",
+                image_advtab: true ,
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css'
+                ],
+                relative_urls : false,
+                remove_script_host : false
+            });
+             
         })
     </script>
 @endpush

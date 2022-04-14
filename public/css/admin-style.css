@@ -24,3 +24,15 @@
 	height: 700px;
 	max-height: 900px;
 }
+
+.mailbox-read-info{
+	border-bottom: 1px solid #e6e6e6;
+	border-top: 1px solid #e6e6e6;
+}
+
+.mailbox-read-message{
+	border-bottom: 1px solid #e6e6e6;
+}
+.mailbox-read-message .profil{
+	/* width: 100px; */
+}

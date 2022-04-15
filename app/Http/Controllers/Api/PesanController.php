@@ -39,20 +39,11 @@ use App\Models\Pesan;
 use App\Models\PesanDetail;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
 {
-    public const PESAN_MASUK = "Pesan Masuk";
-    public const PESAN_KELUAR = "Pesan Keluar";
-    public const BELUM_DIBACA = 0;
-    public const SUDAH_DIBACA = 1;
-    public const MASUK_ARSIP = 1;
-    public const NON_ARSIP = 0;
-    public const PER_PAGE = 10;
-
     public function __construct()
     {
         $this->middleware('auth:api');
@@ -143,7 +134,7 @@ class PesanController extends Controller
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
-            'diarsipkan' => self::MASUK_ARSIP
+            'diarsipkan' => Pesan::MASUK_ARSIP
         ]);
 
         if ($pesan > 0) {

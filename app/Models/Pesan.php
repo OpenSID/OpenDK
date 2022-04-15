@@ -47,7 +47,7 @@ class Pesan extends Model
     public const MASUK_ARSIP = 1;
     public const NON_ARSIP = 0;
     public const PER_PAGE = 10;
-    
+
     public function detailPesan()
     {
         return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');

@@ -66,7 +66,7 @@ class PesanController extends Controller
                     'nama_pengirim' => $request->nama_pengirim
                 ]);
                 Pesan::where('id', (int) $request->pesan_id)->update(['sudah_dibaca' => 0]);
-                
+
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
                 return response()->json(['status' => false, 'message' => 'error Exception' ]);

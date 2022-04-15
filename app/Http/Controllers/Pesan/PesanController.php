@@ -160,13 +160,11 @@ class PesanController extends Controller
     public function readPesan($id_pesan)
     {
         $pesan  = Pesan::findOrFail($id_pesan);
-        // dd($pesan->detailPesan[0]->createBy->name);
         if ($pesan->sudah_dibaca === Pesan::BELUM_DIBACA) {
             $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
         }
         
-
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('page_description', 'Managemen Pesan');

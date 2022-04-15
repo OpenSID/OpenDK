@@ -96,7 +96,7 @@ class PesanController extends Controller
                         'nama_pengirim' => $request->nama_pengirim
                     ]);
                 });
-                
+
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
                 return response()->json(['status' => false, 'message' => 'error Exception' ]);
@@ -130,9 +130,7 @@ class PesanController extends Controller
     {
         if ($request->has('id')) {
             $pesan_id = (int) $request->id;
-            $pesan = Pesan::with(['detailPesan' => function ($query) {
-                $query->select('*');
-            }])
+            $pesan = Pesan::with(['detailPesan'])
             ->where('id', '=', $pesan_id)
             ->first();
 

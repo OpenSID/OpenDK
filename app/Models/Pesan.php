@@ -38,9 +38,8 @@ use Illuminate\Database\Eloquent\Model;
 class Pesan extends Model
 {
     protected $table     = 'das_pesan';
-
-    protected $fillable = ['judul','das_data_desa_id'];
-
+    protected $fillable = ['judul','das_data_desa_id', 'jenis', 'created_at'];
+    public $timestamps = true;
     public const PESAN_MASUK = "Pesan Masuk";
     public const PESAN_KELUAR = "Pesan Keluar";
     public const BELUM_DIBACA = 0;
@@ -48,7 +47,7 @@ class Pesan extends Model
     public const MASUK_ARSIP = 1;
     public const NON_ARSIP = 0;
     public const PER_PAGE = 10;
-
+    
     public function detailPesan()
     {
         return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');

@@ -68,12 +68,14 @@ class PesanController extends Controller
         if ($request->has('pesan_id')) {
             // insert percakapan
             try {
-                $response = PesanDetail::create([
-                    'pesan_id' => $request->pesan_id,
+                PesanDetail::create([
+                    'pesan_id' => (int) $request->pesan_id,
                     'text' => $request->pesan,
                     'pengirim' => $request->pengirim,
                     'nama_pengirim' => $request->nama_pengirim
                 ]);
+                Pesan::where('id', (int) $request->pesan_id)->update(['sudah_dibaca' => 0]);
+                
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
                 return response()->json(['status' => false, 'message' => 'error Exception' ]);
@@ -81,26 +83,22 @@ class PesanController extends Controller
         } else {
             try {
                 DB::transaction(function () use ($request, $desa) {
-                    $id = Pesan::insertGetId([
+                    $id = Pesan::create([
                         'das_data_desa_id' => $desa->id,
                         'judul' => $request->get('judul'),
-                        'jenis' => 'Pesan Masuk',
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
-                    ]);
+                        'jenis' => Pesan::PESAN_MASUK,
+                    ])->id;
 
-                    $id_detail = PesanDetail::insertGetId([
+                    PesanDetail::create([
                         'pesan_id' => $id,
                         'text' => Purify::clean($request->get('pesan')),
                         'pengirim' => $request->pengirim,
-                        'nama_pengirim' => $request->nama_pengirim,
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
+                        'nama_pengirim' => $request->nama_pengirim
                     ]);
                 });
+                
                 return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
             } catch (Exception $e) {
-                dd($e);
                 return response()->json(['status' => false, 'message' => 'error Exception' ]);
             }
         }

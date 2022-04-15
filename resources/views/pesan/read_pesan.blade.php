@@ -62,13 +62,11 @@
                                         </h5>
                                         {!! $single_pesan->text !!}
                                     </div>
-                                    
-                                    
                                 </div>
                             </div>
                         @endforeach
                     </div>
-                    <div style="padding-right: 10px; padding-left: 10px" class="box-footer form-group">
+                    <div style="padding-right: 10px; padding-left: 10px" class="box-footer form-group {{ ($pesan->diarsipkan == 1)?'hidden' : '' }}">
                         {!! Form::open( [ 'route' => 'pesan.reply.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-reply-pesan'] ) !!}
                         {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
                         {!! Form::textarea('text', null,['class'=>'textarea', 'id' => 'reply_message', 'placeholder'=>'Balas Pesan', 'style'=>'width: 100%;
@@ -104,7 +102,6 @@
             })
             
             $('#reply_message').tinymce({
-                
                 height: 500,
                 theme: 'silver',
                 plugins: [

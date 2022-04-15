@@ -165,6 +165,7 @@ class PesanController extends Controller
             $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
         }
+        
 
         $data = collect([]);
         $data->put('page_title', 'Pesan');
@@ -205,20 +206,18 @@ class PesanController extends Controller
             }
 
             DB::transaction(function () use ($request) {
-                $id = Pesan::insertGetId([
+                $id = Pesan::create([
                     'das_data_desa_id' => $request->get('das_data_desa_id'),
                     'judul' => $request->get('judul'),
                     'jenis' => Pesan::PESAN_KELUAR,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
-                ]);
-                PesanDetail::insert([
+                    'sudah_dibaca' => 1,
+                ])->id;
+                
+                PesanDetail::create([
                     'pesan_id' => $id,
                     'text' => Purify::clean($request->get('text')),
                     'pengirim' => 'kecamatan',
                     'nama_pengirim' => 'kecamatan - '. auth()->user()->name,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now()
                 ]);
             });
 
@@ -269,13 +268,11 @@ class PesanController extends Controller
 
     public function replyPesan(Request $request)
     {
-        $pesan = PesanDetail::insert([
+        $pesan = PesanDetail::create([
             'pesan_id' => $request->get('id'),
             'text' => Purify::clean($request->get('text')),
             'pengirim' => 'kecamatan',
-            'nama_pengirim' => 'kecamatan - '. auth()->user()->name,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
+            'nama_pengirim' => 'kecamatan - '. auth()->user()->name
         ]);
 
         if ($pesan) {

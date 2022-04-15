@@ -31,7 +31,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateTableDetailPesan extends Migration
@@ -56,17 +55,6 @@ class CreateTableDetailPesan extends Migration
                 ->onUpdate('cascade');
             $table->timestamps();
         });
-
-        // create aksi triger saat simpan
-        DB::unprepared('
-        CREATE TRIGGER pesan_masuk AFTER INSERT ON das_pesan_detail 
-        FOR EACH ROW 
-        BEGIN 
-            IF new.pengirim = "desa" THEN 
-                UPDATE das_pesan SET sudah_dibaca = 0 WHERE id = new.pesan_id ;
-            END IF;
-        END;
-        ');
     }
 
     /**
@@ -79,6 +67,5 @@ class CreateTableDetailPesan extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('das_pesan_detail');
         Schema::enableForeignKeyConstraints();
-        DB::unprepared('DROP TRIGGER `pesan_masuk`');
     }
 }

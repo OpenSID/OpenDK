@@ -96,18 +96,15 @@
 
             $('#action-reply').click(function (e) {
                 e.preventDefault();
-                
-                if(tinyMCE.activeEditor.getContent() === '') {
+                if($('#reply_message').val() === '') {
                     window.alert("silahkan isi pesan");
                     return;
                 }
-                $('#reply_message').val(tinyMCE.activeEditor.getContent())
                 $('#form-reply-pesan').submit()
             })
-
-            tinymce.init(
-            {
-                selector: '#reply_message',
+            
+            $('#reply_message').tinymce({
+                
                 height: 500,
                 theme: 'silver',
                 plugins: [

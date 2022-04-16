@@ -31,11 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ImporFasilitasPaud;
-use App\Models\FasilitasPAUD;
 use Illuminate\Http\Request;
+use App\Models\FasilitasPAUD;
 use Illuminate\Http\Response;
+ 
+use Illuminate\Validation\Rule;
+use App\Imports\ImporFasilitasPaud;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class FasilitasPaudController extends Controller
@@ -102,6 +104,55 @@ class FasilitasPaudController extends Controller
         }
 
         return redirect()->route('data.fasilitas-paud.index')->with('success', 'Import data sukses.');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $page_title       = 'Fasilitas PAUD';
+        $page_description = 'Tambah Fasilitas PAUD';
+        $years_list       = years_list();
+        $months_list      = months_list();
+
+        return view('data.fasilitas_paud.create', compact('page_title', 'page_description',  'years_list', 'months_list'));
+    }
+
+     /**
+     * Show the form for editing the specified resource.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request,[
+            'jumlah_paud'      => 'required',
+            'jumlah_guru_paud'  => 'required',
+            'jumlah_siswa_paud' => 'required',
+            'desa_id'           => ['required',
+                Rule::unique('das_fasilitas_paud')->where(function ($q) use ($request)  {
+                    return $q->where([
+                      ['desa_id' , $request->desa_id] ,
+                      ['semester', $request->semester],
+                      ['tahun', $request->tahun]
+                    ]);
+                })
+            ],
+            'semester'          => 'required',
+            'tahun'             => 'required',
+        ]);
+     
+        try {
+            FasilitasPAUD::create($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data gagal Ditambah!');
+        }
+
+        return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil Ditambah!');
     }
 
     /**

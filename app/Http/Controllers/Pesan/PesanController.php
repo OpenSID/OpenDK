@@ -35,16 +35,13 @@ use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\Pesan;
 use App\Models\PesanDetail;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
 {
-
     public function index(Request $request)
     {
         $flag_include_arsip = false;
@@ -68,12 +65,12 @@ class PesanController extends Controller
                 $data->put('search_query', $request->get('q'));
                 return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
             })
-            ->when($request->get('sudahdibaca') !== null, function ($q) use($request, &$data) {
+            ->when($request->get('sudahdibaca') !== null, function ($q) use ($request, &$data) {
                 $data->put('sudah_dibaca', $request->get('sudahdibaca'));
                 return $q->where('sudah_dibaca', (int) $request->get('sudahdibaca'));
             })
             ->paginate(Pesan::PER_PAGE);
- 
+
         $list_desa = DataDesa::get();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
@@ -150,7 +147,7 @@ class PesanController extends Controller
                 return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
             })
             ->paginate(Pesan::PER_PAGE);
- 
+
         $list_desa = DataDesa::get();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
@@ -164,7 +161,7 @@ class PesanController extends Controller
             $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
         }
-        
+
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('page_description', 'Managemen Pesan');
@@ -210,7 +207,7 @@ class PesanController extends Controller
                     'jenis' => Pesan::PESAN_KELUAR,
                     'sudah_dibaca' => 1,
                 ])->id;
-                
+
                 PesanDetail::create([
                     'pesan_id' => $id,
                     'text' => Purify::clean($request->get('text')),

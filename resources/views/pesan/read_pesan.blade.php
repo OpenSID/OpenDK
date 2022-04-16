@@ -21,26 +21,25 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Pesan</h3>
-                        <div class="pull-right">
-                            @if($pesan->diarsipkan === 0)
-                                {!! Form::open( [ 'route' => 'pesan.arsip.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-arisp-pesan'] ) !!}
-                                {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
-                                <button id="arsip-action" type="submit" class="btn btn-default"><i
-                                            class="fa fa-archive"></i> Arsipkan
-                                </button>
-                                {!! Form::close() !!}
-                            @endif
-                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
+                        <div class="mailbox-controls">
+                                @if($pesan->diarsipkan === 0)
+                                    {!! Form::open( [ 'route' => 'pesan.arsip.post', 'class' => 'form-group inline', 'method' => 'post','id' => 'form-arisp-pesan'] ) !!}
+                                    {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
+                                    <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan </button>
+                                    {!! Form::close() !!}
+                                    {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
+                                @endif
+                        </div>
                         <div class="mailbox-read-info">
                             <h3 class="text-bold">{{ $pesan->judul }}</h3>
                             <h5>@if($pesan->jenis === "Pesan Masuk") Dari @else Ditujukan untuk @endif:
                                 Desa {{ $pesan->dataDesa->nama }}
                                 <span class="mailbox-read-time pull-right">{{ $pesan->custom_date }}</span></h5>
                         </div>  
-                        @foreach($pesan->detailPesan->sortBy('created_at') as $single_pesan )
+                        @foreach($pesan->detailPesan->sortBy('created_at')->paginate(20) as $single_pesan )
                             <div class="mailbox-read-message">
                                 <div class="row">
                                     <div class="col-xs-1">
@@ -84,6 +83,28 @@
 @push('scripts')
     <script type="application/javascript">
         $(document).ready(function () {
+
+            $('#prev-links').click(function () {
+                let page = $(this).data('currentPage');
+                if(page <= 1){
+                    return;
+                }else{
+                    window.location = window.location.origin +
+                        window.location.pathname + '?' + $.param({page: page - 1})
+                }
+            })
+
+            $('#next-links').click(function () {
+                let last = $(this).data('lastPage');
+                let page = $(this).data('currentPage');
+                if(last <= page){
+                    return;
+                }else{
+                    window.location = window.location.origin +
+                        window.location.pathname +  '?' + $.param({page: page + 1})
+                }
+            })
+
             $('#arsip-action').click(function (e) {
                 e.preventDefault();
                 let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")

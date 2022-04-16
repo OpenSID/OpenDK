@@ -39,7 +39,7 @@ class ProfilDesaController extends Controller
 {
     public function store(ProfilDesaRequest $request)
     {
-         DataDesa::where('desa_id', $request->kode_desa)->update([
+        DataDesa::where('desa_id', $request->kode_desa)->update([
             'website' => $request->website,
             'sebutan_desa' => $request->sebutan_desa
          ]);

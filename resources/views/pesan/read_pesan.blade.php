@@ -30,8 +30,8 @@
                                     {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
                                     <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan </button>
                                     {!! Form::close() !!}
-                                    {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
                                 @endif
+                                {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
                         </div>
                         <div class="mailbox-read-info">
                             <h3 class="text-bold">{{ $pesan->judul }}</h3>

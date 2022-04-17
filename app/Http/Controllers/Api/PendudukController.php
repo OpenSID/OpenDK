@@ -33,12 +33,12 @@ namespace App\Imports;
 
 use App\Models\Penduduk;
 use App\Models\TingkatPendidikan;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -57,7 +57,7 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
      */
     public function collection(Collection $collection)
     {
-         foreach ($collection as $value) {
+        foreach ($collection as $value) {
             $insert = [
                 'nik'                   => $value['nomor_nik'],
                 'nama'                  => $value['nama'],
@@ -116,18 +116,18 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
         TingkatPendidikan::updateOrCreate(
             [
                 'desa_id' => $insert['desa_id'],
-                'semester' => ($dt->format('n') <= 6)? 1 : 2,
+                'semester' => ($dt->format('n') <= 6) ? 1 : 2,
                 'tahun' => $dt->format('Y'),
             ],
             [
                 'desa_id' => $insert['desa_id'],
-                'semester' => ($dt->format('n') <= 6)? 1 : 2,
+                'semester' => ($dt->format('n') <= 6) ? 1 : 2,
                 'tahun' => $dt->format('Y'),
-                'tidak_tamat_sekolah'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk'] <= 2)->count(),
-                'tamat_sd'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk'] == 3)->count(),
-                'tamat_smp'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk'] == 4)->count(),
-                'tamat_sma'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk'] == 5)->count(),
-                'tamat_diploma_sederajat'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk'] >= 6)->count(),
+                'tidak_tamat_sekolah'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] <= 2)->count(),
+                'tamat_sd'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 3)->count(),
+                'tamat_smp'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 4)->count(),
+                'tamat_sma'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 5)->count(),
+                'tamat_diploma_sederajat'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] >= 6)->count(),
             ]
         );
     }

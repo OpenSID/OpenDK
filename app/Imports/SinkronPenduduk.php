@@ -29,99 +29,87 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Imports;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Penduduk;
-use App\Models\TingkatPendidikan;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PendudukRequest;
+use App\Imports\SinkronPenduduk;
+use App\Jobs\PendudukQueueJob;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use ZipArchive;
 
-class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class PendudukController extends Controller
 {
-    use Importable;
-
     /**
-     * {@inheritdoc}
+     * Create a new AuthController instance.
+     *
+     * @return void
      */
-    public function chunkSize(): int
+    public function __construct()
     {
-        return 1000;
+        $this->middleware('auth:api');
     }
 
     /**
-     * {@inheritdoc}
+     * Hapus Data Penduduk Sesuai OpenSID
+     *
+     * @param PendudukRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function collection(Collection $collection)
+    public function store(PendudukRequest $request)
     {
-        foreach ($collection as $value) {
-            $insert = [
-                'nik'                   => $value['nomor_nik'],
-                'nama'                  => $value['nama'],
-                'no_kk'                 => $value['nomor_kk'],
-                'sex'                   => $value['jenis_kelamin'],
-                'tempat_lahir'          => $value['tempat_lahir'],
-                'tanggal_lahir'         => $value['tanggal_lahir'],
-                'agama_id'              => $value['agama'],
-                'pendidikan_kk_id'      => $value['pendidikan_dlm_kk'],
-                'pendidikan_sedang_id'  => $value['pendidikan_sdg_ditempuh'],
-                'pekerjaan_id'          => $value['pekerjaan'],
-                'status_kawin'          => $value['kawin'],
-                'kk_level'              => $value['hubungan_keluarga'],
-                'warga_negara_id'       => $value['kewarganegaraan'],
-                'nama_ibu'              => $value['nama_ibu'],
-                'nama_ayah'             => $value['nama_ayah'],
-                'golongan_darah_id'     => $value['gol_darah'],
-                'akta_lahir'            => $value['akta_lahir'],
-                'dokumen_pasport'       => $value['nomor_dokumen_pasport'],
-                'tanggal_akhir_pasport' => $value['tanggal_akhir_pasport'],
-                'dokumen_kitas'         => $value['nomor_dokumen_kitas'],
-                'ayah_nik'              => $value['nik_ayah'],
-                'ibu_nik'               => $value['nik_ibu'],
-                'akta_perkawinan'       => $value['nomor_akta_perkawinan'],
-                'tanggal_perkawinan'    => $value['tanggal_perkawinan'],
-                'akta_perceraian'       => $value['nomor_akta_perceraian'],
-                'tanggal_perceraian'    => $value['tanggal_perceraian'],
-                'cacat_id'              => $value['cacat'],
-                'cara_kb_id'            => $value['cara_kb'],
-                'hamil'                 => $value['hamil'],
+        // dispatch queue job penduduk
+        PendudukQueueJob::dispatch($request->all());
 
-                // Tambahan
-                'foto'            => $value['foto'],
-                'alamat_sekarang' => $value['alamat_sekarang'],
-                'alamat'          => $value['alamat'],
-                'dusun'           => $value['dusun'],
-                'rw'              => $value['rw'],
-                'rt'              => $value['rt'],
-                'desa_id'         => $value['desa_id'],
-                'id_pend_desa'    => $value['id'],
-                'status_dasar'    => $value['status_dasar'],
-                'status_rekam'    => $value['status_rekam'],
-                'created_at'      => $value['created_at'],
-                'updated_at'      => $value['updated_at'],
-                'imported_at'     => now(),
-            ];
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Proses sync Data Penduduk OpenSID sedang berjalan',
+        ]);
+    }
 
-            Penduduk::updateOrInsert([
-                'desa_id' => $insert['desa_id'],
-                'nik'     => $insert['nik']
-            ], $insert);
+    /**
+     * Tambah dan Ubah Data dan Foto Penduduk Sesuai OpenSID
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storedata(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'file|mimes:zip|max:5120',
+        ]);
+
+        try {
+            // Upload file zip temporary.
+            $file = $request->file('file');
+            $file->storeAs('temp', $name = $file->getClientOriginalName());
+
+            // Temporary path file
+            $path = storage_path("app/temp/{$name}");
+            $extract = storage_path('app/public/penduduk/foto/');
+
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
+            (new SinkronPenduduk())
+                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
 
-        // update rekap tingkat pendidikan
-        // TingkatPendidikan::updateOrCreate([
-        //     'desa_id' => $insert['desa_id'],
-        //     'semester' => 1,
-        //     'tahun' => 2020,
-        //     'tidak_tamat_sekolah'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk']),
-        // ])->dd;
-        $cek = $collection->filter(function ($value, $key) {
-            dd($value);
-        });
-        Log::info($cek);
+        // Hapus folder temp ketika sudah selesai
+        Storage::deleteDirectory('temp');
+        // Hapus file excell temp ketika sudah selesai
+        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
+
+        return response()->json([
+            "message" => "Data Foto Telah Berhasil di Sinkronkan",
+        ]);
     }
 }

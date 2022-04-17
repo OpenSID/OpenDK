@@ -80,6 +80,8 @@ class PendudukController extends Controller
             'file' => 'file|mimes:zip|max:5120',
         ]);
 
+        dump(env('QUEUE_DRIVER'));
+
         try {
             // Upload file zip temporary.
             $file = $request->file('file');

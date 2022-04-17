@@ -32,12 +32,14 @@
 namespace App\Imports;
 
 use App\Models\Penduduk;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\TingkatPendidikan;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -56,6 +58,7 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
      */
     public function collection(Collection $collection)
     {
+         
         foreach ($collection as $value) {
             $insert = [
                 'nik'                   => $value['nomor_nik'],
@@ -109,5 +112,18 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
                 'nik'     => $insert['nik']
             ], $insert);
         }
+
+        // update rekap tingkat pendidikan
+        // TingkatPendidikan::updateOrCreate([
+        //     'desa_id' => $insert['desa_id'],
+        //     'semester' => 1,
+        //     'tahun' => 2020,
+        //     'tidak_tamat_sekolah'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk']),
+        // ])->dd;
+       $cek = $collection->filter(function ($value,$key)  {
+           dd($value);
+       });
+       Log::info($cek);
+       
     }
 }

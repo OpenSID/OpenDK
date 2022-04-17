@@ -33,13 +33,13 @@ namespace App\Imports;
 
 use App\Models\Penduduk;
 use App\Models\TingkatPendidikan;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
@@ -58,7 +58,6 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
      */
     public function collection(Collection $collection)
     {
-         
         foreach ($collection as $value) {
             $insert = [
                 'nik'                   => $value['nomor_nik'],
@@ -120,10 +119,9 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
         //     'tahun' => 2020,
         //     'tidak_tamat_sekolah'=> $collection->filter(fn($value,$key) => $value['pendidikan_dlm_kk']),
         // ])->dd;
-       $cek = $collection->filter(function ($value,$key)  {
-           dd($value);
-       });
-       Log::info($cek);
-       
+        $cek = $collection->filter(function ($value, $key) {
+            dd($value);
+        });
+        Log::info($cek);
     }
 }

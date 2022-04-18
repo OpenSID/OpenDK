@@ -40,9 +40,7 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
-
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
-                            
                         </div>
                         <div class="table-responsive mailbox-messages">
                             <table class="table table-hover table-striped">

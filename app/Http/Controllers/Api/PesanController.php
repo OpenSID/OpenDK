@@ -112,7 +112,9 @@ class PesanController extends Controller
         ->with(['detailPesan' => function ($q) use ($request) {
             $q->where('id', '>', $request->id);
         }])
-        ->where('das_data_desa_id', $desa->id)->get();
+        ->where('das_data_desa_id', $desa->id)
+        ->orWhere('diarsipkan', 1)
+        ->get();
 
         return response()->json(['status' => true, 'data'=>$pesan]);
     }

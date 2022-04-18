@@ -38,7 +38,6 @@ use App\Models\PesanDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
-use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class PesanController extends Controller
 {

@@ -40,11 +40,7 @@
                     <!-- /.box-header -->
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
-                                        class="fa fa-square-o"></i>
-                            </button>
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
                             
                         </div>

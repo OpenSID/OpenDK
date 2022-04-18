@@ -60,6 +60,6 @@ class Pesan extends Model
 
     public function getCustomDateAttribute()
     {
-        return Carbon::parse($this->created_at)->format('d-m-Y H:i');
+        return $this->created_at->format('d-m-Y H:i');
     }
 }

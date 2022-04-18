@@ -189,16 +189,9 @@ class PesanController extends Controller
         try {
             $status = $this->validate($request, [
                 'judul'    => 'required',
-                'das_data_desa_id' => 'required',
+                'das_data_desa_id' => 'required|exists:das_data_desa,id',
                 'text' => 'required'
             ]);
-
-            if (!$status) {
-                throw new \Exception(
-                    collect($this->errors()->all())->implode(", "),
-                    ResponseAlias::HTTP_BAD_REQUEST
-                );
-            }
 
             DB::transaction(function () use ($request) {
                 $id = Pesan::create([

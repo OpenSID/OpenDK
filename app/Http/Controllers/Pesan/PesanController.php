@@ -186,7 +186,7 @@ class PesanController extends Controller
     public function storeComposePesan(Request $request)
     {
         try {
-            $status = $this->validate($request, [
+            $this->validate($request, [
                 'judul'    => 'required',
                 'das_data_desa_id' => 'required|exists:das_data_desa,id',
                 'text' => 'required'

@@ -42,7 +42,6 @@
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Konsep</button>
                             <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Kirim</button>
                         </div>
                         <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Batal</button>

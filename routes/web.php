@@ -438,6 +438,15 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
                 });
+
+                // Pembangunan
+                Route::group(['prefix' => 'pembangunan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.pembangunan.index', 'uses' => 'DataPembangunanController@index']);
+                    Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
+                    Route::get('show/{id}', ['as' => 'data.pembangunan.show', 'uses' => 'DataPembangunanController@show']);
+                    Route::get('rincian/{id}/{kode_desa}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
+                    Route::get('getrinciandata/{id}/{kode_desa}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
+                });
             });
 
             // Admin SIKEMA

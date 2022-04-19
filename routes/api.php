@@ -79,4 +79,12 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'laporan-penduduk'], function () {
         Route::post('/', 'Api\LaporanPendudukController@store');
     });
+
+     /**
+     * Pembangunan
+     */
+    Route::group(['prefix' => 'pembangunan'], function () {
+        Route::post('/', 'Api\PembangunanController@store');
+        Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');
+    });
 });

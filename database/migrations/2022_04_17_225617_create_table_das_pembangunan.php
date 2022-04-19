@@ -15,8 +15,9 @@ class CreateTableDasPembangunan extends Migration
     {
         Schema::create('das_pembangunan', function (Blueprint $table) {
             $table->integer('id', false);
-            $table->char('id_desa', 13);
+            $table->char('kode_desa', 13);
             $table->string('lokasi', 255)->nullable();
+            $table->string('sumber_dana', 255)->nullable();
             $table->string('judul', 255)->nullable();
             $table->string('slug', 255)->nullable();
             $table->string('keterangan', 255)->nullable();
@@ -35,7 +36,7 @@ class CreateTableDasPembangunan extends Migration
             $table->string('manfaat', 100)->nullable();
             $table->integer('waktu')->nullable();
             $table->timestamps();
-            $table->unique(['id', 'id_desa']);
+            $table->unique(['id', 'kode_desa']);
         });
     }
 

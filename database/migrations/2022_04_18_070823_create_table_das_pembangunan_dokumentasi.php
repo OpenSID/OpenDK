@@ -16,12 +16,12 @@ class CreateTableDasPembangunanDokumentasi extends Migration
         Schema::create('das_pembangunan_dokumentasi', function (Blueprint $table) {
             $table->integer('id');
             $table->integer('id_pembangunan');
-            $table->char('id_desa', 13);
+            $table->char('kode_desa', 13);
             $table->string('gambar', 255)->nullable();
             $table->string('persentase', 255)->nullable();
             $table->string('keterangan', 255)->nullable();
             $table->timestamps();
-            $table->unique(['id', 'id_desa', 'id_pembangunan']);
+            $table->unique(['id', 'kode_desa', 'id_pembangunan']);
         });
     }
 

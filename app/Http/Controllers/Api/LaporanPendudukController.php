@@ -32,9 +32,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Jobs\LaporanPendudukQueueJob;
 use App\Http\Requests\LaporanPendudukRequest;
+use App\Jobs\LaporanPendudukQueueJob;
+use Illuminate\Support\Facades\Auth;
 
 class LaporanPendudukController extends Controller
 {
@@ -46,7 +46,7 @@ class LaporanPendudukController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        if (!Auth::guard('api')->user()->hasRole('admin-desa')) {    
+        if (!Auth::guard('api')->user()->hasRole('admin-desa')) {
             response()->json(['status' => 'error',
             'message' => 'akun tidak punya hak akses terhadap modul penduduk'], 404)->send();
             die();

@@ -31,15 +31,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use ZipArchive;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Jobs\PendudukQueueJob;
-use App\Imports\SinkronPenduduk;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PendudukRequest;
+use App\Imports\SinkronPenduduk;
+use App\Jobs\PendudukQueueJob;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use ZipArchive;
 
 class PendudukController extends Controller
 {
@@ -51,7 +51,7 @@ class PendudukController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
-        if (!Auth::guard('api')->user()->hasRole('admin-desa')) {    
+        if (!Auth::guard('api')->user()->hasRole('admin-desa')) {
             response()->json(['status' => 'error',
             'message' => 'akun tidak punya hak akses terhadap modul penduduk'], 404)->send();
             die();

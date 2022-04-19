@@ -39,12 +39,14 @@ use Illuminate\Queue\SerializesModels;
 
 class PembangunanQueueJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     public $timeout = 0;
 
     /** @var array request data */
     protected $request;
-
 
     /**
      * Create a new job instance.

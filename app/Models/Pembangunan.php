@@ -39,7 +39,6 @@ class Pembangunan extends Model
     protected $fillable  = [];
     protected $guarded   = [];
 
-
     public function dokumentasi()
     {
         return $this->hasOne(PembangunanDokumentasi::class, 'id', 'id_pembangunan');

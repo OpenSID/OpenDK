@@ -80,9 +80,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/', 'Api\LaporanPendudukController@store');
     });
 
-     /**
-     * Pembangunan
-     */
+    /**
+    * Pembangunan
+    */
     Route::group(['prefix' => 'pembangunan'], function () {
         Route::post('/', 'Api\PembangunanController@store');
         Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');

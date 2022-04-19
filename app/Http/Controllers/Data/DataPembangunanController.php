@@ -28,14 +28,15 @@
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
+
 namespace App\Http\Controllers\Data;
 
+use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\Pembangunan;
+use App\Models\PembangunanDokumentasi;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Models\PembangunanDokumentasi;
 
 class DataPembangunanController extends Controller
 {
@@ -46,7 +47,6 @@ class DataPembangunanController extends Controller
         $list_desa        = DataDesa::get();
 
         return view('data.pembangunan.index', compact('page_title', 'page_description', 'list_desa'));
-        
     }
 
     public function getPembangunan(Request $request)
@@ -54,15 +54,15 @@ class DataPembangunanController extends Controller
         if (request()->ajax()) {
             $desa = $request->input('desa');
 
-            $pembangunan = Pembangunan::when($desa  , function ($q) use ($desa){
+            $pembangunan = Pembangunan::when($desa, function ($q) use ($desa) {
                 return $desa === 'Semua'
-                ? $q : $q->where('kode_desa',$desa);
+                ? $q : $q->where('kode_desa', $desa);
             })
             ->with('dokumentasi');
 
             return DataTables::of($pembangunan)
                 ->addColumn('aksi', function ($row) {
-                     $data['detail_url']   = route('data.pembangunan.rincian', ['id' => $row->id,'kode_desa' => $row->kode_desa]);
+                    $data['detail_url']   = route('data.pembangunan.rincian', ['id' => $row->id,'kode_desa' => $row->kode_desa]);
                     return view('forms.aksi', $data);
                 })->make();
         }
@@ -77,19 +77,18 @@ class DataPembangunanController extends Controller
     {
         $page_title       = 'Pembangunan';
         $page_description = 'Rincian Pembangunan';
-        $pembangunan =  Pembangunan::where('id', $id)->where('kode_desa',$kode_desa)->first();
-        
+        $pembangunan =  Pembangunan::where('id', $id)->where('kode_desa', $kode_desa)->first();
+
         return view('data.pembangunan.rincian', compact('page_title', 'page_description', 'pembangunan'));
     }
 
     public function getrinciandata($id, $kode_desa)
     {
         if (request()->ajax()) {
-            $pembangunanDokumentasi = PembangunanDokumentasi::where('kode_desa',$kode_desa)->where('id_pembangunan', $id)->get();
-            return DataTables::of($pembangunanDokumentasi) 
+            $pembangunanDokumentasi = PembangunanDokumentasi::where('kode_desa', $kode_desa)->where('id_pembangunan', $id)->get();
+            return DataTables::of($pembangunanDokumentasi)
             ->addIndexColumn()
             ->make();
         }
     }
-    
 }

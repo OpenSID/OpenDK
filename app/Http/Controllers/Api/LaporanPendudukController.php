@@ -48,7 +48,7 @@ class LaporanPendudukController extends Controller
         $this->middleware('auth:api');
         if (!Auth::guard('api')->user()->hasRole('admin-desa')) {    
             response()->json(['status' => 'error',
-            'message' => 'akun tidak punya hak akses terhadap modul penduduk'], 404)->send();
+            'message' => 'akun tidak punya hak akses terhadap modul Laporan Penduduk'], 404)->send();
             die();
         }
     }

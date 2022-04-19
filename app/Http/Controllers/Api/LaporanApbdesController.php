@@ -31,9 +31,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LaporanApbdesRequest;
 use App\Jobs\LaporanApbdesQueueJob;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\LaporanApbdesRequest;
 
 class LaporanApbdesController extends Controller
 {
@@ -45,6 +46,11 @@ class LaporanApbdesController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api');
+        if (!Auth::guard('api')->user()->hasRole('admin-desa')) {    
+            response()->json(['status' => 'error',
+            'message' => 'akun tidak punya hak akses terhadap modul penduduk'], 404)->send();
+            die();
+        }
     }
 
     /**

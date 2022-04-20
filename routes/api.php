@@ -79,4 +79,12 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'laporan-penduduk'], function () {
         Route::post('/', 'Api\LaporanPendudukController@store');
     });
+
+    /**
+     * Laporan Penduduk
+     */
+    Route::group(['prefix' => 'program-bantuan'], function () {
+        Route::post('/', 'Api\ProgamBantuanController@store');
+        Route::post('peserta', 'Api\ProgamBantuanController@storePeserta');
+    });
 });

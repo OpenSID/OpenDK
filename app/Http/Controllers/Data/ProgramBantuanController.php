@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Models\Program;
-use App\Models\DataDesa;
-use Illuminate\Http\Request;
-use App\Models\PesertaProgram;
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
+use App\Models\PesertaProgram;
+use App\Models\Program;
+use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
@@ -51,7 +51,7 @@ class ProgramBantuanController extends Controller
 
     public function getaProgramBantuan(Request $request)
     {
-         return DataTables::of(Program::when(!empty($request->input('desa')), fn($q) => $q->where('desa_id',$request->desa))->with('desa')->get())
+        return DataTables::of(Program::when(!empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa')->get())
             ->addColumn('aksi', function ($row) {
                 $data['detail_url'] = route('data.program-bantuan.show', $row->id);
 

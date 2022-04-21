@@ -131,8 +131,7 @@
                         "table contextmenu directionality emoticons paste textcolor code"
                 ],
                 toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-                toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor | print preview code | fontselect fontsizeselect",
-                toolbar3: "| laporan_keuangan | penerima_bantuan | sotk",
+                toolbar2: "| link unlink anchor | image media | forecolor backcolor | print preview code | fontselect fontsizeselect",
                 image_advtab: true ,
                 content_css: [
                     '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',

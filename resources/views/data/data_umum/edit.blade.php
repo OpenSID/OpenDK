@@ -37,7 +37,6 @@
 
         <div class="box-body">
             @include('data.data_umum.form_edit')
-
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
@@ -57,6 +56,7 @@
 @endsection
 
 @include(('partials.asset_select2'))
+@include(('partials.asset_leaflet'))
 @push('scripts')
 <script>
     $(function () {
@@ -81,6 +81,22 @@
         $(".sumber_luas_wilayah").change(function(){
             updateValueLuasWilayah();
         }); 
+
+        var posisi = [-1.0546279422758742, 116.71875000000001];
+		var zoom = 10;
+        // Inisialisasi tampilan peta
+		var peta_wilayah = L.map('tampil-map',
+        {
+            center: posisi,
+            zoom: 13
+        });
+        var baseLayers = getBaseLayers(peta_wilayah, '');
+        // Menambahkan toolbar ke peta
+      
+
+		peta_wilayah.addControl(drawControl);
+        
+        L.control.layers(baseLayers).addTo(peta_wilayah);
     })
 
     function updateValueLuasWilayah(){
@@ -89,13 +105,7 @@
             url: "/data/data-umum/getdataajax",
             type: "get",
             success: function(response) {
-                if(sumberLuasWilayah == 1) {
-                    $(".luas_wilayah").val(response.data.luas_wilayah);
-                    $(".luas_wilayah").attr('readonly', false);
-                } else {
-                    $(".luas_wilayah").val(response.data.luas_wilayah_dari_data_desa);
-                    $(".luas_wilayah").attr('readonly', true); 
-                }
+                
             },
             error: function(xhr) {
                 console.log('terjadi kesalahan');

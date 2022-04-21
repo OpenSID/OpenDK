@@ -70,7 +70,7 @@ class ProgamBantuanController extends Controller
 
             // Proses impor excell
             (new SinkronBantuan())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');
@@ -79,7 +79,7 @@ class ProgamBantuanController extends Controller
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan' . $excellName);
+        Storage::disk('public')->delete('bantuan' . $csvName);
 
         return response()->json([
             "message" => "Data Bantuan Telah Berhasil di Sinkronkan",
@@ -105,7 +105,7 @@ class ProgamBantuanController extends Controller
 
             // Proses impor excell
             (new SinkronPesertaBantuan())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             return response()->json([
                 "status" => "danger",
@@ -116,7 +116,7 @@ class ProgamBantuanController extends Controller
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan/' . $excellName);
+        Storage::disk('public')->delete('bantuan/' . $csvName);
 
         return response()->json([
             "status" => "success",

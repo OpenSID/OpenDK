@@ -264,8 +264,7 @@ class PesanController extends Controller
 
         if ($pesan) {
             return back()->with('success', 'Pesan berhasil dikirim!');
-        } else {
-            return back()->withInput()->with('error', 'Pesan gagal dikirim!');
         }
+        return back()->withInput()->with('error', 'Pesan gagal dikirim!');
     }
 }

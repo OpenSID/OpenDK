@@ -220,9 +220,8 @@ class PesanController extends Controller
         $pesan->diarsipkan = Pesan::MASUK_ARSIP;
         if ($pesan->save()) {
             return redirect()->route('pesan.arsip')->with('success', 'Pesan berhasil diarsipkan!');
-        } else {
-            return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
         }
+        return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
     }
 
     public function setMultipleReadPesanStatus(Request $request)

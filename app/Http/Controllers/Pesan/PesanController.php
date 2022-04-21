@@ -234,9 +234,8 @@ class PesanController extends Controller
 
         if ($pesan > 0) {
             return back()->with('success', 'Pesan berhasil ditandai!');
-        } else {
-            return back()->withInput()->with('error', 'Pesan gagal ditandai!');
         }
+        return back()->withInput()->with('error', 'Pesan gagal ditandai!');
     }
 
     public function setMultipleArsipPesanStatus(Request $request)

@@ -37,7 +37,6 @@ class Pesan extends Model
 {
     protected $table     = 'das_pesan';
     protected $fillable = ['judul','das_data_desa_id', 'jenis', 'created_at'];
-    public $timestamps = true;
     public const PESAN_MASUK = "Pesan Masuk";
     public const PESAN_KELUAR = "Pesan Keluar";
     public const BELUM_DIBACA = 0;

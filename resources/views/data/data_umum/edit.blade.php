@@ -17,13 +17,13 @@
     @include( 'partials.flash_message' )
 
     <div class="box box-primary">
-            
-        @if (count($errors) > 0)
-            
+
+        @if(count($errors) > 0)
+
             <div class="alert alert-danger">
                 <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
                 <ul>
-                    @foreach ($errors->all() as $error)
+                    @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
@@ -33,7 +33,9 @@
         @endif
 
         <!-- form start -->
-        {!!  Form::model($data_umum, [ 'route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left' ] ) !!}
+        {!! Form::model($data_umum, [ 'route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put','id' =>
+        'form-event', 'class' => 'form-horizontal form-label-left' ] ) !!}
+        <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
 
         <div class="box-body">
             @include('data.data_umum.form_edit')
@@ -43,14 +45,16 @@
             <div class="pull-right">
                 <div class="control-group">
                     <a href="{{ route('data.data-umum.index') }}">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
+                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp;
+                            Batal</button>
                     </a>
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;
+                        Simpan</button>
                 </div>
             </div>
         </div>
         {!! Form::close() !!}
-    
+
     </div>
 </section>
 @endsection
@@ -58,59 +62,91 @@
 @include(('partials.asset_select2'))
 @include(('partials.asset_leaflet'))
 @push('scripts')
-<script>
-    $(function () {
-        // on page loaded
-        updateValueLuasWilayah();
-
-        $('#provinsi_id').select2({
-            placeholder: "Pilih Provinsi",
-            allowClear: true
-        });
-
-        $('#kabupaten_id').select2({
-            placeholder: "Pilih Kabupaten",
-            allowClear: true
-        });
-
-        $('#kecamatan_id').select2({
-            placeholder: "Pilih Kecamatan",
-            allowClear: true
-        });
-
-        $(".sumber_luas_wilayah").change(function(){
+    <script>
+         
+        $(function () {
+            
+          
+            // on page loaded
             updateValueLuasWilayah();
-        }); 
 
-        var posisi = [-1.0546279422758742, 116.71875000000001];
-		var zoom = 10;
-        // Inisialisasi tampilan peta
-		var peta_wilayah = L.map('tampil-map',
-        {
-            center: posisi,
-            zoom: 13
-        });
-        var baseLayers = getBaseLayers(peta_wilayah, '');
-        // Menambahkan toolbar ke peta
-      
+            $('#provinsi_id').select2({
+                placeholder: "Pilih Provinsi",
+                allowClear: true
+            });
 
-		peta_wilayah.addControl(drawControl);
-        
-        L.control.layers(baseLayers).addTo(peta_wilayah);
-    })
+            $('#kabupaten_id').select2({
+                placeholder: "Pilih Kabupaten",
+                allowClear: true
+            });
 
-    function updateValueLuasWilayah(){
-        var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
-        $.ajax({
-            url: "/data/data-umum/getdataajax",
-            type: "get",
-            success: function(response) {
-                
-            },
-            error: function(xhr) {
-                console.log('terjadi kesalahan');
+            $('#kecamatan_id').select2({
+                placeholder: "Pilih Kecamatan",
+                allowClear: true
+            });
+
+            $(".sumber_luas_wilayah").change(function () {
+                updateValueLuasWilayah();
+            });
+
+            var posisi = [-1.0546279422758742, 116.71875000000001];
+            var zoom = 10;
+            // Inisialisasi tampilan peta
+            var peta_wilayah = L.map('tampil-map', {
+                center: posisi,
+                zoom: 13
+            });
+
+            var path_kec = new Array();
+            if ($('#path').val() != '') {
+                path_kec = JSON.parse($('#path').val());
+                console.log(JSON.stringify(path_kec))
+                showPolygon(path_kec, peta_wilayah)
             }
-        });
-    }
-</script>
+
+            // Geolocation IP Route/GPS
+            geoLocation(peta_wilayah);
+
+            var baseLayers = getBaseLayers(peta_wilayah, '');
+            // Menambahkan toolbar ke peta
+            peta_wilayah.pm.addControls(editToolbarPoly());
+            addpoly(peta_wilayah);
+
+            // Export/Import Peta dari file GPX
+			eximGpxRegion(peta_wilayah);
+
+            // Import Peta dari file SHP
+            eximShp(peta_wilayah);
+
+            var overlayLayers = {};
+            L.control.layers(baseLayers, overlayLayers, {
+                position: 'topleft',
+                collapsed: true
+            }).addTo(peta_wilayah);
+
+            peta_wilayah.on('pm:update', function (e) {
+                    setPupup(e.layer);
+                });
+
+            function makePopupContent(feature) {
+                return
+                feature.geometry;
+            }
+
+        })
+
+        function updateValueLuasWilayah() {
+            var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
+            $.ajax({
+                url: "/data/data-umum/getdataajax",
+                type: "get",
+                success: function (response) {
+
+                },
+                error: function (xhr) {
+                    console.log('terjadi kesalahan');
+                }
+            });
+        }
+    </script>
 @endpush

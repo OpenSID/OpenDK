@@ -16,5 +16,6 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 1. [#353](https://github.com/OpenSID/OpenDK/issues/353) Perbaiki sikronisasi data penduduk OpenSID ke OpenDK.
 2. [#370](https://github.com/OpenSID/OpenDK/issues/370) Perbaiki XHRrequest return 404 pada halaman ubah data umum.
 3. [#374](https://github.com/OpenSID/OpenDK/pull/374) Sesuaikan format angka pada statistik.
+4. [#361](https://github.com/OpenSID/OpenDK/issues/361) Perbaiki error migrasi 2022_03_09_134418_create_permission_tables.
 
 #### TEKNIS

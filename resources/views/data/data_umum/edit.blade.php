@@ -56,6 +56,7 @@
 </section>
 @endsection
 
+@include('partials.asset_wysihtml5')
 @include(('partials.asset_select2'))
 @push('scripts')
 <script>
@@ -86,7 +87,7 @@
     function updateValueLuasWilayah(){
         var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
         $.ajax({
-            url: "/data/data-umum/getdataajax",
+            url: "data-umum/getdataajax",
             type: "get",
             success: function(response) {
                 if(sumberLuasWilayah == 1) {
@@ -102,5 +103,7 @@
             }
         });
     }
+
+    $('.textarea').wysihtml5();
 </script>
 @endpush

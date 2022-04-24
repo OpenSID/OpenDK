@@ -75,7 +75,7 @@ class LoginController extends Controller
             case 'kontributor-artikel':
                 $this->redirectTo = 'informasi/artikel';
                 break;
-            
+
             default:
                 $this->redirectTo;
                 break;

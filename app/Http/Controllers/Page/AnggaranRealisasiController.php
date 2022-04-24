@@ -98,35 +98,35 @@ class AnggaranRealisasiController extends Controller
             }
 
             $data_pendidikan['sum']   = [
-                'total_belanja'                     => number_format($total_belanja),
-                'total_belanja_persen'              => number_format(($total_belanja == 0) ? 0 : ($total_belanja / $total_anggaran) * 100, 1),
-                'selisih_anggaran_realisasi'        => number_format(0),
-                'selisih_anggaran_realisasi_persen' => number_format(0),
-                'belanja_pegawai'                   => number_format($belanja_pegawai),
-                'belanja_pegawai_persen'            => number_format(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100, 1),
-                'belanja_barang_jasa'               => number_format($belanja_barang_jasa),
-                'belanja_barang_jasa_persen'        => number_format(($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100, 1),
-                'belanja_modal'                     => number_format($belanja_modal),
-                'belanja_modal_persen'              => number_format(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100, 1),
-                'belanja_tidak_langsung'            => number_format($belanja_tidak_langsung),
-                'belanja_tidak_langsung_persen'     => number_format(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100, 1),
+                'total_belanja'                     => (float) ($total_belanja),
+                'total_belanja_persen'              => (float) (($total_belanja == 0) ? 0 : ($total_belanja / $total_anggaran) * 100),
+                'selisih_anggaran_realisasi'        => (float)(0),
+                'selisih_anggaran_realisasi_persen' => (float)(0),
+                'belanja_pegawai'                   => (float)($belanja_pegawai),
+                'belanja_pegawai_persen'            => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
+                'belanja_barang_jasa'               => (float)($belanja_barang_jasa),
+                'belanja_barang_jasa_persen'        => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
+                'belanja_modal'                     => (float)($belanja_modal),
+                'belanja_modal_persen'              => (float)(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
+                'belanja_tidak_langsung'            => (float)($belanja_tidak_langsung),
+                'belanja_tidak_langsung_persen'     => (float)(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
             ];
             $data_pendidikan['chart'] = [
                 [
                     'anggaran' => 'Belanja Pegawai',
-                    'value'    => number_format(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
                 ],
                 [
                     'anggaran' => 'Belanja Barang dan Jasa',
-                    'value'    => number_format(($belanja_barang_jasa == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_barang_jasa == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
                 ],
                 [
                     'anggaran' => 'Belanja Modal',
-                    'value'    => number_format(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
                 ],
                 [
                     'anggaran' => 'Belanja Tidak Langsung',
-                    'value'    => number_format(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
                 ],
             ];
         } else {
@@ -160,35 +160,35 @@ class AnggaranRealisasiController extends Controller
             }
 
             $data_pendidikan['sum']   = [
-                'total_belanja'                     => number_format($total_belanja),
-                'total_belanja_persen'              => number_format(($total_belanja == 0) ? 0 : ($total_belanja / $total_anggaran) * 100, 1),
-                'selisih_anggaran_realisasi'        => number_format(0),
-                'selisih_anggaran_realisasi_persen' => number_format(0),
-                'belanja_pegawai'                   => number_format($belanja_pegawai),
-                'belanja_pegawai_persen'            => number_format(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100, 1),
-                'belanja_barang_jasa'               => number_format($belanja_barang_jasa),
-                'belanja_barang_jasa_persen'        => number_format(($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100, 1),
-                'belanja_modal'                     => number_format($belanja_modal),
-                'belanja_modal_persen'              => number_format(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100, 1),
-                'belanja_tidak_langsung'            => number_format($belanja_tidak_langsung),
-                'belanja_tidak_langsung_persen'     => number_format(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100, 1),
+                'total_belanja'                     => (float)($total_belanja),
+                'total_belanja_persen'              => (float)(($total_belanja == 0) ? 0 : ($total_belanja / $total_anggaran) * 100),
+                'selisih_anggaran_realisasi'        => (float)(0),
+                'selisih_anggaran_realisasi_persen' => (float)(0),
+                'belanja_pegawai'                   => (float)($belanja_pegawai),
+                'belanja_pegawai_persen'            => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
+                'belanja_barang_jasa'               => (float)($belanja_barang_jasa),
+                'belanja_barang_jasa_persen'        => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
+                'belanja_modal'                     => (float)($belanja_modal),
+                'belanja_modal_persen'              => (float)(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
+                'belanja_tidak_langsung'            => (float)($belanja_tidak_langsung),
+                'belanja_tidak_langsung_persen'     => (float)(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
             ];
             $data_pendidikan['chart'] = [
                 [
                     'anggaran' => 'Belanja Pegawai',
-                    'value'    => number_format(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
                 ],
                 [
                     'anggaran' => 'Belanja Barang dan Jasa',
-                    'value'    => number_format(($belanja_barang_jasa == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_barang_jasa == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
                 ],
                 [
                     'anggaran' => 'Belanja Modal',
-                    'value'    => number_format(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
                 ],
                 [
                     'anggaran' => 'Belanja Tidak Langsung',
-                    'value'    => number_format(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100, 1),
+                    'value'    => (float)(($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
                 ],
             ];
         }

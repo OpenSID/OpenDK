@@ -38,7 +38,7 @@ class WebFaqController extends Controller
 {
     public function index()
     {
-        $faq = Faq::latest()->paginate(10);
+        $faq = Faq::where('status', 1)->latest()->paginate(10);
         $page_title = 'Pertanyaan Yang Sering Diajukan';
 
         return view('pages.faq.index', compact('page_title', 'faq'));

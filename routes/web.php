@@ -200,6 +200,7 @@ Route::group(['middleware' => 'installed'], function () {
                 // FAQ
                 Route::group(['prefix' => 'faq'], function () {
                     Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
+                    Route::get('getdata', ['as' => 'informasi.faq.getdata', 'uses' => 'FaqController@getDataFaq']);
                     Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
                     Route::get('create', ['as' => 'informasi.faq.create', 'uses' => 'FaqController@create']);
                     Route::post('store', ['as' => 'informasi.faq.store', 'uses' => 'FaqController@store']);

@@ -26,7 +26,7 @@
 
       var path = new Array();
       for (var i = 0; i < wilayah.length; i++) {
-        var daerah_wilayah = area_wilayah[i];
+         var daerah_wilayah = area_wilayah[i];
         daerah_wilayah[0].push(daerah_wilayah[0][0]);
         var poligon_wilayah = L.polygon(daerah_wilayah, {
           showMeasurements: true,
@@ -39,6 +39,7 @@
           var old_path = getLatLong("Poly", {
             _latlngs: layers[e.target._leaflet_id],
           }).toString();
+          console.log(old_path);
           var new_path = getLatLong("Poly", e.target).toString();
           var value_path = document.getElementById("path").value; //ambil value pada input
 
@@ -71,6 +72,24 @@
       layerpeta.fitBounds(bounds);
       document.getElementById("path").value = getLatLong("multi", path).toString();
 
+    }
+
+    function hapuslayer(layerpeta) {
+      layerpeta.on("pm:remove", function (e) {
+        var type = e.layerType;
+        var layer = e.layer;
+        var latLngs;
+
+        // set value setelah create polygon
+        var last_path = document.getElementById("path").value;
+        var new_path = getLatLong("Poly", layer).toString();
+        last_path = last_path
+          .replace(new_path, "")
+          .replace(",,", ",")
+          .replace("[,", "[")
+          .replace(",]", "]");
+        document.getElementById("path").value = last_path;
+      });
     }
 
     function getBaseLayers(peta, access_token) {
@@ -480,13 +499,10 @@
          turf.polygon(area[x], { content: contents, style: style_polygon })
         );
       }
-      return marker;
+       return marker;
     }
 
-    function overlayWil(maker, set_content = false) {
-      return wilayah_property(maker, set_content);
-    }
-
+  
     function wilayah_property(set_marker, set_content = false) {
       var wilayah_property = L.geoJSON(turf.featureCollection(set_marker), {
         pmIgnore: true,

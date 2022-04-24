@@ -123,20 +123,24 @@
             $.when(path_desa()).done(function(res_desa){
         
                 if (res_desa) {
-                    var mark_desa = new Array();
-                    res_desa.data.forEach(element => {
-                        console.log(element);
+                    var marker_desa = new Array();
+                    var marker;
+                    res_desa.data.forEach(e => {
+                        if (e.path != null) {
+                            marker = set_marker(e, 'Peta Wilayah Desa', 'Wilayah Desa ' + e.nama, {'line' : '#de2d26', 'fill' : '#fff'});
+                            marker_desa =  marker_desa.concat(marker);
+                        }
                     });
-                    console.log(res_desa)
-                    var mark_kec = set_marker(path_desa.data, 'Peta Wilayah Desa', 'Wilayah Desa ' + res_kec.data.profil.nama_kecamatan, {'line' : '#de2d26', 'fill' : '#fff'});
-                    overlayLayers['Peta Wilayah Kecamatan'] =  wilayah_property(mark_kec, false);
+                    console.log(marker_desa);
+                    overlayLayers['Peta Wilayah Desa'] =  wilayah_property(marker_desa, false);
                     tampil_peta();
                 }
             });
         });
 
         var overlayLayers = {};
-            function tampil_peta () { 
+        function tampil_peta () { 
+            console.log(overlayLayers);
             // Inisialisasi tampilan peta
             var posisi = [-1.0546279422758742, 116.71875000000001];
             var zoom = 10;
@@ -144,6 +148,7 @@
                 center: posisi,
                 zoom: 13
             });
+            
 
             var path_kec = new Array();
             if ($('#path').val() != '') {
@@ -152,14 +157,36 @@
             }
             // Geolocation IP Route/GPS
             geoLocation(peta_wilayah);
-            showPolygon(path_kec, peta_wilayah)
-
-            
+        
             var baseLayers = getBaseLayers(peta_wilayah, '');
             L.control.layers(baseLayers, overlayLayers, {
                         position: 'topleft',
                         collapsed: true
             }).addTo(peta_wilayah);
+
+            // add toolbar
+            peta_wilayah.pm.addControls(editToolbarPoly());
+            addpoly(peta_wilayah);
+
+
+            // Menghapus Peta wilayah
+		    hapuslayer(peta_wilayah);
+
+            // Export/Import Peta dari file GPX
+			eximGpxRegion(peta_wilayah);
+
+            // Import Peta dari file SHP
+            eximShp(peta_wilayah);
+
+            peta_wilayah.on('pm:update', function (e) {
+                setPupup(e.layer);
+            });
+
+            function makePopupContent(feature) {
+                return
+                feature.geometry;
+            }
+
         };
 
         

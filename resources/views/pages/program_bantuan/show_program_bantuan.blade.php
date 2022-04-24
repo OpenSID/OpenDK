@@ -159,7 +159,12 @@
                 "autoMargins":false,
                 "valueWidth": 120
             },
-            "marginTop" : 50
+            "marginTop" : 50,
+            "numberFormatter": {
+                    "precision": -1,
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": "."
+                }
         } );
     }
 
@@ -194,7 +199,12 @@
                 "autoMargins":false,
                 "valueWidth": 120
             },
-            "marginTop" : 50
+            "marginTop" : 50,
+            "numberFormatter": {
+                    "precision": -1,
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": "."
+                }
         } );
     }
 </script>

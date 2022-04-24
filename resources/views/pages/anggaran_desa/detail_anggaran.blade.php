@@ -26,7 +26,7 @@
                                     $query_pendapatan->where('tahun', $year);
                                 }
                                 $total_pendapatan = $query_pendapatan->sum('jumlah');
-                                echo number_format($total_pendapatan, 2);
+                                echo format_number_id($total_pendapatan);
                             @endphp</h4>
                         </a>
                     </div>
@@ -62,7 +62,7 @@
                                                 $query_pendapatan_sub->where('tahun', $year);
                                             }
                                             $total_pendapatan_sub = $query_pendapatan_sub->sum('jumlah');
-                                            echo number_format($total_pendapatan_sub, 2);
+                                            echo format_number_id($total_pendapatan_sub);
                                             ?>
                                         </strong>
                                     </td>
@@ -87,7 +87,7 @@
                                                     $query_pendapatan_sub_sub->where('tahun', $year);
                                                 }
                                                 $total_pendapatan_sub_sub = $query_pendapatan_sub_sub->sum('jumlah');
-                                                echo number_format($total_pendapatan_sub_sub, 2);
+                                                echo format_number_id($total_pendapatan_sub_sub);
                                                 ?>
                                             </strong>
                                         </td>
@@ -121,7 +121,7 @@
                                 $query_belanja->where('tahun', $year);
                                 }
                                 $total_belanja = $query_belanja->sum('jumlah');
-                                echo number_format($total_belanja, 2);
+                                echo format_number_id($total_belanja);
                                 @endphp
                             </h4>
                         </a>
@@ -158,7 +158,7 @@
                                                 $query_belanja_sub->where('tahun', $year);
                                             }
                                             $total_belanja_sub = $query_belanja_sub->sum('jumlah');
-                                            echo number_format($total_belanja_sub, 2);
+                                            echo format_number_id($total_belanja_sub);
                                             ?>
                                         </strong>
                                     </td>
@@ -183,7 +183,7 @@
                                                     $query_belanja_sub_sub->where('tahun', $year);
                                                 }
                                                 $total_belanja_sub_sub = $query_belanja_sub_sub->sum('jumlah');
-                                                echo number_format($total_belanja_sub_sub, 2);
+                                                echo format_number_id($total_belanja_sub_sub);
                                                 ?>
                                             </strong>
                                         </td>
@@ -217,7 +217,7 @@
                                 $query_biaya->where('tahun', $year);
                                 }
                                 $total_biaya = $query_biaya->sum('jumlah');
-                                echo number_format($total_biaya, 2);
+                                echo format_number_id($total_biaya);
                                 @endphp
                             </h4>
                         </a>
@@ -254,7 +254,7 @@
                                                 $query_biaya_sub->where('tahun', $year);
                                             }
                                             $total_biaya_sub = $query_biaya_sub->sum('jumlah');
-                                            echo number_format($total_biaya_sub, 2);
+                                            echo format_number_id($total_biaya_sub);
                                             ?>
                                         </strong>
                                     </td>
@@ -279,7 +279,7 @@
                                                     $query_biaya_sub_sub->where('tahun', $year);
                                                 }
                                                 $total_biaya_sub_sub = $query_biaya_sub_sub->sum('jumlah');
-                                                echo number_format($total_biaya_sub_sub, 2);
+                                                echo format_number_id($total_biaya_sub_sub );
                                                 ?>
                                             </strong>
                                         </td>

@@ -323,29 +323,37 @@ if (! function_exists('divnum')) {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
-    function terbilang($angka)
+
+if (! function_exists('format_number_id')) {
+    function format_number_id($inp = 0)
     {
-        $angka=abs($angka);
-        $baca =["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
-
-        $terbilang="";
-        if ($angka < 12) {
-            $terbilang= " " . $baca[$angka];
-        } elseif ($angka < 20) {
-            $terbilang= terbilang($angka - 10) . " Belas";
-        } elseif ($angka < 100) {
-            $terbilang= terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
-        } elseif ($angka < 200) {
-            $terbilang= " seratus" . terbilang($angka - 100);
-        } elseif ($angka < 1000) {
-            $terbilang= terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
-        } elseif ($angka < 2000) {
-            $terbilang= " seribu" . terbilang($angka - 1000);
-        } elseif ($angka < 1000000) {
-            $terbilang= terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
-        } elseif ($angka < 1000000000) {
-            $terbilang= terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
-        }
-
-        return $terbilang;
+        return number_format($inp, 2, ',', '.');
     }
+}
+
+function terbilang($angka)
+{
+    $angka=abs($angka);
+    $baca =["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+
+    $terbilang="";
+    if ($angka < 12) {
+        $terbilang= " " . $baca[$angka];
+    } elseif ($angka < 20) {
+        $terbilang= terbilang($angka - 10) . " Belas";
+    } elseif ($angka < 100) {
+        $terbilang= terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
+    } elseif ($angka < 200) {
+        $terbilang= " seratus" . terbilang($angka - 100);
+    } elseif ($angka < 1000) {
+        $terbilang= terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
+    } elseif ($angka < 2000) {
+        $terbilang= " seribu" . terbilang($angka - 1000);
+    } elseif ($angka < 1000000) {
+        $terbilang= terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
+    } elseif ($angka < 1000000000) {
+        $terbilang= terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
+    }
+
+    return $terbilang;
+}

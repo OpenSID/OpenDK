@@ -39,7 +39,6 @@
           var old_path = getLatLong("Poly", {
             _latlngs: layers[e.target._leaflet_id],
           }).toString();
-          console.log(old_path);
           var new_path = getLatLong("Poly", e.target).toString();
           var value_path = document.getElementById("path").value; //ambil value pada input
 

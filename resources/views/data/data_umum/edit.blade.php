@@ -131,7 +131,6 @@
                             marker_desa =  marker_desa.concat(marker);
                         }
                     });
-                    console.log(marker_desa);
                     overlayLayers['Peta Wilayah Desa'] =  wilayah_property(marker_desa, false);
                     tampil_peta();
                 }

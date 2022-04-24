@@ -8,7 +8,7 @@
 
 @push('scripts')
   <!-- leaflet -->
-  <script src="{{ asset ("/js/leaflet/leaflet.js") }}"></script>
+  <script src="{{ asset ("/js/leaflet/leaflet-src.js") }}"></script>
   <script src="{{ asset ("/js/leaflet/togeojson.js") }}"></script>
   <script src="{{ asset ("/js/leaflet/leaflet-providers.js") }}"></script>
   <script src="{{ asset ("/js/leaflet/turf.min.js") }}"></script>
@@ -454,6 +454,81 @@
         .replace("],null]", "]");
       path = "".concat("[", path, "]");
       return path;
+    }
+
+    function set_marker(
+      data,
+      judul,
+      contents,
+      color
+      ) {
+      marker = new Array();
+      var area = JSON.parse(data["path"]);
+      var jml = area.length;
+      content = $(contents).html();
+      var style_polygon = {
+        stroke: true,
+        color: color.line,
+        opacity: 1,
+        weight: 3,
+        fillColor: color.fill,
+        fillOpacity: 0.8,
+        dashArray: 4,
+      };
+
+      for (var x = 0; x < jml; x++) {
+        for (var i = 0; i < area[x][0].length; i++) {
+          area[x][0][i].reverse();
+        }
+        area[x][0].push(area[x][0][0]);
+        marker.push(
+         turf.polygon(area[x], { content: contents, style: style_polygon })
+        );
+      }
+      return marker;
+    }
+
+    function overlayWil(maker, set_content = false) {
+      return wilayah_property(maker, set_content);
+    }
+
+    function wilayah_property(set_marker, set_content = false) {
+      var wilayah_property = L.geoJSON(turf.featureCollection(set_marker), {
+        pmIgnore: true,
+        showMeasurements: false,
+        measurementOptions: {
+          showSegmentLength: false,
+        },
+        onEachFeature: function (feature, layer) {
+          if (feature.properties.name == "kantor_desa") {
+            // Beri classname berbeda, supaya bisa gunakan css berbeda
+            layer.bindPopup(feature.properties.content, {
+              className: "kantor_desa",
+            });
+          } else if (set_content === true) {
+            layer.bindPopup(feature.properties.content);
+          }
+          layer.bindTooltip(feature.properties.content, {
+            sticky: true,
+            direction: "top",
+          });
+          feature.properties.style;
+        },
+        style: function (feature) {
+          if (feature.properties.style) {
+            return feature.properties.style;
+          }
+        },
+        pointToLayer: function (feature, latlng) {
+          if (feature.properties.style) {
+            return L.marker(latlng, { icon: feature.properties.style });
+          } else {
+            return L.marker(latlng);
+          }
+        },
+      });
+
+      return wilayah_property;
     }
   </script>
 @endpush

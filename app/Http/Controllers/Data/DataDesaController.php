@@ -68,8 +68,9 @@ class DataDesaController extends Controller
                 if ($this->profil->kecamatan_id) {
                     $data['edit_url']   = route('data.data-desa.edit', $row->id);
                 }
+                $data['peta'] = route('data.data-desa.peta', $row->id);
                 $data['delete_url'] = route('data.data-desa.destroy', $row->id);
-
+               
                 return view('forms.aksi', $data);
             })
             ->editColumn('website', function ($row) {
@@ -244,5 +245,26 @@ class DataDesaController extends Controller
         }
 
         return redirect()->route('data.data-desa.index')->with('success', 'Data Desa berhasil ditambahkan');
+    }
+
+    public function peta($id)
+    {
+        $desa             = DataDesa::findOrFail($id);
+        $page_title       = 'Desa';
+        $page_description = 'Peta Desa : ' . $desa->nama;
+
+        return view('data.data_desa.peta', compact('page_title', 'page_description', 'desa'));
+    }
+
+    public function getAjaxPetaDesa(Request $request)
+    {
+        if (request()->ajax()) {
+            $data             = DataDesa::all();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Proses sinkronisasi identitas desa sudah selesai',
+                'data' => $data
+            ]);
+        }
     }
 }

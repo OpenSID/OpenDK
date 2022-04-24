@@ -65,8 +65,6 @@
     <script>
          
         $(function () {
-            
-          
             // on page loaded
             updateValueLuasWilayah();
 
@@ -100,7 +98,6 @@
             var path_kec = new Array();
             if ($('#path').val() != '') {
                 path_kec = JSON.parse($('#path').val());
-                console.log(JSON.stringify(path_kec))
                 showPolygon(path_kec, peta_wilayah)
             }
 
@@ -148,5 +145,7 @@
                 }
             });
         }
+
+        
     </script>
 @endpush

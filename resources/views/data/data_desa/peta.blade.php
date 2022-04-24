@@ -83,7 +83,7 @@
   
         if (res_kec) {
           var mark_kec = set_marker(res_kec.data, 'Peta Wilayah Kecamatan', 'Wilayah Kecamatan ' + res_kec.data.profil.nama_kecamatan, {'line' : '#de2d26', 'fill' : '#fff'});
-          overlayLayers.kec =  wilayah_property(mark_kec, false);
+          overlayLayers['Peta Wilayah Kec'] =  wilayah_property(mark_kec, false);
           tampil_peta();
         }
       });

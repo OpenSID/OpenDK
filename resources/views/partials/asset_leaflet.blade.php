@@ -456,12 +456,7 @@
       return path;
     }
 
-    function set_marker(
-      data,
-      judul,
-      contents,
-      color
-      ) {
+    function set_marker(data, judul , contents,color) {
       marker = new Array();
       var area = JSON.parse(data["path"]);
       var jml = area.length;

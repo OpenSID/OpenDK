@@ -9,8 +9,10 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 2. [#355](https://github.com/OpenSID/OpenDK/issues/355) Perjelas status kehamilan pada tampilan detail data penduduk.
 3. [#356](https://github.com/OpenSID/OpenDK/issues/356) Sediakan tombol kembali pada form detail data penduduk.
 4. [#332](https://github.com/OpenSID/OpenDK/issues/332) Tambahkan fitur akfif/non-aktifkan FAQ di web.
+6. [#139](https://github.com/OpenSID/OpenDK/issues/139) Tambahkan jumlah karakter pada isian tipologi sejarah.
 
 #### Perbaikan BUG
 1. [#353](https://github.com/OpenSID/OpenDK/issues/353) Perbaiki sikronisasi data penduduk OpenSID ke OpenDK.
+2. [#370](https://github.com/OpenSID/OpenDK/issues/370) Perbaiki XHRrequest return 404 pada halaman ubah data umum.
 
 #### TEKNIS

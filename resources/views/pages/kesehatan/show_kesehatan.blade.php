@@ -394,6 +394,11 @@
                 "enabled": true,
                 "pageOrigin": false,
                 "fileName" :"Jumlah Angka Kematian Ibu & Bayi",
+            },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
             }
         });
     }
@@ -532,6 +537,11 @@
                 "enabled": true,
                 "pageOrigin": false,
                 "fileName" : "Jumlah Persentase Cakupan Imunisasi",
+            },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
             }
         });
     }
@@ -592,6 +602,11 @@
                 "enabled": true,
                 "pageOrigin": false,
                 "fileName":"Jumlah Toilet & Sanitasi",
+            },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
             }
         });
     }
@@ -762,6 +777,11 @@
             },
             "legend": {
                 "enabled" : true
+            },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
             }
         });
 
@@ -913,6 +933,11 @@
                 "enabled": true,
                 "pageOrigin": false,
                 "fileName":"Jumlah Toilet & Sanitasi",
+            },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
             }
         });
     }

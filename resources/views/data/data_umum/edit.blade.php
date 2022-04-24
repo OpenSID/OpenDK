@@ -59,52 +59,52 @@
 </section>
 @endsection
 
+@include('partials.asset_wysihtml5')
 @include(('partials.asset_select2'))
 @include(('partials.asset_leaflet'))
 @push('scripts')
     <script>
-         
         $(function () {
             // on page loaded
             updateValueLuasWilayah();
-
             $('#provinsi_id').select2({
                 placeholder: "Pilih Provinsi",
                 allowClear: true
             });
-
             $('#kabupaten_id').select2({
                 placeholder: "Pilih Kabupaten",
                 allowClear: true
             });
-
             $('#kecamatan_id').select2({
                 placeholder: "Pilih Kecamatan",
                 allowClear: true
             });
-
-            $(".sumber_luas_wilayah").change(function () {
+            $(".sumber_luas_wilayah").change(function(){
                 updateValueLuasWilayah();
-            });
-
-           
-
+            }); 
         })
 
-        function updateValueLuasWilayah() {
+        function updateValueLuasWilayah(){
             var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
             $.ajax({
-                url: "/data/data-umum/getdataajax",
+                url: "data-umum/getdataajax",
                 type: "get",
-                success: function (response) {
-
+                success: function(response) {
+                    if(sumberLuasWilayah == 1) {
+                        $(".luas_wilayah").val(response.data.luas_wilayah);
+                        $(".luas_wilayah").attr('readonly', false);
+                    } else {
+                        $(".luas_wilayah").val(response.data.luas_wilayah_dari_data_desa);
+                        $(".luas_wilayah").attr('readonly', true); 
+                    }
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log('terjadi kesalahan');
                 }
             });
         }
-
+        $('.textarea').wysihtml5();
+         
         $(function () {
             function path_desa () {
                 return $.ajax({
@@ -137,10 +137,8 @@
                 }
             });
         });
-
         var overlayLayers = {};
         function tampil_peta () { 
-            console.log(overlayLayers);
             // Inisialisasi tampilan peta
             var posisi = [-1.0546279422758742, 116.71875000000001];
             var zoom = 10;
@@ -149,7 +147,6 @@
                 zoom: 13
             });
             
-
             var path_kec = new Array();
             if ($('#path').val() != '') {
                 path_kec = JSON.parse($('#path').val());
@@ -163,32 +160,23 @@
                         position: 'topleft',
                         collapsed: true
             }).addTo(peta_wilayah);
-
             // add toolbar
             peta_wilayah.pm.addControls(editToolbarPoly());
             addpoly(peta_wilayah);
-
-
             // Menghapus Peta wilayah
 		    hapuslayer(peta_wilayah);
-
             // Export/Import Peta dari file GPX
 			eximGpxRegion(peta_wilayah);
-
             // Import Peta dari file SHP
             eximShp(peta_wilayah);
-
             peta_wilayah.on('pm:update', function (e) {
                 setPupup(e.layer);
             });
-
             function makePopupContent(feature) {
                 return
                 feature.geometry;
             }
-
         };
-
-        
     </script>
+ 
 @endpush

@@ -460,6 +460,11 @@
             "hideCredits": true,
             "legend": {
                 "generateFromData": true
+            },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
             }
         });
     }
@@ -587,6 +592,11 @@
                 "fileName":"Jumlah Penduduk Berdasarkan Kelompok Usia"
             },
             "hideCredits": true,
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
     // Create Chart Pendidikan
@@ -694,6 +704,11 @@
                 "y": 10
             }],
             "marginTop": 50,
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
     // Create Chart Golongan Darah
@@ -820,6 +835,11 @@
                 "fileName" : "Jumlah Penduduk Berdasarkan Golongan Darah",
             },
             "hideCredits": true,
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
     //Create Chart Status Kawin
@@ -946,6 +966,11 @@
                 "fileName": "Jumlah Penduduk Berdasarkan Status Perkawinan",
             },
             "hideCredits": true,
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
     //Create Chart Agama
@@ -1072,6 +1097,11 @@
             "legend": {
                 "generateFromData": true,
             },
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
 </script>

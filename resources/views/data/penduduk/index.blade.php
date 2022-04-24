@@ -79,6 +79,7 @@
             autoWidth: false,
             processing: true,
             serverSide: true,
+            lengthMenu: [ 10, 25, 50, 75, 100, 500, "All" ],
             ajax: {
                 url: "{!! route( 'data.penduduk.getdata' ) !!}",
                 data: function (d) {

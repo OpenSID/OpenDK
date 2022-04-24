@@ -41,7 +41,7 @@ class RoleKontributorArtikel extends Migration
      */
     public function up()
     {
-        Role::create(['name' =>'kontributor-artikel', 'guard_name' => 'web'], )->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        Role::create(['name' =>'kontributor-artikel', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
     }
 
     /**
@@ -51,5 +51,6 @@ class RoleKontributorArtikel extends Migration
      */
     public function down()
     {
+        Role::where(['name' =>'kontributor-artikel', 'guard_name' => 'web'])->delete();
     }
 }

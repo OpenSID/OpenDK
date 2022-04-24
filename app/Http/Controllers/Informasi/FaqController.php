@@ -48,7 +48,7 @@ class FaqController extends Controller
     {
         return view('informasi.faq.index');
     }
-    
+
     public function getDataFaq(Request $request)
     {
         if ($request->ajax()) {
@@ -76,7 +76,6 @@ class FaqController extends Controller
                 ->make(true);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.

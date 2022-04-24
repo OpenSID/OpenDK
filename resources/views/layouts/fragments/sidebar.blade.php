@@ -18,11 +18,13 @@
         <ul class="sidebar-menu" data-widget="tree">
             @if(isset($user))
                 <li class="header">MENU ADMINISTRATOR</li>
+                @if(isset($user) && !$user->hasrole('kontributor-artikel'))
                 <li class="{{ (Request::is(['dashboard'])? 'active' : '') }}">
-                    <a href="@if(isset($user)){{ route('dashboard') }}@else {{ '#' }} @endif" title="Dashboard">
+                    <a href="{{ route('dashboard') }}" title="Dashboard">
                         <i class="fa fa-dashboard"></i><span>Dashboard</span>
                     </a>
                 </li>
+                @endif
 
                 @if($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website', 'kontributor-artikel']))
                     <li class="treeview {{ (Request::is(['informasi/*'])? 'active' : '') }}">
@@ -192,14 +194,14 @@
                         </ul>
                     </li>
                 @endif
-                @if($user->hasrole(['super-admin', 'admin-komplain', 'administrator-website', 'kontributor-artikel']))
+                @if($user->hasrole(['super-admin', 'admin-komplain', 'administrator-website']))
                 <li class="treeview {{ (Request::is(['admin-komplain/*', 'admin-komplain'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu">
-                        @role('super-admin|admin-komplain|administrator-website|kontributor-artikel')
+                        @role('super-admin|admin-komplain|administrator-website')
                         <li {{ (Request::is(['admin-komplain', 'admin-komplain/*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Keluhan</a></li>
                         @endrole 
                         @role('super-admin|admin-komplain|administrator-website')

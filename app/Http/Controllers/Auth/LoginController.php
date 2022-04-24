@@ -68,4 +68,19 @@ class LoginController extends Controller
 
         $this->middleware('guest')->except('logout');
     }
+
+    public function redirectTo()
+    {
+        switch (auth()->user()->roles()->first()->name) {
+            case 'kontributor-artikel':
+                $this->redirectTo = 'informasi/artikel';
+                break;
+
+            default:
+                $this->redirectTo;
+                break;
+        }
+
+        return $this->redirectTo;
+    }
 }

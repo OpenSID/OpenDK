@@ -18,19 +18,19 @@
     <div class="box-body">
       <div class="row">
         <div class="col-md-12">
-            <div id="tampil-map" style="height: calc(100VH - 110px);"></div>
+            <div id="tampil-map" style="height: calc(100VH - 110px);">
+              <div class="text-center" style="margin-top: 35vh"><h1>Peta Tidak Tersedia</h1></div>
+            </div>
             <input type="hidden" id="path">
         </div>
       </div>
     </div>
   </div>
-    
 </section>
 @endsection
 @include(('partials.asset_leaflet'))
 @push('scripts')
 <script>
-   
     var overlayLayers = {};
     function tampil_peta () { 
       // Inisialisasi tampilan peta
@@ -41,12 +41,11 @@
         zoom: 13
       });
 
-      var path_desa = {{ $desa->path }};
+      var path_desa = {{ empty($desa->path)? 'new Array()': $desa->path }};
       // Geolocation IP Route/GPS
       geoLocation(peta_wilayah);
       showPolygon(path_desa, peta_wilayah)
 
-      
       var baseLayers = getBaseLayers(peta_wilayah, '');
       L.control.layers(baseLayers, overlayLayers, {
                 position: 'topleft',
@@ -77,7 +76,6 @@
       }
       
       $.when(path_kec()).done(function(res_kec){
-  
         if (res_kec) {
           var mark_kec = set_marker(res_kec.data, 'Peta Wilayah Kecamatan', 'Wilayah Kecamatan ' + res_kec.data.profil.nama_kecamatan, {'line' : '#de2d26', 'fill' : '#fff'});
           overlayLayers['Peta Wilayah Kecamatan'] =  wilayah_property(mark_kec, false);
@@ -85,8 +83,5 @@
         }
       });
     });
-   
-
-   
 </script>
 @endpush

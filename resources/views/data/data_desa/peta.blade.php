@@ -42,9 +42,6 @@
       });
 
       var path_desa = {{ $desa->path }};
-
-      
-
       // Geolocation IP Route/GPS
       geoLocation(peta_wilayah);
       showPolygon(path_desa, peta_wilayah)

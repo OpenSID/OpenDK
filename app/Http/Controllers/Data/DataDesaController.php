@@ -79,6 +79,13 @@ class DataDesaController extends Controller
             ->rawColumns(['website', 'aksi'])->make();
     }
 
+    public function getDataDesaAjax(Request $request)
+    {
+        if ($request->ajax()) {
+            return response()->json(['data'=> DataDesa::get()]);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      *

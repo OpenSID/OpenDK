@@ -839,3 +839,22 @@ x-sign:nth-of-type(5) {
 .main-header {
 	max-height: 150px;
 }
+
+.scroll .dropdown-menu{
+  max-height: calc(100vh - 100px);
+  overflow-y: scroll;
+	-ms-overflow-style: none;  /* IE and Edge */
+	scrollbar-width: none;  /* Firefox */
+}
+ 
+.scroll .dropdown-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll:hover{
+	display: block;
+}
+
+.scroll:hover .dropdown-menu{
+	display: block;
+}

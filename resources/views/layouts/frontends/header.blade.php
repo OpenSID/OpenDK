@@ -39,9 +39,9 @@
                 <li style="margin-left:-50px" class="col-sm-3"></li>
               </ul>
           </li>
-            <li class="dropdown @if(Request::is('desa/*'))active @endif">
+            <li class="dropdown scroll @if(Request::is('desa/*'))active @endif">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">DESA <span class="caret"></span></a>
-                <ul class="dropdown-menu fadeIn animated" style="overflow-y : none" role="menu">
+                <ul class="dropdown-menu fadeIn animated   " style="overflow-y : none; " role="menu">
                   @foreach ($navdesa->chunk(2) as $desa)
                     @foreach ($desa as $d)
                     <li><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
@@ -90,6 +90,11 @@
       </div>
     </nav>
   </header>
+
+  <link href="https://unpkg.com/minibarjs@latest/dist/minibar.min.css" rel="stylesheet" type="text/css">
+<script src="https://unpkg.com/minibarjs@latest/dist/minibar.min.js" type="text/javascript"></script>
+
+  
   @push('scripts')
 <script type="text/javascript">
   $(function () {
@@ -97,6 +102,8 @@
       e.preventDefault();
       $('#logout-form').submit();  
     });
+
+    
   });
 </script>
   @endpush

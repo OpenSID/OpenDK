@@ -44,7 +44,9 @@ class DashboardController extends Controller
         $data = [
             'desa' => DataDesa::count(),
             'penduduk' => Penduduk::hidup()->count(),
-            'keluarga' => Keluarga::count(),
+            'keluarga' => Keluarga::whereHas('kepala_kk', static function ($query) {
+                $query->where('kk_level', '1')->where('status_dasar', '1');
+            })->count(),
             'program_bantuan' => Program::count(),
         ];
 

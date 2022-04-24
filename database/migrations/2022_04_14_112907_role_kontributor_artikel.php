@@ -29,23 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Role;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Faq extends Model
+class RoleKontributorArtikel extends Migration
 {
     /**
-     * The attributes that are mass assignable.
+     * Run the migrations.
      *
-     * @var array
+     * @return void
      */
+    public function up()
+    {
+        Role::create(['name' =>'kontributor-artikel', 'guard_name' => 'web'], )->givePermissionTo(['view', 'create', 'edit', 'delete']);
+    }
 
-    protected $table = 'das_faq';
-
-    protected $fillable = [
-        'question',
-        'answer',
-        'status',
-    ];
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+    }
 }

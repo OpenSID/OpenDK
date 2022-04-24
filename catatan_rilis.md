@@ -1,25 +1,20 @@
-#### [v22.04.01]
+#### [v22.04.08]
 
-Di rilis v22.04.01, menyediakan Penambahan fitur FAQS pada halaman website. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.04.08, [untuk diisi]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada totoprayogo1916 yang baru mulai berkontribusi.
+Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 
 #### Penambahan Fitur
-1. [#288](https://github.com/OpenSID/OpenDK/issues/288) Penambahan fitur FAQS pada halaman website.
+1. [#354](https://github.com/OpenSID/OpenDK/issues/354) Tambahkan tombol list/show data penduduk dapat diperluas hingga 500 baris.
+2. [#355](https://github.com/OpenSID/OpenDK/issues/355) Perjelas status kehamilan pada tampilan detail data penduduk.
+3. [#356](https://github.com/OpenSID/OpenDK/issues/356) Sediakan tombol kembali pada form detail data penduduk.
+4. [#332](https://github.com/OpenSID/OpenDK/issues/332) Tambahkan fitur akfif/non-aktifkan FAQ di web.
+6. [#139](https://github.com/OpenSID/OpenDK/issues/139) Tambahkan jumlah karakter pada isian tipologi sejarah.
+7. [#294](https://github.com/OpenSID/OpenDK/issues/294) Ambil data tingkat pendidikan dari data penduduk hasil sinkronisasi penduduk.
 
 #### Perbaikan BUG
-1. [#289](https://github.com/OpenSID/OpenDK/issues/289) Perbaiki error Class 'Barryvdh\Debugbar\ServiceProvider' not found sewaktu install/update composer dengan opsi --no-dev.
-2. [#321](https://github.com/OpenSID/OpenDK/issues/321) Perbaiki tampilan header yang menutup bagian berita desa.
-3. [#286](https://github.com/OpenSID/OpenDK/issues/286) Perbaiki gagal import penduduk.
-4. [#331](https://github.com/OpenSID/OpenDK/issues/331) Perbaiki penempatan notifikasi sistem komplain.
-5. [#335](https://github.com/OpenSID/OpenDK/issues/335) Perbaiki notifikasi hapus event yang tidak sesuai.
-6. [#337](https://github.com/OpenSID/OpenDK/issues/337) Perbaiki tidak bisa hapus data desa jika dimodul lain sudah digunakan.
-7. [#344](https://github.com/OpenSID/OpenDK/issues/344) Perbaiki tombol ubah dan hapus serta proses impor data modul kesehatan (AKI & AKB , epidemi penyakit).
-
-8. [#341](https://github.com/OpenSID/OpenDK/pull/341) Perbaiki tombol ubah dan hapus pada modul putus sekolah, tingkat pendidikan, fasilitas paud.
-9. [#342](https://github.com/OpenSID/OpenDK/pull/342) Perbaiki tombol hapus pada modul APBDes dan Laporan APBDes tidak berfungsi.
+1. [#353](https://github.com/OpenSID/OpenDK/issues/353) Perbaiki sikronisasi data penduduk OpenSID ke OpenDK.
+2. [#370](https://github.com/OpenSID/OpenDK/issues/370) Perbaiki XHRrequest return 404 pada halaman ubah data umum.
+3. [#374](https://github.com/OpenSID/OpenDK/pull/374) Sesuaikan format angka pada statistik.
 
 #### TEKNIS
-1. Hapus composer scripts cs-check & cs-fix yg sudah tidak digunakan.
-2. Penyesuaian routes.
-3. [#70](https://github.com/OpenSID/OpenDK/issues/70) Refactor Autentikasi dengan packages native laravel.

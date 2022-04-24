@@ -29,23 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Faq extends Model
+class ImportLogNullable extends Migration
 {
     /**
-     * The attributes that are mass assignable.
+     * Run the migrations.
      *
-     * @var array
+     * @return void
      */
+    public function up()
+    {
+        Schema::table('das_tingkat_pendidikan', function (Blueprint $table) {
+            // change() tells the Schema builder that we are altering a table
+            $table->integer('import_id')->nullable()->change();
+        });
+    }
 
-    protected $table = 'das_faq';
-
-    protected $fillable = [
-        'question',
-        'answer',
-        'status',
-    ];
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_tingkat_pendidikan', function (Blueprint $table) {
+            // change() tells the Schema builder that we are altering a table
+            $table->integer('import_id')->nullable(false)->change();
+        });
+    }
 }

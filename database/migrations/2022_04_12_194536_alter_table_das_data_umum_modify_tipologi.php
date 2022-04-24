@@ -29,23 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Faq extends Model
+class AlterTableDasDataUmumModifyTipologi extends Migration
 {
     /**
-     * The attributes that are mass assignable.
+     * Run the migrations.
      *
-     * @var array
+     * @return void
      */
+    public function up()
+    {
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->longText('tipologi')->change();
+        });
+    }
 
-    protected $table = 'das_faq';
-
-    protected $fillable = [
-        'question',
-        'answer',
-        'status',
-    ];
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->string('tipologi', 255)->change();
+        });
+    }
 }

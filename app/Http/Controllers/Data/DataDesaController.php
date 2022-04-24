@@ -70,7 +70,7 @@ class DataDesaController extends Controller
                 }
                 $data['peta'] = route('data.data-desa.peta', $row->id);
                 $data['delete_url'] = route('data.data-desa.destroy', $row->id);
-               
+
                 return view('forms.aksi', $data);
             })
             ->editColumn('website', function ($row) {

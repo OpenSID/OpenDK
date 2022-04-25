@@ -86,5 +86,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('detail', 'Api\PesanController@detail');
     });
 
-    // Route::post('pesan', 'Api\PesanController@store');
+    /**
+     * Identitas Desa
+     */
+    Route::group(['prefix' => 'identitas-desa'], function () {
+        Route::post('/', 'Api\ProfilDesaController@store');
+    });
 });

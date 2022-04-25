@@ -29,35 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Http\Controllers\Api;
 
-class AddRememberUser extends Migration
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfilDesaRequest;
+use App\Models\DataDesa;
+
+class ProfilDesaController extends Controller
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function __construct()
     {
-        if (!Schema::hasColumn('users', 'remember_token')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('remember_token', 100)->after('password')->nullable();
-            });
-        }
+        $this->middleware('auth:api');
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function store(ProfilDesaRequest $request)
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('remember_token');
-        });
+        DataDesa::where('desa_id', $request->kode_desa)->update([
+            'website' => $request->website,
+            'sebutan_desa' => $request->sebutan_desa
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Proses sinkronisasi identitas desa sudah selesai',
+        ]);
     }
 }

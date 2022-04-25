@@ -170,7 +170,7 @@ Route::group(['middleware' => 'installed'], function () {
          * Group Routing for Informasi
          */
         Route::namespace('Informasi')->group(function () {
-            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
+            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
 
                 // Prosedur
                 Route::group(['prefix' => 'prosedur'], function () {
@@ -200,6 +200,7 @@ Route::group(['middleware' => 'installed'], function () {
                 // FAQ
                 Route::group(['prefix' => 'faq'], function () {
                     Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
+                    Route::get('getdata', ['as' => 'informasi.faq.getdata', 'uses' => 'FaqController@getDataFaq']);
                     Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
                     Route::get('create', ['as' => 'informasi.faq.create', 'uses' => 'FaqController@create']);
                     Route::post('store', ['as' => 'informasi.faq.store', 'uses' => 'FaqController@store']);
@@ -441,7 +442,7 @@ Route::group(['middleware' => 'installed'], function () {
             });
 
             // Admin SIKEMA
-            Route::group(['prefix' => 'admin-komplain', 'middleware' => ['role:administrator-website|admin-komplain|super-admin']], function () {
+            Route::group(['prefix' => 'admin-komplain', 'middleware' => ['role:administrator-website|admin-komplain|super-admin|kontributor-artikel']], function () {
                 Route::get('/', ['as' => 'admin-komplain.index', 'uses' => 'AdminKomplainController@index']);
                 Route::get('getdata', ['as' => 'admin-komplain.getdata', 'uses' => 'AdminKomplainController@getDataKomplain']);
                 Route::get('edit/{id}', ['as' => 'admin-komplain.edit', 'uses' => 'AdminKomplainController@edit']);

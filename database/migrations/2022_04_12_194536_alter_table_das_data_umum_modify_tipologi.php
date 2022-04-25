@@ -33,7 +33,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRememberUser extends Migration
+class AlterTableDasDataUmumModifyTipologi extends Migration
 {
     /**
      * Run the migrations.
@@ -42,11 +42,9 @@ class AddRememberUser extends Migration
      */
     public function up()
     {
-        if (!Schema::hasColumn('users', 'remember_token')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('remember_token', 100)->after('password')->nullable();
-            });
-        }
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->longText('tipologi')->change();
+        });
     }
 
     /**
@@ -56,8 +54,8 @@ class AddRememberUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('remember_token');
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->string('tipologi', 255)->change();
         });
     }
 }

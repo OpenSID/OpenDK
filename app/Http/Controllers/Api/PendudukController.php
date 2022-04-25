@@ -50,12 +50,7 @@ class PendudukController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api');
-        if (!Auth::guard('api')->user()->hasRole('admin-desa')) {
-            response()->json(['status' => 'error',
-            'message' => 'akun tidak punya hak akses terhadap modul penduduk'], 404)->send();
-            die();
-        }
+        $this->middleware(['auth:api', 'role:admin-desa']);
     }
 
     /**

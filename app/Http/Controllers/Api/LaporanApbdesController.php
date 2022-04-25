@@ -34,7 +34,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LaporanApbdesRequest;
 use App\Jobs\LaporanApbdesQueueJob;
-use Illuminate\Support\Facades\Auth;
 
 class LaporanApbdesController extends Controller
 {

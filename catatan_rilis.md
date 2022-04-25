@@ -20,5 +20,6 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 3. [#374](https://github.com/OpenSID/OpenDK/pull/374) Sesuaikan format angka pada statistik.
 4. [#361](https://github.com/OpenSID/OpenDK/issues/361) Perbaiki error migrasi 2022_03_09_134418_create_permission_tables.
 5. [#365](https://github.com/OpenSID/OpenDK/issues/365) Perbaiki table das_setting tidak ada saat composer install.
+6. [#385](https://github.com/OpenSID/OpenDK/issues/385) Perbaiki link demo OpenDK.
 
 #### TEKNIS

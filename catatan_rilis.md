@@ -12,6 +12,7 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 6. [#139](https://github.com/OpenSID/OpenDK/issues/139) Tambahkan jumlah karakter pada isian tipologi sejarah.
 7. [#294](https://github.com/OpenSID/OpenDK/issues/294) Ambil data tingkat pendidikan dari data penduduk hasil sinkronisasi penduduk.
 8. [#313](https://github.com/OpenSID/OpenDK/issues/313) Sediakan group pengguna kontributor berita/artikel kecamatan.
+9. [#310](https://github.com/OpenSID/OpenDK/issues/310) Tambahkan sinkronisasi profil desa OpenSID ke OpenDK.
 
 #### Perbaikan BUG
 1. [#353](https://github.com/OpenSID/OpenDK/issues/353) Perbaiki sikronisasi data penduduk OpenSID ke OpenDK.

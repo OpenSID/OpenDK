@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\PesertaProgram;
 use App\Models\Program;
 use Illuminate\Http\Request;
@@ -43,17 +44,16 @@ class ProgramBantuanController extends Controller
     {
         $page_title       = 'Program Bantuan';
         $page_description = 'Daftar Program Bantuan';
+        $list_desa        = DataDesa::all();
 
-        return view('data.program_bantuan.index', compact('page_title', 'page_description'));
+        return view('data.program_bantuan.index', compact('page_title', 'page_description', 'list_desa'));
     }
 
-    public function getaProgramBantuan()
+    public function getaProgramBantuan(Request $request)
     {
-        return DataTables::of(Program::all())
+        return DataTables::of(Program::when(!empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
                 $data['detail_url'] = route('data.program-bantuan.show', $row->id);
-                $data['edit_url']   = route('data.program-bantuan.edit', $row->id);
-                $data['delete_url'] = route('data.program-bantuan.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })

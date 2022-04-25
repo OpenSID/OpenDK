@@ -29,34 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Rules\CekDesa;
+use Illuminate\Foundation\Http\FormRequest;
 
-class PesertaProgram extends Model
+class ProgramBantuanRequest extends FormRequest
 {
-    protected $table = 'das_peserta_program';
-
-    protected $fillable = [
-        'peserta',
-        'program_id',
-        'sasaran',
-        'no_id_kartu',
-        'kartu_nik',
-        'kartu_nama',
-        'kartu_tempat_lahir',
-        'kartu_tanggal_lahir',
-        'kartu_alamat',
-        'kartu_peserta',
-        'desa_id'
-    ];
-
-    public function penduduk()
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        if ($this->sasaran == 1) {
-            return $this->hasOne(Penduduk::class, 'nik', 'peserta');
-        } elseif ($this->sasaran == 2) {
-            return $this->hasOne(Penduduk::class, 'no_kk', 'peserta');
-        }
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'file' => 'file|mimes:zip|max:5120',
+            "desa_id" => ['required', 'string', new CekDesa()],
+        ];
     }
 }

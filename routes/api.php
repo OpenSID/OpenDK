@@ -87,7 +87,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/', 'Api\PembangunanController@store');
         Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');
     });
-        
+
     /**
     * Identitas Desa
     */

@@ -29,35 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Http\Requests;
 
-class AddRememberUser extends Migration
+use Illuminate\Foundation\Http\FormRequest;
+
+class ProfilDesaRequest extends FormRequest
 {
     /**
-     * Run the migrations.
+     * Determine if the user is authorized to make this request.
      *
-     * @return void
+     * @return bool
      */
-    public function up()
+    public function authorize()
     {
-        if (!Schema::hasColumn('users', 'remember_token')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('remember_token', 100)->after('password')->nullable();
-            });
-        }
+        return true;
     }
 
     /**
-     * Reverse the migrations.
+     * Get the validation rules that apply to the request.
      *
-     * @return void
+     * @return array
      */
-    public function down()
+    public function rules()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('remember_token');
-        });
+        return [
+            "kode_desa" => "present|string|exists:das_data_desa,desa_id",
+            "sebutan_desa" => "required|string",
+            "website" => "sometimes|url"
+        ];
     }
 }

@@ -33,7 +33,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRememberUser extends Migration
+class ImportLogNullable extends Migration
 {
     /**
      * Run the migrations.
@@ -42,11 +42,10 @@ class AddRememberUser extends Migration
      */
     public function up()
     {
-        if (!Schema::hasColumn('users', 'remember_token')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('remember_token', 100)->after('password')->nullable();
-            });
-        }
+        Schema::table('das_tingkat_pendidikan', function (Blueprint $table) {
+            // change() tells the Schema builder that we are altering a table
+            $table->integer('import_id')->nullable()->change();
+        });
     }
 
     /**
@@ -56,8 +55,9 @@ class AddRememberUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('remember_token');
+        Schema::table('das_tingkat_pendidikan', function (Blueprint $table) {
+            // change() tells the Schema builder that we are altering a table
+            $table->integer('import_id')->nullable(false)->change();
         });
     }
 }

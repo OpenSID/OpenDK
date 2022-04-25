@@ -44,7 +44,7 @@
                 <ul class="dropdown-menu fadeIn animated   " style="overflow-y : none; " role="menu">
                   @foreach ($navdesa->chunk(2) as $desa)
                     @foreach ($desa as $d)
-                    <li><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ 'Desa ' .ucfirst($d->nama) }}</a></li>
+                    <li><a href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}">{{ ($d->sebutan_desa.' ' ?? 'Desa ') .ucfirst($d->nama) }}</a></li>
                     @endforeach
                   @endforeach
                 </ul>

@@ -187,6 +187,7 @@
 
 @include('partials.asset_amcharts')
 @include('partials.asset_select2')
+@include('partials.asset_numeraljs')
 @push('scripts')
 <script>
     $(function () {
@@ -228,28 +229,29 @@
         $.ajax('{!! route('statistik.chart-anggaran-realisasi') !!}', {
             data: {mid: mid, y: year}
         }).done(function (data) {
-            $('#total_belanja').html('Rp '+data.sum.total_belanja);
-            $('#total_belanja_persen').html(data.sum.total_belanja_persen+'%');
-            $('#total_belanja_persen_bar').css('width', data.sum.total_belanja_persen + '%');
+            
+            $('#total_belanja').html('Rp '+numeral(data.sum.total_belanja).format());
+            $('#total_belanja_persen').html(numeral(data.sum.total_belanja_persen).format()+'%');
+            $('#total_belanja_persen_bar').css('width', data.sum.total_belanja_persen+ '%');
 
-            $('#selisih_anggaran_realisasi').html('Rp '+data.sum.selisih_anggaran_realisasi);
-            $('#selisih_anggaran_realisasiPersen').html(data.sum.selisih_anggaran_realisasi_persen+'%');
+            $('#selisih_anggaran_realisasi').html('Rp '+numeral(data.sum.selisih_anggaran_realisasi).format());
+            $('#selisih_anggaran_realisasiPersen').html(numeral(data.sum.selisih_anggaran_realisasi_persen).format()+'%');
             $('#selisih_anggaran_realisasiPersen_bar').css('width', data.sum.selisih_anggaran_realisasi_persen+'%');
 
-            $('#belanja_pegawai').html('Rp '+data.sum.belanja_pegawai);
-            $('#belanja_pegawai_persen').html(data.sum.belanja_pegawai_persen+'%');
+            $('#belanja_pegawai').html('Rp '+numeral(data.sum.belanja_pegawai).format());
+            $('#belanja_pegawai_persen').html(numeral(data.sum.belanja_pegawai_persen).format()+'%');
             $('#belanja_pegawai_persen_bar').css('width', data.sum.belanja_pegawai_persen+'%');
 
-            $('#belanja_barang_jasa').html('Rp '+data.sum.belanja_barang_jasa);
-            $('#belanja_barang_jasa_persen').html(data.sum.belanja_barang_jasa_persen+'%');
+            $('#belanja_barang_jasa').html('Rp '+numeral(data.sum.belanja_barang_jasa).format());
+            $('#belanja_barang_jasa_persen').html(numeral(data.sum.belanja_barang_jasa_persen).format()+'%');
             $('#belanja_barang_jasa_persen_bar').css('width', data.sum.belanja_barang_jasa_persen_bar+'%');
 
-            $('#belanja_modal').html('Rp '+ data.sum.belanja_modal);
-            $('#belanja_modal_persen').html(data.sum.belanja_modal_persen+'%');
+            $('#belanja_modal').html('Rp '+ numeral(data.sum.belanja_modal).format());
+            $('#belanja_modal_persen').html(numeral(data.sum.belanja_modal_persen).format()+'%');
             $('#belanja_modal_persen_bar').css('width', data.sum.belanja_modal_persen_bar+'%');
 
-            $('#belanja_tidak_langsung').html('Rp '+ data.sum.belanja_tidak_langsung);
-            $('#belanja_tidak_langsung_persen').html(data.sum.belanja_tidak_langsung_persen+'%');
+            $('#belanja_tidak_langsung').html('Rp '+ numeral(data.sum.belanja_tidak_langsung).format());
+            $('#belanja_tidak_langsung_persen').html(numeral(data.sum.belanja_tidak_langsung_persen).format()+'%');
             $('#belanja_tidak_langsung_persen_bar').css('width', data.sum.belanja_tidak_langsung_persen_bar+'%');
 
 
@@ -297,7 +299,12 @@
                 "autoMargins":false,
                 "valueWidth": 120
             },
-            "marginTop" : 50
+            "marginTop" : 50,
+            "numberFormatter": {
+                "precision": 2,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         } );
     }
 

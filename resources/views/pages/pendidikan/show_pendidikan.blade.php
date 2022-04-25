@@ -330,6 +330,11 @@
                 "minimum": 0,
                 "title":"Jumlah Penduduk"
             }],
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
 
@@ -565,6 +570,11 @@
                 "baseValue" : 0,
                 "minimum": 0
             }],
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
 
@@ -673,6 +683,11 @@
                 "size": 20,
                 "y": -4
             }],
+            "numberFormatter": {
+                "precision": -1,
+                "decimalSeparator": ",",
+                "thousandsSeparator": "."
+            }
         });
     }
 </script>

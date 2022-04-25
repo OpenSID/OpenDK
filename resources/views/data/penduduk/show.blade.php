@@ -17,6 +17,17 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div class="float-right">
+                        <div class="btn-group">
+                            <a href="{{ route('data.penduduk.index') }}">
+                                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 {!!  Form::model($penduduk, [ 'id' => 'form-penduduk', 'class' => 'form-horizontal form-label-left'] ) !!}
 
                 <div class="box-body">
@@ -25,10 +36,21 @@
 
                 </div>
                 {!! Form::close() !!}
+                <div class="box-footer with-border">
+                    <div class="float-right">
+                        <div class="btn-group">
+                            <a href="{{ route('data.penduduk.index') }}">
+                                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 @endsection
+
 
 @include(('partials.asset_select2'))

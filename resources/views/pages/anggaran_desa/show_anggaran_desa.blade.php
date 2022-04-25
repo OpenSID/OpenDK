@@ -246,7 +246,12 @@
                     "autoMargins": true,
                     "valueWidth": 90
                 },
-                "marginTop": 50
+                "marginTop": 50,
+                "numberFormatter": {
+                    "precision": -1,
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": "."
+                }
             });
 
             chart.addListener("init", handleInit);

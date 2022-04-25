@@ -33,7 +33,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRememberUser extends Migration
+class TambahKolomDesa extends Migration
 {
     /**
      * Run the migrations.
@@ -42,11 +42,9 @@ class AddRememberUser extends Migration
      */
     public function up()
     {
-        if (!Schema::hasColumn('users', 'remember_token')) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('remember_token', 100)->after('password')->nullable();
-            });
-        }
+        Schema::table('das_data_desa', function (Blueprint $table) {
+            $table->string('sebutan_desa', 100)->after('nama')->nullable();
+        });
     }
 
     /**
@@ -56,8 +54,8 @@ class AddRememberUser extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('remember_token');
+        Schema::table('das_data_desa', function (Blueprint $table) {
+            $table->dropColumn('sebutan_desa');
         });
     }
 }

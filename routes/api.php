@@ -79,4 +79,11 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'laporan-penduduk'], function () {
         Route::post('/', 'Api\LaporanPendudukController@store');
     });
+
+    /**
+     * Identitas Desa
+     */
+    Route::group(['prefix' => 'identitas-desa'], function () {
+        Route::post('/', 'Api\ProfilDesaController@store');
+    });
 });

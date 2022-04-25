@@ -13,7 +13,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Tipologi <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::textarea('tipologi', null, ['placeholder' => 'Tipologi', 'class' => 'form-control', 'required', 'rows'=>2]) !!}
+                {!! Form::textarea('tipologi', null, ['placeholder' => 'Tipologi', 'class' => 'textarea', 'form-control', 'required', 'placeholder' => 'Tipologi Kecamatan', 'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
             </div>
         </div>
 

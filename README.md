@@ -9,9 +9,9 @@ OpenDK (https://github.com/OpenSID/OpenDK) adalah aplikasi yang bisa digunakan o
 Pedoman pemasangan dan penggunaan OpenDK dapat dilihat di wiki OpenDK di https://github.com/opensid/opendk/wiki.
 
 ### 💻 DEMO
-Demo aplikasi OpenDK dapat dilihat di https://demo.opendk.or.id. Versi yang terlihat di demo itu adalah rilis terkini.
+Demo aplikasi OpenDK dapat dilihat di https://demodk.opendesa.id. Versi yang terlihat di demo itu adalah rilis terkini.
 
-Modul administrasi OpenDK demo dapat diaskses pada https://demo.opendk.or.id/index.php/login. Masukkan Username = admin@mail.com dan Password = password.
+Modul administrasi OpenDK demo dapat diaskses pada https://demodk.opendesa.id/index.php/login. Masukkan Username = admin@mail.com dan Password = password.
 
 ### 💬 FORUM
 

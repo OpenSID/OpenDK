@@ -30,9 +30,10 @@
  */
 
 use Illuminate\Database\Migrations\Migration;
-use Spatie\Permission\Models\Role;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class RoleKontributorArtikel extends Migration
+class TambahKolomDesa extends Migration
 {
     /**
      * Run the migrations.
@@ -41,7 +42,9 @@ class RoleKontributorArtikel extends Migration
      */
     public function up()
     {
-        Role::create(['name' =>'kontributor-artikel', 'guard_name' => 'web'], )->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        Schema::table('das_data_desa', function (Blueprint $table) {
+            $table->string('sebutan_desa', 100)->after('nama')->nullable();
+        });
     }
 
     /**
@@ -51,5 +54,8 @@ class RoleKontributorArtikel extends Migration
      */
     public function down()
     {
+        Schema::table('das_data_desa', function (Blueprint $table) {
+            $table->dropColumn('sebutan_desa');
+        });
     }
 }

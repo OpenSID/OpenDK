@@ -29,58 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Requests\ProfilDesaRequest;
+use App\Models\DataDesa;
 
-class LoginController extends Controller
+class ProfilDesaController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        parent::__construct();
-
-        $this->middleware('guest')->except('logout');
+        $this->middleware('auth:api');
     }
 
-    public function redirectTo()
+    public function store(ProfilDesaRequest $request)
     {
-        switch (auth()->user()->roles()->first()->name) {
-            case 'kontributor-artikel':
-                $this->redirectTo = 'informasi/artikel';
-                break;
+        DataDesa::where('desa_id', $request->kode_desa)->update([
+            'website' => $request->website,
+            'sebutan_desa' => $request->sebutan_desa
+        ]);
 
-            default:
-                $this->redirectTo;
-                break;
-        }
-
-        return $this->redirectTo;
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Proses sinkronisasi identitas desa sudah selesai',
+        ]);
     }
 }

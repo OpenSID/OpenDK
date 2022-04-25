@@ -29,58 +29,28 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Auth;
+use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Role;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
-class LoginController extends Controller
+class RoleKontributorArtikel extends Migration
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
+     * Run the migrations.
      *
      * @return void
      */
-    public function __construct()
+    public function up()
     {
-        parent::__construct();
-
-        $this->middleware('guest')->except('logout');
+        Role::create(['name' =>'kontributor-artikel', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
     }
 
-    public function redirectTo()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        switch (auth()->user()->roles()->first()->name) {
-            case 'kontributor-artikel':
-                $this->redirectTo = 'informasi/artikel';
-                break;
-
-            default:
-                $this->redirectTo;
-                break;
-        }
-
-        return $this->redirectTo;
+        Role::where(['name' =>'kontributor-artikel', 'guard_name' => 'web'])->delete();
     }
 }

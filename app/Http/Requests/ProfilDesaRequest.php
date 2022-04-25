@@ -29,58 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Requests;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Foundation\Http\FormRequest;
 
-class LoginController extends Controller
+class ProfilDesaRequest extends FormRequest
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
     /**
-     * Where to redirect users after login.
+     * Determine if the user is authorized to make this request.
      *
-     * @var string
+     * @return bool
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function authorize()
     {
-        parent::__construct();
-
-        $this->middleware('guest')->except('logout');
+        return true;
     }
 
-    public function redirectTo()
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
-        switch (auth()->user()->roles()->first()->name) {
-            case 'kontributor-artikel':
-                $this->redirectTo = 'informasi/artikel';
-                break;
-
-            default:
-                $this->redirectTo;
-                break;
-        }
-
-        return $this->redirectTo;
+        return [
+            "kode_desa" => "present|string|exists:das_data_desa,desa_id",
+            "sebutan_desa" => "required|string",
+            "website" => "sometimes|url"
+        ];
     }
 }

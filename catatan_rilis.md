@@ -11,6 +11,8 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 4. [#332](https://github.com/OpenSID/OpenDK/issues/332) Tambahkan fitur akfif/non-aktifkan FAQ di web.
 6. [#139](https://github.com/OpenSID/OpenDK/issues/139) Tambahkan jumlah karakter pada isian tipologi sejarah.
 7. [#294](https://github.com/OpenSID/OpenDK/issues/294) Ambil data tingkat pendidikan dari data penduduk hasil sinkronisasi penduduk.
+8. [#313](https://github.com/OpenSID/OpenDK/issues/313) Sediakan group pengguna kontributor berita/artikel kecamatan.
+9. [#310](https://github.com/OpenSID/OpenDK/issues/310) Tambahkan sinkronisasi profil desa OpenSID ke OpenDK.
 
 #### Perbaikan BUG
 1. [#353](https://github.com/OpenSID/OpenDK/issues/353) Perbaiki sikronisasi data penduduk OpenSID ke OpenDK.
@@ -18,5 +20,6 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 3. [#374](https://github.com/OpenSID/OpenDK/pull/374) Sesuaikan format angka pada statistik.
 4. [#361](https://github.com/OpenSID/OpenDK/issues/361) Perbaiki error migrasi 2022_03_09_134418_create_permission_tables.
 5. [#365](https://github.com/OpenSID/OpenDK/issues/365) Perbaiki table das_setting tidak ada saat composer install.
+6. [#385](https://github.com/OpenSID/OpenDK/issues/385) Perbaiki link demo OpenDK.
 
 #### TEKNIS

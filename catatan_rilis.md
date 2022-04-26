@@ -1,8 +1,10 @@
-#### [v22.04.08]
+#### [v22.05.beta]
 
-Di rilis v22.04.08, [untuk diisi]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.05.beta, menyediakan komunikasi pesan dengan Opensid. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
+Terima kasih pada [totoprayogo1916] yang terus berkontribusi. Terima kasih pula pada [wongjapan] yang baru mulai berkontribusi.
+
+
 
 #### Penambahan Fitur
 1. [#354](https://github.com/OpenSID/OpenDK/issues/354) Tambahkan tombol list/show data penduduk dapat diperluas hingga 500 baris.

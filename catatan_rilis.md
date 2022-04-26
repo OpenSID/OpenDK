@@ -1,6 +1,6 @@
-#### [v22.04.08]
+#### [v22.05.beta]
 
-Di rilis v22.04.08, [untuk diisi]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.05.beta, [untuk diisi]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 

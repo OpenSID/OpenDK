@@ -1,4 +1,4 @@
-#### [v22.05.beta]
+#### [v22.05.pasca]
 
 Di rilis v22.05.beta, menyediakan komunikasi pesan dengan Opensid. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 

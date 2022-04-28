@@ -24,3 +24,4 @@ copy_public.sh
 public/error_log
 composer.lock
 .php-cs-fixer.cache
+public/uploads/user/*

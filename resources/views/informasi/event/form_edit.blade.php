@@ -39,15 +39,27 @@
 
 @push('scripts')
 <script type="application/javascript">
-    $('#status').on('change', function() {
-        if( this.value == 'CLOSED' ) {
-            $('#attachment_input').html('<label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>' +
-                    '<div class="col-md-6 col-sm-6 col-xs-12">' +
-                    '<input id="attachment" name="attachment" class="form-control" type="file" required>' +
-                    '</div>');
-        }else{
-            $('#attachment_input').html("");
+    $(document).ready(function () {
+        if ($('#status').val() == 'CLOSED') {
+            add_atachment();
         }
+
+        $('#status').on('change', function() {
+            if( this.value == 'CLOSED' ) {
+                add_atachment();
+            }else{
+                $('#attachment_input').html("");
+            }
+        });
+
+        function add_atachment() {
+            $('#attachment_input').html(`
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <input id="attachment" name="attachment" class="form-control" type="file" required>
+                </div>
+            `);
+        };
     });
 </script>
 @endpush

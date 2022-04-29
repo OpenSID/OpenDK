@@ -90,8 +90,6 @@ class UserController extends Controller
             $user->assignRole($roles);
 
             return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
-            ;
-            ;
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', $e->getMessage());

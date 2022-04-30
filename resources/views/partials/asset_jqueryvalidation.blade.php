@@ -1,5 +1,5 @@
 
 @push('scripts')
-  <!-- jquery validation -->
-  <script src="{{ asset ("/js/jquery.validate.min.js") }}"></script>
+<!-- Laravel Javascript Validation -->
+<script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
 @endpush

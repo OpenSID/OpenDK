@@ -25,6 +25,7 @@ Terima kasih pada [totoprayogo1916] yang terus berkontribusi. Terima kasih pula 
 5. [#365](https://github.com/OpenSID/OpenDK/issues/365) Perbaiki table das_setting tidak ada saat composer install.
 6. [#385](https://github.com/OpenSID/OpenDK/issues/385) Perbaiki link demo OpenDK.
 7. [#395](https://github.com/OpenSID/OpenDK/issues/395) Perbaiki nama desa yang terpotong karena terlalu panjang di menu desa.
+7. [#394](https://github.com/OpenSID/OpenDK/issues/394) Perbaiki form upload file hilang pada module event ketika gagal upload.
 
 #### TEKNIS
-1. [#398](https://github.com/OpenSID/OpenDK/issues/398) Perbaiki error jquery(...).validate not function.
+1. Perbaiki error jquery(...).validate not function.

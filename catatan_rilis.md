@@ -29,3 +29,4 @@ Terima kasih pada [totoprayogo1916] yang terus berkontribusi. Terima kasih pula 
 
 #### TEKNIS
 1. Perbaiki error jquery(...).validate not function.
+2. Perbaiki nama class yang tidak terbaca di LINUX.

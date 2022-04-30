@@ -1,6 +1,6 @@
-#### [v22.05.beta]
+#### [v22.05.01]
 
-Di rilis v22.05.beta, menyediakan komunikasi pesan dengan Opensid. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.05.01, menyediakan komunikasi pesan dengan Opensid. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada [totoprayogo1916] yang terus berkontribusi. Terima kasih pula pada [wongjapan] yang baru mulai berkontribusi.
 

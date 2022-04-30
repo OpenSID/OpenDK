@@ -25,5 +25,9 @@ Terima kasih pada [totoprayogo1916] yang terus berkontribusi. Terima kasih pula 
 4. [#361](https://github.com/OpenSID/OpenDK/issues/361) Perbaiki error migrasi 2022_03_09_134418_create_permission_tables.
 5. [#365](https://github.com/OpenSID/OpenDK/issues/365) Perbaiki table das_setting tidak ada saat composer install.
 6. [#385](https://github.com/OpenSID/OpenDK/issues/385) Perbaiki link demo OpenDK.
+7. [#395](https://github.com/OpenSID/OpenDK/issues/395) Perbaiki nama desa yang terpotong karena terlalu panjang di menu desa.
+8. [#394](https://github.com/OpenSID/OpenDK/issues/394) Perbaiki form upload file hilang pada module event ketika gagal upload.
 
 #### TEKNIS
+1. Perbaiki error jquery(...).validate not function.
+2. Perbaiki nama class yang tidak terbaca di LINUX.

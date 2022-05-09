@@ -80,6 +80,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/', 'Api\LaporanPendudukController@store');
     });
 
+    Route::group(['prefix' => 'pesan'], function () {
+        Route::post('/', 'Api\PesanController@store');
+        Route::post('getpesan', 'Api\PesanController@getPesan');
+        Route::get('detail', 'Api\PesanController@detail');
+    });
+
     /**
      * Identitas Desa
      */

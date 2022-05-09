@@ -454,6 +454,25 @@ Route::group(['middleware' => 'installed'], function () {
         });
 
         /**
+         * Group Routing for Pesan
+         */
+        Route::namespace('Pesan')->group(function () {
+            //Routes Resource Pesan
+            Route::group(['prefix' => 'pesan'], function () {
+                Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
+                Route::get('/keluar', ['as' => 'pesan.keluar', 'uses' => 'PesanController@loadPesanKeluar']);
+                Route::get('/arsip', ['as' => 'pesan.arsip', 'uses' => 'PesanController@loadPesanArsip']);
+                Route::post('/arsip', ['as' => 'pesan.arsip.post', 'uses' => 'PesanController@setArsipPesan']);
+                Route::get('/compose', ['as' => 'pesan.compose', 'uses' => 'PesanController@composePesan']);
+                Route::post('/compose/post', ['as' => 'pesan.compose.post', 'uses' => 'PesanController@storeComposePesan']);
+                Route::post('/read/multiple', ['as' => 'pesan.read.multiple', 'uses' => 'PesanController@setMultipleReadPesanStatus']);
+                Route::post('/arsip/multiple', ['as' => 'pesan.arsip.multiple', 'uses' => 'PesanController@setMultipleArsipPesanStatus']);
+                Route::post('/reply', ['as' => 'pesan.reply.post', 'uses' => 'PesanController@replyPesan']);
+                Route::get('/{id_pesan}', ['as' => 'pesan.read', 'uses' => 'PesanController@readPesan']);
+            });
+        });
+
+        /**
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {

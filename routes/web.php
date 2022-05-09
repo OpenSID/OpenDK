@@ -200,6 +200,7 @@ Route::group(['middleware' => 'installed'], function () {
                 // FAQ
                 Route::group(['prefix' => 'faq'], function () {
                     Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
+                    Route::get('getdata', ['as' => 'informasi.faq.getdata', 'uses' => 'FaqController@getDataFaq']);
                     Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
                     Route::get('create', ['as' => 'informasi.faq.create', 'uses' => 'FaqController@create']);
                     Route::post('store', ['as' => 'informasi.faq.store', 'uses' => 'FaqController@store']);
@@ -449,6 +450,25 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::delete('destroy/{id}', ['as' => 'admin-komplain.destroy', 'uses' => 'AdminKomplainController@destroy']);
                 Route::put('setuju/{id}', ['as' => 'admin-komplain.setuju', 'uses' => 'AdminKomplainController@disetujui']);
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
+            });
+        });
+
+        /**
+         * Group Routing for Pesan
+         */
+        Route::namespace('Pesan')->group(function () {
+            //Routes Resource Pesan
+            Route::group(['prefix' => 'pesan'], function () {
+                Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
+                Route::get('/keluar', ['as' => 'pesan.keluar', 'uses' => 'PesanController@loadPesanKeluar']);
+                Route::get('/arsip', ['as' => 'pesan.arsip', 'uses' => 'PesanController@loadPesanArsip']);
+                Route::post('/arsip', ['as' => 'pesan.arsip.post', 'uses' => 'PesanController@setArsipPesan']);
+                Route::get('/compose', ['as' => 'pesan.compose', 'uses' => 'PesanController@composePesan']);
+                Route::post('/compose/post', ['as' => 'pesan.compose.post', 'uses' => 'PesanController@storeComposePesan']);
+                Route::post('/read/multiple', ['as' => 'pesan.read.multiple', 'uses' => 'PesanController@setMultipleReadPesanStatus']);
+                Route::post('/arsip/multiple', ['as' => 'pesan.arsip.multiple', 'uses' => 'PesanController@setMultipleArsipPesanStatus']);
+                Route::post('/reply', ['as' => 'pesan.reply.post', 'uses' => 'PesanController@replyPesan']);
+                Route::get('/{id_pesan}', ['as' => 'pesan.read', 'uses' => 'PesanController@readPesan']);
             });
         });
 

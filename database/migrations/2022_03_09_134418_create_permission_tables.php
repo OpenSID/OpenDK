@@ -32,6 +32,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -44,26 +45,14 @@ class CreatePermissionTables extends Migration
      */
     public function up()
     {
+        DB::statement("SET foreign_key_checks=0");
+
         // cek table dari sentinel
-        if (Schema::hasTable('roles')) {
-            Schema::drop('roles');
-        }
+        Schema::dropIfExists('role_users');
+        Schema::dropIfExists('activations');
+        Schema::dropIfExists('persistences');
+        Schema::dropIfExists('reminders');
 
-        if (Schema::hasTable('role_users')) {
-            Schema::drop('role_users');
-        }
-
-        if (Schema::hasTable('activations')) {
-            Schema::drop('activations');
-        }
-
-        if (Schema::hasTable('persistences')) {
-            Schema::drop('persistences');
-        }
-
-        if (Schema::hasTable('reminders')) {
-            Schema::drop('reminders');
-        }
         // end cek table dari sentinel
 
         $tableNames = config('permission.table_names');
@@ -80,10 +69,9 @@ class CreatePermissionTables extends Migration
         Schema::dropIfExists($tableNames['permissions']);
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');       // For MySQL 8.0 use string('name', 125);
-            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
+            $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
-
             $table->unique(['name', 'guard_name']);
         });
 
@@ -94,8 +82,9 @@ class CreatePermissionTables extends Migration
                 $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
             }
-            $table->string('name');       // For MySQL 8.0 use string('name', 125);
-            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+
+            $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
+            $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);
@@ -104,6 +93,7 @@ class CreatePermissionTables extends Migration
             }
         });
 
+        Schema::dropIfExists($tableNames['model_has_permissions']);
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
 
@@ -131,6 +121,7 @@ class CreatePermissionTables extends Migration
             }
         });
 
+        Schema::dropIfExists($tableNames['model_has_roles']);
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
@@ -158,6 +149,7 @@ class CreatePermissionTables extends Migration
             }
         });
 
+        Schema::dropIfExists($tableNames['role_has_permissions']);
         Schema::create($tableNames['role_has_permissions'], function (Blueprint $table) use ($tableNames) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
             $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
@@ -175,6 +167,7 @@ class CreatePermissionTables extends Migration
             $table->primary([PermissionRegistrar::$pivotPermission, PermissionRegistrar::$pivotRole], 'role_has_permissions_permission_id_role_id_primary');
         });
 
+        DB::statement("SET foreign_key_checks=1");
         Artisan::call('db:seed', [
             '--class' => 'RoleSpatieSeeder',
             '--force' => true,

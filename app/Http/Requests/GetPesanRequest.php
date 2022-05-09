@@ -29,27 +29,32 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Spatie\Permission\Models\Role;
+namespace App\Http\Requests;
 
-class RoleKontributorArtikel extends Migration
+use Illuminate\Foundation\Http\FormRequest;
+
+class GetPesanRequest extends FormRequest
 {
     /**
-     * Run the migrations.
+     * Determine if the user is authorized to make this request.
      *
-     * @return void
+     * @return bool
      */
-    public function up()
+    public function authorize()
     {
-        Role::create(['name' =>'kontributor-artikel', 'guard_name' => 'web'], )->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        return true;
     }
 
     /**
-     * Reverse the migrations.
+     * Get the validation rules that apply to the request.
      *
-     * @return void
+     * @return array
      */
-    public function down()
+    public function rules()
     {
+        return [
+            'kode_desa' => 'required|string|min:13|max:13',
+            // 'id' => 'required|integer',
+        ];
     }
 }

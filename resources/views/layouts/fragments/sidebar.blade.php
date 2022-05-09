@@ -18,11 +18,13 @@
         <ul class="sidebar-menu" data-widget="tree">
             @if(isset($user))
                 <li class="header">MENU ADMINISTRATOR</li>
+                @if(isset($user) && !$user->hasrole('kontributor-artikel'))
                 <li class="{{ (Request::is(['dashboard'])? 'active' : '') }}">
-                    <a href="@if(isset($user)){{ route('dashboard') }}@else {{ '#' }} @endif" title="Dashboard">
+                    <a href="{{ route('dashboard') }}" title="Dashboard">
                         <i class="fa fa-dashboard"></i><span>Dashboard</span>
                     </a>
                 </li>
+                @endif
 
                 @if($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website', 'kontributor-artikel']))
                     <li class="treeview {{ (Request::is(['informasi/*'])? 'active' : '') }}">
@@ -192,19 +194,34 @@
                         </ul>
                     </li>
                 @endif
-                @if($user->hasrole(['super-admin', 'admin-komplain', 'administrator-website', 'kontributor-artikel']))
+                @if($user->hasrole(['super-admin', 'admin-komplain', 'administrator-website']))
                 <li class="treeview {{ (Request::is(['admin-komplain/*', 'admin-komplain'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu">
-                        @role('super-admin|admin-komplain|administrator-website|kontributor-artikel')
+                        @role('super-admin|admin-komplain|administrator-website')
                         <li {{ (Request::is(['admin-komplain', 'admin-komplain/*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Keluhan</a></li>
                         @endrole 
                         @role('super-admin|admin-komplain|administrator-website')
                         <li {{ (Request::is(['admin-komplain/statistik'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a></li>
                         @endrole 
+                    </ul>
+                </li>
+                @endif
+
+                @if($user->hasrole(['super-admin', 'admin-kecamatan']))
+                <li class="treeview {{ (Request::is(['pesan', 'pesan/*'])? 'active' : '') }}">
+                    <a href="#" title="pesan"><i class="fa fa-envelope"></i> <span>Pesan</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li {{ (Request::is(['pesan', 'pesan/masuk'])? 'class=active' : '') }}><a href="{{ route('pesan.index') }}"><i class="fa fa-envelope-o"></i>Pesan Masuk</a></li>
+                        <li {{ (Request::is(['pesan/keluar'])? 'class=active' : '') }}><a href="{{ route('pesan.keluar') }}"><i class="fa fa-envelope-open"></i>Pesan Keluar</a></li>
+                        <li {{ (Request::is(['pesan/arsip'])? 'class=active' : '') }}><a href="{{ route('pesan.arsip') }}"><i class="fa fa-archive"></i>Arsip</a></li>
                     </ul>
                 </li>
                 @endif
@@ -217,7 +234,7 @@
                     </a>
                     <ul class="treeview-menu">
                         <li {{ (Request::is(['setting/tipe-potensi/*', 'setting/tipe-potensi'])? 'class=active' : '') }}>
-                          <a href="{{ route('setting.tipe-potensi.index') }}"><i class="fa fa-circle-o"></i>Kategori Potensi</a></li>
+                            <a href="{{ route('setting.tipe-potensi.index') }}"><i class="fa fa-circle-o"></i>Kategori Potensi</a></li>
                         @if($user->hasrole(['super-admin', 'administrator-website']))
                         <li {{ (Request::is(['setting/komplain-kategori/*', 'setting/komplain-kategori'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.komplain-kategori.index') }}"><i class="fa fa-circle-o"></i>Kategori

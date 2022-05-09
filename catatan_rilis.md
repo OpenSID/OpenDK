@@ -1,8 +1,10 @@
-#### [v22.04.08]
+#### [v22.05.01]
 
-Di rilis v22.04.08, [untuk diisi]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.05.01, menyediakan komunikasi pesan dengan Opensid. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
+Terima kasih pada [totoprayogo1916] yang terus berkontribusi. Terima kasih pula pada [wongjapan] yang baru mulai berkontribusi.
+
+
 
 #### Penambahan Fitur
 1. [#354](https://github.com/OpenSID/OpenDK/issues/354) Tambahkan tombol list/show data penduduk dapat diperluas hingga 500 baris.
@@ -13,6 +15,7 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 7. [#294](https://github.com/OpenSID/OpenDK/issues/294) Ambil data tingkat pendidikan dari data penduduk hasil sinkronisasi penduduk.
 8. [#313](https://github.com/OpenSID/OpenDK/issues/313) Sediakan group pengguna kontributor berita/artikel kecamatan.
 9. [#310](https://github.com/OpenSID/OpenDK/issues/310) Tambahkan sinkronisasi profil desa OpenSID ke OpenDK.
+10. [#218](https://github.com/OpenSID/OpenDK/issues/218) Sediakan kotak pesan untuk komunikasi dengan desa.
 
 #### Perbaikan BUG
 1. [#353](https://github.com/OpenSID/OpenDK/issues/353) Perbaiki sikronisasi data penduduk OpenSID ke OpenDK.
@@ -21,5 +24,8 @@ Terima kasih pada [untuk diisi] yang baru mulai berkontribusi.
 4. [#361](https://github.com/OpenSID/OpenDK/issues/361) Perbaiki error migrasi 2022_03_09_134418_create_permission_tables.
 5. [#365](https://github.com/OpenSID/OpenDK/issues/365) Perbaiki table das_setting tidak ada saat composer install.
 6. [#385](https://github.com/OpenSID/OpenDK/issues/385) Perbaiki link demo OpenDK.
+7. [#395](https://github.com/OpenSID/OpenDK/issues/395) Perbaiki nama desa yang terpotong karena terlalu panjang di menu desa.
+7. [#394](https://github.com/OpenSID/OpenDK/issues/394) Perbaiki form upload file hilang pada module event ketika gagal upload.
 
 #### TEKNIS
+1. Perbaiki error jquery(...).validate not function.

@@ -138,7 +138,7 @@ class UserController extends Controller
 
             $user = $user_find->update($request->all());
             if ($request->hasFile('image')) {
-                $path = public_path('uploads/user/');
+                $path = storage_path('app/public/user/');
                 File::delete($path . $user_find->image);
                 $user_find->uploadImage($request->image);
             }

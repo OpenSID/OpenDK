@@ -88,3 +88,4 @@
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </div>
+@include('partials.asset_jqueryvalidation')

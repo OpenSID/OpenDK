@@ -37,6 +37,11 @@ use App\Models\DataDesa;
 
 class ProfilDesaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function store(ProfilDesaRequest $request)
     {
         DataDesa::where('desa_id', $request->kode_desa)->update([

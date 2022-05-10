@@ -138,9 +138,8 @@ class UserController extends Controller
 
             $user = $user_find->update($request->all());
             if ($request->hasFile('image')) {
-                $path = storage_path('app/public/user/');
-                File::delete($path . $user_find->image);
-                $user_find->uploadImage($request->image);
+                $upload = upload_image($request->image, 'user');
+                $user_find->update(['image' => $upload]);
             }
             if (! empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];

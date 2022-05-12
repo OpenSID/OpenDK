@@ -29,38 +29,44 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LaporanApbdesRequest;
-use App\Jobs\LaporanApbdesQueueJob;
-
-class LaporanApbdesController extends Controller
+class CreateRoleApi extends Migration
 {
     /**
-     * Create a new AuthController instance.
+     * Run the migrations.
      *
      * @return void
      */
-    public function __construct()
+    public function up()
     {
-        $this->middleware(['auth:api', 'role:admin-desa']);
+        // create permissions
+        Permission::create(['name' => 'view', 'guard_name' => 'api']);
+        Permission::create(['name' => 'create', 'guard_name' => 'api']);
+        Permission::create(['name' => 'edit', 'guard_name' => 'api']);
+        Permission::create(['name' => 'delete', 'guard_name' => 'api']);
+
+        $role = [
+            ['name' =>'admin-desa', 'guard_name' => 'api'],
+            ['name' =>'admin-kecamatan', 'guard_name' => 'api'],
+            ['name' =>'admin-puskesmas', 'guard_name' => 'api'],
+            ['name' =>'admin-pendidikan', 'guard_name' => 'api'],
+            ['name' =>'admin-komplain', 'guard_name' => 'api'],
+            ['name' =>'administrator-website', 'guard_name' => 'api'],
+        ];
+        foreach ($role as $value) {
+            Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        }
     }
 
     /**
-     * Tambah / Ubah Data Apbdes Sesuai OpenSID
+     * Reverse the migrations.
      *
-     * @param ApbdesRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      */
-    public function store(LaporanApbdesRequest $request)
+    public function down()
     {
-        // dispatch queue job apbdes
-        LaporanApbdesQueueJob::dispatch($request->only(['desa_id', 'laporan_apbdes']));
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sync data APBDes OpenSID sedang berjalan',
-        ]);
     }
 }

@@ -1,7 +1,5 @@
 @extends('layouts.dashboard_template')
 
-@section('title') Data Profil @endsection
-
 @section('content')
 <section class="content-header">
     <h1>
@@ -19,11 +17,6 @@
     @include('partials.flash_message')
 
     <div class="box box-primary">
-        <div class="box-header with-border">
-             
-             
-        </div>
-        
         <div class="box-body">
             <div class="row">
                 <div class="col-sm-3">

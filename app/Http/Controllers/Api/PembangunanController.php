@@ -76,7 +76,7 @@ class PembangunanController extends Controller
 
             // Proses impor excell
             (new SinkronPembangunan())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $excellName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');
@@ -111,7 +111,7 @@ class PembangunanController extends Controller
 
             // Proses impor excell
             (new SinkronPembangunanDokumentasi())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $excellName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');

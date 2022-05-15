@@ -11,7 +11,7 @@
     @endif
     @if( isset( $peta ) )
         <a href="{!! empty( $peta ) ? 'javascript:void(0)' : $peta !!}" class="{!! empty( $peta ) ? 'disabled' : '' !!}" title="Peta" data-button="peta" target="_blank">
-            <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-map   " aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-map" aria-hidden="true"></i></button>
         </a>
     @endif
     @if( isset( $edit_url ) )

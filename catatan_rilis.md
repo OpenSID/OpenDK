@@ -13,3 +13,4 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 #### TEKNIS
 1. [#72](https://github.com/OpenSID/OpenDK/issues/72) Amankan route api penduduk dengan middleware.
+2. Sesuaikan sebutan desa yang tidak muncul.

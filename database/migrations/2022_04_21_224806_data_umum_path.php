@@ -29,30 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ProfilDesaRequest;
-use App\Models\DataDesa;
-
-class ProfilDesaController extends Controller
+class DataUmumPath extends Migration
 {
-    public function __construct()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        $this->middleware('auth:api');
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->json('path')->after('embed_peta')->nullable();
+        });
     }
 
-    public function store(ProfilDesaRequest $request)
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        DataDesa::where('desa_id', $request->kode_desa)->update([
-            'website' => $request->website,
-            'sebutan_desa' => $request->sebutan_desa,
-            'path' => $request->path
-         ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sinkronisasi identitas desa sudah selesai',
-        ]);
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->dropColumn('path');
+        });
     }
 }

@@ -42,6 +42,7 @@ class DataDesa extends Model
         'nama',
         'website',
         'luas_wilayah',
+        'path'
     ];
 
     /**

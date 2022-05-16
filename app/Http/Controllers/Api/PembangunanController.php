@@ -81,7 +81,6 @@ class PembangunanController extends Controller
             // Proses impor data dokumentasi pembangunan
             (new SinkronPembangunanDokumentasi())
             ->queue($extract . $filecsv = Str::replaceLast('zip', 'csv', 'dokumentasi+'.$name));
-
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');

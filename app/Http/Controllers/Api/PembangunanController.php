@@ -68,50 +68,20 @@ class PembangunanController extends Controller
             $path = storage_path("app/temp/{$name}");
             $extract = storage_path('app/public/pembangunan/');
 
-            // // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($extract);
-            $zip->close();
-
-            // Proses impor excell
-            (new SinkronPembangunan())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'csv', $name));
-        } catch (\Exception $e) {
-            report($e);
-            return back()->with('error', 'Import data gagal.');
-        }
-
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('pembangunan/' . $excellName);
-
-        return response()->json([
-             "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
-        ]);
-    }
-
-    public function storeDokumentasi(PembangunanRequest $request)
-    {
-        try {
-            // Upload file zip temporary.
-            $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
-
-            // Temporary path file
-            $path = storage_path("app/temp/{$name}");
-            $extract = storage_path('app/public/pembangunan/');
-
             // Ekstrak file
             $zip = new ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
 
-            // Proses impor excell
+            // Proses impor data pembangunan
+            (new SinkronPembangunan())
+                ->queue($extract . $filecsv = Str::replaceLast('zip', 'csv', $name));
+
+            // Proses impor data dokumentasi pembangunan
             (new SinkronPembangunanDokumentasi())
-                ->queue($extract . $excellName = Str::replaceLast('zip', 'csv', $name));
+            ->queue($extract . $filecsv = Str::replaceLast('zip', 'csv', 'dokumentasi+'.$name));
+
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');
@@ -120,7 +90,7 @@ class PembangunanController extends Controller
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('pembangunan/' . $excellName);
+        Storage::disk('public')->delete('pembangunan/' . $filecsv);
 
         return response()->json([
              "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",

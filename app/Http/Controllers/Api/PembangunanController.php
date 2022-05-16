@@ -94,6 +94,7 @@ class PembangunanController extends Controller
 
         return response()->json([
              "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
+             "status"  => "success"
         ]);
     }
 }

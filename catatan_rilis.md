@@ -7,7 +7,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 #### Penambahan Fitur
 1. [#302](https://github.com/OpenSID/OpenDK/issues/302) Pengaturan peta kecamatan yang sesuai perda setempat pada data kecamatan.
-2.[#333](https://github.com/OpenSID/OpenDK/issues/333) Sinkronisasi Data Pembangunan OpenSID ke OpenDK.
+2. [#333](https://github.com/OpenSID/OpenDK/issues/333) Sinkronisasi Data Pembangunan OpenSID ke OpenDK.
 
 #### Perbaikan BUG
 

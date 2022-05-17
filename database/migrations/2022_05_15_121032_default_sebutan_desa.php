@@ -29,30 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
-
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ProfilDesaRequest;
 use App\Models\DataDesa;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class ProfilDesaController extends Controller
+class DefaultSebutanDesa extends Migration
 {
-    public function __construct()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        $this->middleware('auth:api');
+        // Isi sebutan desa jika kosong
+        DataDesa::whereNull('sebutan_desa')->update(['sebutan_desa' => 'desa']);
+
+        Schema::table('das_data_desa', function (Blueprint $table) {
+            $table->string('sebutan_desa')->default('desa')->change();
+        });
     }
 
-    public function store(ProfilDesaRequest $request)
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        DataDesa::where('desa_id', $request->kode_desa)->update([
-            'website' => $request->website,
-            'sebutan_desa' => $request->sebutan_desa,
-            'path' => $request->path
-         ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sinkronisasi identitas desa sudah selesai',
-        ]);
+        Schema::table('das_data_desa', function (Blueprint $table) {
+            $table->string('sebutan_desa')->default(null)->change();
+        });
     }
 }

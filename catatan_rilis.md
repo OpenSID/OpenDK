@@ -6,10 +6,11 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 
 #### Penambahan Fitur
-
+1. [#302](https://github.com/OpenSID/OpenDK/issues/302) Pengaturan peta kecamatan yang sesuai perda setempat pada data kecamatan.
 
 #### Perbaikan BUG
 
 
 #### TEKNIS
 1. [#72](https://github.com/OpenSID/OpenDK/issues/72) Amankan route api penduduk dengan middleware.
+2. Sesuaikan sebutan desa yang tidak muncul.

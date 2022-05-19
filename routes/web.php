@@ -163,8 +163,15 @@ Route::group(['middleware' => 'installed'], function () {
      */
     Route::group(['middleware' => 'auth:web'], function () {
         // Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
-
+       
         Route::get('/dashboard', 'DashboardController')->name('dashboard');
+        Route::namespace('auth')->group(function () {
+            Route::group(['prefix' => 'changedefault', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                Route::get('/', 'ChangeDefaultController@index')->name('change-default');
+                Route::post('store', ['as' => 'changedefault.store', 'uses' => 'ChangeDefaultController@store']);
+            });
+            
+        });
 
         /**
          * Group Routing for Informasi

@@ -42,6 +42,7 @@ class DataDesa extends Model
         'nama',
         'website',
         'luas_wilayah',
+        'path'
     ];
 
     /**
@@ -53,7 +54,7 @@ class DataDesa extends Model
     {
         $desa = [
             'desa_id' => $this->desa_id,
-            'nama' => 'Desa ' . $this->nama,
+            'nama'    => ucwords($this->sebutan_desa . ' ' . $this->nama),
             'website' => $this->website . 'index.php/feed'
         ];
         return $desa;
@@ -77,7 +78,7 @@ class DataDesa extends Model
 
     public function imunisasi()
     {
-        return $this->hasMany(Imunisasi::class, 'desa_id', 'desa_id');
+        return $this->hasMany(imunisasi::class, 'desa_id', 'desa_id');
     }
 
     public function akiakb()
@@ -97,7 +98,7 @@ class DataDesa extends Model
 
     public function fasilitasPAUD()
     {
-        return $this->hasMany(FasilitasPAUD::class, 'desa_id', 'desa_id');
+        return $this->hasMany(fasilitasPAUD::class, 'desa_id', 'desa_id');
     }
 
     public function laporanapbdes()

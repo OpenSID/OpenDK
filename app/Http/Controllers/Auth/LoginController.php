@@ -32,9 +32,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -78,7 +78,7 @@ class LoginController extends Controller
         if ($cek_password) {
             $this->redirectTo = 'changedefault';
         }
-        
+
         switch (auth()->user()->roles()->first()->name) {
             case 'kontributor-artikel':
                 $this->redirectTo = 'informasi/artikel';
@@ -90,7 +90,7 @@ class LoginController extends Controller
                 if ($cek_password) {
                     $this->redirectTo = 'changedefault';
                 }
-                
+
                 $this->redirectTo;
                 break;
         }

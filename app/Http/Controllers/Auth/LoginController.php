@@ -76,7 +76,7 @@ class LoginController extends Controller
         $cek_password = Hash::check('password', auth()->user()->password);
 
         if ($cek_password) {
-            $this->redirectTo = 'change-default';
+            $this->redirectTo = 'changedefault';
         }
         
         switch (auth()->user()->roles()->first()->name) {
@@ -85,6 +85,12 @@ class LoginController extends Controller
                 break;
 
             default:
+                // check password
+                $cek_password = Hash::check('password', auth()->user()->password);
+                if ($cek_password) {
+                    $this->redirectTo = 'changedefault';
+                }
+                
                 $this->redirectTo;
                 break;
         }

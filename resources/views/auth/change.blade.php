@@ -38,12 +38,14 @@
             </a>
         </div>
         <hr/>
+
+        <div class="alert alert-danger">Kata sandi anda tidak memenuhi syarat keamanan dan harus diganti</div>
         
         @include('partials.flash_message')
         <form method="POST" action="{{ route('changedefault.store') }}">
             @csrf
             <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-              <input id="email" type="email" class="form-control" name="email" required placeholder="Email Baru">
+              <input id="email" type="email" class="form-control" name="email" required placeholder="Email Baru" value="{{ old('email') }}">
               @if ($errors->has('email'))
                   <span class="help-block">
                       <strong>{{ $errors->first('email') }}</strong>

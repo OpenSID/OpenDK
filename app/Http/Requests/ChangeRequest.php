@@ -24,7 +24,7 @@ class ChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required',
+            'email' => 'required|unique:users,email',
             'password' => 'required',
             'password_confirmation' => 'required_with:password|same:password|min:6'
         ];

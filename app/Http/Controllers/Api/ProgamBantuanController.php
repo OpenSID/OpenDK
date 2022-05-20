@@ -68,13 +68,8 @@ class ProgamBantuanController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            // Proses impor program bantuan
             (new SinkronBantuan())
                 ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
-
-            // Proses impor Peserta program bantuan
-            (new SinkronPesertaBantuan())
-            ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', 'peserta+'.$name));
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal.');
@@ -86,7 +81,41 @@ class ProgamBantuanController extends Controller
         Storage::disk('public')->delete('bantuan' . $csvName);
 
         return response()->json([
-            "message" => "Data Bantuan Telah Berhasil di Sinkronkan",
+            "message" => "Data Bantuan Sedang di Sinkronkan",
+            "status" => "success"
+        ]);
+    }
+
+    public function storePeserta(ProgramBantuanRequest $request)
+    {
+        try {
+            // Upload file zip temporary.
+            $file = $request->file('file');
+            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            // Temporary path file
+            $path = storage_path("app/temp/{$name}");
+            $extract = storage_path('app/public/bantuan/');
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+            // Proses impor excell
+            (new SinkronPesertaBantuan())
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+        } catch (\Exception $e) {
+            return response()->json([
+                "status" => "danger",
+                "message" => $e->getMessage(),
+            ]);
+        }
+        // Hapus folder temp ketika sudah selesai
+        Storage::deleteDirectory('temp');
+        // Hapus file excell temp ketika sudah selesai
+        Storage::disk('public')->delete('bantuan/' . $csvName);
+        return response()->json([
+            "status" => "success",
+            "message" => "Data Bantuan Sedang di Sinkronkan",
         ]);
     }
 }

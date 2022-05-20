@@ -42,7 +42,6 @@ class DataDesa extends Model
         'nama',
         'website',
         'luas_wilayah',
-        'path'
     ];
 
     /**
@@ -54,7 +53,7 @@ class DataDesa extends Model
     {
         $desa = [
             'desa_id' => $this->desa_id,
-            'nama'    => ucwords($this->sebutan_desa . ' ' . $this->nama),
+            'nama' => 'Desa ' . $this->nama,
             'website' => $this->website . 'index.php/feed'
         ];
         return $desa;

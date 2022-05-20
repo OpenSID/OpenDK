@@ -291,7 +291,9 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
+                    Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
                     Route::post('getdesa', ['as' => 'data.data-desa.getdesa', 'uses' => 'DataDesaController@getDesaKecamatan']);
+                    Route::get('peta/{id}', ['as' => 'data.data-desa.peta', 'uses' => 'DataDesaController@peta']);
                     Route::get('create', ['as' => 'data.data-desa.create', 'uses' => 'DataDesaController@create']);
                     Route::post('store', ['as' => 'data.data-desa.store', 'uses' => 'DataDesaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
@@ -445,6 +447,15 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
+                });
+
+                // Pembangunan
+                Route::group(['prefix' => 'pembangunan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.pembangunan.index', 'uses' => 'DataPembangunanController@index']);
+                    Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
+                    Route::get('show/{id}', ['as' => 'data.pembangunan.show', 'uses' => 'DataPembangunanController@show']);
+                    Route::get('rincian/{id}/{kode_desa}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
+                    Route::get('getrinciandata/{id}/{kode_desa}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
                 });
             });
 

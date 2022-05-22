@@ -86,4 +86,24 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'data'], function () {
         Route::post('/fasilitaspaud', 'Api\FasilitasPaudController@store');
     });
+    Route::group(['prefix' => 'pesan'], function () {
+        Route::post('/', 'Api\PesanController@store');
+        Route::post('getpesan', 'Api\PesanController@getPesan');
+        Route::get('detail', 'Api\PesanController@detail');
+    });
+
+    /**
+    * Pembangunan
+    */
+    Route::group(['prefix' => 'pembangunan'], function () {
+        Route::post('/', 'Api\PembangunanController@store');
+        Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');
+    });
+
+    /**
+    * Identitas Desa
+    */
+    Route::group(['prefix' => 'identitas-desa'], function () {
+        Route::post('/', 'Api\ProfilDesaController@store');
+    });
 });

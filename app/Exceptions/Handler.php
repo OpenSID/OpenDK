@@ -31,12 +31,12 @@
 
 namespace App\Exceptions;
 
-use Exception;
 use App\Models\Profil;
+use Exception;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -67,9 +67,10 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if (app()->bound('sentry') && $this->shouldReport($exception)) {
-            \Sentry\configureScope(function (\Sentry\State\Scope $scope)  {
+            \Sentry\configureScope(function (\Sentry\State\Scope $scope) {
                 $profil = Profil::first();
-                $scope->setUser([
+                $scope->setUser(
+                    [
                         'nama_provinsi' => $profil->nama_provinsi,
                         'nama_kabupaten' => $profil->nama_kabupaten,
                         'nama_kecamatan' => $profil->nama_kecamatan
@@ -91,7 +92,7 @@ class Handler extends ExceptionHandler
             });
             app('sentry')->captureException($exception);
         }
-        
+
         parent::report($exception);
     }
 

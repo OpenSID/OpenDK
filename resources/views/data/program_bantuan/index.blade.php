@@ -18,7 +18,15 @@
     @include('partials.flash_message')
 
     <div class="box box-primary">
-         
+        <div class="box-header with-border">
+            <div class="float-right">
+                <div class="btn-group">
+                    <a href="{{ route('data.program-bantuan.import') }}">
+                        <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
+                    </a>
+                </div>
+            </div>
+        </div>
         <div class="box-body">
             <div class="row">
                 <div class="col-sm-3">
@@ -30,10 +38,7 @@
                                 <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
                             @endforeach
                         </select>
-                        
-                            
-                   
-                </div>
+                 </div>
             </div>
             <hr>
             <div class="table-responsive">

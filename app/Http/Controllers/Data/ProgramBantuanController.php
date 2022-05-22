@@ -176,4 +176,13 @@ class ProgramBantuanController extends Controller
 
         return redirect()->route('data.program-bantuan.show', $request->input('program_id'))->with('success', 'Data berhasil disimpan!');
     }
+    
+    public function import()
+    {
+        $page_title       = 'Impor';
+        $page_description = 'Impor Data Program Bantuan';
+       
+
+        return view('data.program_bantuan.import', compact('page_title', 'page_description'));
+    }
 }

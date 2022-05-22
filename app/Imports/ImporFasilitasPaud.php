@@ -50,7 +50,7 @@ class ImporFasilitasPaud implements ToCollection, WithHeadingRow, WithChunkReadi
     {
         return 1000;
     }
-    
+
     /**
     * @param Collection $collection
     */

@@ -75,10 +75,8 @@ class FasilitasPaudController extends Controller
     {
         $page_title       = 'Import';
         $page_description = 'Import Data Fasilitas PAUD';
-        $years_list       = years_list();
-        $months_list      = months_list();
 
-        return view('data.fasilitas_paud.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
+        return view('data.fasilitas_paud.import', compact('page_title', 'page_description'));
     }
 
     /**
@@ -101,96 +99,6 @@ class FasilitasPaudController extends Controller
         }
 
         return redirect()->route('data.fasilitas-paud.index')->with('success', 'Import data sukses.');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        $page_title       = 'Fasilitas PAUD';
-        $page_description = 'Tambah Fasilitas PAUD';
-        $years_list       = years_list();
-        $months_list      = months_list();
-
-        return view('data.fasilitas_paud.create', compact('page_title', 'page_description', 'years_list', 'months_list'));
-    }
-
-    /**
-    * Show the form for editing the specified resource.
-    *
-    * @return Response
-    */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'jumlah_paud'      => 'required',
-            'jumlah_guru_paud'  => 'required',
-            'jumlah_siswa_paud' => 'required',
-            'desa_id'           => ['required',
-                Rule::unique('das_fasilitas_paud')->where(function ($q) use ($request) {
-                    return $q->where([
-                      ['desa_id' , $request->desa_id] ,
-                      ['semester', $request->semester],
-                      ['tahun', $request->tahun]
-                    ]);
-                })
-            ],
-            'semester'          => 'required',
-            'tahun'             => 'required',
-        ]);
-
-        try {
-            FasilitasPAUD::create($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal Ditambah!');
-        }
-
-        return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil Ditambah!');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $fasilitas        = FasilitasPAUD::with(['desa'])->findOrFail($id);
-        $page_title       = 'Fasilitas PAUD';
-        $page_description = 'Ubah Fasilitas PAUD : Desa ' . $fasilitas->desa->nama;
-
-        return view('data.fasilitas_paud.edit', compact('page_title', 'page_description', 'fasilitas'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        request()->validate([
-            'jumlaah_paud'       => 'required',
-            'jumlah_guru_paud'  => 'required',
-            'jumlah_siswa_paud' => 'required',
-            'semester'          => 'required',
-            'tahun'             => 'required',
-        ]);
-
-        try {
-            FasilitasPAUD::findOrFail($id)->update($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!');
-        }
-
-        return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil diubah!');
     }
 
     /**

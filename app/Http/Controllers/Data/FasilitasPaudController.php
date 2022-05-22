@@ -34,10 +34,8 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
 class FasilitasPaudController extends Controller
@@ -58,7 +56,6 @@ class FasilitasPaudController extends Controller
     {
         return DataTables::of(FasilitasPAUD::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.fasilitas-paud.edit', $row->id);
                 $data['delete_url'] = route('data.fasilitas-paud.destroy', $row->id);
 
                 return view('forms.aksi', $data);

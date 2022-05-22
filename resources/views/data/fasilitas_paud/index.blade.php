@@ -20,10 +20,6 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <div class="control-group">
-                <a href="{{ route('data.fasilitas-paud.create') }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
-                </a>
-
                 <a href="{{ route('data.fasilitas-paud.import') }}">
                     <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
                 </a>

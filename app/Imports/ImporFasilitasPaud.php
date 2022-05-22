@@ -33,22 +33,15 @@ namespace App\Imports;
 
 use App\Models\FasilitasPAUD;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporFasilitasPaud implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
     use Importable;
-
-    /** @var array $request */
-    protected $request;
-
-    public function __construct(array $request)
-    {
-        $this->request = $request;
-    }
 
     /**
      * {@inheritdoc}
@@ -57,19 +50,27 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
     {
         return 1000;
     }
-
+    
     /**
-     * {@inheritdoc}
-     */
-    public function model(array $row)
+    * @param Collection $collection
+    */
+    public function collection(Collection $collection)
     {
-        return new FasilitasPAUD([
-            'desa_id'           => $this->request['desa_id'],
-            'jumlah_paud'       => $row['jumlah_paud_ra'],
-            'jumlah_guru_paud'  => $row['jumlah_guru_paud_ra'],
-            'jumlah_siswa_paud' => $row['jumlah_siswa_paud_ra'],
-            'semester'          => $this->request['semester'],
-            'tahun'             => $this->request['tahun'],
-        ]);
+        foreach ($collection as $value) {
+            $insert = [
+                'desa_id'           => $value['desa_id'],
+                'jumlah_paud'       => $value['jumlah_paud'],
+                'jumlah_guru_paud'  => $value['jumlah_guru_paud'],
+                'jumlah_siswa_paud' => $value['jumlah_siswa_paud'],
+                'semester'          => $value['semester'],
+                'tahun'             => $value['tahun'],
+            ];
+
+            FasilitasPAUD::updateOrCreate([
+                'desa_id' => $insert['desa_id'],
+                'semester' => $insert['semester'],
+                'tahun' => $insert['tahun'],
+            ], $insert);
+        }
     }
 }

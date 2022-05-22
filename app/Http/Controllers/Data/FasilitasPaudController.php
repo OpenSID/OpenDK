@@ -89,14 +89,11 @@ class FasilitasPaudController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa_id'  => 'required|unique:das_fasilitas_paud,desa_id',
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun'    => 'required|unique:das_fasilitas_paud',
-            'semester' => 'required|unique:das_fasilitas_paud',
         ]);
 
         try {
-            (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
+            (new ImporFasilitasPaud())
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);

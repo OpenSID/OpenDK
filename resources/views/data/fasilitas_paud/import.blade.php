@@ -39,38 +39,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="list_desa" class="control-label col-md-4 col-sm-3 col-xs-12">Desa</label>
-                            <div class="col-md-8">
-                                <select class="form-control" id="list_desa" name="desa_id">
-                                    @foreach(\App\Models\DataDesa::all() as $desa)
-                                        <option value="{{ $desa->desa_id}}">{{$desa->nama}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="bulan" class="control-label col-md-4 col-sm-3 col-xs-12">Semester</label>
-                            <div class="col-md-8">
-                                <select class="form-control" id="bulan" name="semester">
-                                    <option value="1">Semester 1</option>
-                                    <option value="2">Semester 2</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="list_year" class="control-label col-md-4 col-sm-3 col-xs-12">Tahun</label>
-                            <div class="col-md-8">
-                                <select class="form-control" id="list_year" name="tahun">
-                                    @foreach($years_list as $year)
-                                        <option value="{{ $year }}">{{ $year }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Fasilitas PAUD</label>
                             <div class="col-md-8">
                                 <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>

@@ -37,7 +37,6 @@ use App\Models\FasilitasPAUD;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Validation\Rule;
 use Yajra\DataTables\Facades\DataTables;
 
 class FasilitasPaudController extends Controller

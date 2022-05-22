@@ -107,6 +107,7 @@ class ProgamBantuanController extends Controller
             (new SinkronPesertaBantuan())
                 ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
+            report($e);
             return response()->json([
                 "status" => "danger",
                 "message" => $e->getMessage(),

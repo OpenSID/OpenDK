@@ -72,7 +72,10 @@ class ProgamBantuanController extends Controller
                 ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return response()->json([
+                "status" => "danger",
+                "message" => $e->getMessage(),
+            ]);
         }
 
         // Hapus folder temp ketika sudah selesai

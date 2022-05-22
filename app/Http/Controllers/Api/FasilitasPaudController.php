@@ -38,7 +38,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ZipArchive;
 
-
 class FasilitasPaudController extends Controller
 {
     /**
@@ -67,7 +66,6 @@ class FasilitasPaudController extends Controller
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
-            
 
             (new ImporFasilitasPaud())
                 ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));

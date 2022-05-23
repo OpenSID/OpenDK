@@ -47,7 +47,7 @@
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Unggah Data:</p>
-                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/program_bantuan_opendk.zip') }}">Unduh</a></p>
+                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/program_bantuan.zip') }}">Unduh</a></p>
                             </div>
                         </div>
                     </div>

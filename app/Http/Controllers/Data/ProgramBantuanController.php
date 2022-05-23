@@ -31,14 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Models\Program;
-use App\Models\DataDesa;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use App\Models\PesertaProgram;
-use App\Imports\SinkronBantuan;
 use App\Http\Controllers\Controller;
+use App\Imports\SinkronBantuan;
 use App\Imports\SinkronPesertaBantuan;
+use App\Models\DataDesa;
+use App\Models\PesertaProgram;
+use App\Models\Program;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
@@ -179,12 +179,11 @@ class ProgramBantuanController extends Controller
 
         return redirect()->route('data.program-bantuan.show', $request->input('program_id'))->with('success', 'Data berhasil disimpan!');
     }
-    
+
     public function import()
     {
         $page_title       = 'Impor';
         $page_description = 'Impor Data Program Bantuan';
-       
 
         return view('data.program_bantuan.import', compact('page_title', 'page_description'));
     }

@@ -74,7 +74,7 @@ class LoginController extends Controller
     {
         // check password
         $cek_password = Hash::check('password', auth()->user()->password);
-        if ($cek_password && (boolean) env('APP_DEMO') == false) {
+        if ($cek_password && (bool) env('APP_DEMO') == false) {
             $this->redirectTo = 'changedefault';
         }
 

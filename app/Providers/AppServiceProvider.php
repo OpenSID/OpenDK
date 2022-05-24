@@ -34,6 +34,7 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -53,6 +54,10 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         $this->penduduk();
         $this->config();
+        Blade::directive('selected', function ($is_true) {
+            return "<?php echo ($is_true)? 'selected' : ''; ?>";
+        });
+
     }
 
     protected function penduduk()

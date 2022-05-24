@@ -37,7 +37,7 @@
                 <table class="table table-bordered table-hover" id="datadesa-table">
                     <thead>
                         <tr>
-                            <th style="max-width: 100px;">Aksi</th>
+                            <th style="max-width: 150px;">Aksi</th>
                             <th>Kode Desa</th>
                             <th>Nama Desa</th>
                             <th>Website</th>

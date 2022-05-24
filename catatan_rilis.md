@@ -10,6 +10,8 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 2. [#333](https://github.com/OpenSID/OpenDK/issues/333) Sinkronisasi Data Pembangunan OpenSID ke OpenDK.
 
 #### Perbaikan BUG
+1. [#401](https://github.com/OpenSID/OpenDK/issues/401) Perbaiki tidak bisa ubah gambar slider. 
+2. [#391](https://github.com/OpenSID/OpenDK/issues/391) Perbaiki gagal upload foto profil user.
 
 
 #### TEKNIS

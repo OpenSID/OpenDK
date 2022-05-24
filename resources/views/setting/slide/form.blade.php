@@ -17,7 +17,7 @@
         <input accept="image/*" type="file" id="gambar" name="gambar" class="form-control" @isset($slide->gambar) 'required' @endisset>
         <code>Dimensi gambar 1360 x 400 Piksel</code>
         <br>
-            <img class="hide" src="@if(isset($slide->gambar)) {{ asset($slide->gambar) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar"
+            <img src="@if(isset($slide->gambar)) {{ asset($slide->gambar) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar"
             style="max-width:400px;max-height:250px;float:left;"/>
     </div>
 </div>

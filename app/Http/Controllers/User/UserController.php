@@ -31,14 +31,15 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
+use App\Http\Requests\UserRequest;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
@@ -133,16 +134,16 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user_find = User::findOrFail($id);
+            $user = User::findOrFail($id);
 
-            $user = $user_find->update($request->all());
+            $user->update($request->all());
             if ($request->hasFile('image')) {
-                $upload = upload_image($request->image, 'user');
-                $user_find->update(['image' => $upload]);
+                $user->uploadImage($request->image);
             }
+
             if (! empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
-                $user_find->syncRoles($roles);
+                $user->syncRoles($roles);
             }
 
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');

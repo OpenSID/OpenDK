@@ -15,6 +15,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 1. [#401](https://github.com/OpenSID/OpenDK/issues/401) Perbaiki tidak bisa ubah gambar slider. 
 2. [#391](https://github.com/OpenSID/OpenDK/issues/391) Perbaiki gagal upload foto profil user.
 3. [#402](https://github.com/OpenSID/OpenDK/issues/402) Perbaiki artikel baru tidak tampil dan sesuaikan urutannya.
+4. [#400](https://github.com/OpenSID/OpenDK/issues/400) Perbaiki select data penyakit tidak sesuai dengan inputan pada form ubah data modul Epidemi Penyakit.
 
 
 #### TEKNIS

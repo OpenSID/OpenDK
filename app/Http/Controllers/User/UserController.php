@@ -37,7 +37,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
@@ -89,12 +89,10 @@ class UserController extends Controller
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 
-            flash()->success(trans('message.user.create-success'));
-            return redirect()->route('setting.user.index');
+            return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
         } catch (\Exception $e) {
             report($e);
-            flash()->error(trans('message.user.create-error'));
-            return back()->withInput();
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -136,25 +134,22 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user_find = User::findOrFail($id);
+            $user = User::findOrFail($id);
 
-            $user = $user_find->update($request->all());
+            $user->update($request->all());
             if ($request->hasFile('image')) {
-                $path = public_path('uploads/user/');
-                File::delete($path . $user_find->image);
                 $user->uploadImage($request->image);
             }
+
             if (! empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
-                $user_find->syncRoles($roles);
+                $user->syncRoles($roles);
             }
 
-            flash()->success(trans('message.user.update-success'));
-            return redirect()->route('setting.user.index');
+            return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
             report($e);
-            flash()->error(trans('message.user.update-error'));
-            return back()->withInput();
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
 

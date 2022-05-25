@@ -19,7 +19,7 @@
             @include( 'partials.flash_message' )
             <div class="box box-primary">
                 
-                {!! Form::model($slide, [ 'route' => ['setting.slide.update', $slide->id], 'method' => 'put','id' => 'form-slide', 'class' => 'form-horizontal form-label-left'] ) !!}
+                {!! Form::model($slide, [ 'route' => ['setting.slide.update', $slide->id], 'method' => 'put', 'files' => true, 'id' => 'form-slide', 'class' => 'form-horizontal form-label-left'] ) !!}
 
                 <div class="box-body">
 

@@ -11,7 +11,11 @@
     <div class="col-md-8">
         <select class="form-control" id="penyakit_id" name="penyakit_id">
             @foreach($jenis_penyakit as $key=>$penyakit)
-                <option value="{{ $key }}">{{$penyakit}}</option>
+                @if($epidemi->penyakit_id == $key)
+                    <option selected value="{{ $key }}">{{ $penyakit }}</option>
+                @else
+                    <option value="{{ $key }}">{{ $penyakit }}</option>
+                @endif
             @endforeach
         </select>
     </div>

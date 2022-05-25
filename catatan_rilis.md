@@ -10,6 +10,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 2. [#333](https://github.com/OpenSID/OpenDK/issues/333) Sinkronisasi Data Pembangunan OpenSID ke OpenDK.
 3. [#384](https://github.com/OpenSID/OpenDK/issues/384) Sediakan ganti password saat selesai login jika menggunakan password masih default.
 
+
 #### Perbaikan BUG
 1. [#401](https://github.com/OpenSID/OpenDK/issues/401) Perbaiki tidak bisa ubah gambar slider. 
 2. [#391](https://github.com/OpenSID/OpenDK/issues/391) Perbaiki gagal upload foto profil user.
@@ -19,3 +20,4 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 #### TEKNIS
 1. [#72](https://github.com/OpenSID/OpenDK/issues/72) Amankan route api penduduk dengan middleware.
 2. Sesuaikan sebutan desa yang tidak muncul.
+

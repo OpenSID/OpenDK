@@ -16,44 +16,51 @@
 
     @include( 'partials.flash_message' )
 
-    <div class="box box-primary">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#wilayah" data-toggle="tab" aria-expanded="true">Info Wilyah</a></li>
+            <li><a href="#peta" data-toggle="tab" aria-expanded="true">Activity</a></li>
+        </ul>
 
-        @if(count($errors) > 0)
+        <div class="navtab-content">
+            <div class="tab-pane active" id="wilayah">
+                @if(count($errors) > 0)
 
-            <div class="alert alert-danger">
-                <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                    <div class="alert alert-danger">
+                        <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
-            </div>
-
-        @endif
-
-        <!-- form start -->
-        {!! Form::model($data_umum, [ 'route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put','id' =>
-        'form-event', 'class' => 'form-horizontal form-label-left' ] ) !!}
-        <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
-
-        <div class="box-body">
-            @include('data.data_umum.form_edit')
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-            <div class="pull-right">
-                <div class="control-group">
-                    <a href="{{ route('data.data-umum.index') }}">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp;
-                            Batal</button>
-                    </a>
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;
-                        Simpan</button>
+                <!-- form start -->
+                {!! Form::model($data_umum, [ 'route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
+                <div class="box-body">
+                    @include('data.data_umum.form_edit')
                 </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <div class="control-group">
+                            <a href="{{ route('data.data-umum.index') }}">
+                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp;
+                                    Batal</button>
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;
+                                Simpan</button>
+                        </div>
+                    </div>
+                </div>
+                {!! Form::close() !!}
             </div>
+
+            <div class="tab-pane active" id="peta"></div>
         </div>
-        {!! Form::close() !!}
+
 
     </div>
 </section>
@@ -79,65 +86,70 @@
                 placeholder: "Pilih Kecamatan",
                 allowClear: true
             });
-            $(".sumber_luas_wilayah").change(function(){
+            $(".sumber_luas_wilayah").change(function () {
                 updateValueLuasWilayah();
-            }); 
+            });
         })
 
-        function updateValueLuasWilayah(){
+        function updateValueLuasWilayah() {
             var sumberLuasWilayah = $(".sumber_luas_wilayah").val();
             $.ajax({
                 url: "data-umum/getdataajax",
                 type: "get",
-                success: function(response) {
-                    if(sumberLuasWilayah == 1) {
+                success: function (response) {
+                    if (sumberLuasWilayah == 1) {
                         $(".luas_wilayah").val(response.data.luas_wilayah);
                         $(".luas_wilayah").attr('readonly', false);
                     } else {
                         $(".luas_wilayah").val(response.data.luas_wilayah_dari_data_desa);
-                        $(".luas_wilayah").attr('readonly', true); 
+                        $(".luas_wilayah").attr('readonly', true);
                     }
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.log('terjadi kesalahan');
                 }
             });
         }
         $('.textarea').wysihtml5();
-         
+
         $(function () {
-            function path_desa () {
+            function path_desa() {
                 return $.ajax({
-                type: "get",
-                url: "{{ route('data.data-desa.getdataajax') }}",
-                dataType: 'json',
-                success: function (response) {
-                    return response
-                }
-                })
-                .fail(function() {
-                    return false;
-                });
+                        type: "get",
+                        url: "{{ route('data.data-desa.getdataajax') }}",
+                        dataType: 'json',
+                        success: function (response) {
+                            return response
+                        }
+                    })
+                    .fail(function () {
+                        return false;
+                    });
             }
-            
-            $.when(path_desa()).done(function(res_desa){
-        
+
+            $.when(path_desa()).done(function (res_desa) {
+
                 if (res_desa) {
                     var marker_desa = new Array();
                     var marker;
                     res_desa.data.forEach(e => {
                         if (e.path != null) {
-                            marker = set_marker(e, 'Peta Wilayah Desa', 'Wilayah Desa ' + e.nama, {'line' : '#de2d26', 'fill' : '#fff'});
-                            marker_desa =  marker_desa.concat(marker);
+                            marker = set_marker(e, 'Peta Wilayah Desa', 'Wilayah Desa ' + e
+                                .nama, {
+                                    'line': '#de2d26',
+                                    'fill': '#fff'
+                                });
+                            marker_desa = marker_desa.concat(marker);
                         }
                     });
-                    overlayLayers['Peta Wilayah Desa'] =  wilayah_property(marker_desa, false);
+                    overlayLayers['Peta Wilayah Desa'] = wilayah_property(marker_desa, false);
                     tampil_peta();
                 }
             });
         });
         var overlayLayers = {};
-        function tampil_peta () { 
+
+        function tampil_peta() {
             // Inisialisasi tampilan peta
             var posisi = [-1.0546279422758742, 116.71875000000001];
             var zoom = 10;
@@ -145,7 +157,7 @@
                 center: posisi,
                 zoom: 13
             });
-            
+
             var path_kec = new Array();
             if ($('#path').val() != '') {
                 path_kec = JSON.parse($('#path').val());
@@ -153,29 +165,30 @@
             }
             // Geolocation IP Route/GPS
             geoLocation(peta_wilayah);
-        
+
             var baseLayers = getBaseLayers(peta_wilayah, '');
             L.control.layers(baseLayers, overlayLayers, {
-                        position: 'topleft',
-                        collapsed: true
+                position: 'topleft',
+                collapsed: true
             }).addTo(peta_wilayah);
             // add toolbar
             peta_wilayah.pm.addControls(editToolbarPoly());
             addpoly(peta_wilayah);
             // Menghapus Peta wilayah
-		    hapuslayer(peta_wilayah);
+            hapuslayer(peta_wilayah);
             // Export/Import Peta dari file GPX
-			eximGpxRegion(peta_wilayah);
+            eximGpxRegion(peta_wilayah);
             // Import Peta dari file SHP
             eximShp(peta_wilayah);
             peta_wilayah.on('pm:update', function (e) {
                 setPupup(e.layer);
             });
+
             function makePopupContent(feature) {
                 return
                 feature.geometry;
             }
         };
     </script>
- 
+
 @endpush

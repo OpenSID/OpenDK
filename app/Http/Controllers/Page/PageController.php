@@ -77,8 +77,6 @@ class PageController extends Controller
             return $desa->website_url_feed;
         })->all();
 
-        
-
         $feeds = [];
         foreach ($all_desa as $desa) {
             $getFeeds = FeedsFacade::make($desa['website']);

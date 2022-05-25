@@ -11,6 +11,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 #### Perbaikan BUG
 1. [#401](https://github.com/OpenSID/OpenDK/issues/401) Perbaiki tidak bisa ubah gambar slider.
+2. [#402](https://github.com/OpenSID/OpenDK/issues/402) Perbaiki artikel baru tidak tampil dan sesuaikan urutannya.
 
 
 #### TEKNIS

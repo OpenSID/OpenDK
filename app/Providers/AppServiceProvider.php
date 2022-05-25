@@ -54,10 +54,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         $this->penduduk();
         $this->config();
-        Blade::directive('selected', function ($is_true) {
-            return "<?php echo ($is_true)? 'selected' : ''; ?>";
-        });
-
+        $this->blade();
     }
 
     protected function penduduk()
@@ -168,6 +165,13 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }),
         ]);
+    }
+
+    protected function blade()
+    {
+        Blade::directive('selected', function ($condition) {
+            return "<?php if{$condition}: echo 'selected'; endif; ?>";
+        });
     }
 
     /**

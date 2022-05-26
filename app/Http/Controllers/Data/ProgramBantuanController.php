@@ -32,10 +32,13 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Imports\SinkronBantuan;
+use App\Imports\SinkronPesertaBantuan;
 use App\Models\DataDesa;
 use App\Models\PesertaProgram;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
@@ -175,5 +178,48 @@ class ProgramBantuanController extends Controller
         }
 
         return redirect()->route('data.program-bantuan.show', $request->input('program_id'))->with('success', 'Data berhasil disimpan!');
+    }
+
+    public function import()
+    {
+        $page_title       = 'Impor';
+        $page_description = 'Impor Data Program Bantuan';
+
+        return view('data.program_bantuan.import', compact('page_title', 'page_description'));
+    }
+
+    public function do_import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'file|mimes:zip|max:51200',
+        ]);
+
+        try {
+            // Upload file zip temporary.
+            $file = $request->file('file');
+            $file->storeAs('temp', $name = $file->getClientOriginalName());
+
+            // Temporary path file
+            $path = storage_path("app/temp/{$name}");
+            $extract = storage_path('app/public/bantuan/');
+
+            // Ekstrak file
+            $zip = new \ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            $fileExtracted = glob($extract.'*.xlsx');
+
+            (new SinkronBantuan())
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+            (new SinkronPesertaBantuan())
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', 'peserta+'.$name));
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal. '. $e->getMessage());
+        }
+
+        return redirect()->route('data.program-bantuan.index')->with('success', 'Import data sukses.');
     }
 }

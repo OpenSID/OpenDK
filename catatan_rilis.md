@@ -9,7 +9,8 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 1. [#302](https://github.com/OpenSID/OpenDK/issues/302) Pengaturan peta kecamatan yang sesuai perda setempat pada data kecamatan.
 2. [#333](https://github.com/OpenSID/OpenDK/issues/333) Sinkronisasi Data Pembangunan OpenSID ke OpenDK.
 3. [#384](https://github.com/OpenSID/OpenDK/issues/384) Sediakan ganti password saat selesai login jika menggunakan password masih default.
-4. [#416](https://github.com/OpenSID/OpenDK/issues/416) Sinkronisasi Data Program Bantuan OpenSID ke OpenDK.
+4. [#368](https://github.com/OpenSID/OpenDK/issues/368) Sinkronisasi Data Program Bantuan OpenSID ke OpenDK.
+5. [#368](https://github.com/OpenSID/OpenDK/issues/368) Sediakan impor data Bantuan dari OpenSID.
 
 
 #### Perbaikan BUG

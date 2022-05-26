@@ -87,14 +87,22 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     /**
-     * Identitas Desa
-     */
+    * Pembangunan
+    */
+    Route::group(['prefix' => 'pembangunan'], function () {
+        Route::post('/', 'Api\PembangunanController@store');
+        Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');
+    });
+
+    /**
+    * Identitas Desa
+    */
     Route::group(['prefix' => 'identitas-desa'], function () {
         Route::post('/', 'Api\ProfilDesaController@store');
     });
 
     /**
-    * Laporan Penduduk
+    * Program Bantuan
     */
     Route::group(['prefix' => 'program-bantuan'], function () {
         Route::post('/', 'Api\ProgamBantuanController@store');

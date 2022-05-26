@@ -102,7 +102,7 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     /**
-    * Laporan Penduduk
+    * Program Bantuan
     */
     Route::group(['prefix' => 'program-bantuan'], function () {
         Route::post('/', 'Api\ProgamBantuanController@store');

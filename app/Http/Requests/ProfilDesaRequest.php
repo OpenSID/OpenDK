@@ -55,7 +55,8 @@ class ProfilDesaRequest extends FormRequest
         return [
             "kode_desa" => "present|string|exists:das_data_desa,desa_id",
             "sebutan_desa" => "required|string",
-            "website" => "sometimes|url"
+            "website" => "sometimes|required|string",
+            "path" => "required|string"
         ];
     }
 }

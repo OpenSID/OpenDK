@@ -16,7 +16,7 @@
         @foreach ($navdesa->chunk(2) as $desa)
           @foreach ($desa as $d)
           <ul class="no-padding">
-              <li class="col-12 col-xs-6 no-padding"><a class="footer-link" href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}"><i class="fa  fa-chevron-circle-right"></i> {{ ($d->sebutan_desa.' ' ?? 'Desa ') .ucfirst($d->nama) }}</a></li>
+              <li class="col-12 col-xs-6 no-padding"><a class="footer-link" href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}"><i class="fa  fa-chevron-circle-right"></i> {{ ucwords($d->sebutan_desa . ' ' . $d->nama) }}</a></li>
           </ul>
           @endforeach  
         @endforeach

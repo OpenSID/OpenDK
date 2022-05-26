@@ -98,7 +98,7 @@ class DataUmumController extends Controller
     public function getDataUmumAjax(Request $request)
     {
         if ($request->ajax()) {
-            return response()->json(['data'=> DataUmum::first()]);
+            return response()->json(['data'=> DataUmum::with('profil')->first()]);
         }
     }
 }

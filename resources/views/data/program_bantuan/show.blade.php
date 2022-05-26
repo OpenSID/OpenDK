@@ -19,15 +19,6 @@
     @include('partials.flash_message')
 
     <div class="box box-primary">
-        <div class="box-header with-border">
-            <div class="control-group">
-                <a href="{{ route('data.program-bantuan.create-peserta', $program->id) }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Peserta"><i class="fa fa-plus"></i>
-                        Tambah Peserta
-                    </button>
-                </a>
-            </div>
-        </div>
         <div class="box-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-condensed">

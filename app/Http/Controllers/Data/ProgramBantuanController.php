@@ -70,33 +70,6 @@ class ProgramBantuanController extends Controller
             ->rawColumns(['aksi'])->make();
     }
 
-    public function create()
-    {
-        $page_title       = 'Tambah';
-        $page_description = 'Tambah Program Bantuan Baru';
-
-        return view('data.program_bantuan.create', compact('page_title', 'page_description'));
-    }
-
-    public function store(Request $request)
-    {
-        request()->validate([
-            'sasaran'    => 'required',
-            'nama'       => 'required',
-            'start_date' => 'required|date',
-            'end_date'   => 'required|date',
-        ]);
-
-        try {
-            Program::create($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
-        }
-
-        return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil disimpan!');
-    }
-
     public function show($id)
     {
         $program          = Program::findOrFail($id);
@@ -106,78 +79,6 @@ class ProgramBantuanController extends Controller
         $peserta          = PesertaProgram::where('program_id', $id)->get();
 
         return view('data.program_bantuan.show', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        request()->validate([
-            'sasaran'    => 'required',
-            'nama'       => 'required',
-            'start_date' => 'required|date',
-            'end_date'   => 'required|date',
-        ]);
-
-        try {
-            $program = Program::findOrFail($id);
-            $program->fill($request->all());
-            $program->update();
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
-        }
-
-        return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil disimpan!');
-    }
-
-    public function edit($id)
-    {
-        $program          = Program::findOrFail($id);
-        $page_title       = 'Edit Program';
-        $page_description = 'Program Bantuan ' . $program->nama;
-        $sasaran          = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
-        $peserta          = PesertaProgram::where('program_id', $id)->get();
-
-        return view('data.program_bantuan.edit', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
-    }
-
-    public function destroy($id)
-    {
-        try {
-            Program::findOrFail($id)->delete();
-            PesertaProgram::where('program_id', $id)->delete();
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal dihapus!');
-        }
-
-        return redirect()->route('data.program-bantuan.index')->with('success', 'Data berhasil dihapus!');
-    }
-
-    public function createPeserta($id)
-    {
-        $program          = Program::findOrFail($id);
-        $page_title       = 'Tambah Peserta';
-        $page_description = 'Program Bantuan ' . $program->nama;
-        $sasaran          = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
-
-        return view('data.program_bantuan.add_peserta', compact('page_title', 'page_description', 'program', 'sasaran'));
-    }
-
-    public function add_peserta(Request $request)
-    {
-        request()->validate([
-            'peserta'       => 'required',
-            'tanggal_lahir' => 'date',
-        ]);
-
-        try {
-            PesertaProgram::create($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal disimpan!');
-        }
-
-        return redirect()->route('data.program-bantuan.show', $request->input('program_id'))->with('success', 'Data berhasil disimpan!');
     }
 
     public function import()
@@ -209,12 +110,12 @@ class ProgramBantuanController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            $fileExtracted = glob($extract.'*.xlsx');
+            glob($extract.'*.xlsx');
 
             (new SinkronBantuan())
-                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
             (new SinkronPesertaBantuan())
-                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', 'peserta+'.$name));
+                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Import data gagal. '. $e->getMessage());

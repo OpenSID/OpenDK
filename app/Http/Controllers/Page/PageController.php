@@ -58,7 +58,6 @@ class PageController extends Controller
     public function beritaDesa()
     {
         $this->data = $this->getFeeds();
-
         $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         $feeds->all();
 
@@ -88,7 +87,7 @@ class PageController extends Controller
                     'feed_link'   => $item->get_feed()->get_permalink(),
                     'feed_title'  => $item->get_feed()->get_title(),
                     'link'        => $item->get_link(),
-                    'date'        => \Carbon\Carbon::parse($item->get_date('U'))->translatedFormat('d F Y'),
+                    'date'        => \Carbon\Carbon::parse($item->get_date('U')),
                     'author'      => $item->get_author()->get_name() ?? 'Administrator',
                     'title'       => $item->get_title(),
                     'image'       => get_tag_image($item->get_description()),

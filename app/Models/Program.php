@@ -38,15 +38,23 @@ class Program extends Model
     protected $table = 'das_program';
 
     protected $fillable = [
+        'id',
         'nama',
         'sasaran',
         'start_date',
         'end_date',
         'description',
+        'desa_id',
+        'status'
     ];
 
     public function pesertas()
     {
         return $this->hasMany(PesertaProgram::class, 'program_id', 'id');
+    }
+
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
 }

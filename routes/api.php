@@ -106,4 +106,12 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'identitas-desa'], function () {
         Route::post('/', 'Api\ProfilDesaController@store');
     });
+
+    /**
+    * Program Bantuan
+    */
+    Route::group(['prefix' => 'program-bantuan'], function () {
+        Route::post('/', 'Api\ProgamBantuanController@store');
+        Route::post('peserta', 'Api\ProgamBantuanController@storePeserta');
+    });
 });

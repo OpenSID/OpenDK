@@ -29,34 +29,49 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Imports;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Program;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class PesertaProgram extends Model
+class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
-    protected $table = 'das_peserta_program';
+    use Importable;
 
-    protected $fillable = [
-        'peserta',
-        'program_id',
-        'sasaran',
-        'no_id_kartu',
-        'kartu_nik',
-        'kartu_nama',
-        'kartu_tempat_lahir',
-        'kartu_tanggal_lahir',
-        'kartu_alamat',
-        'kartu_peserta',
-        'desa_id'
-    ];
-
-    public function penduduk()
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
     {
-        if ($this->sasaran == 1) {
-            return $this->hasOne(Penduduk::class, 'nik', 'peserta');
-        } elseif ($this->sasaran == 2) {
-            return $this->hasOne(Penduduk::class, 'no_kk', 'peserta');
+        return 1000;
+    }
+
+    /**
+    * @param Collection $collection
+    */
+    public function collection(Collection $collection)
+    {
+        foreach ($collection as $value) {
+            $insert = [
+                'id'            => $value['id'],
+                'nama'          => $value['nama'],
+                'sasaran'       => $value['sasaran'],
+                'status'        => $value['status'],
+                'start_date'    => $value['sdate'],
+                'end_date'      => $value['edate'],
+                'description'   => $value['ndesc'],
+                'desa_id'       => $value['kode_desa']
+            ];
+
+            Program::updateOrCreate([
+                'desa_id' => $insert['desa_id'],
+                'id'      => $insert['id']
+            ], $insert);
         }
     }
 }

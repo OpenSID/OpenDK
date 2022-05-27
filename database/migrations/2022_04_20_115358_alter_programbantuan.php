@@ -29,34 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class PesertaProgram extends Model
+class AlterProgrambantuan extends Migration
 {
-    protected $table = 'das_peserta_program';
-
-    protected $fillable = [
-        'peserta',
-        'program_id',
-        'sasaran',
-        'no_id_kartu',
-        'kartu_nik',
-        'kartu_nama',
-        'kartu_tempat_lahir',
-        'kartu_tanggal_lahir',
-        'kartu_alamat',
-        'kartu_peserta',
-        'desa_id'
-    ];
-
-    public function penduduk()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        if ($this->sasaran == 1) {
-            return $this->hasOne(Penduduk::class, 'nik', 'peserta');
-        } elseif ($this->sasaran == 2) {
-            return $this->hasOne(Penduduk::class, 'no_kk', 'peserta');
-        }
+        Schema::table('das_program', function (Blueprint $table) {
+            $table->text('description')->nullable()->change();
+            $table->integer('id')->nullable(false)->unsigned()->change();
+            $table->dropPrimary('id');
+            $table->unique(['id', 'desa_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_program', function (Blueprint $table) {
+            $table->string('description', 200)->nullable()->change();
+            $table->integer('id', true)->nullable(false)->change();
+        });
     }
 }

@@ -11,7 +11,7 @@
     <div class="col-md-8">
         <select class="form-control" id="penyakit_id" name="penyakit_id">
             @foreach($jenis_penyakit as $key=>$penyakit)
-                <option value="{{ $key }}" {{ old('penyakit_id', $epidemi->penyakit_id) == $key ? 'selected' : null}}>{{ $penyakit }}</option>
+                <option value="{{ $key }}" @selected($epidemi->penyakit_id === $key)>{{ $penyakit }}</option>
             @endforeach
         </select>
     </div>

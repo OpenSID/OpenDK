@@ -39,6 +39,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -53,6 +54,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         $this->penduduk();
         $this->config();
+        $this->blade();
     }
 
     protected function penduduk()
@@ -163,6 +165,13 @@ class AppServiceProvider extends ServiceProvider
                 return null;
             }),
         ]);
+    }
+
+    protected function blade()
+    {
+        Blade::directive('selected', function ($condition) {
+            return "<?php if({$condition}): echo 'selected'; endif; ?>";
+        });
     }
 
     /**

@@ -44,11 +44,6 @@ use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     public function store(PesanRequest $request)
     {
         $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();

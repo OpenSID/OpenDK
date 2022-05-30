@@ -29,27 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LaporanPendudukRequest;
-use App\Jobs\LaporanPendudukQueueJob;
-
-class LaporanPendudukController extends Controller
+class AlterProgrambantuan extends Migration
 {
     /**
-     * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
+     * Run the migrations.
      *
-     * @param LaporanPendudukRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      */
-    public function store(LaporanPendudukRequest $request)
+    public function up()
     {
-        LaporanPendudukQueueJob::dispatch($request->only(['desa_id', 'laporan_penduduk']));
+        Schema::table('das_program', function (Blueprint $table) {
+            $table->text('description')->nullable()->change();
+            $table->integer('id')->nullable(false)->unsigned()->change();
+            $table->dropPrimary('id');
+            $table->unique(['id', 'desa_id']);
+        });
+    }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
-        ]);
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_program', function (Blueprint $table) {
+            $table->string('description', 200)->nullable()->change();
+            $table->integer('id', true)->nullable(false)->change();
+        });
     }
 }

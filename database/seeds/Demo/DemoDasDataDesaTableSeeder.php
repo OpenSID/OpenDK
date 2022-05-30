@@ -178,7 +178,7 @@ class DemoDasDataDesaTableSeeder extends Seeder
                 'website' => '',
             ],
         ]);
-        
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;'); 
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

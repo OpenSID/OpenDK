@@ -43,16 +43,6 @@ use ZipArchive;
 class PembangunanController extends Controller
 {
     /**
-    * Create a new AuthController instance.
-    *
-    * @return void
-    */
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
-    /**
     * Tambah Data Pembangunan Sesuai OpenSID
     *
     * @param PendudukRequest $request

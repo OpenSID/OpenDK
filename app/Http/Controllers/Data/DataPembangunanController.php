@@ -68,11 +68,6 @@ class DataPembangunanController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        # code...
-    }
-
     public function rincian($id, $kode_desa)
     {
         $page_title       = 'Pembangunan';

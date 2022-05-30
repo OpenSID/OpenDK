@@ -63,8 +63,6 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
     */
     public function collection(Collection $collection)
     {
-        $col_kk = Arr::flatten(Keluarga::pluck('no_kk'));
-        $col_nik = Arr::flatten(Keluarga::pluck('no_kk'));
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $value) {

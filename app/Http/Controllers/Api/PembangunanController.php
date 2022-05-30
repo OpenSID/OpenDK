@@ -64,7 +64,6 @@ class PembangunanController extends Controller
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
-           
 
             // Proses impor data pembangunan
             (new SinkronPembangunan())

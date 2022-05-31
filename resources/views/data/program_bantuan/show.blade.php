@@ -17,25 +17,27 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover dataTable no-footer">
-                        <thead>
-                            <tr>
-                                <th class="col-md-2">Nama</th>
-                                <td>: {{ $program->nama }}</td>
-                            </tr>
-                            <tr>
-                                <th>Sasaran</th>
-                                <td>: {{ $sasaran[$program->sasaran] }}</td>
-                            </tr>
-                            <tr>
-                                <th>Periode Program</th>
-                                <td>: {{ $program->start_date }} - {{ $program->end_date }}</td>
-                            </tr>
-                            <tr>
-                                <th>Keterangan</th>
-                                <td>: {{ $program->description }}</td>
-                            </tr>
-                        </thead>
+                    <table class="table table-bordered table-striped table-condensed">
+                        <tr>
+                            <th class="col-md-2">Nama</th>
+                            <td>: {{ $program->nama }}</td>
+                        </tr>
+                        <tr>
+                            <th>Desa</th>
+                            <td>: {{ $program->desa->nama }}</td>
+                        </tr>
+                        <tr>
+                            <th>Sasaran</th>
+                            <td>: {{ $sasaran[$program->sasaran] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Periode Program</th>
+                            <td>: {{ $program->start_date }} - {{ $program->end_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>Keterangan</th>
+                            <td>: {{ $program->description }}</td>
+                        </tr>
                     </table>
                 </div>
                 <hr>

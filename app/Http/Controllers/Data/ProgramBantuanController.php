@@ -56,7 +56,7 @@ class ProgramBantuanController extends Controller
     {
         return DataTables::of(Program::when(!empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
-                $data['detail_url'] = route('data.program-bantuan.show', $row->id);
+                $data['detail_url'] = route('data.program-bantuan.show', [$row->id, $row->desa_id]);
 
                 return view('forms.aksi', $data);
             })
@@ -72,11 +72,11 @@ class ProgramBantuanController extends Controller
 
     public function show($id)
     {
-        $program          = Program::findOrFail($id);
+        $program          = Program::with('desa')->findOrFail($id);
         $page_title       = 'Detail Program';
         $page_description = 'Program Bantuan ' . $program->nama;
         $sasaran          = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
-        $peserta          = PesertaProgram::where('program_id', $id)->get();
+        $peserta          = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
 
         return view('data.program_bantuan.show', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
     }

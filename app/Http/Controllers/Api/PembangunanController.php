@@ -70,7 +70,10 @@ class PembangunanController extends Controller
                 ->queue($extract . $filecsv = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return response()->json([
+                "message" => "Proses Sinkronisasi Data gagal. Error : " . $e->getMessage(),
+                "status"  => "danger"
+           ]);
         }
 
         // Hapus folder temp ketika sudah selesai

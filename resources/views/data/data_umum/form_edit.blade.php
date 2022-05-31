@@ -209,10 +209,4 @@
     </div>
   </div>
 </div>
-<div class="row">
-<div class="col-sm-12" >
-<div id="tampil-map" style="height:500px"></div>
-</div>
-</div>
-
 <div class="ln_solid"></div>

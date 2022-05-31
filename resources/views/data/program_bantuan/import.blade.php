@@ -50,7 +50,7 @@
                             <div class="well">
                                 <p>Instruksi Unggah Data:</p>
                                 <p>Silahkan unduh template unggah data di sini: <a
-                                        href="{{ asset('storage/template_upload/program_bantuan_22_12_2020_opendk.zip') }}">Unduh</a>
+                                        href="{{ asset('storage/template_upload/program_bantuan_31_05_2022_opendk.zip') }}">Unduh</a>
                                 </p>
                             </div>
                         </div>

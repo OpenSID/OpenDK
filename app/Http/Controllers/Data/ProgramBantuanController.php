@@ -110,7 +110,7 @@ class ProgramBantuanController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            glob($extract.'*.xlsx');
+            glob($extract.'*.csv');
 
             (new SinkronBantuan())
                 ->queue($extract . Str::replaceLast('zip', 'csv', $name));

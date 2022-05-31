@@ -70,7 +70,7 @@ class ProgramBantuanController extends Controller
             ->rawColumns(['aksi'])->make();
     }
 
-    public function show($id)
+    public function show($id, $desa_id)
     {
         $program          = Program::with('desa')->findOrFail($id);
         $page_title       = 'Detail Program';

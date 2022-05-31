@@ -58,6 +58,7 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
     {
         foreach ($collection as $value) {
             $insert = [
+                'desa_id'       => $value['desa_id'],
                 'id'            => $value['id'],
                 'nama'          => $value['nama'],
                 'sasaran'       => $value['sasaran'],
@@ -65,7 +66,6 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'start_date'    => $value['sdate'],
                 'end_date'      => $value['edate'],
                 'description'   => $value['ndesc'],
-                'desa_id'       => $value['kode_desa']
             ];
 
             Program::updateOrCreate([

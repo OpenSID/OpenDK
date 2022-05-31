@@ -1,6 +1,5 @@
 @extends('layouts.dashboard_template')
 
-
 @section('content')
     <section class="content-header">
         <h1>
@@ -15,9 +14,6 @@
     </section>
 
     <section class="content container-fluid">
-
-        @include('partials.flash_message')
-
         <div class="box box-primary">
             <div class="box-body">
                 <div class="table-responsive">

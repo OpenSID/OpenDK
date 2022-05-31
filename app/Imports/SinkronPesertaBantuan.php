@@ -31,12 +31,10 @@
 
 namespace App\Imports;
 
-use App\Models\Keluarga;
 use App\Models\Penduduk;
 use App\Models\PesertaProgram;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -63,8 +61,6 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
     */
     public function collection(Collection $collection)
     {
-        $col_kk = Arr::flatten(Keluarga::pluck('no_kk'));
-        $col_nik = Arr::flatten(Keluarga::pluck('no_kk'));
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $value) {
@@ -87,6 +83,7 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
             }
 
             $insert = [
+                'desa_id'               => $value['desa_id'],
                 'id'                    => $value['id'],
                 'peserta'               => $value['peserta'],
                 'program_id'            => $value['program_id'],
@@ -98,13 +95,12 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
                 'kartu_tanggal_lahir'   => $value['kartu_tanggal_lahir'],
                 'kartu_alamat'          => $value['kartu_alamat'],
                 'kartu_peserta'         => $value['kartu_peserta'],
-                'desa_id'               => $value['kode_desa'],
             ];
 
             PesertaProgram::updateOrCreate([
-                'kartu_nik'     => $insert['kartu_nik'],
+                'desa_id'       => $insert['desa_id'],
                 'program_id'    => $insert['program_id'],
-                'desa_id'       => $insert['desa_id']
+                'kartu_nik'     => $insert['kartu_nik'],
             ], $insert);
         }
 

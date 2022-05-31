@@ -73,7 +73,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-              url: "{!! route( 'data.pembangunan.getrinciandata', ['id' => $pembangunan->id, 'kode_desa' => $pembangunan->kode_desa ] ) !!}"
+              url: "{!! route( 'data.pembangunan.getrinciandata', ['id' => $pembangunan->id, 'desa_id' => $pembangunan->desa_id ] ) !!}"
             },
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', class: 'text-center', searchable: false, orderable: true},

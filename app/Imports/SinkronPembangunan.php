@@ -58,6 +58,7 @@ class SinkronPembangunan implements ToCollection, WithHeadingRow, WithChunkReadi
     {
         foreach ($collection as $value) {
             $insert = [
+                "desa_id" => $value['desa_id'],
                 "id" => $value['id'],
                 "sumber_dana" => $value['sumber_dana'],
                 "lokasi" => $value['lokasi'],
@@ -77,11 +78,10 @@ class SinkronPembangunan implements ToCollection, WithHeadingRow, WithChunkReadi
                 "manfaat" => $value['manfaat'],
                 "waktu" => $value['waktu'],
                 "foto" => $value['foto'],
-                "kode_desa" => (string) $value['desa_id'],
             ];
 
             Pembangunan::updateOrCreate([
-                'kode_desa' => $insert['kode_desa'],
+                'desa_id' => $insert['desa_id'],
                 'id'     => $insert['id']
             ], $insert);
         }

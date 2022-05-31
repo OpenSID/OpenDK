@@ -83,6 +83,7 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
             }
 
             $insert = [
+                'desa_id'               => $value['kode_desa'],
                 'id'                    => $value['id'],
                 'peserta'               => $value['peserta'],
                 'program_id'            => $value['program_id'],
@@ -94,13 +95,12 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
                 'kartu_tanggal_lahir'   => $value['kartu_tanggal_lahir'],
                 'kartu_alamat'          => $value['kartu_alamat'],
                 'kartu_peserta'         => $value['kartu_peserta'],
-                'desa_id'               => $value['kode_desa'],
             ];
 
             PesertaProgram::updateOrCreate([
-                'kartu_nik'     => $insert['kartu_nik'],
+                'desa_id'       => $insert['desa_id'],
                 'program_id'    => $insert['program_id'],
-                'desa_id'       => $insert['desa_id']
+                'kartu_nik'     => $insert['kartu_nik'],
             ], $insert);
         }
 

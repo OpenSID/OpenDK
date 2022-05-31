@@ -56,31 +56,31 @@ class DataPembangunanController extends Controller
 
             $pembangunan = Pembangunan::when($desa, function ($q) use ($desa) {
                 return $desa === 'Semua'
-                ? $q : $q->where('kode_desa', $desa);
+                ? $q : $q->where('desa_id', $desa);
             })
             ->with('dokumentasi');
 
             return DataTables::of($pembangunan)
                 ->addColumn('aksi', function ($row) {
-                    $data['detail_url']   = route('data.pembangunan.rincian', ['id' => $row->id,'kode_desa' => $row->kode_desa]);
+                    $data['detail_url']   = route('data.pembangunan.rincian', ['id' => $row->id,'desa_id' => $row->desa_id]);
                     return view('forms.aksi', $data);
                 })->make();
         }
     }
 
-    public function rincian($id, $kode_desa)
+    public function rincian($id, $desa_id)
     {
         $page_title       = 'Pembangunan';
         $page_description = 'Rincian Pembangunan';
-        $pembangunan =  Pembangunan::where('id', $id)->where('kode_desa', $kode_desa)->first();
+        $pembangunan =  Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first();
 
         return view('data.pembangunan.rincian', compact('page_title', 'page_description', 'pembangunan'));
     }
 
-    public function getrinciandata($id, $kode_desa)
+    public function getrinciandata($id, $desa_id)
     {
         if (request()->ajax()) {
-            $pembangunanDokumentasi = PembangunanDokumentasi::where('kode_desa', $kode_desa)->where('id_pembangunan', $id)->get();
+            $pembangunanDokumentasi = PembangunanDokumentasi::where('desa_id', $desa_id)->where('id_pembangunan', $id)->get();
             return DataTables::of($pembangunanDokumentasi)
             ->addIndexColumn()
             ->make();

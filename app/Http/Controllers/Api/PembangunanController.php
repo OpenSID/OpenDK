@@ -73,7 +73,7 @@ class PembangunanController extends Controller
             return response()->json([
                 "message" => "Proses Sinkronisasi Data gagal. Error : " . $e->getMessage(),
                 "status"  => "danger"
-           ]);
+            ]);
         }
 
         // Hapus folder temp ketika sudah selesai
@@ -82,8 +82,8 @@ class PembangunanController extends Controller
         Storage::disk('public')->delete('pembangunan/' . $filecsv);
 
         return response()->json([
-             "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
-             "status"  => "success"
+            "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
+            "status"  => "success"
         ]);
     }
 
@@ -118,8 +118,8 @@ class PembangunanController extends Controller
         Storage::disk('public')->delete('pembangunan/' . $filecsv);
 
         return response()->json([
-             "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
-             "status"  => "success"
+            "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
+            "status"  => "success"
         ]);
     }
 }

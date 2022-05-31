@@ -2,7 +2,7 @@
 
 Di rilis v22.06.01, menyediakan [untuk diisi] Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada [untuk diisi] yang baru mulai berkontribusi.
+Terima kasih pada widoagus17 yang baru mulai berkontribusi.
 
 
 #### Penambahan Fitur

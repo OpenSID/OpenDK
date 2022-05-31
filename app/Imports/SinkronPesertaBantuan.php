@@ -83,7 +83,7 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
             }
 
             $insert = [
-                'desa_id'               => $value['kode_desa'],
+                'desa_id'               => $value['desa_id'],
                 'id'                    => $value['id'],
                 'peserta'               => $value['peserta'],
                 'program_id'            => $value['program_id'],

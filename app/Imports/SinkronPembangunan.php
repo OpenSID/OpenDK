@@ -58,31 +58,31 @@ class SinkronPembangunan implements ToCollection, WithHeadingRow, WithChunkReadi
     {
         foreach ($collection as $value) {
             $insert = [
-                "desa_id" => $value['desa_id'],
-                "id" => $value['id'],
-                "sumber_dana" => $value['sumber_dana'],
-                "lokasi" => $value['lokasi'],
-                "keterangan" => $value['keterangan'],
-                "judul" => $value['judul'],
-                "volume" => $value['volume'],
-                "tahun_anggaran" => $value['tahun_anggaran'],
-                "pelaksana_kegiatan" => $value['pelaksana_kegiatan'],
-                "status" => $value['status'],
-                "anggaran" => $value['anggaran'],
-                "perubahan_anggaran" => $value['perubahan_anggaran'],
+                "desa_id"                 => $value['desa_id'],
+                "id"                      => $value['id'],
+                "sumber_dana"             => $value['sumber_dana'],
+                "lokasi"                  => $value['lokasi'],
+                "keterangan"              => $value['keterangan'],
+                "judul"                   => $value['judul'],
+                "volume"                  => $value['volume'],
+                "tahun_anggaran"          => $value['tahun_anggaran'],
+                "pelaksana_kegiatan"      => $value['pelaksana_kegiatan'],
+                "status"                  => $value['status'],
+                "anggaran"                => $value['anggaran'],
+                "perubahan_anggaran"      => $value['perubahan_anggaran'],
                 "sumber_biaya_pemerintah" => $value['sumber_biaya_pemerintah'],
-                "sumber_biaya_provinsi" => $value['sumber_biaya_provinsi'],
-                "sumber_biaya_kab_kota" => $value['sumber_biaya_kab_kota'],
-                "sumber_biaya_swadaya" => $value['sumber_biaya_swadaya'],
-                "sumber_biaya_jumlah" => $value['sumber_biaya_jumlah'],
-                "manfaat" => $value['manfaat'],
-                "waktu" => $value['waktu'],
-                "foto" => $value['foto'],
+                "sumber_biaya_provinsi"   => $value['sumber_biaya_provinsi'],
+                "sumber_biaya_kab_kota"   => $value['sumber_biaya_kab_kota'],
+                "sumber_biaya_swadaya"    => $value['sumber_biaya_swadaya'],
+                "sumber_biaya_jumlah"     => $value['sumber_biaya_jumlah'],
+                "manfaat"                 => $value['manfaat'],
+                "waktu"                   => $value['waktu'],
+                "foto"                    => $value['foto'],
             ];
 
             Pembangunan::updateOrCreate([
                 'desa_id' => $insert['desa_id'],
-                'id'     => $insert['id']
+                'id'      => $insert['id']
             ], $insert);
         }
     }

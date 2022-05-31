@@ -45,6 +45,9 @@ class AlterProgrambantuan extends Migration
         Schema::table('das_program', function (Blueprint $table) {
             $table->bigInteger('id_program_desa')->after('id');
             $table->text('description')->nullable()->change();
+            $table->integer('id')->nullable(false)->unsigned()->change();
+            $table->dropPrimary('id');
+            $table->unique(['id', 'desa_id']);
         });
     }
 
@@ -58,6 +61,7 @@ class AlterProgrambantuan extends Migration
         Schema::table('das_program', function (Blueprint $table) {
             $table->dropColumn('id_program_desa');
             $table->string('description', 200)->nullable()->change();
+            $table->integer('id', true)->nullable(false)->change();
         });
     }
 }

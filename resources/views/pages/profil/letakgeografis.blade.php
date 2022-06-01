@@ -30,11 +30,9 @@
                             <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> LETAK GEOGRAFIS {{ strtoupper($sebutan_wilayah) }} {{ strtoupper($profil->nama_kecamatan) }}</h3>
                         </div>
                         <div class="box-body">
-                            <div  id="canvas_peta">
-                                <iframe id="btn_peta" src="{!! $profil->dataumum->embed_peta !!}" frameborder="0" style="border:0; width:100%; height:600px; margin: 0px!;" allowfullscreen></iframe>
-                            </div>
-                        </iframe>    
-                    </div>
+                            <div  id="canvas_peta"  style="border:0; width:100%; height:600px; margin: 0px!;"></div>
+                            <input type="hidden" name="path" id="path">
+                        </div>
                                 <!-- /.col -->
                     </div>
                     <!-- /.row -->
@@ -91,13 +89,46 @@
     @endif
 {{-- </section> --}}
 @endsection
+@include(('partials.asset_leaflet'))
 @push('scripts')
-<script type="application/javascript" src="{{ asset('js/html2canvas.min.js') }}"></script>
 <script type="application/javascript">
-    document.querySelector("#btn_peta").addEventListener("click", function() {
-        html2canvas(document.iframe).then(function(canvas) {
-            document.body.appendChild(canvas);
+   
+    var overlayLayers = {};
+    function tampil_peta () { 
+      // Inisialisasi tampilan peta
+      var posisi = [-1.0546279422758742, 116.71875000000001];
+      var zoom = 10;
+      var peta_wilayah = L.map('canvas_peta', {
+        center: posisi,
+        zoom: 13
+      });
+
+      var path_kec = {!! $data_umum->path !!};
+      // Geolocation IP Route/GPS
+      geoLocation(peta_wilayah);
+      showPolygon(path_kec, peta_wilayah)
+
+      
+      var baseLayers = getBaseLayers(peta_wilayah, '');
+      L.control.layers(baseLayers, overlayLayers, {
+                position: 'topleft',
+                collapsed: true
+      }).addTo(peta_wilayah);
+    };
+
+    $(function () {
+        var marker_desa = new Array();
+        var wilayah_desa = {!! $wilayah_desa !!}
+        var marker;
+        wilayah_desa.forEach(e => {
+            if (e.path != null) {
+                marker = set_marker(e, 'Peta Wilayah Desa', 'Wilayah Desa ' + e.nama, {'line' : '#de2d26', 'fill' : '#fff'});
+                marker_desa =  marker_desa.concat(marker);
+            }
         });
-    }, false);
+        console.log(marker_desa);
+        overlayLayers['Peta Wilayah Desa'] =  wilayah_property(marker_desa, false);
+        tampil_peta();
+    });
 </script>
 @endpush

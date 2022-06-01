@@ -43,16 +43,6 @@ use ZipArchive;
 class PendudukController extends Controller
 {
     /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
-    /**
      * Hapus Data Penduduk Sesuai OpenSID
      *
      * @param PendudukRequest $request

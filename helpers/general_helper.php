@@ -317,6 +317,17 @@ function is_user($url = null, $sex = 1)
     return is_img($url, $default);
 }
 
+function avatar($foto)
+{
+    if ($foto) {
+        $foto = 'storage/user/' . $foto;
+    }
+
+    $default = 'bower_components/admin-lte/dist/img/user2-160x160.jpg';
+
+    return is_img($foto, $default);
+}
+
 if (! function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {

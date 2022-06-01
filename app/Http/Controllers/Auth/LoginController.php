@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -71,6 +72,12 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
+        // check password
+        $cek_password = Hash::check('password', auth()->user()->password);
+        if ($cek_password && (bool) env('APP_DEMO') == false) {
+            $this->redirectTo = 'changedefault';
+        }
+
         switch (auth()->user()->roles()->first()->name) {
             case 'kontributor-artikel':
                 $this->redirectTo = 'informasi/artikel';

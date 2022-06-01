@@ -38,16 +38,6 @@ use App\Jobs\LaporanPendudukQueueJob;
 class LaporanPendudukController extends Controller
 {
     /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
-    /**
      * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
      *
      * @param LaporanPendudukRequest $request

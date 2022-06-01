@@ -57,39 +57,58 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('me', 'Api\Auth\AuthController@me');
     });
 
-    /**
-     * Penduduk
-     */
-    Route::group(['prefix' => 'penduduk'], function () {
-        Route::post('/', 'Api\PendudukController@store');
-        Route::post('storedata', 'Api\PendudukController@storedata');
-        Route::post('test', 'Api\PendudukController@test');
-    });
+    Route::group(['middleware' => ['auth:api', 'role:admin-desa']], function () {
 
-    /**
-     * Laporan Apbdes
-     */
-    Route::group(['prefix' => 'laporan-apbdes'], function () {
-        Route::post('/', 'Api\LaporanApbdesController@store');
-    });
+        /**
+         * Penduduk
+         */
+        Route::group(['prefix' => 'penduduk'], function () {
+            Route::post('/', 'Api\PendudukController@store');
+            Route::post('storedata', 'Api\PendudukController@storedata');
+            Route::post('test', 'Api\PendudukController@test');
+        });
 
-    /**
-     * Laporan Penduduk
-     */
-    Route::group(['prefix' => 'laporan-penduduk'], function () {
-        Route::post('/', 'Api\LaporanPendudukController@store');
-    });
+        /**
+         * Laporan Apbdes
+         */
+        Route::group(['prefix' => 'laporan-apbdes'], function () {
+            Route::post('/', 'Api\LaporanApbdesController@store');
+        });
 
-    Route::group(['prefix' => 'pesan'], function () {
-        Route::post('/', 'Api\PesanController@store');
-        Route::post('getpesan', 'Api\PesanController@getPesan');
-        Route::get('detail', 'Api\PesanController@detail');
-    });
+        /**
+         * Laporan Penduduk
+         */
+        Route::group(['prefix' => 'laporan-penduduk'], function () {
+            Route::post('/', 'Api\LaporanPendudukController@store');
+        });
 
-    /**
-     * Identitas Desa
-     */
-    Route::group(['prefix' => 'identitas-desa'], function () {
-        Route::post('/', 'Api\ProfilDesaController@store');
+        Route::group(['prefix' => 'pesan'], function () {
+            Route::post('/', 'Api\PesanController@store');
+            Route::post('getpesan', 'Api\PesanController@getPesan');
+            Route::get('detail', 'Api\PesanController@detail');
+        });
+
+        /**
+        * Pembangunan
+        */
+        Route::group(['prefix' => 'pembangunan'], function () {
+            Route::post('/', 'Api\PembangunanController@store');
+            Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');
+        });
+
+        /**
+        * Identitas Desa
+        */
+        Route::group(['prefix' => 'identitas-desa'], function () {
+            Route::post('/', 'Api\ProfilDesaController@store');
+        });
+
+        /**
+        * Program Bantuan
+        */
+        Route::group(['prefix' => 'program-bantuan'], function () {
+            Route::post('/', 'Api\ProgamBantuanController@store');
+            Route::post('peserta', 'Api\ProgamBantuanController@storePeserta');
+        });
     });
 });

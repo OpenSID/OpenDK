@@ -37,16 +37,12 @@ use App\Models\DataDesa;
 
 class ProfilDesaController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
     public function store(ProfilDesaRequest $request)
     {
         DataDesa::where('desa_id', $request->kode_desa)->update([
             'website' => $request->website,
-            'sebutan_desa' => $request->sebutan_desa
+            'sebutan_desa' => $request->sebutan_desa,
+            'path' => $request->path
         ]);
 
         return response()->json([

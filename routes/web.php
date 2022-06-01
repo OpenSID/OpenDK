@@ -165,6 +165,12 @@ Route::group(['middleware' => 'installed'], function () {
         // Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
 
         Route::get('/dashboard', 'DashboardController')->name('dashboard');
+        Route::namespace('auth')->group(function () {
+            Route::group(['prefix' => 'changedefault', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                Route::get('/', 'ChangeDefaultController@index')->name('change-default');
+                Route::post('store', ['as' => 'changedefault.store', 'uses' => 'ChangeDefaultController@store']);
+            });
+        });
 
         /**
          * Group Routing for Informasi
@@ -284,7 +290,9 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
+                    Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
                     Route::post('getdesa', ['as' => 'data.data-desa.getdesa', 'uses' => 'DataDesaController@getDesaKecamatan']);
+                    Route::get('peta/{id}', ['as' => 'data.data-desa.peta', 'uses' => 'DataDesaController@peta']);
                     Route::get('create', ['as' => 'data.data-desa.create', 'uses' => 'DataDesaController@create']);
                     Route::post('store', ['as' => 'data.data-desa.store', 'uses' => 'DataDesaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
@@ -397,14 +405,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'program-bantuan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.program-bantuan.index', 'uses' => 'ProgramBantuanController@index']);
                     Route::get('getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
-                    Route::get('create', ['as' => 'data.program-bantuan.create', 'uses' => 'ProgramBantuanController@create']);
-                    Route::post('store', ['as' => 'data.program-bantuan.store', 'uses' => 'ProgramBantuanController@store']);
-                    Route::post('add_peserta', ['as' => 'data.program-bantuan.add_peserta', 'uses' => 'ProgramBantuanController@add_peserta']);
-                    Route::get('edit/{id}', ['as' => 'data.program-bantuan.edit', 'uses' => 'ProgramBantuanController@edit']);
-                    Route::get('show/{id}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
-                    Route::get('create-peserta/{id}', ['as' => 'data.program-bantuan.create-peserta', 'uses' => 'ProgramBantuanController@createPeserta']);
-                    Route::put('update/{id}', ['as' => 'data.program-bantuan.update', 'uses' => 'ProgramBantuanController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.program-bantuan.destroy', 'uses' => 'ProgramBantuanController@destroy']);
+                    Route::get('show/{id}/{id_desa}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
                 });
@@ -438,6 +439,14 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
+                });
+
+                // Pembangunan
+                Route::group(['prefix' => 'pembangunan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.pembangunan.index', 'uses' => 'DataPembangunanController@index']);
+                    Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
+                    Route::get('rincian/{id}/{desa_id}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
+                    Route::get('getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
                 });
             });
 

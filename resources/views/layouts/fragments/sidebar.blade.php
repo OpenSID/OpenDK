@@ -191,6 +191,11 @@
                                 </ul>
                             </li>
                             @endif
+
+                            @if($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan','administrator-website']))
+                            <li {{ (Request::is(['data/pembangunan/*', 'data/pembangunan'])? 'class=active' : '') }}>
+                                <a href="{{ route('data.pembangunan.index') }}"><i class="fa fa-circle-o"></i>Pembangunan</a></li>
+                            @endif
                         </ul>
                     </li>
                 @endif

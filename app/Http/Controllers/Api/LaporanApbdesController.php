@@ -38,16 +38,6 @@ use App\Jobs\LaporanApbdesQueueJob;
 class LaporanApbdesController extends Controller
 {
     /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
-
-    /**
      * Tambah / Ubah Data Apbdes Sesuai OpenSID
      *
      * @param ApbdesRequest $request

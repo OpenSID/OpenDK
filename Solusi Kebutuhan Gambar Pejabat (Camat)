@@ -1,0 +1,52 @@
+OLUSI UNTUK PENAMBAHAN GAMBAR CAMAT
+
+Permasalahan:
+1. Pada laman website kecamatan belum ada foto profil camat
+2. Pada dashboard administrator posisi sidebar/widget, belum ada
+gambar foto profil camat.
+3. Penting untuk dapat ditampilkan gambar profil pejabat kepala
+kecamatan.
+
+Dengan adanya foto profil camat seharusnya dimunculkan, alasan dan harapannya adalah sebagai
+berikut:
+1. Pejabat Kepala Kecamatan wajib dikenali oleh seluruh perangkat
+organisasi di bawahnya (kelurahan dan desa)
+2. Penting kelengkapan profil tersebut, karena seorang camat melekat
+status fungsional yaitu sebagai penyelenggara tugas-tugas
+pemerintahan umum dan pembinaan desa dan kelurahan
+3. Dengan adanya profil foto camat, maka akan mudah dibuatkan
+dokumentasi historis pimpinan suatu kecamatan menurut periode
+jabatan
+
+
+SOLUSI ATAS ISSUE INI
+Tim Programmer membuat rencana kerja untuk membuat foto profil pejabat camat pada website
+kecamatan dan dashboard administrator yang harus dilakukan oleh
+programmer sebagai berikut:
+A. Front-End
+a. Website Kecamatan
+1. Pada laman home, pada header website posisi sebelah kiri
+logo kecamatan, tampilkan box foto pejabat (camat), dengan
+disertai tag nama lengkap dan NIK Kepegawaian. Lakukan perubahan pada layout sidebar/widget sesuai kebutuhan.
+2. Foto profil camat pada ditampilkan pada ukuran lebih besar
+untuk laman: Berita Desa dan Profil.
+3. Foto harus disertai link ke laman profil yang memuat biografi
+pejabat periode aktif.
+b. Dashboard Administrator
+1. Dibuatkan Box Foto profil camat pada dashboard dengan
+posisi di bawah logo kecamatan (kiri atas).
+2. Teks “Menu Administrator” dihilang dan diganti menjadi box
+foto profil camat dengan disertai tag name.
+3. Foto memiliki link ke laman biografi pejabat.
+4. Buatkan formulir isian biografi pejabat secara khusus,
+sebaiknya dibuatkan menu baru dalam kelompok Data.
+B. Back-End
+a. Persiapakan database profil pejabat yang relasinya pada master
+profil kecamatan
+b. Relasi tabel master (profil kecamatan) dan tabel detail profil
+pejabat
+c. Pada tabel detail (tabel profil pejabat) yang akan dibuat dengan
+struktur kolom antara lain Nama Pejabat, Tanggal Lahir, Tempat
+Lahir, NIK, Alamat, TMT Jabatan, dan lainnya.
+Setiap langkah pengembangan ini diperhitungkan waktunya kurang dari 1
+minggu sejak konsep ini disampaikan.

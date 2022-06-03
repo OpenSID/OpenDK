@@ -12,6 +12,19 @@
                     {{  strtoupper('Kecamatan ' . $profil->nama_kecamatan) }}<br>
                 </p>
         <!-- </div> -->
+        <!-- Foto Box -->
+                <div class="profile" style="margin: 20px;">
+                    <div class="profile-image" style="border-radius:5%;background-color: #898c8f;box-shadow: inset 0 0 0 3px #77787a;">
+                        <img class="img-circle" src="{{ is_logo($profil->foto_kepala_wilayah) }}" alt="Camat" width="75px" style="margin: 5px;"/>
+                    </div>
+                    <div class="profile-data-name">
+                        <p style="font-size: 12px; color:white">
+                            {{ strtoupper($profil->nama_camat) }}<br>
+                            {{  strtoupper('Kepala Camat') }}<br>
+                        </p>
+                    </div>
+                </div> 
+        <!-- Foto Box -->
         </center>
 
         <!-- Sidebar Menu -->

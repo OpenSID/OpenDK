@@ -29,27 +29,36 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LaporanPendudukRequest;
-use App\Jobs\LaporanPendudukQueueJob;
+use App\Http\Requests\ChangeRequest;
 
-class LaporanPendudukController extends Controller
+class ChangeDefaultController extends Controller
 {
     /**
-     * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
+     * Create a new controller instance.
      *
-     * @param LaporanPendudukRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      */
-    public function store(LaporanPendudukRequest $request)
+    public function __construct()
     {
-        LaporanPendudukQueueJob::dispatch($request->only(['desa_id', 'laporan_penduduk']));
+        parent::__construct();
+    }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
-        ]);
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('auth/change');
+    }
+
+    public function store(ChangeRequest $request)
+    {
+        auth()->user()->update(['email' => $request->email, 'password' => $request->password]);
+        return redirect()->route('dashboard');
     }
 }

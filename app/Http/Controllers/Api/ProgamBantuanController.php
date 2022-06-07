@@ -32,23 +32,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PembangunanDokumentasiRequest;
-use App\Http\Requests\PembangunanRequest;
-use App\Imports\SinkronPembangunan;
-use App\Imports\SinkronPembangunanDokumentasi;
+use App\Http\Requests\ProgramBantuanRequest;
+use App\Imports\SinkronBantuan;
+use App\Imports\SinkronPesertaBantuan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ZipArchive;
 
-class PembangunanController extends Controller
+class ProgamBantuanController extends Controller
 {
-    /**
-    * Tambah Data Pembangunan Sesuai OpenSID
-    *
-    * @param PendudukRequest $request
-    * @return \Illuminate\Http\JsonResponse
-    */
-    public function store(PembangunanRequest $request)
+    public function store(ProgramBantuanRequest $request)
     {
         try {
             // Upload file zip temporary.
@@ -57,7 +50,7 @@ class PembangunanController extends Controller
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
-            $extract = storage_path('app/public/pembangunan/');
+            $extract = storage_path('app/public/bantuan/');
 
             // Ekstrak file
             $zip = new ZipArchive();
@@ -65,61 +58,58 @@ class PembangunanController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            // Proses impor data pembangunan
-            (new SinkronPembangunan())
-                ->queue($extract . $filecsv = Str::replaceLast('zip', 'csv', $name));
+            (new SinkronBantuan())
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
             return response()->json([
-                "message" => "Proses Sinkronisasi Data gagal. Error : " . $e->getMessage(),
-                "status"  => "danger"
+                "status" => "danger",
+                "message" => $e->getMessage(),
             ]);
         }
 
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('pembangunan/' . $filecsv);
+        Storage::disk('public')->delete('bantuan' . $csvName);
 
         return response()->json([
-            "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
-            "status"  => "success"
+            "message" => "Data Bantuan Sedang di Sinkronkan",
+            "status" => "success"
         ]);
     }
 
-    public function storeDokumentasi(PembangunanDokumentasiRequest $request)
+    public function storePeserta(ProgramBantuanRequest $request)
     {
         try {
             // Upload file zip temporary.
             $file = $request->file('file');
             $file->storeAs('temp', $name = $file->getClientOriginalName());
-
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
-            $extract = storage_path('app/public/pembangunan/');
-
+            $extract = storage_path('app/public/bantuan/');
             // Ekstrak file
             $zip = new ZipArchive();
             $zip->open($path);
             $zip->extractTo($extract);
             $zip->close();
-
-            // Proses impor data dokumentasi pembangunan
-            (new SinkronPembangunanDokumentasi())
-            ->queue($extract . $filecsv = Str::replaceLast('zip', 'csv', $name));
+            // Proses impor excell
+            (new SinkronPesertaBantuan())
+                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal.');
+            return response()->json([
+                "status" => "danger",
+                "message" => $e->getMessage(),
+            ]);
         }
-
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('pembangunan/' . $filecsv);
-
+        Storage::disk('public')->delete('bantuan/' . $csvName);
         return response()->json([
-            "message" => "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
-            "status"  => "success"
+            "status" => "success",
+            "message" => "Data Bantuan Sedang di Sinkronkan",
         ]);
     }
 }

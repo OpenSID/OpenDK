@@ -29,27 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Requests;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LaporanPendudukRequest;
-use App\Jobs\LaporanPendudukQueueJob;
+use Illuminate\Foundation\Http\FormRequest;
 
-class LaporanPendudukController extends Controller
+class ChangeRequest extends FormRequest
 {
     /**
-     * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
+     * Determine if the user is authorized to make this request.
      *
-     * @param LaporanPendudukRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return bool
      */
-    public function store(LaporanPendudukRequest $request)
+    public function authorize()
     {
-        LaporanPendudukQueueJob::dispatch($request->only(['desa_id', 'laporan_penduduk']));
+        return true;
+    }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
-        ]);
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'email' => 'required|unique:users,email',
+            'password' => 'required',
+            'password_confirmation' => 'required_with:password|same:password|min:6'
+        ];
     }
 }

@@ -31,6 +31,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CekDesa;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PembangunanDokumentasiRequest extends FormRequest
@@ -42,7 +43,7 @@ class PembangunanDokumentasiRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -53,7 +54,8 @@ class PembangunanDokumentasiRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'file' => 'file|mimes:zip|max:5120',
+            "desa_id" => ['required', 'string', new CekDesa()],
         ];
     }
 }

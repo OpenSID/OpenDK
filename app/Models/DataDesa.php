@@ -78,7 +78,7 @@ class DataDesa extends Model
 
     public function imunisasi()
     {
-        return $this->hasMany(imunisasi::class, 'desa_id', 'desa_id');
+        return $this->hasMany(Imunisasi::class, 'desa_id', 'desa_id');
     }
 
     public function akiakb()
@@ -98,7 +98,7 @@ class DataDesa extends Model
 
     public function fasilitasPAUD()
     {
-        return $this->hasMany(fasilitasPAUD::class, 'desa_id', 'desa_id');
+        return $this->hasMany(FasilitasPAUD::class, 'desa_id', 'desa_id');
     }
 
     public function laporanapbdes()

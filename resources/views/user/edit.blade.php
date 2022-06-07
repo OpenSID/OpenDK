@@ -17,18 +17,6 @@
 <section class="content">
 <div class="box box-primary">
 	<div class="box-body">
-		@if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
-			<ul>
-				@foreach ($errors->all() as $error)
-				<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-
-		</div>
-
-		@endif
 		{!! Form::model($user, ['route'=>['setting.user.update', $user->id], 'method' => 'put', 'autocomplete' => 'off', 'id' => 'form-user',  'class' => 'form-horizontal form-label-left', 'files' => true,]) !!}
 			@include('user.form')
 		{!! Form::close() !!}

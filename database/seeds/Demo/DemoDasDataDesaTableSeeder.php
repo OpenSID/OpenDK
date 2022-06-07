@@ -44,6 +44,8 @@ class DemoDasDataDesaTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         $profil = Profil::first();
 
         DB::table('das_data_desa')->truncate();
@@ -176,5 +178,7 @@ class DemoDasDataDesaTableSeeder extends Seeder
                 'website' => '',
             ],
         ]);
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

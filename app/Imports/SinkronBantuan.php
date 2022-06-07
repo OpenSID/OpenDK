@@ -29,27 +29,49 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+namespace App\Imports;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\LaporanPendudukRequest;
-use App\Jobs\LaporanPendudukQueueJob;
+use App\Models\Program;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class LaporanPendudukController extends Controller
+class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
 {
-    /**
-     * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
-     *
-     * @param LaporanPendudukRequest $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(LaporanPendudukRequest $request)
-    {
-        LaporanPendudukQueueJob::dispatch($request->only(['desa_id', 'laporan_penduduk']));
+    use Importable;
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
-        ]);
+    /**
+     * {@inheritdoc}
+     */
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+
+    /**
+    * @param Collection $collection
+    */
+    public function collection(Collection $collection)
+    {
+        foreach ($collection as $value) {
+            $insert = [
+                'desa_id'       => $value['desa_id'],
+                'id'            => $value['id'],
+                'nama'          => $value['nama'],
+                'sasaran'       => $value['sasaran'],
+                'status'        => $value['status'],
+                'start_date'    => $value['sdate'],
+                'end_date'      => $value['edate'],
+                'description'   => $value['ndesc'],
+            ];
+
+            Program::updateOrCreate([
+                'desa_id' => $insert['desa_id'],
+                'id'      => $insert['id']
+            ], $insert);
+        }
     }
 }

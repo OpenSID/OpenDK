@@ -11,3 +11,16 @@ Fitur ini telah tersedia sehingga untuk menambahkan fitur ini hanya dibutuhkan s
 agar dapat ditampilkan dibagian sidebar website.
 
 Untuk bagian update data telah tersedia di halaman admin di bagian menu Kecamatan -> Profile.
+
+Secara Teknis Dapat ditambah melalui :
+- Resources
+  - Views
+    - Layout
+      - Frontends
+        - Sidebar.blade.php
+          "     <div class="box box-widget">
+                  @include('widgets.camat')
+              </div>"
+    - widgets
+      - Create camat.blade.php
+      

@@ -87,6 +87,7 @@ class ProsedurController extends Controller
                 $file->move($path, $file_name);
 
                 $input['file_prosedur'] = $path . $file_name;
+                $input['slug'] = str_slug($request->input('judul_prosedur'));
                 $input['mime_type'] = $file->getClientOriginalExtension();
             }
 
@@ -131,6 +132,7 @@ class ProsedurController extends Controller
                 $input['file_prosedur'] = $path . $file_name;
                 $input['mime_type'] = $file->getClientOriginalExtension();
             }
+            $input['slug'] = str_slug($request->input('judul_prosedur'));
 
             $prosedur->update($input);
         } catch (\Exception $e) {

@@ -1,0 +1,13 @@
+
+#### [v22.06.01]
+
+Di rilis v22.06.01, menyediakan Sinkronisasi Data Program Bantuan dan Pembangunan OpenSID. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+
+#### Penambahan Fitur
+[#142] (https://github.com/OpenSID/OpenDK/issues/142) Penambahan Fitur Widget Sidebar Foto Camat
+
+Solusi :
+Fitur ini telah tersedia sehingga untuk menambahkan fitur ini hanya dibutuhkan select tabel saja dibagian frontend
+agar dapat ditampilkan dibagian sidebar website.
+
+Untuk bagian update data telah tersedia di halaman admin di bagian menu Kecamatan -> Profile.

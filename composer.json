@@ -9,7 +9,7 @@
     ],
     "homepage": "https://opendk.my.id/",
     "require": {
-        "php": ">=7.4.0",
+        "php": ">=7.4.0 || ^7.2",
         "cviebrock/eloquent-sluggable": "^6.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",

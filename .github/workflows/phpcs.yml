@@ -5,6 +5,8 @@ on:
     branches:
       - dev
       - master
+    paths:
+      - "**.php"
 
 jobs:
   php-cs-fixer:
@@ -13,7 +15,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
 

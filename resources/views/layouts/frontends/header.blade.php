@@ -88,6 +88,14 @@
           @endif
         </ul>
       </div>
+      <!-- Box foto -->
+      <div class="profile" style="margin: 20px;">
+        <img  src="{{ is_logo($profil->foto_kepala_wilayah) }}" width="50px" heigth="50px" style="margin: 5px;">
+          <p style="font-size: 13px; font-weight: bold;color:white">
+            <small class="text-kab">{{ strtoupper($profil->nama_camat) }}</small>
+          </p>
+      </div>
+      <!-- Box foto -->
     </nav>
   </header>
 

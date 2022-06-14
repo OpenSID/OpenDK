@@ -66,7 +66,7 @@ class DownloadController extends Controller
 
     public function showProsedur($nama_prosedur)
     {
-        $prosedur   = Prosedur::where('slug', $nama_prosedur)->first();
+        $prosedur   = Prosedur::where('judul_prosedur', str_replace('-', ' ', $nama_prosedur))->first();
         $page_title = 'Detail Prosedur :' . $prosedur->judul_prosedur;
 
         return view('pages.unduhan.prosedur_show', compact('page_title', 'prosedur'));

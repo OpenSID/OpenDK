@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -85,10 +86,11 @@ return [
 
         'slack' => [
             'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
+            'url' => env('LOG_SLACK_WEBHOOK_URL', 'default_webhook_url_here'),
+            'username' => 'Logging Error OpenDK',
             'emoji' => ':boom:',
-            'level' => 'critical',
+            'formatter' => JsonFormatter::class,
+            'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'papertrail' => [

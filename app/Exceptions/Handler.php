@@ -35,6 +35,7 @@ use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class Handler extends ExceptionHandler
 {
@@ -75,6 +76,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        $errorLog = collect([
+            [
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'code' => $exception->getCode(),
+            ]
+        ])->concat(collect($exception->getTrace())->take(2))->toArray();
+
+        Log::channel('slack')->error($exception->getMessage(), $errorLog);
+        
         return parent::render($request, $exception);
     }
 }

@@ -31,6 +31,7 @@
 
 namespace App\Exceptions;
 
+use App\Jobs\LoggingErrorSlackJob;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
@@ -83,8 +84,10 @@ class Handler extends ExceptionHandler
                 'code' => $exception->getCode(),
             ]
         ])->concat(collect($exception->getTrace())->take(2))->toArray();
+        
+        $errorMessage = $exception->getMessage();
 
-        Log::channel('slack')->error($exception->getMessage(), $errorLog);
+        dispatch(new LoggingErrorSlackJob($errorMessage, $errorLog));
         
         return parent::render($request, $exception);
     }

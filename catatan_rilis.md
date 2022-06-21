@@ -13,4 +13,5 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 #### TEKNIS
 1. [#427](https://github.com/OpenSID/OpenDK/pull/427) Teknis perbaiki error 500 setelah login.
+2. [#431](https://github.com/OpenSID/OpenDK/pull/431) Teknis ignore .phpcs-cache
 

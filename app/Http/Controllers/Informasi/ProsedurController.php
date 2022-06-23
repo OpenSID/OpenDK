@@ -132,7 +132,7 @@ class ProsedurController extends Controller
                 $input['mime_type'] = $file->getClientOriginalExtension();
             }
             $input['slug'] = str_slug($request->input('judul_prosedur'));
-            
+
             $prosedur->update($input);
         } catch (\Exception $e) {
             report($e);

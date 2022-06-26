@@ -6,7 +6,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 
 
 #### Penambahan Fitur
-
+1. [#142](https://github.com/OpenSID/OpenDK/issues/142) Sediakan Widget Sidebar Foto Camat.
 
 #### Perbaikan BUG
 

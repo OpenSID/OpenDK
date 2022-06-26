@@ -44,11 +44,11 @@ class AddSlugProsedur extends Migration
     public function up()
     {
         Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->Char('slug', 50)->after('judul_prosedur')->nullable(false);
+            $table->char('slug', 50)->after('judul_prosedur')->nullable(false);
         });
 
         // update data slug pada das prosedur
-        $prosedur = DB::table('das_prosedur')->update(['slug' => DB::raw("replace(judul_prosedur, ' ' , '-')")]);
+        DB::table('das_prosedur')->update(['slug' => DB::raw("lower(replace(judul_prosedur, ' ' , '-'))")]);
     }
 
     /**

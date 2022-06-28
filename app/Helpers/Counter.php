@@ -163,9 +163,9 @@ class Counter
         $prefix = config('database.connections.' . config('database.default') . '.prefix');
         if ($days) {
             $hits = DB::table($prefix . 'das_counter_page_visitor')->distinct('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
-        } else { 
+        } else {
             $hits = DB::table($prefix . 'das_counter_page_visitor')->distinct('visitor_id')->count();
-         }
+        }
 
         return number_format($hits);
     }

@@ -11,10 +11,11 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi. Terima kasih pula pada
 #### Perbaikan BUG
 
 1. [#430](https://github.com/OpenSID/OpenDK/issues/430) Perbaiki ihat daftar prosedur di menu unduhan error 500.
+2. [#441](https://github.com/OpenSID/OpenDK/issues/441) Perbaiki perhitungan statistik pengunjung website.
 
 
 #### TEKNIS
 
 1. [#427](https://github.com/OpenSID/OpenDK/pull/427) Teknis perbaiki error 500 setelah login.
-2. [#431](https://github.com/OpenSID/OpenDK/pull/431) Teknis ignore .phpcs-cache
+2. [#431](https://github.com/OpenSID/OpenDK/pull/431) Teknis ignore .phpcs-cache.
 

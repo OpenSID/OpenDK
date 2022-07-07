@@ -319,7 +319,10 @@ function is_user($url = null, $sex = 1)
 
 function avatar($foto)
 {
-    $foto    = 'storage/user/' . $foto;
+    if ($foto) {
+        $foto = 'storage/user/' . $foto;
+    }
+
     $default = 'bower_components/admin-lte/dist/img/user2-160x160.jpg';
 
     return is_img($foto, $default);

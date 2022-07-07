@@ -29,49 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Imports;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-use App\Models\Program;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
-
-class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class AddSlugProsedur extends Migration
 {
-    use Importable;
-
     /**
-     * {@inheritdoc}
+     * Run the migrations.
+     *
+     * @return void
      */
-    public function chunkSize(): int
+    public function up()
     {
-        return 1000;
+        Schema::table('das_prosedur', function (Blueprint $table) {
+            $table->char('slug', 50)->after('judul_prosedur')->nullable(false);
+        });
+
+        // update data slug pada das prosedur
+        DB::table('das_prosedur')->update(['slug' => DB::raw("lower(replace(judul_prosedur, ' ' , '-'))")]);
     }
 
     /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $collection)
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        foreach ($collection as $value) {
-            $insert = [
-                'desa_id'       => $value['desa_id'],
-                'id'            => $value['id'],
-                'nama'          => $value['nama'],
-                'sasaran'       => $value['sasaran'],
-                'status'        => $value['status'],
-                'start_date'    => $value['sdate'],
-                'end_date'      => $value['edate'],
-                'description'   => $value['ndesc'],
-            ];
-
-            Program::updateOrCreate([
-                'desa_id' => $insert['desa_id'],
-                'id'      => $insert['id']
-            ], $insert);
-        }
+        Schema::table('das_prosedur', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
     }
 }

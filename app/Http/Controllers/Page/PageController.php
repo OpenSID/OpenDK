@@ -125,7 +125,7 @@ class PageController extends Controller
         
         // Tanggal
         $tanggal = $request->tanggal;
-        if ($tanggal != '0') {
+        if ($tanggal != 'Terlama') {
             $feeds = $feeds->sortBy('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
         }
 

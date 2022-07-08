@@ -124,8 +124,8 @@
 				@endforeach
 			</select>
 			<select class="form-control" id="tanggal" name="tanggal" style="display: inline-flex; width: auto;">
-				<option value="0">Terbaru</option>
-				<option value="1">Terlama</option>
+				<option value="Terlama">Terbaru</option>
+				<option value="Terbaru">Terlama</option>
 			</select>
 			<div class="input-group input-group-sm" style="display: inline-flex; float: right; padding: 5px;">
 				<input class="form-control" style="height: auto;" type="text" name="cari" placeholder="Cari berita" value="{{$cari}}"/>

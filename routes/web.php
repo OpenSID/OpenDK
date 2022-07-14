@@ -263,6 +263,13 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                     Route::get('kategori', ['as' => 'informasi.potensi.kategori', 'uses' => 'PotensiController@kategori']);
                 });
+
+                // Media Sosial
+                Route::group(['prefix' => 'media-sosial'], function () {
+                    Route::get('/', ['as' => 'informasi.media-sosial.index', 'uses' => 'MediaSosialController@index']);
+                    Route::put('update/{medsos}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                });
+
             });
         });
 

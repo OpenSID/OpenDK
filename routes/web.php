@@ -268,6 +268,11 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::group(['prefix' => 'media-sosial'], function () {
                     Route::get('/', ['as' => 'informasi.media-sosial.index', 'uses' => 'MediaSosialController@index']);
                     Route::put('update/{medsos}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                    Route::get('/twitter', ['as' => 'informasi.media-sosial.twitter', 'uses' => 'MediaSosialController@twitter']);
+                    Route::get('/youtube', ['as' => 'informasi.media-sosial.youtube', 'uses' => 'MediaSosialController@youtube']);
+                    Route::get('/instagram', ['as' => 'informasi.media-sosial.instagram', 'uses' => 'MediaSosialController@instagram']);
+                    Route::get('/whatsapp', ['as' => 'informasi.media-sosial.whatsapp', 'uses' => 'MediaSosialController@whatsapp']);
+                    Route::get('/telegram', ['as' => 'informasi.media-sosial.telegram', 'uses' => 'MediaSosialController@telegram']);
                 });
 
             });

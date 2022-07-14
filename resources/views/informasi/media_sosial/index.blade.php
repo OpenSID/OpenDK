@@ -16,13 +16,13 @@
     
     @include('partials.flash_message')
 
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <a href="{{ route('informasi.form-dokumen.create') }}" class="btn btn-success btn-sm {{auth()->guest() ? 'hidden':''}}" title="Tambah"><i class="fa fa-plus"></i>&ensp;Tambah</a>
-        </div>
-        
-        <div class="box-body">
-            Media sosial
+    @include('informasi.media_sosial.navigasi')
+    
+    <div class="col-md-9 col-lg-9">
+        <div class="box box-info">
+            <div class="box-body">
+                Medsos
+            </div>
         </div>
     </div>
 </section>

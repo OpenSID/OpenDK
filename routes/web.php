@@ -267,7 +267,7 @@ Route::group(['middleware' => 'installed'], function () {
                 // Media Sosial
                 Route::group(['prefix' => 'media-sosial'], function () {
                     Route::get('/', ['as' => 'informasi.media-sosial.index', 'uses' => 'MediaSosialController@index']);
-                    Route::put('update/{medsos}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                    Route::post('update/{medsos}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
                     Route::get('/twitter', ['as' => 'informasi.media-sosial.twitter', 'uses' => 'MediaSosialController@twitter']);
                     Route::get('/youtube', ['as' => 'informasi.media-sosial.youtube', 'uses' => 'MediaSosialController@youtube']);
                     Route::get('/instagram', ['as' => 'informasi.media-sosial.instagram', 'uses' => 'MediaSosialController@instagram']);

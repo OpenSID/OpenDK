@@ -21,7 +21,7 @@
     <div class="col-md-9 col-lg-9">
         <div class="box box-info">
             <!-- form start -->
-            {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'post','id' => 'form-medsos', 'class' => 'form-horizontal form-label-left'] ) !!}
+            {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'id' => 'form-medsos', 'class' => 'form-horizontal form-label-left'] ) !!}
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Tipe</label>
@@ -48,7 +48,7 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                        <a href="{{ route('informasi.faq.index') }}">
+                        <a href="{{ route('informasi.media-sosial.index') }}">
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>

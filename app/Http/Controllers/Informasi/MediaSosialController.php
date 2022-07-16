@@ -17,4 +17,19 @@ class MediaSosialController extends Controller
 
         return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos'));
     }
+
+    public function update(Request $request, $id)
+    {
+        request()->validate([
+            'link' => 'required',
+        ]);
+        try {
+            MediaSosial::findOrFail(1)->update($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Facebook gagal diubah!');
+        }
+
+        return redirect()->route('informasi.media-sosial.index')->with('success', 'Facebook berhasil diubah!');
+    }
 }

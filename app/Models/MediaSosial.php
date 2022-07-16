@@ -14,4 +14,6 @@ class MediaSosial extends Model
         'tipe',
         'status',
     ];
+
+    public $timestamps = false;
 }

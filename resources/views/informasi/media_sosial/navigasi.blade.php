@@ -3,22 +3,22 @@
             <div class="box-body no-padding">
                 <div class="box-footer no-padding">
                     <ul class="nav nav-stacked">
-                        <li class="@active($navigasi === 'facebook')"><a href="{{ route('informasi.media-sosial.index') }}">Facebook</a></li>
+                        <li {{ (Request::is('informasi/media-sosial') ? 'class=active' : '') }}><a href="{{ route('informasi.media-sosial.index') }}">Facebook</a></li>
                     </ul>
                     <ul class="nav nav-stacked">
-                        <li class="@active($navigasi === 'twitter')"><a href="{{ route('informasi.media-sosial.twitter') }}">Twitter</a></li>
+                        <li {{ (Request::is('informasi/media-sosial/twitter') ? 'class=active' : '') }}><a href="{{ route('informasi.media-sosial.twitter') }}">Twitter</a></li>
                     </ul>
                     <ul class="nav nav-stacked">
-                        <li class="@active($navigasi === 'youtube')"><a href="{{ route('informasi.media-sosial.youtube') }}">Youtube</a></li>
+                        <li {{ (Request::is('informasi/media-sosial/youtube') ? 'class=active' : '') }}><a href="{{ route('informasi.media-sosial.youtube') }}">Youtube</a></li>
                     </ul>
                     <ul class="nav nav-stacked">
-                        <li class="@active($navigasi === 'instagram')"><a href="{{ route('informasi.media-sosial.instagram') }}">Instagram</a></li>
+                        <li {{ (Request::is('informasi/media-sosial/instagram') ? 'class=active' : '') }}><a href="{{ route('informasi.media-sosial.instagram') }}">Instagram</a></li>
                     </ul>
                     <ul class="nav nav-stacked">
-                        <li class="@active($navigasi === 'whatsapp')"><a href="{{ route('informasi.media-sosial.whatsapp') }}">Whatsapp</a></li>
+                        <li {{ (Request::is('informasi/media-sosial/whatsapp') ? 'class=active' : '') }}><a href="{{ route('informasi.media-sosial.whatsapp') }}">Whatsapp</a></li>
                     </ul>
                     <ul class="nav nav-stacked">
-                        <li class="@active($navigasi === 'telegram')"><a href="{{ route('informasi.media-sosial.telegram') }}">Telegram</a></li>
+                        <li {{ (Request::is('informasi/media-sosial/telegram') ? 'class=active' : '') }}><a href="{{ route('informasi.media-sosial.telegram') }}">Telegram</a></li>
                     </ul>
                 </div>
             </div>

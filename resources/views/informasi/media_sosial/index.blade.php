@@ -23,24 +23,24 @@
             <!-- form start -->
             {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'id' => 'form-medsos', 'class' => 'form-horizontal form-label-left'] ) !!}
             <div class="box-body">
-                @if (Request::is('informasi/media-sosial/whatsapp'))
+                @if (Request::is('informasi/media-sosial') || Request::is('informasi/media-sosial/whatsapp') || Request::is('informasi/media-sosial/telegram'))
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Tipe</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        {!! Form::select('tipe', ['1' => 'Personal Chat', '2' => 'Grup Chat'], null, ['class' => 'form-control']) !!}
+                    <div class="col-md-9 col-sm-9 col-xs-12">
+                        {!! Form::select('tipe', ['1' => 'Personal', '2' => 'Grup'], null, ['class' => 'form-control']) !!}
                     </div>
                 </div>
                 @endif
                 {{ Form::hidden('medsos', $page) }}
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Link akun / username <span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-md-9 col-sm-9 col-xs-12">
                         {!! Form::text('link', null, ['placeholder' => $placeholder,'class' => 'form-control', 'required'=>true]) !!}
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status</label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-md-9 col-sm-9 col-xs-12">
                         {!! Form::select('status', ['1' => 'Aktif', '0' => 'Tidak Aktif'], null, ['class' => 'form-control']) !!}
                     </div>
                 </div>

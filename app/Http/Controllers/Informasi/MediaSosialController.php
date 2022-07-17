@@ -14,7 +14,7 @@ class MediaSosialController extends Controller
         $page_title       = 'Media Sosial';
         $page_description = 'Pengaturan Facebook';
         $page             = 'Facebook';
-        $placeholder      = 'https://www.facebook.com/groups/OpenSID/';
+        $placeholder      = 'https://web.facebook.com/tokoopendesa atau tokoopendesa';
 
         return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
     }
@@ -46,7 +46,7 @@ class MediaSosialController extends Controller
         $page_title       = 'Media Sosial';
         $page_description = 'Pengaturan Twitter';
         $page             = 'Twitter';
-        $placeholder      = 'https://twitter.com/opendesa';
+        $placeholder      = 'https://twitter.com/opendesa, opendesa atau @opendesa';
 
         return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
     }
@@ -57,7 +57,7 @@ class MediaSosialController extends Controller
         $page_title       = 'Media Sosial';
         $page_description = 'Pengaturan YouTube';
         $page             = 'YouTube';
-        $placeholder      = 'https://www.youtube.com/channel/UCvZuSYtrWYuE8otM4SsdT0Q';
+        $placeholder      = 'https://www.youtube.com/channel/UCvZuSYtrWYuE8otM4SsdT0Q atau UCvZuSYtrWYuE8otM4SsdT0Q';
 
         return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
     }
@@ -68,7 +68,7 @@ class MediaSosialController extends Controller
         $page_title       = 'Media Sosial';
         $page_description = 'Pengaturan YouTube';
         $page             = 'YouTube';
-        $placeholder      = 'https://www.instagram.com/OpenDesa';
+        $placeholder      = 'https://www.instagram.com/OpenDesa, OpenDesa atau @OpenDesa';
 
         return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
     }

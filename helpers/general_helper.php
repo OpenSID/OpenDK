@@ -371,19 +371,17 @@ function terbilang($angka)
 
 if (! function_exists('prep_url')) {
     function prep_url($str = '')
-	{
-		if ($str === 'http://' || $str === '')
-		{
-			return '';
-		}
+    {
+        if ($str === 'http://' || $str === '') {
+            return '';
+        }
 
-		$url = parse_url($str);
+        $url = parse_url($str);
 
-		if ( ! $url OR ! isset($url['scheme']))
-		{
-			return $str;
-		}
+        if (! $url or ! isset($url['scheme'])) {
+            return $str;
+        }
 
-		return $str;
-	}
+        return $str;
+    }
 }

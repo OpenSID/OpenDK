@@ -85,7 +85,7 @@ class Controller extends BaseController
                 'whatsapp.com',
                 'youtube.com',
             ];
-    
+
             foreach ($list_domain as $key) {
                 if (strpos($medsos->link, $key)) {
                     // tambahkan https di awal link
@@ -98,48 +98,48 @@ class Controller extends BaseController
                     $medsos->link = str_replace('https://web.facebook.com/', '', $medsos->link);
                     $medsos->link = 'https://web.facebook.com/' . $medsos->link;
                     break;
-    
+
                 case $medsos->id == '1' && $medsos->tipe == '2':
                     $medsos->link = str_replace('https://web.facebook.com/', '', $medsos->link);
                     $medsos->link = 'https://web.facebook.com/groups/' . $medsos->link;
                     break;
-    
+
                 case $medsos->id == '2':
                     $medsos->link = str_replace('https://twitter.com/', '', $medsos->link);
                     $medsos->link = 'https://twitter.com/' . $medsos->link;
                     break;
-    
+
                 case $medsos->id == '3':
                     $medsos->link = str_replace('https://www.youtube.com/channel/', '', $medsos->link);
                     $medsos->link = 'https://www.youtube.com/channel/' . $medsos->link;
                     break;
-    
+
                 case $medsos->id == '4':
                     $medsos->link = str_replace('https://www.instagram.com/', '', $medsos->link);
                     $medsos->link = 'https://www.instagram.com/' . $medsos->link . '/';
                     break;
-    
+
                 case $medsos->id == '5' && $medsos->tipe == '1':
                     $medsos->link = str_replace('https://api.whatsapp.com/send?phone=', '', $medsos->link);
                     $medsos->link = 'https://api.whatsapp.com/send?phone=' . $medsos->link;
                     $medsos->link = str_replace('phone=0', 'phone=+62', $medsos->link);
                     break;
-    
+
                 case $medsos->id == '5' && $medsos->tipe == '2':
                     $medsos->link = str_replace('https://chat.whatsapp.com/', '', $medsos->link);
                     $medsos->link = 'https://chat.whatsapp.com/' . $medsos->link;
                     break;
-    
+
                 case $medsos->id == '6' && $medsos->tipe == '1':
                     $medsos->link = str_replace('https://t.me/', '', $medsos->link);
                     $medsos->link = 'https://t.me/' . $medsos->link;
                     break;
-    
+
                 case $medsos->id == '6' && $medsos->tipe == '2':
                     $medsos->link = str_replace('https://t.me/joinchat/', '', $medsos->link);
                     $medsos->link = 'https://t.me/joinchat/' . $medsos->link;
                     break;
-    
+
                 default:
             }
             return $medsos;

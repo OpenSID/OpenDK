@@ -274,7 +274,6 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('/whatsapp', ['as' => 'informasi.media-sosial.whatsapp', 'uses' => 'MediaSosialController@whatsapp']);
                     Route::get('/telegram', ['as' => 'informasi.media-sosial.telegram', 'uses' => 'MediaSosialController@telegram']);
                 });
-
             });
         });
 

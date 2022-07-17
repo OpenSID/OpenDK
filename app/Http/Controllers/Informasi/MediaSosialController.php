@@ -13,9 +13,10 @@ class MediaSosialController extends Controller
         $medsos           = MediaSosial::findOrFail(1);
         $page_title       = 'Media Sosial';
         $page_description = 'Pengaturan Facebook';
-        $navigasi         = 'facebook';
+        $page             = 'Facebook';
+        $placeholder      = 'https://www.facebook.com/groups/OpenSID/';
 
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos'));
+        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
     }
 
     public function update(Request $request, $id)
@@ -23,13 +24,74 @@ class MediaSosialController extends Controller
         request()->validate([
             'link' => 'required',
         ]);
-        try {
-            MediaSosial::findOrFail(1)->update($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Facebook gagal diubah!');
+
+        $page = 'index';
+        if ($request->medsos != 'Facebook') {
+            $page = strtolower($request->medsos);
         }
 
-        return redirect()->route('informasi.media-sosial.index')->with('success', 'Facebook berhasil diubah!');
+        try {
+            MediaSosial::findOrFail($id)->update($request->except(['request']));
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', $request->medsos .' gagal diubah!');
+        }
+
+        return redirect()->route('informasi.media-sosial.' . $page)->with('success', $request->medsos . ' berhasil diubah!');
+    }
+
+    public function twitter()
+    {
+        $medsos           = MediaSosial::findOrFail(2);
+        $page_title       = 'Media Sosial';
+        $page_description = 'Pengaturan Twitter';
+        $page             = 'Twitter';
+        $placeholder      = 'https://twitter.com/opendesa';
+
+        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
+    }
+
+    public function youtube()
+    {
+        $medsos           = MediaSosial::findOrFail(3);
+        $page_title       = 'Media Sosial';
+        $page_description = 'Pengaturan YouTube';
+        $page             = 'YouTube';
+        $placeholder      = 'https://www.youtube.com/channel/UCvZuSYtrWYuE8otM4SsdT0Q';
+
+        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
+    }
+
+    public function instagram()
+    {
+        $medsos           = MediaSosial::findOrFail(4);
+        $page_title       = 'Media Sosial';
+        $page_description = 'Pengaturan YouTube';
+        $page             = 'YouTube';
+        $placeholder      = 'https://www.instagram.com/OpenDesa';
+
+        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
+    }
+
+    public function whatsapp()
+    {
+        $medsos           = MediaSosial::findOrFail(5);
+        $page_title       = 'Media Sosial';
+        $page_description = 'Pengaturan YouTube';
+        $page             = 'YouTube';
+        $placeholder      = '0851234567890 atau CryQ1VyOXghEVJUTFpwFPb';
+
+        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
+    }
+
+    public function telegram()
+    {
+        $medsos           = MediaSosial::findOrFail(6);
+        $page_title       = 'Media Sosial';
+        $page_description = 'Pengaturan YouTube';
+        $page             = 'YouTube';
+        $placeholder      = 'https://t.me/OpenDesa';
+
+        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
     }
 }

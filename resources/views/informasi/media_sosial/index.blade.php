@@ -23,17 +23,19 @@
             <!-- form start -->
             {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'id' => 'form-medsos', 'class' => 'form-horizontal form-label-left'] ) !!}
             <div class="box-body">
+                @if (Request::is('informasi/media-sosial/whatsapp'))
                 <div class="form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Tipe</label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        {!! Form::select('tipe', ['1' => 'Personal / Halaman', '2' => 'Grup'], null, ['class' => 'form-control']) !!}
+                        {!! Form::select('tipe', ['1' => 'Personal Chat', '2' => 'Grup Chat'], null, ['class' => 'form-control']) !!}
                     </div>
                 </div>
+                @endif
+                {{ Form::hidden('medsos', $page) }}
                 <div class="form-group">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Link <span class="required">*</span></label>
-                
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Link akun / username <span class="required">*</span></label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
-                        {!! Form::text('link', null, ['placeholder' => 'Link','class' => 'form-control', 'required'=>true]) !!}
+                        {!! Form::text('link', null, ['placeholder' => $placeholder,'class' => 'form-control', 'required'=>true]) !!}
                     </div>
                 </div>
                 <div class="form-group">

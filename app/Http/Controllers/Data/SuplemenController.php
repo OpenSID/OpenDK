@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Models\Suplemen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
 class SuplemenController extends Controller
@@ -102,8 +103,9 @@ class SuplemenController extends Controller
     {
         request()->validate([
             'nama' => 'required',
-            'sasaran'   => 'required',
         ]);
+
+        $request['slug'] = Str::slug($request->nama);
 
         try {
             Suplemen::findOrFail($id)->update($request->all());

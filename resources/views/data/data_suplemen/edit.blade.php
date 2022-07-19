@@ -36,7 +36,7 @@
 
                     <div class="box-body">
 
-
+                        {{ method_field('PUT') }}
                         @include( 'flash::message' )
                         @include('data.data_suplemen.form')
 

@@ -100,7 +100,19 @@ class SuplemenController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        request()->validate([
+            'nama' => 'required',
+            'sasaran'   => 'required',
+        ]);
+
+        try {
+            Suplemen::findOrFail($id)->update($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data Suplemen gagal diubah!');
+        }
+
+        return redirect()->route('data.data-suplemen.index')->with('success', 'Data Suplemen berhasil diubah!');
     }
 
     /**

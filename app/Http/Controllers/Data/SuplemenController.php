@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\Suplemen;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class SuplemenController extends Controller
 {
@@ -14,7 +16,32 @@ class SuplemenController extends Controller
      */
     public function index()
     {
-        dd('a');
+        $page_title       = 'Data Suplemen';
+        $page_description = 'Daftar Data Suplemen';
+
+        return view('data.data_suplemen.index', compact('page_title', 'page_description'));
+    }
+
+    /**
+     * Return datatable Data Keluarga
+     */
+    public function getKeluarga()
+    {
+        if (request()->ajax()) {
+            return DataTables::of(Suplemen::get())
+                ->addIndexColumn()
+                ->addColumn('aksi', function ($row) {
+                    $data['show_url'] = route('data.data-suplemen.show', $row->id);
+
+                    if (! auth()->guest()) {
+                        $data['edit_url']   = route('data.data-suplemen.edit', $row->id);
+                        $data['delete_url'] = route('data.data-suplemen.destroy', $row->id);
+                    }
+
+                    return view('forms.aksi', $data);
+                })
+                ->make();
+        }
     }
 
     /**
@@ -57,7 +84,11 @@ class SuplemenController extends Controller
      */
     public function edit($id)
     {
-        //
+        $suplemen         = Suplemen::findOrFail($id);
+        $page_title       = 'Data Suplemen';
+        $page_description = 'Ubah Data Suplemen : ' . $suplemen->nama;
+
+        return view('data.data-suplemen.edit', compact('page_title', 'page_description', 'suplemen'));
     }
 
     /**

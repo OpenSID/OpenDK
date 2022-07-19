@@ -107,6 +107,9 @@
                                         <li {{ (Request::is(['data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.keluarga.index') }}"><i class="fa fa-circle-o"></i>Keluarga</a>
                                         </li>
+                                        <li {{ (Request::is(['data/data-suplemen/*', 'data/data-suplemen/index', 'data/data-suplemen'])? 'class=active' : '') }}>
+                                            <a href="{{ route('data.data-suplemen.index') }}"><i class="fa fa-circle-o"></i>Data Suplemen</a>
+                                        </li>
                                         <li {{ (Request::is(['data/laporan-penduduk/*', 'data/laporan-penduduk/index', 'data/laporan-penduduk'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.laporan-penduduk.index') }}"><i class="fa fa-circle-o"></i>Laporan Penduduk</a>
                                         </li>

@@ -316,6 +316,13 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
                 });
 
+                // Data Suplemen
+                Route::group(['prefix' => 'data-suplemen', 'middleware' => ['role:super-admin|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.data-suplemen.index', 'uses' => 'SuplemenController@index']);
+                    Route::get('getdata', ['as' => 'data.data-suplemen.getdata', 'uses' => 'SuplemenController@getKeluarga']);
+                    Route::get('show/{id}', ['as' => 'data.data-suplemen.show', 'uses' => 'SuplemenController@show']);
+                });
+
                 // Laporan Penduduk
                 Route::group(['prefix' => 'laporan-penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.laporan-penduduk.index', 'uses' => 'LaporanPendudukController@index']);

@@ -42,4 +42,9 @@ class SuplemenTerdata extends Model
         'penduduk_id',
         'keterangan'
     ];
+
+    public function suplemen()
+    {
+        return $this->belongsTo(SuplemenTerdata::class);
+    }
 }

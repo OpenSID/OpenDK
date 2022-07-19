@@ -28,7 +28,7 @@ class SuplemenController extends Controller
     public function getKeluarga()
     {
         if (request()->ajax()) {
-            return DataTables::of(Suplemen::get())
+            return DataTables::of(Suplemen::withCount('terdata')->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_url'] = route('data.data-suplemen.show', $row->id);
@@ -88,7 +88,7 @@ class SuplemenController extends Controller
         $page_title       = 'Data Suplemen';
         $page_description = 'Ubah Data Suplemen : ' . $suplemen->nama;
 
-        return view('data.data-suplemen.edit', compact('page_title', 'page_description', 'suplemen'));
+        return view('data.data_suplemen.edit', compact('page_title', 'page_description', 'suplemen'));
     }
 
     /**

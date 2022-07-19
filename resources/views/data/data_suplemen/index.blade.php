@@ -50,7 +50,7 @@
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama', name: 'nama'},
-                {data: 'jumlah', name: 'jumlah'},
+                {data: 'terdata_count', name: 'terdata_count'},
                 {data: 'sasaran', name: 'sasaran'},
                 {data: 'keterangan', name: 'keterangan'},
             ],

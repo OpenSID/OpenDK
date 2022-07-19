@@ -79,7 +79,7 @@ return [
             'charset' => 'utf8',
             'collation' => 'utf8_general_ci',
             'prefix' => '',
-            'strict' => false,
+            'strict' => true,
             'engine' => null,
         ],
 

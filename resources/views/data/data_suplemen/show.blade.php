@@ -15,6 +15,9 @@
 
     <section class="content container-fluid">
         <div class="box box-primary">
+            <div class="box-header with-border">
+                <a href="{{ route('data.data-suplemen.createdetail') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+            </div>
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-condensed">

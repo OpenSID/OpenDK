@@ -19,6 +19,9 @@
     @include('partials.flash_message')
 
     <div class="box box-primary">
+        <div class="box-header with-border">
+            <a href="{{ route('data.data-suplemen.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+        </div>
         <div class="box-body">
             <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="suplemen-table">

@@ -52,7 +52,10 @@ class SuplemenController extends Controller
      */
     public function create()
     {
-        //
+        $page_title       = 'Data Suplemen';
+        $page_description = 'Tambah Data Suplemen';
+
+        return view('data.data_suplemen.create', compact('page_title', 'page_description'));
     }
 
     /**
@@ -63,7 +66,20 @@ class SuplemenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        request()->validate([
+            'nama' => 'required',
+        ]);
+
+        $request['slug'] = Str::slug($request->nama);
+
+        try {
+            Suplemen::create($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Data Suplemen gagal ditambah!');
+        }
+
+        return redirect()->route('data.data-suplemen.index')->with('success', 'Data Suplemen berhasil ditambah!');
     }
 
     /**

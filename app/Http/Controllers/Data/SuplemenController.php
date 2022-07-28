@@ -42,6 +42,10 @@ class SuplemenController extends Controller
 
                     return view('forms.aksi', $data);
                 })
+                ->editColumn('sasaran', function ($row) {
+                    $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+                    return $sasaran[$row->sasaran];
+                })
                 ->make();
         }
     }
@@ -163,7 +167,7 @@ class SuplemenController extends Controller
     public function getDataSuplemenTerdata()
     {
         if (request()->ajax()) {
-            return DataTables::of(SuplemenTerdata::with('penduduk')->get())
+            return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->get())
                 ->addIndexColumn()
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {

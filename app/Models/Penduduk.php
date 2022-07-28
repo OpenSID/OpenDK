@@ -86,4 +86,9 @@ class Penduduk extends Model
     {
         return $this->hasMany(SuplemenTerdata::class, 'penduduk_id', 'id');
     }
+
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+    }
 }

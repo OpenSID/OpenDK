@@ -68,7 +68,7 @@
             ajax: "{!! route( 'data.data-suplemen.getsuplementerdata' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
-                {data: 'penduduk.desa_id', name: 'penduduk.desa_id'},
+                {data: 'penduduk.desa.nama', name: 'penduduk.desa.nama'},
                 {data: 'penduduk.no_kk', name: 'penduduk.no_kk'},
                 {data: 'penduduk.nik', name: 'penduduk.nik'},
                 {data: 'penduduk.nama', name: 'penduduk.nama'},

@@ -8,15 +8,15 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{{ route('data.data-suplemen.index') }}">Suplemen Terdata</a></li>
-            <li class="active">{{ $page_title }}</li>
+            <li><a href="{{ route('data.data-suplemen.index') }}">Data Suplemen</a></li>
+            <li class="active">Data Suplemen {{ $suplemen->nama }}</li>
         </ol>
     </section>
 
     <section class="content container-fluid">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.data-suplemen.createdetail') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
             </div>
             <div class="box-body">
                 <div class="table-responsive">

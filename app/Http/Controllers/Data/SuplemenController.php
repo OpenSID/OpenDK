@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
 use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
 use Illuminate\Http\Request;
@@ -154,9 +156,9 @@ class SuplemenController extends Controller
     public function show($id)
     {
         $suplemen         = Suplemen::findOrFail($id);
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
         $page_title       = 'Detail Data Suplemen';
         $page_description = 'Detail Data Suplemen: ' . ucwords(strtolower($suplemen->nama));
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
 
         return view('data.data_suplemen.show', compact('page_title', 'page_description', 'suplemen', 'sasaran'));
     }
@@ -190,12 +192,25 @@ class SuplemenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createDetail()
+    public function createDetail($id_suplemen)
     {
-        $page_title       = 'Data Suplemen';
-        $page_description = 'Tambah Data Suplemen';
+        $suplemen         = Suplemen::findOrFail($id_suplemen);
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+        $page_title       = 'Data Suplemen Terdata';
+        $page_description = 'Tambah Data Suplemen Terdata';
+        
+        if ($suplemen->sasaran == 1) {
+            $desa = null;
+            $data = Penduduk::pluck('nama', 'id');
+        } else if (($suplemen->sasaran == 2)) {
+            $desa = null;
+            $data = Penduduk::where('kk_level', 1)->pluck('nama', 'id');
+        } else {
+            $desa = DataDesa::pluck('nama', 'id');
+            $data = Penduduk::pluck('nama', 'id');
+        }
 
-        return view('data.data_suplemen.create', compact('page_title', 'page_description'));
+        return view('data.data_suplemen.create_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa'));
     }
 
     /**
@@ -206,20 +221,14 @@ class SuplemenController extends Controller
      */
     public function storeDetail(Request $request)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
-        $request['slug'] = Str::slug($request->nama);
-
         try {
-            Suplemen::create($request->all());
+            SuplemenTerdata::create($request->all());
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Suplemen gagal ditambah!');
         }
 
-        return redirect()->route('data.data-suplemen.index')->with('success', 'Data Suplemen berhasil ditambah!');
+        return redirect()->route('data.data-suplemen.show', $request['suplemen_id'])->with('success', 'Data Suplemen berhasil ditambah!');
     }
 
     /**

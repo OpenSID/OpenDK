@@ -32,7 +32,7 @@ class SuplemenController extends Controller
             return DataTables::of(Suplemen::withCount('terdata')->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    $data['show_url'] = route('data.data-suplemen.show', $row->id);
+                    $data['detail_url'] = route('data.data-suplemen.show', $row->id);
 
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('data.data-suplemen.edit', $row->id);
@@ -90,7 +90,12 @@ class SuplemenController extends Controller
      */
     public function show($id)
     {
-        //
+        $suplemen         = Suplemen::findOrFail($id);
+        $page_title       = 'Detail Data Suplemen';
+        $page_description = 'Detail Data Suplemen: ' . ucwords(strtolower($suplemen->nama));
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+
+        return view('data.data_suplemen.show', compact('page_title', 'page_description', 'suplemen', 'sasaran'));
     }
 
     /**

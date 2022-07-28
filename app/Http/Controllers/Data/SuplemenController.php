@@ -141,6 +141,13 @@ class SuplemenController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            Suplemen::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return redirect()->route('data.data-suplemen.index')->with('error', 'Data Suplemen gagal dihapus!');
+        }
+
+        return redirect()->route('data.data-suplemen.index')->with('success', 'Data Suplemen berhasil dihapus!');
     }
 }

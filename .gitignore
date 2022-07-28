@@ -13,8 +13,6 @@ yarn-error.log
 .env
 .phpunit.result.cache
 composer.log
-/storage/installed
-/storage/framework
 Vagrantfile.*
 Vagrantfile
 # Shell script di cPanel > Terminal untuk menyalin folder public ke public_html

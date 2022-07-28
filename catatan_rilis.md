@@ -11,12 +11,11 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi. Terima kasih pula pa
 
 #### Perbaikan BUG
 
-1. [#430](https://github.com/OpenSID/OpenDK/issues/430) Perbaiki fungsi Lihat file pada daftar prosedur di menu unduhan.
+1. [#430](https://github.com/OpenSID/OpenDK/issues/430) Perbaiki fungsi lihat file pada daftar prosedur di menu unduhan.
 2. [#441](https://github.com/OpenSID/OpenDK/issues/441) Perbaiki perhitungan statistik pengunjung website.
-
+3. [#450](https://github.com/OpenSID/OpenDK/issues/450) Memperbaiki module keluarga error ketika kepala keluarga tidak ada.
 
 #### TEKNIS
 
 1. [#427](https://github.com/OpenSID/OpenDK/pull/427) Teknis - Perbaiki error 500 setelah login.
 2. [#431](https://github.com/OpenSID/OpenDK/pull/431) Teknis - ignore .phpcs-cache.
-

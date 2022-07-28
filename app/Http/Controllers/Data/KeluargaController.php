@@ -58,7 +58,7 @@ class KeluargaController extends Controller
     public function getKeluarga()
     {
         if (request()->ajax()) {
-            return DataTables::of(Keluarga::get())
+            return DataTables::of(Keluarga::has('kepala_kk')->get())
                 ->addColumn('aksi', function ($row) {
                     $data['show_url']   = route('data.keluarga.show', $row->id);
 

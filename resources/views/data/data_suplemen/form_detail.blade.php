@@ -1,6 +1,6 @@
 {{ Form::hidden('suplemen_id', $suplemen->id) }}
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Warga</label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">{{ $suplemen->sasaran == 2 ? 'Nama Kepala Keluarga' : 'Nama Penduduk' }}</label>
     
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::select('penduduk_id', $data, null, ['class' => 'form-control']) !!}

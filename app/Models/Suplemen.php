@@ -49,11 +49,4 @@ class Suplemen extends Model
     {
         return $this->hasMany(SuplemenTerdata::class, 'suplemen_id', 'id');
     }
-
-    // public function scopeJumlah($query)
-    // {
-    //     return $query->select('das_suplemen.*', DB::raw('COUNT(suplemen_id) As jumlah'))
-    //     ->leftJoin('das_suplemen_terdata', 'das_suplemen_terdata.suplemen_id', '=', 'das_suplemen.id')
-    //     ->groupBy('das_suplemen.id');
-    // }
 }

@@ -45,6 +45,11 @@ class SuplemenTerdata extends Model
 
     public function suplemen()
     {
-        return $this->belongsTo(SuplemenTerdata::class);
+        return $this->belongsTo(Suplemen::class);
+    }
+
+    public function penduduk()
+    {
+        return $this->belongsTo(Penduduk::class);
     }
 }

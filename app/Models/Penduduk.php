@@ -81,4 +81,9 @@ class Penduduk extends Model
     {
         return $this->hasOne(Keluarga::class, 'no_kk', 'no_kk');
     }
+
+    public function suplemen_terdata()
+    {
+        return $this->hasMany(SuplemenTerdata::class, 'penduduk_id', 'id');
+    }
 }

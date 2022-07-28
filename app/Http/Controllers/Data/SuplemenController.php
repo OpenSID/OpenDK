@@ -169,7 +169,6 @@ class SuplemenController extends Controller
         if (request()->ajax()) {
             return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->get())
                 ->addIndexColumn()
-                ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('data.data-suplemen.editdetail', $row->id);
@@ -177,6 +176,10 @@ class SuplemenController extends Controller
                     }
 
                     return view('forms.aksi', $data);
+                })
+                ->editColumn('penduduk.sex', function ($row) {
+                    $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
+                    return $sex[$row->penduduk->sex];
                 })
                 ->make();
         }

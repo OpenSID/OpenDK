@@ -68,7 +68,7 @@
         var data = $('#suplemen-terdata-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{!! route( 'data.data-suplemen.getsuplementerdata' ) !!}",
+            ajax: "{!! route( 'data.data-suplemen.getsuplementerdata', $suplemen->id) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'penduduk.desa.nama', name: 'penduduk.desa.nama'},

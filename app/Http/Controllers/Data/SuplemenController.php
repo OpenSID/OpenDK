@@ -166,10 +166,10 @@ class SuplemenController extends Controller
     /**
      * Return datatable Data Suplemen Terdata
      */
-    public function getDataSuplemenTerdata()
+    public function getDataSuplemenTerdata($id_terdata)
     {
         if (request()->ajax()) {
-            return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->get())
+            return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('suplemen_id', $id_terdata)->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {

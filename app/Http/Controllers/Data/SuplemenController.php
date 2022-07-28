@@ -24,9 +24,9 @@ class SuplemenController extends Controller
     }
 
     /**
-     * Return datatable Data Keluarga
+     * Return datatable Data Suplemen
      */
-    public function getKeluarga()
+    public function getData()
     {
         if (request()->ajax()) {
             return DataTables::of(Suplemen::withCount('terdata')->get())

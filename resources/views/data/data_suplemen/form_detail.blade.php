@@ -1,11 +1,28 @@
 {{ Form::hidden('suplemen_id', $suplemen->id) }}
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">{{ $suplemen->sasaran == 2 ? 'Nama Kepala Keluarga' : 'Nama Penduduk' }}</label>
-    
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('penduduk_id', $data, null, ['class' => 'form-control']) !!}
+@if ($suplemen->sasaran == 3)
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Nama Desa</label>
+        
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {!! Form::select('desa_id', $desa, 'desa_id', ['class' => 'form-control']) !!}
+        </div>
     </div>
-</div>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Nama Penduduk</label>
+        
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {!! Form::select('penduduk_id', $data, 'penduduk_id', ['class' => 'form-control']) !!}
+        </div>
+    </div>
+@else
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">{{ $suplemen->sasaran == 2 ? 'Nama Kepala Keluarga' : 'Nama Penduduk' }}</label>
+        
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {!! Form::select('penduduk_id', $data, null, ['class' => 'form-control']) !!}
+        </div>
+    </div>
+@endif
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan</label>
 

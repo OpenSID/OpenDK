@@ -18,7 +18,7 @@ class CreateSuplemenTable extends Migration
             $table->string('nama');
             $table->string('slug')->unique();
             $table->boolean('sasaran');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

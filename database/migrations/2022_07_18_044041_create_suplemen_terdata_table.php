@@ -21,7 +21,7 @@ class CreateSuplemenTerdataTable extends Migration
             $table->unsignedInteger('penduduk_id');
             $table->foreign('penduduk_id')->references('id')->on('das_penduduk')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('informasi.faq.index') }}">Daftar Data Suplemen</a></li>
+        <li><a href="{{ route('data.data-suplemen.index') }}">Daftar Data Suplemen</a></li>
         <li class="active">{{ $page_description }}</li>
     </ol>
 </section>

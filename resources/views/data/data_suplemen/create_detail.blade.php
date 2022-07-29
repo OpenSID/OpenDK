@@ -72,3 +72,37 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script>
+     $(function() {
+        $('#desa').on('change', function() {
+            var desa = $(this).val();
+            if(desa) {
+                $.ajax({
+                    url: '/data/data-suplemen/getpenduduk/'+encodeURI(desa),
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {
+                        $('#penduduk').empty();
+                        if (Object.keys(data).length === 0){
+                            $('#penduduk').prop('disabled', true);
+                        } else {
+                            $('#penduduk').prop('disabled', false);
+                            $.each(data, function(key, value) {
+                                $('#penduduk').append($('<option>', {
+                                    value: value.id,
+                                    text: value.nama
+                                }));
+                            });
+                        }
+                    }
+                });
+            } else{
+                $('#penduduk').empty();
+                $('#penduduk').prop('disabled', true);
+            }
+       });
+    });
+</script>
+@endpush

@@ -187,27 +187,32 @@ class SuplemenController extends Controller
         }
     }
 
+    public function getPenduduk($desa)
+    {
+        $data = Penduduk::where('desa_id', $desa)->get();
+        return response()->json($data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function createDetail($id_suplemen)
+    public function createDetail($id_suplemen, $id_desa = null)
     {
         $suplemen         = Suplemen::findOrFail($id_suplemen);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
         $page_title       = 'Data Suplemen Terdata';
         $page_description = 'Tambah Data Suplemen Terdata';
+        $desa             = null;
         
         if ($suplemen->sasaran == 1) {
-            $desa = null;
             $data = Penduduk::pluck('nama', 'id');
         } else if (($suplemen->sasaran == 2)) {
-            $desa = null;
             $data = Penduduk::where('kk_level', 1)->pluck('nama', 'id');
         } else {
-            $desa = DataDesa::pluck('nama', 'id');
-            $data = Penduduk::pluck('nama', 'id');
+            $desa = DataDesa::all();
+            $data = Penduduk::all();
         }
 
         return view('data.data_suplemen.create_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa'));
@@ -221,6 +226,11 @@ class SuplemenController extends Controller
      */
     public function storeDetail(Request $request)
     {
+        request()->validate(
+            ['penduduk_id' => 'required',],
+            ['penduduk_id.required' => 'isian warga atau penduduk wajib diisi']
+        );
+
         try {
             SuplemenTerdata::create($request->all());
         } catch (\Exception $e) {

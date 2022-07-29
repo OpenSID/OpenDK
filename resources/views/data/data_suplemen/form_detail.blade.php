@@ -4,14 +4,24 @@
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Nama Desa</label>
         
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::select('desa_id', $desa, 'desa_id', ['class' => 'form-control']) !!}
+            <select name="desa_id" id="desa" class="form-control">
+                <option class="form-control" value="">Pilih Desa</option>
+                @foreach ($desa as $item)
+                    <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Nama Penduduk</label>
         
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::select('penduduk_id', $data, 'penduduk_id', ['class' => 'form-control']) !!}
+            <select name="penduduk_id" id="penduduk" class="form-control" disabled>
+                <option class="form-control" value="">Pilih penduduk</option>
+                @foreach ($data as $penduduk)
+                    <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
+                @endforeach
+            </select>
         </div>
     </div>
 @else

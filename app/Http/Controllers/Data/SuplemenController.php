@@ -173,8 +173,8 @@ class SuplemenController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
-                        $data['edit_url']   = route('data.data-suplemen.editdetail', $row->id);
-                        $data['delete_url'] = route('data.data-suplemen.destroydetail', $row->id);
+                        $data['edit_url']   = route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]);
+                        $data['delete_url'] = route('data.data-suplemen.destroydetail', [$row->id, $row->suplemen_id]);
                     }
 
                     return view('forms.aksi', $data);
@@ -247,7 +247,7 @@ class SuplemenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function editDetail($id)
+    public function editDetail($id, $id_suplemen)
     {
         $suplemen         = Suplemen::findOrFail($id);
         $page_title       = 'Data Suplemen';
@@ -272,7 +272,7 @@ class SuplemenController extends Controller
         $request['slug'] = Str::slug($request->nama);
 
         try {
-            Suplemen::findOrFail($id)->update($request->all());
+            SuplemenTerdata::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Suplemen gagal diubah!');
@@ -287,15 +287,15 @@ class SuplemenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroyDetail($id)
+    public function destroyDetail($id, $id_suplemen)
     {
         try {
-            Suplemen::findOrFail($id)->delete();
+            SuplemenTerdata::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('data.data-suplemen.index')->with('error', 'Data Suplemen gagal dihapus!');
+            return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('error', 'Data Suplemen gagal dihapus!');
         }
 
-        return redirect()->route('data.data-suplemen.index')->with('success', 'Data Suplemen berhasil dihapus!');
+        return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('success', 'Data Suplemen berhasil dihapus!');
     }
 }

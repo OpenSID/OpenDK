@@ -53,7 +53,7 @@
                             </table>
                         </div>
                         <hr>
-                        <legend>Daftar Peserta Suplemen</legend>
+                        <legend>Daftar Anggota Suplemen</legend>
 
                         {{ method_field('PUT') }}
                         @include( 'flash::message')

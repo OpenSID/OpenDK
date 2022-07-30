@@ -157,8 +157,8 @@ class SuplemenController extends Controller
     {
         $suplemen         = Suplemen::findOrFail($id);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
-        $page_title       = 'Detail Data Suplemen';
-        $page_description = 'Detail Data Suplemen: ' . ucwords(strtolower($suplemen->nama));
+        $page_title       = 'Anggota Suplemen';
+        $page_description = 'Anggota Suplemen: ' . ucwords(strtolower($suplemen->nama));
 
         return view('data.data_suplemen.show', compact('page_title', 'page_description', 'suplemen', 'sasaran'));
     }
@@ -202,7 +202,7 @@ class SuplemenController extends Controller
     {
         $suplemen         = Suplemen::findOrFail($id_suplemen);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
-        $page_title       = 'Data Suplemen Terdata';
+        $page_title       = 'Anggota Suplemen';
         $page_description = 'Tambah Anggota Suplemen : ' . $suplemen->nama;
         $desa             = null;
         $anggota          = null;
@@ -252,7 +252,7 @@ class SuplemenController extends Controller
     {
         $suplemen         = Suplemen::findOrFail($id_suplemen);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
-        $page_title       = 'Data Suplemen';
+        $page_title       = 'Anggota Suplemen';
         $page_description = 'Ubah Anggota Suplemen : ' . $suplemen->nama;
         $anggota          = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
         $data             = Penduduk::where('id', $anggota->penduduk_id)->pluck('nama', 'id');

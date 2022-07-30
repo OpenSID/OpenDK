@@ -39,7 +39,7 @@
                         </table>
                     </div>
                     <hr>
-                    <legend>Daftar Peserta Suplemen</legend>
+                    <legend>Daftar Anggota Suplemen</legend>
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">

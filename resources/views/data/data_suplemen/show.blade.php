@@ -39,7 +39,7 @@
                     </table>
                 </div>
                 <hr>
-                <legend>Daftar Peserta Suplemen</legend>
+                <legend>Daftar Anggota Suplemen</legend>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="suplemen-terdata-table">
                         <thead>

@@ -7,7 +7,11 @@
             <select name="desa_id" id="desa" class="form-control">
                 <option class="form-control" value="">Pilih Desa</option>
                 @foreach ($desa as $item)
-                    <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                    @if ($anggota == null)
+                        <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                    @else
+                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>
@@ -19,7 +23,11 @@
             <select name="penduduk_id" id="penduduk" class="form-control" disabled>
                 <option class="form-control" value="">Pilih penduduk</option>
                 @foreach ($data as $penduduk)
-                    <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
+                    @if ($anggota == null)
+                        <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
+                    @else
+                    <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
+                    @endif
                 @endforeach
             </select>
         </div>

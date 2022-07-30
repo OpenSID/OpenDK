@@ -198,13 +198,14 @@ class SuplemenController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createDetail($id_suplemen, $id_desa = null)
+    public function createDetail($id_suplemen)
     {
         $suplemen         = Suplemen::findOrFail($id_suplemen);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
         $page_title       = 'Data Suplemen Terdata';
-        $page_description = 'Tambah Data Suplemen Terdata';
+        $page_description = 'Tambah Anggota Suplemen : ' . $suplemen->nama;
         $desa             = null;
+        $anggota          = null;
         
         if ($suplemen->sasaran == 1) {
             $data = Penduduk::pluck('nama', 'id');
@@ -215,7 +216,7 @@ class SuplemenController extends Controller
             $data = Penduduk::all();
         }
 
-        return view('data.data_suplemen.create_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa'));
+        return view('data.data_suplemen.create_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
     }
 
     /**
@@ -235,10 +236,10 @@ class SuplemenController extends Controller
             SuplemenTerdata::create($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Data Suplemen gagal ditambah!');
+            return back()->withInput()->with('error', 'Anggota Suplemen gagal ditambah!');
         }
 
-        return redirect()->route('data.data-suplemen.show', $request['suplemen_id'])->with('success', 'Data Suplemen berhasil ditambah!');
+        return redirect()->route('data.data-suplemen.show', $request['suplemen_id'])->with('success', 'Anggota Suplemen berhasil ditambah!');
     }
 
     /**
@@ -249,11 +250,20 @@ class SuplemenController extends Controller
      */
     public function editDetail($id, $id_suplemen)
     {
-        $suplemen         = Suplemen::findOrFail($id);
+        $suplemen         = Suplemen::findOrFail($id_suplemen);
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
         $page_title       = 'Data Suplemen';
-        $page_description = 'Ubah Data Suplemen : ' . $suplemen->nama;
+        $page_description = 'Ubah Anggota Suplemen : ' . $suplemen->nama;
+        $anggota          = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
+        $data             = Penduduk::where('id', $anggota->penduduk_id)->pluck('nama', 'id');
+        $desa             = null;
 
-        return view('data.data_suplemen.edit', compact('page_title', 'page_description', 'suplemen'));
+        if ($suplemen->sasaran == 3) {
+            $desa = DataDesa::all();
+            $data = Penduduk::all();
+        }
+
+        return view('data.data_suplemen.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
     }
 
     /**
@@ -265,20 +275,14 @@ class SuplemenController extends Controller
      */
     public function updateDetail(Request $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
-        $request['slug'] = Str::slug($request->nama);
-
         try {
             SuplemenTerdata::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Data Suplemen gagal diubah!');
+            return back()->withInput()->with('error', 'Anggota Suplemen gagal diubah!');
         }
 
-        return redirect()->route('data.data-suplemen.index')->with('success', 'Data Suplemen berhasil diubah!');
+        return redirect()->route('data.data-suplemen.show', $request['suplemen_id'])->with('success', 'Anggota Suplemen berhasil diubah!');
     }
 
     /**
@@ -293,9 +297,9 @@ class SuplemenController extends Controller
             SuplemenTerdata::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('error', 'Data Suplemen gagal dihapus!');
+            return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('error', 'Anggota Suplemen gagal dihapus!');
         }
 
-        return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('success', 'Data Suplemen berhasil dihapus!');
+        return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('success', 'Anggota Suplemen berhasil dihapus!');
     }
 }

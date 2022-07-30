@@ -8,7 +8,8 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('data.data-suplemen.index') }}">Daftar Suplemen</a></li>
+        <li><a href="{{ route('data.data-suplemen.index') }}">Daftar Data Suplemen</a></li>
+        <li><a href="{{ route('data.data-suplemen.show', $suplemen->id) }}">Data Suplemen {{ $suplemen->nama }}</a></li>
         <li class="active">{{ $page_description }}</li>
     </ol>
 </section>
@@ -32,13 +33,31 @@
                     @endif
 
                             <!-- form start -->
-                    {!!  Form::model($suplemen, [ 'route' => ['data.data-suplemen.update', $suplemen->id], 'method' => 'post','id' => 'form-suplemen', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                    {!!  Form::model($suplemen, [ 'route' => ['data.data-suplemen.updatedetail', $anggota->id], 'method' => 'post','id' => 'form-suplemen', 'class' => 'form-horizontal form-label-left' ] ) !!}
 
                     <div class="box-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-condensed">
+                                <tr>
+                                    <th class="col-md-2">Nama</th>
+                                    <td>: {{ $suplemen->nama }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Sasaran</th>
+                                    <td>: {{ $sasaran[$suplemen->sasaran] }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Keterangan</th>
+                                    <td>: {{ $suplemen->keterangan }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <hr>
+                        <legend>Daftar Peserta Suplemen</legend>
 
                         {{ method_field('PUT') }}
                         @include( 'flash::message' )
-                        @include('data.data_suplemen.form')
+                        @include('data.data_suplemen.form_detail')
 
                     </div>
                     <!-- /.box-body -->

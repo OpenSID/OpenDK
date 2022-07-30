@@ -33,7 +33,7 @@
                     @endif
 
                             <!-- form start -->
-                    {!!  Form::model($suplemen, [ 'route' => ['data.data-suplemen.updatedetail', $anggota->id], 'method' => 'post','id' => 'form-suplemen', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                    {!!  Form::model($anggota, [ 'route' => ['data.data-suplemen.updatedetail', $anggota->id], 'method' => 'post','id' => 'form-suplemen', 'class' => 'form-horizontal form-label-left' ] ) !!}
 
                     <div class="box-body">
                         <div class="table-responsive">
@@ -56,7 +56,7 @@
                         <legend>Daftar Peserta Suplemen</legend>
 
                         {{ method_field('PUT') }}
-                        @include( 'flash::message' )
+                        @include( 'flash::message')
                         @include('data.data_suplemen.form_detail')
 
                     </div>

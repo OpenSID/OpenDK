@@ -31,7 +31,6 @@
 
 namespace App\Models;
 
-use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Suplemen extends Model

@@ -1,6 +1,6 @@
 #### [v22.08.01]
 
-Di rilis v22.08.01, menyediakan Widget Sidebar Foto Camat Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.08.01, menyediakan Widget Sidebar Foto Camat. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada totoprayogo1916 yang terus berkontribusi. Terima kasih pula pada vickyrolanda yang baru mulai berkontribusi.
 

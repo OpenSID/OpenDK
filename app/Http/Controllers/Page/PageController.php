@@ -122,6 +122,13 @@ class PageController extends Controller
         }
 
         $feeds = $feeds->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
+
+        // Tanggal
+        $tanggal = $request->tanggal;
+        if ($tanggal != 'Terlama') {
+            $feeds = $feeds->sortBy('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
+        }
+
         $feeds->all();
 
         $html =  view('pages.berita.feeds', [

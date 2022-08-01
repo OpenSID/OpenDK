@@ -32,6 +32,7 @@
 namespace App\Console;
 
 use function base_path;
+
 use Illuminate\Console\Scheduling\Schedule;
 
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

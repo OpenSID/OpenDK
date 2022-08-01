@@ -1,6 +1,6 @@
-#### [v22.07.01]
+#### [v22.08.01]
 
-Di rilis v22.07.01, menyediakan Widget Sidebar Foto Camat Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.08.01, menyediakan Widget Sidebar Foto Camat Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada totoprayogo1916 yang terus berkontribusi. Terima kasih pula pada vickyrolanda yang baru mulai berkontribusi.
 
@@ -8,6 +8,7 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi. Terima kasih pula pa
 #### Penambahan Fitur
 
 1. [#142](https://github.com/OpenSID/OpenDK/issues/142) Sediakan Widget Sidebar Foto Camat.
+2. [#360](https://github.com/OpenSID/OpenDK/issues/360) Tampilkan berita desa yang berurutan berdasarkan tanggal penerbitan artikel.
 
 #### Perbaikan BUG
 

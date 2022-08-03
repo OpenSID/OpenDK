@@ -32,6 +32,7 @@
 namespace App\Providers;
 
 use function base_path;
+
 use Illuminate\Support\Facades\Broadcast;
 
 use Illuminate\Support\ServiceProvider;

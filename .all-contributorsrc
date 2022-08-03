@@ -150,6 +150,24 @@
       ]
     },
     {
+      "login": "wongjapan",
+      "name": "Wong Japan Asri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45100510?v=4",
+      "profile": "https://github.com/wongjapan",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "devrakapriyo",
+      "name": "devrakapriyo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36557759?v=4",
+      "profile": "https://github.com/devrakapriyo",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "vickyrolanda",
       "name": "Vicky Rolanda",
       "avatar_url": "https://avatars.githubusercontent.com/u/59082428?v=4",
@@ -157,7 +175,7 @@
       "contributions": [
         "code"
       ]
-    }
+    },
   ],
   "contributorsPerLine": 7,
   "projectName": "OpenDK",

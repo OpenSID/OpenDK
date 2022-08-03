@@ -9,4 +9,6 @@ Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] y
 #### Perbaikan BUG
 
 #### TEKNIS
-1. [#318](https://github.com/OpenSID/OpenDK/pull/318) Update Ke Laravel 7.x
+
+1. [#318](https://github.com/OpenSID/OpenDK/pull/318) Update ke Laravel 7.x.
+2. [#329](https://github.com/OpenSID/OpenDK/issues/329) Menerapkan sentry untuk menangkap log.

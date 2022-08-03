@@ -68,6 +68,7 @@
         })
         .ajaxStop(function () {
             $('#loading').modal('hide');
+            alert('Berhasil menjalankan queue');
     });
 </script>
 @endpush

@@ -9,4 +9,4 @@ Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] y
 #### Perbaikan BUG
 
 #### TEKNIS
-1. [#318](https://github.com/OpenSID/OpenDK/pull/318) Update Ke laraver 7.x
+1. [#318](https://github.com/OpenSID/OpenDK/pull/318) Update Ke Laravel 7.x

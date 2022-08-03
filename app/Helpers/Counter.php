@@ -34,6 +34,7 @@ namespace App\Helpers;
 use App\Models\CounterPage;
 use App\Models\CounterVisitor;
 use Carbon\Carbon;
+
 use function config;
 use function env;
 use function hash;
@@ -41,6 +42,7 @@ use function hash;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
 use function number_format;
 
 class Counter
@@ -162,9 +164,9 @@ class Counter
     {
         $prefix = config('database.connections.' . config('database.default') . '.prefix');
         if ($days) {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')->groupBy('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = DB::table($prefix . 'das_counter_page_visitor')->distinct('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
         } else {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')->groupBy('visitor_id')->count();
+            $hits = DB::table($prefix . 'das_counter_page_visitor')->distinct('visitor_id')->count();
         }
 
         return number_format($hits);
@@ -200,7 +202,7 @@ class Counter
      */
     private static function hashVisitor()
     {
-        $cookie  = Cookie::get(env('COUNTER_COOKIE', 'kryptonit3-counter'));
+        $cookie  = Cookie::get(env('COUNTER_COOKIE', 'kd_session'));
         $visitor = $cookie !== false ? $cookie : $_SERVER['REMOTE_ADDR'];
         return hash("SHA256", env('APP_KEY') . $visitor);
     }

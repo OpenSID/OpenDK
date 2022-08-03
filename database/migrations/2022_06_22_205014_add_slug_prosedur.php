@@ -29,30 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Middleware;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-use Closure;
-
-use function file_exists;
-
-use Illuminate\Http\Request;
-
-use function redirect;
-use function storage_path;
-
-class KDInstalled
+class AddSlugProsedur extends Migration
 {
     /**
-     * Handle an incoming request.
+     * Run the migrations.
      *
-     * @param Request $request
-     * @return mixed
+     * @return void
      */
-    public function handle($request, Closure $next)
+    public function up()
     {
-        if (! file_exists(storage_path('installed'))) {
-            return redirect()->to('install');
-        }
-        return $next($request);
+        Schema::table('das_prosedur', function (Blueprint $table) {
+            $table->char('slug', 50)->after('judul_prosedur')->nullable(false);
+        });
+
+        // update data slug pada das prosedur
+        DB::table('das_prosedur')->update(['slug' => DB::raw("lower(replace(judul_prosedur, ' ' , '-'))")]);
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('das_prosedur', function (Blueprint $table) {
+            $table->dropColumn('slug');
+        });
     }
 }

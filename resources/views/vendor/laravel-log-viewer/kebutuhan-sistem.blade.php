@@ -42,7 +42,10 @@
         $.ajax({
             type: "GET",
             url: "{{ URL('setting/info-sistem/queuelisten') }}",
-            dataType: "Json"
+            dataType: "Json",
+            complete: function() {
+                alert('Queue berhasil dijalankan');
+            },
         });
     });    
 </script>

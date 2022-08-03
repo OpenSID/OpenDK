@@ -157,7 +157,16 @@
       "contributions": [
         "code"
       ]
-    }
+    },
+    {
+      "login": "devrakapriyo",
+      "name": "devrakapriyo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36557759?v=4",
+      "profile": "https://github.com/devrakapriyo",
+      "contributions": [
+        "code"
+      ]
+    },
   ],
   "contributorsPerLine": 7,
   "projectName": "OpenDK",

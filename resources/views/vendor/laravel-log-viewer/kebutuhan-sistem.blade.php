@@ -6,6 +6,9 @@
                     <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/linkstorage') }}">
                         <span class="fa fa-play-circle"></span> Jalankan php artisan storage:link
                     </a>
+                    <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-queue">
+                        <span class="fa fa-play-circle"></span> Jalankan php artisan queue:listen
+                    </a>
                 </div>
             </div>
             <div class="box-body">
@@ -32,3 +35,40 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id='loading' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header btn-warning">
+                <h4 class="modal-title">Proses Queue Work</h4>
+            </div>
+            <div class="modal-body">
+                Harap tunggu sampai proses selesai. Proses ini bisa memakan waktu beberapa menit tergantung data yang dikirmkan.
+                <div class='text-center'>
+                    <img src="{{ '../img/loading.gif' }}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    $(document).on('click', '#run-queue', function(e) {
+        $.ajax({
+            type: "GET",
+            url: "{{ URL('setting/info-sistem/queuelisten') }}",
+            dataType: "Json"
+        });
+    });
+
+    $(document)
+        .ajaxStart(function () {
+            $('#loading').modal('show');
+        })
+        .ajaxStop(function () {
+            $('#loading').modal('hide');
+            alert('Berhasil menjalankan queue');
+    });
+</script>
+@endpush

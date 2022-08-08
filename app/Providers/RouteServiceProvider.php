@@ -32,6 +32,7 @@
 namespace App\Providers;
 
 use function base_path;
+
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 use Illuminate\Support\Facades\Route;

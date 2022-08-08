@@ -599,6 +599,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::group(['prefix' => 'info-sistem','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
                 Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
+                Route::get('/queuelisten', ['as' => 'setting.info-sistem.queuelisten', 'uses' => 'LogViewerController@queueListen']);
             });
         });
 

@@ -54,6 +54,9 @@
 		$( "#list_desa" ).change(function() {
 			$( "#form_filter" ).submit();
 		});
+    $( "#tanggal" ).change(function() {
+			$( "#form_filter" ).submit();
+		});
 
 		$(document).on('click', '.pagination a', function(event){
       event.preventDefault(); 

@@ -38,8 +38,9 @@ class MediaSosial extends Model
     protected $table = 'media_sosial';
 
     protected $fillable = [
-        'link',
-        'tipe',
+        'logo',
+        'url',
+        'nama',
         'status',
     ];
 

@@ -267,12 +267,13 @@ Route::group(['middleware' => 'installed'], function () {
                 // Media Sosial
                 Route::group(['prefix' => 'media-sosial'], function () {
                     Route::get('/', ['as' => 'informasi.media-sosial.index', 'uses' => 'MediaSosialController@index']);
-                    Route::post('update/{medsos}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
-                    Route::get('/twitter', ['as' => 'informasi.media-sosial.twitter', 'uses' => 'MediaSosialController@twitter']);
-                    Route::get('/youtube', ['as' => 'informasi.media-sosial.youtube', 'uses' => 'MediaSosialController@youtube']);
-                    Route::get('/instagram', ['as' => 'informasi.media-sosial.instagram', 'uses' => 'MediaSosialController@instagram']);
-                    Route::get('/whatsapp', ['as' => 'informasi.media-sosial.whatsapp', 'uses' => 'MediaSosialController@whatsapp']);
-                    Route::get('/telegram', ['as' => 'informasi.media-sosial.telegram', 'uses' => 'MediaSosialController@telegram']);
+                    Route::get('getdata', ['as' => 'informasi.media-sosial.getdata', 'uses' => 'MediaSosialController@getDataMediaSosial']);
+                    Route::get('show/{id}', ['as' => 'informasi.media-sosial.show', 'uses' => 'MediaSosialController@show']);
+                    Route::get('create', ['as' => 'informasi.media-sosial.create', 'uses' => 'MediaSosialController@create']);
+                    Route::post('store', ['as' => 'informasi.media-sosial.store', 'uses' => 'MediaSosialController@store']);
+                    Route::get('edit/{id}', ['as' => 'informasi.media-sosial.edit', 'uses' => 'MediaSosialController@edit']);
+                    Route::post('update/{id}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
                 });
             });
         });

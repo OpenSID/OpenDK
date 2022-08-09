@@ -141,7 +141,7 @@ class Controller extends BaseController
                     break;
 
                 default:
-            }
+                }
             return $medsos;
         });
         $navdesa                     = DataDesa::all();

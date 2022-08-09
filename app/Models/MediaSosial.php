@@ -43,6 +43,4 @@ class MediaSosial extends Model
         'nama',
         'status',
     ];
-
-    public $timestamps = false;
 }

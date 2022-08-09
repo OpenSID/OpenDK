@@ -34,93 +34,137 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Models\MediaSosial;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class MediaSosialController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
     public function index()
     {
-        $medsos           = MediaSosial::findOrFail(1);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Pengaturan Facebook';
-        $page             = 'Facebook';
-        $placeholder      = 'https://web.facebook.com/tokoopendesa atau tokoopendesa';
-
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
+        return view('informasi.media_sosial.index');
     }
+
+    public function getDataMediaSosial(Request $request)
+    {
+        if ($request->ajax()) {
+            return DataTables::of(MediaSosial::all())
+                ->addIndexColumn()
+                ->addColumn('aksi', function ($row) {
+                    $data['show_web'] = route('faq');
+
+                    if (! auth()->guest()) {
+                        $data['edit_url']   = route('informasi.media-sosial.edit', $row->id);
+                        $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
+                    }
+
+                    return view('forms.aksi', $data);
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 0) {
+                        return '<span class="label label-danger">Tidak Aktif</span>';
+                    } else {
+                        return '<span class="label label-success">Aktif</span>';
+                    }
+                })
+                ->rawColumns(['status'])
+                ->escapeColumns([])
+                ->make(true);
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $page_title       = 'FAQ';
+        $page_description = 'Tambah FAQ';
+
+        return view('informasi.media_sosial.create', compact('page_title', 'page_description'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @return Response
+     */
+    public function store(Request $request)
+    {
+        request()->validate([
+            'question' => 'required',
+            'answer'   => 'required',
+        ]);
+
+        try {
+            MediaSosial::create($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'FAQ gagal ditambah!');
+        }
+
+        return redirect()->route('informasi.media_sosial.index')->with('success', 'FAQ berhasil ditambah!');
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+        $faq              = MediaSosial::findOrFail($id);
+        $page_title       = 'FAQ';
+        $page_description = 'Ubah FAQ : ' . $faq->question;
+
+        return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'faq'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
 
     public function update(Request $request, $id)
     {
         request()->validate([
-            'link' => 'required',
+            'question' => 'required',
+            'answer'   => 'required',
         ]);
 
-        $page = 'index';
-        if ($request->medsos != 'Facebook') {
-            $page = strtolower($request->medsos);
-        }
-
         try {
-            MediaSosial::findOrFail($id)->update($request->except(['request']));
+            MediaSosial::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', $request->medsos .' gagal diubah!');
+            return back()->withInput()->with('error', 'FAQ gagal diubah!');
         }
 
-        return redirect()->route('informasi.media-sosial.' . $page)->with('success', $request->medsos . ' berhasil diubah!');
+        return redirect()->route('informasi.media_sosial.index')->with('success', 'FAQ berhasil diubah!');
     }
 
-    public function twitter()
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function destroy($id)
     {
-        $medsos           = MediaSosial::findOrFail(2);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Pengaturan Twitter';
-        $page             = 'Twitter';
-        $placeholder      = 'https://twitter.com/opendesa, opendesa atau @opendesa';
+        try {
+            MediaSosial::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return redirect()->route('informasi.media_sosial.index')->with('error', 'FAQ gagal dihapus!');
+        }
 
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
-    }
-
-    public function youtube()
-    {
-        $medsos           = MediaSosial::findOrFail(3);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Pengaturan YouTube';
-        $page             = 'YouTube';
-        $placeholder      = 'https://www.youtube.com/channel/UCvZuSYtrWYuE8otM4SsdT0Q atau UCvZuSYtrWYuE8otM4SsdT0Q';
-
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
-    }
-
-    public function instagram()
-    {
-        $medsos           = MediaSosial::findOrFail(4);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Pengaturan YouTube';
-        $page             = 'YouTube';
-        $placeholder      = 'https://www.instagram.com/OpenDesa, OpenDesa atau @OpenDesa';
-
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
-    }
-
-    public function whatsapp()
-    {
-        $medsos           = MediaSosial::findOrFail(5);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Pengaturan YouTube';
-        $page             = 'YouTube';
-        $placeholder      = '0851234567890 atau CryQ1VyOXghEVJUTFpwFPb';
-
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
-    }
-
-    public function telegram()
-    {
-        $medsos           = MediaSosial::findOrFail(6);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Pengaturan YouTube';
-        $page             = 'YouTube';
-        $placeholder      = 'https://t.me/OpenDesa';
-
-        return view('informasi.media_sosial.index', compact('page_title', 'page_description', 'medsos', 'page', 'placeholder'));
+        return redirect()->route('informasi.media_sosial.index')->with('success', 'FAQ berhasil dihapus!');
     }
 }

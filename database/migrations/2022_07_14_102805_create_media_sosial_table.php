@@ -44,10 +44,9 @@ class CreateMediaSosialTable extends Migration
     {
         Schema::create('media_sosial', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('gambar');
-            $table->text('link')->nullable()->default(null);
+            $table->text('logo');
+            $table->text('url');
             $table->string('nama', 100);
-            $table->boolean('tipe')->default(1); // 1: Personal; 2: Grup
             $table->boolean('status')->default(0); // 0: Tidak aktif; 1: Aktif
         });
     }

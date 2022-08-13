@@ -182,7 +182,10 @@ class MediaSosialController extends Controller
     public function destroy($id)
     {
         try {
-            MediaSosial::findOrFail($id)->delete();
+            $medsos = MediaSosial::findOrFail($id);
+            if ($medsos->delete()) {
+                unlink(base_path('public/' . $medsos->logo));
+            }
         } catch (\Exception $e) {
             report($e);
             return redirect()->route('informasi.media-sosial.index')->with('error', 'Media Sosial gagal dihapus!');

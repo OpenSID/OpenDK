@@ -1,5 +1,4 @@
 *
 !public/
-!public/media_sosial/*
 !public/template_upload/*
 !.gitignore

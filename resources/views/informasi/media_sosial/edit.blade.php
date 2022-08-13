@@ -32,11 +32,11 @@
                     @endif
 
                             <!-- form start -->
-                    {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'post', 'files' => true, 'id' => 'form-medsos', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                            {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
 
                     <div class="box-body">
 
-
+                        {{ method_field('PUT') }}
                         @include( 'flash::message' )
                         @include('informasi.media_sosial.form')
 

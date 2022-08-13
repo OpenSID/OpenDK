@@ -139,7 +139,7 @@ class MediaSosialController extends Controller
      * @return Response
      */
 
-    public function update(MediaSosial $medsos, Request $request, $id)
+    public function update(Request $request, $id)
     {
         request()->validate([
             'nama' => 'required',
@@ -147,22 +147,22 @@ class MediaSosialController extends Controller
             'logo' => 'required',
         ]);
 
-        dd($medsos);
+        $medsos = MediaSosial::findOrFail($id);
 
         try {
             $input = $request->all();
 
-            // if ($request->hasFile('logo')) {
-            //     $file     = $request->file('logo');
-            //     $original_name = strtolower(trim($file->getClientOriginalName()));
-            //     $file_name = time() . rand(100, 999) . '_' . $original_name;
-            //     $path     = "storage/medsos/";
-            //     $file->move($path, $file_name);
-            //     unlink(base_path('public/' . $medsos->logo));
+            if ($request->hasFile('logo')) {
+                $file           = $request->file('logo');
+                $original_name  = strtolower(trim($file->getClientOriginalName()));
+                $file_name      = time() . rand(100, 999) . '_' . $original_name;
+                $path           = "storage/medsos/";
+                $file->move($path, $file_name);
+                unlink(base_path('public/' . $medsos->logo));
 
-            //     $input['medsos'] = $path . $file_name;
-            //     $input['mime_type'] = $file->getClientOriginalExtension();
-            // }
+                $input['logo'] = $path . $file_name;
+                $input['mime_type'] = $file->getClientOriginalExtension();
+            }
 
             $medsos->update($input);
         } catch (\Exception $e) {

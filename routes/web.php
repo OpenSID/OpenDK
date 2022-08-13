@@ -272,7 +272,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('create', ['as' => 'informasi.media-sosial.create', 'uses' => 'MediaSosialController@create']);
                     Route::post('store', ['as' => 'informasi.media-sosial.store', 'uses' => 'MediaSosialController@store']);
                     Route::get('edit/{id}', ['as' => 'informasi.media-sosial.edit', 'uses' => 'MediaSosialController@edit']);
-                    Route::post('update/{id}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                    Route::put('update/{id}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
                 });
             });

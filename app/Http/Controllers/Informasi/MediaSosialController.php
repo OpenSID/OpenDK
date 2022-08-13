@@ -106,7 +106,7 @@ class MediaSosialController extends Controller
                 $file->move($path, $file_name);
                 $input['logo'] = $path . $file_name;
             }
-            
+
             MediaSosial::create($input);
         } catch (\Exception $e) {
             report($e);

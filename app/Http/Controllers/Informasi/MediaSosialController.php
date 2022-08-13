@@ -54,7 +54,7 @@ class MediaSosialController extends Controller
             return DataTables::of(MediaSosial::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    $data['show_web'] = route('faq');
+                    $data['show_web'] = $row->url;
 
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('informasi.media-sosial.edit', $row->id);

@@ -83,8 +83,8 @@ class MediaSosialController extends Controller
      */
     public function create()
     {
-        $page_title       = 'FAQ';
-        $page_description = 'Tambah FAQ';
+        $page_title       = 'Media Sosial';
+        $page_description = 'Tambah Media Sosial';
 
         return view('informasi.media_sosial.create', compact('page_title', 'page_description'));
     }
@@ -96,19 +96,25 @@ class MediaSosialController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'question' => 'required',
-            'answer'   => 'required',
-        ]);
-
         try {
-            MediaSosial::create($request->all());
+            $input = $request->all();
+            if ($request->hasFile('logo')) {
+                $file     = $request->file('logo');
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time() . rand(100, 999) . '_' . $original_name;
+                $path     = "storage/medsos/";
+                $file->move($path, $file_name);
+                $input['logo'] = $path . $file_name;
+                $input['mime_type'] = $file->getClientOriginalExtension();
+            }
+            
+            MediaSosial::create($input);
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'FAQ gagal ditambah!');
+            return back()->with('error', 'Media Sosial gagal disimpan!');
         }
 
-        return redirect()->route('informasi.media_sosial.index')->with('success', 'FAQ berhasil ditambah!');
+        return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil disimpan!');
     }
 
     /**
@@ -119,11 +125,11 @@ class MediaSosialController extends Controller
      */
     public function edit($id)
     {
-        $faq              = MediaSosial::findOrFail($id);
-        $page_title       = 'FAQ';
-        $page_description = 'Ubah FAQ : ' . $faq->question;
+        $medsos           = MediaSosial::findOrFail($id);
+        $page_title       = 'Media Sosial';
+        $page_description = 'Ubah Media Sosial : ' . $medsos->nama;
 
-        return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'faq'));
+        return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'medsos'));
     }
 
     /**
@@ -133,21 +139,38 @@ class MediaSosialController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(MediaSosial $medsos, Request $request, $id)
     {
         request()->validate([
-            'question' => 'required',
-            'answer'   => 'required',
+            'nama' => 'required',
+            'url'  => 'required',
+            'logo' => 'required',
         ]);
 
+        dd($medsos);
+
         try {
-            MediaSosial::findOrFail($id)->update($request->all());
+            $input = $request->all();
+
+            // if ($request->hasFile('logo')) {
+            //     $file     = $request->file('logo');
+            //     $original_name = strtolower(trim($file->getClientOriginalName()));
+            //     $file_name = time() . rand(100, 999) . '_' . $original_name;
+            //     $path     = "storage/medsos/";
+            //     $file->move($path, $file_name);
+            //     unlink(base_path('public/' . $medsos->logo));
+
+            //     $input['medsos'] = $path . $file_name;
+            //     $input['mime_type'] = $file->getClientOriginalExtension();
+            // }
+
+            $medsos->update($input);
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'FAQ gagal diubah!');
+            return back()->withInput()->with('error', 'Media Sosial gagal diubah!');
         }
 
-        return redirect()->route('informasi.media_sosial.index')->with('success', 'FAQ berhasil diubah!');
+        return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil diubah!');
     }
 
     /**
@@ -162,9 +185,9 @@ class MediaSosialController extends Controller
             MediaSosial::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('informasi.media_sosial.index')->with('error', 'FAQ gagal dihapus!');
+            return redirect()->route('informasi.media-sosial.index')->with('error', 'Media Sosial gagal dihapus!');
         }
 
-        return redirect()->route('informasi.media_sosial.index')->with('success', 'FAQ berhasil dihapus!');
+        return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil dihapus!');
     }
 }

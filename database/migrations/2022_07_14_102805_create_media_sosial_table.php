@@ -42,12 +42,14 @@ class CreateMediaSosialTable extends Migration
      */
     public function up()
     {
-        Schema::create('media_sosial', function (Blueprint $table) {
+        Schema::create('das_media_sosial', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('logo');
+            $table->string('logo', 255);
             $table->text('url');
             $table->string('nama', 100);
+            $table->string('mime_type', 20);
             $table->boolean('status')->default(0); // 0: Tidak aktif; 1: Aktif
+            $table->timestamps();
         });
     }
 
@@ -58,6 +60,6 @@ class CreateMediaSosialTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('media_sosial');
+        Schema::dropIfExists('das_media_sosial');
     }
 }

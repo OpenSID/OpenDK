@@ -35,12 +35,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class MediaSosial extends Model
 {
-    protected $table = 'media_sosial';
+    protected $table = 'das_media_sosial';
 
     protected $fillable = [
         'logo',
         'url',
         'nama',
+        'mime_type',
         'status',
     ];
 }

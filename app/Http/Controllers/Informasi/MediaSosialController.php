@@ -107,7 +107,7 @@ class MediaSosialController extends Controller
                 $input['logo'] = $path . $file_name;
                 $input['mime_type'] = $file->getClientOriginalExtension();
             }
-            
+
             MediaSosial::create($input);
         } catch (\Exception $e) {
             report($e);

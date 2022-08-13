@@ -41,7 +41,6 @@ class MediaSosial extends Model
         'logo',
         'url',
         'nama',
-        'mime_type',
         'status',
     ];
 }

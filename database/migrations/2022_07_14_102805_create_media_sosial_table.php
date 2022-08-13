@@ -47,7 +47,6 @@ class CreateMediaSosialTable extends Migration
             $table->string('logo', 255);
             $table->text('url');
             $table->string('nama', 100);
-            $table->string('mime_type', 20);
             $table->boolean('status')->default(0); // 0: Tidak aktif; 1: Aktif
             $table->timestamps();
         });

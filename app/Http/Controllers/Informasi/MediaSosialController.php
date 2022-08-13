@@ -105,7 +105,6 @@ class MediaSosialController extends Controller
                 $path     = "storage/medsos/";
                 $file->move($path, $file_name);
                 $input['logo'] = $path . $file_name;
-                $input['mime_type'] = $file->getClientOriginalExtension();
             }
             
             MediaSosial::create($input);
@@ -159,9 +158,7 @@ class MediaSosialController extends Controller
                 $path           = "storage/medsos/";
                 $file->move($path, $file_name);
                 unlink(base_path('public/' . $medsos->logo));
-
                 $input['logo'] = $path . $file_name;
-                $input['mime_type'] = $file->getClientOriginalExtension();
             }
 
             $medsos->update($input);

@@ -368,20 +368,3 @@ function terbilang($angka)
 
     return $terbilang;
 }
-
-if (! function_exists('prep_url')) {
-    function prep_url($str = '')
-    {
-        if ($str === 'http://' || $str === '') {
-            return '';
-        }
-
-        $url = parse_url($str);
-
-        if (! $url or ! isset($url['scheme'])) {
-            return $str;
-        }
-
-        return $str;
-    }
-}

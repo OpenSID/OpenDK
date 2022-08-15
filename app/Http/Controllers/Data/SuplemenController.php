@@ -216,9 +216,18 @@ class SuplemenController extends Controller
         }
     }
 
-    public function getPenduduk($desa)
+    public function getPenduduk($desa, $suplemen)
     {
-        $data = Penduduk::where('desa_id', $desa)->get();
+        $anggota = SuplemenTerdata::get();
+        foreach ($anggota as $data) {
+            if ($data->suplemen_id == $suplemen){
+                $penduduk[]  = $data->penduduk_id;
+            } else {
+                $penduduk[] = 0;
+            }
+        }
+
+        $data = Penduduk::where('desa_id', $desa)->whereNotIn('id', $penduduk)->get();
         return response()->json($data);
     }
 

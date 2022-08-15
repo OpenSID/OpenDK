@@ -329,7 +329,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.data-suplemen.destroy', 'uses' => 'SuplemenController@destroy']);
                     Route::get('getsuplementerdata/{id_suplemen}', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
                     Route::get('createdetail/{id_suplemen}', ['as' => 'data.data-suplemen.createdetail', 'uses' => 'SuplemenController@createDetail']);
-                    Route::get('getpenduduk/{id_desa}', ['as' => 'data.data-suplemen.getpenduduk', 'uses' => 'SuplemenController@getPenduduk']);
+                    Route::get('getpenduduk/{id_desa}/{id_suplemen}', ['as' => 'data.data-suplemen.getpenduduk', 'uses' => 'SuplemenController@getPenduduk']);
                     Route::post('storedetail', ['as' => 'data.data-suplemen.storedetail', 'uses' => 'SuplemenController@storeDetail']);
                     Route::get('editdetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.editdetail', 'uses' => 'SuplemenController@editDetail']);
                     Route::put('updatedetail/{id}', ['as' => 'data.data-suplemen.updatedetail', 'uses' => 'SuplemenController@updateDetail']);

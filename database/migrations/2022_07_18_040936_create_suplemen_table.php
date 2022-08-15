@@ -46,7 +46,7 @@ class CreateSuplemenTable extends Migration
             $table->increments('id');
             $table->string('nama');
             $table->string('slug')->unique();
-            $table->boolean('sasaran');
+            $table->boolean('sasaran'); // 1: Penduduk; 2: Keluarga/KK
             $table->text('keterangan')->nullable();
             $table->timestamps();
         });

@@ -218,10 +218,9 @@ class SuplemenController extends Controller
 
     public function getPenduduk($desa, $suplemen)
     {
-        $anggota = SuplemenTerdata::get();
-        foreach ($anggota as $data) {
+        foreach (SuplemenTerdata::get() as $data) {
             if ($data->suplemen_id == $suplemen){
-                $penduduk[]  = $data->penduduk_id;
+                $penduduk[] = $data->penduduk_id;
             } else {
                 $penduduk[] = 0;
             }

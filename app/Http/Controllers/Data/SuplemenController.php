@@ -220,7 +220,7 @@ class SuplemenController extends Controller
     {
         $anggota = SuplemenTerdata::get();
         foreach ($anggota as $data) {
-            if ($data->suplemen_id == $suplemen){
+            if ($data->suplemen_id == $suplemen) {
                 $penduduk[]  = $data->penduduk_id;
             } else {
                 $penduduk[] = 0;

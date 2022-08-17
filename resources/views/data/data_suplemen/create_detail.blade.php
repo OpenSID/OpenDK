@@ -77,10 +77,11 @@
 <script>
      $(function() {
         $('#desa').on('change', function() {
-            var desa = $(this).val();
+            var desa     = $(this).val();
+            var suplemen = $("input[name='suplemen_id']").val();
             if(desa) {
                 $.ajax({
-                    url: '/data/data-suplemen/getpenduduk/'+encodeURI(desa),
+                    url: '/data/data-suplemen/getpenduduk/'+encodeURI(desa)+'/'+encodeURI(suplemen),
                     type: "GET",
                     dataType: "json",
                     success:function(data) {

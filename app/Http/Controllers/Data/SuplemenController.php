@@ -74,7 +74,7 @@ class SuplemenController extends Controller
                     return view('forms.aksi', $data);
                 })
                 ->editColumn('sasaran', function ($row) {
-                    $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+                    $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
                     return $sasaran[$row->sasaran];
                 })
                 ->make();
@@ -185,7 +185,7 @@ class SuplemenController extends Controller
     public function show($id)
     {
         $suplemen         = Suplemen::findOrFail($id);
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title       = 'Anggota Suplemen';
         $page_description = 'Anggota Suplemen: ' . ucwords(strtolower($suplemen->nama));
 
@@ -216,9 +216,17 @@ class SuplemenController extends Controller
         }
     }
 
-    public function getPenduduk($desa)
+    public function getPenduduk($desa, $suplemen)
     {
-        $data = Penduduk::where('desa_id', $desa)->get();
+        foreach (SuplemenTerdata::get() as $data) {
+            if ($data->suplemen_id == $suplemen) {
+                $penduduk[] = $data->penduduk_id;
+            } else {
+                $penduduk[] = 0;
+            }
+        }
+
+        $data = Penduduk::where('desa_id', $desa)->whereNotIn('id', $penduduk)->get();
         return response()->json($data);
     }
 
@@ -230,19 +238,16 @@ class SuplemenController extends Controller
     public function createDetail($id_suplemen)
     {
         $suplemen         = Suplemen::findOrFail($id_suplemen);
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title       = 'Anggota Suplemen';
         $page_description = 'Tambah Anggota Suplemen : ' . $suplemen->nama;
-        $desa             = null;
+        $desa             = DataDesa::all();
         $anggota          = null;
 
         if ($suplemen->sasaran == 1) {
-            $data = Penduduk::pluck('nama', 'id');
-        } elseif (($suplemen->sasaran == 2)) {
-            $data = Penduduk::where('kk_level', 1)->pluck('nama', 'id');
+            $data = Penduduk::get();
         } else {
-            $desa = DataDesa::all();
-            $data = Penduduk::all();
+            $data = Penduduk::where('kk_level', 1)->get();
         }
 
         return view('data.data_suplemen.create_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
@@ -280,17 +285,12 @@ class SuplemenController extends Controller
     public function editDetail($id, $id_suplemen)
     {
         $suplemen         = Suplemen::findOrFail($id_suplemen);
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK', '3' => 'Desa'];
+        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title       = 'Anggota Suplemen';
         $page_description = 'Ubah Anggota Suplemen : ' . $suplemen->nama;
         $anggota          = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
-        $data             = Penduduk::where('id', $anggota->penduduk_id)->pluck('nama', 'id');
-        $desa             = null;
-
-        if ($suplemen->sasaran == 3) {
-            $desa = DataDesa::all();
-            $data = Penduduk::all();
-        }
+        $data             = Penduduk::where('id', $anggota->penduduk_id)->get();
+        $desa             = DataDesa::all();
 
         return view('data.data_suplemen.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
     }

@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class DataDesa extends Model
 {
@@ -52,6 +53,10 @@ class DataDesa extends Model
      */
     public function getWebsiteUrlFeedAttribute()
     {
+        if (Str::endsWith($this->website, '/') == false) {
+            $this->website .= '/';
+        }
+
         $desa = [
             'desa_id' => $this->desa_id,
             'nama'    => ucwords($this->sebutan_desa . ' ' . $this->nama),

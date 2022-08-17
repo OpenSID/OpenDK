@@ -64,6 +64,10 @@
                             <li {{ (Request::is(['informasi/form-dokumen/*', 'informasi/form-dokumen/index', 'informasi/form-dokumen'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a></li>
                             @endrole 
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                            <li {{ (Request::is(['informasi/media-sosial/*', 'informasi/media-sosial/index', 'informasi/media-sosial'])? 'class=active' : '') }}>
+                                <a href="{{ route('informasi.media-sosial.index') }}"><i class="fa fa-circle-o"></i>Media Sosial</a></li>
+                            @endrole 
                         </ul>
                     </li>
                 @endif

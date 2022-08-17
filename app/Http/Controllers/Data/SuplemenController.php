@@ -242,7 +242,7 @@ class SuplemenController extends Controller
         $suplemen         = Suplemen::findOrFail($id_suplemen);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title       = 'Anggota Suplemen';
-        $page_description = 'Tambah Anggota Suplemen : ' . $suplemen->nama;
+        $page_description = 'Tambah Anggota Suplemen';
         $desa             = DataDesa::all();
         $anggota          = null;
 
@@ -289,7 +289,7 @@ class SuplemenController extends Controller
         $suplemen         = Suplemen::findOrFail($id_suplemen);
         $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title       = 'Anggota Suplemen';
-        $page_description = 'Ubah Anggota Suplemen : ' . $suplemen->nama;
+        $page_description = 'Ubah Anggota Suplemen';
         $anggota          = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
         $data             = Penduduk::where('id', $anggota->penduduk_id)->get();
         $desa             = DataDesa::all();

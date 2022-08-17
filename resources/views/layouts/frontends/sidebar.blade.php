@@ -8,7 +8,9 @@
     <div class="box box-widget">
         @include('widgets.event')
     </div>
-
+    <div class="box box-widget">
+        @include('widgets.media_sosial')
+    </div>
     <div class="box box-widget">
         @include('widgets.visitor')
     </div>

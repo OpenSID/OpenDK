@@ -222,9 +222,9 @@ class SuplemenController extends Controller
 
         foreach (SuplemenTerdata::get() as $data) {
             if ($data->suplemen_id == $suplemen) {
-                $penduduk = $data->penduduk_id;
+                $penduduk[] = $data->penduduk_id;
             } else {
-                $penduduk = 0;
+                $penduduk[] = 0;
             }
         }
 

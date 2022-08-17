@@ -166,6 +166,10 @@ class SuplemenController extends Controller
      */
     public function destroy($id)
     {
+        if (SuplemenTerdata::where('suplemen_id', $id)->exists()) {
+            return redirect()->route('data.data-suplemen.index')->with('error', 'Tidak dapat menghapus Data Suplemen yang mempunyai anggota!');
+        }
+
         try {
             Suplemen::findOrFail($id)->delete();
         } catch (\Exception $e) {

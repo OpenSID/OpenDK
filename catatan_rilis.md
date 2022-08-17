@@ -8,6 +8,7 @@ Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] y
 1. [#293](https://github.com/OpenSID/OpenDK/issues/293) Menambahkan widget sosial secara dinamis.
 
 #### Perbaikan BUG
+1. [#464](https://github.com/OpenSID/OpenDK/issues/464) Perbaiki sinkronisasi berita OpenSID ke OpenDK.
 
 #### TEKNIS
 

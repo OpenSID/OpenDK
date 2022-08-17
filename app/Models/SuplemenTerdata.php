@@ -33,62 +33,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Penduduk extends Model
+class SuplemenTerdata extends Model
 {
-    public $incrementing = false;
-    protected $table     = 'das_penduduk';
-    protected $fillable  = [];
-    protected $guarded   = [];
+    protected $table = 'das_suplemen_terdata';
 
-    /**
-     * Relation Methods
-     * */
+    protected $fillable = [
+        'suplemen_id',
+        'penduduk_id',
+        'keterangan'
+    ];
 
-    public function getPendudukAktif($did, $year)
+    public function suplemen()
     {
-        $penduduk =  $this
-            ->where('status_dasar', 1)
-            ->whereYear('created_at', '<=', $year);
-
-        if ($did != 'Semua') {
-            $penduduk->where('desa_id', $did);
-        }
-
-        return $penduduk;
+        return $this->belongsTo(Suplemen::class);
     }
 
-    public function scopeHidup($query)
+    public function penduduk()
     {
-        return $query->where('status_dasar', 1);
-    }
-
-    public function pekerjaan()
-    {
-        return $this->hasOne(Pekerjaan::class, 'id', 'pekerjaan_id');
-    }
-
-    public function kawin()
-    {
-        return $this->hasOne(Kawin::class, 'id', 'status_kawin');
-    }
-
-    public function pendidikan_kk()
-    {
-        return $this->hasOne(PendidikanKK::class, 'id', 'pendidikan_kk_id');
-    }
-
-    public function keluarga()
-    {
-        return $this->hasOne(Keluarga::class, 'no_kk', 'no_kk');
-    }
-
-    public function suplemen_terdata()
-    {
-        return $this->hasMany(SuplemenTerdata::class, 'penduduk_id', 'id');
-    }
-
-    public function desa()
-    {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        return $this->belongsTo(Penduduk::class);
     }
 }

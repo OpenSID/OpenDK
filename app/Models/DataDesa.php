@@ -135,4 +135,9 @@ class DataDesa extends Model
     {
         return $this->hasMany(Keluarga::class, 'desa_id', 'desa_id');
     }
+
+    public function penduduk()
+    {
+        return $this->hasMany(Penduduk::class, 'desa_id', 'desa_id');
+    }
 }

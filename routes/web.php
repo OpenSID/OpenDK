@@ -328,6 +328,26 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
                 });
 
+                // Data Suplemen
+                Route::group(['prefix' => 'data-suplemen', 'middleware' => ['role:super-admin|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.data-suplemen.index', 'uses' => 'SuplemenController@index']);
+                    Route::get('getdata', ['as' => 'data.data-suplemen.getdata', 'uses' => 'SuplemenController@getDataSuplemen']);
+                    Route::get('getsuplementerdata', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    Route::get('show/{id}', ['as' => 'data.data-suplemen.show', 'uses' => 'SuplemenController@show']);
+                    Route::get('create', ['as' => 'data.data-suplemen.create', 'uses' => 'SuplemenController@create']);
+                    Route::post('store', ['as' => 'data.data-suplemen.store', 'uses' => 'SuplemenController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.data-suplemen.edit', 'uses' => 'SuplemenController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.data-suplemen.update', 'uses' => 'SuplemenController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.data-suplemen.destroy', 'uses' => 'SuplemenController@destroy']);
+                    Route::get('getsuplementerdata/{id_suplemen}', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    Route::get('createdetail/{id_suplemen}', ['as' => 'data.data-suplemen.createdetail', 'uses' => 'SuplemenController@createDetail']);
+                    Route::get('getpenduduk/{id_desa}/{id_suplemen}', ['as' => 'data.data-suplemen.getpenduduk', 'uses' => 'SuplemenController@getPenduduk']);
+                    Route::post('storedetail', ['as' => 'data.data-suplemen.storedetail', 'uses' => 'SuplemenController@storeDetail']);
+                    Route::get('editdetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.editdetail', 'uses' => 'SuplemenController@editDetail']);
+                    Route::put('updatedetail/{id}', ['as' => 'data.data-suplemen.updatedetail', 'uses' => 'SuplemenController@updateDetail']);
+                    Route::delete('destroydetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.destroydetail', 'uses' => 'SuplemenController@destroyDetail']);
+                });
+
                 // Laporan Penduduk
                 Route::group(['prefix' => 'laporan-penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.laporan-penduduk.index', 'uses' => 'LaporanPendudukController@index']);

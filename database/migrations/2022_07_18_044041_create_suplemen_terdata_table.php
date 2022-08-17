@@ -29,66 +29,41 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Penduduk extends Model
+class CreateSuplemenTerdataTable extends Migration
 {
-    public $incrementing = false;
-    protected $table     = 'das_penduduk';
-    protected $fillable  = [];
-    protected $guarded   = [];
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('das_suplemen_terdata', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('suplemen_id');
+            $table->foreign('suplemen_id')->references('id')->on('das_suplemen')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedInteger('penduduk_id');
+            $table->foreign('penduduk_id')->references('id')->on('das_penduduk')
+                ->onUpdate('cascade')->onDelete('cascade');
+            $table->text('keterangan')->nullable();
+            $table->timestamps();
+        });
+    }
 
     /**
-     * Relation Methods
-     * */
-
-    public function getPendudukAktif($did, $year)
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        $penduduk =  $this
-            ->where('status_dasar', 1)
-            ->whereYear('created_at', '<=', $year);
-
-        if ($did != 'Semua') {
-            $penduduk->where('desa_id', $did);
-        }
-
-        return $penduduk;
-    }
-
-    public function scopeHidup($query)
-    {
-        return $query->where('status_dasar', 1);
-    }
-
-    public function pekerjaan()
-    {
-        return $this->hasOne(Pekerjaan::class, 'id', 'pekerjaan_id');
-    }
-
-    public function kawin()
-    {
-        return $this->hasOne(Kawin::class, 'id', 'status_kawin');
-    }
-
-    public function pendidikan_kk()
-    {
-        return $this->hasOne(PendidikanKK::class, 'id', 'pendidikan_kk_id');
-    }
-
-    public function keluarga()
-    {
-        return $this->hasOne(Keluarga::class, 'no_kk', 'no_kk');
-    }
-
-    public function suplemen_terdata()
-    {
-        return $this->hasMany(SuplemenTerdata::class, 'penduduk_id', 'id');
-    }
-
-    public function desa()
-    {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('das_suplemen_terdata');
+        Schema::enableForeignKeyConstraints();
     }
 }

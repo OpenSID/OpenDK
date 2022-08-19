@@ -96,7 +96,7 @@ class DataUmum extends Model
     }
 
     /**
-     * Sette untuk membuat path menjadi null jika peta kosong.
+     * Setter untuk membuat path menjadi null jika peta kosong.
      *
      * @return string
      */

@@ -80,4 +80,32 @@ class DataUmum extends Model
     {
         return DataDesa::sum('luas_wilayah');
     }
+
+    /**
+     * Getter untuk membuat path menjadi null jika peta kosong.
+     *
+     * @return string
+     */
+    public function getPathAttribute($value)
+    {
+        if ($value == '[]' || $value == '[[[[]]]]') {
+            $value = null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Sette untuk membuat path menjadi null jika peta kosong.
+     *
+     * @return string
+     */
+    public function setPathAttribute($value)
+    {
+        if ($value == '[]' || $value == '[[[[]]]]') {
+            $value = null;
+        }
+
+        $this->attributes['path'] = $value;
+    }
 }

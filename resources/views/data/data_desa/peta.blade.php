@@ -32,7 +32,7 @@
 @push('scripts')
 <script>
     var overlayLayers = {};
-    function tampil_peta () { 
+    function tampil_peta () {
       // Inisialisasi tampilan peta
       var posisi = [-1.0546279422758742, 116.71875000000001];
       var zoom = 10;
@@ -76,11 +76,13 @@
           return false;
         });
       }
-      
+
       $.when(path_kec()).done(function(res_kec){
         if (res_kec && res_kec.data != null) {
           var mark_kec = set_marker(res_kec.data, 'Peta Wilayah Kecamatan', 'Wilayah Kecamatan ' + res_kec.data.profil.nama_kecamatan, {'line' : '#de2d26', 'fill' : '#fff'});
-          overlayLayers['Peta Wilayah Kecamatan'] =  wilayah_property(mark_kec, false);
+          if (mark_kec != null) {
+            overlayLayers['Peta Wilayah Kecamatan'] =  wilayah_property(mark_kec, false);
+          }
         }
         tampil_peta();
       });

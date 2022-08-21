@@ -305,7 +305,7 @@
       controlGpxPoly.addTo(layerpeta);
 
       controlGpxPoly.loader.on("data:loaded", function (e) {
-        
+
         var type = e.layerType;
         var layer = e.layer;
         var coords = [];
@@ -327,7 +327,7 @@
           }
 
         }
-        
+
         var path = get_path_import(coords);
         coords = new Array(coords);
         document.getElementById("path").value = path;
@@ -477,6 +477,10 @@
     function set_marker(data, judul , contents,color) {
       marker = new Array();
       var area = JSON.parse(data["path"]);
+      if (area == undefined) {
+        return null;
+      }
+      console.log(console.log());
       var jml = area.length;
       content = $(contents).html();
       var style_polygon = {
@@ -501,7 +505,7 @@
        return marker;
     }
 
-  
+
     function wilayah_property(set_marker, set_content = false) {
       var wilayah_property = L.geoJSON(turf.featureCollection(set_marker), {
         pmIgnore: true,

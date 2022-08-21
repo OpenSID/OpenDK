@@ -58,7 +58,6 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['middleware' => ['auth:api', 'role:admin-desa']], function () {
-
         /**
          * Penduduk
          */

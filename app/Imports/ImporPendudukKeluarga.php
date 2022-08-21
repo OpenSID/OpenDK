@@ -155,7 +155,6 @@ class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkRe
 
                 // Salin file yang dibutuhkan
                 if (Storage::exists($temp_foto)) {
-
                     // Hapus file yang lama
                     if (Storage::exists($public_foto)) {
                         Storage::delete($public_foto);

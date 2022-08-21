@@ -177,7 +177,6 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
-
                 // Prosedur
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);
@@ -283,7 +282,6 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
-
                 // Profil
                 Route::group(['prefix' => 'profil'], function () {
                     Route::get('/', ['as' => 'data.profil.index', 'uses' => 'ProfilController@index']);
@@ -517,7 +515,6 @@ Route::group(['middleware' => 'installed'], function () {
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {
-
             // User Management
             Route::group(['prefix' => 'user','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.user.index', 'uses' => 'User\UserController@index']);

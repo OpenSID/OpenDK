@@ -32,7 +32,7 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
-use App\Models\MediaSosial;
+use App\Models\SinergiProgram;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -51,7 +51,7 @@ class SinergiProgramController extends Controller
     public function getDataMediaSosial(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(MediaSosial::all())
+            return DataTables::of(SinergiProgram::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
@@ -107,7 +107,7 @@ class SinergiProgramController extends Controller
                 $input['logo'] = $path . $file_name;
             }
 
-            MediaSosial::create($input);
+            SinergiProgram::create($input);
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Media Sosial gagal disimpan!');
@@ -124,7 +124,7 @@ class SinergiProgramController extends Controller
      */
     public function edit($id)
     {
-        $medsos           = MediaSosial::findOrFail($id);
+        $medsos           = SinergiProgram::findOrFail($id);
         $page_title       = 'Media Sosial';
         $page_description = 'Ubah Media Sosial : ' . $medsos->nama;
 
@@ -146,7 +146,7 @@ class SinergiProgramController extends Controller
             'logo' => 'required',
         ]);
 
-        $medsos = MediaSosial::findOrFail($id);
+        $medsos = SinergiProgram::findOrFail($id);
 
         try {
             $input = $request->all();
@@ -179,7 +179,7 @@ class SinergiProgramController extends Controller
     public function destroy($id)
     {
         try {
-            $medsos = MediaSosial::findOrFail($id);
+            $medsos = SinergiProgram::findOrFail($id);
             if ($medsos->delete()) {
                 unlink(base_path('public/' . $medsos->logo));
             }

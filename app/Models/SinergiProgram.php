@@ -33,7 +33,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MediaSosial extends Model
+class SinergiProgram extends Model
 {
     protected $table = 'das_sinergi_program';
 

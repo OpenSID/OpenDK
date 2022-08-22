@@ -57,8 +57,8 @@ class SinergiProgramController extends Controller
                     $data['show_web'] = $row->url;
 
                     if (! auth()->guest()) {
-                        $data['edit_url']   = route('informasi.media-sosial.edit', $row->id);
-                        $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
+                        $data['edit_url']   = route('informasi.sinergi-program.edit', $row->id);
+                        $data['delete_url'] = route('informasi.sinergi-program.destroy', $row->id);
                     }
 
                     return view('forms.aksi', $data);
@@ -83,10 +83,10 @@ class SinergiProgramController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Media Sosial';
-        $page_description = 'Tambah Media Sosial';
+        $page_title       = 'Sinergi Program';
+        $page_description = 'Tambah Sinergi Program';
 
-        return view('informasi.media_sosial.create', compact('page_title', 'page_description'));
+        return view('informasi.sinergi_program.create', compact('page_title', 'page_description'));
     }
 
     /**
@@ -110,10 +110,10 @@ class SinergiProgramController extends Controller
             SinergiProgram::create($input);
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Media Sosial gagal disimpan!');
+            return back()->with('error', 'Sinergi Program gagal disimpan!');
         }
 
-        return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil disimpan!');
+        return redirect()->route('informasi.sinergi-program.index')->with('success', 'Sinergi Program berhasil disimpan!');
     }
 
     /**
@@ -125,10 +125,10 @@ class SinergiProgramController extends Controller
     public function edit($id)
     {
         $medsos           = SinergiProgram::findOrFail($id);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Ubah Media Sosial : ' . $medsos->nama;
+        $page_title       = 'Sinergi Program';
+        $page_description = 'Ubah Sinergi Program : ' . $medsos->nama;
 
-        return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'medsos'));
+        return view('informasi.sinergi_program.edit', compact('page_title', 'page_description', 'medsos'));
     }
 
     /**
@@ -164,10 +164,10 @@ class SinergiProgramController extends Controller
             $medsos->update($input);
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Media Sosial gagal diubah!');
+            return back()->withInput()->with('error', 'Sinergi Program gagal diubah!');
         }
 
-        return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil diubah!');
+        return redirect()->route('informasi.sinergi-program.index')->with('success', 'Sinergi Program berhasil diubah!');
     }
 
     /**
@@ -185,9 +185,9 @@ class SinergiProgramController extends Controller
             }
         } catch (\Exception $e) {
             report($e);
-            return redirect()->route('informasi.media-sosial.index')->with('error', 'Media Sosial gagal dihapus!');
+            return redirect()->route('informasi.sinergi-program.index')->with('error', 'Sinergi Program gagal dihapus!');
         }
 
-        return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil dihapus!');
+        return redirect()->route('informasi.sinergi-program.index')->with('success', 'Sinergi Program berhasil dihapus!');
     }
 }

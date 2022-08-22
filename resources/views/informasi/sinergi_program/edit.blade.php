@@ -63,7 +63,7 @@
 <script>
     $(function () {
 
-        var fileTypes = ['jpg', 'jpeg', 'png', 'jpg'];  //acceptable file types
+        var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
 
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -81,13 +81,13 @@
                     reader.readAsDataURL(input.files[0]);
                 } else { //no
                     //warning
-                    $("#logo").val('');
+                    $("#gambar").val('');
                     alert('File tersebut tidak diperbolehkan.');
                 }
             }
         }
 
-        $("#logo").change(function () {
+        $("#gambar").change(function () {
             readURL(this);
         });
     });

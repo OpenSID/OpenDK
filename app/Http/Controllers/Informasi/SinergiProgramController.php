@@ -98,15 +98,15 @@ class SinergiProgramController extends Controller
     {
         try {
             $input = $request->all();
-            if ($request->hasFile('logo')) {
-                $file     = $request->file('logo');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time() . rand(100, 999) . '_' . $original_name;
-                $path     = "storage/medsos/";
+            if ($request->hasFile('gambar')) {
+                $file           = $request->file('gambar');
+                $original_name  = strtolower(trim($file->getClientOriginalName()));
+                $file_name      = time() . rand(100, 999) . '_' . $original_name;
+                $path           = "storage/sinergi/";
                 $file->move($path, $file_name);
-                $input['logo'] = $path . $file_name;
+                $input['gambar'] = $path . $file_name;
+                $input['urutan'] = 1;
             }
-
             SinergiProgram::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -124,11 +124,11 @@ class SinergiProgramController extends Controller
      */
     public function edit($id)
     {
-        $medsos           = SinergiProgram::findOrFail($id);
+        $sinergi           = SinergiProgram::findOrFail($id);
         $page_title       = 'Sinergi Program';
-        $page_description = 'Ubah Sinergi Program : ' . $medsos->nama;
+        $page_description = 'Ubah Sinergi Program : ' . $sinergi->nama;
 
-        return view('informasi.sinergi_program.edit', compact('page_title', 'page_description', 'medsos'));
+        return view('informasi.sinergi_program.edit', compact('page_title', 'page_description', 'sinergi'));
     }
 
     /**
@@ -143,25 +143,25 @@ class SinergiProgramController extends Controller
         request()->validate([
             'nama' => 'required',
             'url'  => 'required',
-            'logo' => 'required',
+            'gambar' => 'required',
         ]);
 
-        $medsos = SinergiProgram::findOrFail($id);
+        $sinergi = SinergiProgram::findOrFail($id);
 
         try {
             $input = $request->all();
 
-            if ($request->hasFile('logo')) {
-                $file           = $request->file('logo');
+            if ($request->hasFile('gambar')) {
+                $file           = $request->file('gambar');
                 $original_name  = strtolower(trim($file->getClientOriginalName()));
                 $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/medsos/";
+                $path           = "storage/sinergi/";
                 $file->move($path, $file_name);
-                unlink(base_path('public/' . $medsos->logo));
-                $input['logo'] = $path . $file_name;
+                unlink(base_path('public/' . $sinergi->gambar));
+                $input['gambar'] = $path . $file_name;
             }
 
-            $medsos->update($input);
+            $sinergi->update($input);
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Sinergi Program gagal diubah!');
@@ -179,9 +179,9 @@ class SinergiProgramController extends Controller
     public function destroy($id)
     {
         try {
-            $medsos = SinergiProgram::findOrFail($id);
-            if ($medsos->delete()) {
-                unlink(base_path('public/' . $medsos->logo));
+            $sinergi = SinergiProgram::findOrFail($id);
+            if ($sinergi->delete()) {
+                unlink(base_path('public/' . $sinergi->gambar));
             }
         } catch (\Exception $e) {
             report($e);

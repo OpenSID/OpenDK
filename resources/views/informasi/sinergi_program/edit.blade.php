@@ -8,7 +8,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('informasi.media-sosial.index') }}">Daftar Media Sosial</a></li>
+        <li><a href="{{ route('informasi.sinergi-program.index') }}">Daftar Sinergi Program</a></li>
         <li class="active">{{ $page_description }}</li>
     </ol>
 </section>
@@ -32,20 +32,20 @@
                     @endif
 
                             <!-- form start -->
-                            {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
+                            {!!  Form::model($sinergi, [ 'route' => ['informasi.sinergi-program.update', $sinergi->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
 
                     <div class="box-body">
 
                         {{ method_field('PUT') }}
                         @include( 'flash::message' )
-                        @include('informasi.media_sosial.form')
+                        @include('informasi.sinergi_program.form')
 
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <a href="{{ route('informasi.media-sosial.index') }}">
+                                <a href="{{ route('informasi.sinergi-program.index') }}">
                                     <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
                                 </a>
                                 <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>

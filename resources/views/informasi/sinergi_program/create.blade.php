@@ -8,7 +8,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('informasi.media-sosial.index') }}">Daftar Media Sosial</a></li>
+        <li><a href="{{ route('informasi.sinergi-program.index') }}">Daftar Sinergi Program</a></li>
         <li class="active">{{ $page_description }}</li>
     </ol>
 </section>
@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Form::open( [ 'route' => 'informasi.media-sosial.store', 'method' => 'post', 'files' => true, 'id' => 'form-media-sosial', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                {!! Form::open( [ 'route' => 'informasi.sinergi-program.store', 'method' => 'post', 'files' => true, 'id' => 'form-sinergi-program', 'class' => 'form-horizontal form-label-left' ] ) !!}
 
                 <div class="box-body">
 
@@ -34,13 +34,13 @@
                     @endif
 
                     @include( 'flash::message' )
-                    @include('informasi.media_sosial.form')
+                    @include('informasi.sinergi_program.form')
 
                 </div>
                 <div class="box-footer">
                     <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                            <a href="{{ route('informasi.media-sosial.index') }}">
+                            <a href="{{ route('informasi.sinergi-program.index') }}">
                                 <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
                             </a>
                             <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
@@ -58,7 +58,7 @@
 <script>
     $(function () {
 
-        var fileTypes = ['jpg', 'jpeg', 'png', 'jpg'];  //acceptable file types
+        var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
 
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -76,13 +76,13 @@
                     reader.readAsDataURL(input.files[0]);
                 } else { //no
                     //warning
-                    $("#logo").val('');
+                    $("#gambar").val('');
                     alert('File tersebut tidak diperbolehkan.');
                 }
             }
         }
 
-        $("#logo").change(function () {
+        $("#gambar").change(function () {
             readURL(this);
         });
     });

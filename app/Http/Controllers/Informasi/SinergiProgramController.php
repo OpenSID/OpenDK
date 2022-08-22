@@ -70,6 +70,9 @@ class SinergiProgramController extends Controller
                         return '<span class="label label-success">Aktif</span>';
                     }
                 })
+                ->editColumn('gambar', function ($row) {
+                    return '<img src="' .  asset($row->gambar) . '" style="max-width:100px; max-height:60px;"/>';
+                })
                 ->rawColumns(['status'])
                 ->escapeColumns([])
                 ->make(true);

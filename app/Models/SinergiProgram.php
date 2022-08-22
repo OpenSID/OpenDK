@@ -44,4 +44,13 @@ class SinergiProgram extends Model
         'status',
         'urutan',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        SinergiProgram::creating(function ($model) {
+            $model->urutan = SinergiProgram::max('urutan') + 1;
+        });
+    }
 }

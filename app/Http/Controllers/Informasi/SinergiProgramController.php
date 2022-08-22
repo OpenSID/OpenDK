@@ -108,7 +108,6 @@ class SinergiProgramController extends Controller
                 $path           = "storage/sinergi/";
                 $file->move($path, $file_name);
                 $input['gambar'] = $path . $file_name;
-                $input['urutan'] = 1;
             }
             SinergiProgram::create($input);
         } catch (\Exception $e) {

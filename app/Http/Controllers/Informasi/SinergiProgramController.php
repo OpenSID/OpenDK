@@ -45,10 +45,10 @@ class SinergiProgramController extends Controller
      */
     public function index()
     {
-        return view('informasi.media_sosial.index');
+        return view('informasi.sinergi_program.index');
     }
 
-    public function getDataMediaSosial(Request $request)
+    public function getDataSinergiProgram(Request $request)
     {
         if ($request->ajax()) {
             return DataTables::of(SinergiProgram::all())

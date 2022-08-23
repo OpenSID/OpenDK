@@ -51,7 +51,7 @@ class SinergiProgramController extends Controller
     public function getDataSinergiProgram(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(SinergiProgram::orderBy('urutan', 'asc')->get())
+            return DataTables::of(SinergiProgram::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
@@ -198,19 +198,19 @@ class SinergiProgramController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id, $arah
+     * @param  int $id, $urutan
      * @return Response
      */
-    public function urut($id, $arah)
+    public function urut($id, $urutan)
     {
         try {
             $sinergi = SinergiProgram::findOrFail($id);
-            if ($arah == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
+            if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
                 return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
-            } else if ($arah == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
+            } else if ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
                 return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
             } else {
-                $perubahan = $sinergi->urutan + $arah;
+                $perubahan = $sinergi->urutan + $urutan;
                 SinergiProgram::where('urutan', $perubahan)->update(['urutan' => $sinergi->urutan]);
                 $sinergi->update(['urutan' => $perubahan]);
             }

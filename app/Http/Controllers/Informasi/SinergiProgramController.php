@@ -207,7 +207,7 @@ class SinergiProgramController extends Controller
             $sinergi = SinergiProgram::findOrFail($id);
             if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
                 return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
-            } else if ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
+            } elseif ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
                 return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
             } else {
                 $perubahan = $sinergi->urutan + $urutan;

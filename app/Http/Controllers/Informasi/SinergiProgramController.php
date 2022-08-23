@@ -206,9 +206,9 @@ class SinergiProgramController extends Controller
         try {
             $sinergi = SinergiProgram::findOrFail($id);
             if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
-                return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
+                return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
             } elseif ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
-                return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
+                return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
             } else {
                 $perubahan = $sinergi->urutan + $urutan;
                 SinergiProgram::where('urutan', $perubahan)->update(['urutan' => $sinergi->urutan]);
@@ -216,7 +216,7 @@ class SinergiProgramController extends Controller
             }
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Urutan Sinergi Program gagal diubah!');
+            return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program gagal diubah!');
         }
 
         return redirect()->route('informasi.sinergi-program.index')->with('success', 'Urutan Sinergi Program berhasil diubah!');

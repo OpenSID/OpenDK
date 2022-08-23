@@ -285,6 +285,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
                     Route::put('update/{id}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);
+                    Route::get('urut/{id}/{arah}', ['as' => 'informasi.sinergi-program.urut', 'uses' => 'SinergiProgramController@urut']);
                 });
             });
         });

@@ -51,7 +51,7 @@ class SinergiProgramController extends Controller
     public function getDataSinergiProgram(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(SinergiProgram::all())
+            return DataTables::of(SinergiProgram::orderBy('urutan', 'asc')->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
@@ -59,6 +59,8 @@ class SinergiProgramController extends Controller
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('informasi.sinergi-program.edit', $row->id);
                         $data['delete_url'] = route('informasi.sinergi-program.destroy', $row->id);
+                        $data['naik']       = route('informasi.sinergi-program.urut', [$row->id, -1]);
+                        $data['turun']      = route('informasi.sinergi-program.urut', [$row->id, 1]);
                     }
 
                     return view('forms.aksi', $data);
@@ -191,5 +193,32 @@ class SinergiProgramController extends Controller
         }
 
         return redirect()->route('informasi.sinergi-program.index')->with('success', 'Sinergi Program berhasil dihapus!');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int $id, $arah
+     * @return Response
+     */
+    public function urut($id, $arah)
+    {
+        try {
+            $sinergi = SinergiProgram::findOrFail($id);
+            if ($arah == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
+                return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
+            } else if ($arah == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
+                return back()->withInput()->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
+            } else {
+                $perubahan = $sinergi->urutan + $arah;
+                SinergiProgram::where('urutan', $perubahan)->update(['urutan' => $sinergi->urutan]);
+                $sinergi->update(['urutan' => $perubahan]);
+            }
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Urutan Sinergi Program gagal diubah!');
+        }
+
+        return redirect()->route('informasi.sinergi-program.index')->with('success', 'Urutan Sinergi Program berhasil diubah!');
     }
 }

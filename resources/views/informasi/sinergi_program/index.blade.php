@@ -25,9 +25,10 @@
                 <table class="table table-striped table-bordered" id="sinergi-program-table">
                     <thead>
                         <tr>
-                            <th style="max-width: 150px;">Aksi</th>
+                            <th style="max-width: 250px;">Aksi</th>
                             <th>Nama</th>
                             <th>URL</th>
+                            <th>Urutan</th>
                             <th>Gambar</th>
                             <th style="max-width: 100px;">Status</th>
                         </tr>
@@ -50,12 +51,13 @@
             ajax: "{!! route( 'informasi.sinergi-program.getdata' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
-                {data: 'nama', name: 'nama'},
-                {data: 'url', name: 'url'},
+                {data: 'nama', name: 'nama', orderable: false},
+                {data: 'url', name: 'url', orderable: false},
+                {data: 'urutan', name: 'urutan', orderable: false},
                 {data: 'gambar', name: 'gambar', class: 'text-center', searchable: false, orderable: false},
                 {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},
             ],
-            order: [[1]]
+            order: [[3, 'asc']]
         });
     });
 </script>

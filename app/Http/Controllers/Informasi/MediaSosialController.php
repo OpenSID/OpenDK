@@ -83,10 +83,11 @@ class MediaSosialController extends Controller
      */
     public function create()
     {
+        $medsos           = null;
         $page_title       = 'Media Sosial';
         $page_description = 'Tambah Media Sosial';
 
-        return view('informasi.media_sosial.create', compact('page_title', 'page_description'));
+        return view('informasi.media_sosial.create', compact('page_title', 'page_description', 'medsos'));
     }
 
     /**
@@ -143,7 +144,6 @@ class MediaSosialController extends Controller
         request()->validate([
             'nama' => 'required',
             'url'  => 'required',
-            'logo' => 'required',
         ]);
 
         $medsos = MediaSosial::findOrFail($id);

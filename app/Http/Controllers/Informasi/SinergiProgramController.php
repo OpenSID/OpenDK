@@ -88,10 +88,11 @@ class SinergiProgramController extends Controller
      */
     public function create()
     {
+        $sinergi          = null;
         $page_title       = 'Sinergi Program';
         $page_description = 'Tambah Sinergi Program';
 
-        return view('informasi.sinergi_program.create', compact('page_title', 'page_description'));
+        return view('informasi.sinergi_program.create', compact('page_title', 'page_description', 'sinergi'));
     }
 
     /**
@@ -128,7 +129,7 @@ class SinergiProgramController extends Controller
      */
     public function edit($id)
     {
-        $sinergi           = SinergiProgram::findOrFail($id);
+        $sinergi          = SinergiProgram::findOrFail($id);
         $page_title       = 'Sinergi Program';
         $page_description = 'Ubah Sinergi Program : ' . $sinergi->nama;
 
@@ -147,7 +148,6 @@ class SinergiProgramController extends Controller
         request()->validate([
             'nama' => 'required',
             'url'  => 'required',
-            'gambar' => 'required',
         ]);
 
         $sinergi = SinergiProgram::findOrFail($id);

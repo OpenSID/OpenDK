@@ -196,7 +196,7 @@ class SinergiProgramController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update urutan daftar sinergi program.
      *
      * @param  int $id, $urutan
      * @return Response

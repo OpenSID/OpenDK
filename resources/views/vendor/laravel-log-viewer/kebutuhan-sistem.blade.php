@@ -36,22 +36,6 @@
     </div>
 </div>
 
-<div class="modal fade" id='loading' tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header btn-warning">
-                <h4 class="modal-title">Proses Queue Work</h4>
-            </div>
-            <div class="modal-body">
-                Harap tunggu sampai proses selesai. Proses ini bisa memakan waktu beberapa menit tergantung data yang dikirmkan.
-                <div class='text-center'>
-                    <img src="{{ '../img/loading.gif' }}">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @include('partials.asset_sweetalert')
 
 @push('scripts')

@@ -52,6 +52,8 @@
     </div>
 </div>
 
+@include('partials.asset_sweetalert')
+
 @push('scripts')
 <script>
     $(document).on('click', '#run-queue', function(e) {
@@ -64,11 +66,16 @@
 
     $(document)
         .ajaxStart(function () {
-            $('#loading').modal('show');
+            Swal.showLoading()
         })
         .ajaxStop(function () {
-            $('#loading').modal('hide');
-            alert('Berhasil menjalankan queue');
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Perintah berhasil dijalankan',
+                showConfirmButton: false,
+                timer: 1500
+            })
     });
 </script>
 @endpush

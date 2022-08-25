@@ -15,10 +15,10 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Logo / Gambar <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="logo" id="logo" class="form-control" required >
+        <input type="file" name="logo" id="logo" class="form-control" {{ $medsos ? '' : 'required' }}>
         <br>
 
-        <img class="{{ $medsos ? '' : 'hide'}}" src="@if(isset($medsos->logo)) {{ asset($medsos->logo) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
+        <img src="@if(isset($medsos->logo)) {{ asset($medsos->logo) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
 
     </div>
 </div>

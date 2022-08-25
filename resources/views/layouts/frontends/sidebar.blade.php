@@ -2,6 +2,11 @@
     <div class="box box-widget">
         @include('widgets.camat')
     </div>
+    @if(count($sinergi) > 0)
+    <div class="box box-widget">
+        @include('widgets.sinergi_program')
+    </div>
+    @endif
     <div class="box box-widget">
         @include('widgets.komplain')
     </div>

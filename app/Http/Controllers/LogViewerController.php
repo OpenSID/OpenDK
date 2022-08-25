@@ -196,9 +196,18 @@ class LogViewerController extends Controller
 
     public function queueListen()
     {
-        Artisan::call('queue:work', ['--stop-when-empty' => null]); // this will do the command line job
-        sleep(2);
+        try {
+            Artisan::call('queue:work', ['--stop-when-empty' => null]); // this will do the command line job
 
-        return back()->with('tab', 'ekstensi')->with('success', 'Berhasil menjalankan php artisan queue:listen');
+            return response()->json([
+                'status'  => true,
+                'message' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => true,
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

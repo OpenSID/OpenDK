@@ -13,9 +13,11 @@
     <div class="box box-widget">
         @include('widgets.event')
     </div>
+    @if(count($medsos) > 0)
     <div class="box box-widget">
         @include('widgets.media_sosial')
     </div>
+    @endif
     <div class="box box-widget">
         @include('widgets.visitor')
     </div>

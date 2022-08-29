@@ -31,10 +31,10 @@
 
 namespace App\Imports;
 
-use Exception;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\TingkatPendidikan;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

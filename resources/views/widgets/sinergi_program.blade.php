@@ -5,7 +5,7 @@
     @foreach($sinergi as $key => $data)
         <div class="col-md-6" style="padding: 4px;">
             <a href="{{ $data->url }}" rel="noopener noreferrer" target="_blank">
-                <img src="{{ $data->gambar }}" alt="Sinergi Program Image" style="max-width:100%; height:auto;">
+                <img src="{{ $data->gambar }}" class="logo-sinergi-program" alt="Sinergi Program Image">
             </a>
         </div>
     @endforeach

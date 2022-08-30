@@ -859,3 +859,10 @@ x-sign:nth-of-type(5) {
 	display: block;
 	width: auto;
 }
+
+.logo-sinergi-program {
+	width: 170px;
+	height: 90px;
+	object-fit: cover;
+	object-position: center;
+}

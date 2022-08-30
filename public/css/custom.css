@@ -859,3 +859,9 @@ x-sign:nth-of-type(5) {
 	display: block;
 	width: auto;
 }
+
+.logo-medsos {
+	width: 50px;
+  	height: 50px;
+  	object-fit: cover;
+}

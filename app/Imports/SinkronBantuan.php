@@ -64,6 +64,7 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
 
         // Hapus data peserta di database
         PesertaProgram::whereIn('desa_id', $desa_id)->delete();
+        Program::whereIn('desa_id', $desa_id)->delete();
 
         foreach ($collection as $value) {            
             $insert = [

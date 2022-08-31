@@ -14,6 +14,7 @@ Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] y
 1. [#464](https://github.com/OpenSID/OpenDK/issues/464) Perbaiki sinkronisasi berita OpenSID ke OpenDK.
 2. [#466](https://github.com/OpenSID/OpenDK/issues/466) Perbaiki peta yang tidak muncul ketika data koordinat kosong.
 3. [#471](https://github.com/OpenSID/OpenDK/issues/471) Perbaiki Data sinkronisasi penduduk tetap masuk meskipun desa tidak terdaftar.
+5. [#476](https://github.com/OpenSID/OpenDK/issues/476) Perbaiki tampilan logo atau gambar widget medsos.
 
 
 #### TEKNIS

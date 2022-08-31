@@ -16,6 +16,7 @@ Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] y
 3. [#471](https://github.com/OpenSID/OpenDK/issues/471) Perbaiki Data sinkronisasi penduduk tetap masuk meskipun desa tidak terdaftar.
 4. [#476](https://github.com/OpenSID/OpenDK/issues/476) Perbaiki tampilan logo atau gambar widget medsos.
 5. [#475](https://github.com/OpenSID/OpenDK/issues/475) Perbaiki tampilan logo atau gambar widget sinergi program.
+6. [#479](https://github.com/OpenSID/OpenDK/issues/479) Perbaiki peserta program bantuan yang sudah terhapus di desa tidak terhapus di opendk.
 
 
 #### TEKNIS

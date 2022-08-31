@@ -860,6 +860,12 @@ x-sign:nth-of-type(5) {
 	width: auto;
 }
 
+.logo-medsos {
+  	height: 50px;
+  	object-fit: cover;
+	object-position: center;
+}
+
 .logo-sinergi-program {
 	width: 170px;
 	height: 90px;

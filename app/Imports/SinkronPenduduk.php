@@ -31,10 +31,16 @@
 
 namespace App\Imports;
 
+use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\TingkatPendidikan;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -57,7 +63,17 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
      */
     public function collection(Collection $collection)
     {
+        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+
         foreach ($collection as $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
+                Log::debug('Desa tidak terdaftar');
+
+                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
+                Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+            }
+
             $insert = [
                 'nik'                   => $value['nomor_nik'],
                 'nama'                  => $value['nama'],

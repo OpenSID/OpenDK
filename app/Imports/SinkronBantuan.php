@@ -31,9 +31,11 @@
 
 namespace App\Imports;
 
+use App\Models\PesertaProgram;
 use App\Models\Program;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -56,7 +58,14 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
     */
     public function collection(Collection $collection)
     {
-        foreach ($collection as $value) {
+        foreach ($collection as $data) {
+            $desa_id[] = $data['desa_id'];
+        }
+
+        // Hapus data peserta di database
+        PesertaProgram::whereIn('desa_id', $desa_id)->delete();
+
+        foreach ($collection as $value) {            
             $insert = [
                 'desa_id'       => $value['desa_id'],
                 'id'            => $value['id'],

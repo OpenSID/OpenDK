@@ -13,6 +13,7 @@ Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] y
 #### Perbaikan BUG
 1. [#464](https://github.com/OpenSID/OpenDK/issues/464) Perbaiki sinkronisasi berita OpenSID ke OpenDK.
 2. [#466](https://github.com/OpenSID/OpenDK/issues/466) Perbaiki peta yang tidak muncul ketika data koordinat kosong.
+3. [#476](https://github.com/OpenSID/OpenDK/issues/476) Perbaiki Logo atau Gambar medsos tertarik.
 
 #### TEKNIS
 

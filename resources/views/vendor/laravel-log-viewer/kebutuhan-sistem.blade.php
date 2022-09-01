@@ -6,6 +6,9 @@
                     <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/linkstorage') }}">
                         <span class="fa fa-play-circle"></span> Jalankan php artisan storage:link
                     </a>
+                    <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-queue">
+                        <span class="fa fa-play-circle"></span> Jalankan php artisan queue:listen
+                    </a>
                 </div>
             </div>
             <div class="box-body">
@@ -32,3 +35,31 @@
         </div>
     </div>
 </div>
+
+@include('partials.asset_sweetalert')
+
+@push('scripts')
+<script>
+    $(document).on('click', '#run-queue', function(e) {
+        $.ajax({
+            type: "GET",
+            url: "{{ URL('setting/info-sistem/queuelisten') }}",
+            dataType: "Json"
+        });
+    });
+
+    $(document)
+        .ajaxStart(function () {
+            Swal.showLoading()
+        })
+        .ajaxStop(function () {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Perintah berhasil dijalankan',
+                showConfirmButton: false,
+                timer: 1500
+            })
+    });
+</script>
+@endpush

@@ -33,8 +33,10 @@ namespace App\Http\Controllers;
 
 use App\Models\DataDesa;
 use App\Models\Event;
+use App\Models\MediaSosial;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
+use App\Models\SinergiProgram;
 use App\Models\TipePotensi;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -73,6 +75,8 @@ class Controller extends BaseController
         $this->browser_title = SettingAplikasi::where('key', 'judul_aplikasi')->first()->value ?? ucwords($this->sebutan_wilayah . ' ' . $this->profil->nama_kecamatan);
 
         $events                      = Event::getOpenEvents();
+        $sinergi                     = SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get();
+        $medsos                      = MediaSosial::where('status', 1)->get();
         $navdesa                     = DataDesa::all();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
 
@@ -82,6 +86,8 @@ class Controller extends BaseController
             'sebutan_kepala_wilayah' => $this->sebutan_kepala_wilayah,
             'browser_title'          => $this->browser_title,
             'events'                 => $events,
+            'sinergi'                => $sinergi,
+            'medsos'                 => $medsos,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
         ]);

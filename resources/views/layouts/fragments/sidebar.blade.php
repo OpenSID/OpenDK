@@ -64,6 +64,14 @@
                             <li {{ (Request::is(['informasi/form-dokumen/*', 'informasi/form-dokumen/index', 'informasi/form-dokumen'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a></li>
                             @endrole 
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                            <li {{ (Request::is(['informasi/media-sosial/*', 'informasi/media-sosial/index', 'informasi/media-sosial'])? 'class=active' : '') }}>
+                                <a href="{{ route('informasi.media-sosial.index') }}"><i class="fa fa-circle-o"></i>Media Sosial</a></li>
+                            @endrole
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                            <li {{ (Request::is(['informasi/sinergi-program/*', 'informasi/sinergi-program/index', 'informasi/sinergi-program'])? 'class=active' : '') }}>
+                                <a href="{{ route('informasi.sinergi-program.index') }}"><i class="fa fa-circle-o"></i>Sinergi Program</a></li>
+                            @endrole 
                         </ul>
                     </li>
                 @endif
@@ -94,7 +102,7 @@
                             </li>
                             @endif
                             @if($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan']))
-                                <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga', 'data/laporan-penduduk'])? 'active' : '') }}">
+                                <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga', 'data/data-suplemen', 'data/data-suplemen/*', 'data/laporan-penduduk'])? 'active' : '') }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
                                         <span class="pull-right-container">
                                             <i class="fa fa-angle-left pull-right"></i>
@@ -106,6 +114,9 @@
                                         </li>
                                         <li {{ (Request::is(['data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.keluarga.index') }}"><i class="fa fa-circle-o"></i>Keluarga</a>
+                                        </li>
+                                        <li {{ (Request::is(['data/data-suplemen/*', 'data/data-suplemen/index', 'data/data-suplemen'])? 'class=active' : '') }}>
+                                            <a href="{{ route('data.data-suplemen.index') }}"><i class="fa fa-circle-o"></i>Data Suplemen</a>
                                         </li>
                                         <li {{ (Request::is(['data/laporan-penduduk/*', 'data/laporan-penduduk/index', 'data/laporan-penduduk'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.laporan-penduduk.index') }}"><i class="fa fa-circle-o"></i>Laporan Penduduk</a>

@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class DataDesa extends Model
 {
@@ -52,12 +53,44 @@ class DataDesa extends Model
      */
     public function getWebsiteUrlFeedAttribute()
     {
+        if (Str::endsWith($this->website, '/') == false) {
+            $this->website .= '/';
+        }
+
         $desa = [
             'desa_id' => $this->desa_id,
             'nama'    => ucwords($this->sebutan_desa . ' ' . $this->nama),
             'website' => $this->website . 'index.php/feed'
         ];
         return $desa;
+    }
+
+    /**
+     * Getter untuk membuat path menjadi null jika peta kosong.
+     *
+     * @return string
+     */
+    public function getPathAttribute($value)
+    {
+        if ($value == '[]' || $value == '[[[[]]]]') {
+            $value = null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Setter untuk membuat path menjadi null jika peta kosong.
+     *
+     * @return string
+     */
+    public function setPathAttribute($value)
+    {
+        if ($value == '[]' || $value == '[[[[]]]]') {
+            $value = null;
+        }
+
+        $this->attributes['path'] = $value;
     }
 
     public function scopeNama($query, $value)
@@ -129,5 +162,10 @@ class DataDesa extends Model
     public function keluarga()
     {
         return $this->hasMany(Keluarga::class, 'desa_id', 'desa_id');
+    }
+
+    public function penduduk()
+    {
+        return $this->hasMany(Penduduk::class, 'desa_id', 'desa_id');
     }
 }

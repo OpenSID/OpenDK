@@ -177,7 +177,6 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
-
                 // Prosedur
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::get('/', ['as' => 'informasi.prosedur.index', 'uses' => 'ProsedurController@index']);
@@ -263,6 +262,31 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                     Route::get('kategori', ['as' => 'informasi.potensi.kategori', 'uses' => 'PotensiController@kategori']);
                 });
+
+                // Media Sosial
+                Route::group(['prefix' => 'media-sosial'], function () {
+                    Route::get('/', ['as' => 'informasi.media-sosial.index', 'uses' => 'MediaSosialController@index']);
+                    Route::get('getdata', ['as' => 'informasi.media-sosial.getdata', 'uses' => 'MediaSosialController@getDataMediaSosial']);
+                    Route::get('show/{id}', ['as' => 'informasi.media-sosial.show', 'uses' => 'MediaSosialController@show']);
+                    Route::get('create', ['as' => 'informasi.media-sosial.create', 'uses' => 'MediaSosialController@create']);
+                    Route::post('store', ['as' => 'informasi.media-sosial.store', 'uses' => 'MediaSosialController@store']);
+                    Route::get('edit/{id}', ['as' => 'informasi.media-sosial.edit', 'uses' => 'MediaSosialController@edit']);
+                    Route::put('update/{id}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
+                });
+
+                // Sinergi Program
+                Route::group(['prefix' => 'sinergi-program'], function () {
+                    Route::get('/', ['as' => 'informasi.sinergi-program.index', 'uses' => 'SinergiProgramController@index']);
+                    Route::get('getdata', ['as' => 'informasi.sinergi-program.getdata', 'uses' => 'SinergiProgramController@getDataSinergiProgram']);
+                    Route::get('show/{id}', ['as' => 'informasi.sinergi-program.show', 'uses' => 'SinergiProgramController@show']);
+                    Route::get('create', ['as' => 'informasi.sinergi-program.create', 'uses' => 'SinergiProgramController@create']);
+                    Route::post('store', ['as' => 'informasi.sinergi-program.store', 'uses' => 'SinergiProgramController@store']);
+                    Route::get('edit/{id}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
+                    Route::put('update/{id}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);
+                    Route::get('urut/{id}/{arah}', ['as' => 'informasi.sinergi-program.urut', 'uses' => 'SinergiProgramController@urut']);
+                });
             });
         });
 
@@ -271,7 +295,6 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
-
                 // Profil
                 Route::group(['prefix' => 'profil'], function () {
                     Route::get('/', ['as' => 'data.profil.index', 'uses' => 'ProfilController@index']);
@@ -314,6 +337,26 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
+                });
+
+                // Data Suplemen
+                Route::group(['prefix' => 'data-suplemen', 'middleware' => ['role:super-admin|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.data-suplemen.index', 'uses' => 'SuplemenController@index']);
+                    Route::get('getdata', ['as' => 'data.data-suplemen.getdata', 'uses' => 'SuplemenController@getDataSuplemen']);
+                    Route::get('getsuplementerdata', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    Route::get('show/{id}', ['as' => 'data.data-suplemen.show', 'uses' => 'SuplemenController@show']);
+                    Route::get('create', ['as' => 'data.data-suplemen.create', 'uses' => 'SuplemenController@create']);
+                    Route::post('store', ['as' => 'data.data-suplemen.store', 'uses' => 'SuplemenController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.data-suplemen.edit', 'uses' => 'SuplemenController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.data-suplemen.update', 'uses' => 'SuplemenController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.data-suplemen.destroy', 'uses' => 'SuplemenController@destroy']);
+                    Route::get('getsuplementerdata/{id_suplemen}', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    Route::get('createdetail/{id_suplemen}', ['as' => 'data.data-suplemen.createdetail', 'uses' => 'SuplemenController@createDetail']);
+                    Route::get('getpenduduk/{id_desa}/{id_suplemen}', ['as' => 'data.data-suplemen.getpenduduk', 'uses' => 'SuplemenController@getPenduduk']);
+                    Route::post('storedetail', ['as' => 'data.data-suplemen.storedetail', 'uses' => 'SuplemenController@storeDetail']);
+                    Route::get('editdetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.editdetail', 'uses' => 'SuplemenController@editDetail']);
+                    Route::put('updatedetail/{id}', ['as' => 'data.data-suplemen.updatedetail', 'uses' => 'SuplemenController@updateDetail']);
+                    Route::delete('destroydetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.destroydetail', 'uses' => 'SuplemenController@destroyDetail']);
                 });
 
                 // Laporan Penduduk
@@ -485,7 +528,6 @@ Route::group(['middleware' => 'installed'], function () {
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {
-
             // User Management
             Route::group(['prefix' => 'user','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.user.index', 'uses' => 'User\UserController@index']);
@@ -588,6 +630,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::group(['prefix' => 'info-sistem','middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
                 Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
+                Route::get('/queuelisten', ['as' => 'setting.info-sistem.queuelisten', 'uses' => 'LogViewerController@queueListen']);
             });
         });
 

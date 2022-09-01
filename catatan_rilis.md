@@ -1,8 +1,8 @@
-#### [v22.08.02]
+#### [v22.09.01]
 
-Di rilis v22.08.02, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.08.02, menyediakan Widget Media Sosial, Data Suplemen, Widget Sinergi Program, Tombol Jalankan Queue, Update Versi ke Laravel 7.x, dan Menambahkan Sentry untuk Menangkap Log. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] yang baru mulai berkontribusi.
+Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 
 #### Penambahan Fitur
 1. [#293](https://github.com/OpenSID/OpenDK/issues/293) Penambahan widget sosial secara dinamis.

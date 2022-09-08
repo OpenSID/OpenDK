@@ -69,7 +69,7 @@ class SistemKomplainController extends Controller
     {
         $page_title       = 'SIKEMA';
         $page_description = 'Sistem Keluhan Masyarakat';
-        $komplains = Komplain::where('status', '=', 'Belum')->orderBy('created_at', 'desc')->paginate(10);
+        $komplains = Komplain::where('status', '=', 'Selesai')->orderBy('created_at', 'desc')->paginate(10);
 
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }

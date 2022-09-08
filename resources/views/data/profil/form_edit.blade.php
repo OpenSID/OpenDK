@@ -51,31 +51,31 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Tahun Pembentukan <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('tahun_pembentukan', null, ['placeholder' => 'Tahun Pembentukan', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('tahun_pembentukan', null, ['placeholder' => 'Tahun Pembentukan', 'class' => 'form-control angka', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Dasar Hukum Pembentukan <span class="required">*</span></label><div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('dasar_pembentukan', null, ['placeholder' => 'Dasar Hukum Pembentukan', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('dasar_pembentukan', null, ['placeholder' => 'Dasar Hukum Pembentukan', 'class' => 'form-control nomor_sk', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::textarea('alamat', null, ['placeholder' => 'Alamat', 'class' => 'form-control', 'rows' => 3, 'required']) !!}
+                {!! Form::textarea('alamat', null, ['placeholder' => 'Alamat', 'class' => 'form-control alamat', 'rows' => 3, 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kode Pos <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kode_pos', null, ['placeholder' => '13210', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('kode_pos', null, ['placeholder' => '13210', 'class' => 'form-control angka', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Telepon <span class="required">*</span></label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('telepon', null, ['placeholder' => '021-4567890', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('telepon', null, ['placeholder' => '021-4567890', 'class' => 'form-control angka', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
@@ -115,43 +115,43 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama {{ $sebutan_kepala_wilayah }} <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('nama_camat', null, ['placeholder' => 'Nama Camat', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('nama_camat', null, ['placeholder' => 'Nama Camat', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('sekretaris_camat', null, ['placeholder' => 'Sekretaris Camat', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('sekretaris_camat', null, ['placeholder' => 'Sekretaris Camat', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Pemerintahan Umum <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_pemerintahan_umum', null, ['placeholder' => 'Kepala Seksi Pemerintahan Umum', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('kepsek_pemerintahan_umum', null, ['placeholder' => 'Kepala Seksi Pemerintahan Umum', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Kesejahteraan Masyarakat <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_kesejahteraan_masyarakat', null, ['placeholder' => 'Kepala Seksi Kesejahteraan Masyarakat', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('kepsek_kesejahteraan_masyarakat', null, ['placeholder' => 'Kepala Seksi Kesejahteraan Masyarakat', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Pemberdayaan Masyarakat <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_pemberdayaan_masyarakat', null, ['placeholder' => 'Kepala Seksi Pemberdayaan Masyarakat', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('kepsek_pemberdayaan_masyarakat', null, ['placeholder' => 'Kepala Seksi Pemberdayaan Masyarakat', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Pelayanan Umum <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_pelayanan_umum', null, ['placeholder' => 'Kepala Seksi Pelayanan Umum', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('kepsek_pelayanan_umum', null, ['placeholder' => 'Kepala Seksi Pelayanan Umum', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi TRANTIB <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_trantib', null, ['placeholder' => 'Kepala Seksi TRANTIB', 'class' => 'form-control', 'required']) !!}
+                {!! Form::text('kepsek_trantib', null, ['placeholder' => 'Kepala Seksi TRANTIB', 'class' => 'form-control nama', 'required']) !!}
             </div>
         </div>
 
@@ -225,3 +225,4 @@
     </div>
 </div>
 <div class="ln_solid"></div>
+@include('partials.asset_jqueryvalidation')

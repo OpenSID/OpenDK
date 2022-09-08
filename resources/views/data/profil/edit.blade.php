@@ -61,6 +61,7 @@
 @include(('partials.asset_select2'))
 @push('scripts')
 @include('partials.profil_select2')
+{!! JsValidator::formRequest('App\Http\Requests\ProfilRequest', '#form-profil') !!}
 <script>
 
     $(function () {

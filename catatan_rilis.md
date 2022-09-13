@@ -1,6 +1,6 @@
 #### [v22.09.01]
 
-Di rilis v22.09.01, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.09.02, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada [...] yang terus berkontribusi.
 
@@ -9,7 +9,7 @@ Terima kasih pada [...] yang terus berkontribusi.
 
 
 #### Perbaikan BUG
-
+1. [#486](https://github.com/OpenSID/OpenDK/issues/486) Perbaikan pada daftar keluhan tidak muncul.
 
 
 #### TEKNIS

@@ -284,8 +284,9 @@ class SistemKomplainController extends Controller
         if (request()->ajax()) {
             try {
                 $jawab = new JawabKomplain();
-
-                if ($request->input('nik') == '999') {
+                $user = auth()->user();
+                
+                if (isset($user) && $user->hasrole(['super-admin', 'admin-kecamatan', 'admin-komplain'])) {
                     request()->validate([
                         'jawaban' => 'required',
                     ]);

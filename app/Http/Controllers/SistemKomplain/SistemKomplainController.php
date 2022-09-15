@@ -303,7 +303,7 @@ class SistemKomplainController extends Controller
             try {
                 $jawab = new JawabKomplain();
                 $user = auth()->user();
-                
+
                 if (isset($user) && $user->hasrole(['super-admin', 'admin-kecamatan', 'admin-komplain'])) {
                     request()->validate([
                         'jawaban' => 'required',

@@ -259,6 +259,24 @@ class SistemKomplainController extends Controller
     }
 
     /**
+    * Display the specified resource.
+    *
+    * @param  int  $id
+    * @return Response
+    */
+    public function destroy($id)
+    {
+        try {
+            Komplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Komplain gagal dihapus!');
+        }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dihapus!');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  slug
@@ -284,8 +302,9 @@ class SistemKomplainController extends Controller
         if (request()->ajax()) {
             try {
                 $jawab = new JawabKomplain();
+                $user = auth()->user();
 
-                if ($request->input('nik') == '999') {
+                if (isset($user) && $user->hasrole(['super-admin', 'admin-kecamatan', 'admin-komplain'])) {
                     request()->validate([
                         'jawaban' => 'required',
                     ]);

@@ -1,15 +1,16 @@
 #### [v22.09.01]
 
-Di rilis v22.09.01, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.09.02, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 Terima kasih pada [...] yang terus berkontribusi.
 
 #### Penambahan Fitur
 1. [#473](https://github.com/OpenSID/OpenDK/issues/473) Menambahkan fitur untuk menulis/memuat keterangan pada foto artikel.
+2. [#487](https://github.com/OpenSID/OpenDK/issues/487) Menambahkan fitur jawab keluhan oleh admin.
 
 
 #### Perbaikan BUG
-
-
+1. [#486](https://github.com/OpenSID/OpenDK/issues/486) Perbaikan pada daftar keluhan tidak muncul.
+2. [#491](https://github.com/OpenSID/OpenDK/issues/491) Perbaikan error ketika melihat komplain dengan akun admin-komplain.
 
 #### TEKNIS

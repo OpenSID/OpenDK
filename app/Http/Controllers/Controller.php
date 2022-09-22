@@ -130,10 +130,10 @@ class Controller extends BaseController
         ];
 
         try {
-            $response = Http::withHeaders([
+            Http::withHeaders([
                 'token' => config('app.token_pantau')
             ])->post($host_pantau.'track/opendk?token='.config('app.token_pantau'), $data);
-            dd($response->body() );
+            session(['track' => date('Y m d')]);
             return;
         } catch (Exception $e) {
             Log::notice($e);

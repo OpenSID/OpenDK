@@ -149,6 +149,7 @@ Route::group(['middleware' => 'installed'], function () {
             Route::post('store', ['as' => 'sistem-komplain.store', 'uses' => 'SistemKomplainController@store']);
             Route::get('edit/{id}', ['as' => 'sistem-komplain.edit', 'uses' => 'SistemKomplainController@edit']);
             Route::put('update/{id}', ['as' => 'sistem-komplain.update', 'uses' => 'SistemKomplainController@update']);
+            Route::delete('destroy/{id}', ['as' => 'sistem-komplain.destroy', 'uses' => 'SistemKomplainController@destroy']);
             Route::get('komplain/{slug}', ['as' => 'sistem-komplain.komplain', 'uses' => 'SistemKomplainController@show']);
             Route::get('komplain/kategori/{slug}', ['as' => 'sistem-komplain.kategori', 'uses' => 'SistemKomplainController@indexKategori']);
             Route::get('komplain-sukses', ['as' => 'sistem-komplain.komplain-sukses', 'uses' => 'SistemKomplainController@indexSukses']);
@@ -273,6 +274,19 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.media-sosial.edit', 'uses' => 'MediaSosialController@edit']);
                     Route::put('update/{id}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
+                });
+
+                // Sinergi Program
+                Route::group(['prefix' => 'sinergi-program'], function () {
+                    Route::get('/', ['as' => 'informasi.sinergi-program.index', 'uses' => 'SinergiProgramController@index']);
+                    Route::get('getdata', ['as' => 'informasi.sinergi-program.getdata', 'uses' => 'SinergiProgramController@getDataSinergiProgram']);
+                    Route::get('show/{id}', ['as' => 'informasi.sinergi-program.show', 'uses' => 'SinergiProgramController@show']);
+                    Route::get('create', ['as' => 'informasi.sinergi-program.create', 'uses' => 'SinergiProgramController@create']);
+                    Route::post('store', ['as' => 'informasi.sinergi-program.store', 'uses' => 'SinergiProgramController@store']);
+                    Route::get('edit/{id}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
+                    Route::put('update/{id}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);
+                    Route::get('urut/{id}/{arah}', ['as' => 'informasi.sinergi-program.urut', 'uses' => 'SinergiProgramController@urut']);
                 });
             });
         });

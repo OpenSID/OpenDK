@@ -67,6 +67,10 @@
                             @role('super-admin|admin-kecamatan|administrator-website')
                             <li {{ (Request::is(['informasi/media-sosial/*', 'informasi/media-sosial/index', 'informasi/media-sosial'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.media-sosial.index') }}"><i class="fa fa-circle-o"></i>Media Sosial</a></li>
+                            @endrole
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                            <li {{ (Request::is(['informasi/sinergi-program/*', 'informasi/sinergi-program/index', 'informasi/sinergi-program'])? 'class=active' : '') }}>
+                                <a href="{{ route('informasi.sinergi-program.index') }}"><i class="fa fa-circle-o"></i>Sinergi Program</a></li>
                             @endrole 
                         </ul>
                     </li>

@@ -1,19 +1,17 @@
-#### [v22.08.02]
+#### [v22.09.01]
 
-Di rilis v22.08.02, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v22.09.02, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [...] yang terus berkontribusi. Terima kasih pula pada [...] yang baru mulai berkontribusi.
+Terima kasih pada [...] yang terus berkontribusi.
 
 #### Penambahan Fitur
-1. [#293](https://github.com/OpenSID/OpenDK/issues/293) Menambahkan widget sosial secara dinamis.
-2. [#267](https://github.com/OpenSID/OpenDK/issues/267) Menambahkan menu data suplemen.
-3. [#282](https://github.com/OpenSID/OpenDK/issues/282) Menambahkan tombol jalankan queue listener.
+1. [#473](https://github.com/OpenSID/OpenDK/issues/473) Menambahkan fitur untuk menulis/memuat keterangan pada foto artikel.
+2. [#487](https://github.com/OpenSID/OpenDK/issues/487) Menambahkan fitur jawab keluhan oleh admin.
+
 
 #### Perbaikan BUG
-1. [#464](https://github.com/OpenSID/OpenDK/issues/464) Perbaiki sinkronisasi berita OpenSID ke OpenDK.
-2. [#466](https://github.com/OpenSID/OpenDK/issues/466) Perbaiki peta yang tidak muncul ketika data koordinat kosong.
+1. [#486](https://github.com/OpenSID/OpenDK/issues/486) Perbaikan pada daftar keluhan tidak muncul.
+2. [#491](https://github.com/OpenSID/OpenDK/issues/491) Perbaikan error ketika melihat komplain dengan akun admin-komplain.
+3. [#432](https://github.com/OpenSID/OpenDK/issues/432) Perbaikan form update profil dengan validasi setiap field inputan. 
 
 #### TEKNIS
-
-1. [#318](https://github.com/OpenSID/OpenDK/pull/318) Update ke Laravel 7.x.
-2. [#329](https://github.com/OpenSID/OpenDK/issues/329) Menerapkan sentry untuk menangkap log.

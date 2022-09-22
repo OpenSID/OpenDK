@@ -225,3 +225,4 @@
     </div>
 </div>
 <div class="ln_solid"></div>
+@include('partials.asset_jqueryvalidation')

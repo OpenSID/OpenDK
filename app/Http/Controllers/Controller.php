@@ -32,16 +32,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\DataDesa;
+use App\Models\DataUmum;
 use App\Models\Event;
+use App\Models\Keluarga;
 use App\Models\MediaSosial;
+use App\Models\Penduduk;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
 use App\Models\TipePotensi;
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 
 class Controller extends BaseController
@@ -71,6 +77,8 @@ class Controller extends BaseController
             $this->sebutan_kepala_wilayah = 'Camat';
         }
 
+        $this->kirimTrack();
+
         // TODO : Gunakan untuk semua pengaturan jika sudah tersedia
         $this->browser_title = SettingAplikasi::where('key', 'judul_aplikasi')->first()->value ?? ucwords($this->sebutan_wilayah . ' ' . $this->profil->nama_kecamatan);
 
@@ -91,5 +99,44 @@ class Controller extends BaseController
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
         ]);
+    }
+
+    protected function kirimTrack()
+    {
+        if (config('app.demo') == true) { // jika posisi demo, matikan tracking
+            return;
+        }
+
+        if (session('track') != null && session('track') == date('Y m d')) {
+            return;
+        }
+
+        $host_pantau = config('app.host_pantau');
+        $data = [
+            'url' => url('/'),
+            'versi' => config('app.version'),
+            'jml_desa' => DataDesa::count(),
+            'jumlah_penduduk' => Penduduk::where('status_dasar', 1)->count(),
+            'jumlah_keluarga' => Keluarga::count(),
+            'peta_wilayah'  => DataUmum::first()->path ?? '[[[[]]]]',
+            'sebutan_wilayah' => $this->sebutan_wilayah,
+            'kode_kecamatan' => $this->profil->kecamatan_id,
+            'kode_kabupaten' => $this->profil->kabupaten_id,
+            'kode_provinsi' => $this->profil->provinsi_id,
+            'nama_kecamatan' => $this->profil->nama_kecamatan,
+            'nama_kabupaten' => $this->profil->nama_kabupaten,
+            'nama_provinsi' => $this->profil->nama_provinsi,
+        ];
+
+        try {
+            Http::withHeaders([
+                'token' => config('app.token_pantau')
+            ])->post($host_pantau.'track/opendk?token='.config('app.token_pantau'), $data);
+            session(['track' => date('Y m d')]);
+            return;
+        } catch (Exception $e) {
+            Log::notice($e);
+            return;
+        }
     }
 }

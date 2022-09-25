@@ -12,6 +12,7 @@ Terima kasih pada [...] yang terus berkontribusi.
 #### Perbaikan BUG
 1. [#486](https://github.com/OpenSID/OpenDK/issues/486) Perbaikan pada daftar keluhan tidak muncul.
 2. [#491](https://github.com/OpenSID/OpenDK/issues/491) Perbaikan error ketika melihat komplain dengan akun admin-komplain.
-3. [#432](https://github.com/OpenSID/OpenDK/issues/432) Perbaikan form update profil dengan validasi setiap field inputan. 
+3. [#432](https://github.com/OpenSID/OpenDK/issues/432) Perbaikan form update profil dengan validasi setiap field inputan.
 
 #### TEKNIS
+1. Menambahkan fungsi kirim data ke pantau.

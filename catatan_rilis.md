@@ -11,6 +11,7 @@ Di rilis v22.09.02, menyediakan fitur menulis/memuat keterangan pada foto artike
 1. [#486](https://github.com/OpenSID/OpenDK/issues/486) Perbaikan pada daftar keluhan tidak muncul.
 2. [#491](https://github.com/OpenSID/OpenDK/issues/491) Perbaikan error ketika melihat komplain dengan akun admin-komplain.
 3. [#432](https://github.com/OpenSID/OpenDK/issues/432) Perbaikan form update profil dengan validasi setiap field inputan.
+4. [#493](https://github.com/OpenSID/OpenDK/issues/493) Perbaikan feeds tidak dapat di get.
 
 #### TEKNIS
 1. Menambahkan fungsi kirim data ke pantau.

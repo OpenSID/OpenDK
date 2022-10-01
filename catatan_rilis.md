@@ -1,8 +1,6 @@
-#### [v22.09.01]
+#### [v22.10.01]
 
-Di rilis v22.09.02, menyediakan [...]. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
-
-Terima kasih pada [...] yang terus berkontribusi.
+Di rilis v22.09.02, menyediakan fitur menulis/memuat keterangan pada foto artikel dan fitur jawab keluhan oleh admin. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 #### Penambahan Fitur
 1. [#473](https://github.com/OpenSID/OpenDK/issues/473) Menambahkan fitur untuk menulis/memuat keterangan pada foto artikel.

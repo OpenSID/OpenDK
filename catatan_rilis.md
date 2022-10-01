@@ -1,26 +1,17 @@
-#### [v22.09.01]
+#### [v22.10.01]
 
-Di rilis v22.09.01, menyediakan Widget Media Sosial, Data Suplemen, Widget Sinergi Program, Tombol Jalankan Queue, Update Versi ke Laravel 7.x, dan Menambahkan Sentry untuk Menangkap Log. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
-
-Terima kasih pada totoprayogo1916 yang terus berkontribusi.
+Di rilis v22.09.02, menyediakan fitur menulis/memuat keterangan pada foto artikel dan fitur jawab keluhan oleh admin. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 #### Penambahan Fitur
+1. [#473](https://github.com/OpenSID/OpenDK/issues/473) Menambahkan fitur untuk menulis/memuat keterangan pada foto artikel.
+2. [#487](https://github.com/OpenSID/OpenDK/issues/487) Menambahkan fitur jawab keluhan oleh admin.
 
-1. [#293](https://github.com/OpenSID/OpenDK/issues/293) Penambahan widget sosial secara dinamis.
-2. [#267](https://github.com/OpenSID/OpenDK/issues/267) Penambahan menu data suplemen.
-3. [#282](https://github.com/OpenSID/OpenDK/issues/282) Penambahan tombol jalankan queue listener.
-4. [#463](https://github.com/OpenSID/OpenDK/issues/463) Penambahan Widget link ke OPD/Pemkab.
 
 #### Perbaikan BUG
-
-1. [#464](https://github.com/OpenSID/OpenDK/issues/464) Perbaiki sinkronisasi berita OpenSID ke OpenDK.
-2. [#466](https://github.com/OpenSID/OpenDK/issues/466) Perbaiki peta yang tidak muncul ketika data koordinat kosong.
-3. [#471](https://github.com/OpenSID/OpenDK/issues/471) Perbaiki Data sinkronisasi penduduk tetap masuk meskipun desa tidak terdaftar.
-4. [#476](https://github.com/OpenSID/OpenDK/issues/476) Perbaiki tampilan logo atau gambar widget medsos.
-5. [#475](https://github.com/OpenSID/OpenDK/issues/475) Perbaiki tampilan logo atau gambar widget sinergi program.
-6. [#479](https://github.com/OpenSID/OpenDK/issues/479) Perbaiki peserta program bantuan yang sudah terhapus di desa tidak terhapus di opendk.
+1. [#486](https://github.com/OpenSID/OpenDK/issues/486) Perbaikan pada daftar keluhan tidak muncul.
+2. [#491](https://github.com/OpenSID/OpenDK/issues/491) Perbaikan error ketika melihat komplain dengan akun admin-komplain.
+3. [#432](https://github.com/OpenSID/OpenDK/issues/432) Perbaikan form update profil dengan validasi setiap field inputan.
+4. [#493](https://github.com/OpenSID/OpenDK/issues/493) Perbaikan feeds tidak dapat di get.
 
 #### TEKNIS
-
-1. [#318](https://github.com/OpenSID/OpenDK/pull/318) Update ke Laravel 7.x.
-2. [#329](https://github.com/OpenSID/OpenDK/issues/329) Menerapkan sentry untuk menangkap log.
+1. Menambahkan fungsi kirim data ke pantau.

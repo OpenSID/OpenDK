@@ -79,7 +79,7 @@ class PageController extends Controller
 
         $feeds = [];
         foreach ($all_desa as $desa) {
-            $getFeeds = FeedsFacade::make($desa['website']);
+            $getFeeds = FeedsFacade::make($desa['website'], 5, true);
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
                     'desa_id'     => $desa['desa_id'],

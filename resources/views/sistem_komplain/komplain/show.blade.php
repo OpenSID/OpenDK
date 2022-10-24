@@ -98,7 +98,7 @@
                                     @if(isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
 
                                         @if($komplain->status != 'SELESAI')
-                                            <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                            <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Beri Komentar</a>
                                         @endif
                                         <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
                                             class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
@@ -112,7 +112,7 @@
                                         {!! Form::close() !!}
                                         @else
                                             @if($komplain->status != 'SELESAI')
-                                            <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                            <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Beri Komentar</a>
                                             @endif
                                     @endif
 

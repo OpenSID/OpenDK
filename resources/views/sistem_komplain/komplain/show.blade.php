@@ -97,7 +97,9 @@
                                     @php $user = auth()->user(); @endphp
                                     @if(isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
 
-                                        <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                        @if($komplain->status != 'SELESAI')
+                                            <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                        @endif
                                         <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
                                             class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
                                         {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style' => 'display:inline']) !!}
@@ -109,7 +111,9 @@
 
                                         {!! Form::close() !!}
                                         @else
-                                        <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                            @if($komplain->status != 'SELESAI')
+                                            <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                            @endif
                                     @endif
 
                                 </div>

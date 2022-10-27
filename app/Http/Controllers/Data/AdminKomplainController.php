@@ -45,8 +45,8 @@ class AdminKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Komplain';
-        $page_description = 'Daftar Komplain';
+        $page_title       = 'Keluhan';
+        $page_description = 'Daftar Keluhan';
 
         return view('sistem_komplain.admin_komplain.index', compact('page_title', 'page_description'));
     }

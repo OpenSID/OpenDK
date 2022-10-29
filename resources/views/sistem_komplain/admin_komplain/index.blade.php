@@ -22,7 +22,7 @@
                 <table class="table table-striped table-bordered" id="komplain-table">
                     <thead>
                         <tr>
-                            <th style="max-width: 150px;">Aksi</th>
+                            <th style="max-width: 180px;">Aksi</th>
                             <th>Judul</th>
                             <th>Pelapor</th>
                             <th>Kategori</th>

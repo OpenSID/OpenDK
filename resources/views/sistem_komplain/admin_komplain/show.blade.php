@@ -89,7 +89,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-md" src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" alt="user image">
+                                <img class="img-circle img-bordered-md" src="{{ is_user($penduduk->foto, $penduduk->sex) }}" alt="user image">
                                 <span class="username">
                                     <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                 </span>
@@ -118,7 +118,7 @@
                                     @if(isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
 
                                         @if($komplain->status != 'SELESAI')
-                                            <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Beri Komentar</a>
+                                            <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                         @endif
                                     @endif
                                 </div>
@@ -174,7 +174,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Ubah Jawab Keluhan</h4>
+                <h4 class="modal-title w-100 font-weight-bold">Ubah Jawaban Keluhan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

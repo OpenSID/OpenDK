@@ -117,8 +117,9 @@ class AdminKomplainController extends Controller
         $komplain = Komplain::findOrFail($id);
         $page_title       = 'Detail Keluhan';
         $page_description = 'Detail Keluhan : ' . $komplain->judul;
+        $penduduk = Penduduk::where('nik', $komplain->nik)->first();
 
-        return view('sistem_komplain.admin_komplain.show', compact('page_title', 'page_description', 'komplain'));
+        return view('sistem_komplain.admin_komplain.show', compact('page_title', 'page_description', 'komplain', 'penduduk'));
     }
 
     /**
@@ -212,7 +213,7 @@ class AdminKomplainController extends Controller
         } catch (Exception $e) {
             $response = [
                 'status' => 'success',
-                'msg'    => 'Jawaban  Gaga; disimpan!',
+                'msg'    => 'Jawaban  Gagal disimpan!',
             ];
             return response()->json($response);
         }

@@ -45,8 +45,8 @@ class AdminKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Komplain';
-        $page_description = 'Daftar Komplain';
+        $page_title       = 'Keluhan';
+        $page_description = 'Daftar Keluhan';
 
         return view('sistem_komplain.admin_komplain.index', compact('page_title', 'page_description'));
     }
@@ -104,10 +104,10 @@ class AdminKomplainController extends Controller
             Komplain::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Status Komplain gagal disimpan!');
+            return back()->withInput()->with('error', 'Status Keluhan gagal disimpan!');
         }
 
-        return redirect()->route('admin-komplain.index')->with('success', 'Status Komplain berhasil disimpan!');
+        return redirect()->route('admin-komplain.index')->with('success', 'Status Keluhan berhasil disimpan!');
     }
 
     /**
@@ -119,8 +119,8 @@ class AdminKomplainController extends Controller
     public function edit($id)
     {
         $komplain         = Komplain::findOrFail($id);
-        $page_title       = 'Komplain';
-        $page_description = 'Ubah Komplain' . $komplain->komplain_id;
+        $page_title       = 'Keluhan';
+        $page_description = 'Ubah Keluhan' . $komplain->komplain_id;
 
         return view('sistem_komplain.admin_komplain.edit', compact('page_title', 'page_description', 'komplain'));
     }
@@ -180,16 +180,16 @@ class AdminKomplainController extends Controller
             $komplain->save();
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Komplain gagal dikirim!');
+            return back()->withInput()->with('error', 'Keluhan gagal dikirim!');
         }
 
-        return redirect()->route('admin-komplain.index')->with('success', 'Komplain berhasil dikirim!');
+        return redirect()->route('admin-komplain.index')->with('success', 'Keluhan berhasil dikirim!');
     }
 
     public function statistik()
     {
-        $page_title       = 'Statistik Komplain';
-        $page_description = 'Data Statistik Komplain Masyarakat';
+        $page_title       = 'Statistik Keluhan';
+        $page_description = 'Data Statistik Keluhan Masyarakat';
         $chart_kategori   = $this->getChartKategori();
         $chart_status     = $this->getChartStatus();
         $chart_desa       = $this->getChartDesa();

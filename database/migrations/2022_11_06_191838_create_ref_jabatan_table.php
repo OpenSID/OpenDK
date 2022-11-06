@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Jabatan;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateRefJabatanTable extends Migration
 {
@@ -22,7 +22,12 @@ class CreateRefJabatanTable extends Migration
             $table->timestamps();
         });
 
-        Jabatan::create(['nama' => 'camat', 'jenis' => 1]);
+        $data = [
+            ['nama'=>'Camat', 'jenis'=> 1],
+            ['nama'=>'Sekretaris', 'jenis'=> 1],
+        ];
+
+        Jabatan::insert($data);
     }
 
     /**

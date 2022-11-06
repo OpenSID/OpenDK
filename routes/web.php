@@ -32,8 +32,9 @@
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\Data\PengurusController;
 
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
@@ -311,7 +312,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Data Desa
-                Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-desa']], function () {
+                Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
                     Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
@@ -323,6 +324,13 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
                 });
+
+                // Jabatan
+                Route::resource('/jabatan', 'JabatanController', [
+                    'names' => [
+                        'index' => 'data.jabatan.index',
+                        ]
+                    ])->except('show');
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {

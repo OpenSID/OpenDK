@@ -32,8 +32,8 @@
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Route;
 
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {

@@ -134,7 +134,6 @@ class JabatanController extends Controller
             'nama' => 'required',
         ]);
 
-
         try {
             Jabatan::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {

@@ -34,7 +34,6 @@ use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
-use App\Http\Controllers\Data\PengurusController;
 
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
@@ -326,11 +325,15 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Jabatan
-                Route::resource('/jabatan', 'JabatanController', [
-                    'names' => [
-                        'index' => 'data.jabatan.index',
-                        ]
-                    ])->except('show');
+                Route::group(['prefix' => 'jabatan', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                    Route::get('/', ['as' => 'data.jabatan.index', 'uses' => 'JabatanController@index']);
+                    Route::get('getdata', ['as' => 'data.jabatan.getdata', 'uses' => 'JabatanController@getData']);
+                    Route::get('create', ['as' => 'data.jabatan.create', 'uses' => 'JabatanController@create']);
+                    Route::post('store', ['as' => 'data.jabatan.store', 'uses' => 'JabatanController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.jabatan.edit', 'uses' => 'JabatanController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.jabatan.update', 'uses' => 'JabatanController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.jabatan.destroy', 'uses' => 'JabatanController@destroy']);
+                });
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {

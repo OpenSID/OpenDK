@@ -42,4 +42,14 @@ class Jabatan extends Model
         'tupoksi',
         'jenis',
     ];
+
+    /**
+     * Setter untuk membuat path menjadi null jika peta kosong.
+     *
+     * @return string
+     */
+    public function setJenisAttribute($value)
+    {
+        $this->attributes['jenis'] = $value ?? 3;
+    }
 }

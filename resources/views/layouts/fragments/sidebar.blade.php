@@ -82,7 +82,7 @@
                         </a>
                         <ul class="treeview-menu">
                             @if($user->hasrole(['super-admin', 'admin-kecamatan']))
-                            <li class="treeview {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil','data/data-umum/*', 'data/data-umum/index', 'data/data-umum','data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'active' : '') }}">
+                            <li class="treeview {{ (Request::is(['data/*'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                             <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
@@ -98,7 +98,7 @@
                                     <li {{ (Request::is(['data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.data-desa.index') }}"><i class="fa fa-circle-o"></i>Data Desa</a>
                                     </li>
-                                    <li class="treeview {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil','data/data-umum/*', 'data/data-umum/index', 'data/data-umum','data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'active' : '') }}">
+                                    <li class="treeview {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan'])? 'active' : '') }}">
                                         <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan
                                     <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>

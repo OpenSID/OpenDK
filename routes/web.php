@@ -324,6 +324,17 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
                 });
 
+                // Pengurus
+                Route::group(['prefix' => 'pengurus', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                    Route::get('/', ['as' => 'data.pengurus.index', 'uses' => 'PengurusController@index']);
+                    Route::get('getdata', ['as' => 'data.pengurus.getdata', 'uses' => 'PengurusController@getData']);
+                    Route::get('create', ['as' => 'data.pengurus.create', 'uses' => 'PengurusController@create']);
+                    Route::post('store', ['as' => 'data.pengurus.store', 'uses' => 'PengurusController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.pengurus.edit', 'uses' => 'PengurusController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.pengurus.update', 'uses' => 'PengurusController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.pengurus.destroy', 'uses' => 'PengurusController@destroy']);
+                });
+
                 // Jabatan
                 Route::group(['prefix' => 'jabatan', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.jabatan.index', 'uses' => 'JabatanController@index']);

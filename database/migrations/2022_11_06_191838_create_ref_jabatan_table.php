@@ -44,7 +44,7 @@ class CreateRefJabatanTable extends Migration
     public function up()
     {
         Schema::create('ref_jabatan', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('nama', 255);
             $table->text('tupoksi')->nullable();
             $table->boolean('jenis')->default(3); // 1: Camat; 2: Sekcam, 3: lainnya

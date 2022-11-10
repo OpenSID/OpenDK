@@ -30,8 +30,7 @@ class CreatePengurusTable extends Migration
             $table->unsignedInteger('agama_id');
             $table->string('no_sk', 255)->nullable();
             $table->date('tanggal_sk')->nullable();
-            $table->string('masa_jabatan', 255)->nullable();
-            $table->integer('niap')->nullable()->unique();
+            $table->string('masa_jabatan', 255);
             $table->string('pangkat', 255)->nullable();
             $table->string('no_henti', 255)->nullable();
             $table->date('tanggal_henti')->nullable();

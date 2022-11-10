@@ -32,7 +32,9 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Models\Agama;
 use App\Models\Jabatan;
+use App\Models\PendidikanKK;
 use App\Models\Pengurus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -82,8 +84,12 @@ class PengurusController extends Controller
     {
         $page_title       = 'Pengurus';
         $page_description = 'Tambah Pengurus';
+        $pendidikan       = PendidikanKK::pluck('nama', 'id');
+        $agama            = Agama::pluck('nama', 'id');
+        $jabatan          = Jabatan::pluck('nama', 'id');
+        $pengurus         = null;
 
-        return view('data.pengurus.create', compact('page_title', 'page_description'));
+        return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan', 'pengurus'));
     }
 
     /**

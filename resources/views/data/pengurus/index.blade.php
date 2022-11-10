@@ -1,6 +1,6 @@
 @extends('layouts.dashboard_template')
 
-@section('title') Data Jabatan @endsection
+@section('title') Data Pengurus @endsection
 
 @section('content')
 <section class="content-header">
@@ -20,16 +20,27 @@
 
     <div class="box box-primary">
         <div class="box-header with-border">
-            <a href="{{ route('data.jabatan.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+            <a href="{{ route('data.pengurus.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
         </div>
         <div class="box-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered" id="jabatan-table">
+                <table class="table table-striped table-bordered" id="pengurus-table">
                     <thead>
                         <tr>
                             <th style="max-width: 150px;">Aksi</th>
-                            <th>Nama</th>
-                            <th>Tupoksi</th>
+                            <th>Foto</th>
+                            <th>Nama, NIP, NIK</th>
+                            <th>Tempat, Tanggal Lahir</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Agama</th>
+                            <th>Pangkat/Golongan</th>
+                            <th>Jabatan</th>
+                            <th>Pendidikan Terakhir</th>
+                            <th>No SK Pengangkatan</th>
+                            <th>Tanggal SK Pengangkatan</th>
+                            <th>No SK Pemberhentian</th>
+                            <th>Tanggal SK Pemberhentian</th>
+                            <th>Masa/Periode Jabatan</th>
                         </tr>
                     </thead>
                 </table>
@@ -44,14 +55,15 @@
 @push('scripts')
 <script type="text/javascript">
     $(document).ready(function () {
-        var data = $('#jabatan-table').DataTable({
+        var data = $('#pengurus-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{!! route( 'data.jabatan.getdata' ) !!}",
+            ajax: "{!! route( 'data.pengurus.getdata' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama', name: 'nama'},
-                {data: 'tupoksi', name: 'tupoksi'},
+                {data: 'tempat_lahir', name: 'tempat_lahir'},
             ]
         });
     });

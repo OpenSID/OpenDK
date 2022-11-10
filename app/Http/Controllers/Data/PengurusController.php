@@ -102,9 +102,18 @@ class PengurusController extends Controller
         request()->validate([
             'nama' => 'required',
         ]);
-
+        
         try {
-            Pengurus::create($request->all());
+            $input = $request->all();
+            if ($request->hasFile('foto')) {
+                $file           = $request->file('foto');
+                $original_name  = strtolower(trim($file->getClientOriginalName()));
+                $file_name      = time() . rand(100, 999) . '_' . $original_name;
+                $path           = "storage/pengurus/";
+                $file->move($path, $file_name);
+                $input['foto'] = $path . $file_name;
+            }
+            Pengurus::create($input);
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Pengurus gagal ditambah!');

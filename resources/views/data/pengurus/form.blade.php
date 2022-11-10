@@ -23,17 +23,10 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">NIPD</label>
-
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('niap', null, ['placeholder' => 'NIPD','class' => 'form-control']) !!}
-    </div>
-</div>
-<div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">NIP</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('niap', null, ['placeholder' => 'NIP','class' => 'form-control']) !!}
+        {!! Form::text('nip', null, ['placeholder' => 'NIP','class' => 'form-control']) !!}
     </div>
 </div>
 <div class="form-group">

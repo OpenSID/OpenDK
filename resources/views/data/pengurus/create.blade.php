@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Form::open( [ 'route' => 'data.pengurus.store', 'method' => 'post','id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                {!! Form::open( [ 'route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left' ] ) !!}
 
                 <div class="box-body">
 

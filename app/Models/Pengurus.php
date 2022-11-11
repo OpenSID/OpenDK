@@ -45,6 +45,6 @@ class Pengurus extends Model
 
     public function jabatan()
     {
-        return $this->hasOne(DataDesa::class, 'jabatan_id', 'id');
+        return $this->hasOne(Jabatan::class, 'id', 'jabatan_id');
     }
 }

@@ -64,6 +64,16 @@
                 {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama', name: 'nama'},
                 {data: 'tempat_lahir', name: 'tempat_lahir'},
+                {data: 'sex', name: 'sex'},
+                {data: 'agama_id', name: 'agama_id'},
+                {data: 'pangkat', name: 'pangkat'},
+                {data: 'jabatan_id', name: 'jabatan_id'},
+                {data: 'pendidikan_id', name: 'pendidikan_id'},
+                {data: 'no_sk', name: 'no_sk'},
+                {data: 'tanggal_sk', name: 'tanggal_sk'},
+                {data: 'no_henti', name: 'no_henti'},
+                {data: 'tanggal_henti', name: 'tanggal_henti'},
+                {data: 'masa_jabatan', name: 'masa_jabatan'},
             ]
         });
     });

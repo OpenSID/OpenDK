@@ -102,7 +102,7 @@ class PengurusController extends Controller
         request()->validate([
             'nama' => 'required',
         ]);
-        
+
         try {
             $input = $request->all();
             if ($request->hasFile('foto')) {

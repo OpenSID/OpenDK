@@ -31,14 +31,15 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
 use App\Models\Agama;
 use App\Models\Jabatan;
-use App\Models\PendidikanKK;
 use App\Models\Pengurus;
+use App\Models\PendidikanKK;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class PengurusController extends Controller
 {
@@ -63,14 +64,31 @@ class PengurusController extends Controller
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('data.pengurus.edit', $row->id);
-                        if ($row->jenis == 3) {
-                            $data['delete_url'] = route('data.pengurus.destroy', $row->id);
-                        }
+                        $data['delete_url'] = route('data.pengurus.destroy', $row->id);
                     }
 
                     return view('forms.aksi', $data);
                 })
-                ->escapeColumns([])
+                ->editColumn('foto', function ($row) {
+                    return '<img src="' . is_user($row->foto, $row->sex, true) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                })
+                ->editColumn('identitas', function ($row) {
+                    return $row->namaGelar . ',<br> NIP: ' . $row->nip . ',<br> NIK: ' . $row->nik;
+                })
+                ->editColumn('ttl', function ($row) {
+                    return $row->tempat_lahir . ',' . format_date($row->tanggal_lahir);
+                })
+                ->editColumn('sex', function ($row) {
+                    $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
+                    return $sex[$row->sex];
+                })
+                ->editColumn('tanggal_sk', function ($row) {
+                    return format_date($row->tanggal_sk);
+                })
+                ->editColumn('tanggal_henti', function ($row) {
+                    return format_date($row->tanggal_sk);
+                })
+                ->rawColumns(['foto', 'identitas'])
                 ->make(true);
         }
     }

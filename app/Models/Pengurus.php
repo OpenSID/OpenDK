@@ -40,11 +40,33 @@ class Pengurus extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     protected $with = [
-        'jabatan'
+        'jabatan',
+        'agama',
+        'pendidikan',
     ];
+
+    /**
+     * Setter untuk membuat nama dan gelar.
+     *
+     * @return string
+     */
+    public function getNamaGelarAttribute()
+    {
+        return $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'] . ', ' . $this->attributes['gelar_belakang'];
+    }
 
     public function jabatan()
     {
         return $this->hasOne(Jabatan::class, 'id', 'jabatan_id');
+    }
+
+    public function pendidikan()
+    {
+        return $this->hasOne(PendidikanKK::class, 'id', 'pendidikan_id');
+    }
+
+    public function agama()
+    {
+        return $this->hasOne(Agama::class, 'id', 'agama_id');
     }
 }

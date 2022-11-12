@@ -27,10 +27,10 @@
                 <table class="table table-striped table-bordered" id="pengurus-table">
                     <thead>
                         <tr>
-                            <th style="max-width: 150px;">Aksi</th>
+                            <th style="min-width: 150px;">Aksi</th>
                             <th>Foto</th>
-                            <th>Nama, NIP, NIK</th>
-                            <th>Tempat, Tanggal Lahir</th>
+                            <th style="min-width: 150px;">Nama, NIP, NIK</th>
+                            <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
                             <th>Jenis Kelamin</th>
                             <th>Agama</th>
                             <th>Pangkat/Golongan</th>
@@ -62,13 +62,13 @@
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},
-                {data: 'nama', name: 'nama'},
-                {data: 'tempat_lahir', name: 'tempat_lahir'},
+                {data: 'identitas', name: 'identitas'},
+                {data: 'ttl', name: 'ttl'},
                 {data: 'sex', name: 'sex'},
-                {data: 'agama_id', name: 'agama_id'},
+                {data: 'agama.nama', name: 'agama.nama'},
                 {data: 'pangkat', name: 'pangkat'},
-                {data: 'jabatan_id', name: 'jabatan_id'},
-                {data: 'pendidikan_id', name: 'pendidikan_id'},
+                {data: 'jabatan.nama', name: 'jabatan.nama'},
+                {data: 'pendidikan.nama', name: 'pendidikan.nama'},
                 {data: 'no_sk', name: 'no_sk'},
                 {data: 'tanggal_sk', name: 'tanggal_sk'},
                 {data: 'no_henti', name: 'no_henti'},

@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Foto</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="foto" id="foto" class="form-control" {{ $pengurus ? '' : 'required' }}>
+        <input type="file" name="foto" id="foto" class="form-control">
         <br>
 
         <img src="@if(isset($pengurus->foto)) {{ asset($pengurus->foto) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showfoto" style="max-width:400px;max-height:250px;float:left;"/>
@@ -13,6 +13,16 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('nama', null, ['placeholder' => 'Nama Pengurus','class' => 'form-control', 'required'=>true]) !!}
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Gelar</label>
+    <div class="col-md-2 col-sm-4 col-xs-6">
+        {!! Form::text('gelar_depan', null, ['placeholder' => 'Gelar Depan','class' => 'form-control']) !!}
+    </div>
+
+    <div class="col-md-2 col-sm-4 col-xs-6">
+        {!! Form::text('gelar_belakang', null, ['placeholder' => 'Gelar Belakang','class' => 'form-control']) !!}
     </div>
 </div>
 <div class="form-group">

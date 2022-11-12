@@ -214,14 +214,18 @@ function get_words($sentence, $count = 10)
 
 function diff_for_humans($date)
 {
-    Carbon::setLocale('id');
     return  Carbon::parse($date)->diffForHumans();
+}
+
+function format_datetime($date)
+{
+    return  Carbon::parse($date)->toDayDateTimeString();
+
 }
 
 function format_date($date)
 {
-    Carbon::setLocale('id');
-    return  Carbon::parse($date)->toDayDateTimeString();
+    return  Carbon::parse($date)->translatedFormat('d F Y');
 }
 
 function kuartal_bulan()
@@ -306,9 +310,9 @@ function is_logo($url = '', $file = '/img/logo.png')
     return is_img($url, $file);
 }
 
-function is_user($url = null, $sex = 1)
+function is_user($url = null, $sex = 1, $pengurus = null)
 {
-    if ($url) {
+    if ($url && !$pengurus) {
         $url = 'storage/penduduk/foto/' . $url;
     }
 

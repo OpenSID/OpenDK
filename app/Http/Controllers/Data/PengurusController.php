@@ -151,8 +151,11 @@ class PengurusController extends Controller
         $pengurus          = Pengurus::findOrFail($id);
         $page_title       = 'Pengurus';
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
+        $pendidikan       = PendidikanKK::pluck('nama', 'id');
+        $agama            = Agama::pluck('nama', 'id');
+        $jabatan          = Jabatan::pluck('nama', 'id');
 
-        return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus'));
+        return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus', 'pendidikan', 'agama', 'jabatan'));
     }
 
     /**
@@ -168,8 +171,24 @@ class PengurusController extends Controller
             'nama' => 'required',
         ]);
 
+        $pengurus = Pengurus::findOrFail($id);
+
         try {
-            Pengurus::findOrFail($id)->update($request->all());
+            $input = $request->all();
+
+            if ($request->hasFile('foto')) {
+                $file           = $request->file('foto');
+                $original_name  = strtolower(trim($file->getClientOriginalName()));
+                $file_name      = time() . rand(100, 999) . '_' . $original_name;
+                $path           = "storage/pengurus/";
+                $file->move($path, $file_name);
+                if ($pengurus->foto) {
+                    unlink(base_path('public/' . $pengurus->foto));
+                }
+                $input['foto'] = $path . $file_name;
+            }
+
+            $pengurus->update($input);
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Pengurus gagal diubah!');
@@ -187,7 +206,11 @@ class PengurusController extends Controller
     public function destroy($id)
     {
         try {
-            Pengurus::findOrFail($id)->delete();
+            $pengurus = Pengurus::findOrFail($id)->delete();
+            if ($pengurus->foto) {
+                unlink(base_path('public/' . $pengurus->foto));
+            }
+            $pengurus->delete();
         } catch (\Exception $e) {
             report($e);
             return redirect()->route('data.pengurus.index')->with('error', 'Pengurus gagal dihapus!');

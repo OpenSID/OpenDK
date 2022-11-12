@@ -8,7 +8,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('data.jabatan.index') }}">Daftar Jabatan</a></li>
+        <li><a href="{{ route('data.pengurus.index') }}">Daftar Pengurus</a></li>
         <li class="active">{{ $page_description }}</li>
     </ol>
 </section>
@@ -32,20 +32,20 @@
                     @endif
 
                             <!-- form start -->
-                    {!!  Form::model($jabatan, [ 'route' => ['data.jabatan.update', $jabatan->id], 'method' => 'post','id' => 'form-jabatan', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                    {!!  Form::model($pengurus, [ 'route' => ['data.pengurus.update', $pengurus->id], 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left' ] ) !!}
 
                     <div class="box-body">
 
                         {{ method_field('PUT') }}
                         @include( 'flash::message' )
-                        @include('data.jabatan.form')
+                        @include('data.pengurus.form')
 
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <div class="form-group">
                             <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <a href="{{ route('data.jabatan.index') }}">
+                                <a href="{{ route('data.pengurus.index') }}">
                                     <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
                                 </a>
                                 <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
@@ -61,6 +61,35 @@
 
 @push('scripts')
 <script>
-    $('select').attr('disabled', true);
+    $(function () {
+
+        var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                        isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+                if (isSuccess) { //yes
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+
+                    $('#showfoto').attr('src', e.target.result);
+                    $('#showfoto').removeClass('hide');
+                }
+
+                    reader.readAsDataURL(input.files[0]);
+                } else { //no
+                    //warning
+                    $("#foto").val('');
+                    alert('File tersebut tidak diperbolehkan.');
+                }
+            }
+        }
+
+        $("#foto").change(function () {
+            readURL(this);
+        });
+    });
 </script>
 @endpush

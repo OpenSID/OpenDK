@@ -104,7 +104,7 @@ class PengurusController extends Controller
         $page_description = 'Tambah Pengurus';
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-        $jabatan          = Jabatan::pluck('nama', 'id');
+        $jabatan          = Jabatan::doesntHave('pengurus')->orWhere('jenis', 3)->pluck('nama', 'id');
         $pengurus         = null;
 
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan', 'pengurus'));
@@ -153,7 +153,8 @@ class PengurusController extends Controller
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-        $jabatan          = Jabatan::pluck('nama', 'id');
+        $jabatan          = Jabatan::doesntHave('pengurus')->orWhere('jenis', 3)
+                                ->orWhere('jenis', $pengurus->jabatan->jenis)->pluck('nama', 'id');
 
         return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus', 'pendidikan', 'agama', 'jabatan'));
     }

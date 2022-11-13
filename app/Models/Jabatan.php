@@ -52,4 +52,9 @@ class Jabatan extends Model
     {
         $this->attributes['jenis'] = $value ?? 3;
     }
+
+    public function pengurus()
+    {
+        return $this->hasMany(Pengurus::class, 'jabatan_id', 'id');
+    }
 }

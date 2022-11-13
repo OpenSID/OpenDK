@@ -37,9 +37,9 @@ use App\Models\Pengurus;
 use App\Models\PendidikanKK;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PengurusRequest;
 
 class PengurusController extends Controller
 {
@@ -115,12 +115,8 @@ class PengurusController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(PengurusRequest $request)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
             $input = $request->all();
             if ($request->hasFile('foto')) {
@@ -166,12 +162,8 @@ class PengurusController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(PengurusRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         $pengurus = Pengurus::findOrFail($id);
 
         try {

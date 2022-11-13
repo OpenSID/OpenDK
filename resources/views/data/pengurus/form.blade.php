@@ -124,9 +124,12 @@
     </div>
 </div>
 <div class="ln_solid"></div>
+@include('partials.asset_jqueryvalidation')
 
 @include(('partials.asset_datetimepicker'))
 @push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\PengurusRequest', '#form-pengurus') !!}
+
 <script>
     $(function () {
         $('.datetime').each(function () {

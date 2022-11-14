@@ -15,12 +15,12 @@ class CreatePengurusTable extends Migration
     public function up()
     {
         Schema::create('das_pengurus', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('nama', 255);
             $table->string('gelar_depan', 255)->nullable();
             $table->string('gelar_belakang', 255)->nullable();
-            $table->integer('nip')->nullable()->unique();
-            $table->integer('nik')->unique();
+            $table->bigInteger('nip')->nullable()->unique();
+            $table->bigInteger('nik')->unique();
             $table->boolean('status')->default(1); // 0: Tidak Aktif; 1: aktif
             $table->string('foto', 255)->nullable();
             $table->string('tempat_lahir', 255);

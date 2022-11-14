@@ -27,7 +27,7 @@
                 <table class="table table-striped table-bordered" id="pengurus-table">
                     <thead>
                         <tr>
-                            <th style="min-width: 150px;">Aksi</th>
+                            <th style="min-width: 110px;">Aksi</th>
                             <th>Foto</th>
                             <th style="min-width: 150px;">Nama, NIP, NIK</th>
                             <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
@@ -35,6 +35,7 @@
                             <th>Agama</th>
                             <th>Pangkat/Golongan</th>
                             <th>Jabatan</th>
+                            <th>Status</th>
                             <th>Pendidikan Terakhir</th>
                             <th>No SK Pengangkatan</th>
                             <th>Tanggal SK Pengangkatan</th>
@@ -68,6 +69,7 @@
                 {data: 'agama.nama', name: 'agama.nama'},
                 {data: 'pangkat', name: 'pangkat'},
                 {data: 'jabatan.nama', name: 'jabatan.nama'},
+                {data: 'status', name: 'status'},
                 {data: 'pendidikan.nama', name: 'pendidikan.nama'},
                 {data: 'no_sk', name: 'no_sk'},
                 {data: 'tanggal_sk', name: 'tanggal_sk'},
@@ -80,5 +82,6 @@
 </script>
 @include('forms.datatable-vertical')
 @include('forms.delete-modal')
-
+@include('forms.suspend-modal')
+@include('forms.active-modal', ['title'=>$page_title])
 @endpush

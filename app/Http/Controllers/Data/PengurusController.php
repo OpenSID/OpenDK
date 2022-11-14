@@ -65,6 +65,11 @@ class PengurusController extends Controller
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('data.pengurus.edit', $row->id);
                         $data['delete_url'] = route('data.pengurus.destroy', $row->id);
+                        if ($row->status == 1) {
+                            $data['suspend_url'] = route('data.pengurus.lock', [$row->id, 0]);
+                        } else {
+                            $data['active_url'] = route('data.pengurus.lock', [$row->id, 1]);
+                        }
                     }
 
                     return view('forms.aksi', $data);
@@ -88,7 +93,14 @@ class PengurusController extends Controller
                 ->editColumn('tanggal_henti', function ($row) {
                     return format_date($row->tanggal_sk);
                 })
-                ->rawColumns(['foto', 'identitas'])
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 0) {
+                        return '<span class="label label-danger">Tidak Aktif</span>';
+                    } else {
+                        return '<span class="label label-success">Aktif</span>';
+                    }
+                })
+                ->rawColumns(['foto', 'identitas', 'status'])
                 ->make(true);
         }
     }
@@ -210,5 +222,24 @@ class PengurusController extends Controller
         }
 
         return redirect()->route('data.pengurus.index')->with('success', 'Pengurus berhasil dihapus!');
+    }
+
+    /**
+     * Update status resource from storage.
+     *
+     * @param  int $id
+     * @return Response
+     */
+    public function lock($id, $status)
+    {
+        try {
+            $pengurus = Pengurus::findOrFail($id);
+            $pengurus->update(['status' => $status]);
+        } catch (\Exception $e) {
+            report($e);
+            return redirect()->route('data.pengurus.index')->with('error', 'Status Pengurus gagal diubah!');
+        }
+
+        return redirect()->route('data.pengurus.index')->with('success', 'Status Pengurus berhasil diubah!');
     }
 }

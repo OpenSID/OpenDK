@@ -333,6 +333,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('edit/{id}', ['as' => 'data.pengurus.edit', 'uses' => 'PengurusController@edit']);
                     Route::put('update/{id}', ['as' => 'data.pengurus.update', 'uses' => 'PengurusController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.pengurus.destroy', 'uses' => 'PengurusController@destroy']);
+                    Route::post('lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock']);
                 });
 
                 // Jabatan
@@ -561,7 +562,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'setting.user.update', 'uses' => 'User\UserController@update']);
                 Route::put('updatePassword/{id}', ['as' => 'setting.user.updatePassword', 'uses' => 'User\UserController@updatePassword']);
                 Route::put('password/{id}', ['as' => 'setting.user.password', 'uses' => 'User\UserController@password']);
-                Route::delete('destroy/{id}', ['as' => 'setting.user.destroy', 'uses' => 'User\UserController@destroy']);
+                Route::post('destroy/{id}', ['as' => 'setting.user.destroy', 'uses' => 'User\UserController@destroy']);
                 Route::post('active/{id}', ['as' => 'setting.user.active', 'uses' => 'User\UserController@active']);
                 Route::get('photo-profil/{id}', ['as' => 'setting.user.photo', 'uses' => 'User\UserController@photo']);
                 Route::put('update-photo/{id}', ['as' => 'setting.user.uphoto', 'uses' => 'User\UserController@updatePhoto']);

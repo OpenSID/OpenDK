@@ -31,15 +31,15 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PengurusRequest;
 use App\Models\Agama;
 use App\Models\Jabatan;
-use App\Models\Pengurus;
 use App\Models\PendidikanKK;
+use App\Models\Pengurus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PengurusRequest;
 
 class PengurusController extends Controller
 {

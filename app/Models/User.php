@@ -67,6 +67,7 @@ class User extends Authenticatable implements JWTSubject
         'gender',
         'status',
         'last_login',
+        'pengurus_id',
     ];
 
     /**
@@ -150,5 +151,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function pengurus()
+    {
+        return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
     }
 }

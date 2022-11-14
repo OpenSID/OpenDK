@@ -69,4 +69,9 @@ class Pengurus extends Model
     {
         return $this->hasOne(Agama::class, 'id', 'agama_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'pengurus_id', 'id');
+    }
 }

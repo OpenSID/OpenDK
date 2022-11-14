@@ -220,7 +220,6 @@ function diff_for_humans($date)
 function format_datetime($date)
 {
     return  Carbon::parse($date)->toDayDateTimeString();
-
 }
 
 function format_date($date)

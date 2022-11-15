@@ -41,4 +41,9 @@ class TipePotensi extends Model
         'nama_kategori',
         'slug',
     ];
+
+    public function potensi()
+    {
+        return $this->hasMany(Potensi::class, 'kategori_id', 'id');
+    }
 }

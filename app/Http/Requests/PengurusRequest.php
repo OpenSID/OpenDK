@@ -52,23 +52,29 @@ class PengurusRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->isMethod('put')) {
+            $id = "," . $this->segment(4);
+        } else {
+            $id = "";
+        }
+        
         return [
-            'foto'              => 'image|mimes:jpg,jpeg,png|max:1024',
+            'foto'              => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
             'nama'              =>  "required|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
-            'gelar_depan'       =>  "regex:/^[a-zA-Z '\.,\-]+$/|max:150",
-            'gelar_belakang'    =>  "regex:/^[a-zA-Z '\.,\-]+$/|max:150",
-            'nik'               => 'required|integer|digits:16',
-            'nip'               => 'integer|digits:18',
+            'gelar_depan'       =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'gelar_belakang'    =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'nik'               => 'required|integer|digits:16|unique:das_pengurus,nik' . $id,
+            'nip'               => 'nullable|integer|digits:18|unique:das_pengurus,nip' . $id,
             'tempat_lahir'      => "required|regex:/^[a-zA-Z0-9 '\.,\-\/]+$/",
             'tanggal_lahir'     => "required|date",
             'jenis_kelamin'     => 'integer',
             'pendidikan'        => 'integer',
             'agama'             => 'integer',
-            'pangkat'           => 'regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'no_sk'             => 'regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'tanggal_sk'        => 'date',
-            'no_henti'          => 'regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'tanggal_henti'     => 'date',
+            'pangkat'           => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'no_sk'             => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'tanggal_sk'        => 'nullable|date',
+            'no_henti'          => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'tanggal_henti'     => 'nullable|date',
             'masa_jabatan'      => 'required|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
         ];
     }

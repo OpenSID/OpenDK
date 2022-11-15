@@ -9,3 +9,4 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 
 #### Perubahan Teknis
 1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaiki relasi tabel pembangunan.
+2. [#525](https://github.com/OpenSID/OpenDK/issues/525) Perbaiki relasi tabel potensi.

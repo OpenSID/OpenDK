@@ -5,8 +5,8 @@ Di rilis v22.11.01 berisi perbaikan yang diminta Komunitas OpenDK.
 Terima kasih pada [] yang baru mulai berkontribusi.
 
 #### Perbaikan bug
-
+1. [#530](https://github.com/OpenSID/OpenDK/issues/529) Perbaikan foto pelapor di sikema tidak menampilkan foto penduduk.
 
 #### Perubahan Teknis
-1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaiki relasi tabel pembangunan.
-2. [#525](https://github.com/OpenSID/OpenDK/issues/525) Perbaiki relasi tabel potensi.
+1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaikan relasi tabel pembangunan.
+2. [#525](https://github.com/OpenSID/OpenDK/issues/525) Perbaikan relasi tabel potensi.

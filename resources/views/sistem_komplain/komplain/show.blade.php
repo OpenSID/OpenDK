@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-md" src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" alt="user image">
+                                <img class="img-circle img-bordered-md" src="{{ is_user($komplain->penduduk->foto, $komplain->penduduk->sex) }}" alt="user image">
                                 <span class="username">
                                     <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                 </span>

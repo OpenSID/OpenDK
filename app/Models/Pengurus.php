@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Pengurus extends Model
 {
@@ -45,6 +46,11 @@ class Pengurus extends Model
         'pendidikan',
     ];
 
+    public function getFotoAttribute()
+    {
+        return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;
+    }
+
     /**
      * Setter untuk membuat nama dan gelar.
      *
@@ -52,7 +58,7 @@ class Pengurus extends Model
      */
     public function getNamaGelarAttribute()
     {
-        return $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'] . ', ' . $this->attributes['gelar_belakang'];
+        return $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'] . ' ' . $this->attributes['gelar_belakang'];
     }
 
     public function jabatan()

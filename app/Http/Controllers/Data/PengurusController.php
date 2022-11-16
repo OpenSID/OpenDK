@@ -31,17 +31,18 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Enums\JenisJabatan;
 use App\Enums\Status;
 use App\Models\Agama;
 use App\Models\Jabatan;
 use App\Models\Pengurus;
+use App\Enums\JenisJabatan;
 use App\Models\PendidikanKK;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
+use Illuminate\Support\Facades\Storage;
 
 class PengurusController extends Controller
 {
@@ -133,10 +134,9 @@ class PengurusController extends Controller
             if ($request->hasFile('foto')) {
                 $file           = $request->file('foto');
                 $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/pengurus/";
-                $file->move($path, $file_name);
-                $input['foto'] = $path . $file_name;
+                $file_name      = time() .  '_' . $original_name;
+                Storage::putFileAs('public/pengurus', $file, $file_name);
+                $input['foto']  = $file_name;
             }
             Pengurus::create($input);
         } catch (\Exception $e) {
@@ -156,6 +156,7 @@ class PengurusController extends Controller
     public function edit($id)
     {
         $pengurus          = Pengurus::findOrFail($id);
+        // dd((Storage::url($pengurus->foto)));
         $page_title       = 'Pengurus';
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
@@ -184,13 +185,11 @@ class PengurusController extends Controller
             if ($request->hasFile('foto')) {
                 $file           = $request->file('foto');
                 $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/pengurus/";
-                $file->move($path, $file_name);
+                $file_name      = time() .  '_' . $original_name;
                 if ($pengurus->foto) {
-                    unlink(base_path('public/' . $pengurus->foto));
+                    Storage::delete('public/pengurus/' . $pengurus->getRawOriginal('foto'));
                 }
-                $input['foto'] = $path . $file_name;
+                $input['foto']  = $file_name;
             }
 
             $pengurus->update($input);
@@ -211,9 +210,9 @@ class PengurusController extends Controller
     public function destroy($id)
     {
         try {
-            $pengurus = Pengurus::findOrFail($id)->delete();
+            $pengurus = Pengurus::findOrFail($id);
             if ($pengurus->foto) {
-                unlink(base_path('public/' . $pengurus->foto));
+                Storage::delete('public/pengurus/' . $pengurus->getRawOriginal('foto'));
             }
             $pengurus->delete();
         } catch (\Exception $e) {

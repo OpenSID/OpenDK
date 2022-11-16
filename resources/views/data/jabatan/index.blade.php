@@ -47,7 +47,7 @@
         var data = $('#jabatan-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{!! route( 'data.jabatan.getdata' ) !!}",
+            ajax: "{!! route( 'data.jabatan.index' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama', name: 'nama'},

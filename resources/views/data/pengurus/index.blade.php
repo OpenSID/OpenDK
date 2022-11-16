@@ -59,7 +59,7 @@
         var data = $('#pengurus-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{!! route( 'data.pengurus.getdata' ) !!}",
+            ajax: "{!! route( 'data.pengurus.index' ) !!}",
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},

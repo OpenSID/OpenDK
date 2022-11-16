@@ -107,10 +107,6 @@
                                         <ul class="treeview-menu">
                                             <li {{ (Request::is(['data/pengurus/*', 'data/pengurus/index', 'data/pengurus'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.pengurus.index') }}"><i class="fa fa-circle-o"></i>Pengurus</a>
-                                            </li>
-                                            <li {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan'])? 'class=active' : '') }}>
-                                                <a href="{{ route('data.jabatan.index') }}"><i class="fa fa-circle-o"></i>Jabatan</a>
-                                            </li>
                                         </ul>
                                     </li>
                                 </ul>

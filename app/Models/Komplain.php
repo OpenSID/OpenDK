@@ -52,6 +52,8 @@ class Komplain extends Model
         'lampiran4',
     ];
 
+    protected $with = ['penduduk'];
+
     public function kategori_komplain()
     {
         return $this->hasOne(KategoriKomplain::class, 'id', 'kategori');
@@ -60,5 +62,10 @@ class Komplain extends Model
     public function jawabs()
     {
         return $this->hasMany(JawabKomplain::class, 'komplain_id', 'komplain_id');
+    }
+
+    public function penduduk()
+    {
+        return $this->hasOne(Penduduk::class, 'nik', 'nik');
     }
 }

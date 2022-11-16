@@ -38,4 +38,9 @@ class PembangunanDokumentasi extends Model
     protected $table = 'das_pembangunan_dokumentasi';
     protected $fillable  = [];
     protected $guarded   = [];
+
+    public function pembangunan()
+    {
+        return $this->hasOne(Pembangunan::class, 'id', 'id_pembangunan');
+    }
 }

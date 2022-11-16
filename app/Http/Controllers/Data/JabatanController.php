@@ -45,16 +45,11 @@ class JabatanController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $page_title       = 'Data Jabatan';
         $page_description = 'Daftar Data Jabatan';
 
-        return view('data.jabatan.index', compact('page_title', 'page_description'));
-    }
-
-    public function getData(Request $request)
-    {
         if ($request->ajax()) {
             return DataTables::of(Jabatan::all())
                 ->addIndexColumn()
@@ -71,6 +66,8 @@ class JabatanController extends Controller
                 ->escapeColumns([])
                 ->make(true);
         }
+
+        return view('data.jabatan.index', compact('page_title', 'page_description'));
     }
 
     /**

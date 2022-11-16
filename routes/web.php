@@ -325,15 +325,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Jabatan
-                Route::group(['prefix' => 'jabatan', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
-                    Route::get('/', ['as' => 'data.jabatan.index', 'uses' => 'JabatanController@index']);
-                    Route::get('getdata', ['as' => 'data.jabatan.getdata', 'uses' => 'JabatanController@getData']);
-                    Route::get('create', ['as' => 'data.jabatan.create', 'uses' => 'JabatanController@create']);
-                    Route::post('store', ['as' => 'data.jabatan.store', 'uses' => 'JabatanController@store']);
-                    Route::get('edit/{id}', ['as' => 'data.jabatan.edit', 'uses' => 'JabatanController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.jabatan.update', 'uses' => 'JabatanController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.jabatan.destroy', 'uses' => 'JabatanController@destroy']);
-                });
+                Route::resource('/jabatan', 'JabatanController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {

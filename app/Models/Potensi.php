@@ -49,6 +49,6 @@ class Potensi extends Model
 
     public function tipe()
     {
-        return $this->hasOne(App\Models\TipePotensi::class, 'id', 'tipe_id');
+        return $this->hasOne(TipePotensi::class, 'id', 'kategori_id');
     }
 }

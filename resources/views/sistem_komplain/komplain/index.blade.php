@@ -13,7 +13,7 @@
                 @foreach ($komplains as $item)
                 <div class="post">
                     <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" alt="user image">
+                        <img class="img-circle img-bordered-sm" src="{{ is_user($item->penduduk->foto, $item->penduduk->sex) }}" alt="user image">
                         <span class="username">
                             <a href="{{ route('sistem-komplain.komplain', $item->slug) }}">{{ $item->judul }}</a>
                             <a href="#" class="pull-right btn-box-tool"><span class="label label-default">{{ $item->kategori_komplain->nama }}</span></a>

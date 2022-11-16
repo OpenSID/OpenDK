@@ -41,6 +41,11 @@ class Pembangunan extends Model
 
     public function dokumentasi()
     {
-        return $this->hasOne(PembangunanDokumentasi::class, 'id', 'id_pembangunan');
+        return $this->hasMany(PembangunanDokumentasi::class, 'id_pembangunan');
+    }
+
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
     }
 }

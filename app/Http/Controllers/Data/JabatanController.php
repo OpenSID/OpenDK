@@ -31,11 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\JabatanRequest;
 
 class JabatanController extends Controller
 {
@@ -90,7 +91,7 @@ class JabatanController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(JabatanRequest $request)
     {
         request()->validate([
             'nama' => 'required',
@@ -128,7 +129,7 @@ class JabatanController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(JabatanRequest $request, $id)
     {
         request()->validate([
             'nama' => 'required',

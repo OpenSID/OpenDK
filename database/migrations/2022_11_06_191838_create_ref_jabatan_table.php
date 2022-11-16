@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Enums\JenisJabatan;
 use App\Models\Jabatan;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -47,13 +48,13 @@ class CreateRefJabatanTable extends Migration
             $table->increments('id');
             $table->string('nama', 255);
             $table->text('tupoksi')->nullable();
-            $table->boolean('jenis')->default(3); // 1: Camat; 2: Sekcam, 3: lainnya
+            $table->integer('jenis')->default(JenisJabatan::JabatanLainnya);
             $table->timestamps();
         });
 
         $data = [
-            ['nama'=>'Camat', 'jenis'=> 1],
-            ['nama'=>'Sekretaris', 'jenis'=> 2],
+            ['nama'=>'Camat', 'jenis'=> JenisJabatan::Camat],
+            ['nama'=>'Sekretaris', 'jenis'=> JenisJabatan::Sekretaris],
         ];
 
         Jabatan::insert($data);

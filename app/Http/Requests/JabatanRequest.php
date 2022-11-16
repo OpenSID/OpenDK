@@ -29,33 +29,32 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use App\Enums\JenisJabatan;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Jabatan extends Model
+class JabatanRequest extends FormRequest
 {
-    protected $table = 'ref_jabatan';
-
-    protected $fillable = [
-        'nama',
-        'tupoksi',
-        'jenis',
-    ];
-
     /**
-     * Setter untuk jenis menjadi 3 (Jabatan Lain) jika value null.
+     * Determine if the user is authorized to make this request.
      *
-     * @return string
+     * @return bool
      */
-    public function setJenisAttribute($value)
+    public function authorize()
     {
-        $this->attributes['jenis'] = $value ?? JenisJabatan::JabatanLainnya;
+        return true;
     }
 
-    public function pengurus()
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
-        return $this->hasMany(Pengurus::class, 'jabatan_id', 'id');
+        return [
+            'nama'    => 'required|regex:/^[a-zA-Z\s]*$/',
+            'tupoksi' => 'nullable|string',
+        ];
     }
 }

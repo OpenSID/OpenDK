@@ -32,7 +32,9 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\JabatanRequest;
 use App\Models\Jabatan;
+use App\Enums\JenisJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -44,23 +46,18 @@ class JabatanController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $page_title       = 'Data Jabatan';
         $page_description = 'Daftar Data Jabatan';
 
-        return view('data.jabatan.index', compact('page_title', 'page_description'));
-    }
-
-    public function getData(Request $request)
-    {
         if ($request->ajax()) {
             return DataTables::of(Jabatan::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('data.jabatan.edit', $row->id);
-                        if ($row->jenis == 3) {
+                        if ($row->jenis == JenisJabatan::JabatanLainnya) {
                             $data['delete_url'] = route('data.jabatan.destroy', $row->id);
                         }
                     }
@@ -70,6 +67,8 @@ class JabatanController extends Controller
                 ->escapeColumns([])
                 ->make(true);
         }
+
+        return view('data.jabatan.index', compact('page_title', 'page_description'));
     }
 
     /**
@@ -90,12 +89,8 @@ class JabatanController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(JabatanRequest $request)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
             Jabatan::create($request->all());
         } catch (\Exception $e) {
@@ -128,12 +123,8 @@ class JabatanController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(JabatanRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
             Jabatan::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {

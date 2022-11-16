@@ -6,6 +6,7 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 
 #### Perbaikan bug
 1. [#529](https://github.com/OpenSID/OpenDK/issues/529) Perbaikan foto pelapor di sikema tidak menampilkan foto penduduk.
+2. [#521](https://github.com/OpenSID/OpenDK/issues/521) Sediakan pilihan jabatan bawaan dan dapat diatur secara dinamis.
 
 #### Perubahan Teknis
 1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaikan relasi tabel pembangunan.

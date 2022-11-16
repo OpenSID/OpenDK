@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Enums\JenisJabatan;
 use Illuminate\Database\Eloquent\Model;
 
 class Jabatan extends Model
@@ -44,12 +45,12 @@ class Jabatan extends Model
     ];
 
     /**
-     * Setter untuk membuat path menjadi null jika peta kosong.
+     * Setter untuk jenis menjadi 3 (Jabatan Lain) jika value null.
      *
      * @return string
      */
     public function setJenisAttribute($value)
     {
-        $this->attributes['jenis'] = $value ?? 3;
+        $this->attributes['jenis'] = $value ?? JenisJabatan::JabatanLainnya;
     }
 }

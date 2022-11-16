@@ -29,44 +29,16 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Models\Jabatan;
-use App\Enums\JenisJabatan;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+namespace App\Enums;
 
-class CreateRefJabatanTable extends Migration
+use BenSampo\Enum\Enum;
+
+/**
+ * Jenis atau tipe jabatan untuk pengurus
+ */
+final class JenisJabatan extends Enum
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('ref_jabatan', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nama', 255);
-            $table->text('tupoksi')->nullable();
-            $table->integer('jenis')->default(JenisJabatan::JabatanLainnya);
-            $table->timestamps();
-        });
-
-        $data = [
-            ['nama'=>'Camat', 'jenis'=> JenisJabatan::Camat],
-            ['nama'=>'Sekretaris', 'jenis'=> JenisJabatan::Sekretaris],
-        ];
-
-        Jabatan::insert($data);
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('ref_jabatan');
-    }
+    const Camat          = 1;
+    const Sekretaris     = 2;
+    const JabatanLainnya = 3;
 }

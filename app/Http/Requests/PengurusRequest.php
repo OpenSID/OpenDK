@@ -57,7 +57,7 @@ class PengurusRequest extends FormRequest
         } else {
             $id = "";
         }
-        
+
         return [
             'foto'              => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
             'nama'              =>  "required|regex:/^[a-zA-Z '\.,\-]+$/|max:150",

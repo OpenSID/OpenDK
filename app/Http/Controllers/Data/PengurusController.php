@@ -32,6 +32,8 @@
 namespace App\Http\Controllers\Data;
 
 use App\Enums\Status;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PengurusRequest;
 use App\Models\Agama;
 use App\Models\Jabatan;
 use App\Models\Pengurus;
@@ -40,8 +42,6 @@ use App\Models\PendidikanKK;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PengurusRequest;
 use Illuminate\Support\Facades\Storage;
 
 class PengurusController extends Controller
@@ -156,7 +156,6 @@ class PengurusController extends Controller
     public function edit($id)
     {
         $pengurus          = Pengurus::findOrFail($id);
-        // dd((Storage::url($pengurus->foto)));
         $page_title       = 'Pengurus';
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
@@ -186,6 +185,7 @@ class PengurusController extends Controller
                 $file           = $request->file('foto');
                 $original_name  = strtolower(trim($file->getClientOriginalName()));
                 $file_name      = time() .  '_' . $original_name;
+                Storage::putFileAs('public/pengurus', $file, $file_name);
                 if ($pengurus->foto) {
                     Storage::delete('public/pengurus/' . $pengurus->getRawOriginal('foto'));
                 }

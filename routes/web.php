@@ -326,7 +326,7 @@ Route::group(['middleware' => 'installed'], function () {
 
                 // Jabatan
                 Route::resource('/jabatan', 'JabatanController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
-                
+
                 //Pengurus
                 Route::post('lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('/pengurus', 'PengurusController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);

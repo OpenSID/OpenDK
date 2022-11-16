@@ -19,19 +19,9 @@
             <div class="box box-primary">
 
                 {!! Form::open( [ 'route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                @include('layouts.fragments.error_message')
 
                 <div class="box-body">
-
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
 
                     @include( 'flash::message' )
                     @include('data.pengurus.form')

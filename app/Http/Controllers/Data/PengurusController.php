@@ -48,16 +48,11 @@ class PengurusController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $page_title       = 'Data Pengurus';
         $page_description = 'Daftar Data Pengurus';
 
-        return view('data.pengurus.index', compact('page_title', 'page_description'));
-    }
-
-    public function getData(Request $request)
-    {
         if ($request->ajax()) {
             return DataTables::of(Pengurus::all())
                 ->addIndexColumn()
@@ -103,6 +98,8 @@ class PengurusController extends Controller
                 ->rawColumns(['foto', 'identitas', 'status'])
                 ->make(true);
         }
+
+        return view('data.pengurus.index', compact('page_title', 'page_description'));
     }
 
     /**

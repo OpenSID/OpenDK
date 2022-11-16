@@ -53,7 +53,7 @@ class PengurusRequest extends FormRequest
     public function rules()
     {
         if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
+            $id = "," . $this->penguru;
         } else {
             $id = "";
         }

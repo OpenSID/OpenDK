@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Models\Jabatan;
+use App\Enums\JenisJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -56,7 +57,7 @@ class JabatanController extends Controller
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
                         $data['edit_url']   = route('data.jabatan.edit', $row->id);
-                        if ($row->jenis == 3) {
+                        if ($row->jenis == JenisJabatan::JabatanLainnya) {
                             $data['delete_url'] = route('data.jabatan.destroy', $row->id);
                         }
                     }

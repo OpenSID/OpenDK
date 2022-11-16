@@ -29,11 +29,11 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Models\Jabatan;
 use App\Enums\JenisJabatan;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Jabatan;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateRefJabatanTable extends Migration
 {

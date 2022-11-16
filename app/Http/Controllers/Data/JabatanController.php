@@ -31,13 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\JabatanRequest;
 use App\Models\Jabatan;
 use App\Enums\JenisJabatan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\JabatanRequest;
 
 class JabatanController extends Controller
 {

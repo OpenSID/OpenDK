@@ -93,10 +93,6 @@ class JabatanController extends Controller
      */
     public function store(JabatanRequest $request)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
             Jabatan::create($request->all());
         } catch (\Exception $e) {
@@ -131,10 +127,6 @@ class JabatanController extends Controller
 
     public function update(JabatanRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
             Jabatan::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {

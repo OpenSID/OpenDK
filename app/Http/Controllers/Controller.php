@@ -105,13 +105,13 @@ class Controller extends BaseController
 
     protected function kirimTrack()
     {
-        // if (config('app.demo') == true) { // jika posisi demo, matikan tracking
-        //     return;
-        // }
+        if (config('app.demo') == true) { // jika posisi demo, matikan tracking
+            return;
+        }
 
-        // if (session('track') != null && session('track') == date('Y m d')) {
-        //     return;
-        // }
+        if (session('track') != null && session('track') == date('Y m d')) {
+            return;
+        }
 
         $host_pantau = config('app.host_pantau');
         $data = [

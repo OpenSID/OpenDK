@@ -84,7 +84,7 @@
                                 </tr>
                                 <tr>
                                     <th>TANGGAL LAPOR</th>
-                                    <td>{{ format_date($komplain->created_at) }}</td>
+                                    <td>{{ format_datetime($komplain->created_at) }}</td>
                                 </tr>
                                 <tr>
                                     <th>STATUS</th>

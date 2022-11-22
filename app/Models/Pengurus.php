@@ -31,31 +31,53 @@
 
 namespace App\Models;
 
-use App\Enums\JenisJabatan;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
-class Jabatan extends Model
+class Pengurus extends Model
 {
-    protected $table = 'ref_jabatan';
+    protected $table = 'das_pengurus';
 
-    protected $fillable = [
-        'nama',
-        'tupoksi',
-        'jenis',
+    protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    protected $with = [
+        'jabatan',
+        'agama',
+        'pendidikan',
     ];
 
+    public function getFotoAttribute()
+    {
+        return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;
+    }
+
     /**
-     * Setter untuk jenis menjadi 3 (Jabatan Lain) jika value null.
+     * Setter untuk membuat nama dan gelar.
      *
      * @return string
      */
-    public function setJenisAttribute($value)
+    public function getNamaGelarAttribute()
     {
-        $this->attributes['jenis'] = $value ?? JenisJabatan::JabatanLainnya;
+        return $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'] . ' ' . $this->attributes['gelar_belakang'];
     }
 
-    public function pengurus()
+    public function jabatan()
     {
-        return $this->hasMany(Pengurus::class, 'jabatan_id', 'id');
+        return $this->hasOne(Jabatan::class, 'id', 'jabatan_id');
+    }
+
+    public function pendidikan()
+    {
+        return $this->hasOne(PendidikanKK::class, 'id', 'pendidikan_id');
+    }
+
+    public function agama()
+    {
+        return $this->hasOne(Agama::class, 'id', 'agama_id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'pengurus_id', 'id');
     }
 }

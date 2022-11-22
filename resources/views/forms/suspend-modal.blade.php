@@ -9,7 +9,7 @@
                 <p>Anda yakin ingin menangguhkan data ini?</p>
             </div>
             <div class="modal-footer">
-                {!! Form::open(['id' => 'suspend', 'method' => 'DELETE']) !!}
+                {!! Form::open(['id' => 'suspend', 'method' => 'POST']) !!}
                     <a id="suspend-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
                     {!! Form::submit('Tangguhkan', ['class' => 'btn btn-warning']) !!}
                 {!! Form::close() !!}

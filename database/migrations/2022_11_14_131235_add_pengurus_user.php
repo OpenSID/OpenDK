@@ -29,33 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use App\Enums\JenisJabatan;
-use Illuminate\Database\Eloquent\Model;
-
-class Jabatan extends Model
+class AddPengurusUser extends Migration
 {
-    protected $table = 'ref_jabatan';
-
-    protected $fillable = [
-        'nama',
-        'tupoksi',
-        'jenis',
-    ];
-
     /**
-     * Setter untuk jenis menjadi 3 (Jabatan Lain) jika value null.
+     * Run the migrations.
      *
-     * @return string
+     * @return void
      */
-    public function setJenisAttribute($value)
+    public function up()
     {
-        $this->attributes['jenis'] = $value ?? JenisJabatan::JabatanLainnya;
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('pengurus_id')->after('id')->nullable();
+            $table->foreign('pengurus_id')->references('id')->on('das_pengurus')
+                ->onDelete('restrict')->onUpdate('cascade');
+        });
     }
 
-    public function pengurus()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
-        return $this->hasMany(Pengurus::class, 'jabatan_id', 'id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('pengurus_id');
+        });
     }
 }

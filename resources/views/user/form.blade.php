@@ -1,5 +1,21 @@
 @include('partials.flash_message')
 <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Pengurus</label>
+    
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <select name="pengurus_id" id="pengurus" class="form-control">
+            <option class="form-control" value="">Pilih Pengurus</option>
+            @foreach ($pengurus as $list)
+                @if(empty($user))
+                    <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
+                @else
+                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+</div>
+<div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -89,3 +105,12 @@
             </div>
         </div>
 @include('partials.asset_jqueryvalidation')
+
+@push( 'scripts' )
+<script type="text/javascript">
+$('#pengurus').on('change', function() {
+    var data = $('#pengurus :selected').data('nama');
+    $('input[name="name"]').val(data);
+});
+</script>
+@endpush

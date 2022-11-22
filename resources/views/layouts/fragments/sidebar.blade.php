@@ -98,15 +98,15 @@
                                     <li {{ (Request::is(['data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.data-desa.index') }}"><i class="fa fa-circle-o"></i>Data Desa</a>
                                     </li>
-                                    <li class="treeview {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan'])? 'active' : '') }}">
+                                    <li class="treeview {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan', 'data/pengurus/*', 'data/pengurus/index', 'data/pengurus'])? 'active' : '') }}">
                                         <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan
                                     <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                         </a>
                                         <ul class="treeview-menu">
-                                            <li>
-                                            <a href="#"><i class="fa fa-circle-o"></i>Pengurus</a>
+                                            <li {{ (Request::is(['data/pengurus/*', 'data/pengurus/index', 'data/pengurus'])? 'class=active' : '') }}>
+                                            <a href="{{ route('data.pengurus.index') }}"><i class="fa fa-circle-o"></i>Pengurus</a>
                                             </li>
                                             <li {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan'])? 'class=active' : '') }}>
                                                 <a href="{{ route('data.jabatan.index') }}"><i class="fa fa-circle-o"></i>Jabatan</a>

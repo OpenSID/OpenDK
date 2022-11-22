@@ -8,10 +8,12 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 1. [#521](https://github.com/OpenSID/OpenDK/issues/521) Sediakan pilihan jabatan bawaan dan dapat diatur secara dinamis.
 2. [#519](https://github.com/OpenSID/OpenDK/issues/519) Berikan akses sekretaris kecamatan dan yang terkait untuk melakukan verfikasi surat
 3. [#517](https://github.com/OpenSID/OpenDK/issues/517) Berikan user akses camat untuk melakukan TTE
+4. [#514](https://github.com/OpenSID/OpenDK/issues/514) Buat Fitur Pengaturan Perangkat Kecamatan
 
 
 #### Perbaikan bug
 1. [#529](https://github.com/OpenSID/OpenDK/issues/529) Perbaikan foto pelapor di sikema tidak menampilkan foto penduduk.
+2. [#544](https://github.com/OpenSID/OpenDK/issues/544) Perbaikan form no telepon pengguna tidak bisa dikosongkan.
 
 #### Perubahan Teknis
 1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaikan relasi tabel pembangunan.

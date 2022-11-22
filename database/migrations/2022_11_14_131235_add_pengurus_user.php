@@ -29,55 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-
-class Pengurus extends Model
+class AddPengurusUser extends Migration
 {
-    protected $table = 'das_pengurus';
-
-    protected $guarded = ['id', 'created_at', 'updated_at'];
-
-    protected $with = [
-        'jabatan',
-        'agama',
-        'pendidikan',
-    ];
-
-    public function getFotoAttribute()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('pengurus_id')->after('id')->nullable();
+            $table->foreign('pengurus_id')->references('id')->on('das_pengurus')
+                ->onDelete('restrict')->onUpdate('cascade');
+        });
     }
 
     /**
-     * Setter untuk membuat nama dan gelar.
+     * Reverse the migrations.
      *
-     * @return string
+     * @return void
      */
-    public function getNamaGelarAttribute()
+    public function down()
     {
-        return $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'] . ' ' . $this->attributes['gelar_belakang'];
-    }
-
-    public function jabatan()
-    {
-        return $this->hasOne(Jabatan::class, 'id', 'jabatan_id');
-    }
-
-    public function pendidikan()
-    {
-        return $this->hasOne(PendidikanKK::class, 'id', 'pendidikan_id');
-    }
-
-    public function agama()
-    {
-        return $this->hasOne(Agama::class, 'id', 'agama_id');
-    }
-
-    public function user()
-    {
-        return $this->hasOne(User::class, 'pengurus_id', 'id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('pengurus_id');
+        });
     }
 }

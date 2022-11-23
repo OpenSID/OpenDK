@@ -256,9 +256,20 @@ class PengurusController extends Controller
      * @return Response
      */
     public function lock($id, $status)
-    {
+    {            
         try {
             $pengurus = Pengurus::findOrFail($id);
+
+            if ($status == Status::Aktif) {
+                if ($pengurus->jabatan->id == JenisJabatan::Camat && Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
+                    return redirect()->route('data.pengurus.index')->with('error', 'Camat aktif sudah ditetapkan!');
+                }
+
+                if ($pengurus->jabatan->id == JenisJabatan::Sekretaris && Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
+                    return redirect()->route('data.pengurus.index')->with('error', 'Sekretaris aktif sudah ditetapkan!');
+                }
+            }
+
             $pengurus->update(['status' => $status]);
         } catch (\Exception $e) {
             report($e);

@@ -256,7 +256,7 @@ class PengurusController extends Controller
      * @return Response
      */
     public function lock($id, $status)
-    {            
+    {
         try {
             $pengurus = Pengurus::findOrFail($id);
 

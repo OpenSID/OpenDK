@@ -44,7 +44,9 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Foto Profil </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="image" class="form-control">
+        <input type="file" name="image" id="foto" class="form-control">
+        <br>
+        <img src="{{ is_img($user->foto ?? null) }}"  id="showfoto" style="max-width:400px;max-height:250px;float:left;"/>
     </div>
 </div>
 
@@ -111,6 +113,37 @@
 $('#pengurus').on('change', function() {
     var data = $('#pengurus :selected').data('nama');
     $('input[name="name"]').val(data);
+});
+
+$(function () {
+
+var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+        if (isSuccess) { //yes
+            var reader = new FileReader();
+            reader.onload = function (e) {
+
+            $('#showfoto').attr('src', e.target.result);
+            $('#showfoto').removeClass('hide');
+        }
+
+            reader.readAsDataURL(input.files[0]);
+        } else { //no
+            //warning
+            $("#foto").val('');
+            alert('File tersebut tidak diperbolehkan.');
+        }
+    }
+}
+
+$("#foto").change(function () {
+    readURL(this);
+});
 });
 </script>
 @endpush

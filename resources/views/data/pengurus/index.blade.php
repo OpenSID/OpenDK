@@ -23,6 +23,18 @@
             <a href="{{ route('data.pengurus.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
         </div>
         <div class="box-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Status</label>
+                            <select class="form-control" id="status">
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
+                            </select>
+                    </div>
+                </div>
+            </div>
+            <hr>
             <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="pengurus-table">
                     <thead>
@@ -59,7 +71,12 @@
         var data = $('#pengurus-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{!! route( 'data.pengurus.index' ) !!}",
+            ajax: {
+                url: "{!! route( 'data.pengurus.index' ) !!}",
+                data: function (d) {
+                    d.status = $('#status').val();
+                }
+            },
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},
@@ -77,6 +94,12 @@
                 {data: 'tanggal_henti', name: 'tanggal_henti'},
                 {data: 'masa_jabatan', name: 'masa_jabatan'},
             ]
+        });
+
+        console.log($('#status').val());
+
+        $('#status').on('change', function (e) {
+            data.ajax.reload();
         });
     });
 </script>

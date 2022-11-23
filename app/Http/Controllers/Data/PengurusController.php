@@ -57,7 +57,9 @@ class PengurusController extends Controller
         $page_description = 'Daftar Data Pengurus';
 
         if ($request->ajax()) {
-            return DataTables::of(Pengurus::all())
+            $status = $request->input('status');
+
+            return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {

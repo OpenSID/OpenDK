@@ -96,8 +96,6 @@
             ]
         });
 
-        console.log($('#status').val());
-
         $('#status').on('change', function (e) {
             data.ajax.reload();
         });

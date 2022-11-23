@@ -118,9 +118,21 @@ class PengurusController extends Controller
         $page_description = 'Tambah Pengurus';
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-        $jabatan          = Jabatan::doesntHave('pengurus')->orWhere('jenis', JenisJabatan::JabatanLainnya)
-                                ->pluck('nama', 'id');
 
+        $kecuali = [];
+        
+        // Cek apakah kades
+        if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
+            $kecuali[] = 1;
+        }
+
+        // Cek apakah sekdes
+        if (Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
+            $kecuali[] = 2;
+        }
+
+        $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
+        
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan'));
     }
 
@@ -162,9 +174,21 @@ class PengurusController extends Controller
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-        $jabatan          = Jabatan::doesntHave('pengurus')->orWhere('jenis', JenisJabatan::JabatanLainnya)
-                                ->orWhere('jenis', $pengurus->jabatan->jenis)
-                                ->pluck('nama', 'id');
+
+        $kecuali = [];
+        
+        // Cek apakah kades
+        if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
+            $kecuali[] = 1;
+        }
+
+        // Cek apakah sekdes
+        if (Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
+            $kecuali[] = 2;
+        }
+
+        $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
+                    ->pluck('nama', 'id');
 
         return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus', 'pendidikan', 'agama', 'jabatan'));
     }

@@ -80,4 +80,9 @@ class Pengurus extends Model
     {
         return $this->hasOne(User::class, 'pengurus_id', 'id');
     }
+
+    public function scopeStatus($query, $value = 1)
+    {
+        return $query->where('status', $value);
+    }
 }

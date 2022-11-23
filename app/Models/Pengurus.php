@@ -31,8 +31,8 @@
 
 namespace App\Models;
 
-use App\Enums\Status;
 use App\Enums\JenisJabatan;
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 

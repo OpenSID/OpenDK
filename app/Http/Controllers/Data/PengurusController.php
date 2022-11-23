@@ -120,7 +120,7 @@ class PengurusController extends Controller
         $agama            = Agama::pluck('nama', 'id');
 
         $kecuali = [];
-        
+
         // Cek apakah kades
         if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
             $kecuali[] = 1;
@@ -132,7 +132,7 @@ class PengurusController extends Controller
         }
 
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
-        
+
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan'));
     }
 
@@ -176,7 +176,7 @@ class PengurusController extends Controller
         $agama            = Agama::pluck('nama', 'id');
 
         $kecuali = [];
-        
+
         // Cek apakah kades
         if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
             $kecuali[] = 1;

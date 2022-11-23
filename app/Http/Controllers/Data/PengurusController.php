@@ -57,7 +57,9 @@ class PengurusController extends Controller
         $page_description = 'Daftar Data Pengurus';
 
         if ($request->ajax()) {
-            return DataTables::of(Pengurus::all())
+            $status = $request->input('status');
+
+            return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
@@ -116,8 +118,10 @@ class PengurusController extends Controller
         $page_description = 'Tambah Pengurus';
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-        $jabatan          = Jabatan::doesntHave('pengurus')->orWhere('jenis', JenisJabatan::JabatanLainnya)
-                                ->pluck('nama', 'id');
+        $pengurus         = new Pengurus();
+        $kecuali          = $pengurus->cekPengurus();
+
+        $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
 
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan'));
     }
@@ -155,14 +159,15 @@ class PengurusController extends Controller
      */
     public function edit($id)
     {
-        $pengurus          = Pengurus::findOrFail($id);
+        $pengurus         = Pengurus::findOrFail($id);
         $page_title       = 'Pengurus';
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-        $jabatan          = Jabatan::doesntHave('pengurus')->orWhere('jenis', JenisJabatan::JabatanLainnya)
-                                ->orWhere('jenis', $pengurus->jabatan->jenis)
-                                ->pluck('nama', 'id');
+        $kecuali          = $pengurus->cekPengurus();
+
+        $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
+                    ->pluck('nama', 'id');
 
         return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus', 'pendidikan', 'agama', 'jabatan'));
     }
@@ -233,6 +238,17 @@ class PengurusController extends Controller
     {
         try {
             $pengurus = Pengurus::findOrFail($id);
+
+            if ($status == Status::Aktif) {
+                if ($pengurus->jabatan->id == JenisJabatan::Camat && Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
+                    return redirect()->route('data.pengurus.index')->with('error', 'Camat aktif sudah ditetapkan!');
+                }
+
+                if ($pengurus->jabatan->id == JenisJabatan::Sekretaris && Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
+                    return redirect()->route('data.pengurus.index')->with('error', 'Sekretaris aktif sudah ditetapkan!');
+                }
+            }
+
             $pengurus->update(['status' => $status]);
         } catch (\Exception $e) {
             report($e);

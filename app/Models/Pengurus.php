@@ -31,6 +31,8 @@
 
 namespace App\Models;
 
+use App\Enums\JenisJabatan;
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 
@@ -79,5 +81,32 @@ class Pengurus extends Model
     public function user()
     {
         return $this->hasOne(User::class, 'pengurus_id', 'id');
+    }
+
+    public function scopeStatus($query, $value = 1)
+    {
+        return $query->where('status', $value);
+    }
+
+    /**
+     * Cek pengurus aktif.
+     *
+     * @return     <type>  ( description_of_the_return_value )
+     */
+    public function cekPengurus()
+    {
+        $kecuali = [];
+
+        // Cek apakah kades
+        if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
+            $kecuali[] = 1;
+        }
+
+        // Cek apakah sekdes
+        if (Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
+            $kecuali[] = 2;
+        }
+
+        return $kecuali;
     }
 }

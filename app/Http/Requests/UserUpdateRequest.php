@@ -60,7 +60,7 @@ class UserUpdateRequest extends FormRequest
         return [
             'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
             'email'      => 'required|email|unique:users,email' . $id,
-            'phone'      => 'numeric|digits_between:10,13',
+            'phone'      => 'nullable|numeric|digits_between:10,13',
             'address'    => 'required',
         ];
     }

@@ -118,18 +118,8 @@ class PengurusController extends Controller
         $page_description = 'Tambah Pengurus';
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-
-        $kecuali = [];
-
-        // Cek apakah kades
-        if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
-            $kecuali[] = 1;
-        }
-
-        // Cek apakah sekdes
-        if (Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
-            $kecuali[] = 2;
-        }
+        $pengurus         = new Pengurus();
+        $kecuali          = $pengurus->cekPengurus();
 
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
 
@@ -169,23 +159,12 @@ class PengurusController extends Controller
      */
     public function edit($id)
     {
-        $pengurus          = Pengurus::findOrFail($id);
+        $pengurus         = Pengurus::findOrFail($id);
         $page_title       = 'Pengurus';
         $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan       = PendidikanKK::pluck('nama', 'id');
         $agama            = Agama::pluck('nama', 'id');
-
-        $kecuali = [];
-
-        // Cek apakah kades
-        if (Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
-            $kecuali[] = 1;
-        }
-
-        // Cek apakah sekdes
-        if (Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
-            $kecuali[] = 2;
-        }
+        $kecuali          = $pengurus->cekPengurus();
 
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
                     ->pluck('nama', 'id');

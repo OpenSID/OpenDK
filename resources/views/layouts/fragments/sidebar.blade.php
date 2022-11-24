@@ -35,41 +35,41 @@
                         </a>
                         <ul class="treeview-menu">
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/prosedur/*', 'informasi/prosedur/index', 'informasi/prosedur'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/prosedur*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.prosedur.index') }}"><i class="fa fa-circle-o"></i>Prosedur</a>
                             </li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/regulasi/*', 'informasi/regulasi/index', 'informasi/regulasi'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/regulasi*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.regulasi.index') }}"><i class="fa fa-circle-o"></i>Regulasi</a>
                             </li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/potensi', 'informasi/potensi/*'])? 'class=active' : '') }}><a
+                            <li {{ (Request::is(['informasi/potensi*'])? 'class=active' : '') }}><a
                                         href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a></li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/event/*', 'informasi/event/index', 'informasi/event'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/event*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.event.index') }}"><i class="fa fa-circle-o"></i>Event</a></li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website|kontributor-artikel')
-                            <li {{ (Request::is(['informasi/artikel/*', 'informasi/artikel/index', 'informasi/artikel'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/artikel*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.artikel.index') }}"><i class="fa fa-circle-o"></i>Artikel</a></li>
                             @endrole 
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/faq/*', 'informasi/faq/index', 'informasi/faq'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/faq*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.faq.index') }}"><i class="fa fa-circle-o"></i>FAQ</a></li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/form-dokumen/*', 'informasi/form-dokumen/index', 'informasi/form-dokumen'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/form-dokumen*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a></li>
                             @endrole 
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/media-sosial/*', 'informasi/media-sosial/index', 'informasi/media-sosial'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/media-sosial*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.media-sosial.index') }}"><i class="fa fa-circle-o"></i>Media Sosial</a></li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
-                            <li {{ (Request::is(['informasi/sinergi-program/*', 'informasi/sinergi-program/index', 'informasi/sinergi-program'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['informasi/sinergi-program*'])? 'class=active' : '') }}>
                                 <a href="{{ route('informasi.sinergi-program.index') }}"><i class="fa fa-circle-o"></i>Sinergi Program</a></li>
                             @endrole 
                         </ul>
@@ -82,33 +82,33 @@
                         </a>
                         <ul class="treeview-menu">
                             @if($user->hasrole(['super-admin', 'admin-kecamatan']))
-                            <li class="treeview {{ (Request::is(['data/*'])? 'active' : '') }}">
+                            <li class="treeview {{ (Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/pengurus*', 'data/jabatan*'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                             <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                             </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li {{ (Request::is(['data/profil/*', 'data/profil/index', 'data/profil'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/profil*'])? 'class=active' : '') }}>
                                     <a href="{{ route('data.profil.index') }}"><i class="fa fa-circle-o"></i>Profil</a>
                                     </li>
-                                    <li {{ (Request::is(['data/data-umum/*', 'data/data-umum/index', 'data/data-umum'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/data-umum*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.data-umum.index') }}"><i class="fa fa-circle-o"></i>Data Umum</a>
                                     </li>
-                                    <li {{ (Request::is(['data/data-desa/*', 'data/data-desa/index', 'data/data-desa'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/data-desa*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.data-desa.index') }}"><i class="fa fa-circle-o"></i>Data Desa</a>
                                     </li>
-                                    <li class="treeview {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan', 'data/pengurus/*', 'data/pengurus/index', 'data/pengurus'])? 'active' : '') }}">
+                                    <li class="treeview {{ (Request::is(['data/jabatan*', 'data/pengurus*'])? 'active' : '') }}">
                                         <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan
                                     <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                         </a>
                                         <ul class="treeview-menu">
-                                            <li {{ (Request::is(['data/pengurus/*', 'data/pengurus/index', 'data/pengurus'])? 'class=active' : '') }}>
+                                            <li {{ (Request::is(['data/pengurus*'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.pengurus.index') }}"><i class="fa fa-circle-o"></i>Pengurus</a>
                                             </li>
-                                            <li {{ (Request::is(['data/jabatan/*', 'data/jabatan/index', 'data/jabatan'])? 'class=active' : '') }}>
+                                            <li {{ (Request::is(['data/jabatan*'])? 'class=active' : '') }}>
                                                 <a href="{{ route('data.jabatan.index') }}"><i class="fa fa-circle-o"></i>Jabatan</a>
                                             </li>
                                         </ul>
@@ -117,23 +117,23 @@
                             </li>
                             @endif
                             @if($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan']))
-                                <li class="treeview {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk', 'data/keluarga/*', 'data/keluarga/index', 'data/keluarga', 'data/data-suplemen', 'data/data-suplemen/*', 'data/laporan-penduduk'])? 'active' : '') }}">
+                                <li class="treeview {{ (Request::is(['data/penduduk*', 'data/keluarga*', 'data/data-suplemen*'])? 'active' : '') }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
                                         <span class="pull-right-container">
                                             <i class="fa fa-angle-left pull-right"></i>
                                         </span>
                                     </a>
                                     <ul class="treeview-menu">
-                                        <li {{ (Request::is(['data/penduduk/*', 'data/penduduk/index', 'data/penduduk'])? 'class=active' : '') }}>
+                                        <li {{ (Request::is(['data/penduduk*'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.penduduk.index') }}"><i class="fa fa-circle-o"></i>Penduduk</a>
                                         </li>
-                                        <li {{ (Request::is(['data/keluarga/*', 'data/keluarga/index', 'data/keluarga'])? 'class=active' : '') }}>
+                                        <li {{ (Request::is(['data/keluarga*'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.keluarga.index') }}"><i class="fa fa-circle-o"></i>Keluarga</a>
                                         </li>
-                                        <li {{ (Request::is(['data/data-suplemen/*', 'data/data-suplemen/index', 'data/data-suplemen'])? 'class=active' : '') }}>
+                                        <li {{ (Request::is(['data/data-suplemen*'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.data-suplemen.index') }}"><i class="fa fa-circle-o"></i>Data Suplemen</a>
                                         </li>
-                                        <li {{ (Request::is(['data/laporan-penduduk/*', 'data/laporan-penduduk/index', 'data/laporan-penduduk'])? 'class=active' : '') }}>
+                                        <li {{ (Request::is(['data/laporan-penduduk*'])? 'class=active' : '') }}>
                                             <a href="{{ route('data.laporan-penduduk.index') }}"><i class="fa fa-circle-o"></i>Laporan Penduduk</a>
                                         </li>
                                     </ul>
@@ -141,23 +141,23 @@
                             @endif
 
                             @if($user->hasrole(['super-admin', 'admin-puskesmas']))
-                            <li class="treeview {{ (Request::is(['data/aki-akb/*', 'data/aki-akb','data/imunisasi/*', 'data/imunisasi','data/epidemi-penyakit/*', 'data/epidemi-penyakit','data/toilet-sanitasi/*', 'data/toilet-sanitasi'])? 'active' : '') }}">
+                            <li class="treeview {{ (Request::is(['data/aki-akb*','data/imunisasi*','data/epidemi-penyakit*', 'data/toilet-sanitasi*'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>Kesehatan
                             <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                             </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li {{ (Request::is(['data/aki-akb/*', 'data/aki-akb'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/aki-akb*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.aki-akb.index') }}"><i class="fa fa-circle-o"></i>AKI & AKB</a>
                                     </li>
-                                    <li {{ (Request::is(['data/imunisasi/*', 'data/imunisasi'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/imunisasi*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.imunisasi.index') }}"><i class="fa fa-circle-o"></i>Imunisasi</a>
                                     </li>
-                                    <li {{ (Request::is(['data/epidemi-penyakit/*', 'data/epidemi-penyakit'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/epidemi-penyakit*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.epidemi-penyakit.index') }}"><i class="fa fa-circle-o"></i>Epidemi Penyakit</a>
                                     </li>
-                                    <li {{ (Request::is(['data/toilet-sanitasi/*', 'data/toilet-sanitasi'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/toilet-sanitasi*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.toilet-sanitasi.index') }}"><i class="fa fa-circle-o"></i>Toilet & Sanitasi</a>
                                     </li>
                                 </ul>
@@ -165,20 +165,20 @@
                             @endif
 
                             @if($user->hasrole(['super-admin', 'admin-pendidikan', 'administrator-website']))
-                            <li class="treeview {{ (Request::is(['data/tingkat-pendidikan/*', 'data/tingkat-pendidikan', 'data/putus-sekolah/*', 'data/putus-sekolah', 'data/fasilitas-paud/*', 'data/fasilitas-paud'])? 'active' : '') }}">
+                            <li class="treeview {{ (Request::is(['data/tingkat-pendidikan*', 'data/putus-sekolah*', 'data/fasilitas-paud*'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>Pendidikan
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
                                     </span>
                                 </a>
                                 <ul class="treeview-menu">
-                                    <li {{ (Request::is(['data/tingkat-pendidikan/*', 'data/tingkat-pendidikan'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/tingkat-pendidikan*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.tingkat-pendidikan.index') }}"><i class="fa fa-circle-o"></i>Tingkat Pendidikan</a>
                                     </li>
-                                    <li {{ (Request::is(['data/putus-sekolah/*', 'data/putus-sekolah'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/putus-sekolah*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.putus-sekolah.index') }}"><i class="fa fa-circle-o"></i>Siswa Putus Sekolah</a>
                                     </li>
-                                    <li {{ (Request::is(['data/fasilitas-paud/*', 'data/fasilitas-paud'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/fasilitas-paud*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.fasilitas-paud.index') }}"><i class="fa fa-circle-o"></i>Fasilitas PAUD</a>
                                     </li>
                                 </ul>
@@ -186,12 +186,12 @@
                             @endif
 
                             @if($user->hasrole(['super-admin', 'administrator-website', 'admin-desa']))
-                            <li {{ (Request::is(['data/program-bantuan/*', 'data/program-bantuan/index', 'data/program-bantuan'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['data/program-bantuan*'])? 'class=active' : '') }}>
                                 <a href="{{ route('data.program-bantuan.index') }}"><i class="fa fa-circle-o"></i>Program Bantuan</a></li>
                             @endif
 
                             @if($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan','administrator-website']))
-                            <li class="treeview {{ (Request::is(['data/anggaran-realisasi/*','data/anggaran-realisasi' ,'data/anggaran-desa/*', 'data/anggaran-desa', 'data/laporan-apbdes'])? 'active' : '') }}">
+                            <li class="treeview {{ (Request::is(['data/anggaran-realisasi*', 'data/anggaran-desa*', 'data/laporan-apbdes*'])? 'active' : '') }}">
                                 <a href="#"><i class="fa fa-circle-o"></i>Finansial
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
@@ -199,18 +199,18 @@
                                 </a>
                                 <ul class="treeview-menu">
                                     @if($user->hasrole(['super-admin', 'admin-kecamatan','administrator-website']))
-                                    <li {{ (Request::is(['data/anggaran-realisasi/*', 'data/anggaran-realisasi/index', 'data/anggaran-realisasi'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/anggaran-realisasi*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.anggaran-realisasi.index') }}"><i class="fa fa-circle-o"></i>Anggaran & Realisasi</a>
                                     </li>
                                     @endif
 
                                     @if($user->hasrole(['super-admin', 'admin-desa','administrator-website']))
-                                    <li {{ (Request::is(['data/anggaran-desa/*', 'data/anggaran-desa/index', 'data/anggaran-desa'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/anggaran-desa*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.anggaran-desa.index') }}"><i class="fa fa-circle-o"></i>APBDes</a></li>
                                     @endif
 
                                     @if($user->hasrole(['super-admin','admin-desa','administrator-website']))
-                                    <li {{ (Request::is(['data/laporan-apbdes/*', 'data/laporan-apbdes/index', 'data/laporan-apbdes'])? 'class=active' : '') }}>
+                                    <li {{ (Request::is(['data/laporan-apbdes*'])? 'class=active' : '') }}>
                                         <a href="{{ route('data.laporan-apbdes.index') }}"><i class="fa fa-circle-o"></i>Laporan APBDes</a>
                                     </li>
                                     @endif
@@ -219,31 +219,31 @@
                             @endif
 
                             @if($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan','administrator-website']))
-                            <li {{ (Request::is(['data/pembangunan/*', 'data/pembangunan'])? 'class=active' : '') }}>
+                            <li {{ (Request::is(['data/pembangunan*'])? 'class=active' : '') }}>
                                 <a href="{{ route('data.pembangunan.index') }}"><i class="fa fa-circle-o"></i>Pembangunan</a></li>
                             @endif
                         </ul>
                     </li>
                 @endif
                 @if($user->hasrole(['super-admin', 'admin-komplain', 'administrator-website']))
-                <li class="treeview {{ (Request::is(['admin-komplain/*', 'admin-komplain'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
+                <li class="treeview {{ (Request::is(['admin-komplain*'])? 'active' : '') }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu">
                         @role('super-admin|admin-komplain|administrator-website')
-                        <li {{ (Request::is(['admin-komplain', 'admin-komplain/*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Keluhan</a></li>
+                        <li {{ (Request::is(['admin-komplain*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Keluhan</a></li>
                         @endrole 
                         @role('super-admin|admin-komplain|administrator-website')
-                        <li {{ (Request::is(['admin-komplain/statistik'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a></li>
+                        <li {{ (Request::is(['admin-komplain/statistik*'])? 'class=active' : '') }}><a href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a></li>
                         @endrole 
                     </ul>
                 </li>
                 @endif
 
                 @if($user->hasrole(['super-admin', 'admin-kecamatan']))
-                <li class="treeview {{ (Request::is(['pesan', 'pesan/*'])? 'active' : '') }}">
+                <li class="treeview {{ (Request::is(['pesan*'])? 'active' : '') }}">
                     <a href="#" title="pesan"><i class="fa fa-envelope"></i> <span>Pesan</span>
                         <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
@@ -258,34 +258,34 @@
                 @endif
 
                 @if($user->hasrole(['super-admin', 'administrator-website']))
-                <li class="treeview {{ (Request::is(['setting/*'])? 'active' : '') }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
+                <li class="treeview {{ (Request::is(['setting*'])? 'active' : '') }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                     </a>
                     <ul class="treeview-menu">
-                        <li {{ (Request::is(['setting/tipe-potensi/*', 'setting/tipe-potensi'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['setting/tipe-potensi*'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.tipe-potensi.index') }}"><i class="fa fa-circle-o"></i>Kategori Potensi</a></li>
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/komplain-kategori/*', 'setting/komplain-kategori'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['setting/komplain-kategori*'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.komplain-kategori.index') }}"><i class="fa fa-circle-o"></i>Kategori
                                 Komplain</a></li>
                         @endif
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/tipe-regulasi/*', 'setting/tipe-regulasi'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['setting/tipe-regulasi*'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.tipe-regulasi.index') }}"><i class="fa fa-circle-o"></i>Tipe
                                 Regulasi</a></li>
                         @endif
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/jenis-penyakit/*', 'setting/jenis-penyakit'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['setting/jenis-penyakit*'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.jenis-penyakit.index') }}"><i class="fa fa-circle-o"></i>Jenis Penyakit</a></li>
                         @endif
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/slide/*', 'setting/slide'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['setting/slide*'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.slide.index') }}"><i class="fa fa-circle-o"></i>Slide</a></li>
                         @endif
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/coa/*', 'setting/coa'])? 'class=active' : '') }}>
+                        <li {{ (Request::is(['setting/coa*'])? 'class=active' : '') }}>
                             <a href="{{ route('setting.coa.index') }}"><i class="fa fa-circle-o"></i>COA</a></li>
                         @endif
                             {{-- @if($user->hasrole('super-admin'))
@@ -293,15 +293,15 @@
                                     href="{{ route('setting.hasrole.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a></li>
                         @endif --}}
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/user/*', 'setting/user'])? 'class=active' : '') }}><a
+                        <li {{ (Request::is(['setting/user*'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                         @endif
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/aplikasi/*', 'setting/aplikasi'])? 'class=active' : '') }}><a
+                        <li {{ (Request::is(['setting/aplikasi*'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
                         @endif
                         @if($user->hasrole(['super-admin', 'administrator-website']))
-                        <li {{ (Request::is(['setting/info-sistem/*', 'setting/info-sistem'])? 'class=active' : '') }}><a
+                        <li {{ (Request::is(['setting/info-sistem*'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
                         @endif
                     </ul>

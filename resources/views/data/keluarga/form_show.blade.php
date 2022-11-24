@@ -61,7 +61,7 @@
     <label for="tgl_cetak_kk" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Cetak KK </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('tgl_cetak_kk', null, ['class' => 'form-control', 'disabled', 'id' => 'tgl_cetak_kk']) !!}
+        {!! Form::text('tgl_cetak_kk', format_datetime($keluarga->tgl_cetak_kk), ['class' => 'form-control', 'disabled', 'id' => 'tgl_cetak_kk']) !!}
     </div>
 </div>
 

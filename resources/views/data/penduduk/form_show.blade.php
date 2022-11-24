@@ -105,7 +105,7 @@
             <label for="tanggal_lahir" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Lahir</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tanggal_lahir', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'tanggal_lahir']) !!}
+                {!! Form::text('tanggal_lahir', format_date($penduduk->tanggal_lahir), ['class' => 'form-control', 'disabled'=>true, 'id' => 'tanggal_lahir']) !!}
             </div>
         </div>
 

@@ -36,6 +36,7 @@ use App\Models\DataDesa;
 use App\Models\KategoriKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
+use App\Models\JawabKomplain;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -64,6 +65,7 @@ class AdminKomplainController extends Controller
                     $data['agree_url'] = route('admin-komplain.setuju', $row->id);
                 }
 
+                $data['show_url']   = route('admin-komplain.show', $row->id);
                 $data['edit_url']   = route('admin-komplain.edit', $row->id);
                 $data['delete_url'] = route('admin-komplain.destroy', $row->id);
 
@@ -108,6 +110,16 @@ class AdminKomplainController extends Controller
         }
 
         return redirect()->route('admin-komplain.index')->with('success', 'Status Keluhan berhasil disimpan!');
+    }
+
+    public function show($id)
+    {
+        $komplain = Komplain::findOrFail($id);
+        $page_title       = 'Detail Keluhan';
+        $page_description = 'Detail Keluhan : ' . $komplain->judul;
+        $penduduk = Penduduk::where('nik', $komplain->nik)->first();
+
+        return view('sistem_komplain.admin_komplain.show', compact('page_title', 'page_description', 'komplain', 'penduduk'));
     }
 
     /**
@@ -186,6 +198,27 @@ class AdminKomplainController extends Controller
         return redirect()->route('admin-komplain.index')->with('success', 'Keluhan berhasil dikirim!');
     }
 
+    public function updateKomentar(Request $request, $id)
+    {
+        $jawabKomplain = JawabKomplain::findOrFail($id);
+
+        try {
+            $jawabKomplain->jawaban = $request->jawaban;
+            $jawabKomplain->save();
+            $response = [
+                'status' => 'success',
+                'msg'    => 'Jawaban  berhasil disimpan!',
+            ];
+            return response()->json($response);
+        } catch (Exception $e) {
+            $response = [
+                'status' => 'success',
+                'msg'    => 'Jawaban  Gagal disimpan!',
+            ];
+            return response()->json($response);
+        }
+    }
+
     public function statistik()
     {
         $page_title       = 'Statistik Keluhan';
@@ -241,6 +274,16 @@ class AdminKomplainController extends Controller
         return $data_chart;
     }
 
+    public function getKomentar($id)
+    {
+        $jawab = JawabKomplain::findOrFail($id);
+        $response = [
+            'status' => 'success',
+            'data' => $jawab,
+        ];
+        return response()->json($response);
+    }
+
     /**
     * Display the specified resource.
     *
@@ -257,5 +300,17 @@ class AdminKomplainController extends Controller
         }
 
         return redirect()->route('admin-komplain.index')->with('success', 'Keluhan sukses dihapus!');
+    }
+
+    public function deletekomentar($id)
+    {
+        try {
+            JawabKomplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Komentar Keluhan gagal dihapus!');
+        }
+
+        return back()->with('success', 'Komentar Keluhan sukses dihapus!');
     }
 }

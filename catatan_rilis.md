@@ -10,6 +10,7 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 2. [#514](https://github.com/OpenSID/OpenDK/issues/514) Penambahan fitur pengaturan perangkat kecamatan.
 3. [#519](https://github.com/OpenSID/OpenDK/issues/519) Penambahan fitur pengguna untuk perangkat kecamatan.
 4. [#546](https://github.com/OpenSID/OpenDK/issues/546) Penambahan fitur pratinjau foto pengguna.
+5. [#502](https://github.com/OpenSID/OpenDK/issues/502) Penambahan fitur komentar keluhan di halaman admin.
 
 #### Perbaikan bug
 

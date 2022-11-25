@@ -348,7 +348,8 @@ class SistemKomplainController extends Controller
     public function getJawabans(Request $request)
     {
         $jawabans = JawabKomplain::where('komplain_id', $request->input('id'))->orderBy('id', 'desc')->get();
+        $komplain = Komplain::where('komplain_id', $request->input('id'))->get()[0];
 
-        return view('sistem_komplain.komplain.jawabans', compact('jawabans'))->render();
+        return view('sistem_komplain.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
 }

@@ -14,7 +14,7 @@ class DeletePerangkatProfil extends Migration
      */
     public function up()
     {
-        Schema::table('das_profil', function($table) {
+        Schema::table('das_profil', function(Blueprint $table) {
             $table->dropColumn('nama_camat');
             $table->dropColumn('sekretaris_camat');
             $table->dropColumn('kepsek_pemerintahan_umum');
@@ -35,7 +35,7 @@ class DeletePerangkatProfil extends Migration
      */
     public function down()
     {
-        Schema::table('das_profil', function ($table) {
+        Schema::table('das_profil', function (Blueprint $table) {
             $table->string('nama_camat', 150)->nullable()->after('dasar_pembentukan');
             $table->string('sekretaris_camat', 150)->nullable()->after('nama_camat');
             $table->string('kepsek_pemerintahan_umum', 150)->nullable()->after('sekretaris_camat');

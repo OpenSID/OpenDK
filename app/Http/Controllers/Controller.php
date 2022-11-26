@@ -89,8 +89,8 @@ class Controller extends BaseController
         $navdesa                     = DataDesa::all();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
         $camat                       = Pengurus::status()->whereHas('jabatan', function ($query) {
-                                            $query->where('jenis', 1);
-                                        })->first();
+            $query->where('jenis', 1);
+        })->first();
 
         View::share([
             'profil'                 => $this->profil,

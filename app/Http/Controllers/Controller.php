@@ -37,6 +37,7 @@ use App\Models\Event;
 use App\Models\Keluarga;
 use App\Models\MediaSosial;
 use App\Models\Penduduk;
+use App\Models\Pengurus;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
@@ -87,6 +88,9 @@ class Controller extends BaseController
         $medsos                      = MediaSosial::where('status', 1)->get();
         $navdesa                     = DataDesa::all();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
+        $camat                       = Pengurus::status()->whereHas('jabatan', function ($query) {
+                                            $query->where('jenis', 1);
+                                        })->first();
 
         View::share([
             'profil'                 => $this->profil,
@@ -98,6 +102,7 @@ class Controller extends BaseController
             'medsos'                 => $medsos,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
+            'camat'                  => $camat,
         ]);
     }
 

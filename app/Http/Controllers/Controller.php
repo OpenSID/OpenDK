@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Event;
@@ -89,7 +90,7 @@ class Controller extends BaseController
         $navdesa                     = DataDesa::all();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
         $camat                       = Pengurus::status()->whereHas('jabatan', function ($query) {
-                                            $query->where('jenis', 1);
+                                            $query->where('jenis', JenisJabatan::Camat);
                                         })->first();
 
         View::share([

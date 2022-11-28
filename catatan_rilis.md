@@ -32,3 +32,4 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 
 1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaikan relasi tabel pembangunan.
 2. [#525](https://github.com/OpenSID/OpenDK/issues/525) Perbaikan relasi tabel potensi.
+2. [#125](https://github.com/OpenSID/tracksid/issues/125) Tambahkan data untuk di kirim ke tracksid.

@@ -106,30 +106,30 @@ class Controller extends BaseController
 
     protected function kirimTrack()
     {
-        if (config('app.demo') == true) { // jika posisi demo, matikan tracking
-            return;
-        }
+        // if (config('app.demo') == true) { // jika posisi demo, matikan tracking
+        //     return;
+        // }
 
-        if (session('track') != null && session('track') == date('Y m d')) {
-            return;
-        }
+        // if (session('track') != null && session('track') == date('Y m d')) {
+        //     return;
+        // }
 
         $host_pantau = config('app.host_pantau');
         $data = [
             'url' => url('/'),
             'versi' => config('app.version'),
             'jumlah_desa' => DataDesa::count(),
-            'desa' => DataDesa::select(['desa_id', 'nama', 'sebutan_desa', 'path', 'website'])->get(),
+            'desa' => json_encode(DataDesa::select(['desa_id', 'nama', 'sebutan_desa', 'path', 'website'])->get()),
             'jumlahdesa_sinkronisasi' => DataDesa::count(),
             'jumlah_penduduk' => Penduduk::where('status_dasar', 1)->count(),
             'jumlah_keluarga' => Keluarga::count(),
             'peta_wilayah'  => $this->umum->path ?? '[[[[]]]]',
-            'batas_wilayah' => [
+            'batas_wilayah' => json_encode([
                 'bts_wil_utara' => $this->umum->bts_wil_utara,
                 'bts_wil_timur' => $this->umum->bts_wil_timur,
                 'bts_wil_selatan' => $this->umum->bts_wil_selatan,
                 'bts_wil_barat' => $this->umum->bts_wil_barat
-            ],
+            ]),
             'sebutan_wilayah' => $this->sebutan_wilayah,
             'alamat' => $this->profil->alamat,
             'jumlah_bantuan' => Program::count(),
@@ -142,10 +142,13 @@ class Controller extends BaseController
             'nama_camat' => $this->profil->nama_camat
         ];
 
+
+
         try {
-            Http::withHeaders([
+            $response = Http::withHeaders([
                 'token' => config('app.token_pantau')
             ])->post($host_pantau.'track/opendk?token='.config('app.token_pantau'), $data);
+            dd($response->getBody()->getContents());
             session(['track' => date('Y m d')]);
             return;
         } catch (Exception $e) {

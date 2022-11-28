@@ -148,7 +148,6 @@ class Controller extends BaseController
             $response = Http::withHeaders([
                 'token' => config('app.token_pantau')
             ])->post($host_pantau.'track/opendk?token='.config('app.token_pantau'), $data);
-            dd($response->getBody()->getContents());
             session(['track' => date('Y m d')]);
             return;
         } catch (Exception $e) {

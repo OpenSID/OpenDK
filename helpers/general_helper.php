@@ -219,7 +219,7 @@ function diff_for_humans($date)
 
 function format_datetime($date)
 {
-    return  Carbon::parse($date)->toDayDateTimeString();
+    return  Carbon::parse($date)->translatedFormat('d F Y H:i:s');
 }
 
 function format_date($date)

@@ -33,7 +33,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class PengurusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -53,15 +53,29 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
+            $id = "," . $this->penguru;
         } else {
             $id = "";
         }
+
         return [
-            'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'      => 'required|email|unique:users,email' . $id,
-            'phone'      => 'nullable|numeric|digits_between:10,13',
-            'address'    => 'required',
+            'foto'              => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'nama'              =>  "required|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'gelar_depan'       =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'gelar_belakang'    =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'nik'               => 'required|integer|digits:16|unique:das_pengurus,nik' . $id,
+            'nip'               => 'nullable|integer|digits:18|unique:das_pengurus,nip' . $id,
+            'tempat_lahir'      => "required|regex:/^[a-zA-Z0-9 '\.,\-\/]+$/",
+            'tanggal_lahir'     => "required|date",
+            'jenis_kelamin'     => 'integer',
+            'pendidikan'        => 'integer',
+            'agama'             => 'integer',
+            'pangkat'           => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'no_sk'             => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'tanggal_sk'        => 'nullable|date',
+            'no_henti'          => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'tanggal_henti'     => 'nullable|date',
+            'masa_jabatan'      => 'required|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
         ];
     }
 }

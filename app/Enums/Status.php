@@ -29,33 +29,15 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Enums;
 
-use App\Enums\JenisJabatan;
-use Illuminate\Database\Eloquent\Model;
+use BenSampo\Enum\Enum;
 
-class Jabatan extends Model
+/**
+ * Status untuk melihat aktif dan tidak aktif
+ */
+final class Status extends Enum
 {
-    protected $table = 'ref_jabatan';
-
-    protected $fillable = [
-        'nama',
-        'tupoksi',
-        'jenis',
-    ];
-
-    /**
-     * Setter untuk jenis menjadi 3 (Jabatan Lain) jika value null.
-     *
-     * @return string
-     */
-    public function setJenisAttribute($value)
-    {
-        $this->attributes['jenis'] = $value ?? JenisJabatan::JabatanLainnya;
-    }
-
-    public function pengurus()
-    {
-        return $this->hasMany(Pengurus::class, 'jabatan_id', 'id');
-    }
+    public const TidakAktif = 0;
+    public const Aktif      = 1;
 }

@@ -83,6 +83,9 @@ class DataPembangunanController extends Controller
             $pembangunanDokumentasi = PembangunanDokumentasi::where('desa_id', $desa_id)->where('id_pembangunan', $id)->get();
             return DataTables::of($pembangunanDokumentasi)
             ->addIndexColumn()
+            ->editColumn('created_at', function ($row) {
+                return format_datetime($row->created_at);
+            })
             ->make();
         }
     }

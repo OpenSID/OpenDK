@@ -64,10 +64,12 @@ class Controller extends BaseController
     protected $sebutan_wilayah;
     protected $sebutan_kepala_wilayah;
     protected $browser_title;
+    protected $umum;
 
     public function __construct()
     {
         $this->profil = Profil::first();
+        $this->umum = DataUmum::first();
 
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';
@@ -115,17 +117,27 @@ class Controller extends BaseController
         $data = [
             'url' => url('/'),
             'versi' => config('app.version'),
-            'jml_desa' => DataDesa::count(),
+            'jumlah_desa' => DataDesa::count(),
+            'desa' => DataDesa::select(['desa_id', 'nama', 'sebutan_desa', 'path', 'website'])->get(),
+            'jumlahdesa_sinkronisasi' => DataDesa::count(),
             'jumlah_penduduk' => Penduduk::where('status_dasar', 1)->count(),
             'jumlah_keluarga' => Keluarga::count(),
-            'peta_wilayah'  => DataUmum::first()->path ?? '[[[[]]]]',
+            'peta_wilayah'  => $this->umum->path ?? '[[[[]]]]',
+            'batas_wilayah' => [
+                'bts_wil_utara' => $this->umum->bts_wil_utara,
+                'bts_wil_timur' => $this->umum->bts_wil_timur,
+                'bts_wil_selatan' => $this->umum->bts_wil_selatan,
+                'bts_wil_barat' => $this->umum->bts_wil_barat
+            ],
             'sebutan_wilayah' => $this->sebutan_wilayah,
+            'alamat' => $this->profil->alamat,
             'kode_kecamatan' => $this->profil->kecamatan_id,
             'kode_kabupaten' => $this->profil->kabupaten_id,
             'kode_provinsi' => $this->profil->provinsi_id,
             'nama_kecamatan' => $this->profil->nama_kecamatan,
             'nama_kabupaten' => $this->profil->nama_kabupaten,
             'nama_provinsi' => $this->profil->nama_provinsi,
+            'nama_camat' => $this->profil->nama_camat
         ];
 
         try {

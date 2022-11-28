@@ -25,7 +25,7 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 9. [#558](https://github.com/OpenSID/OpenDK/issues/558) Perbaikan Format tanggal daftar dan cetak kk di detail keluarga.
 10. [#559](https://github.com/OpenSID/OpenDK/issues/559) Perbaikan Format tanggal lapor di sistem keluhan.
 11. [#561](https://github.com/OpenSID/OpenDK/issues/561) Perbaikan Format tanggal terbit artikel.
-
+12. [#549](https://github.com/OpenSID/OpenDK/issues/549) Perbaiki foto sinergi tidak tampil dihalaman lain selain halaman utama.
 
 
 #### Perubahan Teknis

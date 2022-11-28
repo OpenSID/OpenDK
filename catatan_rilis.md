@@ -16,6 +16,7 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 
 1. [#529](https://github.com/OpenSID/OpenDK/issues/529) Perbaikan foto pelapor di sikema tidak menampilkan foto penduduk.
 2. [#544](https://github.com/OpenSID/OpenDK/issues/544) Perbaikan form no telepon pengguna tidak bisa dikosongkan.
+3. [#536](https://github.com/OpenSID/OpenDK/pull/536) Perbaikan Foto artikel tidak terhapus ketika hapus atau ganti foto.
 
 #### Perubahan Teknis
 

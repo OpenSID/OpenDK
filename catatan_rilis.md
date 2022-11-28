@@ -17,6 +17,16 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 1. [#529](https://github.com/OpenSID/OpenDK/issues/529) Perbaikan foto pelapor di sikema tidak menampilkan foto penduduk.
 2. [#544](https://github.com/OpenSID/OpenDK/issues/544) Perbaikan form no telepon pengguna tidak bisa dikosongkan.
 3. [#536](https://github.com/OpenSID/OpenDK/pull/536) Perbaikan Foto artikel tidak terhapus ketika hapus atau ganti foto.
+4. [#553](https://github.com/OpenSID/OpenDK/issues/553) Perbaikan Format tanggal rekam dokumentasi pembangunan.
+5. [#554](https://github.com/OpenSID/OpenDK/issues/554) Perbaikan Format tanggal masa berlaku program bantuan.
+6. [#555](https://github.com/OpenSID/OpenDK/issues/555) Perbaikan Format tanggal lahir peserta program bantuan.
+7. [#556](https://github.com/OpenSID/OpenDK/issues/556) Perbaikan Format tanggal di modul detail penduduk.
+8. [#557](https://github.com/OpenSID/OpenDK/issues/557) Perbaikan Format tanggal di modul keluarga.
+9. [#558](https://github.com/OpenSID/OpenDK/issues/558) Perbaikan Format tanggal daftar dan cetak kk di detail keluarga.
+10. [#559](https://github.com/OpenSID/OpenDK/issues/559) Perbaikan Format tanggal lapor di sistem keluhan.
+11. [#561](https://github.com/OpenSID/OpenDK/issues/561) Perbaikan Format tanggal terbit artikel.
+
+
 
 #### Perubahan Teknis
 

@@ -7,14 +7,14 @@
 </div>
 
 <div class="form-group">
-  
+
     <label for="nik_kepala" class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Keluarga</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <select class="form-control" id="nik_kepala" disabled name="nik_kepala">
           @foreach($penduduk as $kk)
               @if($kk->nik == $keluarga->nik_kepala)
-                <option value="{{ $kk->nik }}" selected="true">{{ $kk->nama }}</option>      
+                <option value="{{ $kk->nik }}" selected="true">{{ $kk->nama }}</option>
               @else
                 <option value="{{ $kk->nik }}" >{{ $kk->nama }}</option>
               @endif
@@ -26,7 +26,7 @@
     <label for="tgl_daftar" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Daftar</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('tgl_daftar', null, ['class' => 'form-control', 'disabled', 'id' => 'tgl_daftar']) !!}
+        {!! Form::text('tgl_daftar', format_date($keluarga->tgl_daftar), ['class' => 'form-control', 'disabled', 'id' => 'tgl_daftar']) !!}
     </div>
 </div>
 <div class="form-group">
@@ -73,7 +73,7 @@
 
         // Select 2 Kecamatan
         $('#nik_kepala').select2();
-      
+
     });
 </script>
 @endpush

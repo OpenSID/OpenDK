@@ -31,24 +31,25 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Event;
+use App\Models\Profil;
+use App\Models\Program;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
-use App\Models\Event;
 use App\Models\Keluarga;
-use App\Models\MediaSosial;
 use App\Models\Penduduk;
-use App\Models\Profil;
-use App\Models\SettingAplikasi;
-use App\Models\SinergiProgram;
+use App\Models\MediaSosial;
 use App\Models\TipePotensi;
-use Exception;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Http;
+use App\Models\SinergiProgram;
+use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -131,6 +132,7 @@ class Controller extends BaseController
             ],
             'sebutan_wilayah' => $this->sebutan_wilayah,
             'alamat' => $this->profil->alamat,
+            'jumlah_bantuan' => Program::count(),
             'kode_kecamatan' => $this->profil->kecamatan_id,
             'kode_kabupaten' => $this->profil->kabupaten_id,
             'kode_provinsi' => $this->profil->provinsi_id,

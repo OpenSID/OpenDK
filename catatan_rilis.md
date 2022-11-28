@@ -28,7 +28,7 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 12. [#549](https://github.com/OpenSID/OpenDK/issues/549) Perbaiki foto sinergi tidak tampil dihalaman lain selain halaman utama.
 13. [#565](hhttps://github.com/OpenSID/OpenDK/issues/565) Perbaiki foto media sosial tidak tampil dihalaman lain selain halaman utama.
 14. [#548](https://github.com/OpenSID/OpenDK/issues/548) Perbaiki modul edit grup pengguna selalu admin desa.
-
+15. [#552](https://github.com/OpenSID/OpenDK/issues/552) Perbaiki Error sinkronisasi program bantuan saat no_id_kartu yang panjang.
 
 #### Perubahan Teknis
 

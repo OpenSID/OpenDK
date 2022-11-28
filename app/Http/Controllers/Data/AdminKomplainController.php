@@ -33,10 +33,10 @@ namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use App\Models\JawabKomplain;
 use App\Models\KategoriKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use App\Models\JawabKomplain;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;

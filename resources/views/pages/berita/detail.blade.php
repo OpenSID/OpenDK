@@ -13,7 +13,7 @@
 
 		<div class="isi-artikel">
 			<h3 style="margin-top: 5px; text-align: justify;"><b>{{ $artikel->judul }}</b></h3>
-			<p><i class="fa fa-calendar"></i>&ensp;{{ $artikel->created_at->format('d M Y') }}&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>
+			<p><i class="fa fa-calendar"></i>&ensp;{{ format_date($artikel->created_at) }}&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>
 			<p>{!! $artikel->isi !!}</p>
 			<hr/>
 			<div style="margin-top:-10px" class="sharethis-inline-share-buttons"></div>

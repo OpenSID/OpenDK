@@ -95,7 +95,6 @@ class Controller extends BaseController
         $medsos                      = MediaSosial::where('status', 1)->get();
         $navdesa                     = DataDesa::all();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
-        $camat                       = 
 
         View::share([
             'profil'                 => $this->profil,

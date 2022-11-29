@@ -32,26 +32,26 @@
 namespace App\Http\Controllers;
 
 use App\Enums\JenisJabatan;
-use Exception;
-use App\Models\Event;
-use App\Models\Program;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
+use App\Models\Event;
 use App\Models\Keluarga;
+use App\Models\MediaSosial;
 use App\Models\Penduduk;
 use App\Models\Pengurus;
 use App\Models\Profil;
+use App\Models\Program;
 use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
-use App\Models\MediaSosial;
 use App\Models\TipePotensi;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\View;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 
 class Controller extends BaseController
 {
@@ -74,8 +74,8 @@ class Controller extends BaseController
         $this->profil     = Profil::first();
         $this->umum       = DataUmum::first();
         $this->nama_camat = Pengurus::status()->whereHas('jabatan', function ($query) {
-                $query->where('jenis', JenisJabatan::Camat);
-            })->first();
+            $query->where('jenis', JenisJabatan::Camat);
+        })->first();
 
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';
@@ -147,8 +147,6 @@ class Controller extends BaseController
             'nama_provinsi' => $this->profil->nama_provinsi,
             'nama_camat' => $this->nama_camat
         ];
-
-
 
         try {
             $response = Http::withHeaders([

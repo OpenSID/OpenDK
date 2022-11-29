@@ -71,8 +71,11 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $this->profil = Profil::first();
-        $this->umum = DataUmum::first();
+        $this->profil     = Profil::first();
+        $this->umum       = DataUmum::first();
+        $this->nama_camat = Pengurus::status()->whereHas('jabatan', function ($query) {
+                $query->where('jenis', JenisJabatan::Camat);
+            })->first();
 
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';
@@ -92,9 +95,7 @@ class Controller extends BaseController
         $medsos                      = MediaSosial::where('status', 1)->get();
         $navdesa                     = DataDesa::all();
         $navpotensi                  = TipePotensi::orderby('nama_kategori', 'ASC')->get();
-        $camat                       = Pengurus::status()->whereHas('jabatan', function ($query) {
-                                            $query->where('jenis', JenisJabatan::Camat);
-                                        })->first();
+        $camat                       = 
 
         View::share([
             'profil'                 => $this->profil,
@@ -106,7 +107,7 @@ class Controller extends BaseController
             'medsos'                 => $medsos,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
-            'camat'                  => $camat,
+            'camat'                  => $this->nama_camat,
         ]);
     }
 
@@ -145,7 +146,7 @@ class Controller extends BaseController
             'nama_kecamatan' => $this->profil->nama_kecamatan,
             'nama_kabupaten' => $this->profil->nama_kabupaten,
             'nama_provinsi' => $this->profil->nama_provinsi,
-            'nama_camat' => $this->profil->nama_camat
+            'nama_camat' => $this->nama_camat
         ];
 
 

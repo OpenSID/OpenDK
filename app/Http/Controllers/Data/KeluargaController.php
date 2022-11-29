@@ -66,6 +66,8 @@ class KeluargaController extends Controller
                 })
                 ->addColumn('foto', function ($row) {
                     return '<img src="' . is_user($row->kepala_kk->foto, $row->kepala_kk->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                })->editColumn('tgl_cetak_kk', function ($row) {
+                    return format_datetime($row->tgl_cetak_kk);
                 })
                 ->rawColumns(['foto'])
                 ->make();

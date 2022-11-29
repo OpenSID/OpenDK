@@ -66,6 +66,8 @@ class ArtikelController extends Controller
                     } else {
                         return '<span class="label label-success">Aktif</span>';
                     }
+                })->editColumn('created_at', function ($row) {
+                    return format_datetime($row->created_at);
                 })
                 ->rawColumns(['status'])
                 ->make(true);
@@ -111,7 +113,7 @@ class ArtikelController extends Controller
                 $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
-                Storage::delete('public/artikel/' . $artikel->getOriginal('gambar'));
+                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
 
                 $input['gambar'] = substr($path, 15) ;
             }
@@ -129,7 +131,7 @@ class ArtikelController extends Controller
     {
         try {
             if ($artikel->delete()) {
-                Storage::delete('public/artikel/' . $artikel->getOriginal('gambar'));
+                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
             }
         } catch (\Exception $e) {
             report($e);

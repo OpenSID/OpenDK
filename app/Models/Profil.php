@@ -51,22 +51,14 @@ class Profil extends Model
         'kode_pos',
         'telepon',
         'email',
-        'nama_camat',
         'tahun_pembentukan',
         'dasar_pembentukan',
-        'sekretaris_camat',
-        'kepsek_pemerintahan_umum',
-        'kepsek_kesejahteraan_masyarakat',
-        'kepsek_pemberdayaan_masyarakat',
-        'kepsek_pelayanan_umum',
-        'kepsek_trantib',
         'file_struktur_organisasi',
         'file_logo',
         'sambutan',
         'socialmedia',
         'visi',
         'misi',
-        'foto_kepala_wilayah',
     ];
 
     protected $cast = [

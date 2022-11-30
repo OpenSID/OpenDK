@@ -36,3 +36,4 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 2. [#525](https://github.com/OpenSID/OpenDK/issues/525) Perbaikan relasi tabel potensi.
 3. [#125](https://github.com/OpenSID/tracksid/issues/125) Tambahkan data untuk di kirim ke tracksid.
 4. [#562](https://github.com/OpenSID/OpenDK/issues/562) Penyesuaian kondisi cek menu aktif di halaman.admin.
+5. [#570](https://github.com/OpenSID/OpenDK/issues/570) Perbaikan duplikasi perangkat pada halaman profil.

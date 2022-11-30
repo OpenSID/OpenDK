@@ -26,12 +26,13 @@ Terima kasih pada [] yang baru mulai berkontribusi.
 10. [#559](https://github.com/OpenSID/OpenDK/issues/559) Perbaikan Format tanggal lapor di sistem keluhan.
 11. [#561](https://github.com/OpenSID/OpenDK/issues/561) Perbaikan Format tanggal terbit artikel.
 12. [#549](https://github.com/OpenSID/OpenDK/issues/549) Perbaiki foto sinergi tidak tampil dihalaman lain selain halaman utama.
-13. [#565](hhttps://github.com/OpenSID/OpenDK/issues/565) Perbaiki foto media sosial tidak tampil dihalaman lain selain halaman utama.
-14. [#548](https://github.com/OpenSID/OpenDK/issues/548) Perbaiki modul edit grup pengguna selalu admin desa.
-15. [#552](https://github.com/OpenSID/OpenDK/issues/552) Perbaiki Error sinkronisasi program bantuan saat no_id_kartu yang panjang.
+13. [#565](hhttps://github.com/OpenSID/OpenDK/issues/565) Perbaikan foto media sosial tidak tampil dihalaman lain selain halaman utama.
+14. [#548](https://github.com/OpenSID/OpenDK/issues/548) Perbaikan modul edit grup pengguna selalu admin desa.
+15. [#552](https://github.com/OpenSID/OpenDK/issues/552) Perbaikan Error sinkronisasi program bantuan saat no_id_kartu yang panjang.
 
 #### Perubahan Teknis
 
 1. [#523](https://github.com/OpenSID/OpenDK/issues/523) Perbaikan relasi tabel pembangunan.
 2. [#525](https://github.com/OpenSID/OpenDK/issues/525) Perbaikan relasi tabel potensi.
-2. [#125](https://github.com/OpenSID/tracksid/issues/125) Tambahkan data untuk di kirim ke tracksid.
+3. [#125](https://github.com/OpenSID/tracksid/issues/125) Tambahkan data untuk di kirim ke tracksid.
+4. [#562](https://github.com/OpenSID/OpenDK/issues/562) Penyesuaian kondisi cek menu aktif di halaman.admin.

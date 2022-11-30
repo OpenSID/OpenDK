@@ -94,67 +94,9 @@
                     <img src="{{ is_img($profil->file_struktur_organisasi) }}" id="showgambar" style="max-width:200px;max-height:200px;float:left;"/>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sambutan {{ $sebutan_kepala_wilayah }}</label>
-                <div class="col-md-8 col-sm-6 col-xs-12">
-                    {!! Form::textarea('sambutan', null, ['class' => 'textarea', 'placeholder' => 'Sambutan '.$sebutan_kepala_wilayah. ' ' .$profil->nama_kecamatan .'', 'style' => 'width: 100%;
-                    height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $profil->foto_kepala_wilayah }} Foto {{ $sebutan_kepala_wilayah }}</label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                <input type="file" id="foto_kepala_wilayah" name="foto_kepala_wilayah" accept="image/*" class="validate form-control"/>
-                <br>
-                <img src="{{ is_img($profil->foto_kepala_wilayah) }}" id="showgambar2" style="max-width:200px;max-height:200px;float:left;"/>
-            </div>
-        </div>
     </div>
 
     <div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama {{ $sebutan_kepala_wilayah }} <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('nama_camat', null, ['placeholder' => 'Nama Camat', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sekretaris <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('sekretaris_camat', null, ['placeholder' => 'Sekretaris Camat', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Pemerintahan Umum <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_pemerintahan_umum', null, ['placeholder' => 'Kepala Seksi Pemerintahan Umum', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Kesejahteraan Masyarakat <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_kesejahteraan_masyarakat', null, ['placeholder' => 'Kepala Seksi Kesejahteraan Masyarakat', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Pemberdayaan Masyarakat <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_pemberdayaan_masyarakat', null, ['placeholder' => 'Kepala Seksi Pemberdayaan Masyarakat', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi Pelayanan Umum <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_pelayanan_umum', null, ['placeholder' => 'Kepala Seksi Pelayanan Umum', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Kepala Seksi TRANTIB <span class="required">*</span></label>
-            <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Form::text('kepsek_trantib', null, ['placeholder' => 'Kepala Seksi TRANTIB', 'class' => 'form-control', 'required']) !!}
-            </div>
-        </div>
-
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Logo</label>
 
@@ -202,6 +144,13 @@
                     <br>
                     @endforeach
                 @endif
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Sambutan {{ $sebutan_kepala_wilayah }}</label>
+                <div class="col-md-8 col-sm-6 col-xs-12">
+                    {!! Form::textarea('sambutan', null, ['class' => 'textarea', 'placeholder' => 'Sambutan '.$sebutan_kepala_wilayah. ' ' .$profil->nama_kecamatan .'', 'style' => 'width: 100%;
+                    height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;']) !!}
             </div>
         </div>
     </div>

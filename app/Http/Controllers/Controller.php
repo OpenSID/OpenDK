@@ -31,12 +31,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Event;
 use App\Models\Keluarga;
 use App\Models\MediaSosial;
 use App\Models\Penduduk;
+use App\Models\Pengurus;
 use App\Models\Profil;
 use App\Models\Program;
 use App\Models\SettingAplikasi;
@@ -69,8 +71,11 @@ class Controller extends BaseController
 
     public function __construct()
     {
-        $this->profil = Profil::first();
-        $this->umum = DataUmum::first();
+        $this->profil     = Profil::first();
+        $this->umum       = DataUmum::first();
+        $this->nama_camat = Pengurus::status()->whereHas('jabatan', function ($query) {
+            $query->where('jenis', JenisJabatan::Camat);
+        })->first();
 
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';
@@ -101,6 +106,7 @@ class Controller extends BaseController
             'medsos'                 => $medsos,
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
+            'camat'                  => $this->nama_camat,
         ]);
     }
 
@@ -139,13 +145,13 @@ class Controller extends BaseController
             'nama_kecamatan' => $this->profil->nama_kecamatan,
             'nama_kabupaten' => $this->profil->nama_kabupaten,
             'nama_provinsi' => $this->profil->nama_provinsi,
-            'nama_camat' => $this->profil->nama_camat
+            'nama_camat' => $this->nama_camat
         ];
 
         try {
             $response = Http::withHeaders([
                 'token' => config('app.token_pantau')
-            ])->post($host_pantau.'track/opendk?token='.config('app.token_pantau'), $data);
+            ])->post($host_pantau . 'track/opendk?token=' . config('app.token_pantau'), $data);
             session(['track' => date('Y m d')]);
             return;
         } catch (Exception $e) {

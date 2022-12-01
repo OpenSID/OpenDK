@@ -61,7 +61,7 @@ class ProgramBantuanController extends Controller
                 return view('forms.aksi', $data);
             })
             ->addColumn('masa_berlaku', function ($row) {
-                return $row->start_date . ' - ' . $row->end_date;
+                return format_date($row->start_date) . ' - ' . format_date($row->end_date);
             })
             ->editColumn('sasaran', function ($row) {
                 $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];

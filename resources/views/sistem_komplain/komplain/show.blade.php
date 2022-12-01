@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-md" src="{{ asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg') }}" alt="user image">
+                                <img class="img-circle img-bordered-md" src="{{ is_user($komplain->penduduk->foto, $komplain->penduduk->sex) }}" alt="user image">
                                 <span class="username">
                                     <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                 </span>
@@ -84,7 +84,7 @@
                                 </tr>
                                 <tr>
                                     <th>TANGGAL LAPOR</th>
-                                    <td>{{ format_date($komplain->created_at) }}</td>
+                                    <td>{{ format_datetime($komplain->created_at) }}</td>
                                 </tr>
                                 <tr>
                                     <th>STATUS</th>
@@ -211,6 +211,37 @@
     </div>
 </div>
 
+<div id="modalUbahReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Ubah Jawaban Keluhan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {!! Form::open(['id' => 'form-ubah-reply-admin', 'method' => 'POST']) !!}
+            <div class="modal-body mx-3">
+                <div id="form-errors-admin"></div>
+                <div class="md-form mb-4">
+                    <label>Jawaban</label>
+                    {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'ubah-jawab-admin', 'required']) }}
+                    {{ Form::hidden('nik', '999') }}
+                    {{ Form::hidden('id', null, ['id' => 'id_jawab']) }}
+                    {{ Form::hidden('_method', 'PUT') }}
+                </div>
+
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+            {{ Form::close() }}
+        </div>
+    </div>
+</div>
+
+
 @endsection
 
 @include('partials.asset_fancybox')
@@ -332,6 +363,76 @@
                         errorsHtml += '</ul></di>';
 
                         $( '#form-errors' ).html( errorsHtml ); //appending to a <div id="form-errors"></div> inside form
+                    } else {
+                        /// do some thing else
+                    }
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                }
+            });
+        });
+
+        $(document).on('click', '#btn-ubah-reply-admin', function(e) {
+            url = $(this).attr('data-href');
+            $('#form-ubah-reply-admin').attr('action', url );
+            
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function( data ) {
+                    $('#modalUbahReplyAdmin').modal({
+                        backdrop: 'static',
+                        keyboard: false,
+                        show: true
+                    });
+                    $('#ubah-jawab-admin').val(data.data.jawaban);
+                    $('#id_jawab').val(data.data.id);
+                },
+            });
+            e.preventDefault();
+        });
+
+        $('#modalUbahReplyAdmin').on('hidden.bs.modal', function () {
+            $('#ubah-jawab-admin').val('');
+            $('#form-errors-admin').html('');
+        })
+
+        $('#form-ubah-reply-admin').on('submit', function(e) {
+            e.preventDefault();
+            var jawab = $('#jawab').val();
+            var komplain_id = $('#komplain_id').val();
+            var id_jawab = $('#id_jawab').val();
+            url = url.replace('getkomentar', 'updatekomentar');
+            
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $("#form-ubah-reply-admin").serialize(),
+                success: function( msg ) {
+                    if(msg.status == 'success'){
+                        refresh_jawaban(id_komplain);
+                        $('#ubah-jawab-admin').val('');
+                        $('#modalUbahReplyAdmin').modal('hide');
+                    }
+                },
+                error :function( jqXhr ) {
+                    if( jqXhr.status === 401 ) //redirect if not authenticated user.
+                        $( location ).prop( 'pathname', 'auth/login' );
+                    if( jqXhr.status === 422 ) {
+                        //process validation errors here.
+                        $errors = jqXhr.responseJSON; //this will get the errors response data.
+                        console.log($errors);
+                        //show them somewhere in the markup
+                        //e.g
+                        errorsHtml = '<div class="alert alert-danger"><ul>';
+
+                        $.each( $errors.errors, function( key, value ) {
+                            errorsHtml += '<li>' + value[0] + '</li>'; //showing only the first error.
+                        });
+                        errorsHtml += '</ul></di>';
+
+                        $( '#form-errors-admin' ).html( errorsHtml ); //appending to a <div id="form-errors"></div> inside form
                     } else {
                         /// do some thing else
                     }

@@ -84,14 +84,6 @@ class ProfilController extends Controller
                 $request->file('file_logo')->move("storage/profil/file_logo/", $fileLogoName);
                 $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
             }
-            if ($request->file('foto_kepala_wilayah') == "") {
-                $profil->foto_kepala_wilayah = $profil->foto_kepala_wilayah;
-            } else {
-                $fileFoto     = $request->file('foto_kepala_wilayah');
-                $fileFotoName = $fileFoto->getClientOriginalName();
-                $request->file('foto_kepala_wilayah')->move("storage/profil/pegawai/", $fileFotoName);
-                $profil->foto_kepala_wilayah = 'storage/profil/pegawai/' . $fileFotoName;
-            }
 
             $profil->update();
             $dataumum->update();

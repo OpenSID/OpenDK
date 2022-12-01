@@ -105,7 +105,7 @@
             <label for="tanggal_lahir" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Lahir</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tanggal_lahir', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'tanggal_lahir']) !!}
+                {!! Form::text('tanggal_lahir', format_date($penduduk->tanggal_lahir), ['class' => 'form-control', 'disabled'=>true, 'id' => 'tanggal_lahir']) !!}
             </div>
         </div>
 
@@ -199,7 +199,7 @@
             <label for="tanggal_akhir_pasport" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Akhir Paspor</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tanggal_akhir_pasport', null, ['class' => 'form-control', 'disabled', 'id' => 'tanggal_akhir_pasport']) !!}
+                {!! Form::text('tanggal_akhir_pasport', format_date($penduduk->tanggal_akhir_pasport), ['class' => 'form-control', 'disabled', 'id' => 'tanggal_akhir_pasport']) !!}
             </div>
         </div>
 
@@ -296,7 +296,7 @@
             <label for="tanggal_perkawinan" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Nikah</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tanggal_perkawinan', null, ['class' => 'form-control', 'disabled', 'id' => 'tanggal_perkawinan']) !!}
+                {!! Form::text('tanggal_perkawinan', format_date($penduduk->tanggal_perkawinan), ['class' => 'form-control', 'disabled', 'id' => 'tanggal_perkawinan']) !!}
             </div>
         </div>
 
@@ -312,7 +312,7 @@
             <label for="tanggal_perceraian" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Perceraian</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tanggal_perceraian', null, ['class' => 'form-control', 'disabled', 'id' => 'tanggal_perceraian']) !!}
+                {!! Form::text('tanggal_perceraian', format_date($penduduk->tanggal_perceraian), ['class' => 'form-control', 'disabled', 'id' => 'tanggal_perceraian']) !!}
             </div>
         </div>
 

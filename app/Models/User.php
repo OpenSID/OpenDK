@@ -36,6 +36,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -67,6 +68,7 @@ class User extends Authenticatable implements JWTSubject
         'gender',
         'status',
         'last_login',
+        'pengurus_id',
     ];
 
     /**
@@ -96,6 +98,11 @@ class User extends Authenticatable implements JWTSubject
     public static function datatables()
     {
         return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone');
+    }
+
+    public function getFotoAttribute()
+    {
+        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
     }
 
     /**
@@ -150,5 +157,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function pengurus()
+    {
+        return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
     }
 }

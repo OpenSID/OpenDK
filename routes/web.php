@@ -311,7 +311,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Data Desa
-                Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-desa']], function () {
+                Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
                     Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
@@ -323,6 +323,13 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
                 });
+
+                // Jabatan
+                Route::resource('jabatan', 'JabatanController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+
+                //Pengurus
+                Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::resource('pengurus', 'PengurusController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
@@ -503,6 +510,10 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::delete('destroy/{id}', ['as' => 'admin-komplain.destroy', 'uses' => 'AdminKomplainController@destroy']);
                 Route::put('setuju/{id}', ['as' => 'admin-komplain.setuju', 'uses' => 'AdminKomplainController@disetujui']);
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
+                Route::get('show/{id}', ['as' => 'admin-komplain.show', 'uses' => 'AdminKomplainController@show']);
+                Route::delete('deletekomentar/{id}', ['as' => 'admin-komplain.deletekomentar', 'uses' => 'AdminKomplainController@deletekomentar']);
+                Route::get('getkomentar/{id}', ['as' => 'admin-komplain.getkomentar', 'uses' => 'AdminKomplainController@getKomentar']);
+                Route::put('updatekomentar/{id}', ['as' => 'admin-komplain.updatekomentar', 'uses' => 'AdminKomplainController@updateKomentar']);
             });
         });
 
@@ -539,7 +550,7 @@ Route::group(['middleware' => 'installed'], function () {
                 Route::put('update/{id}', ['as' => 'setting.user.update', 'uses' => 'User\UserController@update']);
                 Route::put('updatePassword/{id}', ['as' => 'setting.user.updatePassword', 'uses' => 'User\UserController@updatePassword']);
                 Route::put('password/{id}', ['as' => 'setting.user.password', 'uses' => 'User\UserController@password']);
-                Route::delete('destroy/{id}', ['as' => 'setting.user.destroy', 'uses' => 'User\UserController@destroy']);
+                Route::post('destroy/{id}', ['as' => 'setting.user.destroy', 'uses' => 'User\UserController@destroy']);
                 Route::post('active/{id}', ['as' => 'setting.user.active', 'uses' => 'User\UserController@active']);
                 Route::get('photo-profil/{id}', ['as' => 'setting.user.photo', 'uses' => 'User\UserController@photo']);
                 Route::put('update-photo/{id}', ['as' => 'setting.user.uphoto', 'uses' => 'User\UserController@updatePhoto']);

@@ -2,7 +2,7 @@
 
 Di rilis v22.12.01 berisi perbaikan yang diminta Komunitas OpenDK.
 
-Terima kasih pada [] yang baru mulai berkontribusi.
+Terima kasih pada yonathanrizky yang terus berkontribusi.
 
 #### Penambahan Fitur
 

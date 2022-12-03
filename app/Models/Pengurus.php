@@ -62,7 +62,7 @@ class Pengurus extends Model
     {
         $nama = $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'];
 
-        if($this->attributes['gelar_belakang']) {
+        if ($this->attributes['gelar_belakang']) {
             $nama = $nama . ', ' . $this->attributes['gelar_belakang'];
         }
 

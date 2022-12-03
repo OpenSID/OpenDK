@@ -37,7 +37,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v22.11.01',
+    'version' => 'v22.12.01',
 
     /*
     |--------------------------------------------------------------------------
@@ -242,7 +242,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         // iSeed
         Orangehill\Iseed\IseedServiceProvider::class,
-         //Captcha
+        //Captcha
         Mews\Captcha\CaptchaServiceProvider::class,
 
         // Visitor Counter

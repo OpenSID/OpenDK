@@ -1,8 +1,8 @@
-#### [v22.11.01]
+#### [v22.12.01]
 
-Di rilis v22.11.01 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v22.12.01, menyediakan fitur jabatan, pengaturan perangkat kecamatan, akun perangkat kecamatan, dan komentar keluhan di halaman admin. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
-Terima kasih pada [] yang baru mulai berkontribusi.
+Terima kasih pada yonathanrizky yang terus berkontribusi.
 
 #### Penambahan Fitur
 

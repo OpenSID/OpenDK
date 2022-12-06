@@ -44,6 +44,11 @@
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <a href="{{ route('data.data-umum.resetpeta', $data_umum->id) }}">
+                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
+                            Reset Peta</button>
+                    </a>
                 </div>
             </div>
 

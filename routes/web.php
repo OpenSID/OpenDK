@@ -308,6 +308,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
                     Route::get('getdataajax', ['as' => 'data.data-umum.getdataajax', 'uses' => 'DataUmumController@getDataUmumAjax']);
                     Route::put('update/{id}', ['as' => 'data.data-umum.update', 'uses' => 'DataUmumController@update']);
+                    Route::get('resetpeta/{id}', ['as' => 'data.data-umum.resetpeta', 'uses' => 'DataUmumController@resetPeta']);
                 });
 
                 // Data Desa

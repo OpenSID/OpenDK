@@ -101,4 +101,16 @@ class DataUmumController extends Controller
             return response()->json(['data'=> DataUmum::with('profil')->first()]);
         }
     }
+
+    public function resetPeta($id)
+    {
+        try {
+            DataUmum::findOrFail($id)->update(['path' => null]);
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Reset Peta gagal!');
+        }
+
+        return redirect()->route('data.data-umum.index')->with('success', 'Reset Peta sukses!');
+    }
 }

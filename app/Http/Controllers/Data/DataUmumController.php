@@ -108,9 +108,7 @@ class DataUmumController extends Controller
             DataUmum::findOrFail($id)->update(['path' => null]);
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Reset Peta gagal!');
         }
-
-        return redirect()->route('data.data-umum.index')->with('success', 'Reset Peta sukses!');
+        return response()->json();
     }
 }

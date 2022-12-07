@@ -59,7 +59,7 @@ class PengurusController extends Controller
         if ($request->ajax()) {
             $status = $request->input('status');
 
-            return DataTables::of(Pengurus::where('status', $status)->urut())
+            return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {

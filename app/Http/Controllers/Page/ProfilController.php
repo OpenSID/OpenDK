@@ -77,7 +77,7 @@ class ProfilController extends Controller
         Counter::count('profil.struktur-pemerintahan');
 
         $profil     = $this->profil;
-        $pengurus   = Pengurus::status()->urut()->get();
+        $pengurus   = Pengurus::status()->get()->sortBy('jabatan.jenis');
         $page_title = 'Struktur Pemerintahan';
         if (isset($profil)) {
             $page_description = $this->browser_title;

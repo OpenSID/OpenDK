@@ -94,6 +94,13 @@ class Pengurus extends Model
         return $query->where('status', $value);
     }
 
+    public function scopeUrut($query)
+    {
+        return $query->whereHas('jabatan', function ($q) {
+            $q->orderBy('jenis', 'ASC');
+        });
+    }
+
     /**
      * Cek pengurus aktif.
      *

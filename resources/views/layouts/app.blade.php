@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="{{ asset('/css/slider.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/skins/skin-blue.min.css') }}">
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="{{ asset('css/swiper.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
@@ -105,6 +107,8 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Swiper JS -->
+    <script src="{{ asset('js/swiper.min.js') }}"></script>
     <script src="{{ asset('/js/custom.js') }}"></script>
     @stack('scripts')
 </body>

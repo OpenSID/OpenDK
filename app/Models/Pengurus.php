@@ -94,6 +94,13 @@ class Pengurus extends Model
         return $query->where('status', $value);
     }
 
+    public function scopeCamat($query)
+    {
+        return $query->whereHas('jabatan', function ($q) {
+            $q->where('jenis', JenisJabatan::Camat);
+        });
+    }
+
     public function scopeUrut($query)
     {
         return $query->whereHas('jabatan', function ($q) {

@@ -31,7 +31,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Event;

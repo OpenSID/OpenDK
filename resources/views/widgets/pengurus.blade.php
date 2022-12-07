@@ -3,7 +3,7 @@
       @foreach ($pengurus as $item)
       <div class="swiper-slide">
         <div class="pad text-bold bg-white" style="text-align:center;">
-          <img src="@if(isset($item->foto)) {{ asset($item->foto) }} @else {{ asset('img/no-profile.png') }} @endif" width="auto" height="400px" class="img-user" style="max-height: 256px; object-fit: contain;  width: 250px;">
+          <img src="{{ is_user($item->foto, $item->sex, true) }}" width="auto" height="400px" class="img-user" style="max-height: 256px; object-fit: contain;  width: 250px;">
       
         </div>
         <div class="box-header text-center  with-border bg-blue">

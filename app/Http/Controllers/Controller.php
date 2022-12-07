@@ -105,7 +105,7 @@ class Controller extends BaseController
             'navdesa'                => $navdesa,
             'navpotensi'             => $navpotensi,
             'camat'                  => $this->nama_camat,
-            'pengurus'               => $pengurus,
+            'pengurus'               => $pengurus->sortBy('jabatan.jenis'),
         ]);
     }
 

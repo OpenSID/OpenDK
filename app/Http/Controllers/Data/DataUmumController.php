@@ -101,4 +101,14 @@ class DataUmumController extends Controller
             return response()->json(['data'=> DataUmum::with('profil')->first()]);
         }
     }
+
+    public function resetPeta($id)
+    {
+        try {
+            DataUmum::findOrFail($id)->update(['path' => null]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+        return response()->json();
+    }
 }

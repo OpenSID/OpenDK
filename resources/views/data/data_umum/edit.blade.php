@@ -44,6 +44,11 @@
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <a id="reset">
+                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
+                            Reset Peta</button>
+                    </a>
                 </div>
             </div>
 
@@ -67,7 +72,9 @@
 
 @include('partials.asset_wysihtml5')
 @include('partials.asset_select2')
+@include('partials.asset_sweetalert')
 @include('partials.asset_leaflet')
+
 @push('scripts')
     <script>
         $(function() {
@@ -193,5 +200,47 @@
                 feature.geometry;
             }
         };
+
+        $('#reset').on('click', function () {
+            Swal.fire({
+            title: 'Apakah anda yakin ingin mereset peta?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            showLoaderOnConfirm: true,
+            preConfirm: (login) => {
+                return fetch(`{{ route('data.data-umum.resetpeta', $data_umum->id) }}`)
+                .then(response => {
+                    if (!response.ok) {
+                    throw new Error(response.statusText)
+                    }
+                    return response.json()
+                })
+                .catch(error => {
+                    Swal.showValidationMessage(
+                    `Request failed: ${error}`
+                    )
+                })
+            }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Sukses!',
+                        'Peta berhasil direset.',
+                        'success'
+                    )
+                    return window.location.replace(`{{ route('data.data-umum.index') }}`);
+                } else {
+                    Swal.fire(
+                        'Gagal!',
+                        'Peta gagal direset.',
+                        'error'
+                    )
+                }
+            })
+        });
     </script>
 @endpush

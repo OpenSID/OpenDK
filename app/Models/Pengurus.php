@@ -60,7 +60,13 @@ class Pengurus extends Model
      */
     public function getNamaGelarAttribute()
     {
-        return $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'] . ' ' . $this->attributes['gelar_belakang'];
+        $nama = $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'];
+
+        if ($this->attributes['gelar_belakang']) {
+            $nama = $nama . ', ' . $this->attributes['gelar_belakang'];
+        }
+
+        return $nama;
     }
 
     public function jabatan()
@@ -86,6 +92,13 @@ class Pengurus extends Model
     public function scopeStatus($query, $value = 1)
     {
         return $query->where('status', $value);
+    }
+
+    public function scopeCamat($query)
+    {
+        return $query->whereHas('jabatan', function ($q) {
+            $q->where('jenis', JenisJabatan::Camat);
+        });
     }
 
     /**

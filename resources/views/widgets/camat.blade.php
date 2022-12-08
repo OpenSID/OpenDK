@@ -5,7 +5,7 @@
     </div>
     <div class="box-header text-center  with-border bg-blue">
         <h2 class="box-title text-bold" data-toggle="tooltip" data-placement="top" >
-          {{ $camat->nama }} <br />  <span style="font-size: 14px;color: #ecf0f5;"> {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }} </span></h6>
+          {{ $camat->namaGelar }} <br />  <span style="font-size: 14px;color: #ecf0f5;"> {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }} </span></h6>
         </h2>
     </div>
 @endif

@@ -35,6 +35,7 @@ use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
+use App\Models\Pengurus;
 use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
 
@@ -76,12 +77,13 @@ class ProfilController extends Controller
         Counter::count('profil.struktur-pemerintahan');
 
         $profil     = $this->profil;
+        $pengurus   = Pengurus::status()->get()->sortBy('jabatan.jenis');
         $page_title = 'Struktur Pemerintahan';
         if (isset($profil)) {
             $page_description = $this->browser_title;
         }
 
-        return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description', 'profil'));
+        return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description', 'profil', 'pengurus'));
     }
 
     public function VisiMisi()

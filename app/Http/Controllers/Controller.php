@@ -31,7 +31,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Event;
@@ -73,9 +72,7 @@ class Controller extends BaseController
     {
         $this->profil     = Profil::first();
         $this->umum       = DataUmum::first();
-        $this->nama_camat = Pengurus::status()->whereHas('jabatan', function ($query) {
-            $query->where('jenis', JenisJabatan::Camat);
-        })->first();
+        $this->nama_camat = Pengurus::status()->camat()->first();
 
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';

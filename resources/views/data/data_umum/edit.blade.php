@@ -72,8 +72,9 @@
 
 @include('partials.asset_wysihtml5')
 @include('partials.asset_select2')
-@include('partials.asset_leaflet')
 @include('partials.asset_sweetalert')
+@include('partials.asset_leaflet')
+
 @push('scripts')
     <script>
         $(function() {

@@ -480,7 +480,6 @@
       if (area == undefined) {
         return null;
       }
-      console.log(console.log());
       var jml = area.length;
       content = $(contents).html();
       var style_polygon = {

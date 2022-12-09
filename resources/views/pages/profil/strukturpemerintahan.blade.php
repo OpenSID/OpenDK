@@ -13,12 +13,16 @@
             <img id="myImg"  style="width:97%;" src="{{ is_img($profil->file_struktur_organisasi) }}">
             <!-- The Modal -->
             @foreach ($pengurus as $item)
-                <div class="col-md-5 col-xs-8">
-                    <label for="">{{ $item->jabatan->nama }}</label> 
-                </div>
-                <label for="" class="col-md-1 no-padding">: </label>
-                <div class="col-md-6">
-                    <label for="" class="text-muted">{{ $item->namaGelar }}</label>
+                <div class="col-md-3 col-sm-6">
+                    <div class="pad text-bold bg-white" style="text-align:center;">
+                    <img src="{{ is_user($item->foto, $item->sex, true) }}" width="auto" height="120px" class="img-user" style="max-height: 256px; object-fit: contain;  width: 250px;">
+                
+                    </div>
+                    <div class="box-header text-center  with-border bg-blue">
+                    <p class="box-title text-bold text-small" data-toggle="tooltip" data-placement="top" style="font-size: 12px;">
+                        {{ $item->namaGelar }} <br />  <span style="font-size: 10px;color: #ecf0f5;"> {{ $item->jabatan->nama }} </span></h6>
+                    </p>
+                    </div>
                 </div>
             @endforeach
         </div>

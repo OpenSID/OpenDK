@@ -3,9 +3,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="foto" id="foto" class="form-control">
         <br>
-
         <img src="{{ is_img($pengurus->foto ?? null) }}"  id="showfoto" style="max-width:400px;max-height:250px;float:left;"/>
-        
     </div>
 </div>
 <div class="form-group">

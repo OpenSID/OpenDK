@@ -15,7 +15,7 @@
             @foreach ($pengurus as $item)
             <div class="col-md-3 col-sm-6">
                 <div class="pad text-bold bg-white" style="text-align:center;">
-                    <img id="myImg" src="{{ is_user($item->foto, $item->sex, true) }}" alt="{{ $item->namaGelar . ' - ' . $item->jabatan->nama }}" width="auto" height="120px" class="img-user" style="object-fit: contain;">
+                    <img id="myImg" src="{{ is_user($item->foto, $item->sex, true) }}" width="auto" height="120px" class="img-user" style="object-fit: contain;">
                     
                 </div>
                 <div class="box-header text-center  with-border bg-blue">

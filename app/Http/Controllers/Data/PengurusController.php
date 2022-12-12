@@ -120,8 +120,7 @@ class PengurusController extends Controller
         $agama            = Agama::pluck('nama', 'id');
         $pengurus         = new Pengurus();
         $kecuali          = $pengurus->cekPengurus();
-
-        $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
+        $jabatan          = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
 
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan'));
     }

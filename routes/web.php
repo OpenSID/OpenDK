@@ -538,6 +538,15 @@ Route::group(['middleware' => 'installed'], function () {
         });
 
         /**
+         * Group Routing for Pesan
+         */
+        Route::namespace('Surat')->group(function () {
+            Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|administrator-kecamatan']], function () {
+                Route::get('/pengaturan', ['as' => 'surat.pengaturan', 'uses' => 'SuratController@pengaturan']);
+            });
+        });
+
+        /**
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {

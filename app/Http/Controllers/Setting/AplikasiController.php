@@ -39,7 +39,7 @@ class AplikasiController extends Controller
 {
     public function index()
     {
-        $settings = SettingAplikasi::all();
+        $settings = SettingAplikasi::where('kategori', '!=', 'surat')->get();
         if ($settings->isEmpty()) {
             SettingAplikasi::insert([
                 'key'         => SettingAplikasi::KEY_BROWSER_TITLE,

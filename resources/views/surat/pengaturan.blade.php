@@ -1,0 +1,98 @@
+@extends('layouts.dashboard_template')
+
+@section('content')
+    <section class="content-header">
+        <h1>
+            {{ $page_title ?? "Page Title" }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li class="active"><i class="fa fa-dashboard"></i> Pengaturan</li>
+        </ol>
+    </section>
+    <section class="content">
+        @include('partials.flash_message')
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">{{ $page_title }}</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <form method="POST" action="{{ $formAction }}">
+                        <div class="box-body">
+                            {{ method_field('PUT') }}
+                            @csrf
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="tte">Aktifkan Modul TTE</label>
+                                <div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
+                                    <label id="n1"
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['tte'] ? 'active' : '' }}">
+                                        <input id="q1" type="radio" name="tte" class="form-check-input" type="radio"
+                                            value="1" {{ $settings['tte'] ? 'checked' : '' }} autocomplete="off">Ya
+                                    </label>
+                                    <label id="n2"
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['tte'] ? '' : 'active' }}">
+                                        <input id="q2" type="radio" name="tte" class="form-check-input" type="radio"
+                                            value="0" {{ $settings['tte'] ? '' : 'checked' }} autocomplete="off">Tidak
+                                    </label>
+                                </div>
+                            </div>
+                            <br/><br/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="url">URL API Server TTE</label>
+                                <div class="col-sm-9">
+                                    <input id="url" class="form-control input-sm" type="text" placeholder="Masukkan URL API Server TTE" name="url" value="{{ $settings['tte_api'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="username">Username API Server TTE</label>
+                                <div class="col-sm-9">
+                                    <input id="username" class="form-control input-sm" type="text" placeholder="Masukkan Username API Server TTE" name="username" value="{{ $settings['tte_username'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="password">Password API Server TTE</label>
+                                <div class="col-sm-9">
+                                    <input id="password" class="form-control input-sm" type="text" placeholder="Masukkan Password API Server TTE" name="password" value="{{ $settings['tte_password'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                        </div>
+                        <div class="box-footer">
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <a href="{{ route('surat.pengaturan') }}">
+                                        <button type="button" class="btn btn-default">Batal</button>
+                                    </a>
+                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /. box -->
+            </div>
+        </div>
+    </section>
+@endsection
+
+@push('scripts')
+<script>
+    $('input[type=radio][name=tte]').change(function() {
+        if (this.value == 1) {
+            $('#url').prop("disabled", false);
+            $('#username').prop("disabled", false);
+            $('#password').prop("disabled", false);
+        }
+        else {
+            $('#url').prop("disabled", true);
+            $('#username').prop("disabled", true);
+            $('#password').prop("disabled", true);
+        }
+    });
+</script>    
+@endpush

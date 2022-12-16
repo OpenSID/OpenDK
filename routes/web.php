@@ -543,6 +543,7 @@ Route::group(['middleware' => 'installed'], function () {
         Route::namespace('Surat')->group(function () {
             Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|administrator-kecamatan']], function () {
                 Route::get('/pengaturan', ['as' => 'surat.pengaturan', 'uses' => 'SuratController@pengaturan']);
+                Route::put('/pengaturan/update', ['as' => 'surat.pengaturan.update', 'uses' => 'SuratController@pengaturan_update']);
             });
         });
 

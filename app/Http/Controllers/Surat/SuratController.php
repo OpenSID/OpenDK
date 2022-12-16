@@ -31,12 +31,29 @@
 
 namespace App\Http\Controllers\Surat;
 
+use App\Models\SettingAplikasi;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class SuratController extends Controller
 {
     public function pengaturan()
     {
-        dd('pengaturan');
+        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
+        $formAction       = route('surat.pengaturan.update');
+        $page_title       = 'Pegaturan Surat';
+        $page_description = 'Daftar Pegaturan Surat';
+
+        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings', 'formAction'));
+    }
+
+    public function pengaturan_update(Request $request)
+    {
+        dd($request->all());
+        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
+        $page_title       = 'Pegaturan Surat';
+        $page_description = 'Daftar Pegaturan Surat';
+
+        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings'));
     }
 }

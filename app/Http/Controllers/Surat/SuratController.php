@@ -31,10 +31,9 @@
 
 namespace App\Http\Controllers\Surat;
 
-use App\Models\SettingAplikasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengaturanSuratRequest;
-use Illuminate\Http\Request;
+use App\Models\SettingAplikasi;
 
 class SuratController extends Controller
 {

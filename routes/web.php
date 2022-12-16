@@ -542,6 +542,16 @@ Route::group(['middleware' => 'installed'], function () {
          */
         Route::namespace('Surat')->group(function () {
             Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|administrator-kecamatan']], function () {
+                
+                //permohonan
+                Route::group(['prefix' => 'permohonan'], function () {
+                    Route::get('/', ['as' => 'surat.permohonan', 'uses' => 'PermohonanController@index']);
+                });
+                
+                //arsip
+                Route::get('/arsip', ['as' => 'surat.arsip', 'uses' => 'SuratController@arsip']);
+                
+                //pengaturan
                 Route::get('/pengaturan', ['as' => 'surat.pengaturan', 'uses' => 'SuratController@pengaturan']);
                 Route::put('/pengaturan/update', ['as' => 'surat.pengaturan.update', 'uses' => 'SuratController@pengaturan_update']);
             });

@@ -42,23 +42,23 @@
                             </div>
                             <br/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="url">URL API Server TTE</label>
+                                <label class="col-sm-3 control-label" for="tte_api">URL API Server TTE</label>
                                 <div class="col-sm-9">
-                                    <input id="url" class="form-control input-sm" type="text" placeholder="Masukkan URL API Server TTE" name="url" value="{{ $settings['tte_api'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                    <input id="tte_api" class="form-control input-sm" type="text" placeholder="Masukkan URL API Server TTE" name="tte_api" value="{{ $settings['tte_api'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
                                 </div>
                             </div>
                             <br/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="username">Username API Server TTE</label>
+                                <label class="col-sm-3 control-label" for="tte_username">Username API Server TTE</label>
                                 <div class="col-sm-9">
-                                    <input id="username" class="form-control input-sm" type="text" placeholder="Masukkan Username API Server TTE" name="username" value="{{ $settings['tte_username'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                    <input id="tte_username" class="form-control input-sm" type="text" placeholder="Masukkan Username API Server TTE" name="tte_username" value="{{ $settings['tte_username'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
                                 </div>
                             </div>
                             <br/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="password">Password API Server TTE</label>
+                                <label class="col-sm-3 control-label" for="tte_password">Password API Server TTE</label>
                                 <div class="col-sm-9">
-                                    <input id="password" class="form-control input-sm" type="text" placeholder="Masukkan Password API Server TTE" name="password" value="{{ $settings['tte_password'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                    <input id="tte_password" class="form-control input-sm" type="text" placeholder="Masukkan Password API Server TTE" name="tte_password" value="{{ $settings['tte_password'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
                                 </div>
                             </div>
                             <div class="ln_solid"></div>
@@ -89,14 +89,14 @@
 <script>
     $('input[type=radio][name=tte]').change(function() {
         if (this.value == 1) {
-            $('#url').prop("disabled", false);
-            $('#username').prop("disabled", false);
-            $('#password').prop("disabled", false);
+            $('#tte_api').prop("disabled", false);
+            $('#tte_username').prop("disabled", false);
+            $('#tte_password').prop("disabled", false);
         }
         else {
-            $('#url').prop("disabled", true);
-            $('#username').prop("disabled", true);
-            $('#password').prop("disabled", true);
+            $('#tte_api').prop("disabled", true);
+            $('#tte_username').prop("disabled", true);
+            $('#tte_password').prop("disabled", true);
         }
     });
 </script>    

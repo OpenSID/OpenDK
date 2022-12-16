@@ -53,9 +53,9 @@ class PengaturanSuratRequest extends FormRequest
     public function rules()
     {
         return [
-            'url'      => 'sometimes|required|string',
-            'username' => 'sometimes|required|string',
-            'password' => 'sometimes|required|string',
+            'tte_api'      => 'sometimes|required|string',
+            'tte_username' => 'sometimes|required|string',
+            'tte_password' => 'sometimes|required|string',
         ];
     }
 }

@@ -50,11 +50,15 @@ class SuratController extends Controller
 
     public function pengaturan_update(PengaturanSuratRequest $request)
     {
-        dd($request->all());
-        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
-        $page_title       = 'Pegaturan Surat';
-        $page_description = 'Daftar Pegaturan Surat';
+        try {
+            foreach ($request->all() as $key => $value) {
+                SettingAplikasi::where('key', '=', $key)->update(['value' => $value]);
+            }
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Pengaturan Surat gagal diubah!');
+        }
 
-        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings'));
+        return redirect()->route('surat.pengaturan')->with('success', 'Pengaturan Surat berhasil diubah!');
     }
 }

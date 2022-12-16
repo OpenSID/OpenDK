@@ -29,32 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Surat;
+namespace App\Http\Requests;
 
-use App\Models\SettingAplikasi;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PengaturanSuratRequest;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 
-class SuratController extends Controller
+class PengaturanSuratRequest extends FormRequest
 {
-    public function pengaturan()
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
-        $formAction       = route('surat.pengaturan.update');
-        $page_title       = 'Pegaturan Surat';
-        $page_description = 'Daftar Pegaturan Surat';
-
-        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings', 'formAction'));
+        return true;
     }
 
-    public function pengaturan_update(PengaturanSuratRequest $request)
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
-        dd($request->all());
-        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
-        $page_title       = 'Pegaturan Surat';
-        $page_description = 'Daftar Pegaturan Surat';
-
-        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings'));
+        return [
+            'url'      => 'sometimes|required|string',
+            'username' => 'sometimes|required|string',
+            'password' => 'sometimes|required|string',
+        ];
     }
 }

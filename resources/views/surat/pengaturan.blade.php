@@ -19,8 +19,10 @@
                         <h3 class="box-title">{{ $page_title }}</h3>
                     </div>
                     <!-- /.box-header -->
-                    <form method="POST" action="{{ $formAction }}">
+                    <form method="POST" action="{{ $formAction }}" id="form-pengaturan-surat">
+                        @include('layouts.fragments.error_message')
                         <div class="box-body">
+                            @include( 'flash::message' )
                             {{ method_field('PUT') }}
                             @csrf
                             <div class="form-group">
@@ -38,7 +40,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <br/><br/>
+                            <br/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="url">URL API Server TTE</label>
                                 <div class="col-sm-9">
@@ -79,8 +81,11 @@
         </div>
     </section>
 @endsection
+@include('partials.asset_jqueryvalidation')
 
 @push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\PengaturanSuratRequest', '#form-pengaturan-surat') !!}
+
 <script>
     $('input[type=radio][name=tte]').change(function() {
         if (this.value == 1) {

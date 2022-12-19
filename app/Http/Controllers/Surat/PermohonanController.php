@@ -31,7 +31,9 @@
 
 namespace App\Http\Controllers\Surat;
 
+use App\Enums\LogVerifikasiSurat;
 use App\Models\Surat;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 
 class PermohonanController extends Controller
@@ -41,8 +43,32 @@ class PermohonanController extends Controller
         $page_title       = 'Permohonan Surat';
         $page_description = 'Daftar Permohonan Surat';
         $surat            = Surat::permohonan()->get();
-        dd($surat);
 
-        return view('surat.pengaturan', compact('page_title', 'page_description', 'surat'));
+        return view('surat.permohonan.index', compact('page_title', 'page_description', 'surat'));
+    }
+
+    public function getData()
+    {
+        return DataTables::of(Surat::permohonan())
+            ->addColumn('aksi', function ($row) {
+                $data['download_url']   = route('surat.permohonan.download', $row->id);
+
+                return view('forms.aksi', $data);
+            })
+            ->editColumn('log_verifikasi', function ($row) {
+                if ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
+                    return 'Camat';
+                } else if ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
+                    return 'Sekretaris';
+                } else {
+                    return 'Operator';
+                }
+            })
+            ->rawColumns(['aksi', 'log_verifikasi'])->make();
+    }
+
+    public function download($id)
+    {
+        dd('unduh');
     }
 }

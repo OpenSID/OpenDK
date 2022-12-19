@@ -546,6 +546,8 @@ Route::group(['middleware' => 'installed'], function () {
                 //permohonan
                 Route::group(['prefix' => 'permohonan'], function () {
                     Route::get('/', ['as' => 'surat.permohonan', 'uses' => 'PermohonanController@index']);
+                    Route::get('getdata', ['as' => 'surat.permohonan.getdata', 'uses' => 'PermohonanController@getData']);
+                    Route::get('download', ['as' => 'surat.permohonan.download', 'uses' => 'PermohonanController@download']);
                 });
                 
                 //arsip

@@ -31,13 +31,40 @@
 
 namespace App\Http\Controllers\Surat;
 
+use App\Models\Surat;
+use Illuminate\Http\Request;
 use App\Models\SettingAplikasi;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengaturanSuratRequest;
-use Illuminate\Http\Request;
 
 class SuratController extends Controller
 {
+    public function arsip()
+    {
+        $page_title       = 'Arsip Surat';
+        $page_description = 'Daftar Arsip Surat';
+        $surat            = Surat::arsip()->get();
+
+        return view('surat.arsip', compact('page_title', 'page_description', 'surat'));
+    }
+
+    public function getData()
+    {
+        return DataTables::of(Surat::permohonan())
+            ->addColumn('aksi', function ($row) {
+                $data['download_url']   = route('surat.permohonan.download', $row->id);
+
+                return view('forms.aksi', $data);
+            })
+            ->rawColumns(['aksi', 'log_verifikasi'])->make();
+    }
+
+    public function download($id)
+    {
+        dd('unduh');
+    }
+    
     public function pengaturan()
     {
         $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Surat;
+use App\Models\DataDesa;
+use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
 use Illuminate\Support\Facades\Storage;
@@ -32,6 +36,11 @@ class SuratController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }
+
+        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+            Log::debug('Kode desa' . $request->desa_id . 'tidak terdaftar di kecamatan');
+            return response()->json('Kode desa ' . $request->desa_id . ' tidak terdaftar di kecamatan', 400);
         }
 
         $file           = $request->file('file');

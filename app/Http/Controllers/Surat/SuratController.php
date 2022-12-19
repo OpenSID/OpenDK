@@ -57,7 +57,7 @@ class SuratController extends Controller
 
                 return view('forms.aksi', $data);
             })
-            ->rawColumns(['aksi', 'log_verifikasi'])->make();
+            ->rawColumns(['aksi'])->make();
     }
 
     public function download($id)

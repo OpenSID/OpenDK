@@ -54,7 +54,6 @@ class CreateLogSuratTable extends Migration
             $table->date('tanggal');
             $table->integer('nomor');
             $table->string('nama', 100);
-            $table->string('format', 225);
             $table->string('file', 255);
             $table->text('keterangan')->nullable()->default(null);
             $table->tinyInteger('log_verifikasi')->default(LogVerifikasiSurat::Operator);

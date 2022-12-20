@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Surat;
 use App\Models\DataDesa;
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +29,6 @@ class SuratController extends Controller
             'nik'     => 'required|integer|digits:16',
             'nomor'   => 'required|integer',
             'nama'    => 'required|string',
-            'format'  => 'required|string',
             'file'    => 'required|file|mimes:pdf|max:2048',
         ]);
 
@@ -47,7 +45,6 @@ class SuratController extends Controller
         $original_name  = strtolower(trim($file->getClientOriginalName()));
         $file_name      = time() .  '_' . $original_name;
         Storage::putFileAs('public/surat', $file, $file_name);
-        $input['foto']  = $file_name;
 
         $surat = Surat::create([
             'desa_id'     => $request->desa_id,
@@ -56,7 +53,6 @@ class SuratController extends Controller
             'tanggal'     => $request->tanggal,
             'nomor'       => $request->nomor,
             'nama'        => $request->nama,
-            'format'      => $request->format,
             'file'        => $file_name,
         ]);
 

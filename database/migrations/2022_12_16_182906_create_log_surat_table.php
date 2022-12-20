@@ -33,9 +33,9 @@ use App\Enums\LogVerifikasiSurat;
 use App\Enums\Status;
 use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLogSuratTable extends Migration
 {

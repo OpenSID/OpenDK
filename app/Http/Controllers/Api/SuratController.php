@@ -51,6 +51,10 @@ class SuratController extends Controller
      */
     public function store(Request $request)
     {
+        if (! $this->settings['tte']) {
+            return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'desa_id' => 'required',
             'nik'     => 'required|integer|digits:16',

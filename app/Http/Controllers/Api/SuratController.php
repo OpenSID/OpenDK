@@ -26,7 +26,6 @@ class SuratController extends Controller
             'desa_id' => 'required',
             'nik'     => 'required|integer|digits:16',
             'tanggal' => 'required|date',
-            'nik'     => 'required|integer|digits:16',
             'nomor'   => 'required|integer',
             'nama'    => 'required|string',
             'file'    => 'required|file|mimes:pdf|max:2048',

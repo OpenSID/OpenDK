@@ -25,7 +25,6 @@
                     <thead>
                         <tr>
                             <th style="min-width: 110px;">Aksi</th>
-                            <th>Jenis Surat</th>
                             <th>Nama Surat</th>
                             <th>Nama Penduduk</th>
                             <th>Ditandatangani oleh</th>
@@ -52,7 +51,6 @@
             },
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
-                {data: 'format', name: 'format'},
                 {data: 'nama', name: 'nama'},
                 {data: 'nik', name: 'nik'},
                 {data: 'pengurus_id', name: 'pengurus_id'},

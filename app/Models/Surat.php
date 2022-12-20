@@ -45,6 +45,7 @@ class Surat extends Model
         'tanggal',
         'nomor',
         'nama',
+        'file',
         'keterangan',
         'log_verifikasi',
         'verifikasi_operator',

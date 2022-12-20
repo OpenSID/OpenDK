@@ -33,9 +33,9 @@ use App\Enums\LogVerifikasiSurat;
 use App\Enums\Status;
 use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateLogSuratTable extends Migration
 {
@@ -54,7 +54,6 @@ class CreateLogSuratTable extends Migration
             $table->date('tanggal');
             $table->integer('nomor');
             $table->string('nama', 100);
-            $table->string('format', 225);
             $table->string('file', 255);
             $table->text('keterangan')->nullable()->default(null);
             $table->tinyInteger('log_verifikasi')->default(LogVerifikasiSurat::Operator);

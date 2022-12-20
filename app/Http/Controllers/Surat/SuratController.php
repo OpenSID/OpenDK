@@ -31,11 +31,12 @@
 
 namespace App\Http\Controllers\Surat;
 
+use App\Models\Surat;
+use Illuminate\Http\Request;
+use App\Models\SettingAplikasi;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengaturanSuratRequest;
-use App\Models\SettingAplikasi;
-use App\Models\Surat;
-use Yajra\DataTables\DataTables;
 
 class SuratController extends Controller
 {

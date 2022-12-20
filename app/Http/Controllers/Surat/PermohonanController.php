@@ -31,22 +31,20 @@
 
 namespace App\Http\Controllers\Surat;
 
+use App\Enums\LogVerifikasiSurat;
 use App\Models\Surat;
-use Illuminate\Http\Request;
-use App\Models\SettingAplikasi;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PengaturanSuratRequest;
 
-class SuratController extends Controller
+class PermohonanController extends Controller
 {
-    public function arsip()
+    public function index()
     {
-        $page_title       = 'Arsip Surat';
-        $page_description = 'Daftar Arsip Surat';
-        $surat            = Surat::arsip()->get();
+        $page_title       = 'Permohonan Surat';
+        $page_description = 'Daftar Permohonan Surat';
+        $surat            = Surat::permohonan()->get();
 
-        return view('surat.arsip', compact('page_title', 'page_description', 'surat'));
+        return view('surat.permohonan.index', compact('page_title', 'page_description', 'surat'));
     }
 
     public function getData()
@@ -57,35 +55,20 @@ class SuratController extends Controller
 
                 return view('forms.aksi', $data);
             })
-            ->rawColumns(['aksi'])->make();
+            ->editColumn('log_verifikasi', function ($row) {
+                if ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
+                    return 'Camat';
+                } else if ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
+                    return 'Sekretaris';
+                } else {
+                    return 'Operator';
+                }
+            })
+            ->rawColumns(['aksi', 'log_verifikasi'])->make();
     }
 
     public function download($id)
     {
         dd('unduh');
-    }
-
-    public function pengaturan()
-    {
-        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
-        $formAction       = route('surat.pengaturan.update');
-        $page_title       = 'Pegaturan Surat';
-        $page_description = 'Daftar Pegaturan Surat';
-
-        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings', 'formAction'));
-    }
-
-    public function pengaturan_update(PengaturanSuratRequest $request)
-    {
-        try {
-            foreach ($request->all() as $key => $value) {
-                SettingAplikasi::where('key', '=', $key)->update(['value' => $value]);
-            }
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Pengaturan Surat gagal diubah!');
-        }
-
-        return redirect()->route('surat.pengaturan')->with('success', 'Pengaturan Surat berhasil diubah!');
     }
 }

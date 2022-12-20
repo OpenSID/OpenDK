@@ -58,7 +58,7 @@ class PermohonanController extends Controller
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
                     return 'Camat';
-                } else if ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
                     return 'Sekretaris';
                 } else {
                     return 'Operator';

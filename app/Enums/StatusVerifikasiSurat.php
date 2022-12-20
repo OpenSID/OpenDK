@@ -38,8 +38,8 @@ use BenSampo\Enum\Enum;
  */
 final class StatusVerifikasiSurat extends Enum
 {
-    const TidakAktif         = 1;
-    const MenungguVerifikasi = 2;
-    const TelahDiverifikasi  = 3;
-    const Menolak            = 4;
+    public const TidakAktif         = 1;
+    public const MenungguVerifikasi = 2;
+    public const TelahDiverifikasi  = 3;
+    public const Menolak            = 4;
 }

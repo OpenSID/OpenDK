@@ -32,9 +32,9 @@
 namespace App\Http\Controllers\Surat;
 
 use App\Enums\LogVerifikasiSurat;
+use App\Http\Controllers\Controller;
 use App\Models\Surat;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
 
 class PermohonanController extends Controller
 {

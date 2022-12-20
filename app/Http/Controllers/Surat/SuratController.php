@@ -64,7 +64,7 @@ class SuratController extends Controller
     {
         dd('unduh');
     }
-    
+
     public function pengaturan()
     {
         $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');

@@ -9,6 +9,7 @@ Terima kasih pada [] yang terus berkontribusi.
 2. [#574](https://github.com/OpenSID/OpenDK/issues/574) Penambahan widget untuk menampilkan daftar perangkat kecamatan.
 3. [#576](https://github.com/OpenSID/OpenDK/issues/576) Penambahan daftar perangkat-perangkat kecamatan pada menu Struktur Pemerintahan.
 4. [#518](https://github.com/OpenSID/OpenDK/issues/518) Penambahan modul arsip surat.
+5. [#534](https://github.com/OpenSID/OpenDK/issues/534) Penambahan Api untuk permohonan surat.
 #### Perbaikan bug
 
 1. [#577](https://github.com/OpenSID/OpenDK/issues/577) Perbaikan Gelar tidak muncul di widget camat.

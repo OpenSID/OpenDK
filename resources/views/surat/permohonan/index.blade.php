@@ -25,6 +25,7 @@
                     <thead>
                         <tr>
                             <th style="min-width: 110px;">Aksi</th>
+                            <th>Desa</th>
                             <th>Nama Surat</th>
                             <th>Nama Penduduk</th>
                             <th>Ditandatangani oleh</th>
@@ -52,9 +53,10 @@
             },
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'nama', name: 'nama'},
-                {data: 'nik', name: 'nik'},
-                {data: 'pengurus_id', name: 'pengurus_id'},
+                {data: 'penduduk.nama', name: 'penduduk.nama'},
+                {data: 'pengurus.nama', name: 'pengurus.nama'},
                 {data: 'tanggal', name: 'tanggal'},
                 {data: 'log_verifikasi', name: 'log_verifikasi'},
             ]

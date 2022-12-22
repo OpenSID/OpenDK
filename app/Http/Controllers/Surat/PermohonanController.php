@@ -55,16 +55,21 @@ class PermohonanController extends Controller
 
                 return view('forms.aksi', $data);
             })
+            ->editColumn('nama', function ($row) {
+                return "Surat {$row->nama}";
+            })
             ->editColumn('log_verifikasi', function ($row) {
-                if ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
-                    return 'Camat';
+                if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
+                    return 'Menunggu Ditandatangani Camat';
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
+                    return 'Menunggu Verifikasi Camat';
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
-                    return 'Sekretaris';
+                    return 'Menunggu Verifikasi Sekretaris';
                 } else {
-                    return 'Operator';
+                    return 'Menunggu Verifikasi Operator';
                 }
             })
-            ->rawColumns(['aksi', 'log_verifikasi'])->make();
+            ->rawColumns(['aksi', 'nama', 'log_verifikasi'])->make();
     }
 
     public function download($id)

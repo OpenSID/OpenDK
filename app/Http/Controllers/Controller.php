@@ -74,6 +74,10 @@ class Controller extends BaseController
         $this->umum       = DataUmum::first();
         $this->nama_camat = Pengurus::status()->camat()->first();
 
+        // Global variable for setting application
+        $this->settings = SettingAplikasi::pluck('value', 'key');
+        View::share('settings', $this->settings);
+
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';
             $this->sebutan_kepala_wilayah = 'Kepala Distrik';

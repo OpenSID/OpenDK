@@ -1,0 +1,89 @@
+<?php
+
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\SuratResource;
+use App\Models\DataDesa;
+use App\Models\Surat;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+
+class SuratController extends Controller
+{
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'desa_id' => 'required',
+            'nik'     => 'required|integer|digits:16',
+            'tanggal' => 'required|date',
+            'nomor'   => 'required|integer',
+            'nama'    => 'required|string',
+            'file'    => 'required|file|mimes:pdf|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+            Log::debug('Kode desa' . $request->desa_id . 'tidak terdaftar di kecamatan');
+            return response()->json('Kode desa ' . $request->desa_id . ' tidak terdaftar di kecamatan', 400);
+        }
+
+        $file           = $request->file('file');
+        $original_name  = strtolower(trim($file->getClientOriginalName()));
+        $file_name      = time() .  '_' . $original_name;
+        Storage::putFileAs('public/surat', $file, $file_name);
+
+        $surat = Surat::create([
+            'desa_id'     => $request->desa_id,
+            'nik'         => $request->nik,
+            'pengurus_id' => $this->nama_camat->id,
+            'tanggal'     => $request->tanggal,
+            'nomor'       => $request->nomor,
+            'nama'        => $request->nama,
+            'file'        => $file_name,
+        ]);
+
+        return new SuratResource(true, 'Surat Berhasil Dikirim!', $surat);
+    }
+}

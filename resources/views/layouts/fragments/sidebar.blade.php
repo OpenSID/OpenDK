@@ -265,6 +265,8 @@
                         </span>
                     </a>
                     <ul class="treeview-menu">
+                        <li {{ (Request::is(['surat/permohonan*'])? 'class=active' : '') }}><a href="{{ route('surat.permohonan') }}"><i class="fa fa-files-o"></i>Permohonan</a></li>
+                        <li {{ (Request::is(['surat/arsip*'])? 'class=active' : '') }}><a href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a></li>
                         <li {{ (Request::is(['surat/pengaturan*'])? 'class=active' : '') }}><a href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a></li>
                     </ul>
                 </li>

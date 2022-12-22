@@ -551,6 +551,8 @@ Route::group(['middleware' => 'installed'], function () {
 
                 //arsip
                 Route::get('/arsip', ['as' => 'surat.arsip', 'uses' => 'SuratController@arsip']);
+                Route::get('/arsip/getdata', ['as' => 'surat.arsip.getdata', 'uses' => 'SuratController@getData']);
+                Route::get('/arsip/download', ['as' => 'surat.arsip.download', 'uses' => 'SuratController@download']);
 
                 //pengaturan
                 Route::get('/pengaturan', ['as' => 'surat.pengaturan', 'uses' => 'SuratController@pengaturan']);

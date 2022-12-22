@@ -43,16 +43,15 @@ class SuratController extends Controller
     {
         $page_title       = 'Arsip Surat';
         $page_description = 'Daftar Arsip Surat';
-        $surat            = Surat::arsip()->get();
 
-        return view('surat.arsip', compact('page_title', 'page_description', 'surat'));
+        return view('surat.arsip', compact('page_title', 'page_description'));
     }
 
     public function getData()
     {
-        return DataTables::of(Surat::permohonan())
+        return DataTables::of(Surat::arsip())
             ->addColumn('aksi', function ($row) {
-                $data['download_url']   = route('surat.permohonan.download', $row->id);
+                $data['download_url']   = route('surat.arsip.download', $row->id);
 
                 return view('forms.aksi', $data);
             })

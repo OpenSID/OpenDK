@@ -47,7 +47,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{!! route( 'surat.permohonan.getdata' ) !!}"
+                url: "{!! route( 'surat.arsip.getdata' ) !!}"
             },
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},

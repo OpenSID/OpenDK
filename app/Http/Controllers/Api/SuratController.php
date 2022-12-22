@@ -31,13 +31,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Surat;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
-use App\Models\DataDesa;
-use App\Models\Surat;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -69,8 +70,13 @@ class SuratController extends Controller
         }
 
         if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
-            Log::debug('Kode desa' . $request->desa_id . 'tidak terdaftar di kecamatan');
-            return response()->json('Kode desa ' . $request->desa_id . ' tidak terdaftar di kecamatan', 400);
+            Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
+            return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
+        }
+
+        if (!Penduduk::where('nik', $request->nik)->exists()) {
+            Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan");
+            return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan", 400);
         }
 
         $file           = $request->file('file');

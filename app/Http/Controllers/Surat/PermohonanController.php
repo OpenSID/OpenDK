@@ -43,7 +43,7 @@ class PermohonanController extends Controller
         $page_title       = 'Permohonan Surat';
         $page_description = 'Daftar Permohonan Surat';
 
-        return view('surat.permohonan.index', compact('page_title', 'page_description', 'surat'));
+        return view('surat.permohonan.index', compact('page_title', 'page_description'));
     }
 
     public function getData()

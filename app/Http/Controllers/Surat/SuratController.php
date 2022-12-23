@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Surat;
 
+use App\Models\Surat;
+use App\Models\SettingAplikasi;
+use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengaturanSuratRequest;
-use App\Models\SettingAplikasi;
-use App\Models\Surat;
-use Yajra\DataTables\DataTables;
 
 class SuratController extends Controller
 {
@@ -65,12 +65,13 @@ class SuratController extends Controller
 
     public function pengaturan()
     {
-        $settings         = SettingAplikasi::where('kategori', 'surat')->pluck('value', 'key');
-        $formAction       = route('surat.pengaturan.update');
-        $page_title       = 'Pegaturan Surat';
-        $page_description = 'Daftar Pegaturan Surat';
-
-        return view('surat.pengaturan', compact('page_title', 'page_description', 'settings', 'formAction'));
+        $formAction        = route('surat.pengaturan.update');
+        $camat             = $this->akun_camat;
+        $sekretaris        = $this->akun_sekretaris;
+        $page_title        = 'Pegaturan Surat';
+        $page_description  = 'Daftar Pegaturan Surat';
+     
+        return view('surat.pengaturan', compact('page_title', 'page_description', 'formAction', 'camat', 'sekretaris'));
     }
 
     public function pengaturan_update(PengaturanSuratRequest $request)

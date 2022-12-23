@@ -31,26 +31,28 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Event;
+use App\Models\Profil;
+use App\Models\Jabatan;
+use App\Models\Program;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
-use App\Models\Event;
 use App\Models\Keluarga;
-use App\Models\MediaSosial;
 use App\Models\Penduduk;
 use App\Models\Pengurus;
-use App\Models\Profil;
-use App\Models\Program;
-use App\Models\SettingAplikasi;
-use App\Models\SinergiProgram;
+use App\Enums\JenisJabatan;
+use App\Models\MediaSosial;
 use App\Models\TipePotensi;
-use Exception;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Http;
+use App\Models\SinergiProgram;
+use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -74,8 +76,28 @@ class Controller extends BaseController
         $this->umum       = DataUmum::first();
         $this->nama_camat = Pengurus::status()->camat()->first();
 
-        // Global variable for setting application
+        // Pemeriksaan akun pengurus untuk alur pemeriksaan surat
+        $this->akun_camat      = Pengurus::status()->akunCamat()->first();
+        $this->akun_sekretaris = Pengurus::status()->akunSekretaris()->first();
+
+        if (! $this->akun_camat) {
+            SettingAplikasi::where('key', 'tte')->update(['value' => 0]);
+            SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 0]);
+        }
+
+        if (! $this->akun_sekretaris) {
+            SettingAplikasi::where('key', 'pemeriksaan_sekretaris')->update(['value' => 0]);
+        }
+
+        // Tambahan global variabel di luar setting aplikasi
+        $this->sebutan_tambahan = array(
+            'sebutan_camat'      => Jabatan::where('jenis', JenisJabatan::Camat)->first()->nama,
+            'sebutan_sekretaris' => Jabatan::where('jenis', JenisJabatan::Sekretaris)->first()->nama,
+        );
+
+        // Global variabel setting aplikasi
         $this->settings = SettingAplikasi::pluck('value', 'key');
+        $this->settings = $this->settings->merge($this->sebutan_tambahan);
         View::share('settings', $this->settings);
 
         if (in_array($this->profil->provinsi_id, [91, 92])) {
@@ -84,6 +106,10 @@ class Controller extends BaseController
         } else {
             $this->sebutan_wilayah = 'Kecamatan';
             $this->sebutan_kepala_wilayah = 'Camat';
+        }
+
+        if ($this->settings['tte']) {
+            SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 1]);
         }
 
         $this->kirimTrack();

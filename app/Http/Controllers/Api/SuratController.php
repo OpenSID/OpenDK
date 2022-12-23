@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\StatusVerifikasiSurat;
 use App\Models\Surat;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
@@ -84,14 +85,18 @@ class SuratController extends Controller
         $file_name      = time() .  '_' . $original_name;
         Storage::putFileAs('public/surat', $file, $file_name);
 
+        $this->settings['pemeriksaan_camat'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif;
+
         $surat = Surat::create([
-            'desa_id'     => $request->desa_id,
-            'nik'         => $request->nik,
-            'pengurus_id' => $this->nama_camat->id,
-            'tanggal'     => $request->tanggal,
-            'nomor'       => $request->nomor,
-            'nama'        => $request->nama,
-            'file'        => $file_name,
+            'desa_id'               => $request->desa_id,
+            'nik'                   => $request->nik,
+            'pengurus_id'           => $this->nama_camat->id,
+            'tanggal'               => $request->tanggal,
+            'nomor'                 => $request->nomor,
+            'nama'                  => $request->nama,
+            'file'                  => $file_name,
+            'verifikasi_camat'      => StatusVerifikasiSurat::MenungguVerifikasi,
+            'verifikasi_sekretaris' => $this->settings['pemeriksaan_sekretaris'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif,
         ]);
 
         return new SuratResource(true, 'Surat Berhasil Dikirim!', $surat);

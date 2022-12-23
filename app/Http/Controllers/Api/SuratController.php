@@ -90,7 +90,7 @@ class SuratController extends Controller
         $surat = Surat::create([
             'desa_id'               => $request->desa_id,
             'nik'                   => $request->nik,
-            'pengurus_id'           => $this->nama_camat->id,
+            'pengurus_id'           => $this->akun_camat->id,
             'tanggal'               => $request->tanggal,
             'nomor'                 => $request->nomor,
             'nama'                  => $request->nama,

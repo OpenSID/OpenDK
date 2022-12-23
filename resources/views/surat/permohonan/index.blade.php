@@ -24,7 +24,7 @@
                 <table class="table table-striped table-bordered" id="pengurus-table">
                     <thead>
                         <tr>
-                            <th style="min-width: 40px;">Aksi</th>
+                            <th style="min-width: 80px;">Aksi</th>
                             <th>Desa</th>
                             <th>Nama Surat</th>
                             <th>Nama Penduduk</th>

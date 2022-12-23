@@ -50,7 +50,7 @@ class PermohonanController extends Controller
     {
         return DataTables::of(Surat::permohonan())
             ->addColumn('aksi', function ($row) {
-                $data['download_url']   = route('surat.permohonan.download', $row->id);
+                $data['show_url']   = route('surat.permohonan.show', $row->id);
 
                 return view('forms.aksi', $data);
             })
@@ -74,8 +74,12 @@ class PermohonanController extends Controller
             ->rawColumns(['aksi', 'nama', 'log_verifikasi'])->make();
     }
 
-    public function download($id)
+    public function show($id)
     {
-        dd('unduh');
+        $surat            = Surat::findOrFail($id);
+        $page_title       = 'Detail Surat';
+        $page_description = "Detail Data Surat: {$surat->nama}";
+
+        return view('surat.permohonan.show', compact('page_title', 'page_description', 'surat'));
     }
 }

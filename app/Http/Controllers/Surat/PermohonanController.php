@@ -59,14 +59,17 @@ class PermohonanController extends Controller
             })
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
-                    return 'Menunggu Ditandatangani Camat';
+                    return "<span class='label label-warning'>Menunggu Ditandatangani {$this->settings['sebutan_camat']}</span>";
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
-                    return 'Menunggu Verifikasi Camat';
+                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_camat']}</span>";
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
-                    return 'Menunggu Verifikasi Sekretaris';
+                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_sekretaris']}</span>";
                 } else {
-                    return 'Menunggu Verifikasi Operator';
+                    return "<span class='label label-warning'>Menunggu Verifikasi Operator</span>";
                 }
+            })
+            ->editColumn('tanggal', function ($row) {
+                return format_date($row->tanggal);
             })
             ->rawColumns(['aksi', 'nama', 'log_verifikasi'])->make();
     }

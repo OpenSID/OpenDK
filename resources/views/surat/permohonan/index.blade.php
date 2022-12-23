@@ -29,7 +29,7 @@
                             <th>Nama Surat</th>
                             <th>Nama Penduduk</th>
                             <th>Ditandatangani oleh</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal Surat</th>
                             <th>Status</th>
                         </tr>
                     </thead>

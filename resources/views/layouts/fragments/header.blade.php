@@ -1,8 +1,11 @@
 <style>
+.badge {
+    font-size: 10px;
+}
 .badge-notif {
     background:red;
     position:relative;
-    top: -15px;
+    top: -10px;
     left: -15px;
 }
 </style>

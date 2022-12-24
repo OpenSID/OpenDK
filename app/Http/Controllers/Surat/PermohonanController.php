@@ -32,10 +32,12 @@
 namespace App\Http\Controllers\Surat;
 
 use App\Models\Surat;
+use App\Enums\StatusSurat;
 use Yajra\DataTables\DataTables;
 use App\Enums\LogVerifikasiSurat;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PermohonanController extends Controller
@@ -114,6 +116,20 @@ class PermohonanController extends Controller
             }
 
             $surat->update(['log_verifikasi' => $log_verifikasi]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+        return response()->json();
+    }
+
+    public function tolak(Request $request, $id)
+    {
+        try {
+            Surat::findOrFail($id)->update([
+                'log_verifikasi' => LogVerifikasiSurat::Ditolak,
+                'status'         => StatusSurat::Ditolak,
+                'keterangan'     => $request['keterangan'],
+            ]);
         } catch (\Exception $e) {
             report($e);
         }

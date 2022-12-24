@@ -91,5 +91,61 @@
             }
         })
     });
+
+    $('#tolak').on('click', function () {
+        Swal.fire({
+        title: 'Berikan alasan menolak surat ini.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Kirim!',
+        cancelButtonText: 'Batal!',
+        showLoaderOnConfirm: true,
+        input: 'textarea',
+        inputPlaceholder : 'Masukkan asalan',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Kolom keterangan tidak boleh kosong'
+            }
+        },
+        preConfirm: (value) => {
+            const formData = new FormData();
+            formData.append('_token', "{{ csrf_token() }}");
+            formData.append('keterangan', value);
+            return fetch(`{{ route('surat.permohonan.tolak', $surat->id) }}`, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error(response.statusText)
+                }
+                return response.json()
+            })
+            .catch(error => {
+                Swal.showValidationMessage(
+                `Request failed: ${error}`
+                )
+            })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Sukses!',
+                    'Surat berhasil ditolak',
+                    'success'
+                )
+                return window.location.replace(`{{ route('surat.permohonan') }}`);
+            } else {
+                Swal.fire(
+                    'Gagal!',
+                    'Surat gagal ditolak.',
+                    'error'
+                )
+            }
+        })
+    });
 </script>
 @endpush

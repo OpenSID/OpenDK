@@ -549,6 +549,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::get('show/{surat}', ['as' => 'surat.permohonan.show', 'uses' => 'PermohonanController@show']);
                     Route::get('download/{surat}', ['as' => 'surat.permohonan.download', 'uses' => 'PermohonanController@download']);
                     Route::get('setujui/{surat}', ['as' => 'surat.permohonan.setujui', 'uses' => 'PermohonanController@setujui']);
+                    Route::post('tolak/{surat}', ['as' => 'surat.permohonan.tolak', 'uses' => 'PermohonanController@tolak']);
                 });
 
                 //arsip

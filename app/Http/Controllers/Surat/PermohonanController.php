@@ -54,7 +54,19 @@ class PermohonanController extends Controller
     {
         return DataTables::of(Surat::permohonan())
             ->addColumn('aksi', function ($row) {
-                $data['show_url']     = route('surat.permohonan.show', $row->id);
+                $user = auth()->user()->pengurus_id;
+                $isAllow = false;
+                if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
+                    $isAllow = true;
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+                    $isAllow = true;
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+                    $isAllow = true;
+                }
+
+                if ($isAllow) {
+                    $data['show_url'] = route('surat.permohonan.show', $row->id);
+                }
                 $data['download_url'] = route('surat.permohonan.download', $row->id);
 
                 return view('forms.aksi', $data);
@@ -85,6 +97,21 @@ class PermohonanController extends Controller
         $page_title       = 'Detail Surat';
         $page_description = "Detail Data Surat: {$surat->nama}";
 
+        // Cek pemeriksa
+        $user = auth()->user()->pengurus_id;
+        $isAllow = false;
+        if ($surat->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
+            $isAllow = true;
+        } elseif ($surat->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+            $isAllow = true;
+        } elseif ($surat->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+            $isAllow = true;
+        }
+
+        if (! $isAllow) {
+            return back()->with('error', 'Anda tidak memiliki akses');
+        }
+
         return view('surat.permohonan.show', compact('page_title', 'page_description', 'surat'));
     }
 
@@ -109,10 +136,13 @@ class PermohonanController extends Controller
             if ($log_sekarang == LogVerifikasiSurat::Operator) {
                 $log_verifikasi = $surat->verifikasi_sekretaris == StatusVerifikasiSurat::MenungguVerifikasi ? 
                     LogVerifikasiSurat::Sekretaris : LogVerifikasiSurat::Camat;
+                $surat->update(['verifikasi_operator' => StatusVerifikasiSurat::TelahDiverifikasi]);
             } elseif ($log_sekarang == LogVerifikasiSurat::Sekretaris) {
                 $log_verifikasi = LogVerifikasiSurat::Camat;
+                $surat->update(['verifikasi_sekretaris' => StatusVerifikasiSurat::TelahDiverifikasi]);
             } else {
                 $log_verifikasi = LogVerifikasiSurat::ProsesTTE;
+                $surat->update(['verifikasi_camat' => StatusVerifikasiSurat::TelahDiverifikasi]);
             }
 
             $surat->update(['log_verifikasi' => $log_verifikasi]);

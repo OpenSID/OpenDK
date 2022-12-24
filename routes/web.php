@@ -541,13 +541,14 @@ Route::group(['middleware' => 'installed'], function () {
          * Group Routing for Pesan
          */
         Route::namespace('Surat')->group(function () {
-            Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|administrator-kecamatan']], function () {
+            Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                 //permohonan
                 Route::group(['prefix' => 'permohonan'], function () {
                     Route::get('/', ['as' => 'surat.permohonan', 'uses' => 'PermohonanController@index']);
                     Route::get('getdata', ['as' => 'surat.permohonan.getdata', 'uses' => 'PermohonanController@getData']);
                     Route::get('show/{surat}', ['as' => 'surat.permohonan.show', 'uses' => 'PermohonanController@show']);
                     Route::get('download/{surat}', ['as' => 'surat.permohonan.download', 'uses' => 'PermohonanController@download']);
+                    Route::get('setujui/{surat}', ['as' => 'surat.permohonan.setujui', 'uses' => 'PermohonanController@setujui']);
                 });
 
                 //arsip

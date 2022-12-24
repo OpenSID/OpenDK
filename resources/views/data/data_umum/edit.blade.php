@@ -211,7 +211,7 @@
             confirmButtonText: 'Ya!',
             cancelButtonText: 'Tidak!',
             showLoaderOnConfirm: true,
-            preConfirm: (login) => {
+            preConfirm: () => {
                 return fetch(`{{ route('data.data-umum.resetpeta', $data_umum->id) }}`)
                 .then(response => {
                     if (!response.ok) {

@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Surat;
 use App\Models\Surat;
 use Yajra\DataTables\DataTables;
 use App\Enums\LogVerifikasiSurat;
+use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -88,12 +89,34 @@ class PermohonanController extends Controller
     public function download($id)
     {
         try {
-            $getFile = Surat::findOrFail($id);
+            $surat = Surat::findOrFail($id);
 
-            return Storage::download('public/surat/' . $getFile->file);
+            return Storage::download('public/surat/' . $surat->file);
         } catch (\Exception $e) {
             report($e);
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
+    }
+
+    public function setujui($id)
+    {
+        try {
+            $surat        = Surat::findOrFail($id);
+            $log_sekarang = $surat->log_verifikasi;
+
+            if ($log_sekarang == LogVerifikasiSurat::Operator) {
+                $log_verifikasi = $surat->verifikasi_sekretaris == StatusVerifikasiSurat::MenungguVerifikasi ? 
+                    LogVerifikasiSurat::Sekretaris : LogVerifikasiSurat::Camat;
+            } elseif ($log_sekarang == LogVerifikasiSurat::Sekretaris) {
+                $log_verifikasi = LogVerifikasiSurat::Camat;
+            } else {
+                $log_verifikasi = LogVerifikasiSurat::ProsesTTE;
+            }
+
+            $surat->update(['log_verifikasi' => $log_verifikasi]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+        return response()->json();
     }
 }

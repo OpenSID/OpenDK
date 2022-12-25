@@ -46,6 +46,35 @@ use Illuminate\Support\Facades\Validator;
 class SuratController extends Controller
 {
     /**
+     * index
+     *
+     * @return void
+     */
+    public function index(Request $request)
+    {
+        if (! $this->settings['tte']) {
+            return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
+        }
+
+        $validator = Validator::make($request->all(), ['desa_id' => 'required']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+            Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
+            return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
+        }
+
+        $surat = Surat::where('desa_id', $request->desa_id)->get([
+            'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan' 
+            ])->chunk(50);
+
+        return new SuratResource(true, 'Daftar Surat', $surat);
+    }
+
+    /**
      * store
      *
      * @param  mixed $request

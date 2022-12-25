@@ -165,4 +165,27 @@ class PermohonanController extends Controller
         }
         return response()->json();
     }
+
+    public function ditolak()
+    {
+        $page_title       = 'Permohonan Surat Ditolak';
+        $page_description = 'Daftar Permohonan Surat Ditolak';
+
+        return view('surat.permohonan.ditolak', compact('page_title', 'page_description'));
+    }
+
+    public function getDataDitolak()
+    {
+        return DataTables::of(Surat::ditolak())
+            ->editColumn('nama', function ($row) {
+                return "Surat {$row->nama}";
+            })
+            ->editColumn('log_verifikasi', function () {
+                return "<span class='label label-danger'>Ditolak</span>";
+            })
+            ->editColumn('tanggal', function ($row) {
+                return format_date($row->tanggal);
+            })
+            ->rawColumns(['nama', 'log_verifikasi'])->make();
+    }
 }

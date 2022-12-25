@@ -23,7 +23,7 @@
             <div class="icon">
                 <i class="fa fa-close"></i>
             </div>
-            <a href="#" class="small-box-footer">
+            <a href="{{ route('surat.permohonan.ditolak') }}" class="small-box-footer">
                 Selengkapnya <i class="fa fa-arrow-circle-right"></i>
             </a>
         </div>

@@ -16,9 +16,10 @@
 
 <section class="content container-fluid">
 
-    @include('partials.flash_message')
+    @include('surat.permohonan.widget')
 
     <div class="box box-primary">
+        @include('partials.flash_message')
         <div class="box-body">
             <div class="table-responsive">
                 <table class="table table-striped table-bordered" id="pengurus-table">

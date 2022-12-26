@@ -32,14 +32,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\StatusVerifikasiSurat;
-use App\Models\Surat;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use App\Models\Surat;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -68,7 +68,7 @@ class SuratController extends Controller
         }
 
         $surat = Surat::where('desa_id', $request->desa_id)->get([
-            'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan' 
+            'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan'
             ])->chunk(50);
         return new SuratResource(true, 'Daftar Surat', $surat);
     }

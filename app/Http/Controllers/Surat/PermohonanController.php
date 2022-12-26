@@ -31,14 +31,14 @@
 
 namespace App\Http\Controllers\Surat;
 
-use App\Models\Surat;
-use App\Enums\StatusSurat;
-use Yajra\DataTables\DataTables;
 use App\Enums\LogVerifikasiSurat;
+use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
+use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
 class PermohonanController extends Controller
 {
@@ -134,7 +134,7 @@ class PermohonanController extends Controller
             $log_sekarang = $surat->log_verifikasi;
 
             if ($log_sekarang == LogVerifikasiSurat::Operator) {
-                $log_verifikasi = $surat->verifikasi_sekretaris == StatusVerifikasiSurat::MenungguVerifikasi ? 
+                $log_verifikasi = $surat->verifikasi_sekretaris == StatusVerifikasiSurat::MenungguVerifikasi ?
                     LogVerifikasiSurat::Sekretaris : LogVerifikasiSurat::Camat;
                 $surat->update(['verifikasi_operator' => StatusVerifikasiSurat::TelahDiverifikasi]);
             } elseif ($log_sekarang == LogVerifikasiSurat::Sekretaris) {

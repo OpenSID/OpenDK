@@ -100,7 +100,7 @@ class Pengurus extends Model
             $q->where('jenis', JenisJabatan::Camat);
         });
     }
-    
+
     public function scopeAkunCamat($query)
     {
         return $query->whereHas('jabatan', function ($q) {

@@ -32,8 +32,12 @@
 namespace App\Http\Controllers\Surat;
 
 use App\Enums\LogVerifikasiSurat;
+use App\Enums\StatusSurat;
+use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use App\Models\Surat;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class PermohonanController extends Controller
@@ -50,7 +54,20 @@ class PermohonanController extends Controller
     {
         return DataTables::of(Surat::permohonan())
             ->addColumn('aksi', function ($row) {
-                $data['download_url']   = route('surat.permohonan.download', $row->id);
+                $user = auth()->user()->pengurus_id;
+                $isAllow = false;
+                if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
+                    $isAllow = true;
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+                    $isAllow = true;
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+                    $isAllow = true;
+                }
+
+                if ($isAllow) {
+                    $data['show_url'] = route('surat.permohonan.show', $row->id);
+                }
+                $data['download_url'] = route('surat.permohonan.download', $row->id);
 
                 return view('forms.aksi', $data);
             })
@@ -59,20 +76,116 @@ class PermohonanController extends Controller
             })
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
-                    return 'Menunggu Ditandatangani Camat';
+                    return "<span class='label label-warning'>Menunggu Ditandatangani {$this->settings['sebutan_camat']}</span>";
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
-                    return 'Menunggu Verifikasi Camat';
+                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_camat']}</span>";
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
-                    return 'Menunggu Verifikasi Sekretaris';
+                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_sekretaris']}</span>";
                 } else {
-                    return 'Menunggu Verifikasi Operator';
+                    return "<span class='label label-warning'>Menunggu Verifikasi Operator</span>";
                 }
+            })
+            ->editColumn('tanggal', function ($row) {
+                return format_date($row->tanggal);
             })
             ->rawColumns(['aksi', 'nama', 'log_verifikasi'])->make();
     }
 
+    public function show($id)
+    {
+        $surat            = Surat::findOrFail($id);
+        $page_title       = 'Detail Surat';
+        $page_description = "Detail Data Surat: {$surat->nama}";
+
+        // Cek pemeriksa
+        $user = auth()->user()->pengurus_id;
+        $isAllow = false;
+        if ($surat->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
+            $isAllow = true;
+        } elseif ($surat->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+            $isAllow = true;
+        } elseif ($surat->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+            $isAllow = true;
+        }
+
+        if (! $isAllow) {
+            return back()->with('error', 'Anda tidak memiliki akses');
+        }
+
+        return view('surat.permohonan.show', compact('page_title', 'page_description', 'surat'));
+    }
+
     public function download($id)
     {
-        dd('unduh');
+        try {
+            $surat = Surat::findOrFail($id);
+
+            return Storage::download('public/surat/' . $surat->file);
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Dokumen tidak ditemukan');
+        }
+    }
+
+    public function setujui($id)
+    {
+        try {
+            $surat        = Surat::findOrFail($id);
+            $log_sekarang = $surat->log_verifikasi;
+
+            if ($log_sekarang == LogVerifikasiSurat::Operator) {
+                $log_verifikasi = $surat->verifikasi_sekretaris == StatusVerifikasiSurat::MenungguVerifikasi ?
+                    LogVerifikasiSurat::Sekretaris : LogVerifikasiSurat::Camat;
+                $surat->update(['verifikasi_operator' => StatusVerifikasiSurat::TelahDiverifikasi]);
+            } elseif ($log_sekarang == LogVerifikasiSurat::Sekretaris) {
+                $log_verifikasi = LogVerifikasiSurat::Camat;
+                $surat->update(['verifikasi_sekretaris' => StatusVerifikasiSurat::TelahDiverifikasi]);
+            } else {
+                $log_verifikasi = LogVerifikasiSurat::ProsesTTE;
+                $surat->update(['verifikasi_camat' => StatusVerifikasiSurat::TelahDiverifikasi]);
+            }
+
+            $surat->update(['log_verifikasi' => $log_verifikasi]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+        return response()->json();
+    }
+
+    public function tolak(Request $request, $id)
+    {
+        try {
+            Surat::findOrFail($id)->update([
+                'log_verifikasi' => LogVerifikasiSurat::Ditolak,
+                'status'         => StatusSurat::Ditolak,
+                'keterangan'     => $request['keterangan'],
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+        }
+        return response()->json();
+    }
+
+    public function ditolak()
+    {
+        $page_title       = 'Permohonan Surat Ditolak';
+        $page_description = 'Daftar Permohonan Surat Ditolak';
+
+        return view('surat.permohonan.ditolak', compact('page_title', 'page_description'));
+    }
+
+    public function getDataDitolak()
+    {
+        return DataTables::of(Surat::ditolak())
+            ->editColumn('nama', function ($row) {
+                return "Surat {$row->nama}";
+            })
+            ->editColumn('log_verifikasi', function () {
+                return "<span class='label label-danger'>Ditolak</span>";
+            })
+            ->editColumn('tanggal', function ($row) {
+                return format_date($row->tanggal);
+            })
+            ->rawColumns(['nama', 'log_verifikasi'])->make();
     }
 }

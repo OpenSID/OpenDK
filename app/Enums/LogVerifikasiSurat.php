@@ -42,4 +42,6 @@ final class LogVerifikasiSurat extends Enum
     public const Sekretaris = 2;
     public const Camat      = 3;
     public const ProsesTTE  = 4;
+    public const SudahTTE   = 5;
+    public const Ditolak    = 6;
 }

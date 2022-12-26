@@ -14,6 +14,7 @@ Terima kasih pada [] yang terus berkontribusi.
 7. [#585](https://github.com/OpenSID/OpenDK/issues/585) Penambahan Pengaturan Verifikasi camat dan sekretaris.
 8. [#591](https://github.com/OpenSID/OpenDK/issues/591) Penambahan API untuk mengecek status pemeriksaan surat.
 9. [#532](https://github.com/OpenSID/OpenDK/issues/532) Penambahan notifikasi untuk setiap surat yang masuk dari opensid.
+10. [#586](https://github.com/OpenSID/OpenDK/issues/586) Penambahan Module pemeriksaan surat.
 
 #### Perbaikan bug
 

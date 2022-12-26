@@ -23,6 +23,16 @@
                     <form method="POST" action="{{ $formAction }}" id="form-pengaturan-surat">
                         @include('layouts.fragments.error_message')
                         <div class="box-body">
+                            @if (!$camat)
+                                <div class="callout callout-danger">
+                                    <p>Pengaturan modul TTE dan pemeriksaan {{ $settings['sebutan_camat'] }} hanya bisa aktif jika akun <strong>{{ $settings['sebutan_camat'] }}</strong> sudah dibuat dan aktif.</p>
+                                </div>
+                            @endif
+                            @if (!$sekretaris)
+                                <div class="callout callout-danger">
+                                    <p>Pemeriksaan {{ $settings['sebutan_sekretaris'] }} hanya bisa aktif jika akun <strong>{{ $settings['sebutan_sekretaris'] }}</strong> sudah dibuat dan aktif.</p>
+                                </div>
+                            @endif
                             @include( 'flash::message' )
                             {{ method_field('PUT') }}
                             @csrf
@@ -30,17 +40,18 @@
                                 <label class="col-sm-3 control-label" for="tte">Aktifkan Modul TTE</label>
                                 <div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
                                     <label id="n1"
-                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['tte'] ? 'active' : '' }}">
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['tte'] ? 'active' : '' }}" {{ $camat ? '' : 'disabled' }}>
                                         <input id="q1" type="radio" name="tte" class="form-check-input" type="radio"
                                             value="1" {{ $settings['tte'] ? 'checked' : '' }} autocomplete="off">Ya
                                     </label>
                                     <label id="n2"
-                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['tte'] ? '' : 'active' }}">
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['tte'] ? '' : 'active' }}" {{ $camat ? '' : 'disabled' }}>
                                         <input id="q2" type="radio" name="tte" class="form-check-input" type="radio"
                                             value="0" {{ $settings['tte'] ? '' : 'checked' }} autocomplete="off">Tidak
                                     </label>
                                 </div>
                             </div>
+                            <br/>
                             <br/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="tte_api">URL API Server TTE</label>
@@ -64,15 +75,15 @@
                             </div>
                             <br/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="pemeriksaan_camat">Pemeriksaan Camat</label>
+                                <label class="col-sm-3 control-label" for="pemeriksaan_camat">Pemeriksaan {{ $settings['sebutan_camat'] }}</label>
                                 <div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
                                     <label id="n1"
-                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_camat'] ? 'active' : '' }}">
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_camat'] ? 'active' : '' }}" {{ $camat ? '' : 'disabled' }}>
                                         <input id="q1" type="radio" name="pemeriksaan_camat" class="form-check-input" type="radio"
                                             value="1" {{ $settings['pemeriksaan_camat'] ? 'checked' : '' }} autocomplete="off">Ya
                                     </label>
                                     <label id="n2"
-                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_camat'] ? '' : 'active' }}">
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_camat'] ? '' : 'active' }}" {{ $camat ? '' : 'disabled' }}>
                                         <input id="q2" type="radio" name="pemeriksaan_camat" class="form-check-input" type="radio"
                                             value="0" {{ $settings['pemeriksaan_camat'] ? '' : 'checked' }} autocomplete="off">Tidak
                                     </label>
@@ -80,15 +91,15 @@
                             </div>
                             <br/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="pemeriksaan_sekretaris">Pemeriksaan Sekretaris</label>
+                                <label class="col-sm-3 control-label" for="pemeriksaan_sekretaris">Pemeriksaan {{ $settings['sebutan_sekretaris'] }}</label>
                                 <div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
                                     <label id="n1"
-                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_sekretaris'] ? 'active' : '' }}">
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_sekretaris'] ? 'active' : '' }}" {{ $sekretaris ? '' : 'disabled' }}>
                                         <input id="q1" type="radio" name="pemeriksaan_sekretaris" class="form-check-input" type="radio"
                                             value="1" {{ $settings['pemeriksaan_sekretaris'] ? 'checked' : '' }} autocomplete="off">Ya
                                     </label>
                                     <label id="n2"
-                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_sekretaris'] ? '' : 'active' }}">
+                                        class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_sekretaris'] ? '' : 'active' }}" {{ $sekretaris ? '' : 'disabled' }}>
                                         <input id="q2" type="radio" name="pemeriksaan_sekretaris" class="form-check-input" type="radio"
                                             value="0" {{ $settings['pemeriksaan_sekretaris'] ? '' : 'checked' }} autocomplete="off">Tidak
                                     </label>
@@ -122,7 +133,8 @@
 
 <script>
     $('input[type=radio][name=tte]').change(function() {
-        if (this.value == 1) {
+        var camat = "{{ $camat }}";
+        if (this.value == 1 && camat) {
             $('#tte_api').prop("disabled", false);
             $('#tte_username').prop("disabled", false);
             $('#tte_password').prop("disabled", false);

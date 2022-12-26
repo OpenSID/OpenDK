@@ -25,7 +25,6 @@
                 <table class="table table-striped table-bordered" id="pengurus-table">
                     <thead>
                         <tr>
-                            <th style="min-width: 80px;">Aksi</th>
                             <th>Desa</th>
                             <th>Nama Surat</th>
                             <th>Nama Penduduk</th>
@@ -50,10 +49,9 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{!! route( 'surat.permohonan.getdata' ) !!}"
+                url: "{!! route( 'surat.permohonan.getdataditolak' ) !!}"
             },
             columns: [
-                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'desa.nama', name: 'desa.nama'},
                 {data: 'nama', name: 'nama'},
                 {data: 'penduduk.nama', name: 'penduduk.nama', orderable: false},

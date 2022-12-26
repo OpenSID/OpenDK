@@ -12,6 +12,9 @@ Terima kasih pada [] yang terus berkontribusi.
 5. [#534](https://github.com/OpenSID/OpenDK/issues/534) Penambahan Api untuk permohonan surat.
 6. [#588](https://github.com/OpenSID/OpenDK/issues/588) Penambahan Logo BSRE di halaman login saat pengaturan tte aktif.
 7. [#585](https://github.com/OpenSID/OpenDK/issues/585) Penambahan Pengaturan Verifikasi camat dan sekretaris.
+8. [#591](https://github.com/OpenSID/OpenDK/issues/591) Penambahan API untuk mengecek status pemeriksaan surat.
+9. [#532](https://github.com/OpenSID/OpenDK/issues/532) Penambahan notifikasi untuk setiap surat yang masuk dari opensid.
+
 #### Perbaikan bug
 
 1. [#577](https://github.com/OpenSID/OpenDK/issues/577) Perbaikan Gelar tidak muncul di widget camat.

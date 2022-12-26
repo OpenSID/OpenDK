@@ -122,6 +122,27 @@ class Pengurus extends Model
         })->whereHas('user');
     }
 
+    public function scopeAkunCamat($query)
+    {
+        return $query->whereHas('jabatan', function ($q) {
+            $q->where('jenis', JenisJabatan::Camat);
+        })->whereHas('user');
+    }
+
+    public function scopeSekretaris($query)
+    {
+        return $query->whereHas('jabatan', function ($q) {
+            $q->where('jenis', JenisJabatan::Sekretaris);
+        });
+    }
+
+    public function scopeAkunSekretaris($query)
+    {
+        return $query->whereHas('jabatan', function ($q) {
+            $q->where('jenis', JenisJabatan::Sekretaris);
+        })->whereHas('user');
+    }
+
     /**
      * Cek pengurus aktif.
      *

@@ -32,19 +32,47 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\StatusVerifikasiSurat;
-use App\Models\Surat;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use App\Models\Surat;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
 {
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index(Request $request)
+    {
+        if (! $this->settings['tte']) {
+            return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
+        }
+
+        $validator = Validator::make($request->all(), ['desa_id' => 'required']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+            Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
+            return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
+        }
+
+        $surat = Surat::where('desa_id', $request->desa_id)->get([
+            'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan'
+            ])->chunk(50);
+        return new SuratResource(true, 'Daftar Surat', $surat);
+    }
+
     /**
      * store
      *

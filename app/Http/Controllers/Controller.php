@@ -31,28 +31,28 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use App\Models\Event;
-use App\Models\Profil;
-use App\Models\Jabatan;
-use App\Models\Program;
+use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
+use App\Models\Event;
+use App\Models\Jabatan;
 use App\Models\Keluarga;
+use App\Models\MediaSosial;
 use App\Models\Penduduk;
 use App\Models\Pengurus;
-use App\Enums\JenisJabatan;
-use App\Models\MediaSosial;
-use App\Models\TipePotensi;
-use App\Models\SinergiProgram;
+use App\Models\Profil;
+use App\Models\Program;
 use App\Models\SettingAplikasi;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\View;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
+use App\Models\SinergiProgram;
+use App\Models\TipePotensi;
+use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 
 class Controller extends BaseController
 {
@@ -90,10 +90,10 @@ class Controller extends BaseController
         }
 
         // Tambahan global variabel di luar setting aplikasi
-        $this->sebutan_tambahan = array(
+        $this->sebutan_tambahan = [
             'sebutan_camat'      => Jabatan::where('jenis', JenisJabatan::Camat)->first()->nama,
             'sebutan_sekretaris' => Jabatan::where('jenis', JenisJabatan::Sekretaris)->first()->nama,
-        );
+        ];
 
         // Global variabel setting aplikasi
         $this->settings = SettingAplikasi::pluck('value', 'key');

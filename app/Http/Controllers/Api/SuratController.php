@@ -70,7 +70,6 @@ class SuratController extends Controller
         $surat = Surat::where('desa_id', $request->desa_id)->get([
             'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan' 
             ])->chunk(50);
-
         return new SuratResource(true, 'Daftar Surat', $surat);
     }
 

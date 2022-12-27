@@ -31,9 +31,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
 use App\Models\DataDesa;
+use App\Models\Penduduk;
 use App\Models\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -43,6 +45,34 @@ use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
 {
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index(Request $request)
+    {
+        if (! $this->settings['tte']) {
+            return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
+        }
+
+        $validator = Validator::make($request->all(), ['desa_id' => 'required']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+            Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
+            return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
+        }
+
+        $surat = Surat::where('desa_id', $request->desa_id)->get([
+            'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan'
+            ])->chunk(50);
+        return new SuratResource(true, 'Daftar Surat', $surat);
+    }
+
     /**
      * store
      *
@@ -69,8 +99,13 @@ class SuratController extends Controller
         }
 
         if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
-            Log::debug('Kode desa' . $request->desa_id . 'tidak terdaftar di kecamatan');
-            return response()->json('Kode desa ' . $request->desa_id . ' tidak terdaftar di kecamatan', 400);
+            Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
+            return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
+        }
+
+        if (!Penduduk::where('nik', $request->nik)->exists()) {
+            Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan");
+            return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan", 400);
         }
 
         $file           = $request->file('file');
@@ -78,14 +113,18 @@ class SuratController extends Controller
         $file_name      = time() .  '_' . $original_name;
         Storage::putFileAs('public/surat', $file, $file_name);
 
+        $this->settings['pemeriksaan_camat'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif;
+
         $surat = Surat::create([
-            'desa_id'     => $request->desa_id,
-            'nik'         => $request->nik,
-            'pengurus_id' => $this->nama_camat->id,
-            'tanggal'     => $request->tanggal,
-            'nomor'       => $request->nomor,
-            'nama'        => $request->nama,
-            'file'        => $file_name,
+            'desa_id'               => $request->desa_id,
+            'nik'                   => $request->nik,
+            'pengurus_id'           => $this->akun_camat->id,
+            'tanggal'               => $request->tanggal,
+            'nomor'                 => $request->nomor,
+            'nama'                  => $request->nama,
+            'file'                  => $file_name,
+            'verifikasi_camat'      => StatusVerifikasiSurat::MenungguVerifikasi,
+            'verifikasi_sekretaris' => $this->settings['pemeriksaan_sekretaris'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif,
         ]);
 
         return new SuratResource(true, 'Surat Berhasil Dikirim!', $surat);

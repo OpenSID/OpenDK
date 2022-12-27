@@ -17,7 +17,6 @@
 <section class="content container-fluid">
 
     @include('partials.flash_message')
-
     <div class="box box-primary">
         <div class="box-body">
             <div class="table-responsive">
@@ -47,7 +46,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{!! route( 'surat.permohonan.getdata' ) !!}"
+                url: "{!! route( 'surat.arsip.getdata' ) !!}"
             },
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},

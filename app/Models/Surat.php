@@ -55,6 +55,27 @@ class Surat extends Model
         'status',
     ];
 
+    protected $with = [
+        'penduduk',
+        'pengurus',
+        'desa',
+    ];
+
+    public function pengurus()
+    {
+        return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
+    }
+
+    public function penduduk()
+    {
+        return $this->hasOne(Penduduk::class, 'nik', 'nik');
+    }
+
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+    }
+
     public function scopePermohonan($query)
     {
         return $query->where('status', StatusSurat::Permohonan);

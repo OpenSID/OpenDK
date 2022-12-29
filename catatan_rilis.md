@@ -12,5 +12,5 @@ Terima kasih pada [] yang terus berkontribusi.
 
 1. [#577](https://github.com/OpenSID/OpenDK/issues/577) Perbaikan Gelar tidak muncul di widget camat.
 2. [#575](https://github.com/OpenSID/OpenDK/issues/575) Perbaikan Halaman struktur pemerintahan tidak menampilkan data perangkat saat ini.
-3. [#600](https://github.com/OpenSID/OpenDK/issues/600) Perbaikan gagal menjalankan seeder profil ketika install baru.
+3. [#598](https://github.com/OpenSID/OpenDK/issues/598) Perbaikan gagal menjalankan seeder profil ketika install baru.
 #### Perubahan Teknis

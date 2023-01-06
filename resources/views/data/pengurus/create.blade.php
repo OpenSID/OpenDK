@@ -24,6 +24,7 @@
                 <div class="box-body">
 
                     @include( 'flash::message' )
+                    @php $pengurus->foto = null; @endphp
                     @include('data.pengurus.form')
 
                 </div>

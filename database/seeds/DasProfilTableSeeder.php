@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2022 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -76,13 +76,6 @@ class DasProfilTableSeeder extends Seeder
             'email'                           => null,
             'tahun_pembentukan'               => null,
             'dasar_pembentukan'               => null,
-            'nama_camat'                      => null,
-            'sekretaris_camat'                => null,
-            'kepsek_pemerintahan_umum'        => null,
-            'kepsek_kesejahteraan_masyarakat' => null,
-            'kepsek_pemberdayaan_masyarakat'  => null,
-            'kepsek_pelayanan_umum'           => null,
-            'kepsek_trantib'                  => null,
             'file_struktur_organisasi'        => null,
             'file_logo'                       => null,
             'visi'                            => null,

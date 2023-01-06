@@ -1,8 +1,6 @@
-#### [v22.12.01]
+#### [v23.01.01]
 
-Di rilis v22.12.01, menyediakan fitur []. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
-
-Terima kasih pada [] yang terus berkontribusi.
+Di rilis v23.01.01, menyediakan fitur Widget Perangkat Kecamatan dan Tombol Reset Peta. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
 
 #### Penambahan Fitur
 1. [#579](https://github.com/OpenSID/OpenDK/issues/579) Penambahan fitur tombol reset peta kecamatan.
@@ -16,8 +14,9 @@ Terima kasih pada [] yang terus berkontribusi.
 9. [#532](https://github.com/OpenSID/OpenDK/issues/532) Penambahan notifikasi untuk setiap surat yang masuk dari opensid.
 10. [#586](https://github.com/OpenSID/OpenDK/issues/586) Penambahan Module pemeriksaan surat.
 
-#### Perbaikan bug
 
+#### Perbaikan bug
 1. [#577](https://github.com/OpenSID/OpenDK/issues/577) Perbaikan Gelar tidak muncul di widget camat.
 2. [#575](https://github.com/OpenSID/OpenDK/issues/575) Perbaikan Halaman struktur pemerintahan tidak menampilkan data perangkat saat ini.
-#### Perubahan Teknis
+3. [#598](https://github.com/OpenSID/OpenDK/issues/598) Perbaikan gagal menjalankan seeder profil ketika install baru.
+4. [#598](https://github.com/OpenSID/OpenDK/issues/601) Perbaikan Error Saat menambahkan data pengurus.

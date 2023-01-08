@@ -45,7 +45,6 @@ use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
 {
-    
     /**
      * index
      *

@@ -45,6 +45,7 @@ use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
 {
+    
     /**
      * index
      *
@@ -67,9 +68,7 @@ class SuratController extends Controller
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
 
-        $surat = Surat::where('desa_id', $request->desa_id)->get([
-            'file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan'
-            ])->chunk(50);
+        $surat = Surat::where('desa_id', $request->desa_id)->get(['file', 'nama', 'nik', 'pengurus_id', 'status', 'keterangan']);
         return new SuratResource(true, 'Daftar Surat', $surat);
     }
 
@@ -89,7 +88,7 @@ class SuratController extends Controller
             'desa_id' => 'required',
             'nik'     => 'required|integer|digits:16',
             'tanggal' => 'required|date',
-            'nomor'   => 'required|integer',
+            'nomor'   => 'required|string',
             'nama'    => 'required|string',
             'file'    => 'required|file|mimes:pdf|max:2048',
         ]);

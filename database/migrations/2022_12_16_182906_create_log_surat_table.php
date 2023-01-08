@@ -52,7 +52,7 @@ class CreateLogSuratTable extends Migration
             $table->char('nik', 16);
             $table->unsignedInteger('pengurus_id');
             $table->date('tanggal');
-            $table->integer('nomor');
+            $table->string('nomor', 100);
             $table->string('nama', 100);
             $table->string('file', 255);
             $table->text('keterangan')->nullable()->default(null);

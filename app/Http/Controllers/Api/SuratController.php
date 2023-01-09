@@ -87,7 +87,7 @@ class SuratController extends Controller
             'desa_id' => 'required',
             'nik'     => 'required|integer|digits:16',
             'tanggal' => 'required|date',
-            'nomor'   => 'required|string',
+            'nomor'   => 'required|string|unique:das_log_surat,nomor',
             'nama'    => 'required|string',
             'file'    => 'required|file|mimes:pdf|max:2048',
         ]);

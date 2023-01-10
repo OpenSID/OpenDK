@@ -32,8 +32,8 @@
                   <small class="" style="text-align:justify;">{{ strip_tags($profil->sambutan) }} </small>
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
-                  <img src="@if(isset($profil->foto_kepala_wilayah)) {{ asset($profil->foto_kepala_wilayah) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
-                  <h6 class="text-bold no-padding">{{ $profil->nama_camat }}</h6>
+                  <img src="@if(isset($camat->foto)) {{ asset($camat->foto) }} @else {{ asset('img/no-profile.png') }} @endif" width="200px" class="img-user">
+                  <h6 class="text-bold no-padding">{{ $camat->namaGelar }}</h6>
                   <h6>{{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }} </h6>
                 </li>
                 <li style="margin-left:-50px" class="col-sm-3"></li>

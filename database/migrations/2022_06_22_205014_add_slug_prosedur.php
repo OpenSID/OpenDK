@@ -44,7 +44,7 @@ class AddSlugProsedur extends Migration
     public function up()
     {
         Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->char('slug', 255)->after('judul_prosedur')->nullable(false);
+            $table->char('slug', 150)->after('judul_prosedur')->nullable(false);
         });
 
         // update data slug pada das prosedur

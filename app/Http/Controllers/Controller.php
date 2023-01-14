@@ -31,9 +31,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Event;
+use App\Models\Jabatan;
 use App\Models\Keluarga;
 use App\Models\MediaSosial;
 use App\Models\Penduduk;
@@ -74,12 +76,40 @@ class Controller extends BaseController
         $this->umum       = DataUmum::first();
         $this->nama_camat = Pengurus::status()->camat()->first();
 
+        // Pemeriksaan akun pengurus untuk alur pemeriksaan surat
+        $this->akun_camat      = Pengurus::status()->akunCamat()->first();
+        $this->akun_sekretaris = Pengurus::status()->akunSekretaris()->first();
+
+        if (! $this->akun_camat) {
+            SettingAplikasi::where('key', 'tte')->update(['value' => 0]);
+            SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 0]);
+        }
+
+        if (! $this->akun_sekretaris) {
+            SettingAplikasi::where('key', 'pemeriksaan_sekretaris')->update(['value' => 0]);
+        }
+
+        // Tambahan global variabel di luar setting aplikasi
+        $this->sebutan_tambahan = [
+            'sebutan_camat'      => Jabatan::where('jenis', JenisJabatan::Camat)->first()->nama,
+            'sebutan_sekretaris' => Jabatan::where('jenis', JenisJabatan::Sekretaris)->first()->nama,
+        ];
+
+        // Global variabel setting aplikasi
+        $this->settings = SettingAplikasi::pluck('value', 'key');
+        $this->settings = $this->settings->merge($this->sebutan_tambahan);
+        View::share('settings', $this->settings);
+
         if (in_array($this->profil->provinsi_id, [91, 92])) {
             $this->sebutan_wilayah = 'Distrik';
             $this->sebutan_kepala_wilayah = 'Kepala Distrik';
         } else {
             $this->sebutan_wilayah = 'Kecamatan';
             $this->sebutan_kepala_wilayah = 'Camat';
+        }
+
+        if ($this->settings['tte']) {
+            SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 1]);
         }
 
         $this->kirimTrack();

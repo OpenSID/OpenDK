@@ -109,5 +109,11 @@ Route::group(['prefix' => 'v1'], function () {
             Route::post('/', 'Api\ProgamBantuanController@store');
             Route::post('peserta', 'Api\ProgamBantuanController@storePeserta');
         });
+
+        //Surat
+        Route::group(['prefix' => 'surat'], function () {
+            Route::get('/', 'Api\SuratController@index');
+            Route::post('kirim', 'Api\SuratController@store');
+        });
     });
 });

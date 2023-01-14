@@ -4,6 +4,6 @@ Di rilis v23.01.01, menyediakan fitur Widget Perangkat Kecamatan dan Tombol Rese
 
 #### Penambahan Fitur
 
-
 #### Perbaikan bug
+
 1. [#609](https://github.com/OpenSID/OpenDK/issues/609) Perbaikan foto dan nama camat di menu profil tidak tampil.

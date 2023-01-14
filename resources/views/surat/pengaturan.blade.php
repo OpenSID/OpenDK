@@ -33,6 +33,17 @@
                                     <p>Pemeriksaan {{ $settings['sebutan_sekretaris'] }} hanya bisa aktif jika akun <strong>{{ $settings['sebutan_sekretaris'] }}</strong> sudah dibuat dan aktif.</p>
                                 </div>
                             @endif
+                            @if ($settings['tte_api'] == 'demo')
+                            <div class="alert alert-warning alert-dismissible">
+                                <h4><i class="icon fa fa-warning"></i> Info Penting!</h4>
+                                Modul TTE ini hanya sebuah simulasi untuk persiapan penerapan TTE di
+                                {{ $profil->nama_kecamatan }}
+                            </div>
+                            @endif
+                            <div class="alert alert-info alert-dismissible">
+                                <h4><i class="icon fa fa-info"></i> Info Penting!</h4>
+                                Masukkan URL dengan nilai "demo" jika ingin mengaktifkan mode demo
+                            </div>
                             @include( 'flash::message' )
                             {{ method_field('PUT') }}
                             @csrf
@@ -70,7 +81,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="tte_password">Password API Server TTE</label>
                                 <div class="col-sm-9">
-                                    <input id="tte_password" class="form-control input-sm" type="text" placeholder="Masukkan Password API Server TTE" name="tte_password" value="{{ $settings['tte_password'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
+                                    <input id="tte_password" class="form-control input-sm" type="password" placeholder="Masukkan Password API Server TTE" name="tte_password" value="{{ $settings['tte_password'] }}" {{ $settings['tte'] ? '' : 'disabled' }}>
                                 </div>
                             </div>
                             <br/>

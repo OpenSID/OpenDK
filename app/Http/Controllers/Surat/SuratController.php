@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Surat;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengaturanSuratRequest;
+use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\Surat;
 use Yajra\DataTables\DataTables;
@@ -68,6 +69,7 @@ class SuratController extends Controller
         $formAction        = route('surat.pengaturan.update');
         $camat             = $this->akun_camat;
         $sekretaris        = $this->akun_sekretaris;
+        $profil            = Profil::first();
         $page_title        = 'Pegaturan Surat';
         $page_description  = 'Daftar Pegaturan Surat';
 

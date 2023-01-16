@@ -557,7 +557,7 @@ Route::group(['middleware' => 'installed'], function () {
                 //arsip
                 Route::get('/arsip', ['as' => 'surat.arsip', 'uses' => 'SuratController@arsip']);
                 Route::get('/arsip/getdata', ['as' => 'surat.arsip.getdata', 'uses' => 'SuratController@getData']);
-                Route::get('/arsip/qrcode/{nomor}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
+                Route::get('/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
                 Route::get('/arsip/download/{surat}', ['as' => 'surat.arsip.download', 'uses' => 'SuratController@download']);
 
                 //pengaturan

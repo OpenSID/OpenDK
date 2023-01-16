@@ -61,12 +61,12 @@
               <tr>
                 <td width="30%">Nomor Surat</td>
                 <td width="1%">:</td>
-                <td><?= $surat->nomor; ?></td>
+                <td>{{ $surat->nomor }}</td>
               </tr>
               <tr>
                 <td>Tanggal Surat</td>
                 <td>:</td>
-                <td><?= $surat->tanggal; ?></td>
+                <td>{{ format_date($surat->tanggal) }}</td>
               </tr>
               <tr>
                 <td></td>
@@ -79,12 +79,12 @@
               <tr>
                 <td>Nama</td>
                 <td>:</td>
-                <td><?= $surat->pengurus->nama; ?></td>
+                <td>{{ $surat->pengurus->nama }}</td>
               </tr>
               <tr>
                 <td>Jabatan</td>
                 <td>:</td>
-                <td><?= $surat->pengurus->jabatan->nama; ?></td>
+                <td>{{ $surat->pengurus->jabatan->nama }}</td>
               </tr>
             </tbody>
           </table>

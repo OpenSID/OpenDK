@@ -195,18 +195,22 @@
         allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Sukses!',
-                    'Surat berhasil ditolak',
-                    'success'
-                )
-                return window.location.replace(`{{ route('surat.permohonan') }}`);
-            } else {
-                Swal.fire(
-                    'Gagal!',
-                    'Surat gagal ditolak.',
-                    'error'
-                )
+                let response = result.value
+                if (response.status == false) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Request failed',
+                        text: response.pesan_error,
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Dokumen berhasil tertanda tangani secara elektronik',
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        return window.location.replace(`{{ route('surat.permohonan') }}`);
+                    })
+                }
             }
         })
     });

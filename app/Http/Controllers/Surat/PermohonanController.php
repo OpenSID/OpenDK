@@ -32,16 +32,17 @@
 namespace App\Http\Controllers\Surat;
 
 use App\Models\Surat;
+use App\Models\LogTte;
 use App\Enums\StatusSurat;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Enums\LogVerifikasiSurat;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7;
 
 class PermohonanController extends Controller
 {    
@@ -181,12 +182,11 @@ class PermohonanController extends Controller
         $surat = Surat::findorfail($id);
 
         DB::beginTransaction();
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => "http://tte-dev.kamparkab.go.id/api/sign/pdf",
+        ]);
 
         try {
-            $client = new \GuzzleHttp\Client([
-                'base_uri' => "http://tte-dev.kamparkab.go.id/api/sign/pdf",
-            ]);
-
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
@@ -208,8 +208,8 @@ class PermohonanController extends Controller
 
             return $this->response([
                 'status'      => true,
-                'pesan'       => 'success',
-                'jenis_error' => null,
+                'pesan_error' => 'success',
+                'jenis'       => null,
             ]);
         } catch (ClientException $e) {
             report($e);
@@ -218,8 +218,8 @@ class PermohonanController extends Controller
 
             return $this->response([
                 'status'      => false,
-                'pesan'       => $e->getResponse()->getBody()->getContents(),
-                'jenis_error' => 'ClientException',
+                'pesan_error' => $e->getMessage(),
+                'jenis'       => 'ClientException',
             ]);
         }
     }
@@ -227,8 +227,8 @@ class PermohonanController extends Controller
     protected function response($notif = [])
     {
         LogTte::create([
-            'message'     => $notif['pesan'],
-            'jenis_error' => $notif['jenis_error'],
+            'pesan_error' => $notif['pesan_error'],
+            'jenis'       => $notif['jenis'],
         ]);
 
         return response()->json($notif);

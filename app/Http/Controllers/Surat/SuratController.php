@@ -36,6 +36,7 @@ use App\Http\Requests\PengaturanSuratRequest;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\Surat;
+use App\Enums\StatusSurat;
 use Yajra\DataTables\DataTables;
 
 class SuratController extends Controller
@@ -88,5 +89,13 @@ class SuratController extends Controller
         }
 
         return redirect()->route('surat.pengaturan')->with('success', 'Pengaturan Surat berhasil diubah!');
+    }
+
+    public function qrcode($id)
+    {
+        $surat  = Surat::where('id', '=', $id)->where('status', '=', StatusSurat::Arsip)->firstOrFail();
+        $profil = Profil::first();
+
+        return view('surat.qrcode', compact('surat', 'profil'));
     }
 }

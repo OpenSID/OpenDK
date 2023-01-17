@@ -38,11 +38,11 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Enums\LogVerifikasiSurat;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7;
 
 class PermohonanController extends Controller
 {    
@@ -179,19 +179,24 @@ class PermohonanController extends Controller
 
     public function passphrase(Request $request, $id)
     {
-        $surat = Surat::findorfail($id);
+        $surat = Surat::findOrFail($id);
 
         DB::beginTransaction();
+
         $client = new \GuzzleHttp\Client([
-            'base_uri' => "http://tte-dev.kamparkab.go.id/api/sign/pdf",
+            'base_uri' => $this->settings['tte_api'],
+            'auth'     => [
+                $this->settings['tte_username'],
+                $this->settings['tte_password'],
+            ],
         ]);
 
         try {
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
-                    // ['name' => 'file', 'contents' => Psr7\Utils::tryFopen(Storage::download('public/surat/' . $surat->file), 'r')],
-                    ['name' => 'nik', 'contents' => 0],
+                    ['name' => 'file', 'contents' => Psr7\Utils::tryFopen(Storage::download('public/surat/' . $surat->file), 'r')],
+                    ['name' => 'nik', 'contents' => $surat->pengurus->nik],
                     ['name' => 'passphrase', 'contents' => $request['passphrase']],
                     ['name' => 'tampilan', 'contents' => 'invisible'],
                 ],

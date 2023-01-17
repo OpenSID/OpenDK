@@ -71,4 +71,9 @@
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye" aria-hidden="true"></i></button>
         </a>
     @endif
+    @if( isset( $passphrase ) )
+        <a href="{!! empty( $passphrase ) ? 'javascript:void(0)' : $passphrase !!}" class="{!! empty( $passphrase ) ? 'disabled' : '' !!}" title="Passphrase" data-button="passphrase">
+            <button type="button" class="btn btn-primary btn-sm" style="width: 40px;"><i class="fa fa-key" aria-hidden="true"></i></button>
+        </a>
+    @endif
 </div>

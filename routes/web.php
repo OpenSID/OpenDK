@@ -552,6 +552,7 @@ Route::group(['middleware' => 'installed'], function () {
                     Route::post('tolak/{surat}', ['as' => 'surat.permohonan.tolak', 'uses' => 'PermohonanController@tolak']);
                     Route::get('ditolak', ['as' => 'surat.permohonan.ditolak', 'uses' => 'PermohonanController@ditolak']);
                     Route::get('getdataditolak', ['as' => 'surat.permohonan.getdataditolak', 'uses' => 'PermohonanController@getDataDitolak']);
+                    Route::post('passphrase/{surat}', ['as' => 'surat.permohonan.passphrase', 'uses' => 'PermohonanController@passphrase']);
                 });
 
                 //arsip

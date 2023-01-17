@@ -31,17 +31,20 @@
 
 namespace App\Http\Controllers\Surat;
 
-use App\Enums\LogVerifikasiSurat;
+use App\Models\Surat;
 use App\Enums\StatusSurat;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Enums\LogVerifikasiSurat;
+use Illuminate\Support\Facades\DB;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
-use App\Models\Surat;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7;
 
 class PermohonanController extends Controller
-{
+{    
     public function index()
     {
         $page_title       = 'Permohonan Surat';
@@ -67,6 +70,11 @@ class PermohonanController extends Controller
                 if ($isAllow) {
                     $data['show_url'] = route('surat.permohonan.show', $row->id);
                 }
+
+                if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE && $user == $this->akun_camat->id) {
+                    $data['passphrase'] = route('surat.permohonan.show', $row->id);
+                }
+
                 $data['download_url'] = route('surat.permohonan.download', $row->id);
 
                 return view('forms.aksi', $data);
@@ -105,6 +113,8 @@ class PermohonanController extends Controller
         } elseif ($surat->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
             $isAllow = true;
         } elseif ($surat->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+            $isAllow = true;
+        } elseif ($surat->log_verifikasi == LogVerifikasiSurat::ProsesTTE && $user == $this->akun_camat->id) {
             $isAllow = true;
         }
 
@@ -164,6 +174,64 @@ class PermohonanController extends Controller
             report($e);
         }
         return response()->json();
+    }
+
+    public function passphrase(Request $request, $id)
+    {
+        $surat = Surat::findorfail($id);
+
+        DB::beginTransaction();
+
+        try {
+            $client = new \GuzzleHttp\Client([
+                'base_uri' => "http://tte-dev.kamparkab.go.id/api/sign/pdf",
+            ]);
+
+            $response = $client->post('api/sign/pdf', [
+                'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
+                'multipart' => [
+                    // ['name' => 'file', 'contents' => Psr7\Utils::tryFopen(Storage::download('public/surat/' . $surat->file), 'r')],
+                    ['name' => 'nik', 'contents' => 0],
+                    ['name' => 'passphrase', 'contents' => $request['passphrase']],
+                    ['name' => 'tampilan', 'contents' => 'invisible'],
+                ],
+            ]);
+
+            DB::commit();
+
+            // overwrite dokumen lama dengan response dari bsre
+            // if ($response->getStatusCode() == 200) {
+            //     $file = fopen(Storage::url('surat/' . $surat->file), 'wb');
+            //     fwrite($file, $response->getBody()->getContents());
+            //     fclose($file);
+            // }
+
+            return $this->response([
+                'status'      => true,
+                'pesan'       => 'success',
+                'jenis_error' => null,
+            ]);
+        } catch (ClientException $e) {
+            report($e);
+
+            DB::rollback();
+
+            return $this->response([
+                'status'      => false,
+                'pesan'       => $e->getResponse()->getBody()->getContents(),
+                'jenis_error' => 'ClientException',
+            ]);
+        }
+    }
+
+    protected function response($notif = [])
+    {
+        LogTte::create([
+            'message'     => $notif['pesan'],
+            'jenis_error' => $notif['jenis_error'],
+        ]);
+
+        return response()->json($notif);
     }
 
     public function ditolak()

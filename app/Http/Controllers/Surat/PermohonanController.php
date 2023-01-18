@@ -85,7 +85,7 @@ class PermohonanController extends Controller
             })
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
-                    return "<span class='label label-warning'>Menunggu Ditandatangani {$this->settings['sebutan_camat']}</span>";
+                    return "<span class='label label-primary'>Menunggu Ditandatangani {$this->settings['sebutan_camat']}</span>";
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
                     return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_camat']}</span>";
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
@@ -192,10 +192,11 @@ class PermohonanController extends Controller
         ]);
 
         try {
+            $file_path = asset("storage/surat/{$surat->file}");
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
-                    ['name' => 'file', 'contents' => Psr7\Utils::tryFopen(Storage::download('public/surat/' . $surat->file), 'r')],
+                    ['name' => 'file', 'contents' => Psr7\Utils::tryFopen($file_path, 'r')],
                     ['name' => 'nik', 'contents' => $surat->pengurus->nik],
                     ['name' => 'passphrase', 'contents' => $request['passphrase']],
                     ['name' => 'tampilan', 'contents' => 'invisible'],

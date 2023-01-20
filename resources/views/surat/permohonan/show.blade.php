@@ -208,7 +208,7 @@
                         title: 'Dokumen berhasil tertanda tangani secara elektronik',
                         showConfirmButton: true,
                     }).then((result) => {
-                        return window.location.replace(`{{ route('surat.permohonan') }}`);
+                        return window.location.replace(`{{ route('surat.arsip') }}`);
                     })
                 }
             }

@@ -196,8 +196,7 @@ class PermohonanController extends Controller
             $file_path = public_path("storage/surat/{$surat->file}");
             $width     = 90;
             $height    = 90;
-            $tag       = '[qrcode_bsre_kecamatan]';
-            $nik       = $surat->pengurus->nik;
+            $tag       = '[qr_camat]';
 
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
@@ -213,19 +212,24 @@ class PermohonanController extends Controller
                 ],
             ]);
 
+            $surat->update([
+                'status' => StatusSurat::Arsip, 
+                'log_verifikasi' => LogVerifikasiSurat::SudahTTE
+            ]);
+
             DB::commit();
 
             // overwrite dokumen lama dengan response dari bsre
-            // if ($response->getStatusCode() == 200) {
-            //     $file = fopen(Storage::url('surat/' . $surat->file), 'wb');
-            //     fwrite($file, $response->getBody()->getContents());
-            //     fclose($file);
-            // }
+            if ($response->getStatusCode() == 200) {
+                $file = fopen($file_path, 'wb');
+                fwrite($file, $response->getBody()->getContents());
+                fclose($file);
+            }
 
             return $this->response([
                 'status'      => true,
                 'pesan_error' => 'success',
-                'jenis'       => null,
+                'jenis'       => 'success',
             ]);
         } catch (ClientException $e) {
             report($e);

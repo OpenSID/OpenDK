@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Surat;
 
+use GuzzleHttp\Psr7;
 use App\Models\Surat;
 use App\Models\LogTte;
 use App\Enums\StatusSurat;
@@ -40,9 +41,9 @@ use App\Enums\LogVerifikasiSurat;
 use Illuminate\Support\Facades\DB;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7;
 
 class PermohonanController extends Controller
 {    
@@ -192,14 +193,23 @@ class PermohonanController extends Controller
         ]);
 
         try {
-            $file_path = asset("storage/surat/{$surat->file}");
+            $file_path = public_path("storage/surat/{$surat->file}");
+            $width     = 90;
+            $height    = 90;
+            $tag       = '[qrcode_bsre_kecamatan]';
+            $nik       = $surat->pengurus->nik;
+
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
                     ['name' => 'file', 'contents' => Psr7\Utils::tryFopen($file_path, 'r')],
                     ['name' => 'nik', 'contents' => $surat->pengurus->nik],
                     ['name' => 'passphrase', 'contents' => $request['passphrase']],
-                    ['name' => 'tampilan', 'contents' => 'invisible'],
+                    ['name' => 'tampilan', 'contents' => 'visible'],
+                    ['name' => 'linkQR', 'contents' => Crypt::encrypt($surat->id)],
+                    ['name' => 'width', 'contents' => $width],
+                    ['name' => 'height', 'contents' => $height],
+                    ['name' => 'tag_koordinat', 'contents' => $tag],
                 ],
             ]);
 

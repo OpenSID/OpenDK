@@ -33,7 +33,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogTteTable extends Migration
+class ChangePengurusNikType extends Migration
 {
     /**
      * Run the migrations.
@@ -42,11 +42,8 @@ class CreateLogTteTable extends Migration
      */
     public function up()
     {
-        Schema::create('das_log_tte', function (Blueprint $table) {
-            $table->id();
-            $table->text('pesan_error');
-            $table->string('jenis', 150);
-            $table->timestamps();
+        Schema::table('das_pengurus', function (Blueprint $table) {
+            $table->string('nik', 16)->change();
         });
     }
 
@@ -57,6 +54,8 @@ class CreateLogTteTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('das_log_tte');
+        Schema::table('das_pengurus', function (Blueprint $table) {
+            $table->bigInteger('nik')->change();
+        });
     }
 }

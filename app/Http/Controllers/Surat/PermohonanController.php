@@ -196,7 +196,7 @@ class PermohonanController extends Controller
             $file_path = public_path("storage/surat/{$surat->file}");
             $width     = 90;
             $height    = 90;
-            $tag       = 'Keterangan';
+            $tag       = '[qr_camat]';
 
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],

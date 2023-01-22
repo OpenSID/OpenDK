@@ -196,7 +196,7 @@ class PermohonanController extends Controller
             $file_path = public_path("storage/surat/{$surat->file}");
             $width     = 90;
             $height    = 90;
-            $tag       = '[qr_camat]';
+            $tag       = 'Keterangan';
 
             $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
@@ -205,7 +205,7 @@ class PermohonanController extends Controller
                     ['name' => 'nik', 'contents' => $surat->pengurus->nik],
                     ['name' => 'passphrase', 'contents' => $request['passphrase']],
                     ['name' => 'tampilan', 'contents' => 'visible'],
-                    ['name' => 'linkQR', 'contents' => Crypt::encrypt($surat->id)],
+                    ['name' => 'linkQR', 'contents' => route('surat.arsip.qrcode', $surat->id)],
                     ['name' => 'width', 'contents' => $width],
                     ['name' => 'height', 'contents' => $height],
                     ['name' => 'tag_koordinat', 'contents' => $tag],

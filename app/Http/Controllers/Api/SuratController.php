@@ -127,4 +127,38 @@ class SuratController extends Controller
 
         return new SuratResource(true, 'Surat Berhasil Dikirim!', $surat);
     }
+
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function download(Request $request)
+    {
+        if (! $this->settings['tte']) {
+            return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'desa_id' => 'required',
+            'id'      => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+            Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
+            return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
+        }
+
+        $surat = Surat::where('desa_id', $request->desa_id)->where('id', $request->id)->firstOrFail();
+        
+        $file = public_path("storage/surat/{$surat->file}");
+
+        $headers = array('Content-Type: application/pdf');
+        
+        return response()->download($file, $surat->file, $headers);
+    }
 }

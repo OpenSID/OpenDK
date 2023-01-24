@@ -114,6 +114,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'surat'], function () {
             Route::get('/', 'Api\SuratController@index');
             Route::post('kirim', 'Api\SuratController@store');
+            Route::get('download', 'Api\SuratController@download');
         });
     });
 });

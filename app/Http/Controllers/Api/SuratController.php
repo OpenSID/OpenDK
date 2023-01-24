@@ -31,16 +31,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Surat;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use App\Models\Surat;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
@@ -156,9 +157,10 @@ class SuratController extends Controller
         $surat = Surat::where('desa_id', $request->desa_id)->where('id', $request->id)->firstOrFail();
         
         $file = public_path("storage/surat/{$surat->file}");
-
-        $headers = array('Content-Type: application/pdf');
         
-        return response()->download($file, $surat->file, $headers);
+        return Response::make(file_get_contents($file), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="'.$surat->file.'"'
+        ]);
     }
 }

@@ -36,8 +36,12 @@
         <div class="box-footer">
             <div class="form-group">
                 <div class="text-center">
-                    <button id="setujui" class="btn btn-primary">Setujui</button>
-                    <button id="tolak" class="btn btn-danger">Tolak</button>
+                    @if($surat->log_verifikasi == 4)
+                        <button id="passphrase" class="btn btn-primary">Tandatangani</button>
+                    @else
+                        <button id="setujui" class="btn btn-primary">Setujui</button>
+                        <button id="tolak" class="btn btn-danger">Tolak</button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -144,6 +148,69 @@
                     'Surat gagal ditolak.',
                     'error'
                 )
+            }
+        })
+    });
+
+    $('#passphrase').on('click', function () {
+        Swal.fire({
+        title: 'Apakah anda yakin ingin menandatangani surat ini?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Kirim!',
+        cancelButtonText: 'Batal!',
+        showLoaderOnConfirm: true,
+        input: 'password',
+        inputAttributes: {
+            autocomplete: 'off'
+        },
+        inputPlaceholder : 'Masukkan passphrase',
+        inputValidator: (value) => {
+            if (!value) {
+                return 'Kolom passphrase tidak boleh kosong'
+            }
+        },
+        preConfirm: (value) => {
+            const formData = new FormData();
+            formData.append('_token', "{{ csrf_token() }}");
+            formData.append('passphrase', value);
+            return fetch(`{{ route('surat.permohonan.passphrase', $surat->id) }}`, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error(response.statusText)
+                }
+                return response.json()
+            })
+            .catch(error => {
+                Swal.showValidationMessage(
+                `Request failed: ${error}`
+                )
+            })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                let response = result.value
+                if (response.status == false) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Request failed',
+                        text: response.pesan_error,
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Dokumen berhasil tertanda tangani secara elektronik',
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        return window.location.replace(`{{ route('surat.arsip') }}`);
+                    })
+                }
             }
         })
     });

@@ -29,37 +29,13 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-class AddSlugProsedur extends Migration
+use Illuminate\Database\Eloquent\Model;
+
+class LogTTE extends Model
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->char('slug', 150)->after('judul_prosedur')->nullable(false);
-        });
+    protected $table = 'das_log_tte';
 
-        // update data slug pada das prosedur
-        DB::table('das_prosedur')->update(['slug' => DB::raw("lower(replace(judul_prosedur, ' ' , '-'))")]);
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->dropColumn('slug');
-        });
-    }
+    protected $fillable = ['pesan_error', 'jenis'];
 }

@@ -31,10 +31,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddSlugProsedur extends Migration
+class CreateLogTteTable extends Migration
 {
     /**
      * Run the migrations.
@@ -43,12 +42,12 @@ class AddSlugProsedur extends Migration
      */
     public function up()
     {
-        Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->char('slug', 150)->after('judul_prosedur')->nullable(false);
+        Schema::create('das_log_tte', function (Blueprint $table) {
+            $table->id();
+            $table->text('pesan_error');
+            $table->string('jenis', 150);
+            $table->timestamps();
         });
-
-        // update data slug pada das prosedur
-        DB::table('das_prosedur')->update(['slug' => DB::raw("lower(replace(judul_prosedur, ' ' , '-'))")]);
     }
 
     /**
@@ -58,8 +57,6 @@ class AddSlugProsedur extends Migration
      */
     public function down()
     {
-        Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->dropColumn('slug');
-        });
+        Schema::dropIfExists('das_log_tte');
     }
 }

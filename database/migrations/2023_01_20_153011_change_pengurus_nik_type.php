@@ -31,10 +31,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddSlugProsedur extends Migration
+class ChangePengurusNikType extends Migration
 {
     /**
      * Run the migrations.
@@ -43,12 +42,9 @@ class AddSlugProsedur extends Migration
      */
     public function up()
     {
-        Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->char('slug', 150)->after('judul_prosedur')->nullable(false);
+        Schema::table('das_pengurus', function (Blueprint $table) {
+            $table->string('nik', 16)->change();
         });
-
-        // update data slug pada das prosedur
-        DB::table('das_prosedur')->update(['slug' => DB::raw("lower(replace(judul_prosedur, ' ' , '-'))")]);
     }
 
     /**
@@ -58,8 +54,8 @@ class AddSlugProsedur extends Migration
      */
     public function down()
     {
-        Schema::table('das_prosedur', function (Blueprint $table) {
-            $table->dropColumn('slug');
+        Schema::table('das_pengurus', function (Blueprint $table) {
+            $table->bigInteger('nik')->change();
         });
     }
 }

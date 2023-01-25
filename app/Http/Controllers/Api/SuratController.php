@@ -68,7 +68,7 @@ class SuratController extends Controller
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
 
-        $surat = Surat::where('desa_id', $request->desa_id)->get(['id', 'file', 'nama', 'nik', 'pengurus_id', 'log_verifikasi', 'keterangan']);
+        $surat = Surat::where('desa_id', $request->desa_id)->get(['nomor', 'file', 'nama', 'nik', 'pengurus_id', 'log_verifikasi', 'keterangan']);
         return new SuratResource(true, 'Daftar Surat', $surat);
     }
 
@@ -142,7 +142,7 @@ class SuratController extends Controller
 
         $validator = Validator::make($request->all(), [
             'desa_id' => 'required',
-            'id'      => 'required',
+            'nomor'      => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -154,7 +154,7 @@ class SuratController extends Controller
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
 
-        $surat = Surat::where('desa_id', $request->desa_id)->where('id', $request->id)->firstOrFail();
+        $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $request->nomor)->firstOrFail();
         
         $file = public_path("storage/surat/{$surat->file}");
         

@@ -155,9 +155,9 @@ class SuratController extends Controller
         }
 
         $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $request->nomor)->firstOrFail();
-        
+
         $file = public_path("storage/surat/{$surat->file}");
-        
+
         return Response::make(file_get_contents($file), 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="'.$surat->file.'"'

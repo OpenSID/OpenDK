@@ -9,6 +9,7 @@ Di rilis v23.01.01, menyediakan fitur Widget Perangkat Kecamatan dan Tombol Rese
 4. [#618](https://github.com/OpenSID/OpenDK/pull/618) Sediakan fungsi pengiriman dokumen ke bsre untuk ditandatangani
 5. [#618](https://github.com/OpenSID/OpenDK/pull/618) Sediakan log sukses atau gagal saat proses TTE.
 6. [#618](https://github.com/OpenSID/OpenDK/pull/618) Sediakan fungsi pengiriman dokumen ke bsre untuk ditandatangani
+7. [#584](https://github.com/OpenSID/OpenDK/issues/584) Sediakan fungsi pengiriman dokumen ke bsre untuk ditandatangani API pengiriman surat yang telah di TTE ke OpenSID
 
 #### Perbaikan bug
 

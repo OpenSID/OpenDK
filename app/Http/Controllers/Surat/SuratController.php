@@ -31,14 +31,14 @@
 
 namespace App\Http\Controllers\Surat;
 
-use App\Models\Surat;
-use App\Models\Profil;
 use App\Enums\StatusSurat;
+use App\Http\Requests\PengaturanSuratRequest;
+use App\Models\Profil;
 use App\Models\SettingAplikasi;
+use App\Models\Surat;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\PengaturanSuratRequest;
 
 class SuratController extends Controller
 {

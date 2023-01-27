@@ -31,22 +31,21 @@
 
 namespace App\Http\Controllers\Surat;
 
-use GuzzleHttp\Psr7;
-use App\Models\Surat;
-use App\Models\LogTte;
-use App\Enums\StatusSurat;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Enums\LogVerifikasiSurat;
-use Illuminate\Support\Facades\DB;
+use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Storage;
+use App\Models\LogTte;
+use App\Models\Surat;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Psr7;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Yajra\DataTables\DataTables;
 
 class PermohonanController extends Controller
-{    
+{
     public function index()
     {
         $page_title       = 'Permohonan Surat';
@@ -213,7 +212,7 @@ class PermohonanController extends Controller
             ]);
 
             $surat->update([
-                'status' => StatusSurat::Arsip, 
+                'status' => StatusSurat::Arsip,
                 'log_verifikasi' => LogVerifikasiSurat::SudahTTE
             ]);
 

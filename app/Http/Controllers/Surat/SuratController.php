@@ -31,13 +31,14 @@
 
 namespace App\Http\Controllers\Surat;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PengaturanSuratRequest;
-use App\Models\Profil;
-use App\Models\SettingAplikasi;
 use App\Models\Surat;
+use App\Models\Profil;
 use App\Enums\StatusSurat;
+use App\Models\SettingAplikasi;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\PengaturanSuratRequest;
 
 class SuratController extends Controller
 {
@@ -62,7 +63,14 @@ class SuratController extends Controller
 
     public function download($id)
     {
-        dd('unduh');
+        try {
+            $surat = Surat::findOrFail($id);
+
+            return Storage::download('public/surat/' . $surat->file);
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Dokumen tidak ditemukan');
+        }
     }
 
     public function pengaturan()

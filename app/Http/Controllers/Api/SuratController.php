@@ -31,17 +31,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Surat;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
-use Illuminate\Support\Facades\Storage;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use App\Models\Surat;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller

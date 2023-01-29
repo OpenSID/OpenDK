@@ -67,6 +67,7 @@ class Controller extends BaseController
     protected $sebutan_kepala_wilayah;
     protected $browser_title;
     protected $umum;
+    protected $nama_camat;
 
     public function __construct()
     {
@@ -107,6 +108,8 @@ class Controller extends BaseController
             'camat'                  => $this->nama_camat,
             'pengurus'               => $pengurus->sortBy('jabatan.jenis'),
         ]);
+
+        $this->middleware('installed');
     }
 
     protected function kirimTrack()

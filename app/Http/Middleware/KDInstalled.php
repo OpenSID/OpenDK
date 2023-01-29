@@ -32,13 +32,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
-use function file_exists;
-
 use Illuminate\Http\Request;
-
-use function redirect;
-use function storage_path;
 
 class KDInstalled
 {
@@ -50,9 +44,8 @@ class KDInstalled
      */
     public function handle($request, Closure $next)
     {
-        if (! file_exists(storage_path('installed'))) {
-            return redirect()->to('install');
-        }
-        return $next($request);
+        return is_file(storage_path('installed'))
+            ? $next($request)
+            : redirect('/install');
     }
 }

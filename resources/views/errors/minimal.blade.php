@@ -22,7 +22,7 @@
             }
 
             .full-height {
-                height: 100vh;
+                padding: 40vh 0;
             }
 
             .flex-center {
@@ -49,13 +49,18 @@
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            <div class="code">
-                @yield('code')
+        <div class="box full-height">
+            <div class="flex-center position-ref">
+                <div class="code">
+                    @yield('code')
+                </div>
+                
+                <div class="message" style="padding: 10px;">
+                    @yield('message')
+                </div>
             </div>
-
             <div class="message" style="padding: 10px;">
-                @yield('message')
+                @yield('custom-message')
             </div>
         </div>
     </body>

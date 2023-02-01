@@ -53,7 +53,7 @@ class ProsedurRequest extends FormRequest
     public function rules()
     {
         return [
-            'judul_prosedur' => 'required|string|min:5|max:255',
+            'judul_prosedur' => 'required|string|min:5|max:150',
             'file_prosedur'  => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
         ];
     }

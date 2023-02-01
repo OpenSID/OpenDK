@@ -1,6 +1,6 @@
-#### [v23.01.01]
+#### [v23.02.01]
 
-Di rilis v23.01.01, menyediakan fitur Widget Perangkat Kecamatan dan Tombol Reset Peta. Rilis ini juga berisi perbaikan lain yang diminta Komunitas OpenDK.
+Di rilis v23.02.01, berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Penambahan Fitur
 

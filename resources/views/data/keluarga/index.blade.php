@@ -60,7 +60,7 @@
                 {data: 'tgl_daftar', name: 'tgl_daftar'},
                 {data: 'tgl_cetak_kk', name: 'tgl_cetak_kk'},
                 {data: 'desa.nama', name: 'desa.nama', 
-                    "render": function (data, name) {
+                    "render": function (data) {
                         if(data == null){
                             return '';
                         }else{

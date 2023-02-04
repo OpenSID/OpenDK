@@ -59,7 +59,15 @@
                 {data: 'kepala_kk.nama', name: 'kepala_kk.nama'},
                 {data: 'tgl_daftar', name: 'tgl_daftar'},
                 {data: 'tgl_cetak_kk', name: 'tgl_cetak_kk'},
-                {data: 'desa.nama', name: 'desa.nama'},
+                {data: 'desa.nama', name: 'desa.nama', 
+                    "render": function (data, name) {
+                        if(data == null){
+                            return '';
+                        }else{
+                            return data;
+                        }
+                    }
+                },
                 {data: 'alamat', name: 'alamat'},
                 {data: 'rw', name: 'rw'},
                 {data: 'rt', name: 'rt'},

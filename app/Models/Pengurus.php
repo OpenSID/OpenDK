@@ -48,6 +48,10 @@ class Pengurus extends Model
         'pendidikan',
     ];
 
+    protected $appends = [
+        'namaGelar'
+    ];
+
     public function getFotoAttribute()
     {
         return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;

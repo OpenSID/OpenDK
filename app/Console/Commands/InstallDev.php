@@ -34,7 +34,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
-class dev extends Command
+class InstallDev extends Command
 {
     /**
      * The name and signature of the console command.
@@ -57,16 +57,27 @@ class dev extends Command
      */
     public function handle()
     {
-        Artisan::call('key:generate');
         $this->line('Menambahkan key');
+        Artisan::call('key:generate');
 
-        Artisan::call('storage:link');
         $this->line('Menambahkan storage ke public');
+        Artisan::call('storage:link');
 
-        Artisan::call('migrate');
         $this->line('Menambahkan migrasi');
+        Artisan::call('migrate:fresh');
 
-        Artisan::call('db:seed --class="DemoDatabaseSeeder"');
         $this->line('Menambahkan data demo');
+        Artisan::call('db:seed --class="DemoDatabaseSeeder"');
+
+        $this->line('Lock web installer');
+
+        if (!is_file($file = storage_path('installed'))) {
+            file_put_contents(
+                $file,
+                sprintf('%s berhasil DIPASANG pada %s', config('app.name'), now())
+            );
+        }
+
+        $this->line('Done.');
     }
 }

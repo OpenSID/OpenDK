@@ -69,7 +69,7 @@ class InstallDev extends Command
         $this->line('Menambahkan data demo');
         Artisan::call('db:seed --class="DemoDatabaseSeeder"');
 
-        $this->line('Lock web installer');
+        $this->line('Kunci akses penginstal web');
 
         if (!is_file($file = storage_path('installed'))) {
             file_put_contents(

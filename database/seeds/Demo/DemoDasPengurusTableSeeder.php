@@ -31,6 +31,7 @@
 
 namespace Database\Seeds\Demo;
 
+use App\Enums\JenisJabatan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -59,10 +60,10 @@ class DemoDasPengurusTableSeeder extends Seeder
             'no_sk' => null,
             'tanggal_sk' => now(),
             'masa_jabatan' => 5,
-            'pangkat' => 'Sekretaris',
+            'pangkat' => 'Camat',
             'no_henti' => null,
             'tanggal_henti' => null,
-            'jabatan_id' => 1,
+            'jabatan_id' => JenisJabatan::Camat,
             'created_at' => now(),
         ];
 

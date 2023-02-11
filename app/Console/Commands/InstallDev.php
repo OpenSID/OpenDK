@@ -78,6 +78,6 @@ class InstallDev extends Command
             );
         }
 
-        $this->line('Done.');
+        $this->line('Selesai.');
     }
 }

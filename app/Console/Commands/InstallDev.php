@@ -64,10 +64,10 @@ class InstallDev extends Command
         Artisan::call('storage:link');
 
         $this->line('Menambahkan migrasi');
-        Artisan::call('migrate:fresh');
+        Artisan::call('migrate:fresh --force');
 
         $this->line('Menambahkan data demo');
-        Artisan::call('db:seed --class="DemoDatabaseSeeder"');
+        Artisan::call('db:seed --class="DemoDatabaseSeeder" --force');
 
         $this->line('Kunci akses penginstal web');
 

@@ -42,6 +42,7 @@ use Database\Seeds\Demo\DemoPendudukKeluargaSeeder;
 use Database\Seeds\Demo\DemoPutusSekolahSeeder;
 use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
 use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
+use Database\Seeds\Demo\DemoDasPengurusTableSeeder;
 use Illuminate\Database\Seeder;
 
 class DemoDatabaseSeeder extends Seeder
@@ -69,5 +70,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoPutusSekolahSeeder::class);
         $this->call(DemoTingkatPendidikanSeeder::class);
         $this->call(DemoToiletSanitasiSeeder::class);
+        $this->call(DemoDasPengurusTableSeeder::class);
     }
 }

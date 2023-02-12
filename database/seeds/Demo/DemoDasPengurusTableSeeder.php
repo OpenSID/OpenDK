@@ -29,44 +29,44 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Console\Commands;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
+use App\Enums\JenisJabatan;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class dev extends Command
+class DemoDasPengurusTableSeeder extends Seeder
 {
     /**
-     * The name and signature of the console command.
+     * Run the database seeds.
      *
-     * @var string
+     * @return void
      */
-    protected $signature = 'install:dev';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Membuat instalasi baru dengan data contoh untuk development';
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
-    public function handle()
+    public function run()
     {
-        Artisan::call('key:generate');
-        $this->line('Menambahkan key');
+        $data = [
+            'nama' => 'H. Hadi Fathurrahman, S.Sos, M.AP',
+            'gelar_depan' => null,
+            'gelar_belakang' => null,
+            'nip' =>  null,
+            'nik' =>  random_int(16, 16),
+            'status' => 1,
+            'foto' => null,
+            'tempat_lahir' => 'Mangsit',
+            'tanggal_lahir' => now(),
+            'sex' => 1,
+            'pendidikan_id' => 1,
+            'agama_id' => 1,
+            'no_sk' => null,
+            'tanggal_sk' => now(),
+            'masa_jabatan' => 5,
+            'pangkat' => 'Camat',
+            'no_henti' => null,
+            'tanggal_henti' => null,
+            'jabatan_id' => JenisJabatan::Camat,
+            'created_at' => now(),
+        ];
 
-        Artisan::call('storage:link');
-        $this->line('Menambahkan storage ke public');
-
-        Artisan::call('migrate');
-        $this->line('Menambahkan migrasi');
-
-        Artisan::call('db:seed --class="DemoDatabaseSeeder"');
-        $this->line('Menambahkan data demo');
+        DB::table('das_pengurus')->insert($data);
     }
 }

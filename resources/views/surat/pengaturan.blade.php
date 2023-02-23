@@ -12,6 +12,12 @@
         </ol>
     </section>
     <section class="content">
+        <div class="alert alert-warning alert-dismissible">
+            <h4><i class="icon fa fa-warning"></i> Info Penting!</h4>
+            Fitur Sinkronisasi Surat TTE ke kecamatan saat ini masih berupa demo menunggu proses penyempurnaan dan terdapat kecamatan yang sudah mengimplentasikan TTE. 
+            Kami juga menghimbau kepada seluruh pengguna memberikan masukan terkait penyempurnaan fitur ini baik dari sisi OpenSID maupun OpenDK.
+            Masukan dapat disampaikan di grup telegram, forum opendesa maupun issue di github.
+        </div>
         @include('partials.flash_message')
         <div class="row">
             <div class="col-md-12">

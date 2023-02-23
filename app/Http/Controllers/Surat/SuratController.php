@@ -58,6 +58,9 @@ class SuratController extends Controller
 
                 return view('forms.aksi', $data);
             })
+            ->editColumn('tanggal', function ($row) {
+                return format_date($row->tanggal);
+            })
             ->rawColumns(['aksi'])->make();
     }
 

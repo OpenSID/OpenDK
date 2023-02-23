@@ -31,18 +31,19 @@
 
 namespace App\Http\Controllers\Surat;
 
-use App\Enums\LogVerifikasiSurat;
+use GuzzleHttp\Psr7;
+use App\Models\Surat;
+use App\Models\LogTte;
 use App\Enums\StatusSurat;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Enums\LogVerifikasiSurat;
+use Illuminate\Support\Facades\DB;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
-use App\Models\LogTte;
-use App\Models\Surat;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Psr7;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
+use GuzzleHttp\Exception\ClientException;
 
 class PermohonanController extends Controller
 {
@@ -197,7 +198,7 @@ class PermohonanController extends Controller
             $height    = 90;
             $tag       = '[qr_camat]';
 
-            $response = $client->post('api/sign/pdf', [
+            $response = $client->post('', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
                     ['name' => 'file', 'contents' => Psr7\Utils::tryFopen($file_path, 'r')],

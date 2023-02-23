@@ -51,8 +51,8 @@
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'nama', name: 'nama'},
-                {data: 'nik', name: 'nik'},
-                {data: 'pengurus_id', name: 'pengurus_id'},
+                {data: 'penduduk.nama', name: 'penduduk.nama', orderable: false},
+                {data: 'pengurus.nama', name: 'pengurus.nama', orderable: false},
                 {data: 'tanggal', name: 'tanggal'},
             ]
         });

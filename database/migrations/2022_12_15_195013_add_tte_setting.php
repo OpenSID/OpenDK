@@ -31,6 +31,7 @@
 
 use App\Enums\Status;
 use App\Models\SettingAplikasi;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Migrations\Migration;
 
 class AddTteSetting extends Migration
@@ -42,14 +43,10 @@ class AddTteSetting extends Migration
      */
     public function up()
     {
-        $data = [
-            ['key'=>'tte', 'value'=> Status::TidakAktif, 'type' => 'boolean', 'description' => 'Mengaktifkan modul TTE', 'kategori' => 'surat', 'option' => '{}'],
-            ['key'=>'tte_api', 'value'=> '', 'type' => 'input', 'description' => 'URL API TTE', 'kategori' => 'surat', 'option' => '{}'],
-            ['key'=>'tte_username', 'value'=> '', 'type' => 'input', 'description' => 'Username API TTE', 'kategori' => 'surat', 'option' => '{}'],
-            ['key'=>'tte_password', 'value'=> '', 'type' => 'input', 'description' => 'Password API TTE', 'kategori' => 'surat', 'option' => '{}'],
-        ];
-
-        SettingAplikasi::insert($data);
+        Artisan::call('db:seed', [
+            '--class' => 'DasSettingTableSeeder',
+            '--force' => true,
+        ]);
     }
 
     /**
@@ -63,6 +60,8 @@ class AddTteSetting extends Migration
             ->orWhere('key', 'tte_api')
             ->orWhere('key', 'tte_username')
             ->orWhere('key', 'tte_password')
+            ->orwhere('key', 'pemeriksaan_camat')
+            ->orWhere('key', 'pemeriksaan_sekretaris')
             ->delete();
     }
 }

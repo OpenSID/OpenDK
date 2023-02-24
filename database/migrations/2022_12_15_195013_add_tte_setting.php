@@ -29,10 +29,9 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Enums\Status;
 use App\Models\SettingAplikasi;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Artisan;
 
 class AddTteSetting extends Migration
 {

@@ -10,3 +10,4 @@ Terima kasih pada syahransaputra yang baru mulai berkontribusi.
 2. [#628](https://github.com/OpenSID/OpenDK/issues/628) Perbaikan eror data demo.
 3. [#641](https://github.com/OpenSID/OpenDK/issues/641) Perbaiki sambutan camat kosong
 4. [#637](https://github.com/OpenSID/OpenDK/issues/637) Perbaiki preview gambar slider
+5. [#639](https://github.com/OpenSID/OpenDK/issues/639) Perbaiki pengisian kolom sejarah.

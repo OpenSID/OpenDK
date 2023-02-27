@@ -8,4 +8,5 @@ Terima kasih pada syahransaputra yang baru mulai berkontribusi.
 
 1. [#627](https://github.com/OpenSID/OpenDK/pull/627) Perbaikan eror menu keluarga.
 2. [#628](https://github.com/OpenSID/OpenDK/issues/628) Perbaikan eror data demo.
-3. [#641](https://github.com/OpenSID/OpenDK/issues/641) Perbaiki sambutan camat kosong #642
+3. [#641](https://github.com/OpenSID/OpenDK/issues/641) Perbaiki sambutan camat kosong
+4. [#637](https://github.com/OpenSID/OpenDK/issues/637) Perbaiki preview gambar slider

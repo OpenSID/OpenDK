@@ -12,13 +12,49 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-4 col-sm-3 col-xs-12">Gambar<span class="required">*</span></label>
+    <label class="control-label col-md-4 col-sm-3 col-xs-12">Gambar <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input accept="image/*" type="file" id="gambar" name="gambar" class="form-control" @isset($slide->gambar) 'required' @endisset>
+        <input accept="image/*" type="file" name="gambar" id="gambar" class="form-control" {{ $slide ? '' : 'required' }}>
         <code>Dimensi gambar 1360 x 400 Piksel</code>
         <br>
-            <img src="@if(isset($slide->gambar)) {{ asset($slide->gambar) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar"
-            style="max-width:400px;max-height:250px;float:left;"/>
+
+        <img src="@if(isset($slide->gambar)) {{ asset($slide->gambar) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
+
     </div>
 </div>
 <div class="ln_solid"></div>
+
+@push('scripts')
+<script>
+    $(function () {
+
+        var fileTypes = ['jpg', 'jpeg', 'png', 'jpg'];  //acceptable file types
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                        isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+                if (isSuccess) { //yes
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+
+                    $('#showgambar').attr('src', e.target.result);
+                    $('#showgambar').removeClass('hide');
+                }
+
+                    reader.readAsDataURL(input.files[0]);
+                } else { //no
+                    //warning
+                    $("#gambar").val('');
+                    alert('File tersebut tidak diperbolehkan.');
+                }
+            }
+        }
+
+        $("#gambar").change(function () {
+            readURL(this);
+        });
+    });
+</script>
+@endpush

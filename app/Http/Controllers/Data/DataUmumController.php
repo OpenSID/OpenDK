@@ -83,7 +83,7 @@ class DataUmumController extends Controller
             'jml_pasar'              => 'required',
             'jml_balai_pertemuan'    => 'required',
         ]);
-        
+
         try {
             $data = ($request->sumber_luas_wilayah == 1) ? $request->all() : $request->except('luas_wilayah');
             DataUmum::findOrFail($id)->update($data);

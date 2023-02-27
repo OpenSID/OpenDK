@@ -62,7 +62,7 @@ class DataUmumController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
-            'tipologi'               => 'required',
+            'sejarah'                => 'required',
             'sumber_luas_wilayah'    => 'required',
             'luas_wilayah'           => 'required',
             'bts_wil_utara'          => 'required',
@@ -83,7 +83,7 @@ class DataUmumController extends Controller
             'jml_pasar'              => 'required',
             'jml_balai_pertemuan'    => 'required',
         ]);
-
+        
         try {
             $data = ($request->sumber_luas_wilayah == 1) ? $request->all() : $request->except('luas_wilayah');
             DataUmum::findOrFail($id)->update($data);

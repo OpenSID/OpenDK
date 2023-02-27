@@ -10,7 +10,7 @@
             <center>
                 <img class="img-circle" style="display:block;margin:auto" src="{{ is_logo($profil->file_logo) }}">
             </center>
-            <p> {!! $profil->dataumum->tipologi !!}</p>
+            <p> {!! $profil->dataumum->sejarah !!}</p>
         </div>
     </div>
 </div>

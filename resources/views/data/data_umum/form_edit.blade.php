@@ -12,10 +12,10 @@
     </div>
 
     <div class="form-group">
-      <label class="control-label col-md-4 col-sm-3 col-xs-12">Tipologi <span class="required">*</span></label>
+      <label class="control-label col-md-4 col-sm-3 col-xs-12">Sejarah <span class="required">*</span></label>
 
       <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('tipologi', null, ['placeholder' => 'Tipologi', 'class' => 'form-control', 'required',
+        {!! Form::textarea('sejarah', null, ['placeholder' => 'Sejarah', 'class' => 'form-control', 'required',
         'rows'=>2]) !!}
       </div>
     </div>

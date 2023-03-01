@@ -31,7 +31,7 @@
 
                     <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar" style="width:100%; max-height:250px; float:left;"/>
 
-                    {!! Form::file('gambar', ['placeholder' => 'Gambar', 'class' => 'form-control', 'id' => 'file-artikel']) !!}
+                    {!! Form::file('gambar', ['placeholder' => 'Gambar', 'class' => 'form-control', 'id' => 'file-artikel', 'accept' => 'jpg,jpeg,png']) !!}
                     @if ($errors->has('gambar')) <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span> @endif
                 </div>
 
@@ -58,7 +58,7 @@
 
         $('.textarea').wysihtml5();
         
-        var fileTypes = ['jpg', 'jpeg', 'png', 'jpg'];  //acceptable file types
+        var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
 
         function readURL(input) {
             if (input.files && input.files[0]) {

@@ -4,7 +4,7 @@ Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan bug
 
-1. [#627](https://github.com/OpenSID/OpenDK/pull/627) Perbaikan eror menu keluarga.
+1. [#626](https://github.com/OpenSID/OpenDK/issues/626) Perbaikan eror menu keluarga.
 2. [#628](https://github.com/OpenSID/OpenDK/issues/628) Perbaikan eror data demo.
 3. [#641](https://github.com/OpenSID/OpenDK/issues/641) Perbaikan sambutan camat kosong
 4. [#637](https://github.com/OpenSID/OpenDK/issues/637) Perbaikan preview gambar slider

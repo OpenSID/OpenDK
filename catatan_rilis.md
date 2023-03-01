@@ -1,8 +1,6 @@
-#### [v23.02.01]
+#### [v23.03.01]
 
-Di rilis v23.02.01 berisi perbaikan yang diminta Komunitas OpenDK.
-
-Terima kasih pada syahransaputra yang baru mulai berkontribusi.
+Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan bug
 

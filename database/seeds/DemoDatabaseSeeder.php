@@ -34,6 +34,7 @@ use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
 use Database\Seeds\Demo\DemoAPBDesaSeeder;
 use Database\Seeds\Demo\DemoDasDataDesaTableSeeder;
 use Database\Seeds\Demo\DemoDasDataUmumTableSeeder;
+use Database\Seeds\Demo\DemoDasPengurusTableSeeder;
 use Database\Seeds\Demo\DemoDasProfilTableSeeder;
 use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
 use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
@@ -69,5 +70,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoPutusSekolahSeeder::class);
         $this->call(DemoTingkatPendidikanSeeder::class);
         $this->call(DemoToiletSanitasiSeeder::class);
+        $this->call(DemoDasPengurusTableSeeder::class);
     }
 }

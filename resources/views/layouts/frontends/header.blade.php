@@ -28,8 +28,10 @@
                   </ul>
                 </li>
                 <li class="col-md-4 col-sm-4">
-                  <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }}</h4>
-                  <small class="" style="text-align:justify;">{{ strip_tags($profil->sambutan) }} </small>
+                  @if ($profil->sambutan)
+                    <h4 class="text-bold text-center">Sambutan {{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }}</h4>
+                    <small class="" style="text-align:justify;">{{ strip_tags($profil->sambutan) }} </small>
+                  @endif
                 </li>
                 <li class="col-md-4 col-sm-3 text-center">
                   @if ($camat)

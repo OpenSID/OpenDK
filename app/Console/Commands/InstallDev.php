@@ -29,34 +29,55 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Console\Commands;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
-class ArtikelRequest extends FormRequest
+class InstallDev extends Command
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * The name and signature of the console command.
      *
-     * @return bool
+     * @var string
      */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $signature = 'install:dev';
 
     /**
-     * Get the validation rules that apply to the request.
+     * The console command description.
      *
-     * @return array
+     * @var string
      */
-    public function rules()
+    protected $description = 'Membuat instalasi baru dengan data contoh untuk development';
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
     {
-        return [
-            'judul'     => 'required|string|max:191',
-            'isi'       => 'required',
-            'status'    => 'required',
-            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
-        ];
+        $this->line('Menambahkan key');
+        Artisan::call('key:generate');
+
+        $this->line('Menambahkan storage ke public');
+        Artisan::call('storage:link');
+
+        $this->line('Menambahkan migrasi');
+        Artisan::call('migrate:fresh --force');
+
+        $this->line('Menambahkan data demo');
+        Artisan::call('db:seed --class="DemoDatabaseSeeder" --force');
+
+        $this->line('Kunci akses penginstal web');
+
+        if (!is_file($file = storage_path('installed'))) {
+            file_put_contents(
+                $file,
+                sprintf('%s berhasil DIPASANG pada %s', config('app.name'), now())
+            );
+        }
+
+        $this->line('Selesai.');
     }
 }

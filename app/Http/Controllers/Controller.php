@@ -104,8 +104,8 @@ class Controller extends BaseController
                     'gambar' => '/slide/slide-1.png',
                 ],
                 (object) [
-                    'judul' => 'Bukit Sinalu Bulu Jaya', 
-                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
+                    'judul' => 'Batu Siping', 
+                    'deskripsi' => 'Lokasi: Karampuang, Desa Garassikang, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
                     'gambar' => '/slide/slide-2.png',
                 ],
                 (object) [
@@ -114,8 +114,8 @@ class Controller extends BaseController
                     'gambar' => '/slide/slide-3.png',
                 ],
                 (object) [
-                    'judul' => 'Bukit Sinalu Bulu Jaya', 
-                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
+                    'judul' => 'Pantai Tamarunang', 
+                    'deskripsi' => 'Lokasi: Tamarunang, Pabiringa, Kecamatan Binamu, Kabupaten Jeneponto, Sulawesi Selatan', 
                     'gambar' => '/slide/slide-4.png',
                 ],
             ]);

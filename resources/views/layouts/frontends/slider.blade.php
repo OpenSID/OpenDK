@@ -2,7 +2,6 @@
 <!-- Slider -->
 <div id="swiper-slider" class="swiper">
     <div class="swiper-wrapper">
-        @php $slides  = \App\Models\Slide::orderBy('created_at','DESC')->get(); @endphp
         @foreach ($slides as $slide)
         <div class="swiper-slide">
             <div class="slider-class">

@@ -31,26 +31,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DataDesa;
-use App\Models\DataUmum;
+use Exception;
 use App\Models\Event;
-use App\Models\Keluarga;
-use App\Models\MediaSosial;
-use App\Models\Penduduk;
-use App\Models\Pengurus;
+use App\Models\Slide;
 use App\Models\Profil;
 use App\Models\Program;
-use App\Models\SettingAplikasi;
-use App\Models\SinergiProgram;
+use App\Models\DataDesa;
+use App\Models\DataUmum;
+use App\Models\Keluarga;
+use App\Models\Penduduk;
+use App\Models\Pengurus;
+use App\Models\MediaSosial;
 use App\Models\TipePotensi;
-use Exception;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Http;
+use App\Models\SinergiProgram;
+use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -93,6 +94,33 @@ class Controller extends BaseController
         $navdesa    = DataDesa::all();
         $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
         $pengurus   = Pengurus::status()->get();
+        $slides     = Slide::orderBy('created_at','DESC')->get();
+
+        if (count($slides) < 1) {
+            $slides = collect([
+                (object) [
+                    'judul' => 'Pantai Garassikang', 
+                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
+                    'gambar' => '/slide/slide-1.png',
+                ],
+                (object) [
+                    'judul' => 'Bukit Sinalu Bulu Jaya', 
+                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
+                    'gambar' => '/slide/slide-2.png',
+                ],
+                (object) [
+                    'judul' => 'Bukit Sinalu Bulu Jaya', 
+                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
+                    'gambar' => '/slide/slide-3.png',
+                ],
+                (object) [
+                    'judul' => 'Bukit Sinalu Bulu Jaya', 
+                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan', 
+                    'gambar' => '/slide/slide-4.png',
+                ],
+            ]);
+
+        }
 
         View::share([
             'profil'                 => $this->profil,
@@ -106,6 +134,7 @@ class Controller extends BaseController
             'navpotensi'             => $navpotensi,
             'camat'                  => $this->nama_camat,
             'pengurus'               => $pengurus->sortBy('jabatan.jenis'),
+            'slides'                 => $slides,
         ]);
     }
 

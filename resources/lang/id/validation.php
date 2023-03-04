@@ -97,7 +97,7 @@ return [
     'timezone'             => 'Isian :attribute harus berupa zona waktu yang valid.',
     'unique'               => 'Isian :attribute sudah ada sebelumnya.',
     'url'                  => 'Format isian :attribute tidak valid.',
-
+    'valid_file'           => 'Format :attribute tidak valid',
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',

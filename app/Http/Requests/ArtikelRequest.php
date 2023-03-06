@@ -56,7 +56,7 @@ class ArtikelRequest extends FormRequest
             'judul'     => 'required|string|max:191',
             'isi'       => 'required',
             'status'    => 'required',
-            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
         ];
     }
 }

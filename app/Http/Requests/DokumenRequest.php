@@ -53,8 +53,8 @@ class DokumenRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_dokumen' => 'required',
-            'file_dokumen' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
+            'nama_dokumen' => 'required|string|max:255',
+            'file_dokumen' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048|valid_file',
         ];
     }
 }

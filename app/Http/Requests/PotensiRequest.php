@@ -54,9 +54,9 @@ class PotensiRequest extends FormRequest
     {
         return [
             'kategori_id'  => 'required',
-            'nama_potensi' => 'required',
-            'deskripsi'    => 'required',
-            'file_gambar'  => 'file|mimes:bmp,jpg,jpeg,gif,png|max:1024',
+            'nama_potensi' => 'required|string|max:200',
+            'deskripsi'    => 'required|string',
+            'file_gambar'  => 'file|mimes:bmp,jpg,jpeg,gif,png|max:1024|valid_file',
         ];
     }
 }

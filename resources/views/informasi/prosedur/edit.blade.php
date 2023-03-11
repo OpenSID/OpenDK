@@ -58,7 +58,7 @@
 <script>
     $(function () {
 
-        var fileTypes = ['jpg', 'jpeg', 'png', 'jpg', 'bmp', 'pdf'];  //acceptable file types
+        var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'pdf'];  //acceptable file types
 
         function readURL(input) {
             if (input.files && input.files[0]) {

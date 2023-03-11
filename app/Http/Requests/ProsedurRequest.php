@@ -54,7 +54,7 @@ class ProsedurRequest extends FormRequest
     {
         return [
             'judul_prosedur' => 'required|string|min:5|max:150',
-            'file_prosedur'  => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
+            'file_prosedur'  => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048|valid_file',
         ];
     }
 }

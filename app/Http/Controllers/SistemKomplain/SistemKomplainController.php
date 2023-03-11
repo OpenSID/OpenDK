@@ -112,15 +112,15 @@ class SistemKomplainController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'nik'           => 'required|numeric|nik_exists:' . $request->input('tanggal_lahir'),
-                'judul'         => 'required',
+                'judul'         => 'required|string|max:255',
                 'kategori'      => 'required',
-                'laporan'       => 'required',
+                'laporan'       => 'required|string',
                 'captcha'       => 'required|captcha',
                 'tanggal_lahir' => 'password_exists:' . $request->input('nik'),
-                'lampiran1'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'lampiran2'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'lampiran3'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'lampiran4'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
+                'lampiran1'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran2'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran3'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran4'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
             ], [
                 'captcha.captcha' => 'Invalid captcha code.',
                 'nik_exists'      => 'NIK tidak ditemukan atau NIK dan Tanggal Lahir tidak sesuai.',
@@ -206,9 +206,9 @@ class SistemKomplainController extends Controller
     {
         request()->validate([
             'nik'      => 'required|numeric',
-            'judul'    => 'required',
+            'judul'    => 'required|string|max:255',
             'kategori' => 'required',
-            'laporan'  => 'required',
+            'laporan'  => 'required|string',
         ], ['captcha.captcha' => 'Invalid captcha code.']);
 
         try {

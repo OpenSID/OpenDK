@@ -54,9 +54,9 @@ class RegulasiRequest extends FormRequest
     {
         return [
             'tipe_regulasi' => 'required',
-            'judul'         => 'required',
-            'deskripsi'     => 'required',
-            'file_regulasi' => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048',
+            'judul'         => 'required|string|max:200',
+            'deskripsi'     => 'required|string',
+            'file_regulasi' => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048|valid_file',
         ];
     }
 }

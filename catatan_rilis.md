@@ -14,3 +14,4 @@ Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
 4. [#2116](https://github.com/OpenSID/premium/issues/2116) Audit keamanan form potensi.
 5. [#2118](https://github.com/OpenSID/premium/issues/2118) Audit keamanan form dokumen.
 6. [#2121](https://github.com/OpenSID/premium/issues/2121) Audit keamanan form pengurus.
+7. [#2124](https://github.com/OpenSID/premium/issues/2124) Audit keamanan form keluhan.

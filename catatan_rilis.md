@@ -11,3 +11,4 @@ Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
 1. [#2089](https://github.com/OpenSID/premium/issues/2089) Audit keamanan validasi saat unggah gambar di artikel.
 2. [#2114](https://github.com/OpenSID/premium/issues/2114) Audit keamanan form prosedur.
 3. [#2115](https://github.com/OpenSID/premium/issues/2115) Audit keamanan form regulasi.
+4. [#2116](https://github.com/OpenSID/premium/issues/2116) Audit keamanan form potensi.

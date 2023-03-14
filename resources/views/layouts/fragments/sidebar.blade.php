@@ -257,6 +257,21 @@
                 </li>
                 @endif
 
+                @if($user->hasrole(['super-admin', 'admin-kecamatan']))
+                <li class="treeview {{ (Request::is(['surat*'])? 'active' : '') }}">
+                    <a href="#" title="Layanan Surat"><i class="fa fa-envelope"></i> <span>Layanan Surat</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li {{ (Request::is(['surat/permohonan*'])? 'class=active' : '') }}><a href="{{ route('surat.permohonan') }}"><i class="fa fa-files-o"></i>Permohonan</a></li>
+                        <li {{ (Request::is(['surat/arsip*'])? 'class=active' : '') }}><a href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a></li>
+                        <li {{ (Request::is(['surat/pengaturan*'])? 'class=active' : '') }}><a href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a></li>
+                    </ul>
+                </li>
+                @endif
+
                 @if($user->hasrole(['super-admin', 'administrator-website']))
                 <li class="treeview {{ (Request::is(['setting*'])? 'active' : '') }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
                     <span class="pull-right-container">

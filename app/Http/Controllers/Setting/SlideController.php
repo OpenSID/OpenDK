@@ -63,10 +63,11 @@ class SlideController extends Controller
 
     public function create()
     {
+        $slide            = null;
         $page_title       = 'Slide';
         $page_description = 'Tambah Slide';
 
-        return view('setting.slide.create', compact('page_title', 'page_description'));
+        return view('setting.slide.create', compact('page_title', 'page_description', 'slide'));
     }
 
     public function store(SlideRequest $request)

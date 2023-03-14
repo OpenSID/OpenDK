@@ -62,7 +62,7 @@ class DataUmumController extends Controller
     public function update(Request $request, $id)
     {
         request()->validate([
-            'tipologi'               => 'required',
+            'sejarah'                => 'required',
             'sumber_luas_wilayah'    => 'required',
             'luas_wilayah'           => 'required',
             'bts_wil_utara'          => 'required',

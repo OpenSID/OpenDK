@@ -1,10 +1,10 @@
-#### [v23.02.01]
+#### [v23.03.01]
 
-Di rilis v23.02.01 berisi perbaikan yang diminta Komunitas OpenDK.
-
-Terima kasih pada syahransaputra yang baru mulai berkontribusi.
+Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan bug
 
-1. [#627](https://github.com/OpenSID/OpenDK/pull/627) Perbaikan eror menu keluarga.
-1. [#628](https://github.com/OpenSID/OpenDK/issues/628) Perbaikan eror data demo.
+1. [#638](https://github.com/OpenSID/OpenDK/issues/638) Perbaiki slider tidak bisa lebih dari 4.
+
+#### Teknis
+1. [#2089](https://github.com/OpenSID/premium/issues/2089) Perbaikan validasi saat unggah gambar di artikel.

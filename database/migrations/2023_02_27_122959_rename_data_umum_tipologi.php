@@ -29,34 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class ArtikelRequest extends FormRequest
+class RenameDataUmumTipologi extends Migration
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the migrations.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function up()
     {
-        return true;
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->renameColumn('tipologi', 'sejarah');
+        });
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reverse the migrations.
      *
-     * @return array
+     * @return void
      */
-    public function rules()
+    public function down()
     {
-        return [
-            'judul'     => 'required|string|max:191',
-            'isi'       => 'required',
-            'status'    => 'required',
-            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
-        ];
+        Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->renameColumn('sejarah', 'tipologi');
+        });
     }
 }

@@ -1,6 +1,6 @@
-#### [v23.03.01]
+#### [v23.03.02]
 
-Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v23.03.02 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan bug
 

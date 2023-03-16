@@ -1,22 +1,19 @@
 /* @media only screen and (min-width:768px) { */
-#slider {
+.swiper {
   width: 100%;
-  height: 160px;
+  height: 450px;
   position: relative;
   overflow: hidden;
 }
 
-.slides {
+.swiper-wrapper {
   width: 400%;
   height: 100%;
   position: relative;
-  -webkit-animation: slide 30s infinite;
-  -moz-animation: slide 30s infinite;
-  animation: slide 30s infinite;
 }
 
 .slider-class {
-  width: 25%;
+  width: 100%;
   height: 100%;
   float: left;
   position: relative;
@@ -45,8 +42,8 @@
 }
 
 .legend {
-  border: 220px solid transparent;
-  border-left: 220px solid rgba(52, 73, 94, 0.7);
+  border: 520px solid transparent;
+  border-left: 520px solid rgba(52, 73, 94, 0.7);
   border-bottom: 0;
   position: absolute;
   bottom: 0;
@@ -65,22 +62,19 @@
   height: 50px;
   float: left;
   position: relative;
-  top: 55px;
-  -webkit-animation: content-s 7.5s infinite;
-  -moz-animation: content-s 7.5s infinite;
-  animation: content-s 7.5s infinite;
+  top: 255px;
 }
 
 .content-txt h1 {
   font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic,
     "AppleGothic", sans-serif;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: 24px;
   color: #f39c12;
   text-align: left;
-  margin-left: 10px;
+  margin-left: 20px;
   padding-bottom: 0px;
-  width: 125px;
+  width: 325px;
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -88,370 +82,56 @@
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: normal;
-  font-size: 8.5px;
+  font-size: 18px;
   font-style: italic;
   color: #fff;
   text-align: left;
-  margin-left: 10px;
+  margin-left: 20px;
   margin-top: 10px;
-  width: 150px;
-  line-height: 12px;
+  width: 350px;
+  line-height: 16px;
 }
 
-.switch {
-  width: 100px;
-  height: 10px;
-  position: absolute;
-  bottom: 10px;
-  z-index: 1;
-  left: 10px;
-}
-
-.switch > ul {
-  list-style: none;
-}
-
-.switch > ul > li {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #333;
-  float: left;
-  margin-right: 5px;
-  cursor: pointer;
-}
-
-.switch ul {
-  overflow: hidden;
+.swiper-pagination-bullet-active {
+  background: #ff4900 !important;
 }
 
 /* Desktop */
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
   #slider {
     height: 400px;
   }
 
+  .swiper {
+    height: 180px;
+  }
+
+  .content-slide {
+    width: 23%;
+  }
+
   .content-txt {
-    top: 200px;
+    top: 60px;
   }
 
   .content-txt h1 {
-    font-size: 24px;
-    margin-left: 30px;
-    padding-bottom: 10px;
+    font-size: 12px;
     width: auto;
   }
 
   .content-txt h2 {
-    font-size: 14px;
-    margin-left: 30px;
-    margin-top: 20px;
+    font-size: 10px;
+    margin-top: 10px;
     width: auto;
     line-height: 18px;
   }
 
   .legend {
-    border: 500px solid transparent;
-    border-left: 500px solid rgba(52, 73, 94, 0.7);
+    border: 280px solid transparent;
+    border-left: 280px solid rgba(52, 73, 94, 0.7);
     border-bottom: 0;
     position: absolute;
     bottom: 0;
-  }
-
-  .switch {
-    width: 120px;
-    height: 10px;
-    left: 30px;
-  }
-
-  .switch > ul {
-    list-style: none;
-  }
-
-  .switch > ul > li {
-    width: 10px;
-    height: 10px;
-  }
-}
-
-.on {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: #ff4900;
-  position: relative;
-  -webkit-animation: on 30s infinite;
-  -moz-animation: on 30s infinite;
-  animation: on 30s infinite;
-}
-
-@-webkit-keyframes slide {
-  0%,
-  100% {
-    margin-left: 0;
-  }
-  21% {
-    margin-left: 0;
-  }
-  25% {
-    margin-left: -100%;
-  }
-  46% {
-    margin-left: -100%;
-  }
-  50% {
-    margin-left: -200%;
-  }
-  71% {
-    margin-left: -200%;
-  }
-  75% {
-    margin-left: -300%;
-  }
-  96% {
-    margin-left: -300%;
-  }
-}
-
-@-moz-keyframes slide {
-  0%,
-  100% {
-    margin-left: 0;
-  }
-  21% {
-    margin-left: 0;
-  }
-  25% {
-    margin-left: -100%;
-  }
-  46% {
-    margin-left: -100%;
-  }
-  50% {
-    margin-left: -200%;
-  }
-  71% {
-    margin-left: -200%;
-  }
-  75% {
-    margin-left: -300%;
-  }
-  96% {
-    margin-left: -300%;
-  }
-}
-
-@keyframes slide {
-  0%,
-  100% {
-    margin-left: 0;
-  }
-  21% {
-    margin-left: 0;
-  }
-  25% {
-    margin-left: -100%;
-  }
-  46% {
-    margin-left: -100%;
-  }
-  50% {
-    margin-left: -200%;
-  }
-  71% {
-    margin-left: -200%;
-  }
-  75% {
-    margin-left: -300%;
-  }
-  96% {
-    margin-left: -300%;
-  }
-}
-
-@-webkit-keyframes content-s {
-  0% {
-    left: -420px;
-  }
-  10% {
-    left: 0;
-  }
-  30% {
-    left: 0;
-  }
-  40% {
-    left: 0;
-  }
-  50% {
-    left: 0;
-  }
-  60% {
-    left: 0;
-  }
-  70% {
-    left: 0;
-  }
-  80% {
-    left: -420px;
-  }
-  90% {
-    left: -420px;
-  }
-  100% {
-    left: -420px;
-  }
-}
-
-@-moz-keyframes content-s {
-  0% {
-    left: -420px;
-  }
-  10% {
-    left: 0;
-  }
-  30% {
-    left: 0;
-  }
-  40% {
-    left: 0;
-  }
-  50% {
-    left: 0;
-  }
-  60% {
-    left: 0;
-  }
-  70% {
-    left: 0;
-  }
-  80% {
-    left: -420px;
-  }
-  90% {
-    left: -420px;
-  }
-  100% {
-    left: -420px;
-  }
-}
-
-@keyframes content-s {
-  0% {
-    left: -420px;
-  }
-  10% {
-    left: 20px;
-  }
-  15% {
-    left: 0;
-  }
-  30% {
-    left: 0;
-  }
-  40% {
-    left: 0;
-  }
-  50% {
-    left: 0;
-  }
-  60% {
-    left: 0;
-  }
-  70% {
-    left: 0;
-  }
-  80% {
-    left: -420px;
-  }
-  90% {
-    left: -420px;
-  }
-  100% {
-    left: -420px;
-  }
-}
-
-@-webkit-keyframes on {
-  0%,
-  100% {
-    margin-left: 0;
-  }
-  21% {
-    margin-left: 0;
-  }
-  25% {
-    margin-left: 15px;
-  }
-  46% {
-    margin-left: 15px;
-  }
-  50% {
-    margin-left: 30px;
-  }
-  71% {
-    margin-left: 30px;
-  }
-  75% {
-    margin-left: 45px;
-  }
-  96% {
-    margin-left: 45px;
-  }
-}
-
-@-moz-keyframes on {
-  0%,
-  100% {
-    margin-left: 0;
-  }
-  21% {
-    margin-left: 0;
-  }
-  25% {
-    margin-left: 15px;
-  }
-  46% {
-    margin-left: 15px;
-  }
-  50% {
-    margin-left: 30px;
-  }
-  71% {
-    margin-left: 30px;
-  }
-  75% {
-    margin-left: 45px;
-  }
-  96% {
-    margin-left: 45px;
-  }
-}
-
-@keyframes on {
-  0%,
-  100% {
-    margin-left: 0;
-  }
-  21% {
-    margin-left: 0;
-  }
-  25% {
-    margin-left: 15px;
-  }
-  46% {
-    margin-left: 15px;
-  }
-  50% {
-    margin-left: 30px;
-  }
-  71% {
-    margin-left: 30px;
-  }
-  75% {
-    margin-left: 45px;
-  }
-  96% {
-    margin-left: 45px;
   }
 }
 

@@ -59,7 +59,7 @@ class PengurusRequest extends FormRequest
         }
 
         return [
-            'foto'              => 'nullable|image|mimes:jpg,jpeg,png|max:1024',
+            'foto'              => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
             'nama'              =>  "required|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
             'gelar_depan'       =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
             'gelar_belakang'    =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",

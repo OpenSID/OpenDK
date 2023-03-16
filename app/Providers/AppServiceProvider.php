@@ -37,6 +37,7 @@ use App\Models\Penduduk;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -55,6 +56,7 @@ class AppServiceProvider extends ServiceProvider
         $this->penduduk();
         $this->config();
         $this->blade();
+        $this->file();
     }
 
     protected function penduduk()
@@ -171,6 +173,17 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::directive('selected', function ($condition) {
             return "<?php if({$condition}): echo 'selected'; endif; ?>";
+        });
+    }
+
+    protected function file()
+    {
+        Validator::extend('valid_file', function ($attributes, $value, $parameters) {
+            $contains = preg_match('/<\?php|<script|function|__halt_compiler|<html/i', File::get($value));
+            if ($contains) {
+                return false;
+            }
+            return true;
         });
     }
 

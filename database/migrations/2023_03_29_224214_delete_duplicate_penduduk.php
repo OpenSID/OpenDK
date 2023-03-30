@@ -30,10 +30,8 @@
  */
 
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class DeleteDuplicatePenduduk extends Migration
 {
@@ -45,7 +43,7 @@ class DeleteDuplicatePenduduk extends Migration
     public function up()
     {
         $duplicates = DB::table('das_penduduk')
-            ->select('id_pend_desa','desa_id', DB::raw('COUNT(*) as `count`'))
+            ->select('id_pend_desa', 'desa_id', DB::raw('COUNT(*) as `count`'))
             ->groupBy('id_pend_desa', 'desa_id')
             ->having('count', '>', 1)
             ->get();

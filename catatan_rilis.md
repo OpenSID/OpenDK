@@ -15,7 +15,7 @@ Di rilis v23.03.01 berisi perbaikan yang diminta Komunitas OpenDK.
 #### Perbaikan bug
 
 1. [#638](https://github.com/OpenSID/OpenDK/issues/638) Perbaiki slider tidak bisa lebih dari 4.
-
+2. [#652](https://github.com/OpenSID/OpenDK/issues/652) Jumlah penduduk tidak sinkron antara kecamatan dan desa karena perubahan NIK (kasus tertentu).
 
 #### Teknis
 

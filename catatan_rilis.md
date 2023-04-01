@@ -1,6 +1,6 @@
 #### [v23.04.01]
 
-Di rilis v23.04.01 berisi fitur modul TTE dan perbaikan yang diminta Komunitas OpenDK.
+Di rilis v23.04.01 berisi penambahan fitur modul TTE dan permohonan surat dari OpendSID serta perbaikan yang diminta Komunitas OpenDK.
 
 #### Fitur
 1. [#590](https://github.com/OpenSID/OpenDK/pull/590) Penambahan Modul Tte.

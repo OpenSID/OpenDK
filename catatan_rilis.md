@@ -1,10 +1,15 @@
-#### [v23.03.02]
+#### [v23.04.00]
 
-Di rilis v23.03.02 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v23.04.00 berisi penambahan fitur modul TTE dan permohonan surat dari OpendSID serta perbaikan yang diminta Komunitas OpenDK.
+
+#### Fitur
+1. [#590](https://github.com/OpenSID/OpenDK/pull/590) Penambahan Modul Tte.
+2. [#518](https://github.com/OpenSID/OpenDK/pull/518) Sediakan menu permohonan dan arsip surat dari opensid.
 
 #### Perbaikan bug
 
-1. [#638](https://github.com/OpenSID/OpenDK/issues/638) Perbaiki slider tidak bisa lebih dari 4.
+1. [#638](https://github.com/OpenSID/OpenDK/issues/638) Perbaikan slider tidak bisa lebih dari 4.
+2. [#652](https://github.com/OpenSID/OpenDK/issues/652) Perbaikan jumlah penduduk tidak sinkron antara kecamatan dan desa karena perubahan NIK (kasus tertentu).
 
 #### Teknis
 

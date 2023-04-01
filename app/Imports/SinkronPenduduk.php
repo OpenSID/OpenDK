@@ -122,8 +122,8 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
             ];
 
             Penduduk::updateOrInsert([
-                'desa_id' => $insert['desa_id'],
-                'nik'     => $insert['nik']
+                'desa_id'      => $insert['desa_id'],
+                'id_pend_desa' => $insert['id_pend_desa'],
             ], $insert);
         }
 

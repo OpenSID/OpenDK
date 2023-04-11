@@ -1,61 +1,83 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\SistemKomplain;
 
 use App\Http\Controllers\Controller;
 use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-
-use function back;
-use function compact;
-use function mt_rand;
-use function redirect;
-use function request;
-use function response;
-use function str_slug;
-use function view;
 
 class SistemKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'SIKOMA';
-        $page_description = 'Sistem Komplain Masyarakat';
+        $page_title       = 'SIKEMA';
+        $page_description = 'Sistem Keluhan Masyarakat';
 
         $komplains = Komplain::with('kategori_komplain')
             ->where('status', '<>', 'DITOLAK')
             ->where('status', '<>', 'REVIEW')
             ->orderBy('created_at', 'desc')->paginate(10);
+
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
+    // TODO : Cek digunakan dimana ?
     public function indexKategori($slug)
     {
-        $page_title       = 'SIKOMA';
-        $page_description = 'Sistem Komplain Masyarakat';
-
+        $page_title       = 'SIKEMA';
+        $page_description = 'Sistem Keluhan Masyarakat';
         $komplains = Komplain::where('kategori', '=', $slug)->orderBy('created_at', 'desc')->paginate(10);
+
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
+    // TODO : Cek digunakan dimana ?
     public function indexSukses()
     {
-        $page_title       = 'SIKOMA';
-        $page_description = 'Sistem Komplain Masyarakat';
+        $page_title       = 'SIKEMA';
+        $page_description = 'Sistem Keluhan Masyarakat';
+        $komplains = Komplain::where('status', '=', 'Selesai')->orderBy('created_at', 'desc')->paginate(10);
 
-        $komplains = Komplain::where('status', '=', 'Belum')->orderBy('created_at', 'desc')->paginate(10);
         return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
     public function kirim()
     {
-        $page_title       = 'Kirim Komplain';
-        $page_description = 'Kirim Komplain Baru';
+        $page_title       = 'Kirim Keluhan';
+        $page_description = 'Kirim Keluhan Baru';
 
         return view('sistem_komplain.komplain.kirim', compact('page_title', 'page_description'));
     }
@@ -65,7 +87,8 @@ class SistemKomplainController extends Controller
         try {
             $komplain = Komplain::where('komplain_id', '=', $request->post('q'))->firstOrFail();
             return redirect()->route('sistem-komplain.komplain', $komplain->slug);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->with('warning', 'Komplain tidak ditemukan!');
         }
     }
@@ -73,15 +96,15 @@ class SistemKomplainController extends Controller
     protected function generateID()
     {
         $id  = mt_rand(100000, 999999);
-        $kid = '';
+        $pid = '';
 
         if (! Komplain::where('komplain_id', '=', $id)->exists()) {
-            $kid = $id;
+            $pid = $id;
         } else {
             $this->generateID();
         }
 
-        return $kid;
+        return $pid;
     }
 
     public function store(Request $request)
@@ -89,15 +112,15 @@ class SistemKomplainController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'nik'           => 'required|numeric|nik_exists:' . $request->input('tanggal_lahir'),
-                'judul'         => 'required',
+                'judul'         => 'required|string|max:255',
                 'kategori'      => 'required',
-                'laporan'       => 'required',
+                'laporan'       => 'required|string',
                 'captcha'       => 'required|captcha',
                 'tanggal_lahir' => 'password_exists:' . $request->input('nik'),
-                'lampiran1'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'lampiran2'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'lampiran3'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
-                'lampiran4'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024',
+                'lampiran1'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran2'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran3'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran4'     => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
             ], [
                 'captcha.captcha' => 'Invalid captcha code.',
                 'nik_exists'      => 'NIK tidak ditemukan atau NIK dan Tanggal Lahir tidak sesuai.',
@@ -149,10 +172,12 @@ class SistemKomplainController extends Controller
             }
 
             $komplain->save();
-            return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim. Tunggu Admin untuk di review terlebih dahulu!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim. Tunggu Admin untuk di review terlebih dahulu!');
     }
 
     /**
@@ -161,11 +186,13 @@ class SistemKomplainController extends Controller
      * @param  int  $id
      * @return Response
      */
+    // TODO : Cek digunakan dimana ?
     public function edit($id)
     {
         $komplain         = Komplain::where('komplain_id', '=', $id)->first();
-        $page_title       = 'Edit Komplain';
-        $page_description = 'Komplain ' . $komplain->komplain_id;
+        $page_title       = 'Komplain';
+        $page_description = 'Ubah Komplain : ' . $komplain->komplain_id;
+
         return view('sistem_komplain.komplain.edit', compact('page_title', 'page_description', 'komplain'));
     }
 
@@ -174,17 +201,17 @@ class SistemKomplainController extends Controller
      *
      * @return Response
      */
+    // TODO : Cek digunakan dimana ?
     public function update(Request $request, $id)
     {
-        // Save Request
-        try {
-            request()->validate([
-                'nik'      => 'required|numeric',
-                'judul'    => 'required',
-                'kategori' => 'required',
-                'laporan'  => 'required',
-            ], ['captcha.captcha' => 'Invalid captcha code.']);
+        request()->validate([
+            'nik'      => 'required|numeric',
+            'judul'    => 'required|string|max:255',
+            'kategori' => 'required',
+            'laporan'  => 'required|string',
+        ], ['captcha.captcha' => 'Invalid captcha code.']);
 
+        try {
             $komplain = Komplain::findOrFail($id);
             $komplain->fill($request->all());
             $komplain->nama = Penduduk::where('nik', $komplain->nik)->first()->nama;
@@ -223,27 +250,30 @@ class SistemKomplainController extends Controller
             }
 
             $komplain->save();
-            return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dikirim!');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
+    * Display the specified resource.
+    *
+    * @param  int  $id
+    * @return Response
+    */
     public function destroy($id)
     {
         try {
             Komplain::findOrFail($id)->delete();
-
-            return redirect()->route('sistem-komplain.index')->with('success', 'Komplain sukses dihapus!');
-        } catch (Exception $e) {
-            return redirect()->route('sistem-komplain.index')->with('error', 'Komplain gagal dihapus!');
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Komplain gagal dihapus!');
         }
+
+        return redirect()->route('sistem-komplain.index')->with('success', 'Komplain berhasil dihapus!');
     }
 
     /**
@@ -256,12 +286,13 @@ class SistemKomplainController extends Controller
     {
         try {
             $komplain = Komplain::where('slug', '=', $slug)->first();
-        } catch (Exception $ex) {
-            return back()->withInput()->with('error', $ex);
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', $e);
         }
 
-        $page_title       = 'Detail Laporan';
-        $page_description = $komplain->judul;
+        $page_title       = 'Laporan';
+        $page_description = 'Detail Laporan : ' . $komplain->judul;
 
         return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain'));
     }
@@ -271,8 +302,9 @@ class SistemKomplainController extends Controller
         if (request()->ajax()) {
             try {
                 $jawab = new JawabKomplain();
+                $user = auth()->user();
 
-                if ($request->input('nik') == '999') {
+                if (isset($user) && $user->hasrole(['super-admin', 'admin-kecamatan', 'admin-komplain'])) {
                     request()->validate([
                         'jawaban' => 'required',
                     ]);
@@ -300,7 +332,8 @@ class SistemKomplainController extends Controller
                     'msg'    => 'Jawaban  berhasil disimpan!',
                 ];
                 return response()->json($response);
-            } catch (Exception $ex) {
+            } catch (\Exception $e) {
+                report($e);
                 $response = [
                     'status' => 'error',
                     'msg'    => 'Jawaban  gagal disimpan!',
@@ -315,6 +348,8 @@ class SistemKomplainController extends Controller
     public function getJawabans(Request $request)
     {
         $jawabans = JawabKomplain::where('komplain_id', $request->input('id'))->orderBy('id', 'desc')->get();
-        return view('sistem_komplain.komplain.jawabans', compact('jawabans'))->render();
+        $komplain = Komplain::where('komplain_id', $request->input('id'))->get()[0];
+
+        return view('sistem_komplain.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
 }

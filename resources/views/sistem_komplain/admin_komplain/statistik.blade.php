@@ -3,19 +3,17 @@
 @section('title') Data Umum @endsection
 
 @section('content')
-        <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
@@ -24,8 +22,7 @@
                     <h3 class="box-title">Berdasarkan Status</h3>
                 </div>
                 <div class="box-body">
-                    <div id="chart_status"
-                         style="width: 100%; height: 450px; overflow: visible; text-align: left;">
+                    <div id="chart_status" style="width: 100%; height: 450px; overflow: visible; text-align: left;">
                     </div>
                 </div>
             </div>
@@ -36,8 +33,7 @@
                     <h3 class="box-title">Berdasarkan Kategori</h3>
                 </div>
                 <div class="box-body">
-                    <div id="chart_kategori"
-                         style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
+                    <div id="chart_kategori" style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
                     </div>
                 </div>
             </div>
@@ -50,15 +46,13 @@
                     <h3 class="box-title">Berdasarkan Desa</h3>
                 </div>
                 <div class="box-body">
-                    <div id="chart_desa"
-                         style="width: 100%; height: 500px; overflow: visible; text-align: left;">
+                    <div id="chart_desa" style="width: 100%; height: 500px; overflow: visible; text-align: left;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- /.content -->
 @endsection
 @include('partials.asset_amcharts')
 
@@ -93,12 +87,12 @@
             "dataProvider": {!!  json_encode($chart_kategori) !!},
             "valueAxes": [{
                 "position": "left",
-                "title": "Jumlah Komplain",
+                "title": "Jumlah Keluhan",
                 "baseValue" : 0,
                 "minimum": 0
             }],
             "allLabels": [{
-                "text": "Statistik Komplain Berdasarkan Kategori",
+                "text": "Statistik Keluhan Berdasarkan Kategori",
                 "align": "center",
                 "bold": true,
                 "size": 20,
@@ -126,14 +120,14 @@
             "export": {
                 "enabled": true,
                 "pageOrigin": false,
-                "fileName":"Statistik Komplain Berdasarkan Kategori",
+                "fileName":"Statistik Keluhan Berdasarkan Kategori",
             },
             "hideCredits": true,
             "marginTop" : 50
         });
     }
 
-    //Chart Komplain Status
+    //Chart Keluhan Status
     function create_chart_status()
     {
         var chart_status = AmCharts.makeChart( "chart_status", {
@@ -149,7 +143,7 @@
             "export": {
                 "enabled": true,
                 "pageOrigin": false,
-                "fileName":"Statistik Komplain Berdasarkan Status",
+                "fileName":"Statistik Keluhan Berdasarkan Status",
             },
             "hideCredits": true,
             "legend":{
@@ -158,7 +152,7 @@
                 "autoMargins":false
             },
             "allLabels": [{
-                "text": "Statistik Komplain Berdasarkan Status",
+                "text": "Statistik Keluhan Berdasarkan Status",
                 "align": "center",
                 "bold": true,
                 "size": 20,
@@ -168,7 +162,7 @@
         } );
     }
 
-    // Chart Komplain Desa
+    // Chart Keluhan Desa
     function create_chart_desa() {
 
         AmCharts.addInitHandler( function ( chart_desa ) {
@@ -191,12 +185,12 @@
             "dataProvider": {!!  json_encode($chart_desa) !!},
             "valueAxes": [{
                 "position": "left",
-                "title": "Jumlah Komplain",
+                "title": "Jumlah Keluhan",
                 "baseValue" : 0,
                 "minimum": 0
             }],
             "allLabels": [{
-                "text": "Statistik Komplain Berdasarkan Desa",
+                "text": "Statistik Keluhan Berdasarkan Desa",
                 "align": "center",
                 "bold": true,
                 "size": 20,
@@ -224,13 +218,11 @@
             "export": {
                 "enabled": true,
                 "pageOrigin": false,
-                "fileName": "Statistik Komplain Berdasarkan Desa",
+                "fileName": "Statistik Keluhan Berdasarkan Desa",
             },
             "hideCredits": true,
             "marginTop" : 50
         });
-
     }
-
 </script>
 @endpush

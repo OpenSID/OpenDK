@@ -1,27 +1,58 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace App\Models;
 
-use App\Models\Role;
-use Cartalyst\Sentinel\Users\EloquentUser as SentinelModel;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
-use Image;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-use function file_exists;
-use function public_path;
-
-class User extends SentinelModel implements Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
+    use HasRoles;
+    use Notifiable;
 
     /**
      * Default password.
      *
      * @var string
      */
-    const DEFAULT_PASSWORD = '12345678';
+    public const DEFAULT_PASSWORD = '12345678';
 
     /**
      * {@inheritDoc}
@@ -30,14 +61,14 @@ class User extends SentinelModel implements Authenticatable
         'email',
         'password',
         'permissions',
-        'first_name',
-        'last_name',
+        'name',
         'image',
         'address',
         'phone',
         'gender',
         'status',
         'last_login',
+        'pengurus_id',
     ];
 
     /**
@@ -45,12 +76,17 @@ class User extends SentinelModel implements Authenticatable
      */
     protected $hidden = [
         'password',
+        'remember_token',
     ];
 
-    public static function byEmail($email)
-    {
-        return static::whereEmail($email)->first();
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -61,21 +97,12 @@ class User extends SentinelModel implements Authenticatable
 
     public static function datatables()
     {
-        return static::select('first_name', 'address', 'status', 'id', 'email', 'created_at', 'phone')->where('id', '!=', '1');
+        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone');
     }
 
-    /**
-     * Get user's profile picture.
-     *
-     * @return string
-     */
-    public function isSuperAdmin()
+    public function getFotoAttribute()
     {
-        if ($this->roles[0]->slug == 'super-admin') {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
     }
 
     /**
@@ -87,7 +114,7 @@ class User extends SentinelModel implements Authenticatable
     public function uploadImage($image)
     {
         $extension = $image->getClientOriginalExtension();
-        $path      = public_path('uploads/user/');
+        $path      = storage_path('app/public/user/');
 
         if (! file_exists($path)) {
             File::makeDirectory($path, 0777, true);
@@ -100,16 +127,40 @@ class User extends SentinelModel implements Authenticatable
         return $this->update(['image' => $name]);
     }
 
-    /**
-     * The roles that belong to the user.
-     */
-    public function role()
-    {
-        return $this->belongsToMany(Role::class, 'role_users');
-    }
-
     public function scopeSuspend($query, $email)
     {
         return $query->where('email', $email)->where('status', 0)->get();
+    }
+
+    /**
+     * Hash password
+     * @param $input
+     */
+    public function setPasswordAttribute($input)
+    {
+        if ($input) {
+            $this->attributes['password'] = app('hash')->needsRehash($input) ? Hash::make($input) : $input;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function pengurus()
+    {
+        return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
     }
 }

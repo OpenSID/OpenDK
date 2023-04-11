@@ -1,28 +1,46 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Models\Role;
+use App\Models\Pengurus;
 use App\Models\User;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
-
-use function back;
-use function bcrypt;
-use function compact;
-use function flash;
-use function public_path;
-use function redirect;
-use function route;
-use function trans;
-use function view;
 
 class UserController extends Controller
 {
@@ -33,8 +51,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $page_title = 'Pengguna';
-        return view('user.index', compact('page_title'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Daftar Data';
+
+        return view('user.index', compact('page_title', 'page_description'));
     }
 
     /**
@@ -44,9 +64,12 @@ class UserController extends Controller
      */
     public function create()
     {
-        $page_title = 'Tambah Pengguna';
-        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.create', compact('item', 'page_title'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Tambah Data';
+        $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        $pengurus         = Pengurus::status()->doesntHave('user')->get();
+
+        return view('user.create', compact('page_title', 'page_description', 'item', 'pengurus'));
     }
 
     /**
@@ -60,18 +83,18 @@ class UserController extends Controller
         try {
             $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
-            $user = Sentinel::registerAndActivate($request->all());
+            $user = User::create($request->all());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
             }
 
-            Sentinel::findRoleBySlug($request->role)->users()->attach($user);
+            $roles = $request->input('role') ? $request->input('role') : [];
+            $user->assignRole($roles);
 
-            flash()->success(trans('message.user.create-success'));
-            return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
-            flash()->error(trans('message.user.create-error'));
-            return back()->withInput();
+            return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -83,7 +106,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         return view('user.show', compact('user'));
     }
 
@@ -95,11 +118,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $page_title = 'Ubah Pengguna';
-        $user       = User::find($id);
-        $title      = ['title' => 'Pengguna'];
-        $item       = Role::where('slug', '!=', 'super-admin')->pluck('name', 'slug')->toArray();
-        return view('user.edit', compact('page_title', 'user', 'title', 'item'));
+        $page_title       = 'Pengguna';
+        $page_description = 'Ubah Data';
+        $user             = User::findOrFail($id);
+        $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        $pengurus         = Pengurus::status()->doesntHave('user')->orWhere('id', $user->pengurus_id)->get();
+
+        return view('user.edit', compact('page_title', 'page_description', 'user', 'item', 'pengurus'));
     }
 
     /**
@@ -112,24 +137,22 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, $id)
     {
         try {
-            $user_find = User::find($id);
+            $user = User::findOrFail($id);
 
-            $user = Sentinel::update($user_find, $request->all());
+            $user->update($request->all());
             if ($request->hasFile('image')) {
-                 $path = public_path('uploads/user/');
-                 File::delete($path . $user_find->image);
-                 $user->uploadImage($request->image);
-            }
-            if (! empty($request->role)) {
-                Sentinel::findRoleBySlug($user_find->roles()->first()->slug)->users()->detach($user);
-                Sentinel::findRoleBySlug($request->role)->users()->attach($user);
+                $user->uploadImage($request->image);
             }
 
-            flash()->success(trans('message.user.update-success'));
-            return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
-            flash()->error(trans('message.user.update-error'));
-            return back()->withInput();
+            if (! empty($request->role)) {
+                $roles = $request->input('role') ? $request->input('role') : [];
+                $user->syncRoles($roles);
+            }
+
+            return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', $e->getMessage());
         }
     }
 
@@ -142,18 +165,18 @@ class UserController extends Controller
      */
     public function updatePassword(UserUpdateRequest $request, $id)
     {
-        // dd($request->all());
         try {
-            $user_find = User::find($id);
+            $user_find = User::findOrFail($id);
 
-            $user = Sentinel::update($user_find, $request->all());
+            $user = $user_find->update($request->all());
             $user->update([
                 'password' => bcrypt($request->password),
             ]);
 
             flash()->success(trans('message.user.update-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->error(trans('message.user.update-error'));
             return back()->withInput();
         }
@@ -174,7 +197,8 @@ class UserController extends Controller
 
             flash()->success(trans('general.suspend-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->success(trans('general.suspend-error'));
             return redirect()->route('setting.user.index');
         }
@@ -195,7 +219,8 @@ class UserController extends Controller
 
             flash()->success(trans('general.active-success'));
             return redirect()->route('setting.user.index');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             flash()->success(trans('general.active-error'));
             return redirect()->route('setting.user.index');
         }
@@ -210,24 +235,18 @@ class UserController extends Controller
         ->editColumn('status', function ($user) {
             return $user->status == 1 ? 'Active' : 'Not Active';
         })
-        ->addColumn('action', function ($user) {
+        ->addColumn('aksi', function ($user) {
             if ($user->id != 1) {
-                $edit_url = route('setting.user.edit', $user->id);
                 if ($user->status == 1) {
-                    $suspend_url         = route('setting.user.destroy', $user->id);
-                    $data['suspend_url'] = $suspend_url;
+                    $data['suspend_url'] = route('setting.user.destroy', $user->id);
                 } else {
-                    $active_url         = route('setting.user.active', $user->id);
-                    $data['active_url'] = $active_url;
+                    $data['active_url'] = route('setting.user.active', $user->id);
                 }
-
-                $data['edit_url'] = $edit_url;
-            } else {
-                $edit_url         = route('setting.user.edit', $user->id);
-                $data['edit_url'] = $edit_url;
             }
 
-            return view('forms.action', $data);
+            $data['edit_url'] = route('setting.user.edit', $user->id);
+
+            return view('forms.aksi', $data);
         })
         ->make(true);
     }

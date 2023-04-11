@@ -1,38 +1,23 @@
-@extends( 'layouts.dashboard_template' )
+@extends('layouts.dashboard_template')
 
-@section('title') UBah Pengguna @endsection
-
-@section( 'content' )
+@section('content')
+<!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
-	Ubah Pengguna
+		{{ $page_title ?? "Page Title" }}
+		<small>{{ $page_description ?? '' }}</small>
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-		<li><a href="{{ route('setting.user.index') }}">Pengguna</a></li>
-		<li class="active">Ubah</li>
+		<li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+		<li><a href="{{ route('setting.role.index') }}">{{ $page_title }}</a></li>
+		<li class="active">{{ $page_description }}</li>
 	</ol>
 </section>
 
 <section class="content">
 <div class="box box-primary">
-	<div class="box-header with-border">
-		<h3 class="box-title">Users</h3>
-	</div>
 	<div class="box-body">
-	 	@if (count($errors) > 0)
-		<div class="alert alert-danger">
-			<strong>Whoops!</strong> There were some problems with your input.<br><br>
-			<ul>
-				@foreach ($errors->all() as $error)
-				<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-
-		</div>
-
-		@endif
-		{!! Form::model($user, ['route'=>['setting.user.update', $user->id], 'method' => 'put', 'autocomplete'=>'off', 'id'=>'form-user',  'class' => 'form-horizontal form-label-left', 'files' => true,]) !!}
+		{!! Form::model($user, ['route'=>['setting.user.update', $user->id], 'method' => 'put', 'autocomplete' => 'off', 'id' => 'form-user',  'class' => 'form-horizontal form-label-left', 'files' => true,]) !!}
 			@include('user.form')
 		{!! Form::close() !!}
 	</div>

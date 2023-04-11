@@ -1,19 +1,15 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ config('app.name', 'Laravel')}} | {{$page_title ?? ''}}</title>
+    <title>{{ $page_title ?? config('app.name', 'Laravel') }} | {{ $browser_title }}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset("/favicon.png")}}"/>
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
     <link rel="stylesheet" href="{{ asset("/bower_components/bootstrap/dist/css/bootstrap.min.css") }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset("/bower_components/font-awesome/css/font-awesome.min.css") }}">
@@ -24,10 +20,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @stack('css')
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset("/bower_components/admin-lte/dist/css/AdminLTE.min.css") }}">
-    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-          page. However, you can choose any other skin. Make sure you
-          apply the skin class to the body tag so the changes take effect. -->
+    <!--
+        AdminLTE Skins. We have chosen the skin-blue for this starter
+        page. However, you can choose any other skin. Make sure you
+        apply the skin class to the body tag so the changes take effect.
+    -->
     <link rel="stylesheet" href="{{ asset("/bower_components/admin-lte/dist/css/skins/skin-blue.min.css") }}">
+
+    <!-- Admin style -->
+    <link rel="stylesheet" href="{{ asset("/css/admin-style.css") }}">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,29 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <![endif]-->
 
     <!-- Google Font -->
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <style type="text/css">
-        .scrollToTop{
-
-            padding:9px 12px;
-            text-align:center;
-            background: whiteSmoke;
-            font-weight: bold;
-            font-size: 12px;
-            color: #ffffff;
-            text-decoration: none;
-            position:fixed;
-            bottom:50px;
-            right:0px;
-            display:none;
-            background: #3F3F3F;
-        }
-        .scrollToTop:hover{
-            text-decoration:none;
-            color: #8996A8;;
-        }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -137,6 +116,11 @@ desired effect
             return false;
         });
 
+        window.setTimeout(function() {
+            $("#notifikasi").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 5000);
     });
 </script>
 </body>

@@ -19,8 +19,7 @@
 </div>
 <script>
     $(document).ready(function() {
-
-         $(document).on('click', '#deleteModal', function(e) {
+        $(document).on('click', '#deleteModal', function(e) {
             var url = $(this).attr('data-href');
             $('#destroy').attr('action', url );
             $('#import').attr( 'method', 'delete' );

@@ -2,37 +2,30 @@
 
 @section('content')
 
-        <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
 
     <div class="row">
-        <!-- /.col -->
         <div class="col-md-12">
             <!-- kirim komplain form -->
             {!! Form::model($komplain, [ 'route' => ['admin-komplain.update', $komplain->id], 'method' => 'put','id' => 'form-komplain', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
             <div class="box box-primary">
-                <div class="box-header">
-                    <i class="fa fa-paper-plane"></i>
-
-                    <h3 class="box-title">{{ $page_title }}</h3>
-                </div>
                 <div class="box-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -50,7 +43,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Form::text('nik', null,['placeholder'=>'NIK', 'class'=>'form-control', 'required', 'readonly'=>true]) !!}
+                                    {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required', 'readonly'=>true]) !!}
                                     @if ($errors->has('nik'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('nik') }}</strong>
@@ -62,7 +55,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Form::text('nama', null,['placeholder'=>'Nama', 'class'=>'form-control', 'required', 'readonly'=>true ]) !!}
+                                    {!! Form::text('nama', null, ['placeholder' => 'Nama', 'class' => 'form-control', 'required', 'readonly'=>true ]) !!}
                                     @if ($errors->has('nama'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('nama') }}</strong>
@@ -75,7 +68,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null,['class'=>'form-control', 'id'=>'kategori', 'required']) !!}
+                                    {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null, ['class' => 'form-control', 'id' => 'kategori', 'required']) !!}
                                     @if ($errors->has('kategori'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('kategori') }}</strong>
@@ -88,7 +81,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-8 col-xs-12">
-                                    {!! Form::text('judul', null,['placeholder'=>'Judul', 'class'=>'form-control', 'required']) !!}
+                                    {!! Form::text('judul', null, ['placeholder' => 'Judul', 'class' => 'form-control', 'required']) !!}
                                     @if ($errors->has('judul'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('judul') }}</strong>
@@ -101,7 +94,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-8 col-xs-12">
-                                    {!! Form::textArea('laporan', null,['placeholder'=>'Laporan', 'class'=>'form-control', 'required']) !!}
+                                    {!! Form::textArea('laporan', null, ['placeholder' => 'Laporan', 'class' => 'form-control', 'required']) !!}
                                     @if ($errors->has('laporan'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('laporan') }}</strong>
@@ -120,7 +113,7 @@
                                             <label for="lampiran1"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview1" style="background-image: url(@if(! $komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview1" style="background-image: url(@if(! $komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -131,7 +124,7 @@
                                             <label for="lampiran2"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview2" style="background-image: url(@if(! $komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview2" style="background-image: url(@if(! $komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -142,7 +135,7 @@
                                             <label for="lampiran3"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview3" style="background-image: url(@if(! $komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview3" style="background-image: url(@if(! $komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -153,7 +146,7 @@
                                             <label for="lampiran4"></label>
                                         </div>
                                         <div class="avatar-preview">
-                                            <div id="lampiranPreview4" style="background-image: url(@if(! $komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'http://placehold.it/80x100' }} @endif );">
+                                            <div id="lampiranPreview4" style="background-image: url(@if(! $komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                             </div>
                                         </div>
                                     </div>
@@ -164,7 +157,7 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Status</label>
 
                                 <div class="col-md-2 col-sm-2 col-xs-12">
-                                    {!! Form::select('status', ['BELUM'=>'Belum', 'PROSES'=>'Proses', 'SELESAI'=>'Selesai'], null, ['class'=>'form-control']) !!}
+                                    {!! Form::select('status', ['BELUM' => 'Belum', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, ['class' => 'form-control']) !!}
                                     @if ($errors->has('status'))
                                         <span class="help-block">
                                             <strong>{{ $errors->first('status') }}</strong>
@@ -191,21 +184,14 @@
             </div>
             {!! Form::close() !!}
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
 
 @include('partials.asset_upload_images')
 
 @push('scripts')
-
 <script type="text/javascript">
-
-
     $(".btn-refresh").click(function(){
         $.ajax({
             type:'GET',
@@ -215,8 +201,5 @@
             }
         });
     });
-
-
 </script>
-
 @endpush

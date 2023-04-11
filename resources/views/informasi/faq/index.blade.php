@@ -1,81 +1,63 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-
-        <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
+        Faq
+        <small>Daftar</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">faq</li>
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
+
     @include('partials.flash_message')
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Daftar FAQ</h3>
-
-                    <div class="box-tools pull-right">
-                        <a href="{{route('informasi.faq.create')}}"
-                           class="btn btn-primary btn-sm {{Sentinel::guest() ? 'hidden':''}}"><i class="fa fa-plus"></i> Tambah</a>
-                    </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <section class="content-max-width">
-                        <section id="faq">
-                            @if(count($faqs) > 0)
-                                @foreach($faqs as $faq)
-                                    <h3>{{$faq->question}}</h3>
-
-                                    <p>{!! $faq->answer !!}</p>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="pull-right">
-                                                @unless(!Sentinel::check())
-                                                    <a href="{{ route('informasi.faq.edit', $faq->id) }}">
-                                                        <button type="submit"
-                                                                class="btn btn-sm btn-primary">Ubah
-                                                        </button>
-                                                    </a>&nbsp;
-                                                    {!! Form::open(['method' => 'DELETE','route' => ['informasi.faq.destroy', $faq->id],'style'=>'display:inline']) !!}
-
-                                                    {!! Form::submit('Hapus', ['class' => 'btn btn-sm btn-danger', 'onclick' => 'return confirm("Yakin akan menghapus data tersebut?")']) !!}
-
-                                                    {!! Form::close() !!}
-                                                @endunless
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                @endforeach
-                            @else
-                                <h3>Maaf, FAQ belum tersedia.</h3>
-                            @endif
-
-                        </section>
-                    </section>
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer clearfix">
-                    {!! $faqs->links() !!}
-                </div>
-                <!-- /.box-footer -->
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <a href="{{ route('informasi.faq.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+        </div>
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="faq-table">
+                    <thead>
+                        <tr>
+                            <th style="max-width: 150px;">Aksi</th>
+                            <th>Pertanyaan</th>
+                            <th>Jawaban</th>
+                            <th style="max-width: 100px;">Status</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection
+
+@include('partials.asset_datatables')
+
+@push('scripts')
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data = $('#faq-table').DataTable({
+            processing: true,
+            serverSide: false,
+            ajax: "{!! route( 'informasi.faq.getdata' ) !!}",
+            columns: [
+                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
+                {data: 'question', name: 'question'},
+                {data: 'answer', name: 'answer'},
+                {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},
+            ],
+            order: [[3, 'desc']]
+        });
+    });
+</script>
+@include('forms.datatable-vertical')
+@include('forms.delete-modal')
+
+@endpush

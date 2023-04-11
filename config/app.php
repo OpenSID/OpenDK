@@ -1,12 +1,67 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 return [
 
     /*
-     *  Default Profil
-     */
+    |--------------------------------------------------------------------------
+    | Versi Aplikasi
+    |--------------------------------------------------------------------------
+    */
 
-    'default_profile' => env('KD_DEFAULT_PROFIL', '13.07.04'),
+    'version' => 'v23.04.00',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Host Pantau
+    |--------------------------------------------------------------------------
+    */
+
+    'host_pantau' => env('HOST_PANTAU', 'https://pantau.opensid.my.id/index.php/api/'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Token  Pantau
+    |--------------------------------------------------------------------------
+    */
+
+    'token_pantau' => env('TOKEN_PANTAU', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6bnVsbCwidGltZXN0YW1wIjoxNjAzNDY2MjM5fQ.HVCNnMLokF2tgHwjQhSIYo6-2GNXB4-Kf28FSIeXnZw'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Mode Website
+    |--------------------------------------------------------------------------
+    */
+
+    'demo' => env('APP_DEMO', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -19,7 +74,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Dashboard Kecamatan'),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +224,9 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -185,12 +242,17 @@ return [
         App\Providers\RouteServiceProvider::class,
         // iSeed
         Orangehill\Iseed\IseedServiceProvider::class,
-        Cartalyst\Sentinel\Laravel\SentinelServiceProvider::class,
         //Captcha
         Mews\Captcha\CaptchaServiceProvider::class,
 
         // Visitor Counter
-        \App\Providers\KDServiceProvider::class,
+        App\Providers\KDServiceProvider::class,
+
+        // JWT Auth
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+
+        //Log Viewer
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
     ],
 
     /*
@@ -224,7 +286,8 @@ return [
         'File' => Illuminate\Support\Facades\File::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
-        'Input' => \Illuminate\Support\Facades\Input::class,
+        'Http' => Illuminate\Support\Facades\Http::class,
+        'Input' => Illuminate\Support\Facades\Input::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,
@@ -239,15 +302,16 @@ return [
         'Schema' => Illuminate\Support\Facades\Schema::class,
         'Session' => Illuminate\Support\Facades\Session::class,
         'Storage' => Illuminate\Support\Facades\Storage::class,
+        'Str' => Illuminate\Support\Str::class,
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Activation' => Cartalyst\Sentinel\Laravel\Facades\Activation::class,
-        'Reminder'   => Cartalyst\Sentinel\Laravel\Facades\Reminder::class,
-        'Sentinel'   => Cartalyst\Sentinel\Laravel\Facades\Sentinel::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
-        'Counter' => \App\Facades\Counter::class,
+        'Counter' => App\Facades\Counter::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];

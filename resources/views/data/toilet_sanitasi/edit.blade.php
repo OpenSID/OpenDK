@@ -1,29 +1,22 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-        <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
         {{ $page_title ?? "Page Title" }}
         <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{route('dashboard.profil')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{route('data.toilet-sanitasi.index')}}">Data Toilet & Sanitasi</a></li>
-        <li class="active">{{$page_title}}</li>
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.toilet-sanitasi.index') }}">Daftar Toilet & Sanitasi</a></li>
+        <li class="active">{{ $page_description ?? '' }}</li>
     </ol>
 </section>
 
-<!-- Main content -->
 <section class="content container-fluid">
     <div class="row">
         <div class="col-md-12">
             @include('partials.flash_message')
-            <div class="box box-primary">
-                {{-- <div class="box-header with-border">
-                     <h3 class="box-title">Aksi</h3>
-                 </div>--}}
-                <!-- /.box-header -->
 
                 @if (count($errors) > 0)
                     <div class="alert alert-danger">
@@ -61,8 +54,5 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
-
 </section>
-<!-- /.content -->
 @endsection

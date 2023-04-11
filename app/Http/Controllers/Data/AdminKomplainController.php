@@ -1,33 +1,54 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use App\Models\JawabKomplain;
 use App\Models\KategoriKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-use function back;
-use function compact;
-use function redirect;
-use function request;
-use function route;
-use function strtolower;
-use function ucfirst;
-use function view;
-
 class AdminKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Admin Komplain';
-        $page_description = 'Data Admin Komplain';
+        $page_title       = 'Keluhan';
+        $page_description = 'Daftar Keluhan';
+
         return view('sistem_komplain.admin_komplain.index', compact('page_title', 'page_description'));
     }
 
@@ -38,19 +59,17 @@ class AdminKomplainController extends Controller
      */
     public function getDataKomplain()
     {
-        return DataTables::of(Komplain::with(['kategori_komplain'])->select('*')->get())
-            ->addColumn('actions', function ($row) {
-                $edit_url   = route('admin-komplain.edit', $row->id);
-                $delete_url = route('admin-komplain.destroy', $row->id);
+        return DataTables::of(Komplain::with(['kategori_komplain']))
+            ->addColumn('aksi', function ($row) {
                 if ($row->status == 'REVIEW' || $row->status == 'DITOLAK' | $row->status == 'BELUM') {
-                    $agree_url         = route('admin-komplain.setuju', $row->id);
-                    $data['agree_url'] = $agree_url;
+                    $data['agree_url'] = route('admin-komplain.setuju', $row->id);
                 }
 
-                $data['edit_url']   = $edit_url;
-                $data['delete_url'] = $delete_url;
+                $data['show_url']   = route('admin-komplain.show', $row->id);
+                $data['edit_url']   = route('admin-komplain.edit', $row->id);
+                $data['delete_url'] = route('admin-komplain.destroy', $row->id);
 
-                return view('forms.action', $data);
+                return view('forms.aksi', $data);
             })
             ->editColumn('kategori', function ($row) {
                 return $row->kategori_komplain->nama;
@@ -74,22 +93,33 @@ class AdminKomplainController extends Controller
                 }
                 return $status;
             })
-            ->rawColumns(['actions', 'status'])->make();
+            ->rawColumns(['aksi', 'status'])->make();
     }
 
     public function disetujui(Request $request, $id)
     {
+        request()->validate([
+            'status' => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'status' => 'required',
-            ]);
-
-            Komplain::find($id)->update($request->all());
-
-            return redirect()->route('admin-komplain.index')->with('success', 'Status Komplain berhasil disimpan!');
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Status Komplain gagal disimpan!');
+            Komplain::findOrFail($id)->update($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Status Keluhan gagal disimpan!');
         }
+
+        return redirect()->route('admin-komplain.index')->with('success', 'Status Keluhan berhasil disimpan!');
+    }
+
+    public function show($id)
+    {
+        $komplain = Komplain::findOrFail($id);
+        $page_title       = 'Detail Keluhan';
+        $page_description = 'Detail Keluhan : ' . $komplain->judul;
+        $penduduk = Penduduk::where('nik', $komplain->nik)->first();
+
+        return view('sistem_komplain.admin_komplain.show', compact('page_title', 'page_description', 'komplain', 'penduduk'));
     }
 
     /**
@@ -100,9 +130,10 @@ class AdminKomplainController extends Controller
      */
     public function edit($id)
     {
-        $komplain         = Komplain::find($id);
-        $page_title       = 'Edit Komplain';
-        $page_description = 'Komplain ' . $komplain->komplain_id;
+        $komplain         = Komplain::findOrFail($id);
+        $page_title       = 'Keluhan';
+        $page_description = 'Ubah Keluhan' . $komplain->komplain_id;
+
         return view('sistem_komplain.admin_komplain.edit', compact('page_title', 'page_description', 'komplain'));
     }
 
@@ -113,18 +144,17 @@ class AdminKomplainController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Save Request
+        request()->validate([
+            'nik'      => 'required|numeric',
+            'judul'    => 'required',
+            'kategori' => 'required',
+            'laporan'  => 'required',
+        ]);
+
         try {
             $komplain = Komplain::findOrFail($id);
             $komplain->fill($request->all());
             $komplain->nama = Penduduk::where('nik', $komplain->nik)->first()->nama;
-
-            request()->validate([
-                'nik'      => 'required|numeric',
-                'judul'    => 'required',
-                'kategori' => 'required',
-                'laporan'  => 'required',
-            ]);
 
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {
@@ -160,19 +190,43 @@ class AdminKomplainController extends Controller
             }
 
             $komplain->save();
-            return redirect()->route('admin-komplain.index')->with('success', 'Komplain berhasil dikirim!');
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'Keluhan gagal dikirim!');
+        }
+
+        return redirect()->route('admin-komplain.index')->with('success', 'Keluhan berhasil dikirim!');
+    }
+
+    public function updateKomentar(Request $request, $id)
+    {
+        $jawabKomplain = JawabKomplain::findOrFail($id);
+
+        try {
+            $jawabKomplain->jawaban = $request->jawaban;
+            $jawabKomplain->save();
+            $response = [
+                'status' => 'success',
+                'msg'    => 'Jawaban  berhasil disimpan!',
+            ];
+            return response()->json($response);
         } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Komplain gagal dikirim!');
+            $response = [
+                'status' => 'success',
+                'msg'    => 'Jawaban  Gagal disimpan!',
+            ];
+            return response()->json($response);
         }
     }
 
     public function statistik()
     {
-        $page_title       = 'Statsitik Komplain';
-        $page_description = 'Data Statistik Komplain Masyarakat';
+        $page_title       = 'Statistik Keluhan';
+        $page_description = 'Data Statistik Keluhan Masyarakat';
         $chart_kategori   = $this->getChartKategori();
         $chart_status     = $this->getChartStatus();
         $chart_desa       = $this->getChartDesa();
+
         return view('sistem_komplain.admin_komplain.statistik', compact('page_title', 'page_description', 'chart_kategori', 'chart_status', 'chart_desa'));
     }
 
@@ -218,5 +272,45 @@ class AdminKomplainController extends Controller
         }
 
         return $data_chart;
+    }
+
+    public function getKomentar($id)
+    {
+        $jawab = JawabKomplain::findOrFail($id);
+        $response = [
+            'status' => 'success',
+            'data' => $jawab,
+        ];
+        return response()->json($response);
+    }
+
+    /**
+    * Display the specified resource.
+    *
+    * @param  int  $id
+    * @return Response
+    */
+    public function destroy($id)
+    {
+        try {
+            Komplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return redirect()->route('admin-komplain.index')->with('error', 'Keluhan gagal dihapus!');
+        }
+
+        return redirect()->route('admin-komplain.index')->with('success', 'Keluhan sukses dihapus!');
+    }
+
+    public function deletekomentar($id)
+    {
+        try {
+            JawabKomplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Komentar Keluhan gagal dihapus!');
+        }
+
+        return back()->with('success', 'Komentar Keluhan sukses dihapus!');
     }
 }

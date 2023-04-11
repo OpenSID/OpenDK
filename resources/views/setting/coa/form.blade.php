@@ -35,14 +35,14 @@
     <label for="id" class="control-label col-md-3 col-sm-6 col-xs-12">ID Akun <span class="required">*</span></label>
 
     <div class="col-md-3 col-sm-6 col-xs-12">
-        {!! Form::text('id', null, ['class' => 'form-control', 'required'=>true, 'id'=>'id', 'readonly'=>true]) !!}
+        {!! Form::text('id', null, ['class' => 'form-control', 'required'=>true, 'id' => 'id', 'readonly'=>true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label for="coa_name" class="control-label col-md-3 col-sm-6 col-xs-12">Nama Akun <span class="required">*</span></label>
 
     <div class="col-md-8 col-sm-6 col-xs-12">
-        {!! Form::text('coa_name', null, ['class' => 'form-control', 'required'=>true, 'id'=>'coa_name']) !!}
+        {!! Form::text('coa_name', null, ['class' => 'form-control', 'required'=>true, 'id' => 'coa_name']) !!}
     </div>
 </div>
 <div class="ln_solid"></div>

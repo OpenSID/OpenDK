@@ -1,19 +1,41 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace App\Http\Controllers\Informasi;
 
-use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
-use function back;
-use function compact;
-use function redirect;
-use function request;
-use function view;
+use Yajra\DataTables\DataTables;
 
 class FaqController extends Controller
 {
@@ -24,14 +46,35 @@ class FaqController extends Controller
      */
     public function index()
     {
-        Counter::count('informasi.faq.index');
+        return view('informasi.faq.index');
+    }
 
-        $page_title       = 'FAQ';
-        $page_description = 'Frequently Ask and Question';
+    public function getDataFaq(Request $request)
+    {
+        if ($request->ajax()) {
+            return DataTables::of(Faq::all())
+                ->addIndexColumn()
+                ->addColumn('aksi', function ($row) {
+                    $data['show_web'] = route('faq');
 
-        $faqs = Faq::latest()->paginate(10);
-        return view('informasi.faq.index', compact('page_title', 'page_description', 'faqs'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+                    if (! auth()->guest()) {
+                        $data['edit_url']   = route('informasi.faq.edit', $row->id);
+                        $data['delete_url'] = route('informasi.faq.destroy', $row->id);
+                    }
+
+                    return view('forms.aksi', $data);
+                })
+                ->editColumn('status', function ($row) {
+                    if ($row->status == 0) {
+                        return '<span class="label label-danger">Tidak Aktif</span>';
+                    } else {
+                        return '<span class="label label-success">Aktif</span>';
+                    }
+                })
+                ->rawColumns(['status'])
+                ->escapeColumns([])
+                ->make(true);
+        }
     }
 
     /**
@@ -41,8 +84,8 @@ class FaqController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Tambah FAQ';
-        $page_description = '';
+        $page_title       = 'FAQ';
+        $page_description = 'Tambah FAQ';
 
         return view('informasi.faq.create', compact('page_title', 'page_description'));
     }
@@ -58,19 +101,15 @@ class FaqController extends Controller
             'question' => 'required',
             'answer'   => 'required',
         ]);
-        Faq::create($request->all());
+
+        try {
+            Faq::create($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'FAQ gagal ditambah!');
+        }
 
         return redirect()->route('informasi.faq.index')->with('success', 'FAQ berhasil ditambah!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function show($id)
-    {
     }
 
     /**
@@ -81,9 +120,9 @@ class FaqController extends Controller
      */
     public function edit($id)
     {
-        $faq              = Faq::find($id);
-        $page_title       = 'Ubah FAQ';
-        $page_description = $faq->question;
+        $faq              = Faq::findOrFail($id);
+        $page_title       = 'FAQ';
+        $page_description = 'Ubah FAQ : ' . $faq->question;
 
         return view('informasi.faq.edit', compact('page_title', 'page_description', 'faq'));
     }
@@ -97,18 +136,19 @@ class FaqController extends Controller
 
     public function update(Request $request, $id)
     {
+        request()->validate([
+            'question' => 'required',
+            'answer'   => 'required',
+        ]);
+
         try {
-            request()->validate([
-                'question' => 'required',
-                'answer'   => 'required',
-            ]);
-
-            Faq::find($id)->update($request->all());
-
-            return redirect()->route('informasi.faq.index')->with('success', 'Update FAQ sukses!');
-        } catch (Exception $e) {
-            return back()->withInput()->with('error', 'Update FAQ gagal!');
+            Faq::findOrFail($id)->update($request->all());
+        } catch (\Exception $e) {
+            report($e);
+            return back()->withInput()->with('error', 'FAQ gagal diubah!');
         }
+
+        return redirect()->route('informasi.faq.index')->with('success', 'FAQ berhasil diubah!');
     }
 
     /**
@@ -121,10 +161,11 @@ class FaqController extends Controller
     {
         try {
             Faq::findOrFail($id)->delete();
-
-            return redirect()->route('informasi.faq.index')->with('success', 'FAQ sukses dihapus!');
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            report($e);
             return redirect()->route('informasi.faq.index')->with('error', 'FAQ gagal dihapus!');
         }
+
+        return redirect()->route('informasi.faq.index')->with('success', 'FAQ berhasil dihapus!');
     }
 }

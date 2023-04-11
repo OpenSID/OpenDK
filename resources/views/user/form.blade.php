@@ -1,15 +1,25 @@
+@include('partials.flash_message')
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Depan <span class="required">*</span></label>
-
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Pengurus</label>
+    
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text( 'first_name', null, [ 'class' => 'form-control', 'placeholder' => 'First Name', 'pattern' => '[A-Za-z]{1,}'] ) !!}
+        <select name="pengurus_id" id="pengurus" class="form-control">
+            <option class="form-control" value="">Pilih Pengurus</option>
+            @foreach ($pengurus as $list)
+                @if(empty($user))
+                    <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
+                @else
+                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
+                @endif
+            @endforeach
+        </select>
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Belakang <span class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text( 'last_name', null, [ 'class' => 'form-control', 'placeholder' => 'Last Name', 'pattern' => '[A-Za-z]{1,}'] ) !!}
+        {!! Form::text( 'name', null, [ 'class' => 'form-control', 'placeholder' => 'Nama', 'pattern' => '^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$'] ) !!}
     </div>
 </div>
 <div class="form-group">
@@ -31,13 +41,17 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Photo Profil </label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Foto Profil </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="image" class="form-control">
+        <input type="file" name="image" id="foto" class="form-control">
+        <br>
+        <img src="{{ is_img($user->foto ?? null) }}"  id="showfoto" style="max-width:400px;max-height:250px;float:left;"/>
     </div>
 </div>
+
 @if(empty($user))
+
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
 
@@ -48,7 +62,9 @@
             <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
         </div>
     </div>
+
 @endif
+
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
 
@@ -58,6 +74,7 @@
 </div>
 
 @if(empty($user))
+
     <div class="form-group">
         <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
@@ -65,30 +82,20 @@
             {{ Form::select('role', $item, null, ['class' => 'form-control']) }}
         </div>
     </div>
-@elseif(Sentinel::getUser()->id == 1)
+
+@elseif(auth()->user()->id == 1)
     @if($user->id !=1)
+
         <div class="form-group">
-            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
+            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna  <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ Form::select('role', $item, !empty(old('role'))?old('role'):$user->role->first()->slug, ['class' => 'form-control']) }}
+                {{ Form::select('role', $item, $user->getRoleNames(), ['class' => 'form-control']) }}
             </div>
         </div>
-        @endif
-        @endif
 
-                <!-- @if(empty($user))
-                <div class="form-group">
-                  <label class="col-md-3 col-sm-3 col-xs-12 control-label">Active</label>
-                  <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="checkbox">
-                      <label>
-                        {!! Form::checkbox( 'status', !empty( $user ) ? $user->is_active : 0),null  !!}
-                </label>
-              </div>
-            </div>
-          </div>
-          @endif -->
+    @endif
+@endif
 
         <div class="ln_solid"></div>
         <div class="form-group">
@@ -99,3 +106,44 @@
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </div>
+@include('partials.asset_jqueryvalidation')
+
+@push( 'scripts' )
+<script type="text/javascript">
+$('#pengurus').on('change', function() {
+    var data = $('#pengurus :selected').data('nama');
+    $('input[name="name"]').val(data);
+});
+
+$(function () {
+
+var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+        if (isSuccess) { //yes
+            var reader = new FileReader();
+            reader.onload = function (e) {
+
+            $('#showfoto').attr('src', e.target.result);
+            $('#showfoto').removeClass('hide');
+        }
+
+            reader.readAsDataURL(input.files[0]);
+        } else { //no
+            //warning
+            $("#foto").val('');
+            alert('File tersebut tidak diperbolehkan.');
+        }
+    }
+}
+
+$("#foto").change(function () {
+    readURL(this);
+});
+});
+</script>
+@endpush

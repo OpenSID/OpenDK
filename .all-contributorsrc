@@ -1,0 +1,186 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "roaddee",
+      "name": "Rudi Purwanto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45786885?v=4",
+      "profile": "https://github.com/roaddee",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "dirgareborn",
+      "name": "Dirga ",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21957159?v=4",
+      "profile": "https://github.com/dirgareborn",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "fusionid",
+      "name": "zeppyshiddiq",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10391199?v=4",
+      "profile": "https://github.com/fusionid",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "afa28",
+      "name": "Andi Fahruddin Akas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/57283157?v=4",
+      "profile": "http://afa28.github.io",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "agungsugiarto",
+      "name": "Agung Sugiarto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10989147?v=4",
+      "profile": "https://agungsugiarto.github.io",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "xiaocids",
+      "name": "R Awaludin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4973716?v=4",
+      "profile": "https://github.com/xiaocids",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "raismaulana",
+      "name": "Lufri Rais Maulana",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22321111?v=4",
+      "profile": "https://ocan.page.link/fbku",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ilamazuliaf",
+      "name": "Faizul Amali",
+      "avatar_url": "https://avatars.githubusercontent.com/u/31075119?v=4",
+      "profile": "https://facebook.com/faizulamaly",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ibnuhalimm",
+      "name": "IBNU HALIM MUSTOFA",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14322078?v=4",
+      "profile": "https://ibnuis.dev",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "ahmadrosid",
+      "name": "ahmadrosid",
+      "avatar_url": "https://avatars.githubusercontent.com/u/29406408?v=4",
+      "profile": "https://ahmadrosid.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "nurisakbar",
+      "name": "Nuris Akbar",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5483330?v=4",
+      "profile": "http://belajarphp.net",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "sayasuhendra",
+      "name": "Suhendra",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4870292?v=4",
+      "profile": "http://sayasuhendra.github.io",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "wahyusafrizal17",
+      "name": "Wahyu Safrizal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/49548492?v=4",
+      "profile": "http://wahyusafrizal.xyz/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "totoprayogo1916",
+      "name": "Toto",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2387514?v=4",
+      "profile": "https://github.com/totoprayogo1916",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "apidong",
+      "name": "Afila",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20056421?v=4",
+      "profile": "https://github.com/apidong",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "widoagus17",
+      "name": "widoagus17",
+      "avatar_url": "https://avatars.githubusercontent.com/u/87120968?v=4",
+      "profile": "https://github.com/widoagus17",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "wongjapan",
+      "name": "Wong Japan Asri",
+      "avatar_url": "https://avatars.githubusercontent.com/u/45100510?v=4",
+      "profile": "https://github.com/wongjapan",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "devrakapriyo",
+      "name": "devrakapriyo",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36557759?v=4",
+      "profile": "https://github.com/devrakapriyo",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "vickyrolanda",
+      "name": "Vicky Rolanda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59082428?v=4",
+      "profile": "https://github.com/vickyrolanda",
+      "contributions": [
+        "code"
+      ]
+    },
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "OpenDK",
+  "projectOwner": "OpenSID",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

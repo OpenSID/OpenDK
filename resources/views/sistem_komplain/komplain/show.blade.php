@@ -100,14 +100,6 @@
                                         @if($komplain->status != 'SELESAI')
                                             <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                         @endif
-                                        <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
-                                            class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
-                                        {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style' => 'display:inline']) !!}
-
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Yakin akan menghapus data tersebut?')"><i
-                                                    class="fa fa-trash margin-r-5"></i> Hapus
-                                        </button>
 
                                         {!! Form::close() !!}
                                         @else

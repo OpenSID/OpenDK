@@ -15,8 +15,7 @@ class UpdateStatusKeluhan extends Migration
      */
     public function up()
     {
-        Komplain::whereStatus('BELUM')->update(['status' => 'PROSES']);
-        print(DB::getQueryLog());        
+        Komplain::whereStatus('BELUM')->update(['status' => 'PROSES']);            
     }
 
     /**

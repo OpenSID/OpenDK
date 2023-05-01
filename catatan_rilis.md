@@ -2,7 +2,7 @@
 
 Di rilis v25.04.00 berisi perbaikan yang diminta Komunitas OpenDK.
 
-Terima kasih pada syahransyaputra yang baru mulai berkontribusi.
+Terima kasih pada syahransyaputra yang terus berkontribusi.
 
 #### Teknis
 

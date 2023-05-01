@@ -1,6 +1,6 @@
-#### [v23.05.00]
+#### [v2305.0.0]
 
-Di rilis v25.04.00 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v2305.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 
 Terima kasih pada syahransyaputra yang terus berkontribusi.
 

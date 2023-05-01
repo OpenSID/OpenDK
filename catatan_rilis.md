@@ -1,6 +1,8 @@
-#### [v23.04.00]
+#### [v23.05.00]
 
-Di rilis v23.04.00 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v25.04.00 berisi perbaikan yang diminta Komunitas OpenDK.
+
+Terima kasih pada syahransyaputra yang baru mulai berkontribusi.
 
 #### Teknis
 

@@ -63,6 +63,7 @@ class UserRequest extends FormRequest
             'phone'      => 'nullable|numeric|digits_between:10,13',
             'password'   => 'required|min:8|max:32',
             'address'    => 'required',
+            'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
         ];
     }
 }

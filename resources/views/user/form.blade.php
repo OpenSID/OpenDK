@@ -44,7 +44,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Foto Profil </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="image" id="foto" class="form-control">
+        <input type="file" name="image" id="foto" class="form-control" accept="jpg,jpeg,png">
         <br>
         <img src="{{ is_img($user->foto ?? null) }}"  id="showfoto" style="max-width:400px;max-height:250px;float:left;"/>
     </div>

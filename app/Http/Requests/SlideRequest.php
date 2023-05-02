@@ -55,7 +55,7 @@ class SlideRequest extends FormRequest
         return [
             'judul'     => 'required',
             'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048',
+            'gambar'    => 'required|file|mimes:jpg,jpeg,png|max:2048|valid_file',
         ];
     }
 }

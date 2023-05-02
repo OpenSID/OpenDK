@@ -14,7 +14,7 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Gambar <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input accept="image/*" type="file" name="gambar" id="gambar" class="form-control" {{ $slide ? '' : 'required' }}>
+        <input accept="jpg,jpeg,png" type="file" name="gambar" id="gambar" class="form-control" {{ $slide ? '' : 'required' }}>
         <code>Dimensi gambar 1360 x 400 Piksel</code>
         <br>
 
@@ -24,11 +24,15 @@
 </div>
 <div class="ln_solid"></div>
 
+@include('partials.asset_jqueryvalidation')
+
 @push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\SlideRequest', '#form-slide') !!}
+
 <script>
     $(function () {
 
-        var fileTypes = ['jpg', 'jpeg', 'png', 'jpg'];  //acceptable file types
+        var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
 
         function readURL(input) {
             if (input.files && input.files[0]) {

@@ -29,10 +29,10 @@
 
                     </div>
 
-                    @endif
+                @endif
 
-                            <!-- form start -->
-                            {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
+                    <!-- form start -->
+                    {!!  Form::model($medsos, [ 'route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'put','id' => 'form-media-sosial', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
 
                     <div class="box-body">
 

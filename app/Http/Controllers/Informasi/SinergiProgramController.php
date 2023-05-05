@@ -31,10 +31,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Models\SinergiProgram;
 use Illuminate\Http\Request;
+use App\Models\SinergiProgram;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\SinergiProgramRequest;
 
 class SinergiProgramController extends Controller
 {
@@ -100,10 +101,10 @@ class SinergiProgramController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(SinergiProgramRequest $request)
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
             if ($request->hasFile('gambar')) {
                 $file           = $request->file('gambar');
                 $original_name  = strtolower(trim($file->getClientOriginalName()));
@@ -143,17 +144,12 @@ class SinergiProgramController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(SinergiProgramRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-            'url'  => 'required',
-        ]);
-
         $sinergi = SinergiProgram::findOrFail($id);
 
         try {
-            $input = $request->all();
+            $input = $request->validated();
 
             if ($request->hasFile('gambar')) {
                 $file           = $request->file('gambar');

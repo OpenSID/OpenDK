@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use Illuminate\Http\Request;
-use App\Models\SinergiProgram;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SinergiProgramRequest;
+use App\Models\SinergiProgram;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class SinergiProgramController extends Controller
 {

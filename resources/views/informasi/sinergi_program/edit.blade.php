@@ -32,7 +32,7 @@
                     @endif
 
                             <!-- form start -->
-                            {!!  Form::model($sinergi, [ 'route' => ['informasi.sinergi-program.update', $sinergi->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
+                            {!!  Form::model($sinergi, [ 'route' => ['informasi.sinergi-program.update', $sinergi->id], 'method' => 'put','id' => 'form-sinergi-program', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
 
                     <div class="box-body">
 

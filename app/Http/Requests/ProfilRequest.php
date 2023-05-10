@@ -65,8 +65,8 @@ class ProfilRequest extends FormRequest
             'email'                           => 'required|email',
             'tahun_pembentukan'               => 'required|integer',
             'dasar_pembentukan'               => 'required|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'file_logo'                       => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024',
-            'file_struktur_organisasi'        => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024',
+            'file_logo'                       => 'image|mimes:jpg,jpeg,bmp,png,gif|max:1024|valid_file',
+            'file_struktur_organisasi'        => 'image|mimes:jpg,jpeg,png,bmp,gif|max:1024|valid_file',
             // 'visi'                            => 'required',
             // 'misi'                            => 'required',
         ];

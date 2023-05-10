@@ -7,6 +7,7 @@ Terima kasih pada syahransyaputra yang terus berkontribusi.
 #### Perbaikan
 
 1. [#4](https://github.com/OpenSID/wiki-keamanan/issues/4) Perbaikan audit keamanan form profil.
+2. [#3](https://github.com/OpenSID/wiki-keamanan/issues/3) Perbaikan audit keamanan form slide.
 
 #### Teknis
 

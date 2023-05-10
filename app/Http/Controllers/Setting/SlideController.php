@@ -73,7 +73,7 @@ class SlideController extends Controller
     public function store(SlideRequest $request)
     {
         try {
-            $input = $request->input();
+            $input = $request->validated();
 
             if ($request->hasFile('gambar')) {
                 $file     = $request->file('gambar');
@@ -110,7 +110,7 @@ class SlideController extends Controller
     public function update(SlideRequest $request, Slide $slide)
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
 
             if ($request->hasFile('gambar')) {
                 $file     = $request->file('gambar');

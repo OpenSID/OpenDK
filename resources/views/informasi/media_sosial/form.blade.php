@@ -15,7 +15,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Logo / Gambar <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="logo" id="logo" class="form-control" {{ $medsos ? '' : 'required' }}>
+        <input type="file" name="logo" id="logo" accept="jpg,jpeg,png" class="form-control" {{ $medsos ? '' : 'required' }}>
         <br>
 
         <img src="@if(isset($medsos->logo)) {{ asset($medsos->logo) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
@@ -29,3 +29,9 @@
     </div>
 </div>
 <div class="ln_solid"></div>
+
+@include('partials.asset_jqueryvalidation')
+
+@push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\MediaSosialRequest', '#form-media-sosial') !!}
+@endpush

@@ -54,14 +54,16 @@ class UserRequest extends FormRequest
     {
         if ($this->isMethod('put')) {
             $id = "," . $this->segment(4);
+            $password = '';
         } else {
             $id = "";
+            $password = 'required|min:8|max:32';
         }
         return [
             'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
             'email'      => 'required|email|unique:users,email' . $id,
             'phone'      => 'nullable|numeric|digits_between:10,13',
-            'password'   => 'required|min:8|max:32',
+            'password'   => $password,
             'address'    => 'required',
             'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
         ];

@@ -33,7 +33,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SlideRequest extends FormRequest
+class SinergiProgramRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -53,9 +53,10 @@ class SlideRequest extends FormRequest
     public function rules()
     {
         return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'nama'   => 'required',
+            'url'    => 'required',
+            'gambar' => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'status' => 'required',
         ];
     }
 }

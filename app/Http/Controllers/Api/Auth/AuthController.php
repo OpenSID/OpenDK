@@ -31,10 +31,11 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\JsonResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -65,6 +66,12 @@ class AuthController extends Controller
 
         if (! $token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = User::where('email', '=', $request->email)->first();
+
+        if (! $user->hasrole(['super-admin', 'admin-desa'])) {
+            return response()->json(['error' => 'User does not have the right roles'], 422);
         }
 
         return $this->respondWithToken($token);

@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\MediaSosialRequest;
 use App\Models\MediaSosial;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MediaSosialRequest;
 
 class MediaSosialController extends Controller
 {

@@ -98,7 +98,7 @@ class SistemKomplainController extends Controller
         $id  = mt_rand(100000, 999999);
         $pid = '';
 
-        if (! Komplain::where('komplain_id', '=', $id)->exists()) {
+        if (!Komplain::where('komplain_id', '=', $id)->exists()) {
             $pid = $id;
         } else {
             $this->generateID();
@@ -204,6 +204,10 @@ class SistemKomplainController extends Controller
     // TODO : Cek digunakan dimana ?
     public function update(Request $request, $id)
     {
+        $is_login = auth()->check();
+        if (!$is_login) {
+            return back()->withInput()->with('error', 'Anda Harus Login Terlebih Dahulu!');
+        }
         request()->validate([
             'nik'      => 'required|numeric',
             'judul'    => 'required|string|max:255',
@@ -259,14 +263,20 @@ class SistemKomplainController extends Controller
     }
 
     /**
-    * Display the specified resource.
-    *
-    * @param  int  $id
-    * @return Response
-    */
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function destroy($id)
     {
+        $is_login = auth()->check();
+        if (!$is_login) {
+            return redirect()->route('login')->withInput()->with('error', 'Anda Harus Login Terlebih Dahulu!');
+        }
+        // dd($is_login);
         try {
+            dd('ok deleted');
             Komplain::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);

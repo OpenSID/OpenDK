@@ -61,12 +61,12 @@ class AdminKomplainController extends Controller
     {
         return DataTables::of(Komplain::with(['kategori_komplain']))
             ->addColumn('aksi', function ($row) {
-                if ($row->status == 'REVIEW' || $row->status == 'DITOLAK' | $row->status == 'BELUM') {
+                if ($row->status == 'SELESAI' || $row->status == 'REVIEW' || $row->status == 'DITOLAK' | $row->status == 'BELUM') {
                     $data['agree_url'] = route('admin-komplain.setuju', $row->id);
                 }
 
                 $data['show_url']   = route('admin-komplain.show', $row->id);
-                $data['edit_url']   = route('admin-komplain.edit', $row->id);
+                // $data['edit_url']   = route('admin-komplain.edit', $row->id);
                 $data['delete_url'] = route('admin-komplain.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -98,6 +98,7 @@ class AdminKomplainController extends Controller
 
     public function disetujui(Request $request, $id)
     {
+        // dd($request->all());
         request()->validate([
             'status' => 'required',
         ]);
@@ -266,7 +267,7 @@ class AdminKomplainController extends Controller
         foreach ($desa as $value) {
             $query_total  = DB::table('das_komplain')
                 ->join('das_penduduk', 'das_komplain.nik', '=', 'das_penduduk.nik')
-            ->where('das_penduduk.desa_id', $value->desa_id);
+                ->where('das_penduduk.desa_id', $value->desa_id);
             $total        = $query_total->count();
             $data_chart[] = ['desa' => $value->nama, 'value' => $total];
         }
@@ -285,13 +286,15 @@ class AdminKomplainController extends Controller
     }
 
     /**
-    * Display the specified resource.
-    *
-    * @param  int  $id
-    * @return Response
-    */
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function destroy($id)
     {
+        $is_login = auth()->check();
+        // dd($is_login);
         try {
             Komplain::findOrFail($id)->delete();
         } catch (\Exception $e) {

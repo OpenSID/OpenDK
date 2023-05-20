@@ -3,16 +3,19 @@
         <div class="modal-content">
             {!! Form::open(['id' => 'agree', 'method' => 'PUT']) !!}
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Ubah Status Komplain</h4>
             </div>
             <div class="modal-body">
                 <p>Silahkan pilih status di bawah ini?</p>
-                {{ Form::select('status', ['BELUM' => 'Setujui', 'DITOLAK' => 'Ditolak'], null, ['class' => 'form-control']) }}
+                {{ Form::select('status', ['SELESAI' => 'Setujui', 'DITOLAK' => 'Ditolak'], null, ['class' =>
+                'form-control']) }}
             </div>
             <div class="modal-footer">
-                    <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
-                    {!! Form::submit('Simpan', [ 'class' => 'btn btn-warning waves-effect waves-light' ]) !!}
+                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
+                    data-dismiss="modal">Batal</a>
+                {!! Form::submit('Simpan', [ 'class' => 'btn btn-warning waves-effect waves-light' ]) !!}
             </div>
             {!! Form::close() !!}
         </div>

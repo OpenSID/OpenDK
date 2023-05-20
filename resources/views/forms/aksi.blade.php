@@ -1,4 +1,10 @@
 <div class="btn-group" id="exampleToolbar" role="group">
+    {{-- ubah status --}}
+    @if( isset( $agree_url ) )
+        <a href="javascript:void(0)" class="{!! empty( $agree_url ) ? 'disabled' : '' !!}" title="Ubah Status" data-href="{!! empty( $agree_url ) ? 'javascript:void(0)' : $agree_url !!}" data-button="delete" id="agreeModal">
+            <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+        </a>
+    @endif
     @if( isset( $turun ) )
         <a href="{!! empty( $turun ) ? 'javascript:void(0)' : $turun !!}" class="{!! empty( $turun ) ? 'disabled' : '' !!}" title="Pindah Posisi ke Bawah" data-button="turun">
             <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
@@ -60,12 +66,7 @@
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-download"></i></button>
         </a>
     @endif
-    @if( isset( $agree_url ) )
-        <a href="javascript:void(0)" class="{!! empty( $agree_url ) ? 'disabled' : '' !!}" title="Setuju" data-href="{!! empty( $agree_url ) ? 'javascript:void(0)' : $agree_url !!}" data-button="delete" id="agreeModal">
-            <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-check" aria-hidden="true"></i>
-            </button>
-        </a>
-    @endif
+    
     @if( isset( $show_web ) )
         <a href="{!! empty( $edit_url ) ? 'javascript:void(0)' : $show_web !!}" class="{!! empty( $show_web ) ? 'disabled' : '' !!}" title="Detail" data-button="detail" target="_blank">
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye" aria-hidden="true"></i></button>

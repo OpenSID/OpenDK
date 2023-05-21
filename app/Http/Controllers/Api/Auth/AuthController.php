@@ -71,7 +71,7 @@ class AuthController extends Controller
         $user = User::where('email', '=', $request->email)->first();
 
         if (! $user->hasrole(['super-admin', 'admin-desa'])) {
-            return response()->json(['error' => 'User does not have the right roles'], 422);
+            return response()->json(['error' => 'Grup Pengguna Salah. Pastikan Grup Pengguna adalah admin-desa'], 422);
         }
 
         return $this->respondWithToken($token);

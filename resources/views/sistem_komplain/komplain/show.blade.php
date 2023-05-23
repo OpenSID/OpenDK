@@ -69,7 +69,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-md" src="{{ is_user($komplain->penduduk->foto, $komplain->penduduk->sex) }}" alt="user image">
+                                <img class="img-circle img-bordered-md" src="{{ $komplain->penduduk ? is_user($komplain->penduduk->foto, $komplain->penduduk->sex) : '' }}" alt="user image">
                                 <span class="username">
                                     <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                 </span>
@@ -100,16 +100,7 @@
                                         @if($komplain->status != 'SELESAI')
                                             <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                         @endif
-                                        <a href="{{ route('sistem-komplain.edit', $komplain->komplain_id) }}"
-                                            class="btn btn-sm btn-info"><i class="fa fa-edit margin-r-5"></i> Ubah</a>
-                                        {!! Form::open(['method' => 'DELETE','route' => ['sistem-komplain.destroy', $komplain->id],'style' => 'display:inline']) !!}
-
-                                        <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Yakin akan menghapus data tersebut?')"><i
-                                                    class="fa fa-trash margin-r-5"></i> Hapus
-                                        </button>
-
-                                        {!! Form::close() !!}
+                                        
                                         @else
                                             @if($komplain->status != 'SELESAI')
                                             <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Beri Komentar</a>

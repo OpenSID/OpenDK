@@ -66,7 +66,6 @@ class AdminKomplainController extends Controller
                 }
 
                 $data['show_url']   = route('admin-komplain.show', $row->id);
-                // $data['edit_url']   = route('admin-komplain.edit', $row->id);
                 $data['delete_url'] = route('admin-komplain.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -98,7 +97,6 @@ class AdminKomplainController extends Controller
 
     public function disetujui(Request $request, $id)
     {
-        // dd($request->all());
         request()->validate([
             'status' => 'required',
         ]);
@@ -293,8 +291,6 @@ class AdminKomplainController extends Controller
      */
     public function destroy($id)
     {
-        $is_login = auth()->check();
-        // dd($is_login);
         try {
             Komplain::findOrFail($id)->delete();
         } catch (\Exception $e) {

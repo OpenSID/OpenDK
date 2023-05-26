@@ -31,13 +31,11 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Models\Pesan;
-use Faker\Factory;
+use App\Models\Potensi;
+use App\Models\TipePotensi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 
-class DemoPesanDetailSeeder extends Seeder
+class DemoPotensiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -46,27 +44,30 @@ class DemoPesanDetailSeeder extends Seeder
      */
     public function run()
     {
-        $defaultCounter = 150;
-        if (env("truncate", 0) === "1") {
-            Schema::disableForeignKeyConstraints();
-            $this->command->info("truncating...");
-            DB::table('das_pesan_detail')->truncate();
-            Schema::enableForeignKeyConstraints();
-        }
+        $kategori = [
+            ['nama_kategori' => 'Kategori 1', 'slug' => 'kategori-1'],
+            ['nama_kategori' => 'Kategori 2', 'slug' => 'kategori-2'],
+        ];
 
-        $faker = Factory::create("id-ID");
-        $pesan = Pesan::skip(0)->take(20);
-        $pesan_id = $pesan->pluck('id');
+        TipePotensi::insert($kategori);
 
-        for ($i = 1; $i <= $defaultCounter; $i++) {
-            DB::table("das_pesan_detail")->insert([
-                'pesan_id' => $faker->randomElement($pesan_id),
-                'text' => $faker->text,
-                'pengirim' => 'desa',
-                'nama_pengirim' => $faker->name(),
-                'created_at' => $faker->dateTimeThisYear(),
-                'updated_at' => $faker->dateTimeThisYear(),
-            ]);
-        }
+        $potensi = [
+            [
+                'kategori_id' => 1,
+                'nama_potensi' => 'Potensi 1',
+                'deskripsi' => 'Deskripsi potensi 1',
+                'lokasi' => 'Lokasi potensi 1',
+                'file_gambar' => '/img/no-image.png',
+            ],
+            [
+                'kategori_id' => 1,
+                'nama_potensi' => 'Potensi 2',
+                'deskripsi' => 'Deskripsi potensi 2',
+                'lokasi' => 'Lokasi potensi 2',
+                'file_gambar' => '/img/no-image.png',
+            ],
+        ];
+
+        Potensi::insert($potensi);
     }
 }

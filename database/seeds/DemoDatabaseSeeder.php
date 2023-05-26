@@ -30,10 +30,12 @@
  */
 
 use Illuminate\Database\Seeder;
+use Database\Seeds\Demo\DemoPesanSeeder;
 use Database\Seeds\Demo\DemoAKIAKBSeeder;
 use Database\Seeds\Demo\DemoAPBDesaSeeder;
 use Database\Seeds\Demo\DemoArtikelSeeder;
 use Database\Seeds\Demo\DemoImunisasiSeeder;
+use Database\Seeds\Demo\DemoPesanDetailSeeder;
 use Database\Seeds\Demo\DemoPutusSekolahSeeder;
 use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
 use Database\Seeds\Demo\DemoDasProfilTableSeeder;
@@ -75,5 +77,7 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoToiletSanitasiSeeder::class);
         $this->call(DemoDasPengurusTableSeeder::class);
         $this->call(DemoArtikelSeeder::class);
+        $this->call(DemoPesanSeeder::class);
+        $this->call(DemoPesanDetailSeeder::class);
     }
 }

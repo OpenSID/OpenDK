@@ -63,7 +63,8 @@ class DemoPesanDetailSeeder extends Seeder
             DB::table("das_pesan_detail")->insert([
                 'pesan_id' => $faker->randomElement($pesan_id),
                 'text' => $faker->text,
-                'desa_id' => $faker->randomElement($desa_id),
+                'pengirim' => 'desa',
+                'nama_pengirim' => $faker->name(),
                 'created_at' => $faker->dateTimeThisYear(),
                 'updated_at' => $faker->dateTimeThisYear(),
             ]);

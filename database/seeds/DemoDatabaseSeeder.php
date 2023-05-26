@@ -29,21 +29,23 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use Illuminate\Database\Seeder;
 use Database\Seeds\Demo\DemoAKIAKBSeeder;
-use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
 use Database\Seeds\Demo\DemoAPBDesaSeeder;
+use Database\Seeds\Demo\DemoArtikelSeeder;
+use Database\Seeds\Demo\DemoImunisasiSeeder;
+use Database\Seeds\Demo\DemoPutusSekolahSeeder;
+use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
+use Database\Seeds\Demo\DemoDasProfilTableSeeder;
+use Database\Seeds\Demo\DemoProgramBantuanSeeder;
+use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
+use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
 use Database\Seeds\Demo\DemoDasDataDesaTableSeeder;
 use Database\Seeds\Demo\DemoDasDataUmumTableSeeder;
 use Database\Seeds\Demo\DemoDasPengurusTableSeeder;
-use Database\Seeds\Demo\DemoDasProfilTableSeeder;
-use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
-use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
-use Database\Seeds\Demo\DemoImunisasiSeeder;
 use Database\Seeds\Demo\DemoPendudukKeluargaSeeder;
-use Database\Seeds\Demo\DemoPutusSekolahSeeder;
+use Database\Seeds\Demo\DemoAnggaranRealisasiSeeder;
 use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
-use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
-use Illuminate\Database\Seeder;
 
 class DemoDatabaseSeeder extends Seeder
 {
@@ -67,9 +69,11 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoFasilitasPaudSeeder::class);
         $this->call(DemoImunisasiSeeder::class);
         $this->call(DemoPendudukKeluargaSeeder::class);
+        $this->call(DemoProgramBantuanSeeder::class);
         $this->call(DemoPutusSekolahSeeder::class);
         $this->call(DemoTingkatPendidikanSeeder::class);
         $this->call(DemoToiletSanitasiSeeder::class);
         $this->call(DemoDasPengurusTableSeeder::class);
+        $this->call(DemoArtikelSeeder::class);
     }
 }

@@ -29,11 +29,15 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Models\Artikel;
-use Faker\Factory;
-use Illuminate\Database\Seeder;
+namespace Database\Seeds\Demo;
 
-class ArtikelSeeder extends Seeder
+use ZipArchive;
+use Illuminate\Support\Str;
+use App\Imports\SinkronBantuan;
+use Illuminate\Database\Seeder;
+use App\Imports\SinkronPesertaBantuan;
+
+class DemoProgramBantuanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -42,19 +46,27 @@ class ArtikelSeeder extends Seeder
      */
     public function run()
     {
-        Artikel::truncate();
+        try {
+            $name = 'program_bantuan_31_05_2022_opendk.zip';
 
-        $faker = Factory::create("id-ID");
+            // Temporary path file
+            $path = storage_path("app/public/template_upload/{$name}");
+            $extract = storage_path('app/temp/bantuan/');
 
-        foreach (range(1, 50) as $index) {
-            Artikel::create([
-                'judul' => $faker->sentence(),
-                'gambar' => '/img/no-image.png',
-                'isi' => $faker->paragraph(),
-                'status' => 1, //$faker->randomElement([0, 1]),
-                'created_at' => $faker->dateTimeThisYear(),
-                'updated_at' => $faker->dateTimeThisYear(),
-            ]);
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
+            (new SinkronBantuan())
+                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
+            (new SinkronPesertaBantuan())
+                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
         }
     }
 }

@@ -35,6 +35,7 @@ use Database\Seeds\Demo\DemoAKIAKBSeeder;
 use Database\Seeds\Demo\DemoAPBDesaSeeder;
 use Database\Seeds\Demo\DemoArtikelSeeder;
 use Database\Seeds\Demo\DemoPotensiSeeder;
+use Database\Seeds\Demo\DemoProsedurSeeder;
 use Database\Seeds\Demo\DemoImunisasiSeeder;
 use Database\Seeds\Demo\DemoPesanDetailSeeder;
 use Database\Seeds\Demo\DemoPutusSekolahSeeder;
@@ -81,5 +82,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoPesanSeeder::class);
         $this->call(DemoPesanDetailSeeder::class);
         $this->call(DemoPotensiSeeder::class);
+        $this->call(DemoProsedurSeeder::class);
     }
 }

@@ -46,8 +46,6 @@ class DemoTingkatPendidikanSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_tingkat_pendidikan')->truncate();
-
         Excel::import(
             new ImporTingkatPendidikan([
                 'semester' => 1,

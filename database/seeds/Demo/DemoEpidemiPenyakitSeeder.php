@@ -46,8 +46,6 @@ class DemoEpidemiPenyakitSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_epidemi_penyakit')->truncate();
-
         Excel::import(
             new ImporEpidemiPenyakit([
                 'penyakit_id' => JenisPenyakit::first()->id,

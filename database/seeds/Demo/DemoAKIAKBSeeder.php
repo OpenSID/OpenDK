@@ -45,8 +45,6 @@ class DemoAKIAKBSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_akib')->truncate();
-
         Excel::import(
             new ImporAKIAKB([
                 'bulan'   => now()->month,

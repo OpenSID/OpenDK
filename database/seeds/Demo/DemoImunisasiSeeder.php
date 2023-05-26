@@ -45,8 +45,6 @@ class DemoImunisasiSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_imunisasi')->truncate();
-
         Excel::import(
             new ImporImunisasi([
                 'bulan' => now()->month,

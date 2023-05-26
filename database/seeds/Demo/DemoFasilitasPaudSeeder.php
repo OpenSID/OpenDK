@@ -46,8 +46,6 @@ class DemoFasilitasPaudSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_fasilitas_paud')->truncate();
-
         Excel::import(
             new ImporFasilitasPaud([
                 'semester' => 1,

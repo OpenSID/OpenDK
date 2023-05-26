@@ -46,8 +46,6 @@ class DemoPutusSekolahSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_putus_sekolah')->truncate();
-
         Excel::import(
             new ImporPutusSekolah([
                 'semester' => 1,

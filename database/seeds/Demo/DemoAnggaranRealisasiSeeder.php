@@ -45,8 +45,6 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_anggaran_realisasi')->truncate();
-
         Excel::import(
             new ImporAnggaranRealisasi([
                 'bulan' => now()->month,

@@ -47,9 +47,6 @@ class DemoPendudukKeluargaSeeder extends Seeder
     public function run()
     {
         try {
-            DB::table('das_penduduk')->truncate();
-            DB::table('das_keluarga')->truncate();
-
             $name = 'penduduk_22_12_2020_opendk.zip';
 
             // Temporary path file

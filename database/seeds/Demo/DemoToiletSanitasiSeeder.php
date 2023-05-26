@@ -45,8 +45,6 @@ class DemoToiletSanitasiSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_toilet_sanitasi')->truncate();
-
         Excel::import(
             new ImporToiletSanitasi([
                 'bulan' => now()->month,

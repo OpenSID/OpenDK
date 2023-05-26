@@ -33,7 +33,6 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporImunisasi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoImunisasiSeeder extends Seeder

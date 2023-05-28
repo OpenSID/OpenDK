@@ -47,6 +47,7 @@ use Database\Seeds\Demo\DemoPutusSekolahSeeder;
 use Database\Seeds\Demo\DemoFasilitasPaudSeeder;
 use Database\Seeds\Demo\DemoDasProfilTableSeeder;
 use Database\Seeds\Demo\DemoProgramBantuanSeeder;
+use Database\Seeds\Demo\DemoSinergiProgramSeeder;
 use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
 use Database\Seeds\Demo\DemoEpidemiPenyakitSeeder;
 use Database\Seeds\Demo\DemoDasDataDesaTableSeeder;
@@ -93,5 +94,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoEventSeeder::class);
         $this->call(DemoFaqSeeder::class);
         $this->call(DemoMediaSosialSeeder::class);
+        $this->call(DemoSinergiProgramSeeder::class);
     }
 }

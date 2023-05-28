@@ -32,10 +32,10 @@
 namespace Database\Seeds\Demo;
 
 use App\Enums\Status;
-use App\Models\MediaSosial;
+use App\Models\SinergiProgram;
 use Illuminate\Database\Seeder;
 
-class DemoMediaSosialSeeder extends Seeder
+class DemoSinergiProgramSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -46,13 +46,14 @@ class DemoMediaSosialSeeder extends Seeder
     {
         $data = [
             [
-                'logo' => '/img/fb.png',
-                'url' => 'https://www.facebook.com/groups/OpenDK/',
-                'nama' => 'Grup Facebook',
+                'gambar' => '/img/opendesa.png',
+                'url' => 'https://opendesa.id/',
+                'nama' => 'Open Desa',
                 'status' => Status::Aktif,
+                'urutan' => 1,
             ],
         ];
 
-        MediaSosial::insert($data);
+        SinergiProgram::insert($data);
     }
 }

@@ -98,7 +98,6 @@ class MediaSosialController extends Controller
      */
     public function store(MediaSosialRequest $request)
     {
-        dd($request->validated());
         try {
             $input = $request->validated();
             if ($request->hasFile('logo')) {

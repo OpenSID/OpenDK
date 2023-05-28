@@ -30,6 +30,7 @@
  */
 
 use Illuminate\Database\Seeder;
+use Database\Seeds\Demo\DemoFaqSeeder;
 use Database\Seeds\Demo\DemoEventSeeder;
 use Database\Seeds\Demo\DemoPesanSeeder;
 use Database\Seeds\Demo\DemoAKIAKBSeeder;
@@ -89,5 +90,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoRegulasiSeeder::class);
         $this->call(DemoDokumenSeeder::class);
         $this->call(DemoEventSeeder::class);
+        $this->call(DemoFaqSeeder::class);
     }
 }

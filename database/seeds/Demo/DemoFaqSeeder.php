@@ -33,7 +33,6 @@ namespace Database\Seeds\Demo;
 
 use App\Enums\Status;
 use App\Models\Faq;
-use App\Models\FormDokumen;
 use Illuminate\Database\Seeder;
 
 class DemoFaqSeeder extends Seeder

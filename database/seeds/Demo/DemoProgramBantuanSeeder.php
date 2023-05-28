@@ -31,11 +31,11 @@
 
 namespace Database\Seeds\Demo;
 
-use ZipArchive;
-use Illuminate\Support\Str;
 use App\Imports\SinkronBantuan;
-use Illuminate\Database\Seeder;
 use App\Imports\SinkronPesertaBantuan;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use ZipArchive;
 
 class DemoProgramBantuanSeeder extends Seeder
 {

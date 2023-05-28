@@ -31,10 +31,10 @@
 
 namespace Database\Seeds\Demo;
 
-use Faker\Factory;
 use App\Models\Event;
-use Illuminate\Support\Str;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DemoEventSeeder extends Seeder
 {

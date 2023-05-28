@@ -34,7 +34,6 @@ namespace Database\Seeds\Demo;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\JenisPenyakit;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoEpidemiPenyakitSeeder extends Seeder

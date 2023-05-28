@@ -33,7 +33,6 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporAnggaranRealisasi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoAnggaranRealisasiSeeder extends Seeder

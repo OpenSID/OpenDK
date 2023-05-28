@@ -31,11 +31,12 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Models\Artikel;
 use Faker\Factory;
+use App\Models\Event;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
-class DemoArtikelSeeder extends Seeder
+class DemoEventSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,18 +45,19 @@ class DemoArtikelSeeder extends Seeder
      */
     public function run()
     {
-        Artikel::truncate();
-
         $faker = Factory::create("id-ID");
 
-        foreach (range(1, 20) as $index) {
-            Artikel::create([
-                'judul' => $faker->sentence(),
-                'gambar' => '/img/no-image.png',
-                'isi' => $faker->paragraph(),
-                'status' => 1, //$faker->randomElement([0, 1]),
-                'created_at' => $faker->dateTimeThisYear(),
-                'updated_at' => $faker->dateTimeThisYear(),
+        foreach (range(1, 10) as $index) {
+            $title = $faker->name();
+            $slug = Str::slug($title);
+            Event::create([
+                'event_name' => $title,
+                'slug' => $slug,
+                'start' => $faker->dateTime()->format('Y-m-d H:i:s'),
+                'end' => $faker->dateTime()->format('Y-m-d H:i:s'),
+                'attendants' => 'Camat',
+                'description' => "<p>" . $faker->name() . "</p>",
+                'status' => 'OPEN',
             ]);
         }
     }

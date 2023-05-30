@@ -35,17 +35,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
-
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Auth::routes([
         'register' => false,
     ]);
-    
+
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
-    
+
     /**
      * Group Routing for Halaman Website
      */

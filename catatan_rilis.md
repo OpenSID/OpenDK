@@ -11,6 +11,7 @@ Terima kasih pada syahransyaputra yang terus berkontribusi.
 3. [#5](https://github.com/OpenSID/wiki-keamanan/issues/5) Perbaikan audit keamanan form media sosial.
 4. [#6](https://github.com/OpenSID/wiki-keamanan/issues/6) Perbaikan audit keamanan form sinergi program.
 5. [#2](https://github.com/OpenSID/wiki-keamanan/issues/2) Perbaikan audit keamanan form pengguna.
+6. [#695](https://github.com/OpenSID/OpenDK/issues/695) Perbaikan urutan event.
 
 #### Teknis
 

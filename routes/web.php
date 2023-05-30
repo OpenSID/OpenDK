@@ -35,12 +35,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
+
 // Redirect if apps not installed
 Route::group(['middleware' => 'installed'], function () {
     Auth::routes([
         'register' => false,
     ]);
-
+    
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+    
     /**
      * Group Routing for Halaman Website
      */
@@ -228,7 +233,6 @@ Route::group(['middleware' => 'installed'], function () {
 
                 // Artikel
                 Route::group(['prefix' => 'artikel'], function () {
-                    '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()';
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
                     Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArtikelController@create']);
                     Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArtikelController@store']);

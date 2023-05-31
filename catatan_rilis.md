@@ -1,8 +1,6 @@
-#### [v2305.0.0]
+#### [v2306.0.0]
 
 Di rilis v2305.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
-
-Terima kasih pada syahransyaputra yang terus berkontribusi.
 
 #### Perbaikan
 
@@ -12,7 +10,3 @@ Terima kasih pada syahransyaputra yang terus berkontribusi.
 4. [#6](https://github.com/OpenSID/wiki-keamanan/issues/6) Perbaikan audit keamanan form sinergi program.
 5. [#2](https://github.com/OpenSID/wiki-keamanan/issues/2) Perbaikan audit keamanan form pengguna.
 6. [#695](https://github.com/OpenSID/OpenDK/issues/695) Perbaikan urutan event.
-
-#### Teknis
-
-1. [#673](https://github.com/OpenSID/OpenDK/issues/673) Penyesuaian middleware laravel-filemanager agar hanya dapat diakses oleh admin.

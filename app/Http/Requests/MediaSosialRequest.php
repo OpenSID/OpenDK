@@ -33,7 +33,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserUpdateRequest extends FormRequest
+class MediaSosialRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -52,16 +52,11 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
-        } else {
-            $id = "";
-        }
         return [
-            'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'      => 'required|email|unique:users,email' . $id,
-            'phone'      => 'nullable|numeric|digits_between:10,13',
-            'address'    => 'required',
+            'nama'   => 'required',
+            'url'    => 'required',
+            'logo'   => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'status' => 'required',
         ];
     }
 }

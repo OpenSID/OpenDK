@@ -31,11 +31,11 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Models\Potensi;
+use App\Models\TipePotensi;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoPotensiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +44,30 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        $kategori = [
+            ['nama_kategori' => 'Kategori 1', 'slug' => 'kategori-1'],
+            ['nama_kategori' => 'Kategori 2', 'slug' => 'kategori-2'],
+        ];
+
+        TipePotensi::insert($kategori);
+
+        $potensi = [
+            [
+                'kategori_id' => 1,
+                'nama_potensi' => 'Potensi 1',
+                'deskripsi' => 'Deskripsi potensi 1',
+                'lokasi' => 'Lokasi potensi 1',
+                'file_gambar' => '/img/no-image.png',
+            ],
+            [
+                'kategori_id' => 1,
+                'nama_potensi' => 'Potensi 2',
+                'deskripsi' => 'Deskripsi potensi 2',
+                'lokasi' => 'Lokasi potensi 2',
+                'file_gambar' => '/img/no-image.png',
+            ],
+        ];
+
+        Potensi::insert($potensi);
     }
 }

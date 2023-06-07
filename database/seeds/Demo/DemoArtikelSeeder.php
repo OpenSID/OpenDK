@@ -31,11 +31,11 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Models\Artikel;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoArtikelSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +44,19 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        Artikel::truncate();
+
+        $faker = Factory::create("id-ID");
+
+        foreach (range(1, 20) as $index) {
+            Artikel::create([
+                'judul' => $faker->sentence(),
+                'gambar' => '/img/no-image.png',
+                'isi' => $faker->paragraph(),
+                'status' => 1, //$faker->randomElement([0, 1]),
+                'created_at' => $faker->dateTimeThisYear(),
+                'updated_at' => $faker->dateTimeThisYear(),
+            ]);
+        }
     }
 }

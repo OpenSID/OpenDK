@@ -34,7 +34,6 @@ namespace Database\Seeds\Demo;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoFasilitasPaudSeeder extends Seeder
@@ -46,8 +45,6 @@ class DemoFasilitasPaudSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_fasilitas_paud')->truncate();
-
         Excel::import(
             new ImporFasilitasPaud([
                 'semester' => 1,

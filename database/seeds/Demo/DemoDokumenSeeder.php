@@ -31,11 +31,10 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Models\FormDokumen;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoDokumenSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +43,13 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        $data = [
+            [
+                'nama_dokumen' => 'Panduan OpenDK',
+                'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+            ],
+        ];
+
+        FormDokumen::insert($data);
     }
 }

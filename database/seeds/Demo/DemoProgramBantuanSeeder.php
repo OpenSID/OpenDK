@@ -31,11 +31,13 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Imports\SinkronBantuan;
+use App\Imports\SinkronPesertaBantuan;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
+use ZipArchive;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoProgramBantuanSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +46,27 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        try {
+            $name = 'program_bantuan_31_05_2022_opendk.zip';
+
+            // Temporary path file
+            $path = storage_path("app/public/template_upload/{$name}");
+            $extract = storage_path('app/temp/bantuan/');
+
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
+            (new SinkronBantuan())
+                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
+            (new SinkronPesertaBantuan())
+                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
+        }
     }
 }

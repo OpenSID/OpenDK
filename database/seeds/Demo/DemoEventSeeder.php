@@ -31,11 +31,12 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Models\Event;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoEventSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +45,20 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        $faker = Factory::create("id-ID");
+
+        foreach (range(1, 10) as $index) {
+            $title = $faker->name();
+            $slug = Str::slug($title);
+            Event::create([
+                'event_name' => $title,
+                'slug' => $slug,
+                'start' => $faker->dateTime()->format('Y-m-d H:i:s'),
+                'end' => $faker->dateTime()->format('Y-m-d H:i:s'),
+                'attendants' => 'Camat',
+                'description' => "<p>" . $faker->name() . "</p>",
+                'status' => 'OPEN',
+            ]);
+        }
     }
 }

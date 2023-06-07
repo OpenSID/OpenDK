@@ -31,11 +31,10 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Models\Prosedur;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoProsedurSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +43,21 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        $data = [
+            [
+                'judul_prosedur' => 'Prosedur 1',
+                'slug' => 'prosedur-1',
+                'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type' => 'pdf',
+            ],
+            [
+                'judul_prosedur' => 'Prosedur 2',
+                'slug' => 'prosedur-2',
+                'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type' => 'pdf',
+            ],
+        ];
+
+        Prosedur::insert($data);
     }
 }

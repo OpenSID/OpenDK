@@ -31,11 +31,11 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Enums\Status;
+use App\Models\Faq;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoFaqSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +44,14 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        $data = [
+            [
+                'question' => 'Apa itu OpenDK?',
+                'answer' => '<p>OpenDK [Dashboard Kecamatan Terbuka] adalah aplikasi yang bisa digunakan oleh Pemerintah Kecamatan di Seluruh Indonesia. Aplikasi ini sangat berguna untuk menampilkan statistik di wilayah Kecamatan, diantaranya adalah statistik Penduduk, statistik Kesehatan, Statistik Pendidikan dan Statistik lainnya. Upaya ini adalah sebagai bentuk transparansi dan Keterbukaan Informasi Publik yang dilakukan Pemerintah Kecamatan kepada seluruh rakyat di wilayahnya.</p>',
+                'status' => Status::Aktif,
+            ],
+        ];
+
+        Faq::insert($data);
     }
 }

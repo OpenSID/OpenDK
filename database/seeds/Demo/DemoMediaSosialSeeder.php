@@ -31,11 +31,11 @@
 
 namespace Database\Seeds\Demo;
 
-use App\Imports\ImporAnggaranRealisasi;
+use App\Enums\Status;
+use App\Models\MediaSosial;
 use Illuminate\Database\Seeder;
-use Maatwebsite\Excel\Facades\Excel;
 
-class DemoAnggaranRealisasiSeeder extends Seeder
+class DemoMediaSosialSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -44,13 +44,15 @@ class DemoAnggaranRealisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAnggaranRealisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Anggaran_Realisasi.xlsx',
-            'public'
-        );
+        $data = [
+            [
+                'logo' => '/img/fb.png',
+                'url' => 'https://www.facebook.com/groups/OpenDK/',
+                'nama' => 'Grup Facebook',
+                'status' => Status::Aktif,
+            ],
+        ];
+
+        MediaSosial::insert($data);
     }
 }

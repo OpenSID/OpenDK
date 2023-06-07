@@ -61,6 +61,7 @@
                 <em class="fa fa-times"></em>
             </a>
             <form method="get" action="{{ url('/') }}" role="search">
+                @csrf
                 <input class="form-control" placeholder="Mulai Pencarian" name="cari" id="searchbox" type="text" />
             </form>
         </div>

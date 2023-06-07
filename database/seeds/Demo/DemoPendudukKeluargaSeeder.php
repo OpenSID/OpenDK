@@ -33,7 +33,6 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporPendudukKeluarga;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use ZipArchive;
 
@@ -47,9 +46,6 @@ class DemoPendudukKeluargaSeeder extends Seeder
     public function run()
     {
         try {
-            DB::table('das_penduduk')->truncate();
-            DB::table('das_keluarga')->truncate();
-
             $name = 'penduduk_22_12_2020_opendk.zip';
 
             // Temporary path file

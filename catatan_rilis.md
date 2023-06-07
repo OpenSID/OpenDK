@@ -4,6 +4,6 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan
 
-1. [#4](https://github.com/OpenSID/wiki-keamanan/issues/4) Perbaikan audit keamanan form profil.
+1. [#692](https://github.com/OpenSID/OpenDK/issues/692) Perbaikan gagal impor penduduk ketika menjalankan install:dev.
 
 #### Teknis

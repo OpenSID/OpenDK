@@ -31,14 +31,13 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Menu extends Model
 {
-    use Sluggable;
-
     /**
      * {@inheritDoc}
      */
@@ -59,18 +58,9 @@ class Menu extends Model
         return static::select('name', 'slug', 'parent_id', 'id')->get();
     }
 
-    /**
-     * slug for menu name
-     *
-     * @return     array
-     */
-    public function sluggable()
+    public function setSlugAttribute()
     {
-        return [
-            'slug' => [
-                'source' => 'name',
-            ],
-        ];
+        return $this->attributes['slug'] = Str::slug($this->attributes['name']);
     }
 
     /**

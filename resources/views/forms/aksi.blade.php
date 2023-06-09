@@ -61,7 +61,7 @@
         </a>
     @endif
     @if( isset( $agree_url ) )
-        <a href="javascript:void(0)" class="{!! empty( $agree_url ) ? 'disabled' : '' !!}" title="Setuju" data-href="{!! empty( $agree_url ) ? 'javascript:void(0)' : $agree_url !!}" data-button="delete" id="agreeModal">
+        <a href="javascript:void(0)" class="{!! empty( $agree_url ) ? 'disabled' : '' !!}" title="Ubah Status" data-href="{!! empty( $agree_url ) ? 'javascript:void(0)' : $agree_url !!}" data-button="delete" id="agreeModal">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-check" aria-hidden="true"></i>
             </button>
         </a>

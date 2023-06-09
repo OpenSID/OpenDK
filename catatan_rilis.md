@@ -5,6 +5,7 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 #### Perbaikan
 
 1. [#692](https://github.com/OpenSID/OpenDK/issues/692) Perbaikan gagal impor penduduk ketika menjalankan install:dev.
+2. [#503](https://github.com/OpenSID/OpenDK/issues/503) Perbaikan fitur keluhan web dan admin.
 
 #### Teknis
 

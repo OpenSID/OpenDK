@@ -134,7 +134,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(UserUpdateRequest $request, $id)
+    public function update(UserRequest $request, $id)
     {
         try {
             $user = User::findOrFail($id);

@@ -29,33 +29,34 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Artikel;
+use Faker\Factory;
+use Illuminate\Database\Seeder;
 
-class SlideRequest extends FormRequest
+class DemoArtikelSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
+        Artikel::truncate();
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
-        ];
+        $faker = Factory::create("id-ID");
+
+        foreach (range(1, 20) as $index) {
+            Artikel::create([
+                'judul' => $faker->sentence(),
+                'gambar' => '/img/no-image.png',
+                'isi' => $faker->paragraph(),
+                'status' => 1, //$faker->randomElement([0, 1]),
+                'created_at' => $faker->dateTimeThisYear(),
+                'updated_at' => $faker->dateTimeThisYear(),
+            ]);
+        }
     }
 }

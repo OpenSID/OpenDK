@@ -29,33 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\Status;
+use App\Models\Faq;
+use Illuminate\Database\Seeder;
 
-class SlideRequest extends FormRequest
+class DemoFaqSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+        $data = [
+            [
+                'question' => 'Apa itu OpenDK?',
+                'answer' => '<p>OpenDK [Dashboard Kecamatan Terbuka] adalah aplikasi yang bisa digunakan oleh Pemerintah Kecamatan di Seluruh Indonesia. Aplikasi ini sangat berguna untuk menampilkan statistik di wilayah Kecamatan, diantaranya adalah statistik Penduduk, statistik Kesehatan, Statistik Pendidikan dan Statistik lainnya. Upaya ini adalah sebagai bentuk transparansi dan Keterbukaan Informasi Publik yang dilakukan Pemerintah Kecamatan kepada seluruh rakyat di wilayahnya.</p>',
+                'status' => Status::Aktif,
+            ],
         ];
+
+        Faq::insert($data);
     }
 }

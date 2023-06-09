@@ -30,4 +30,11 @@
         <img src="http://placehold.it/1000x600" id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
     </div>
 </div>
+
 <div class="ln_solid"></div>
+
+@include('partials.asset_jqueryvalidation')
+
+@push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\PotensiRequest', '#form-potensi') !!}
+@endpush

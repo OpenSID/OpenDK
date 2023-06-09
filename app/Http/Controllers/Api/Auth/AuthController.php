@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -62,9 +63,16 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only(['email', 'password']);
+        $credentials['status'] = true;
 
         if (! $token = Auth::guard('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Pengguna tidak dikenali'], 401);
+        }
+
+        $user = User::where('email', '=', $request->email)->first();
+
+        if (! $user->hasrole(['super-admin', 'admin-desa'])) {
+            return response()->json(['message' => 'Grup pengguna bukan admin-desa'], 422);
         }
 
         return $this->respondWithToken($token);

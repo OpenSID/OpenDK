@@ -29,33 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Prosedur;
+use Illuminate\Database\Seeder;
 
-class SlideRequest extends FormRequest
+class DemoProsedurSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+        $data = [
+            [
+                'judul_prosedur' => 'Prosedur 1',
+                'slug' => 'prosedur-1',
+                'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type' => 'pdf',
+            ],
+            [
+                'judul_prosedur' => 'Prosedur 2',
+                'slug' => 'prosedur-2',
+                'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type' => 'pdf',
+            ],
         ];
+
+        Prosedur::insert($data);
     }
 }

@@ -33,7 +33,6 @@ namespace Database\Seeds\Demo;
 
 use App\Imports\ImporToiletSanitasi;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoToiletSanitasiSeeder extends Seeder
@@ -45,8 +44,6 @@ class DemoToiletSanitasiSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_toilet_sanitasi')->truncate();
-
         Excel::import(
             new ImporToiletSanitasi([
                 'bulan' => now()->month,

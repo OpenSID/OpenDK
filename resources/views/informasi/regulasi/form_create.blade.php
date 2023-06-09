@@ -38,7 +38,11 @@
 
 <div class="ln_solid"></div>
 
+@include('partials.asset_jqueryvalidation')
+
 @push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\RegulasiRequest', '#form-regulasi') !!}
+
 <script>
     $(function () {
 

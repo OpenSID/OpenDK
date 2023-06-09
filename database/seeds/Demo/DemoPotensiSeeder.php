@@ -29,33 +29,45 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Potensi;
+use App\Models\TipePotensi;
+use Illuminate\Database\Seeder;
 
-class SlideRequest extends FormRequest
+class DemoPotensiSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+        $kategori = [
+            ['nama_kategori' => 'Kategori 1', 'slug' => 'kategori-1'],
+            ['nama_kategori' => 'Kategori 2', 'slug' => 'kategori-2'],
         ];
+
+        TipePotensi::insert($kategori);
+
+        $potensi = [
+            [
+                'kategori_id' => 1,
+                'nama_potensi' => 'Potensi 1',
+                'deskripsi' => 'Deskripsi potensi 1',
+                'lokasi' => 'Lokasi potensi 1',
+                'file_gambar' => '/img/no-image.png',
+            ],
+            [
+                'kategori_id' => 1,
+                'nama_potensi' => 'Potensi 2',
+                'deskripsi' => 'Deskripsi potensi 2',
+                'lokasi' => 'Lokasi potensi 2',
+                'file_gambar' => '/img/no-image.png',
+            ],
+        ];
+
+        Potensi::insert($potensi);
     }
 }

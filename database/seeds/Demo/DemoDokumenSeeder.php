@@ -29,33 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\FormDokumen;
+use Illuminate\Database\Seeder;
 
-class SlideRequest extends FormRequest
+class DemoDokumenSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+        $data = [
+            [
+                'nama_dokumen' => 'Panduan OpenDK',
+                'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+            ],
         ];
+
+        FormDokumen::insert($data);
     }
 }

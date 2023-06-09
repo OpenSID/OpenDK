@@ -29,33 +29,30 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\Status;
+use App\Models\MediaSosial;
+use Illuminate\Database\Seeder;
 
-class SlideRequest extends FormRequest
+class DemoMediaSosialSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+        $data = [
+            [
+                'logo' => '/img/fb.png',
+                'url' => 'https://www.facebook.com/groups/OpenDK/',
+                'nama' => 'Grup Facebook',
+                'status' => Status::Aktif,
+            ],
         ];
+
+        MediaSosial::insert($data);
     }
 }

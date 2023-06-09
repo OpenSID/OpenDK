@@ -29,39 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\Status;
+use App\Models\SinergiProgram;
+use Illuminate\Database\Seeder;
 
-class UserUpdateRequest extends FormRequest
+class DemoSinergiProgramSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
-        } else {
-            $id = "";
-        }
-        return [
-            'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'      => 'required|email|unique:users,email' . $id,
-            'phone'      => 'nullable|numeric|digits_between:10,13',
-            'address'    => 'required',
+        $data = [
+            [
+                'gambar' => '/img/opendesa.png',
+                'url' => 'https://opendesa.id/',
+                'nama' => 'Open Desa',
+                'status' => Status::Aktif,
+                'urutan' => 1,
+            ],
         ];
+
+        SinergiProgram::insert($data);
     }
 }

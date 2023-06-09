@@ -29,33 +29,44 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace Database\Seeds\Demo;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Imports\SinkronBantuan;
+use App\Imports\SinkronPesertaBantuan;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
+use ZipArchive;
 
-class SlideRequest extends FormRequest
+class DemoProgramBantuanSeeder extends Seeder
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the database seeds.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function run()
     {
-        return true;
-    }
+        try {
+            $name = 'program_bantuan_31_05_2022_opendk.zip';
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            'judul'     => 'required',
-            'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
-        ];
+            // Temporary path file
+            $path = storage_path("app/public/template_upload/{$name}");
+            $extract = storage_path('app/temp/bantuan/');
+
+            // Ekstrak file
+            $zip = new ZipArchive();
+            $zip->open($path);
+            $zip->extractTo($extract);
+            $zip->close();
+
+            // Proses impor excell
+            (new SinkronBantuan())
+                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
+            (new SinkronPesertaBantuan())
+                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+        } catch (\Exception $e) {
+            report($e);
+            return back()->with('error', 'Import data gagal.');
+        }
     }
 }

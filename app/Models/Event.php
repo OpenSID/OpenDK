@@ -72,7 +72,7 @@ class Event extends Model
 
     public static function getOpenEvents()
     {
-        return self::get()->groupBy(function ($item) {
+        return self::orderBy('start', 'desc')->get()->groupBy(function ($item) {
             return Carbon::parse($item->start)->format('d-M-y');
         });
     }

@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MediaSosialRequest;
 use App\Models\MediaSosial;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -95,10 +96,10 @@ class MediaSosialController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(MediaSosialRequest $request)
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
             if ($request->hasFile('logo')) {
                 $file     = $request->file('logo');
                 $original_name = strtolower(trim($file->getClientOriginalName()));
@@ -139,17 +140,12 @@ class MediaSosialController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(MediaSosialRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-            'url'  => 'required',
-        ]);
-
         $medsos = MediaSosial::findOrFail($id);
 
         try {
-            $input = $request->all();
+            $input = $request->validated();
 
             if ($request->hasFile('logo')) {
                 $file           = $request->file('logo');

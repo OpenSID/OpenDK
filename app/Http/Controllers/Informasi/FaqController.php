@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\FaqRequest;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Http\Requests\FaqRequest;
-use App\Http\Controllers\Controller;
 
 class FaqController extends Controller
 {

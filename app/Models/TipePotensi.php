@@ -32,15 +32,32 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class TipePotensi extends Model
 {
+    use Sluggable;
+
     protected $table    = 'das_tipe_potensi';
 
     protected $fillable = [
         'nama_kategori',
         'slug',
     ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'nama_kategori',
+            ],
+        ];
+    }
 
     public function potensi()
     {

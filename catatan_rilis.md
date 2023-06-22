@@ -14,3 +14,5 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 3. [#8](https://github.com/OpenSID/wiki-keamanan/issues/8) Keamanan OpenDK: upgrade versi filemanager.
 4. [#705](https://github.com/OpenSID/OpenDK/issues/705) Penyesuaian validasi input pada modul potensi.
 5. [#704](https://github.com/OpenSID/OpenDK/issues/704) Penyesuaian validasi input pada modul regulasi.
+6. [#706](https://github.com/OpenSID/OpenDK/issues/706) Penambahan validasi client-side pada form event agar lebih memudahkan pengguna.
+7. [#707](https://github.com/OpenSID/OpenDK/issues/707) Penambahan validasi client-side pada form FAQ agar lebih memudahkan pengguna

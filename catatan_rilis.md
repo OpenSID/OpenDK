@@ -16,3 +16,4 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 5. [#704](https://github.com/OpenSID/OpenDK/issues/704) Penyesuaian validasi input pada modul regulasi.
 6. [#706](https://github.com/OpenSID/OpenDK/issues/706) Penambahan validasi client-side pada form event agar lebih memudahkan pengguna.
 7. [#707](https://github.com/OpenSID/OpenDK/issues/707) Penambahan validasi client-side pada form FAQ agar lebih memudahkan pengguna
+8. [#709](https://github.com/OpenSID/OpenDK/issues/709) Penyesuaian slug tidak berubah ketika di edit pada kategori potensi untuk menghindari bug ketika sudah dibagikan.

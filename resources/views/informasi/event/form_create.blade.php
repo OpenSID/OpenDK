@@ -31,7 +31,10 @@
 </div>
 <div class="ln_solid"></div>
 
+@include('partials.asset_jqueryvalidation')
+
 @push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
 <script type="application/javascript">
     $('#status').on('change', function() {
         if( this.value == 'CLOSED' ) {

@@ -53,11 +53,12 @@ class EventRequest extends FormRequest
     public function rules()
     {
         return [
-            'event_name' => 'required',
-            'start'      => 'required',
-            'end'        => 'required',
-            'attendants' => 'required',
-            'attachment' => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
+            'event_name'  => 'required|string|max:150',
+            'start'       => 'required',
+            'end'         => 'required',
+            'attendants'  => 'required|string|max:250',
+            'description' => 'required',
+            'attachment'  => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',
         ];
     }
 }

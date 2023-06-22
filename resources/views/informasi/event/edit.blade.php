@@ -18,21 +18,9 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-
-                    </div>
-
-                    @endif
-
                     <!-- form start -->
                     {!!  Form::model($event, [ 'route' => ['informasi.event.update', $event->id], 'method' => 'post','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
+                    @include('layouts.fragments.error_message')
 
                     <div class="box-body">
                         @include( 'flash::message' )

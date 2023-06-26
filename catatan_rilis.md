@@ -7,6 +7,7 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 1. [#692](https://github.com/OpenSID/OpenDK/issues/692) Perbaikan gagal impor penduduk ketika menjalankan install:dev.
 2. [#503](https://github.com/OpenSID/OpenDK/issues/503) Perbaikan fitur keluhan web dan admin.
 
+
 #### Teknis
 
 1. [#681](https://github.com/OpenSID/OpenDK/issues/681) Penyesuaian data yang belum lengkap untuk kebutuhan demo.
@@ -17,3 +18,4 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 6. [#706](https://github.com/OpenSID/OpenDK/issues/706) Penambahan validasi client-side pada form event agar lebih memudahkan pengguna.
 7. [#707](https://github.com/OpenSID/OpenDK/issues/707) Penambahan validasi client-side pada form FAQ agar lebih memudahkan pengguna
 8. [#709](https://github.com/OpenSID/OpenDK/issues/709) Penyesuaian slug tidak berubah ketika di edit pada kategori potensi untuk menghindari bug ketika sudah dibagikan.
+9. [#10](https://github.com/OpenSID/wiki-keamanan/issues/10) Pembatasan akses file .php pada folder public.

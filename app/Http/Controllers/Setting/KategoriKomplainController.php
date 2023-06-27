@@ -77,7 +77,6 @@ class KategoriKomplainController extends Controller
 
         try {
             $kategori       = new KategoriKomplain($request->all());
-            $kategori->slug = str_slug($kategori->nama);
             $kategori->save();
         } catch (\Exception $e) {
             report($e);

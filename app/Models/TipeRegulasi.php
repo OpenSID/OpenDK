@@ -31,13 +31,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
 
 class TipeRegulasi extends Model
 {
     use Sluggable;
-    
+
     protected $table = 'das_tipe_regulasi';
 
     protected $fillable = ['nama'];

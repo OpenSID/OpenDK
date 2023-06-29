@@ -29,7 +29,7 @@
             @foreach($potensis as $potensi)
             <div class="row overflow-x">
                 <div class="col-md-3">
-                    <img src="{{ asset($potensi->file_gambar) }}" width="100%">
+                    <img src="{{ is_img($potensi->file_gambar ?? null) }}" width="100%">
                 </div>
                 <div class="col-md-8">
                     <h3>{{ $potensi->nama_potensi }}</h3>

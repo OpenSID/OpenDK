@@ -9,6 +9,7 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 3. [#714](https://github.com/OpenSID/OpenDK/issues/714) Perbaikan gambar image not found tidak muncul ketika tidak ada gambar pada modul potensi.
 4. [#708](https://github.com/OpenSID/OpenDK/issues/708) Perbaikan validasi client-side pada form dokumen.
 5. [#710](https://github.com/OpenSID/OpenDK/issues/710) Perbaikan slug tidak berubah ketika di edit pada kategori komplain.
+6. [#711](https://github.com/OpenSID/OpenDK/issues/711) Perbaikan slug tidak berubah ketika di edit pada tipe regulasi.
 
 #### Teknis
 

@@ -32,7 +32,7 @@
                     @endif
 
                     <!-- form start -->
-                    {!!  Form::model($dokumen, [ 'route' => ['informasi.form-dokumen.update', $dokumen->id], 'method' => 'put','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
+                    {!!  Form::model($dokumen, [ 'route' => ['informasi.form-dokumen.update', $dokumen->id], 'method' => 'put','id' => 'form-dokumen', 'class' => 'form-horizontal form-label-left', 'files'=>true ] ) !!}
 
                     <div class="box-body">
 

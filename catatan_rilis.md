@@ -6,7 +6,9 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 
 1. [#692](https://github.com/OpenSID/OpenDK/issues/692) Perbaikan gagal impor penduduk ketika menjalankan install:dev.
 2. [#503](https://github.com/OpenSID/OpenDK/issues/503) Perbaikan fitur keluhan web dan admin.
-
+3. [#714](https://github.com/OpenSID/OpenDK/issues/714) Perbaikan gambar image not found tidak muncul ketika tidak ada gambar pada modul potensi.
+4. [#708](https://github.com/OpenSID/OpenDK/issues/708) Perbaikan validasi client-side pada form dokumen.
+5. [#710](https://github.com/OpenSID/OpenDK/issues/710) Perbaikan slug tidak berubah ketika di edit pada kategori komplain.
 
 #### Teknis
 

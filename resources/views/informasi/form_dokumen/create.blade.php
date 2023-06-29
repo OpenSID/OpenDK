@@ -20,7 +20,7 @@
 
                 <div class="box-body">
                     <!-- form start -->
-                    {!! Form::open( [ 'route' => 'informasi.form-dokumen.store', 'method' => 'post', 'files' => true, 'id' => 'form-prosedur', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                    {!! Form::open( [ 'route' => 'informasi.form-dokumen.store', 'method' => 'post', 'files' => true, 'id' => 'form-dokumen', 'class' => 'form-horizontal form-label-left' ] ) !!}
 
                     @if (count($errors) > 0)
 

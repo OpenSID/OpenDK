@@ -1,15 +1,12 @@
-#### [v2306.0.0]
+#### [v2307.0.0]
 
-Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v2307.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan
 
 1. [#692](https://github.com/OpenSID/OpenDK/issues/692) Perbaikan gagal impor penduduk ketika menjalankan install:dev.
 2. [#503](https://github.com/OpenSID/OpenDK/issues/503) Perbaikan fitur keluhan web dan admin.
 3. [#714](https://github.com/OpenSID/OpenDK/issues/714) Perbaikan gambar image not found tidak muncul ketika tidak ada gambar pada modul potensi.
-4. [#708](https://github.com/OpenSID/OpenDK/issues/708) Perbaikan validasi client-side pada form dokumen.
-5. [#710](https://github.com/OpenSID/OpenDK/issues/710) Perbaikan slug tidak berubah ketika di edit pada kategori komplain.
-6. [#711](https://github.com/OpenSID/OpenDK/issues/711) Perbaikan slug tidak berubah ketika di edit pada tipe regulasi.
 
 #### Teknis
 
@@ -21,4 +18,7 @@ Di rilis v2306.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 6. [#706](https://github.com/OpenSID/OpenDK/issues/706) Penambahan validasi client-side pada form event agar lebih memudahkan pengguna.
 7. [#707](https://github.com/OpenSID/OpenDK/issues/707) Penambahan validasi client-side pada form FAQ agar lebih memudahkan pengguna
 8. [#709](https://github.com/OpenSID/OpenDK/issues/709) Penyesuaian slug tidak berubah ketika di edit pada kategori potensi untuk menghindari bug ketika sudah dibagikan.
-9. [#10](https://github.com/OpenSID/wiki-keamanan/issues/10) Pembatasan akses file .php pada folder public.
+9. [#710](https://github.com/OpenSID/OpenDK/issues/710) Perbaikan slug tidak berubah ketika di edit pada kategori komplain.
+10. [#711](https://github.com/OpenSID/OpenDK/issues/711) Perbaikan slug tidak berubah ketika di edit pada tipe regulasi.
+11. [#708](https://github.com/OpenSID/OpenDK/issues/708) Penambahan validasi client-side pada form dokumen agar lebih memudahkan pengguna.
+12. [#10](https://github.com/OpenSID/wiki-keamanan/issues/10) Pembatasan akses file .php pada folder public.

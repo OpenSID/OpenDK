@@ -120,7 +120,10 @@ class PotensiController extends Controller
                 $fileName = $lampiran->getClientOriginalName();
                 $path     = "storage/potensi_kecamatan/";
                 $lampiran->move($path, $fileName);
-                unlink(base_path('public/' . $potensi->file_gambar));
+
+                if ($potensi->file_gambar && file_exists(base_path('public/' . $potensi->file_gambar))) {
+                    unlink(base_path('public/' . $potensi->file_gambar));
+                }
 
                 $input['file_gambar'] = $path . $fileName;
             }

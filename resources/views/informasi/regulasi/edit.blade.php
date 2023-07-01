@@ -32,7 +32,7 @@
                     @endif
 
                     <!-- form start -->
-                    {!!  Form::model($regulasi, [ 'route' => ['informasi.regulasi.update', $regulasi->id], 'method' => 'put','id' => 'form-visimisi', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
+                    {!!  Form::model($regulasi, [ 'route' => ['informasi.regulasi.update', $regulasi->id], 'method' => 'put','id' => 'form-regulasi', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
 
                     <div class="box-body">
 

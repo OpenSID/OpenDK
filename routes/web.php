@@ -41,6 +41,10 @@ Route::group(['middleware' => 'installed'], function () {
         'register' => false,
     ]);
 
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+
     /**
      * Group Routing for Halaman Website
      */
@@ -147,9 +151,6 @@ Route::group(['middleware' => 'installed'], function () {
             Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
             Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
             Route::post('store', ['as' => 'sistem-komplain.store', 'uses' => 'SistemKomplainController@store']);
-            Route::get('edit/{id}', ['as' => 'sistem-komplain.edit', 'uses' => 'SistemKomplainController@edit']);
-            Route::put('update/{id}', ['as' => 'sistem-komplain.update', 'uses' => 'SistemKomplainController@update']);
-            Route::delete('destroy/{id}', ['as' => 'sistem-komplain.destroy', 'uses' => 'SistemKomplainController@destroy']);
             Route::get('komplain/{slug}', ['as' => 'sistem-komplain.komplain', 'uses' => 'SistemKomplainController@show']);
             Route::get('komplain/kategori/{slug}', ['as' => 'sistem-komplain.kategori', 'uses' => 'SistemKomplainController@indexKategori']);
             Route::get('komplain-sukses', ['as' => 'sistem-komplain.komplain-sukses', 'uses' => 'SistemKomplainController@indexSukses']);
@@ -228,7 +229,6 @@ Route::group(['middleware' => 'installed'], function () {
 
                 // Artikel
                 Route::group(['prefix' => 'artikel'], function () {
-                    '\vendor\UniSharp\LaravelFilemanager\Lfm::routes()';
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
                     Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArtikelController@create']);
                     Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArtikelController@store']);

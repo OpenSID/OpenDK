@@ -68,8 +68,8 @@ class DemoDasProfilTableSeeder extends Seeder
             'kepsek_trantib'                  => 'Mastur Idris, SH',
             'file_struktur_organisasi'        => null,
             'file_logo'                       => null,
-            'visi'                            => null,
-            'misi'                            => null,
+            'visi'                            => '<p>Ini adalah kalimat visi</p>',
+            'misi'                            => '<p>Ini adalah kalimat visi</p>',
             'created_at'                      => now(),
             'updated_at'                      => now(),
         ]);

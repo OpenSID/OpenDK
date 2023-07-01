@@ -31,11 +31,28 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 
 class TipeRegulasi extends Model
 {
+    use Sluggable;
+
     protected $table = 'das_tipe_regulasi';
 
     protected $fillable = ['nama'];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'nama',
+            ],
+        ];
+    }
 }

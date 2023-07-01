@@ -34,7 +34,6 @@ namespace Database\Seeds\Demo;
 use App\Imports\ImporAPBDesa;
 use App\Models\DataDesa;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DemoAPBDesaSeeder extends Seeder
@@ -46,8 +45,6 @@ class DemoAPBDesaSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_anggaran_desa')->truncate();
-
         Excel::import(
             new ImporAPBDesa([
                 'bulan' => now()->month,

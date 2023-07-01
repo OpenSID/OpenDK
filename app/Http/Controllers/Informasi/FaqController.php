@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Informasi;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FaqRequest;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -95,7 +96,7 @@ class FaqController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(FaqRequest $request)
     {
         request()->validate([
             'question' => 'required',
@@ -134,13 +135,8 @@ class FaqController extends Controller
      * @return Response
      */
 
-    public function update(Request $request, $id)
+    public function update(FaqRequest $request, $id)
     {
-        request()->validate([
-            'question' => 'required',
-            'answer'   => 'required',
-        ]);
-
         try {
             Faq::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {

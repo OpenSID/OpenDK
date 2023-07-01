@@ -48,8 +48,6 @@ class DemoDasDataDesaTableSeeder extends Seeder
 
         $profil = Profil::first();
 
-        DB::table('das_data_desa')->truncate();
-
         DB::table('das_data_desa')->insert([
             0 => [
                 'profil_id' => $profil->id,

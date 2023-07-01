@@ -50,7 +50,7 @@
                 {data: 'judul', name: 'judul'},
                 {data: 'nama', name: 'nama'},
                 {data: 'kategori', name: 'kategori'},
-                {data: 'status', name: 'status'},
+                {data: 'status', name: 'status', class: 'status'},
             ],
             order: [[1, 'asc']]
         });

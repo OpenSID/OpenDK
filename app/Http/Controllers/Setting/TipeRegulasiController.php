@@ -77,7 +77,6 @@ class TipeRegulasiController extends Controller
 
         try {
             $tipe       = new TipeRegulasi($request->all());
-            $tipe->slug = str_slug($tipe->nama);
             $tipe->save();
         } catch (\Exception $e) {
             report($e);

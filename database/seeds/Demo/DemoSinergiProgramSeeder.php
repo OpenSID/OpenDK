@@ -29,11 +29,13 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Models\Artikel;
-use Faker\Factory;
+namespace Database\Seeds\Demo;
+
+use App\Enums\Status;
+use App\Models\SinergiProgram;
 use Illuminate\Database\Seeder;
 
-class ArtikelSeeder extends Seeder
+class DemoSinergiProgramSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -42,19 +44,16 @@ class ArtikelSeeder extends Seeder
      */
     public function run()
     {
-        Artikel::truncate();
+        $data = [
+            [
+                'gambar' => '/img/opendesa.png',
+                'url' => 'https://opendesa.id/',
+                'nama' => 'Open Desa',
+                'status' => Status::Aktif,
+                'urutan' => 1,
+            ],
+        ];
 
-        $faker = Factory::create("id-ID");
-
-        foreach (range(1, 50) as $index) {
-            Artikel::create([
-                'judul' => $faker->sentence(),
-                'gambar' => '/img/no-image.png',
-                'isi' => $faker->paragraph(),
-                'status' => 1, //$faker->randomElement([0, 1]),
-                'created_at' => $faker->dateTimeThisYear(),
-                'updated_at' => $faker->dateTimeThisYear(),
-            ]);
-        }
+        SinergiProgram::insert($data);
     }
 }

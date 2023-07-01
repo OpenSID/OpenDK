@@ -91,7 +91,6 @@ class TipePotensiController extends Controller
 
         try {
             $tipe       = new TipePotensi($request->all());
-            $tipe->slug = str_slug($tipe->nama_kategori);
             $tipe->save();
         } catch (\Exception $e) {
             report($e);
@@ -131,7 +130,6 @@ class TipePotensiController extends Controller
         try {
             $tipe = TipePotensi::findOrFail($id);
             $tipe->fill($request->all());
-            $tipe->slug = str_slug($tipe->nama_kategori);
             $tipe->save();
         } catch (\Exception $e) {
             report($e);

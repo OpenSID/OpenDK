@@ -22,3 +22,4 @@ Di rilis v2307.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 10. [#711](https://github.com/OpenSID/OpenDK/issues/711) Perbaikan slug tidak berubah ketika di edit pada tipe regulasi.
 11. [#708](https://github.com/OpenSID/OpenDK/issues/708) Penambahan validasi client-side pada form dokumen agar lebih memudahkan pengguna.
 12. [#10](https://github.com/OpenSID/wiki-keamanan/issues/10) Pembatasan akses file .php pada folder public.
+13. [#685](https://github.com/OpenSID/OpenDK/issues/685) Tambahkan flag HttpOnly pada setiap Cookie.

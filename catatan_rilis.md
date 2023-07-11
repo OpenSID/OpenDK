@@ -7,6 +7,7 @@ Di rilis v2307.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 1. [#692](https://github.com/OpenSID/OpenDK/issues/692) Perbaikan gagal impor penduduk ketika menjalankan install:dev.
 2. [#503](https://github.com/OpenSID/OpenDK/issues/503) Perbaikan fitur keluhan web dan admin.
 3. [#714](https://github.com/OpenSID/OpenDK/issues/714) Perbaikan gambar image not found tidak muncul ketika tidak ada gambar pada modul potensi.
+4. [#728](https://github.com/OpenSID/OpenDK/issues/728) Perbaikan pengurutan informasi artikel.
 
 #### Teknis
 
@@ -22,3 +23,4 @@ Di rilis v2307.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 10. [#711](https://github.com/OpenSID/OpenDK/issues/711) Perbaikan slug tidak berubah ketika di edit pada tipe regulasi.
 11. [#708](https://github.com/OpenSID/OpenDK/issues/708) Penambahan validasi client-side pada form dokumen agar lebih memudahkan pengguna.
 12. [#10](https://github.com/OpenSID/wiki-keamanan/issues/10) Pembatasan akses file .php pada folder public.
+13. [#685](https://github.com/OpenSID/OpenDK/issues/685) Tambahkan flag HttpOnly pada setiap Cookie.

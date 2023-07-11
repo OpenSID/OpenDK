@@ -10,3 +10,4 @@ Di rilis v2307.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 #### Teknis
 
 1. [#685](https://github.com/OpenSID/OpenDK/issues/685) Tambahkan flag HttpOnly pada setiap Cookie.
+2. [#687](https://github.com/OpenSID/OpenDK/issues/687) Tambahkan Header Anti-MIME-Sniffing X-Content-Type-Options tidak disetel ke 'nosniff'.

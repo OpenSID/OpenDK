@@ -80,8 +80,8 @@
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'foto', name: 'foto', class: 'text-center', searchable: false, orderable: false},
-                {data: 'identitas', name: 'identitas'},
-                {data: 'ttl', name: 'ttl'},
+                {data: 'identitas', name: 'identitas', searchable: false, orderable: false},
+                {data: 'ttl', name: 'ttl', searchable: false, orderable: false},
                 {data: 'sex', name: 'sex'},
                 {data: 'agama.nama', name: 'agama.nama'},
                 {data: 'pangkat', name: 'pangkat'},

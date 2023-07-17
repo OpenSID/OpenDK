@@ -548,9 +548,7 @@ interface HtmlPanelSpec {
 }
 interface IframeSpec extends FormComponentWithLabelSpec {
     type: 'iframe';
-    border?: boolean;
     sandboxed?: boolean;
-    streamContent?: boolean;
     transparent?: boolean;
 }
 interface ImagePreviewSpec extends FormComponentSpec {
@@ -564,12 +562,10 @@ interface InputSpec extends FormComponentWithLabelSpec {
     maximized?: boolean;
     enabled?: boolean;
 }
-type Alignment = 'start' | 'center' | 'end';
 interface LabelSpec {
     type: 'label';
     label: string;
     items: BodyComponentSpec[];
-    align?: Alignment;
 }
 interface ListBoxSingleItemSpec {
     text: string;
@@ -968,7 +964,7 @@ interface DialogSpec<T extends DialogData> {
     title: string;
     size?: DialogSize;
     body: TabPanelSpec | PanelSpec;
-    buttons?: DialogFooterButtonSpec[];
+    buttons: DialogFooterButtonSpec[];
     initialData?: Partial<T>;
     onAction?: DialogActionHandler<T>;
     onChange?: DialogChangeHandler<T>;
@@ -1424,9 +1420,8 @@ declare namespace Ui_d {
     export { Ui_d_Registry as Registry, PublicDialog_d as Dialog, PublicInlineContent_d as InlineContent, PublicMenu_d as Menu, PublicView_d as View, PublicSidebar_d as Sidebar, PublicToolbar_d as Toolbar, Ui_d_EditorUiApi as EditorUiApi, Ui_d_EditorUi as EditorUi, };
 }
 interface WindowParams {
-    readonly inline?: 'cursor' | 'toolbar' | 'bottom';
+    readonly inline?: 'cursor' | 'toolbar';
     readonly ariaAttrs?: boolean;
-    readonly persistent?: boolean;
 }
 type InstanceApi<T extends DialogData> = UrlDialogInstanceApi | DialogInstanceApi<T>;
 interface WindowManagerImpl {

@@ -6,6 +6,7 @@ Di rilis v2307.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 
 1. [#728](https://github.com/OpenSID/OpenDK/issues/728) Perbaikan pengurutan informasi artikel.
 2. [#727](https://github.com/OpenSID/OpenDK/issues/727) Perbaikan terjadi error saat melakukan pencarian dan pengurutan nama perangkat kecamatan.
+3. [#738](https://github.com/OpenSID/OpenDK/issues/738) Perbaikan notifikasi gagal kirim identitas desa menggunakan bahasa indonesia.
 
 #### Teknis
 

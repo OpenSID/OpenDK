@@ -15,3 +15,4 @@ Di rilis v2307.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 3. [#686](https://github.com/OpenSID/OpenDK/issues/686) Memindahkan file sumber JavaScript dari domain yang berbeda.
 4. [#684](https://github.com/OpenSID/OpenDK/issues/684) Perbaikan terkait Content-Security-Policy header.
 5. [#737](https://github.com/OpenSID/OpenDK/issues/737) Rapikan css inline.
+6. [#742](https://github.com/OpenSID/OpenDK/issues/742) Ubah bahasa bawaan untuk datatable ke bahasa indonesia.

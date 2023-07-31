@@ -1,6 +1,6 @@
-#### [v2307.0.1]
+#### [v2308.0.0]
 
-Di rilis v2307.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v2308.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Perbaikan
 

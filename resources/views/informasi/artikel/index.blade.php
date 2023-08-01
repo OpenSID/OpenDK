@@ -51,7 +51,7 @@
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'judul', name: 'judul'},
                 {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},
-                {data: 'created_at', name: 'created_at', class: 'text-center', searchable: false, orderable: false},
+                {data: 'created_at', name: 'created_at', class: 'text-center', searchable: false},
             ],
             order: [[3, 'desc']]
         });

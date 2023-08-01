@@ -1,0 +1,107 @@
+.select2-container--default {
+    padding: 5px !important;
+    font-size: 12px !important;
+}
+
+.card-body {
+    padding: 10px;
+    background-color: white;
+}
+
+.page-header {
+    background: rgb(0, 43, 105);
+    background: linear-gradient(180deg, rgba(0, 43, 105, 1) 0%, rgba(0, 25, 142, 1) 50%, rgba(0, 43, 105, 1) 100%);
+    color: white;
+}
+
+p {
+    font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+.page-header strong {
+    padding-left: 90px;
+    font-family: 'Lato', sans-serif;
+}
+
+@media(max-width:980px) {
+    .page-header strong {
+        font-size: 18px;
+    }
+
+    .card-body p {
+        text-align: justify;
+    }
+}
+
+.fat-arrow {
+    display: flex;
+    align-items: center;
+    width: 60px;
+    height: 40px;
+    position: absolute;
+    background: #ff4900;
+    margin-right: 20px;
+    color: white;
+    text-align: left;
+    line-height: 15px;
+
+}
+
+.fat-arrow:before {
+    content: "";
+    position: absolute;
+    right: -20px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 20px solid #ff4900;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+}
+
+.flo-arrow {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 25px;
+    position: absolute;
+    left: 3px;
+    padding-left: 8px;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    z-index: 2;
+    box-shadow: 2px 2px 3px 0px rgba(0, 0, 0, 0.75);
+}
+
+.flo-arrow:before {
+    content: "";
+    position: absolute;
+    right: -7px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 7px solid #FFF;
+    border-top: 13px solid transparent;
+    border-bottom: 12px solid transparent;
+}
+
+.title-artikel {
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    /* font-family: 'Varela', sans-serif; */
+    /* font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: 400; line-height: 21px;  */
+}
+
+.card-horizontal {
+    display: flex;
+    flex: 1 1 auto;
+}

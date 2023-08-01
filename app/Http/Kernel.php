@@ -89,6 +89,7 @@ class Kernel extends HttpKernel
             ShareErrorsFromSession::class,
             VerifyCsrfToken::class,
             SubstituteBindings::class,
+            \App\Http\Middleware\SecurityHeaders::class,
         ],
         'api' => [
             'throttle:60,1',
@@ -136,6 +137,6 @@ class Kernel extends HttpKernel
         AuthenticateSession::class,
         SubstituteBindings::class,
         Authorize::class,
-
+        \App\Http\Middleware\SecurityHeaders::class,
     ];
 }

@@ -30,6 +30,7 @@
  */
 
 return [
+    'header'               => 'Data yang diberikan tidak valid.',
     'accepted'             => 'Isian :attribute harus diterima.',
     'active_url'           => 'Isian :attribute bukan URL yang sah.',
     'after'                => 'Isian :attribute harus tanggal setelah :date.',

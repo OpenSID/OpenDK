@@ -107,7 +107,7 @@
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script async defer src="{{ asset('js/github-buttons/buttons.min.js') }}"></script>
     <!-- Swiper JS -->
     <script src="{{ asset('js/swiper.min.js') }}"></script>
     <script src="{{ asset('/js/custom.js') }}"></script>

@@ -288,7 +288,7 @@
             <label for="akta_perkawinan" class="control-label col-md-4 col-sm-3 col-xs-12">No. Akta Nikah (Buku Nikah)</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('akta_perkawinan', null, ['class' => 'form-control', 'id' => 'akta_perkawinan']) !!}
+                {!! Form::text('akta_perkawinan', null, ['class' => 'form-control', 'disabled', 'id' => 'akta_perkawinan']) !!}
             </div>
         </div>
 

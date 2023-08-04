@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pesan extends Model
 {
     protected $table     = 'das_pesan';
-    protected $fillable = ['judul','das_data_desa_id', 'jenis', 'created_at'];
+    protected $fillable = ['judul','das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at'];
     public const PESAN_MASUK = "Pesan Masuk";
     public const PESAN_KELUAR = "Pesan Keluar";
     public const BELUM_DIBACA = 0;

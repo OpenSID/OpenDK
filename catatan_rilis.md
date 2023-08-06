@@ -7,7 +7,4 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 1. [#758](https://github.com/OpenSID/OpenDK/issues/758) Perbaikan angka pada data statistik web.
 2. [#759](https://github.com/OpenSID/OpenDK/issues/759) Perbaikan tampilan detail penduduk.
 3. [#764](https://github.com/OpenSID/OpenDK/issues/764) Perbaikan validasi modul media sosial.
-
-#### Teknis
-
-1. 
+4. [#746](https://github.com/OpenSID/OpenDK/issues/746) Perbaikan tampilan pesan sudah dan belum dibaca.

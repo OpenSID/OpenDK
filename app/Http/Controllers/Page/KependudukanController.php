@@ -101,28 +101,28 @@ class KependudukanController extends Controller
         $query_total_penduduk_aktif = $this->penduduk->getPendudukAktif($did, $year);
 
         $total_penduduk         = (clone $query_total_penduduk_aktif)->count();
-        $data['total_penduduk'] = format_number_id($total_penduduk);
+        $data['total_penduduk'] = $total_penduduk;
 
         // Get Total Laki-Laki
         $total_laki_laki        = (clone $query_total_penduduk_aktif)
             ->where('sex', 1)
             ->count();
 
-        $data['total_lakilaki'] = format_number_id($total_laki_laki);
+        $data['total_lakilaki'] = $total_laki_laki;
 
         // Get Total Perempuan
         $total_perempuan = (clone $query_total_penduduk_aktif)
             ->where('sex', 2)
             ->count();
 
-        $data['total_perempuan'] = format_number_id($total_perempuan);
+        $data['total_perempuan'] = $total_perempuan;
 
         // Get Total Disabilitas
         $total_disabilitas = (clone $query_total_penduduk_aktif)
             ->where('cacat_id', '<>', 7)
             ->count();
 
-        $data['total_disabilitas'] = format_number_id($total_disabilitas);
+        $data['total_disabilitas'] = $total_disabilitas;
 
         if ($total_penduduk == 0) {
             $data['ktp_wajib']            = 0;
@@ -148,8 +148,8 @@ class KependudukanController extends Controller
 
             $ktp_persen_terpenuhi = ($ktp_terpenuhi / $ktp_wajib) * 100;
 
-            $data['ktp_wajib']            = format_number_id($ktp_wajib);
-            $data['ktp_terpenuhi']        = format_number_id($ktp_terpenuhi);
+            $data['ktp_wajib']            = $ktp_wajib;
+            $data['ktp_terpenuhi']        = $ktp_terpenuhi;
             $data['ktp_persen_terpenuhi'] = format_number_id($ktp_persen_terpenuhi);
 
             // Get Data Akta Penduduk Terpenuhi
@@ -160,7 +160,7 @@ class KependudukanController extends Controller
                 ->count();
 
             $akta_persen_terpenuhi         = ($akta_terpenuhi / $total_penduduk) * 100;
-            $data['akta_terpenuhi']        = format_number_id($akta_terpenuhi);
+            $data['akta_terpenuhi']        = $akta_terpenuhi;
             $data['akta_persen_terpenuhi'] = format_number_id($akta_persen_terpenuhi);
 
             // Get Data Akta Nikah Penduduk Terpenuhi
@@ -174,13 +174,13 @@ class KependudukanController extends Controller
                 ->where('akta_perkawinan', '<>', '-')
                 ->count();
 
-            $data['aktanikah_wajib']            = format_number_id(0);
-            $data['aktanikah_terpenuhi']        = format_number_id(0);
+            $data['aktanikah_wajib']            = 0;
+            $data['aktanikah_terpenuhi']        = 0;
             $data['aktanikah_persen_terpenuhi'] = format_number_id(0);
             if ($aktanikah_wajib != 0) {
                 $aktanikah_persen_terpenuhi         = ($aktanikah_terpenuhi / $aktanikah_wajib) * 100;
-                $data['aktanikah_wajib']            = format_number_id($aktanikah_wajib);
-                $data['aktanikah_terpenuhi']        = format_number_id($aktanikah_terpenuhi);
+                $data['aktanikah_wajib']            = $aktanikah_wajib;
+                $data['aktanikah_terpenuhi']        = $aktanikah_terpenuhi;
                 $data['aktanikah_persen_terpenuhi'] = format_number_id($aktanikah_persen_terpenuhi);
             }
         }

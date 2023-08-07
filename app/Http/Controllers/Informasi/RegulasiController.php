@@ -82,7 +82,7 @@ class RegulasiController extends Controller
     public function show(Regulasi $regulasi)
     {
         $page_title       = "Regulasi";
-        $page_description = "Detail Regulasi : " . $page_title;
+        $page_description = "Detail Regulasi : " . $regulasi->judul;
 
         return view('informasi.regulasi.show', compact('page_title', 'page_description', 'regulasi'));
     }

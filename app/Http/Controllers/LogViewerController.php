@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Artisan;
-use Symfony\Component\HttpFoundation\Response;
-use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Illuminate\Support\Facades\Crypt;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
+use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LogViewerController
@@ -207,7 +207,7 @@ class LogViewerController extends Controller
                 'error' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        
+
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);

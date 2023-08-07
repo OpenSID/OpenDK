@@ -31,10 +31,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
-use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
+use Illuminate\Support\Facades\Artisan;
+use Symfony\Component\HttpFoundation\Response;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 
 /**
  * Class LogViewerController
@@ -196,18 +197,19 @@ class LogViewerController extends Controller
 
     public function queueListen()
     {
+        return response()->json('a');
         try {
             Artisan::call('queue:work', ['--stop-when-empty' => null]); // this will do the command line job
+        } catch (\Exception $e) {
+            report($e);
 
             return response()->json([
-                'status'  => true,
-                'message' => 'success',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => true,
-                'message' => $e->getMessage(),
-            ]);
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+        
+        return response()->json([
+            'success' => true,
+        ], Response::HTTP_OK);
     }
 }

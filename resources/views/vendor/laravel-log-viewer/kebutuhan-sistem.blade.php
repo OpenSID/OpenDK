@@ -40,26 +40,43 @@
 
 @push('scripts')
 <script>
-    $(document).on('click', '#run-queue', function(e) {
-        $.ajax({
-            type: "GET",
-            url: "{{ URL('setting/info-sistem/queuelisten') }}",
-            dataType: "Json"
-        });
-    });
-
-    $(document)
-        .ajaxStart(function () {
-            Swal.showLoading()
+    $(document).on('click', '#run-queue', function() {
+        Swal.fire({
+            title: 'Apakah anda yakin ingin menjalankan perintah ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya!',
+            cancelButtonText: 'Tidak!',
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+                return fetch('info-sistem/queuelisten', {
+                        method: 'GET'
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            // throw new Error(response.statusText)
+                            return response.text().then(text => {
+                                throw new Error(text)
+                            })
+                        }
+                        return response.json()
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(error)
+                    })
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Sukses!',
+                    'Perintah berhasil dijalankan.',
+                    'success'
+                )
+                return window.location.replace('info-sistem');
+            }
         })
-        .ajaxStop(function () {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Perintah berhasil dijalankan',
-                showConfirmButton: false,
-                timer: 1500
-            })
     });
 </script>
 @endpush

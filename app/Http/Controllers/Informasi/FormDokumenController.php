@@ -86,7 +86,7 @@ class FormDokumenController extends Controller
             FormDokumen::create($input);
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Dokumen gagal disimpan!');
+            return back()->withInput()->with('error', 'Dokumen gagal disimpan!');
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil ditambah!');
@@ -118,7 +118,7 @@ class FormDokumenController extends Controller
             $dokumen->update($input);
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Dokumen gagal diubah!');
+            return back()->withInput()->with('error', 'Dokumen gagal diubah!');
         }
 
         return redirect()->route('informasi.form-dokumen.index')->with('success', 'Dokumen berhasil diubah!');

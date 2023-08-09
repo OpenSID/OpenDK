@@ -156,7 +156,7 @@ class PesanController extends Controller
     public function readPesan($id_pesan)
     {
         $pesan  = Pesan::findOrFail($id_pesan);
-        if ($pesan->sudah_dibaca === Pesan::BELUM_DIBACA) {
+        if ($pesan->sudah_dibaca == Pesan::BELUM_DIBACA) {
             $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
         }

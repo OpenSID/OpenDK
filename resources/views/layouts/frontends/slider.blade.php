@@ -1,4 +1,4 @@
-@if (Route::currentRouteName() === 'beranda')
+@if (Route::currentRouteName() === 'beranda' && $slides->count() > 0)
 <!-- Slider -->
 <div id="swiper-slider" class="swiper">
     <div class="swiper-wrapper">
@@ -24,8 +24,8 @@
     <div class="swiper-button-prev"></div>
     <!-- Add Pagination -->
     <div class="swiper-pagination"></div>
-  </div>
-  <div class="dk-line"></div>
+</div>
+<div class="dk-line"></div>
 @endif
 
 @push('scripts')
@@ -47,4 +47,4 @@
       });
     });
   </script>    
-  @endpush
+@endpush

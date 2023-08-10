@@ -18,6 +18,14 @@
                     @foreach($regulasi as $item)
                     <tr>
                         <td><a href="{{ route('unduhan.regulasi.show', ['nama_regulasi' => str_slug($item->judul)] ) }}">{{ $item->judul }}</a></td>
+                        <td>
+                            <a href="{{ route('unduhan.regulasi.show', ['nama_regulasi' => str_slug($item->judul)]) }}" title="Lihat">
+                                <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
+                            </a>
+                            <a href="{{ route('unduhan.regulasi.download', ['file'=> str_slug($item->judul)]) }}" title="Unduh">
+                                <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-download"></i></button>
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </table>

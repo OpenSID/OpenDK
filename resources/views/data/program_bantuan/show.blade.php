@@ -85,13 +85,13 @@
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $row->peserta }}</td>
-                                        <td>{!! $row->penduduk->nama !!}</td>
-                                        <td>{!! $row->no_id_kartu !!}</td>
-                                        <td>{!! $row->kartu_nik !!}</td>
-                                        <td>{!! $row->kartu_nama !!}</td>
-                                        <td>{!! $row->kartu_tempat_lahir !!}</td>
-                                        <td>{!! format_date($row->kartu_tanggal_lahir) !!}</td>
-                                        <td>{!! $row->kartu_alamat !!}</td>
+                                        <td>{{ $row->penduduk->nama }}</td>
+                                        <td>{{ $row->no_id_kartu }}</td>
+                                        <td>{{ $row->kartu_nik }}</td>
+                                        <td>{{ $row->kartu_nama }}</td>
+                                        <td>{{ $row->kartu_tempat_lahir }}</td>
+                                        <td>{{ format_date($row->kartu_tanggal_lahir) }}</td>
+                                        <td>{{ $row->kartu_alamat }}</td>
                                     </tr>
                                 @endforeach
                             @else

@@ -43,7 +43,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Penduduk</span>
-                    <span class="info-box-number" id="total_penduduk">{!! $total_penduduk !!}</span>
+                    <span class="info-box-number" id="total_penduduk">{{ $total_penduduk }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -56,7 +56,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Laki-Laki</span>
-                    <span class="info-box-number" id="total_lakilaki">{!! $total_lakilaki !!}</span>
+                    <span class="info-box-number" id="total_lakilaki">{{ $total_lakilaki }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -69,7 +69,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Perempuan</span>
-                    <span class="info-box-number" id="total_perempuan">{!! $total_perempuan !!}</span>
+                    <span class="info-box-number" id="total_perempuan">{{ $total_perempuan }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -83,7 +83,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Disabilitas</span>
-                    <span class="info-box-number" id="total_disabilitas">{!! $total_disabilitas !!}</span>
+                    <span class="info-box-number" id="total_disabilitas">{{ $total_disabilitas }}</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -129,8 +129,6 @@
                     <li><a href="#gol-darah" data-toggle="tab">Golongan Darah</a></li>
                     <li><a href="#perkawinan" data-toggle="tab">Perkawinan</a></li>
                     <li><a href="#agama" data-toggle="tab">Agama</a></li>
-                    {{--<li><a href="#kelamin" data-toggle="tab">Kelamin</a></li>--}}
-                    {{--<li><a href="#status-tinggal" data-toggle="tab">Status Tinggal</a></li>--}}
                 </ul>
 
                 <div class="tab-content">
@@ -164,13 +162,13 @@
                 <span class="info-box-icon"><i class="fa fa-credit-card"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-number">KTP</span>
-                    <span class="info-box-text" id="data_ktp">{!! $ktp_terpenuhi !!} dari {!! $total_penduduk !!}
+                    <span class="info-box-text" id="data_ktp">{{ $ktp_terpenuhi }} dari {{ $total_penduduk }}
                         Jiwa Terpenuhi</span>
 
                     <div class="progress">
-                        <div id="ktp_persen" class="progress-bar" style="width: {!! $ktp_persen_terpenuhi !!}%"></div>
+                        <div id="ktp_persen" class="progress-bar" style="width: {{ $ktp_persen_terpenuhi }}%"></div>
                     </div>
-                    <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                    <span id="ktp_terpenuhi" class="progress-description">{{ $ktp_persen_terpenuhi }}% Jiwa Tidak Terpenuhi</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -179,13 +177,13 @@
                 <span class="info-box-icon"><i class="fa fa-file-word-o"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-number">Akta Kelahiran</span>
-                    <span class="info-box-text" id="data_akta">{!! $akta_terpenuhi !!} dari {!! $total_penduduk !!}
+                    <span class="info-box-text" id="data_akta">{{ $akta_terpenuhi }} dari {{ $total_penduduk }}
                         Jiwa Terpenuhi</span>
 
                     <div class="progress">
-                        <div id="akta_persen" class="progress-bar" style="width: {!! $akta_persen_terpenuhi !!}%"></div>
+                        <div id="akta_persen" class="progress-bar" style="width: {{ $akta_persen_terpenuhi }}%"></div>
                     </div>
-                    <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                    <span id="akta_terpenuhi" class="progress-description">{{ $akta_persen_terpenuhi }}% Jiwa Tidak Terpenuhi</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -195,13 +193,13 @@
 
                 <div class="info-box-content">
                     <span class="info-box-number">Akta Nikah</span>
-                    <span class="info-box-text" id="data_nikah">{!! $aktanikah_terpenuhi !!} dari {!! $total_penduduk !!}
+                    <span class="info-box-text" id="data_nikah">{{ $aktanikah_terpenuhi }} dari {{ $total_penduduk }}
                         Jiwa Terpenuhi</span>
 
                     <div class="progress">
-                        <div id="nikah_persen" class="progress-bar" style="width: {!! $aktanikah_persen_terpenuhi !!}%"></div>
+                        <div id="nikah_persen" class="progress-bar" style="width: {{ $aktanikah_persen_terpenuhi }}%"></div>
                     </div>
-                    <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                    <span id="nikah_terpenuhi" class="progress-description">{{ $aktanikah_persen_terpenuhi }}% Jiwa Tidak Terpenuhi</span>
                 </div>
                 <!-- /.info-box-content -->
             </div>

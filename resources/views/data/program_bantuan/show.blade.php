@@ -32,7 +32,7 @@
                         </tr>
                         <tr>
                             <th>Periode Program</th>
-                            <td>: {{ $program->start_date }} - {{ $program->end_date }}</td>
+                            <td>: {{ format_date($program->start_date) }} - {{ format_date($program->end_date) }}</td>
                         </tr>
                         <tr>
                             <th>Keterangan</th>

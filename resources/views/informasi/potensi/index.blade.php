@@ -8,7 +8,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{!! $page_title !!}</li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 
@@ -38,9 +38,9 @@
                         <a href="{{ route('informasi.potensi.show', $potensi->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i>&nbsp; Detail</a>
                         @unless(!Auth::check())
                         
-                        <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
+                        <a href="{{ route('informasi.potensi.edit', $potensi->id) }}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
                         
-                        <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.potensi.destroy', $potensi->id) !!}" data-button="delete" id="deleteModal">
+                        <a href="javascript:void(0)" class="" title="Hapus" data-href="{{ route('informasi.potensi.destroy', $potensi->id) }}" data-button="delete" id="deleteModal">
                             <button type="button" class="btn btn-icon btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp; Hapus</button>
                         </a>
                         @endunless

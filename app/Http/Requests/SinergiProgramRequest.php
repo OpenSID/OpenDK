@@ -52,11 +52,17 @@ class SinergiProgramRequest extends FormRequest
      */
     public function rules()
     {
+        if ($this->id) {
+            $gambar = 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file';
+        } else {
+            $gambar = 'required|image|mimes:jpg,jpeg,png|max:2048|valid_file';
+        }
+
         return [
-            'nama'   => 'required',
-            'url'    => 'required',
-            'gambar' => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
-            'status' => 'required',
+            'nama'   => 'required|string|max:100',
+            'url'    => 'required|url',
+            'gambar' => $gambar,
+            'status' => 'required|integer',
         ];
     }
 }

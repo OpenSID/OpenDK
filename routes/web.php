@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
 // Redirect if apps not installed
-Route::group(['middleware' => 'installed'], function () {
+Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Auth::routes([
         'register' => false,
     ]);

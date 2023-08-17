@@ -11,6 +11,7 @@
                     </a>
                 </div>
             </div>
+            <p id="#ajaxProgress" style="display: none;">asdasd</p>
             <div class="box-body">
                 @foreach($requirements['requirements'] as $type => $requirement)
                 <div class="form-group">
@@ -44,22 +45,28 @@
         $.ajax({
             type: "GET",
             url: "{{ URL('setting/info-sistem/queuelisten') }}",
-            dataType: "Json"
+            beforeSend: function() {
+                Swal.showLoading()
+            },
+            success: function(data) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Perintah berhasil dijalankan',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Perintah gagal dijalankan',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            }
         });
-    });
-
-    $(document)
-        .ajaxStart(function () {
-            Swal.showLoading()
-        })
-        .ajaxStop(function () {
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Perintah berhasil dijalankan',
-                showConfirmButton: false,
-                timer: 1500
-            })
     });
 </script>
 @endpush

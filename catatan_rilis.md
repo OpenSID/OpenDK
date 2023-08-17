@@ -16,6 +16,7 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 10. [#749](https://github.com/OpenSID/OpenDK/issues/749) Perbaikan breadcrumb pada halaman admin event.
 11. [#750](https://github.com/OpenSID/OpenDK/issues/750) Perbaikan breadcrumb pada halaman admin artikel.
 12. [#751](https://github.com/OpenSID/OpenDK/issues/751) Perbaikan breadcrumb pada halaman admin FAQ.
+13. [#754](https://github.com/OpenSID/OpenDK/issues/754) Perbaikan notifikasi saat akses modul info sistem.
 
 #### Teknis
 1. [#12](https://github.com/OpenSID/wiki-keamanan/issues/12) Perbaikan keamanan modul bantuan.

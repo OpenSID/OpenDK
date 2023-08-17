@@ -19,4 +19,5 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Teknis
 1. [#12](https://github.com/OpenSID/wiki-keamanan/issues/12) Perbaikan keamanan modul bantuan.
-2. [#11](https://github.com/OpenSID/wiki-keamanan/issues/11) Pembatasan input element HTML.
+2. [#13](https://github.com/OpenSID/wiki-keamanan/issues/13) Perbaikan kemanan modul desa.
+3. [#11](https://github.com/OpenSID/wiki-keamanan/issues/11) Pembatasan input element HTML.

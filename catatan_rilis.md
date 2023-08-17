@@ -11,3 +11,11 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 5. [#755](https://github.com/OpenSID/OpenDK/issues/755) Perbaikan slider contoh data awal.
 6. [#757](https://github.com/OpenSID/OpenDK/issues/757) Perbaikan tombol pada kolom aksi halaman regulasi.
 7. [#753](https://github.com/OpenSID/OpenDK/issues/753) Perbaikan validasi tambah/ubah pada modul dokumen.
+8. [#747](https://github.com/OpenSID/OpenDK/issues/747) Perbaikan breadcrumb pada halaman admin regulasi.
+9. [#748](https://github.com/OpenSID/OpenDK/issues/748) Perbaikan breadcrumb pada halaman admin potensi.
+10. [#749](https://github.com/OpenSID/OpenDK/issues/749) Perbaikan breadcrumb pada halaman admin event.
+11. [#750](https://github.com/OpenSID/OpenDK/issues/750) Perbaikan breadcrumb pada halaman admin artikel.
+
+#### Teknis
+1. [#12](https://github.com/OpenSID/wiki-keamanan/issues/12) Perbaikan keamanan modul bantuan.
+2. [#11](https://github.com/OpenSID/wiki-keamanan/issues/11) Pembatasan input element HTML.

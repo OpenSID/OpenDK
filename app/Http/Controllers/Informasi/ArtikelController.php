@@ -42,7 +42,10 @@ class ArtikelController extends Controller
 {
     public function index()
     {
-        return view('informasi.artikel.index');
+        $page_title       = 'Artikel';
+        $page_description = 'Daftar Artikel';
+
+        return view('informasi.artikel.index', compact('page_title', 'page_description'));
     }
 
     public function getDataArtikel(Request $request)
@@ -76,7 +79,10 @@ class ArtikelController extends Controller
 
     public function create()
     {
-        return view('informasi.artikel.create');
+        $page_title       = 'Artikel';
+        $page_description = 'Tambah Artikel';
+
+        return view('informasi.artikel.create', compact('page_title', 'page_description'));
     }
 
     public function store(ArtikelRequest $request)
@@ -101,7 +107,10 @@ class ArtikelController extends Controller
 
     public function edit(Artikel $artikel)
     {
-        return view('informasi.artikel.edit', compact('artikel'));
+        $page_title       = 'Artikel';
+        $page_description = 'Ubah Artikel';
+
+        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description'));
     }
 
     public function update(ArtikelRequest $request, Artikel $artikel)

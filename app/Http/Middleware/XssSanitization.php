@@ -29,34 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Closure;
 
-class ProfilDesaRequest extends FormRequest
+class XssSanitization
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Handle an incoming request.
      *
-     * @return bool
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function authorize()
+    public function handle($request, Closure $next)
     {
-        return true;
-    }
+        $input = $request->all();
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        return [
-            "kode_desa" => "present|string|exists:das_data_desa,desa_id",
-            "sebutan_desa" => "required|string",
-            "website" => "sometimes|required|url",
-            "path" => "required|string"
-        ];
+        array_walk_recursive($input, function (&$input) {
+            $input = strip_tags($input);
+        });
+
+        $request->merge($input);
+
+        return $next($request);
     }
 }

@@ -46,7 +46,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function () {
     /**
      * Authentication api
      */

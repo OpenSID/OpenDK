@@ -41,7 +41,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         'register' => false,
     ]);
 
-    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 

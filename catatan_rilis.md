@@ -16,3 +16,4 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 
 #### Teknis
 1. [#12](https://github.com/OpenSID/wiki-keamanan/issues/12) Perbaikan keamanan modul bantuan.
+2. [#786](https://github.com/OpenSID/OpenDK/issues/786) Pembatasan akses filemanager.

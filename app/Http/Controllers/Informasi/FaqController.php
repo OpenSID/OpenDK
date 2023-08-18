@@ -47,7 +47,10 @@ class FaqController extends Controller
      */
     public function index()
     {
-        return view('informasi.faq.index');
+        $page_title       = 'FAQ';
+        $page_description = 'Daftar FAQ';
+
+        return view('informasi.faq.index', compact('page_title', 'page_description'));
     }
 
     public function getDataFaq(Request $request)
@@ -123,7 +126,7 @@ class FaqController extends Controller
     {
         $faq              = Faq::findOrFail($id);
         $page_title       = 'FAQ';
-        $page_description = 'Ubah FAQ : ' . $faq->question;
+        $page_description = 'Ubah FAQ';
 
         return view('informasi.faq.edit', compact('page_title', 'page_description', 'faq'));
     }

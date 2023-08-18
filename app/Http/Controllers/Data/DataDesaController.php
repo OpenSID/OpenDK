@@ -74,7 +74,7 @@ class DataDesaController extends Controller
                 return view('forms.aksi', $data);
             })
             ->editColumn('website', function ($row) {
-                return '<a href="' . $row->website . '" target="_blank">' . $row->website . '</a>';
+                return '<a href="' . htmlentities($row->website) . '" target="_blank">' . htmlentities($row->website) . '</a>';
             })
             ->rawColumns(['website', 'aksi'])->make();
     }

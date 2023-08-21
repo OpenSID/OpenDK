@@ -30,9 +30,11 @@
             <div id="ekstensi" class="log_ekstensi tab-pane fade in">
                 @include('vendor.laravel-log-viewer.kebutuhan-sistem')
             </div>
+            @role('super-admin')
             <div id="info_sistem" class="tab-pane fade in">
                 @include('vendor.laravel-log-viewer.info-sistem')
             </div>
+            @endrole
         </div>
     </div>
 </section>

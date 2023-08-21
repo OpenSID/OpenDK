@@ -19,7 +19,9 @@
         <ul class="nav nav-tabs">
             <li class="logs active"><a data-toggle="tab" href="#log_viewer">Logs</a></li>
             <li class="log_ekstensi"><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
+            @role('super-admin')
             <li><a data-toggle="tab" href="#info_sistem">Info Sistem</a></li>
+            @endrole
         </ul>
         <div class="tab-content">
             <div id="log_viewer" class="logs tab-pane fade in active">

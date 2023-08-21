@@ -56,7 +56,6 @@ class FasilitasPaudController extends Controller
     {
         return DataTables::of(FasilitasPAUD::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.fasilitas-paud.edit', $row->id);
                 $data['delete_url'] = route('data.fasilitas-paud.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -73,10 +72,8 @@ class FasilitasPaudController extends Controller
     {
         $page_title       = 'Import';
         $page_description = 'Import Data Fasilitas PAUD';
-        $years_list       = years_list();
-        $months_list      = months_list();
 
-        return view('data.fasilitas_paud.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
+        return view('data.fasilitas_paud.import', compact('page_title', 'page_description'));
     }
 
     /**
@@ -87,14 +84,11 @@ class FasilitasPaudController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'desa_id'  => 'required|unique:das_fasilitas_paud,desa_id',
             'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun'    => 'required|unique:das_fasilitas_paud',
-            'semester' => 'required|unique:das_fasilitas_paud',
         ]);
 
         try {
-            (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
+            (new ImporFasilitasPaud())
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
@@ -102,47 +96,6 @@ class FasilitasPaudController extends Controller
         }
 
         return redirect()->route('data.fasilitas-paud.index')->with('success', 'Import data sukses.');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $fasilitas        = FasilitasPAUD::with(['desa'])->findOrFail($id);
-        $page_title       = 'Fasilitas PAUD';
-        $page_description = 'Ubah Fasilitas PAUD : Desa ' . $fasilitas->desa->nama;
-
-        return view('data.fasilitas_paud.edit', compact('page_title', 'page_description', 'fasilitas'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        request()->validate([
-            'jumlaah_paud'       => 'required',
-            'jumlah_guru_paud'  => 'required',
-            'jumlah_siswa_paud' => 'required',
-            'semester'          => 'required',
-            'tahun'             => 'required',
-        ]);
-
-        try {
-            FasilitasPAUD::findOrFail($id)->update($request->all());
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah!');
-        }
-
-        return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data berhasil diubah!');
     }
 
     /**

@@ -75,6 +75,13 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         });
 
         /**
+         * Data
+         */
+        Route::group(['prefix' => 'data'], function () {
+            Route::post('/fasilitaspaud', 'Api\FasilitasPaudController@store');
+        });
+
+        /**
          * Laporan Penduduk
          */
         Route::group(['prefix' => 'laporan-penduduk'], function () {

@@ -76,25 +76,25 @@
                     </thead>
                     <tbody>
                     @foreach($logs as $key => $log)
-                    <tr data-display="stack{{{$key}}}">
+                    <tr data-display="stack{{$key}}">
                     @if ($standardFormat)
-                        <td class="nowrap text-{{{$log['level_class']}}}">
-                        <span class="fa fa-{{{$log['level_img']}}}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
+                        <td class="nowrap text-{{$log['level_class']}}">
+                        <span class="fa fa-{{$log['level_img']}}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
                         </td>
                     @endif
                     <td class="date">{{ \Carbon\Carbon::parse($log['date'])->translatedFormat('d-m-Y H:i') }} </td>
                     <td class="text">
                         @if ($log['stack'])
-                        <button style="float:right" type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2" data-display="stack{{{$key}}}">
+                        <button style="float:right" type="button" class="float-right expand btn btn-outline-dark btn-sm mb-2 ml-2" data-display="stack{{$key}}">
                             <span class="fa fa-search"></span>
                         </button>
                         @endif
                         {{ str_limit($log['text'],250) }}
                         @if (isset($log['in_file']))
-                        <br/>{{{$log['in_file']}}}
+                        <br/>{{$log['in_file']}}
                         @endif
                         @if ($log['stack'])
-                        <div class="stack" id="stack{{{$key}}}"  style="display: none; white-space: pre-wrap;">{{{ trim($log['stack']) }}}</div>
+                        <div class="stack" id="stack{{$key}}"  style="display: none; white-space: pre-wrap;">{{ trim($log['stack']) }}</div>
                         @endif
                     </td>
                     </tr>

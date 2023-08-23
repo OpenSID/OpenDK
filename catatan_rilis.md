@@ -29,3 +29,4 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 7. [#800](https://github.com/OpenSID/OpenDK/issues/800) Perbaikan penamaan file models LogTte.
 8. [#798](https://github.com/OpenSID/OpenDK/issues/798) Pengahapusan variabel yang tidak digunakan.
 9. [#805](https://github.com/OpenSID/OpenDK/issues/805) Perbaikan migrasi rollback untuk tabel users, das_data_umum dan das_pembangunan_dokumentasi.
+10. [#814](https://github.com/OpenSID/OpenDK/issues/814) Penghapusan package nesbot/carbon.

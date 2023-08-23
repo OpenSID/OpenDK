@@ -28,4 +28,4 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 6. [#801](https://github.com/OpenSID/OpenDK/issues/801) Penyesuaian .gitattributes.
 7. [#800](https://github.com/OpenSID/OpenDK/issues/800) Perbaikan penamaan file models LogTte.
 8. [#798](https://github.com/OpenSID/OpenDK/issues/798) Pengahapusan variabel yang tidak digunakan.
-9. [#805](https://github.com/OpenSID/OpenDK/issues/805) Perbaikan migrasi rollback untuk tabel user dan das_data_umum.
+9. [#805](https://github.com/OpenSID/OpenDK/issues/805) Perbaikan migrasi rollback untuk tabel users dan das_data_umum.

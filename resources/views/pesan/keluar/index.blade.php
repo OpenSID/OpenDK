@@ -56,7 +56,7 @@
                             <table class="table table-hover table-striped">
                                 <tbody>
                                 @foreach($list_pesan as $pesan)
-                                    <tr>
+                                    <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
                                         <td style="width: 5%">
                                             <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
                                         </td>

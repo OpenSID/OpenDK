@@ -60,7 +60,7 @@
                             <table class="table table-hover">
                                 <tbody>
                                 @foreach($list_pesan as $pesan)
-                                    <tr class="{{ $pesan->sudah_dibaca === 1 ? '' : 'unread' }}">
+                                    <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
                                         <td style="width: 5%">
                                             <input data-read="{{ $pesan->sudah_dibaca }}" data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
                                         </td>
@@ -96,13 +96,6 @@
         </div>
     </section>
 @endsection
-@push('css')
-    <style>
-        .unread{
-            background: lightyellow;
-        }
-    </style>
-@endpush
 @include('partials.asset_select2')
 @push('scripts')
     <script type="text/javascript">

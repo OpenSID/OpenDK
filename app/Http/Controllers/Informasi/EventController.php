@@ -50,7 +50,7 @@ class EventController extends Controller
     public function create()
     {
         $page_title       = 'Event';
-        $page_description = 'Tambah Data';
+        $page_description = 'Tambah Event';
 
         return view('informasi.event.create', compact('page_title', 'page_description'));
     }
@@ -72,7 +72,7 @@ class EventController extends Controller
     public function edit(Event $event)
     {
         $page_title       = 'Event';
-        $page_description = 'Ubah Data';
+        $page_description = 'Ubah Event';
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }

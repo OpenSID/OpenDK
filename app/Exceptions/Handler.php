@@ -68,33 +68,6 @@ class Handler extends ExceptionHandler
      */
     public function report(Throwable $exception)
     {
-        if (app()->bound('sentry') && $this->shouldReport($exception)) {
-            \Sentry\configureScope(function (\Sentry\State\Scope $scope) {
-                $profil = Profil::first();
-                $scope->setUser(
-                    [
-                        'nama_provinsi' => $profil->nama_provinsi,
-                        'nama_kabupaten' => $profil->nama_kabupaten,
-                        'nama_kecamatan' => $profil->nama_kecamatan
-                    ]
-                );
-
-                if (Auth::check()) {
-                    $scope->setUser([
-                        'email' => auth()->user()->email,
-                        'name' => auth()->user()->name,
-                        'role' => Auth::user()->getRoleNames()
-                    ]);
-                }
-
-                $scope->setTags([
-                    'kecamatan' =>  $profil->nama_kecamatan,
-                    'versi' => config('app.version')
-                ]);
-            });
-            app('sentry')->captureException($exception);
-        }
-
         parent::report($exception);
     }
 

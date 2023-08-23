@@ -54,7 +54,7 @@ class AddFieldSumberLuasWilayah extends Migration
      */
     public function down()
     {
-        Schema::table('das_data_desa', function (Blueprint $table) {
+        Schema::table('das_data_umum', function (Blueprint $table) {
             $table->dropColumn('sumber_luas_wilayah');
         });
     }

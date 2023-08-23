@@ -43,7 +43,6 @@ class PesanController extends Controller
 {
     public function index(Request $request)
     {
-        $flag_include_arsip = false;
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('desa_id', null);
@@ -96,7 +95,6 @@ class PesanController extends Controller
 
     public function loadPesanKeluar(Request $request)
     {
-        $flag_include_arsip = false;
         $data = collect([]);
         $data->put('desa_id', null);
         $data->put('search_query', '');

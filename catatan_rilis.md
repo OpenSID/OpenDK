@@ -24,3 +24,8 @@ Di rilis v2308.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 2. [#13](https://github.com/OpenSID/wiki-keamanan/issues/13) Perbaikan kemanan modul desa.
 3. [#11](https://github.com/OpenSID/wiki-keamanan/issues/11) Pembatasan input element HTML.
 4. [#786](https://github.com/OpenSID/OpenDK/issues/786) Pembatasan akses filemanager.
+5. [#765](https://github.com/OpenSID/OpenDK/issues/765) Pembatasan info sistem hanya untuk superadmin.
+6. [#801](https://github.com/OpenSID/OpenDK/issues/801) Penyesuaian .gitattributes.
+7. [#800](https://github.com/OpenSID/OpenDK/issues/800) Perbaikan penamaan file models LogTte.
+8. [#798](https://github.com/OpenSID/OpenDK/issues/798) Pengahapusan variabel yang tidak digunakan.
+9. [#805](https://github.com/OpenSID/OpenDK/issues/805) Perbaikan migrasi rollback untuk tabel user.

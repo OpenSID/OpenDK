@@ -63,7 +63,7 @@ class AlterTableUser extends Migration
     public function down()
     {
         // Kembalikan kolom first_name dan last_name
-        DB::statement('ALTER TABLE tableName CHANGE `name` `first_name` VARCHAR(191) default null');
+        DB::statement('ALTER TABLE users CHANGE `name` `first_name` VARCHAR(191) default null');
         Schema::table('users', function (Blueprint $table) {
             $table->string('last_name')->nullable();
         });

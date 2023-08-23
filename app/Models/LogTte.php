@@ -33,7 +33,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class LogTTE extends Model
+class LogTte extends Model
 {
     protected $table = 'das_log_tte';
 

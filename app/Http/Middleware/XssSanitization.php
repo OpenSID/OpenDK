@@ -29,36 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Closure;
 
-class SinergiProgramRequest extends FormRequest
+class XssSanitization
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Handle an incoming request.
      *
-     * @return bool
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function authorize()
+    public function handle($request, Closure $next)
     {
-        return true;
-    }
+        $input = $request->all();
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        $gambarRule = $this->id ? 'nullable|' : 'required|';
+        array_walk_recursive($input, function (&$input) {
+            $input = strip_tags($input);
+        });
 
-        return [
-            'nama'   => 'required|string|max:100',
-            'url'    => 'required|url',
-            'gambar' => $gambarRule . 'image|mimes:jpg,jpeg,png|max:2048|valid_file',
-            'status' => 'required|integer',
-        ];
+        $request->merge($input);
+
+        return $next($request);
     }
 }

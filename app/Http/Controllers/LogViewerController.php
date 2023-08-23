@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LogViewerController
@@ -198,16 +199,16 @@ class LogViewerController extends Controller
     {
         try {
             Artisan::call('queue:work', ['--stop-when-empty' => null]); // this will do the command line job
+        } catch (\Exception $e) {
+            report($e);
 
             return response()->json([
-                'status'  => true,
-                'message' => 'success',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status'  => true,
-                'message' => $e->getMessage(),
-            ]);
+                'error' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+
+        return response()->json([
+            'success' => true,
+        ], Response::HTTP_OK);
     }
 }

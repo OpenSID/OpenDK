@@ -3,12 +3,12 @@
 @section('content')
 <section class="content-header">
     <h1>
-        Artikel
-        <small>Daftar</small>
+        {{ $page_title ?? "Page Title" }}
+        <small>{{ $page_description ?? '' }}</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">artikel</li>
+        <li class="active">{{ $page_title }}</li>
     </ol>
 </section>
 

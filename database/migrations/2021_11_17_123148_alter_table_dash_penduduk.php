@@ -29,9 +29,11 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Profil;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class AlterTableDashPenduduk extends Migration
 {
@@ -64,7 +66,7 @@ class AlterTableDashPenduduk extends Migration
 
         // Isi data
         if ($profil = Profil::first()) {
-            Penduduk::update([
+            DB::table('das_penduduk')->update([
                 'kecamatan_id' => $profil->kecamatan_id,
                 'kabupaten_id' => $profil->kabupaten_id,
                 'provinsi_id' => $profil->provinsi_id,

@@ -74,10 +74,8 @@ class AlterTableDasProfilAddName extends Migration
 
     private function myDropColumnIfExists($myTable, $column)
     {
-        if (Schema::hasColumn($myTable, $column))
-        {
-            Schema::table($myTable, function (Blueprint $table, $column)
-            {
+        if (Schema::hasColumn($myTable, $column)) {
+            Schema::table($myTable, function (Blueprint $table, $column) {
                 $table->dropColumn($column);
             });
         }

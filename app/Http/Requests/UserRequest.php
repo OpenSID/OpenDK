@@ -70,7 +70,7 @@ class UserRequest extends FormRequest
     }
 
     /**
-     * Get the validation custom message apply to the request.
+     * Get the validation custom messages apply to the request.
      *
      * @return array
      */

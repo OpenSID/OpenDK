@@ -57,7 +57,6 @@
 </section>
 @endsection
 
-@include('partials.asset_wysihtml5')
 @include(('partials.asset_select2'))
 @include('partials.tinymce_min')
 @push('scripts')

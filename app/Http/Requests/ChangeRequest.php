@@ -31,6 +31,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChangeRequest extends FormRequest
@@ -54,20 +55,8 @@ class ChangeRequest extends FormRequest
     {
         return [
             'email' => 'required|unique:users,email',
-            'password' => 'required|min:8|max:32|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[.,!$#%]).*$/',
-            'password_confirmation' => 'required_with:password|same:password|min:8|max:32|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[.,!$#%]).*$/'
-        ];
-    }
-
-    /**
-     * Get the validation custom messages apply to the request.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'password.regex' => 'Password harus terdiri dari kombinasi huruf besar, huruf kecil, angka dan simbol'
+            'password' => ['required', 'min:8', 'max:32', new Password()],
+            'password_confirmation' => ['required_with:password', 'same:password', 'min:8', 'max:32', new Password()],
         ];
     }
 }

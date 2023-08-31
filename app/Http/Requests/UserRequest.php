@@ -31,6 +31,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -57,7 +58,7 @@ class UserRequest extends FormRequest
             $password = '';
         } else {
             $id = "";
-            $password = 'required|min:8|max:32|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[.,!$#%]).*$/';
+            $password = ['required', 'min:8', 'max:32', new Password()];
         }
         return [
             'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
@@ -66,18 +67,6 @@ class UserRequest extends FormRequest
             'password'   => $password,
             'address'    => 'required',
             'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
-        ];
-    }
-
-    /**
-     * Get the validation custom messages apply to the request.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'password.regex' => 'Password harus terdiri dari kombinasi huruf besar, huruf kecil, angka dan simbol'
         ];
     }
 }

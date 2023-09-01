@@ -126,31 +126,6 @@ class Controller extends BaseController
         $pengurus   = Pengurus::status()->get();
         $slides     = Slide::orderBy('created_at', 'DESC')->get();
 
-        if (count($slides) < 1) {
-            $slides = collect([
-                (object) [
-                    'judul' => 'Pantai Garassikang',
-                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
-                    'gambar' => '/slide/slide-1.png',
-                ],
-                (object) [
-                    'judul' => 'Batu Siping',
-                    'deskripsi' => 'Lokasi: Karampuang, Desa Garassikang, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
-                    'gambar' => '/slide/slide-2.png',
-                ],
-                (object) [
-                    'judul' => 'Bukit Sinalu Bulu Jaya',
-                    'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
-                    'gambar' => '/slide/slide-3.png',
-                ],
-                (object) [
-                    'judul' => 'Pantai Tamarunang',
-                    'deskripsi' => 'Lokasi: Tamarunang, Pabiringa, Kecamatan Binamu, Kabupaten Jeneponto, Sulawesi Selatan',
-                    'gambar' => '/slide/slide-4.png',
-                ],
-            ]);
-        }
-
         View::share([
             'profil'                 => $this->profil,
             'sebutan_wilayah'        => $this->sebutan_wilayah,

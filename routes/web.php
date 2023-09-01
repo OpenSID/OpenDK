@@ -36,12 +36,12 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 
 // Redirect if apps not installed
-Route::group(['middleware' => 'installed'], function () {
+Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Auth::routes([
         'register' => false,
     ]);
 
-    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+    Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
@@ -205,7 +205,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // FAQ
-                Route::group(['prefix' => 'faq'], function () {
+                Route::group(['prefix' => 'faq', 'excluded_middleware' => 'xss_sanitization'], function () {
                     Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
                     Route::get('getdata', ['as' => 'informasi.faq.getdata', 'uses' => 'FaqController@getDataFaq']);
                     Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
@@ -217,7 +217,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Events
-                Route::group(['prefix' => 'event'], function () {
+                Route::group(['prefix' => 'event', 'excluded_middleware' => 'xss_sanitization'], function () {
                     Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
                     Route::get('show/{event}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
                     Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
@@ -228,7 +228,7 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Artikel
-                Route::group(['prefix' => 'artikel'], function () {
+                Route::group(['prefix' => 'artikel', 'excluded_middleware' => 'xss_sanitization'], function () {
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
                     Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArtikelController@create']);
                     Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArtikelController@store']);
@@ -326,11 +326,11 @@ Route::group(['middleware' => 'installed'], function () {
                 });
 
                 // Jabatan
-                Route::resource('jabatan', 'JabatanController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
                 //Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
-                Route::resource('pengurus', 'PengurusController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {

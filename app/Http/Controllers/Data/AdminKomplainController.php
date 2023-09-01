@@ -245,7 +245,7 @@ class AdminKomplainController extends Controller
         $data_chart = [];
         $status     = ['REVIEW', 'DITOLAK', 'BELUM', 'PROSES', 'SELESAI'];
         $colors     = ['REVIEW' => '#f4f4f4', 'DITOLAK' => '#c9302c', 'BELUM' => '#286090', 'PROSES' => '#ec971f', 'SELESAI' => '#00a65a'];
-        foreach ($status as $key => $value) {
+        foreach ($status as $value) {
             $query_total  = DB::table('das_komplain')
                 ->where('status', '=', $value);
             $total        = $query_total->count();

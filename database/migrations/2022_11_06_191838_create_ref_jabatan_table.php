@@ -53,8 +53,8 @@ class CreateRefJabatanTable extends Migration
         });
 
         $data = [
-            ['nama'=>'Camat', 'jenis'=> JenisJabatan::Camat],
-            ['nama'=>'Sekretaris', 'jenis'=> JenisJabatan::Sekretaris],
+            ['nama' => 'Camat', 'jenis' => JenisJabatan::Camat],
+            ['nama' => 'Sekretaris', 'jenis' => JenisJabatan::Sekretaris],
         ];
 
         Jabatan::insert($data);

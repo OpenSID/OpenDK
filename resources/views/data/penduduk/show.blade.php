@@ -36,16 +36,6 @@
 
                 </div>
                 {!! Form::close() !!}
-                <div class="box-footer with-border">
-                    <div class="float-right">
-                        <div class="btn-group">
-                            <a href="{{ route('data.penduduk.index') }}">
-                                <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

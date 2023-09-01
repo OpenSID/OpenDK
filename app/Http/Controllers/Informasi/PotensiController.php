@@ -69,7 +69,7 @@ class PotensiController extends Controller
         $page_title = 'Potensi';
         $page_description = 'Tambah Potensi';
 
-        return view('informasi.potensi.create', compact('page_title'));
+        return view('informasi.potensi.create', compact('page_title', 'page_description'));
     }
 
     public function store(PotensiRequest $request)
@@ -97,7 +97,7 @@ class PotensiController extends Controller
     public function show(Potensi $potensi)
     {
         $page_title       = 'Potensi';
-        $page_description = 'Potensi : ' . $potensi->nama_potensi;
+        $page_description = 'Detail Potensi';
 
         return view('informasi.potensi.show', compact('page_title', 'page_description', 'potensi'));
     }
@@ -105,7 +105,7 @@ class PotensiController extends Controller
     public function edit(Potensi $potensi)
     {
         $page_title       = 'Potensi';
-        $page_description = 'Ubah Potensi : ' . $potensi->nama_potensi;
+        $page_description = 'Ubah Potensi';
 
         return view('informasi.potensi.edit', compact('page_title', 'page_description', 'potensi'));
     }

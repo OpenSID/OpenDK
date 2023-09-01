@@ -61,6 +61,6 @@ class CreateTableDasPembangunanDokumentasi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_das_pembangunan_dokumentasi');
+        Schema::dropIfExists('das_pembangunan_dokumentasi');
     }
 }

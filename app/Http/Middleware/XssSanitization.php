@@ -29,28 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Spatie\Permission\Models\Role;
+namespace App\Http\Middleware;
 
-class RoleKontributorArtikel extends Migration
+use Closure;
+
+class XssSanitization
 {
     /**
-     * Run the migrations.
+     * Handle an incoming request.
      *
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function up()
+    public function handle($request, Closure $next)
     {
-        Role::create(['name' => 'kontributor-artikel', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
-    }
+        $input = $request->all();
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Role::where(['name' => 'kontributor-artikel', 'guard_name' => 'web'])->delete();
+        array_walk_recursive($input, function (&$input) {
+            $input = strip_tags($input);
+        });
+
+        $request->merge($input);
+
+        return $next($request);
     }
 }

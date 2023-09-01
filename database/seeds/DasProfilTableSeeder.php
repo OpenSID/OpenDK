@@ -44,19 +44,19 @@ class DasProfilTableSeeder extends Seeder
         $socialmedia = [
             0 => [
                 "icon" => "fa fa-facebook",
-                "link"=> null
+                "link" => null
             ],
             1 => [
-                "icon"=> "fa fa-twitter",
-                "link"=> null
+                "icon" => "fa fa-twitter",
+                "link" => null
             ],
             2 => [
-                "icon"=> "fa fa-instagram",
-                "link"=> null
+                "icon" => "fa fa-instagram",
+                "link" => null
             ],
             3 => [
-                "icon"=> "fa fa-youtube",
-                "link"=> null
+                "icon" => "fa fa-youtube",
+                "link" => null
             ],
         ];
 

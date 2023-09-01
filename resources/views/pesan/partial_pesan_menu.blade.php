@@ -58,6 +58,14 @@
 </div>
 @endif
 
+@push('css')
+    <style>
+        .unread{
+            background: lightyellow;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script type="text/javascript">
         $(function () {

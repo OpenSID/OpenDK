@@ -43,7 +43,6 @@ class PesanController extends Controller
 {
     public function index(Request $request)
     {
-        $flag_include_arsip = false;
         $data = collect([]);
         $data->put('page_title', 'Pesan');
         $data->put('desa_id', null);
@@ -96,7 +95,6 @@ class PesanController extends Controller
 
     public function loadPesanKeluar(Request $request)
     {
-        $flag_include_arsip = false;
         $data = collect([]);
         $data->put('desa_id', null);
         $data->put('search_query', '');
@@ -156,7 +154,7 @@ class PesanController extends Controller
     public function readPesan($id_pesan)
     {
         $pesan  = Pesan::findOrFail($id_pesan);
-        if ($pesan->sudah_dibaca === Pesan::BELUM_DIBACA) {
+        if ($pesan->sudah_dibaca == Pesan::BELUM_DIBACA) {
             $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
         }

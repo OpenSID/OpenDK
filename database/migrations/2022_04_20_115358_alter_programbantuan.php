@@ -58,6 +58,8 @@ class AlterProgrambantuan extends Migration
     public function down()
     {
         Schema::table('das_program', function (Blueprint $table) {
+            $table->primary('id');
+            $table->dropUnique(['id', 'desa_id']);
             $table->string('description', 200)->nullable()->change();
             $table->integer('id', true)->nullable(false)->change();
         });

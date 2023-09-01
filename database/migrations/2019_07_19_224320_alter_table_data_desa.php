@@ -56,8 +56,10 @@ class AlterTableDataDesa extends Migration
     public function down()
     {
         Schema::table('das_data_desa', function (Blueprint $table) {
-            $table->string('kecamatan_id', 7)->change();
-            $table->string('desa_id', 10)->change();
+            $table->char('kecamatan_id', 7)->change();
+
+            // seharusnya bernilai 10, tapi jika diset 10 maka data yang ada akan membuat error
+            $table->char('desa_id', 13)->nullable()->change();
         });
     }
 }

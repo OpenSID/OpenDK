@@ -43,8 +43,8 @@ class TambahkanKolomProgrambantuan extends Migration
     public function up()
     {
         Schema::table('das_program', function (Blueprint $table) {
-            $table->Char('desa_id', 13)->after('sasaran')->nullable();
-            $table->tinyInteger('status', false, 1)->after('sasaran')->nullable();
+            $table->char('desa_id', 13)->nullable();
+            $table->tinyInteger('status', false, 1)->nullable();
         });
     }
 

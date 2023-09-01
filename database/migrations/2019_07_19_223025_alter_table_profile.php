@@ -56,8 +56,8 @@ class AlterTableProfile extends Migration
     public function down()
     {
         Schema::table('das_profil', function (Blueprint $table) {
-            $table->string('kabupaten_id', 4)->change();
-            $table->string('kecamatan_id', 7)->change();
+            $table->string('kabupaten_id', 5)->change();
+            $table->string('kecamatan_id', 8)->change();
         });
     }
 }

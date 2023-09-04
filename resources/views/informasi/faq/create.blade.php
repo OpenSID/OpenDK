@@ -44,14 +44,4 @@
 </section>
 @endsection
 
-@include('partials.asset_wysihtml5')
-
-@push('scripts')
-<script>
-    $(function () {
-        // Replace the <textarea id="editor1"> with a CKEditor
-        //bootstrap WYSIHTML5 - text editor
-        $('.textarea').wysihtml5()
-    })
-</script>
-@endpush
+@include('partials.tinymce_min')

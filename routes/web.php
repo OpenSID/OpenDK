@@ -297,7 +297,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
                 // Profil
-                Route::group(['prefix' => 'profil'], function () {
+                Route::group(['prefix' => 'profil', 'excluded_middleware' => 'xss_sanitization'], function () {
                     Route::get('/', ['as' => 'data.profil.index', 'uses' => 'ProfilController@index']);
                     Route::put('update/{id}', ['as' => 'data.profil.update', 'uses' => 'ProfilController@update']);
                     Route::get('success/{id}', ['as' => 'data.profil.success', 'uses' => 'ProfilController@success']);

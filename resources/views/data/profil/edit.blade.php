@@ -57,8 +57,8 @@
 </section>
 @endsection
 
-@include('partials.asset_wysihtml5')
 @include(('partials.asset_select2'))
+@include('partials.tinymce_min')
 @push('scripts')
 @include('partials.profil_select2')
 {!! JsValidator::formRequest('App\Http\Requests\ProfilRequest', '#form-profil') !!}
@@ -113,8 +113,6 @@
         $("#file_logo").change(function () {
             readURL3(this);
         });
-
-        $('.textarea').wysihtml5();
-    })
+    });
 </script>
 @endpush

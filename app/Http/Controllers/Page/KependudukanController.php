@@ -332,7 +332,7 @@ class KependudukanController extends Controller
         $agama  = DB::table('ref_agama')->orderBy('id')->get();
         $colors = [1 => '#dcaf1e', 2 => '#dc9f1e', 3 => '#dc8f1e', 4 => '#dc7f1e', 5 => '#dc6f1e', 6 => '#dc5f1e', 7 => '#dc4f1e'];
         foreach ($agama as $val) {
-            $total =$this->penduduk->getPendudukAktif($did, $year)
+            $total = $this->penduduk->getPendudukAktif($did, $year)
                 ->where('agama_id', $val->id)
                 ->count();
 

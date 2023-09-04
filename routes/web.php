@@ -297,7 +297,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
                 // Profil
-                Route::group(['prefix' => 'profil'], function () {
+                Route::group(['prefix' => 'profil', 'excluded_middleware' => 'xss_sanitization'], function () {
                     Route::get('/', ['as' => 'data.profil.index', 'uses' => 'ProfilController@index']);
                     Route::put('update/{id}', ['as' => 'data.profil.update', 'uses' => 'ProfilController@update']);
                     Route::get('success/{id}', ['as' => 'data.profil.success', 'uses' => 'ProfilController@success']);
@@ -326,11 +326,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // Jabatan
-                Route::resource('jabatan', 'JabatanController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
                 //Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
-                Route::resource('pengurus', 'PengurusController', ['as'=>'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {

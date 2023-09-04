@@ -139,11 +139,11 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
                 'desa_id' => $insert['desa_id'],
                 'semester' => ($dt->format('n') <= 6) ? 1 : 2,
                 'tahun' => $dt->format('Y'),
-                'tidak_tamat_sekolah'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] <= 2)->count(),
-                'tamat_sd'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 3)->count(),
-                'tamat_smp'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 4)->count(),
-                'tamat_sma'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 5)->count(),
-                'tamat_diploma_sederajat'=> $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] >= 6)->count(),
+                'tidak_tamat_sekolah' => $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] <= 2)->count(),
+                'tamat_sd' => $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 3)->count(),
+                'tamat_smp' => $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 4)->count(),
+                'tamat_sma' => $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] == 5)->count(),
+                'tamat_diploma_sederajat' => $collection->filter(fn ($value, $key) => $value['pendidikan_dlm_kk'] >= 6)->count(),
             ]
         );
     }

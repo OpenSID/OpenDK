@@ -49,12 +49,12 @@ class CreateRoleApi extends Migration
         Permission::create(['name' => 'delete', 'guard_name' => 'api']);
 
         $role = [
-            ['name' =>'admin-desa', 'guard_name' => 'api'],
-            ['name' =>'admin-kecamatan', 'guard_name' => 'api'],
-            ['name' =>'admin-puskesmas', 'guard_name' => 'api'],
-            ['name' =>'admin-pendidikan', 'guard_name' => 'api'],
-            ['name' =>'admin-komplain', 'guard_name' => 'api'],
-            ['name' =>'administrator-website', 'guard_name' => 'api'],
+            ['name' => 'admin-desa', 'guard_name' => 'api'],
+            ['name' => 'admin-kecamatan', 'guard_name' => 'api'],
+            ['name' => 'admin-puskesmas', 'guard_name' => 'api'],
+            ['name' => 'admin-pendidikan', 'guard_name' => 'api'],
+            ['name' => 'admin-komplain', 'guard_name' => 'api'],
+            ['name' => 'administrator-website', 'guard_name' => 'api'],
         ];
         foreach ($role as $value) {
             Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);

@@ -89,7 +89,7 @@ class PesanController extends Controller
             }
         }
 
-        return response()->json(['result'=>'unknow method']);
+        return response()->json(['result' => 'unknow method']);
     }
 
     public function getpesan(GetPesanRequest $request)
@@ -111,7 +111,7 @@ class PesanController extends Controller
         ->orWhere('diarsipkan', 1)
         ->get();
 
-        return response()->json(['status' => true, 'data'=>$pesan]);
+        return response()->json(['status' => true, 'data' => $pesan]);
     }
 
     public function detail(Request $request)
@@ -122,7 +122,7 @@ class PesanController extends Controller
             ->where('id', '=', $pesan_id)
             ->first();
 
-            return response()->json(['status' => true, 'data'=>$pesan]);
+            return response()->json(['status' => true, 'data' => $pesan]);
         }
         return response()->json(['status' => true, 'message' => 'Tidak ada Pesan untuk ditampilkan' ]);
     }

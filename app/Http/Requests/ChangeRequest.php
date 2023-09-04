@@ -31,6 +31,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChangeRequest extends FormRequest
@@ -54,8 +55,8 @@ class ChangeRequest extends FormRequest
     {
         return [
             'email' => 'required|unique:users,email',
-            'password' => 'required',
-            'password_confirmation' => 'required_with:password|same:password|min:6'
+            'password' => ['required', 'min:8', 'max:32', new Password()],
+            'password_confirmation' => ['required_with:password', 'same:password', 'min:8', 'max:32', new Password()],
         ];
     }
 }

@@ -29,28 +29,41 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Database\Migrations\Migration;
-use Spatie\Permission\Models\Role;
+namespace App\Rules;
 
-class RoleKontributorArtikel extends Migration
+use Illuminate\Contracts\Validation\Rule;
+
+class Password implements Rule
 {
     /**
-     * Run the migrations.
+     * Create a new rule instance.
      *
      * @return void
      */
-    public function up()
+    public function __construct()
     {
-        Role::create(['name' => 'kontributor-artikel', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        //
     }
 
     /**
-     * Reverse the migrations.
+     * Determine if the validation rule passes.
      *
-     * @return void
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
      */
-    public function down()
+    public function passes($attribute, $value)
     {
-        Role::where(['name' => 'kontributor-artikel', 'guard_name' => 'web'])->delete();
+        return preg_match('/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[.,!$#%]).*$/', $value);
+    }
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return 'Password harus terdiri dari kombinasi huruf besar, huruf kecil, angka dan simbol.';
     }
 }

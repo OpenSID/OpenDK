@@ -5,5 +5,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi.
 #### Perbaikan
 
 
-#### Teknis
+#### Keamanan
+
+1. [#796](https://github.com/OpenSID/OpenDK/issues/796) Penggunaan aturan password yang kuat.
 

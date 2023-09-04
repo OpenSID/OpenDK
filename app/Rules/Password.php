@@ -29,44 +29,41 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Rules;
 
-use App\Rules\Password;
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Rule;
 
-class UserRequest extends FormRequest
+class Password implements Rule
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Create a new rule instance.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function __construct()
     {
-        return true;
+        //
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Determine if the validation rule passes.
      *
-     * @return array
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
      */
-    public function rules()
+    public function passes($attribute, $value)
     {
-        if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
-            $password = '';
-        } else {
-            $id = "";
-            $password = ['required', 'min:8', 'max:32', new Password()];
-        }
-        return [
-            'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'      => 'required|email|unique:users,email' . $id,
-            'phone'      => 'nullable|numeric|digits_between:10,13',
-            'password'   => $password,
-            'address'    => 'required',
-            'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
-        ];
+        return preg_match('/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[.,!$#%]).*$/', $value);
+    }
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return 'Password harus terdiri dari kombinasi huruf besar, huruf kecil, angka dan simbol.';
     }
 }

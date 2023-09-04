@@ -82,7 +82,7 @@ class DataDesaController extends Controller
     public function getDataDesaAjax(Request $request)
     {
         if ($request->ajax()) {
-            return response()->json(['data'=> DataDesa::get()]);
+            return response()->json(['data' => DataDesa::get()]);
         }
     }
 

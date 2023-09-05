@@ -73,6 +73,9 @@
         "allow-plugins": {
             "symfony/thanks": true,
             "php-http/discovery": true
+        },
+        "platform": {
+            "php": "7.4"
         }
     },
     "extra": {

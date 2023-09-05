@@ -27,7 +27,6 @@
                         <tr>
                             <th style="max-width: 150px;">Aksi</th>
                             <th>Pertanyaan</th>
-                            <th>Jawaban</th>
                             <th style="max-width: 100px;">Status</th>
                         </tr>
                     </thead>
@@ -50,10 +49,9 @@
             columns: [
                 {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
                 {data: 'question', name: 'question'},
-                {data: 'answer', name: 'answer'},
                 {data: 'status', name: 'status', class: 'text-center', searchable: false, orderable: false},
             ],
-            order: [[3, 'desc']]
+            order: [[2, 'desc']]
         });
     });
 </script>

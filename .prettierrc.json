@@ -6,6 +6,7 @@
       "options": {
         "bracketSameLine": true,
         "parser": "blade",
+        "printWidth": 300,
         "singleAttributePerLine": true,
         "tabWidth": 4,
         "wrapAttributesMinAttrs": 7

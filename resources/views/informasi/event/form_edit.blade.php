@@ -62,7 +62,7 @@
         };
 
         //Datetimepicker
-        $('#waktu').daterangepicker({ timePicker: true, locale: { format: 'YYYY/MM/D HH:mm' }})
+        $('#waktu').daterangepicker({ timePicker: true, timePicker24Hour: true, locale: { format: 'YYYY/MM/D HH:mm' }})
     });
 </script>
 @endpush

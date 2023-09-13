@@ -7,11 +7,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Mulai / Selesai<span class="required">*</span></label>
     <div class="col-md-2 col-sm-4 col-xs-6">
-        {!! Form::text('start', null, ['placeholder' => 'Mulai kegiatan','class' => 'form-control datetime', 'required'=>true]) !!}
-    </div>
-
-    <div class="col-md-2 col-sm-4 col-xs-6">
-        {!! Form::text('end', null, ['placeholder' => 'Selesai kegiatan','class' => 'form-control datetime', 'required'=>true]) !!}
+        {!! Form::text('waktu', null, ['id' => 'waktu', 'placeholder' => 'Waktu kegiatan','class' => 'form-control', 'required'=>true]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -38,6 +34,7 @@
 <div class="ln_solid"></div>
 
 @include('partials.asset_jqueryvalidation')
+@include('partials.asset_daterangepicker')
 
 @push('scripts')
 {!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
@@ -63,6 +60,9 @@
                 </div>
             `);
         };
+
+        //Datetimepicker
+        $('#waktu').daterangepicker({ timePicker: true, locale: { format: 'YYYY/MM/D HH:mm' }})
     });
 </script>
 @endpush

@@ -58,7 +58,11 @@ class EventController extends Controller
     public function store(EventRequest $request)
     {
         try {
+            $waktu = explode("-", $request->waktu);
+
             $input = $request->input();
+            $input['start']  = date('Y-m-d H:i', strtotime($waktu[0]));
+            $input['end']    = date('Y-m-d H:i', strtotime($waktu[1]));
             $input['status'] = 'OPEN';
             Event::create($input);
         } catch (\Exception $e) {
@@ -73,6 +77,7 @@ class EventController extends Controller
     {
         $page_title       = 'Event';
         $page_description = 'Ubah Event';
+        $event->waktu     = $event->start . ' - ' . $event->end;
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }
@@ -80,6 +85,7 @@ class EventController extends Controller
     public function update(EventRequest $request, Event $event)
     {
         try {
+            $waktu = explode("-", $request->waktu);
             $input = $request->all();
 
             if ($request->hasFile('attachment')) {
@@ -90,6 +96,8 @@ class EventController extends Controller
                 $lampiran->move(base_path('public/'.$path), $fileName);
                 $input['attachment'] = $path . $fileName;
             }
+            $input['end']    = date('Y-m-d H:i', strtotime($waktu[1]));
+            $input['start']  = date('Y-m-d H:i', strtotime($waktu[0]));
 
             $event->update($input);
         } catch (\Exception $e) {

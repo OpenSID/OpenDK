@@ -8,6 +8,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi.
 #### Penyesuaian Teknis
 1. [#797](https://github.com/OpenSID/OpenDK/issues/797) Penyesuaian editor menggunakan tinymce pada form profil keacamtan.
 2. [#828](https://github.com/OpenSID/OpenDK/issues/828) Penyesuaian editor menggunakan tinymce pada form faq.
+3. 
 
 #### Peningkatan Keamanan
 

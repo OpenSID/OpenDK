@@ -60,7 +60,8 @@ class AlterProgrambantuan extends Migration
         Schema::table('das_program', function (Blueprint $table) {
             $table->primary('id');
             $table->dropUnique(['id', 'desa_id']);
-            $table->string('description', 200)->nullable()->change();
+            // ini menyebabkan error ketika rollback, karena datanya dipaksa dipotong
+            // $table->string('description', 200)->nullable()->change();
             $table->integer('id', true)->nullable(false)->change();
         });
     }

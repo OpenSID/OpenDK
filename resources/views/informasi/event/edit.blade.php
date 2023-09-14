@@ -52,14 +52,6 @@
         // Replace the <textarea id="editor1"> with a CKEditor
         //bootstrap WYSIHTML5 - text editor
         $('.textarea').wysihtml5()
-
-        //Datetimepicker
-        $('.datetime').each(function () {
-            var $this = $(this);
-            $this.datetimepicker({
-                format: 'YYYY-MM-D HH:mm'
-            });
-        });
     })
 </script>
 @endpush

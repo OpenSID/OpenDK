@@ -45,7 +45,7 @@ use Carbon\Carbon;
 
                             <div class="timeline-item">
                                 <span class="time bg-blue label"><i class="fa fa-clock-o"></i>
-                                    {{ Carbon::parse($value->start)->format('d M Y, H:m') }} s/d {{ Carbon::parse($value->end)->format('d M Y, H:m') }}</span>
+                                    {{ Carbon::parse($value->start)->format('d M Y, H:i') }} s/d {{ Carbon::parse($value->end)->format('d M Y, H:i') }}</span>
 
                                 <h3 class="timeline-header">{{ $value->event_name }}</h3>
 

@@ -6,7 +6,7 @@
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Mulai / Selesai<span class="required">*</span></label>
-    <div class="col-md-2 col-sm-4 col-xs-6">
+    <div class="col-md-3 col-sm-8 col-xs-12">
         {!! Form::text('waktu', null, ['id' => 'waktu', 'placeholder' => 'Waktu kegiatan','class' => 'form-control', 'required'=>true]) !!}
     </div>
 </div>

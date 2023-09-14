@@ -240,8 +240,6 @@ return [
         App\Providers\EventServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // iSeed
-        Orangehill\Iseed\IseedServiceProvider::class,
         //Captcha
         Mews\Captcha\CaptchaServiceProvider::class,
 

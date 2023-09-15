@@ -70,7 +70,7 @@
     </section>
 @endsection
 
-@include('partials.asset_wysihtml5')
+@include('partials.tinymce_min')
 @include('partials.asset_select2')
 @include('partials.asset_sweetalert')
 @include('partials.asset_leaflet')
@@ -155,7 +155,6 @@
                 }
             });
         }
-        $('.textarea').wysihtml5();
 
         var overlayLayers = {};
 

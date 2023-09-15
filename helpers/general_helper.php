@@ -32,6 +32,7 @@
 use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Parsing url image dari rss feed description
@@ -370,4 +371,60 @@ function terbilang($angka)
     }
 
     return $terbilang;
+}
+
+/**
+ * Cek ada koneksi internet.
+ *
+ * @param string $sCheckHost Default: www.google.com
+ *
+ * @return bool
+ */
+function cek_koneksi_internet($sCheckHost = 'www.google.com')
+{
+    $connected = @fsockopen($sCheckHost, 80, $errno, $errstr, 5);
+
+    if ($connected) {
+        fclose($connected);
+
+        return true;
+    }
+
+    Log::debug('Gagal menghubungi ' . $sCheckHost . ' dengan status error ' . $errno . ' - ' . $errstr);
+
+    return false;
+}
+
+/**
+ * Cek akses website.
+ *
+ * @param string $url
+ *
+ * @return bool
+ */
+if (! function_exists('checkWebsiteAccessibility')) {
+    function checkWebsiteAccessibility($url)
+    {
+        $options = [
+            'http' => [
+                'method'  => 'GET',
+                'timeout' => 3,
+            ],
+        ];
+        $context = stream_context_create($options);
+        $headers = @get_headers($url, 0, $context);
+
+        if ($headers) {
+            $status = substr($headers[0], 9, 3);
+            if ($status == '200') {
+                return true;
+            }
+
+            $status = "(Status: {$status})";
+        }
+
+        Log::debug("Website tidak dapat diakses");
+
+        return false;
+    }
 }

@@ -374,28 +374,6 @@ function terbilang($angka)
 }
 
 /**
- * Cek ada koneksi internet.
- *
- * @param string $sCheckHost Default: www.google.com
- *
- * @return bool
- */
-function cek_koneksi_internet($sCheckHost = 'www.google.com')
-{
-    $connected = @fsockopen($sCheckHost, 80, $errno, $errstr, 5);
-
-    if ($connected) {
-        fclose($connected);
-
-        return true;
-    }
-
-    Log::debug('Gagal menghubungi ' . $sCheckHost . ' dengan status error ' . $errno . ' - ' . $errstr);
-
-    return false;
-}
-
-/**
  * Cek akses website.
  *
  * @param string $url

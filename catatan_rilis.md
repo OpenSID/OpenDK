@@ -12,6 +12,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi.
 2. [#828](https://github.com/OpenSID/OpenDK/issues/828) Penyesuaian editor menggunakan tinymce pada form faq.
 3. [#838](https://github.com/OpenSID/OpenDK/issues/838) Penyesuaian package yang tidak digunakan.
 4. [#828](https://github.com/OpenSID/OpenDK/issues/828) Penyesuaian editor menggunakan tinymce pada form event.
+4. [#854](https://github.com/OpenSID/OpenDK/issues/854) Penyesuaian editor menggunakan tinymce pada form data umum.
 
 #### Peningkatan Keamanan
 

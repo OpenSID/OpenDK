@@ -7,7 +7,7 @@
                     <input id="provinsi_id" class="form-control" placeholder="00" type="text" readonly value="{{ $profil->provinsi_id }}"/>
                     <input id="nama_provinsi" type="hidden" name="nama_provinsi" value="{{ $profil->nama_provinsi }}"/>
                 @else
-                    <input name="provinsi_id" class="form-control" placeholder="00" type="text" value="{{ $profil->provinsi_id }}"/>
+                    <input id="provinsi_offline" name="provinsi_id" class="form-control" placeholder="00" type="text" value="{{ $profil->provinsi_id }}"/>
                 @endif
             </div>
             <div class="col-md-5 col-sm-6 col-xs-12">
@@ -31,7 +31,7 @@
                     <input id="kabupaten_id" class="form-control" placeholder="00.00" type="text" readonly value="{{ $profil->kabupaten_id }}"/>
                     <input id="nama_kabupaten" type="hidden" name="nama_kabupaten" value="{{ $profil->nama_kabupaten }}"/>
                 @else
-                    <input name="kabupaten_id" class="form-control" placeholder="00.00" type="text" value="{{ $profil->kabupaten_id }}"/>
+                    <input id="kabupaten_offline" name="kabupaten_id" class="form-control" placeholder="00.00" type="text" value="{{ $profil->kabupaten_id }}"/>
                 @endif
                 </div>
                 <div class="col-md-5 col-sm-6 col-xs-12">
@@ -55,7 +55,7 @@
                     <input id="kecamatan_id" class="form-control" placeholder="00.00.00" type="text" readonly value="{{ $profil->kecamatan_id }}"/>
                     <input id="nama_kecamatan" type="hidden" name="nama_kecamatan" value="{{ $profil->nama_kecamatan }}"/>
                 @else
-                    <input name="kecamatan_id" class="form-control" placeholder="00.00.00" type="text" value="{{ $profil->kecamatan_id }}"/>
+                    <input id="kecamatan_offline" name="kecamatan_id" class="form-control" placeholder="00.00.00" type="text" value="{{ $profil->kecamatan_id }}"/>
                 @endif
                 </div>
                 <div class="col-md-5 col-sm-6 col-xs-12">

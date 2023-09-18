@@ -59,10 +59,15 @@
 
 @include(('partials.asset_select2'))
 @include('partials.tinymce_min')
+@include('partials.asset_inputmask')
+
 @push('scripts')
 @include('partials.profil_select2')
 {!! JsValidator::formRequest('App\Http\Requests\ProfilRequest', '#form-profil') !!}
 <script>
+
+    $('#kabupaten_offline').inputmask('99.99');
+    $('#kecamatan_offline').inputmask('99.99.99');
 
     $(function () {
 

@@ -41,7 +41,6 @@ class Jabatan extends Model
     protected $fillable = [
         'nama',
         'tupoksi',
-        'jenis',
     ];
 
     /**

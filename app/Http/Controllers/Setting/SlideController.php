@@ -57,7 +57,6 @@ class SlideController extends Controller
             })
             ->editColumn('judul', function ($row) {
                 return $row->judul;
-                return $row->deskripsi;
             })->make();
     }
 

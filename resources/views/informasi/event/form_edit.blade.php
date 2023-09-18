@@ -1,13 +1,13 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Kegiatan <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Form::text('event_name', null, ['placeholder' => 'Nama kegiatan','class' => 'form-control', 'required'=>true]) !!}
+        {!! Form::text('event_name', null, ['placeholder' => 'Nama kegiatan', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Mulai / Selesai<span class="required">*</span></label>
     <div class="col-md-3 col-sm-8 col-xs-12">
-        {!! Form::text('waktu', null, ['id' => 'waktu', 'placeholder' => 'Waktu kegiatan','class' => 'form-control', 'required'=>true]) !!}
+        {!! Form::text('waktu', null, ['id' => 'waktu', 'placeholder' => 'Waktu kegiatan', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -19,13 +19,13 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Orang yang hadir <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Form::text('attendants', null, ['placeholder' => 'contoh: BAPENAS, GUBERNUR, CAMAT','class' => 'form-control', 'required'=>true]) !!}
+        {!! Form::text('attendants', null, ['placeholder' => 'contoh: BAPENAS, GUBERNUR, CAMAT', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Status <span class="required">*</span></label>
     <div class="col-md-2 col-sm-8 col-xs-12">
-        {!! Form::select('status', ['OPEN' => 'Open', 'CLOSED' => 'Closed'],null, ['class' => 'form-control', 'required'=>true, 'id'=> 'status']) !!}
+        {!! Form::select('status', ['OPEN' => 'Open', 'CLOSED' => 'Closed'], null, ['class' => 'form-control', 'required' => true, 'id' => 'status']) !!}
     </div>
 </div>
 <div id="attachment_input" class="form-group">
@@ -37,8 +37,8 @@
 @include('partials.asset_daterangepicker')
 
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
-<script type="application/javascript">
+    {!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
+    <script type="application/javascript">
     $(document).ready(function () {
         if ($('#status').val() == 'CLOSED') {
             add_atachment();

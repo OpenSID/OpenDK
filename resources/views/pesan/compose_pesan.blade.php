@@ -44,7 +44,7 @@
                                 'class' => 'textarea',
                                 'placeholder' => 'Isi Pesan',
                                 'style' => 'width: 100%;
-                                                                         height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                                                                                                     height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
                             ]) !!}
                         </div>
                     </div>

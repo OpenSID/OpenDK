@@ -120,13 +120,13 @@
 
         function das_chart_anggaran(mid, did, year) {
 
-            $.ajax('{!!  route('statistik.chart-anggaran-desa') !!}', {
-                    data: {
-                        mid: mid,
-                        did: did,
-                        y: year
-                    }
-                }).done(function(data) {
+            $.ajax('{!! route('statistik.chart-anggaran-desa') !!}', {
+                data: {
+                    mid: mid,
+                    did: did,
+                    y: year
+                }
+            }).done(function(data) {
                 create_chart_anggaran(data.grafik);
                 alert
                 $('#detail_anggaran').html(data.detail);
@@ -269,7 +269,5 @@
                 wedge.parentNode.appendChild(wedge);
             }
         }
-
     </script>
-
 @endpush

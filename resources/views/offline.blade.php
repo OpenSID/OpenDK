@@ -2341,12 +2341,8 @@
     </script>
     <div id="main-frame-error" class="interstitial-wrapper" jstcache="0">
         <div class="onlyforchrome" style="font-size: 30px;text-align: center;font-family: Helvetica;">Running T-Rex</div>
-        <div class="onlyforchrome"
-            style="margin-top:5px;text-align:center;color:#8a8a8a;margin-bottom:80px; font-size:.8em;line-height:1.2em;font-family: Georgia;"
-        ><a href="http://www.thecodepost.org/internet/play-hidden-t-rex-game-offline-chrome/"
-                target="_blank"><strong>T-Rex Dino game</strong></a> from Google Chrome offline mode ripped by <a
-                href="http://www.twitter.com/thecodepost" target="_blank"
-            ><strong>@thecodepost</strong></a>.<br /> Press "Space" to jump your Dino and start the game.</div>
+        <div class="onlyforchrome" style="margin-top:5px;text-align:center;color:#8a8a8a;margin-bottom:80px; font-size:.8em;line-height:1.2em;font-family: Georgia;"><a href="http://www.thecodepost.org/internet/play-hidden-t-rex-game-offline-chrome/" target="_blank"><strong>T-Rex Dino
+                    game</strong></a> from Google Chrome offline mode ripped by <a href="http://www.twitter.com/thecodepost" target="_blank"><strong>@thecodepost</strong></a>.<br /> Press "Space" to jump your Dino and start the game.</div>
         <div id="main-frame-notchrome" style="display:none; margin-top:50px;">Sorry, this game only runs on the Google
             Chrome! You can download it free <a href="https://www.google.com/chrome">here</a></div>
         <div id="offline-resources" jstcache="0">
@@ -2359,10 +2355,7 @@
                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGYAAAAjCAMAAABRlI+PAAAADFBMVEX////////39/dTU1PhglcSAAAAAXRSTlMAQObYZgAAAPNJREFUeF7tlkEKwzAMBLXr//+5iQhU7gRRQkyhZI+DhwH74jhmO+oIJBVwURljuAXagG5QqkSgBLqg3JnxJ1Cb8SmQ3o6gpO85owGlOB4m2BNKJ11BSd01owGlOHkcIAuHkz6UNpPKgozPM54dADHjJuNhZiJxdQCQgZJeBczgCAAy3yhPJvcnmdC9mZwBIsQMFV5AkzHBNknFgcKM+oyDIFcfCAoy03m+jSMIcmoVZkKqSjr1fghyahRmoKRUHYLiSI1SMlCq5CDgX6BXmKkfn+oQ0KEyyrzoy8GbXJ9xrM/YjhUZgl9nnsyTCe9rgSRdV15CwRcIEu8GGQAAAABJRU5ErkJggg=="
                     jstcache="0"
                 >
-                <img id="1x-cloud"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAOCAQAAAD6HOaKAAAAU0lEQVR4XrWSsQkAQAgD3X9El/ELixQpJHCfdApnUCtXz7o49cgagaGPaq4rIwAP9s/C7R7UX3inJ0BDb6qWDC7ScOR/QWjRlFizuPwLtTLj+qkH6DjD2wLtikUAAAAASUVORK5CYII="
-                    jstcache="0"
-                >
+                <img id="1x-cloud" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAOCAQAAAD6HOaKAAAAU0lEQVR4XrWSsQkAQAgD3X9El/ELixQpJHCfdApnUCtXz7o49cgagaGPaq4rIwAP9s/C7R7UX3inJ0BDb6qWDC7ScOR/QWjRlFizuPwLtTLj+qkH6DjD2wLtikUAAAAASUVORK5CYII=" jstcache="0">
                 <img id="1x-text"
                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAL8AAAAYAgMAAADWncTDAAAABlBMVEX///9TU1NYzE1OAAAAAXRSTlMAQObYZgAAAO1JREFUeF690TFqxUAQA1BNoRtk7jMu3E9Auv9Vgr/5A863Y9zEhVhkHmhZsEGkw4Lppmllh1tcLHx+aRj2YnEDuQFvcQW+EoZY0TQLCZbEVxRxAvY+i8ikW0C0bwFdbictG2zvu/4EcCuBF0B23IBsQHZBYgm1n86BN+BmyV5rQFyCJAiDJSTfgBV9BbjvXdzIcKchpMOYd3gO/jvCeuUGFALg95J0/SrtQlrzz+sAjDwCIQsbWAdgbqrQpKYRjmPuAfU5dMC+c0rxOTiO+T6ZlK4pbcDLI1DIRaf3GxDGALkQHnD+cGhMKeox+AEOL3mLO7TQZgAAAABJRU5ErkJggg=="
                     jstcache="0"
@@ -2375,10 +2368,7 @@
                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAAvAgMAAABiRrxWAAAADFBMVEX///9TU1P39/f///+TS9URAAAAAXRSTlMAQObYZgAAAPpJREFUeF7d0jFKRkEMhdGLMM307itNLALyVmHvJuzTDMjdn72E95PGFEZSmeoU4YMMgxhskvQec8YSVFX1NhGcS5ywtbmC8khcZeKq+ZWJ4F8Sr2+ZCErjkJFEfcjAc/6/BMlfcz6xHdhRthYzIZhIHMcTVY1scUUiAphK8CMSPUbieTBhvD9Lj0vyV4wklEGzHpciKGOJoBp7XDcFs4kWxxM7Ey3iZ8JbzASAvMS7XLOJHTTvEkEZSeQl7DMuwVyCasqK5+XzQRYLUJlMbPXjFcn3m8eKBSjWZMJwvGIOvViAzCbUj1VEDoqFOEQGE3SyInJQLOQMJL4B7enP1UbLXJQAAAAASUVORK5CYII="
                     jstcache="0"
                 >
-                <img id="1x-restart"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAgCAQAAADQmBIFAAAAZklEQVR4Xu3WMQoAIAxDUe/Y+58jYwV1CwQJWQT5o/DAoaWjV2i/LRym/A5FjEsR41LPQchByEHwIVAEC4gZpghmSDP8egXpr/hQZaAKQFQe+pBOQAblDC336qrlPpSg0MEjInbWTLFFmwc8TpTAAAAAAElFTkSuQmCC"
-                    jstcache="0"
-                >
+                <img id="1x-restart" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAgCAQAAADQmBIFAAAAZklEQVR4Xu3WMQoAIAxDUe/Y+58jYwV1CwQJWQT5o/DAoaWjV2i/LRym/A5FjEsR41LPQchByEHwIVAEC4gZpghmSDP8egXpr/hQZaAKQFQe+pBOQAblDC336qrlPpSg0MEjInbWTLFFmwc8TpTAAAAAAElFTkSuQmCC" jstcache="0">
             </div>
             <div id="offline-resources-2x" jstcache="0">
                 <img id="2x-obstacle-large"
@@ -2389,8 +2379,7 @@
                     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAABGBAMAAAByJ2Z/AAAADFBMVEX///9TU1P39/f///+TS9URAAAAAXRSTlMAQObYZgAAARZJREFUeF7t2NEJwzAQg2GtcCtoBe2/W6k5aK8qLgR6ToL9KPzzgR+NPCRRjg2ScjiQ9DKMCE4HRYQOJB2MJyXyQWPQgeSCDD8HnYHh10F6NbJk9KyMwpJ+hkEfnoSyGX1NUmAOqVjSz4zrNgwhm9FbMmEyuS7DpQw/Gf5kOGEYXMgwWBobnGHQmZKsYuyKDcZk8gdmM5uJMzKbgS7I5KENgJzxxN95PUMfAKi8gCXO6BQM4cM4ysEZwplyfxFDErAhmWniDKT3pJEpD2RDMpPEGUt6mOIQ1XFGmiXOZNLIgKUpgzH4lTgDtDIgmY0NznhSnWhk/v2ZkuONGOI2DEn0MNf7ttvMZjazmc2AJDkdJOlQ0sk8AC45t4r28J0GAAAAAElFTkSuQmCC"
                     jstcache="0"
                 >
-                <img id="2x-cloud"
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAAAcAgMAAACR2TCnAAAABlBMVEUAAADa2to4qB92AAAAAXRSTlMAQObYZgAAAFFJREFUeF6VzTEKAFEIxNA03m+a3P8q2wqi/E35BIdeGXq3q5hnrwBs7mC5vIZzu/nnqI319vRtqHB731blwSHjx+22+Rdn94rzQq0ugKPVlz5onyJcGdu0NgAAAABJRU5ErkJggg=="
+                <img id="2x-cloud" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAAAcAgMAAACR2TCnAAAABlBMVEUAAADa2to4qB92AAAAAXRSTlMAQObYZgAAAFFJREFUeF6VzTEKAFEIxNA03m+a3P8q2wqi/E35BIdeGXq3q5hnrwBs7mC5vIZzu/nnqI319vRtqHB731blwSHjx+22+Rdn94rzQq0ugKPVlz5onyJcGdu0NgAAAABJRU5ErkJggg=="
                     jstcache="0"
                 >
                 <img id="2x-text"
@@ -2432,23 +2421,14 @@
         </script>
 
         <div class="onlyforchrome">
-            <div id="socialbutts" class="addthis_toolbox addthis_default_style"
-                style="text-align:center; padding-top:65px;"
-            >
+            <div id="socialbutts" class="addthis_toolbox addthis_default_style" style="text-align:center; padding-top:65px;">
                 <table border="0" style="margin:0 auto;">
                     <tr>
                         <td>
                             <div class="fb-like" data-share="false" data-width="150" data-show-faces="false">
                             </div>
                         </td>
-                        <td><a
-                                href="https://twitter.com/share"
-                                class="twitter-share-button"
-                                data-url="http://apps.thecodepost.org/trex/trex.html"
-                                data-text="Cool Hidden T-Rex game"
-                                data-via="thecodepost"
-                                data-hashtags="trexgame"
-                            >Tweet</a>
+                        <td><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://apps.thecodepost.org/trex/trex.html" data-text="Cool Hidden T-Rex game" data-via="thecodepost" data-hashtags="trexgame">Tweet</a>
                             <script>
                                 ! function(d, s, id) {
                                     var js, fjs = d.getElementsByTagName(s)[0],
@@ -2462,15 +2442,11 @@
                                 }(document, 'script', 'twitter-wjs');
                             </script>
                         </td>
-                        <td><a href="https://twitter.com/thecodepost" class="twitter-follow-button"
-                                data-show-count="false"
-                            >Follow @thecodepost</a>
+                        <td><a href="https://twitter.com/thecodepost" class="twitter-follow-button" data-show-count="false">Follow @thecodepost</a>
                             <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
                         </td>
                         <td style="padding-left:15px;">
-                            <div class="g-plusone" data-size="medium"
-                                data-href="http://apps.thecodepost.org/trex/trex.html"
-                            ></div>
+                            <div class="g-plusone" data-size="medium" data-href="http://apps.thecodepost.org/trex/trex.html"></div>
                         </td>
                     </tr>
                 </table>

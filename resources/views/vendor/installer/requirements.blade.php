@@ -11,11 +11,11 @@
 
 @section('container')
 
-    @foreach($requirements['requirements'] as $type => $requirement)
+    @foreach ($requirements['requirements'] as $type => $requirement)
         <ul class="list">
             <li class="list__item list__title {{ $phpSupportInfo['supported'] ? 'success' : 'error' }}">
                 <strong>{{ ucfirst($type) }}</strong>
-                @if($type == 'php')
+                @if ($type == 'php')
                     <strong>
                         <small>
                             (version {{ $phpSupportInfo['minimum'] }} required)
@@ -29,7 +29,7 @@
                     </span>
                 @endif
             </li>
-            @foreach($requirements['requirements'][$type] as $extention => $enabled)
+            @foreach ($requirements['requirements'][$type] as $extention => $enabled)
                 <li class="list__item {{ $enabled ? 'success' : 'error' }}">
                     {{ $extention }}
                     <i class="fa fa-fw fa-{{ $enabled ? 'check-circle-o' : 'exclamation-circle' }} row-icon" aria-hidden="true"></i>
@@ -38,7 +38,7 @@
         </ul>
     @endforeach
 
-    @if ( ! isset($requirements['errors']) && $phpSupportInfo['supported'] )
+    @if (!isset($requirements['errors']) && $phpSupportInfo['supported'])
         <div class="buttons">
             <a class="button" href="{{ route('LaravelInstaller::permissions') }}">
                 {{ trans('installer_messages.requirements.next') }}

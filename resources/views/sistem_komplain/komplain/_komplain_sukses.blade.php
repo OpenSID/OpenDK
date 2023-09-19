@@ -1,8 +1,11 @@
 @php
-use App\Models\Komplain;
-
-$komplains = Komplain::where('status', '=', 'SELESAI')->orderBy('created_at', 'desc')->limit(5)->get();
-
+    use App\Models\Komplain;
+    
+    $komplains = Komplain::where('status', '=', 'SELESAI')
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get();
+    
 @endphp
 
 <!-- Success Box -->
@@ -15,8 +18,8 @@ $komplains = Komplain::where('status', '=', 'SELESAI')->orderBy('created_at', 'd
     <!-- /.box-header -->
     <div class="box-body no-padding">
         <ul class="nav nav-pills nav-stacked">
-            @if(count($komplains) > 0 )
-                @foreach($komplains as $item)
+            @if (count($komplains) > 0)
+                @foreach ($komplains as $item)
                     <li><a href="{{ route('sistem-komplain.komplain', $item->slug) }}"><i class="fa fa-comment"></i> {{ $item->judul }}</a></li>
                 @endforeach
             @else
@@ -25,7 +28,7 @@ $komplains = Komplain::where('status', '=', 'SELESAI')->orderBy('created_at', 'd
         </ul>
     </div>
     <!-- /.box-body -->
-    @if(count($komplains) > 0 )
+    @if (count($komplains) > 0)
         <div class="box-footer">
             <a href="{{ route('sistem-komplain.komplain-sukses') }}" class="footer">Lihat Semua</a>
         </div>

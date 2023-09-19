@@ -373,6 +373,21 @@ function terbilang($angka)
     return $terbilang;
 }
 
+if (!function_exists('sudahInstal')) {
+    /**
+     * Cek apakah sudah install OpenDK atau belum
+     *
+     * @return bool True jika sudah install, False jika belum install
+     */
+    function sudahInstal(): bool
+    {
+        if (! file_exists(storage_path('installed'))) {
+            return false;
+        }
+        return true;
+    }
+}
+
 /**
  * Cek akses website.
  *

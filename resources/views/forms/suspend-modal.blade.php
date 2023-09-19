@@ -10,8 +10,8 @@
             </div>
             <div class="modal-footer">
                 {!! Form::open(['id' => 'suspend', 'method' => 'POST']) !!}
-                    <a id="suspend-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
-                    {!! Form::submit('Tangguhkan', ['class' => 'btn btn-warning']) !!}
+                <a id="suspend-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
+                {!! Form::submit('Tangguhkan', ['class' => 'btn btn-warning']) !!}
                 {!! Form::close() !!}
             </div>
         </div>
@@ -22,8 +22,8 @@
 
         $(document).on('click', '#suspendModal', function(e) {
             var url = $(this).attr('data-href');
-            $('#suspend').attr('action', url );
-            $('#import').attr( 'method', 'post' );
+            $('#suspend').attr('action', url);
+            $('#import').attr('method', 'post');
             $('#suspend-modal').modal('show');
             e.preventDefault();
         });

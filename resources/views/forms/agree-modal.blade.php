@@ -11,8 +11,8 @@
                 {{ Form::select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, ['class' => 'form-control']) }}
             </div>
             <div class="modal-footer">
-                    <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
-                    {!! Form::submit('Simpan', [ 'class' => 'btn btn-warning waves-effect waves-light' ]) !!}
+                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
+                {!! Form::submit('Simpan', ['class' => 'btn btn-warning waves-effect waves-light']) !!}
             </div>
             {!! Form::close() !!}
         </div>
@@ -20,13 +20,13 @@
 </div>
 <script>
     $(document).ready(function() {
-         var _trSelected;   
-         $(document).on('click', '#agreeModal', function(e) {
+        var _trSelected;
+        $(document).on('click', '#agreeModal', function(e) {
             var url = $(this).attr('data-href');
             _trSelected = $(this).closest('tr');
-            $('#agree').attr('action', url );
-            $('#import').attr( 'method', 'post' );
-            $('#agree-modal').modal('show');            
+            $('#agree').attr('action', url);
+            $('#import').attr('method', 'post');
+            $('#agree-modal').modal('show');
             e.preventDefault();
         })
 

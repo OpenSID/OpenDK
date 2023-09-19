@@ -37,8 +37,8 @@
     <label for="semester" class="control-label col-md-4 col-sm-3 col-xs-12">Semester</label>
     <div class="col-md-4">
         <select class="form-control" id="semester" name="semester">
-            <option value="1" @if($pendidikan->semester === 1) {{ 'selected' }} @endif>Semester 1</option>
-            <option value="2" @if($pendidikan->semester === 2) {{ 'selected' }} @endif>Semester 2</option>
+            <option value="1" @if ($pendidikan->semester === 1) {{ 'selected' }} @endif>Semester 1</option>
+            <option value="2" @if ($pendidikan->semester === 2) {{ 'selected' }} @endif>Semester 2</option>
         </select>
     </div>
 </div>
@@ -47,8 +47,8 @@
     <label for="list_year" class="control-label col-md-4 col-sm-3 col-xs-12">Tahun</label>
     <div class="col-md-4">
         <select class="form-control" id="list_year" name="tahun">
-            @foreach(years_list() as $year)
-                @if($pendidikan->tahun == $year)
+            @foreach (years_list() as $year)
+                @if ($pendidikan->tahun == $year)
                     <option selected value="{{ $year }}">{{ $year }}</option>
                 @else
                     <option value="{{ $year }}">{{ $year }}</option>

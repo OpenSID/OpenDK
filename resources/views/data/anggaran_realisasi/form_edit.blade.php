@@ -38,11 +38,11 @@
     <label for="bulan" class="control-label col-md-4 col-sm-3 col-xs-12">Bulan</label>
     <div class="col-md-3">
         <select class="form-control" id="bulan" name="bulan">
-            @foreach(months_list() as $key=> $month)
-                @if($anggaran->bulan == $key)
-                <option selected value="{{ $key }}">{{ $month }}</option>
+            @foreach (months_list() as $key => $month)
+                @if ($anggaran->bulan == $key)
+                    <option selected value="{{ $key }}">{{ $month }}</option>
                 @else
-                <option value="{{ $key }}">{{ $month }}</option>
+                    <option value="{{ $key }}">{{ $month }}</option>
                 @endif
             @endforeach
         </select>
@@ -53,11 +53,11 @@
     <label for="list_year" class="control-label col-md-4 col-sm-3 col-xs-12">Tahun</label>
     <div class="col-md-3">
         <select class="form-control" id="list_year" name="tahun">
-            @foreach(years_list() as $year)
-                @if($anggaran->tahun == $year)
-                <option selected value="{{ $year }}">{{ $year }}</option>
+            @foreach (years_list() as $year)
+                @if ($anggaran->tahun == $year)
+                    <option selected value="{{ $year }}">{{ $year }}</option>
                 @else
-                <option value="{{ $year }}">{{ $year }}</option>
+                    <option value="{{ $year }}">{{ $year }}</option>
                 @endif
             @endforeach
         </select>

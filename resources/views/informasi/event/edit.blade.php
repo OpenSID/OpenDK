@@ -1,29 +1,29 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('informasi.event.index') }}">Daftar Event</a></li>
-        <li class="active">{{ $page_description }}</li>
-    </ol>
-</section>
+    <section class="content-header">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{{ route('informasi.event.index') }}">Daftar Event</a></li>
+            <li class="active">{{ $page_description }}</li>
+        </ol>
+    </section>
 
-<section class="content container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
 
                     <!-- form start -->
-                    {!!  Form::model($event, [ 'route' => ['informasi.event.update', $event->id], 'method' => 'post','id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files'=>true] ) !!}
+                    {!! Form::model($event, ['route' => ['informasi.event.update', $event->id], 'method' => 'post', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
-                        @include( 'flash::message' )
+                        @include('flash::message')
                         @include('informasi.event.form_edit')
                     </div>
                     <!-- /.box-body -->
@@ -38,11 +38,11 @@
                         </div>
                     </div>
                     {!! Form::close() !!}
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @include('partials.tinymce_min')
-@include(('partials.asset_datetimepicker'))
+@include('partials.asset_datetimepicker')

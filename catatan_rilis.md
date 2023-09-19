@@ -7,12 +7,16 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi.
 2. [#784](https://github.com/OpenSID/OpenDK/issues/784) Perbaikan tidak bisa gunakan php versi 8.0.x.
 3. [#858](https://github.com/OpenSID/OpenDK/issues/858) Perbaikan tambah jabatan perangkat kecamatan.
 
+
 #### Penyesuaian Teknis
 1. [#797](https://github.com/OpenSID/OpenDK/issues/797) Penyesuaian editor menggunakan tinymce pada form profil keacamtan.
 2. [#828](https://github.com/OpenSID/OpenDK/issues/828) Penyesuaian editor menggunakan tinymce pada form faq.
 3. [#838](https://github.com/OpenSID/OpenDK/issues/838) Penyesuaian package yang tidak digunakan.
 4. [#828](https://github.com/OpenSID/OpenDK/issues/828) Penyesuaian editor menggunakan tinymce pada form event.
-4. [#854](https://github.com/OpenSID/OpenDK/issues/854) Penyesuaian editor menggunakan tinymce pada form data umum.
+5. [#854](https://github.com/OpenSID/OpenDK/issues/854) Penyesuaian editor menggunakan tinymce pada form data umum.
+6. [#842](https://github.com/OpenSID/OpenDK/issues/842) Penyesuaian proses instalasi dengan wizard.
+7. [#818](https://github.com/OpenSID/OpenDK/issues/818) Penyesuaian view blade menggunakan library prettier.
+
 
 #### Peningkatan Keamanan
 

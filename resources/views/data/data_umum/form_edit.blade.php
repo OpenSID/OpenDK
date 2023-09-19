@@ -15,7 +15,7 @@
       <label class="control-label col-md-4 col-sm-3 col-xs-12">Sejarah <span class="required">*</span></label>
 
       <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('sejarah', null, ['placeholder' => 'Sejarah', 'class' => 'form-control', 'required',
+        {!! Form::textarea('sejarah', null, ['placeholder' => 'Sejarah', 'class' => 'form-control my-editor', 'required',
         'rows'=>2]) !!}
       </div>
     </div>

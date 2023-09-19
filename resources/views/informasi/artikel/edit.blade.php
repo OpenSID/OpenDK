@@ -24,5 +24,3 @@
 
 </section>
 @endsection
-
-@include(('partials.asset_wysihtml5'))

@@ -1,25 +1,25 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('data.aki-akb.index') }}">Daftar AKI & AKB</a></li>
-        <li class="active">{{ $page_description ?? '' }}</li>
-    </ol>
-</section>
+    <section class="content-header">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{{ route('data.aki-akb.index') }}">Daftar AKI & AKB</a></li>
+            <li class="active">{{ $page_description ?? '' }}</li>
+        </ol>
+    </section>
 
-<section class="content container-fluid">
+    <section class="content container-fluid">
 
-    @include('partials.flash_message')
-    <div class="row">
-        <div class="col-md-12">
+        @include('partials.flash_message')
+        <div class="row">
+            <div class="col-md-12">
 
-                {!! Form::open( [ 'route' => 'data.aki-akb.do_import', 'method' => 'post','id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true ] ) !!}
+                {!! Form::open(['route' => 'data.aki-akb.do_import', 'method' => 'post', 'id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
 
                 <div class="box-body">
 
@@ -42,7 +42,7 @@
 
                                 <div class="col-md-8">
                                     <select class="form-control" id="bulan" name="bulan">
-                                        @foreach($months_list as $key=> $month)
+                                        @foreach ($months_list as $key => $month)
                                             <option value="{{ $key }}">{{ $month }}</option>
                                         @endforeach
                                     </select>
@@ -54,7 +54,7 @@
 
                                 <div class="col-md-8">
                                     <select class="form-control" id="list_year" name="tahun">
-                                        @foreach($years_list as $year)
+                                        @foreach ($years_list as $year)
                                             <option value="{{ $year }}">{{ $year }}</option>
                                         @endforeach
                                     </select>
@@ -65,7 +65,7 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data AKI & AKB</label>
 
                                 <div class="col-md-8">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
@@ -91,39 +91,39 @@
                 {!! Form::close() !!}
             </div>
         </div>
-    </div>
-</section>
+        </div>
+    </section>
 @endsection
-@include(('partials.asset_select2'))
-@include(('partials.asset_datetimepicker'))
+@include('partials.asset_select2')
+@include('partials.asset_datetimepicker')
 @push('scripts')
-<script>
-    $(function () {
+    <script>
+        $(function() {
 
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $('#showgambar').attr('src', e.target.result);
+                    reader.onload = function(e) {
+                        $('#showgambar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
                 }
-
-                reader.readAsDataURL(input.files[0]);
             }
-        }
 
-        $("#foto").change(function () {
-            readURL(this);
-        });
-
-        //Datetimepicker
-        $('.datepicker').each(function () {
-            var $this = $(this);
-            $this.datetimepicker({
-                format: 'YYYY-MM-D'
+            $("#foto").change(function() {
+                readURL(this);
             });
+
+            //Datetimepicker
+            $('.datepicker').each(function() {
+                var $this = $(this);
+                $this.datetimepicker({
+                    format: 'YYYY-MM-D'
+                });
+            });
+
         });
-        
-    });
-</script>
+    </script>
 @endpush

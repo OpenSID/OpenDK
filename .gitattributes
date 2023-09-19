@@ -8,10 +8,12 @@
 /stubs export-ignore
 /tests export-ignore
 /.all-contributorsrc export-ignore
+/.php-cs-fixer.php export-ignore
+/.prettierrc.json export-ignore
 /Agent export-ignore
 /docker-compose.yml export-ignore
+/package-lock.json export-ignore
 /package.json export-ignore
 /phpcs.xml export-ignore
-/.php-cs-fixer.php export-ignore
 /phpunit.xml export-ignore
 /webpack.mix.js export-ignore

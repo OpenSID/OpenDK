@@ -5,11 +5,27 @@
         &nbsp;
         &nbsp;
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-primary btn-sm @if($penduduk->hamil == 1) active @endif" disabled>
-                <input type="radio" name="hamil" id="hamil" value="1" disabled autocomplete="off" @if($penduduk->hamil == 1) checked @endif> Tidak Hamil
+            <label class="btn btn-primary btn-sm @if ($penduduk->hamil == 1) active @endif" disabled>
+                <input
+                    type="radio"
+                    name="hamil"
+                    id="hamil"
+                    value="1"
+                    disabled
+                    autocomplete="off"
+                    @if ($penduduk->hamil == 1) checked @endif
+                > Tidak Hamil
             </label>
-            <label class="btn btn-primary btn-sm @if($penduduk->hamil == 2) active @endif" disabled>
-                <input type="radio" name="hamil" id="hamil" value="2" disabled autocomplete="off" @if($penduduk->hamil == 2) checked @endif> Hamil
+            <label class="btn btn-primary btn-sm @if ($penduduk->hamil == 2) active @endif" disabled>
+                <input
+                    type="radio"
+                    name="hamil"
+                    id="hamil"
+                    value="2"
+                    disabled
+                    autocomplete="off"
+                    @if ($penduduk->hamil == 2) checked @endif
+                > Hamil
             </label>
         </div>
     </div>

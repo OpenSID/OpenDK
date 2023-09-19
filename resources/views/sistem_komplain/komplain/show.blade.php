@@ -1,242 +1,239 @@
 @extends('layouts.app')
 
 @section('content')
-        <div class="col-md-8">
-            <!-- kirim komplain form -->
-            <div class="box box-primary">
-                <div class="box-header">
-                    <i class="fa fa-paper-plane"></i>
+    <div class="col-md-8">
+        <!-- kirim komplain form -->
+        <div class="box box-primary">
+            <div class="box-header">
+                <i class="fa fa-paper-plane"></i>
 
-                    <h3 class="box-title">{{ $page_description }}</h3>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-8" style="border-right:1px solid #f3f3f3">
-                            <!-- Post -->
-                            <div class="post">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5 class="bg-primary" style="padding: 2px;">LAPORAN:</h5>
+                <h3 class="box-title">{{ $page_description }}</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-8" style="border-right:1px solid #f3f3f3">
+                        <!-- Post -->
+                        <div class="post">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="bg-primary" style="padding: 2px;">LAPORAN:</h5>
 
-                                        <p>Yth: {{ config('profil.sebutan_kepala_wilayah') . ' ' . config('profil.nama_kecamatan') }}</p>
-                                        <br>
+                                    <p>Yth: {{ config('profil.sebutan_kepala_wilayah') . ' ' . config('profil.nama_kecamatan') }}</p>
+                                    <br>
+                                    <p>
+                                        {{ $komplain->laporan }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="bg-primary" style="padding: 2px;">LAMPIRAN:</h5>
+                                    @if ($komplain->lampiran1 == '' && $komplain->lampiran2 == '' && $komplain->lampiran3 == '' && $komplain->lampiran4 == '')
                                         <p>
-                                            {{  $komplain->laporan  }}
+                                            Tidak ada lampiran.
                                         </p>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5 class="bg-primary" style="padding: 2px;">LAMPIRAN:</h5>
-                                        @if($komplain->lampiran1 == '' && $komplain->lampiran2 == '' && $komplain->lampiran3 == '' && $komplain->lampiran4 == '')
-                                            <p>
-                                                Tidak ada lampiran.
-                                            </p>
-                                        @else
-                                            @if(! $komplain->lampiran1 == '')
-                                                <a data-fancybox="gallery" href="{{ asset($komplain->lampiran1) }}">
-                                                    <img src="{{ asset($komplain->lampiran1) }}" alt="{{ $komplain->komplain_id}}-Lampiran1" class="img-thumbnail" style="width:80px; height:100px;">
-                                                </a>
-                                            @endif
-                                            @if(! $komplain->lampiran2 == '')
-                                                <a data-fancybox="gallery" href="{{ asset($komplain->lampiran2) }}">
-                                                    <img src="{{ asset($komplain->lampiran2) }}" alt="{{ $komplain->komplain_id}}-Lampiran2" class="img-thumbnail" style="width:80px; height:100px">
-                                                </a>
-                                            @endif
-                                            @if(! $komplain->lampiran3 == '')
-                                                <a data-fancybox="gallery" href="{{ asset($komplain->lampiran3) }}">
-                                                    <img src="{{ asset($komplain->lampiran3) }}" alt="{{ $komplain->komplain_id}}-Lampiran3" class="img-thumbnail" style="width:80px; height:100px">
-                                                </a>
-                                            @endif
-                                            @if(! $komplain->lampiran4 == '')
-                                                <a data-fancybox="gallery" href="{{ asset($komplain->lampiran4) }}">
-                                                    <img src="{{ asset($komplain->lampiran4) }}" alt="{{ $komplain->komplain_id}}-Lampiran4" class="img-thumbnail" style="width:80px; height:100px">
-                                                </a>
-                                            @endif
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h5 class="bg-primary" style="padding: 2px;">TINDAK LANJUT:</h5>
-                                        {{ Form::hidden('komplain_id', $komplain->komplain_id, ['id' => 'komplain_id']) }}
-                                        <div id="jawabans"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.post -->
-                        </div>
-                        <div class="col-md-4">
-                            <div class="user-block">
-                                <img class="img-circle img-bordered-md" src="{{ is_user($komplain->penduduk->foto, $komplain->penduduk->sex) }}" alt="user image">
-                                <span class="username">
-                                    <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
-                                </span>
-                                <span class="description">PELAPOR : {{ $komplain->nama }}</span>
-                            </div>
-                            <!-- /.user-block -->
-                            <br>
-                            <table class="table table-bordered table-striped">
-                                <tr>
-                                    <th>KATEGORI</th>
-                                    <td>{{ $komplain->kategori_komplain->nama }}</td>
-                                </tr>
-                                <tr>
-                                    <th>TANGGAL LAPOR</th>
-                                    <td>{{ format_datetime($komplain->created_at) }}</td>
-                                </tr>
-                                <tr>
-                                    <th>STATUS</th>
-                                    <td>{{ ucfirst(strtolower($komplain->status)) }}</td>
-                                </tr>
-                            </table>
-
-                            <div class="pull-right">
-                                <div class="control-group">
-                                    @php $user = auth()->user(); @endphp
-                                    @if(isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
-
-                                        @if($komplain->status != 'SELESAI')
-                                            <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
-                                        @endif                                        
                                     @else
-                                        @if($komplain->status != 'SELESAI')
-                                            <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Beri Komentar</a>
+                                        @if (!$komplain->lampiran1 == '')
+                                            <a data-fancybox="gallery" href="{{ asset($komplain->lampiran1) }}">
+                                                <img src="{{ asset($komplain->lampiran1) }}" alt="{{ $komplain->komplain_id }}-Lampiran1" class="img-thumbnail" style="width:80px; height:100px;">
+                                            </a>
+                                        @endif
+                                        @if (!$komplain->lampiran2 == '')
+                                            <a data-fancybox="gallery" href="{{ asset($komplain->lampiran2) }}">
+                                                <img src="{{ asset($komplain->lampiran2) }}" alt="{{ $komplain->komplain_id }}-Lampiran2" class="img-thumbnail" style="width:80px; height:100px">
+                                            </a>
+                                        @endif
+                                        @if (!$komplain->lampiran3 == '')
+                                            <a data-fancybox="gallery" href="{{ asset($komplain->lampiran3) }}">
+                                                <img src="{{ asset($komplain->lampiran3) }}" alt="{{ $komplain->komplain_id }}-Lampiran3" class="img-thumbnail" style="width:80px; height:100px">
+                                            </a>
+                                        @endif
+                                        @if (!$komplain->lampiran4 == '')
+                                            <a data-fancybox="gallery" href="{{ asset($komplain->lampiran4) }}">
+                                                <img src="{{ asset($komplain->lampiran4) }}" alt="{{ $komplain->komplain_id }}-Lampiran4" class="img-thumbnail" style="width:80px; height:100px">
+                                            </a>
                                         @endif
                                     @endif
-
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="bg-primary" style="padding: 2px;">TINDAK LANJUT:</h5>
+                                    {{ Form::hidden('komplain_id', $komplain->komplain_id, ['id' => 'komplain_id']) }}
+                                    <div id="jawabans"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.post -->
+                    </div>
+                    <div class="col-md-4">
+                        <div class="user-block">
+                            <img class="img-circle img-bordered-md" src="{{ is_user($komplain->penduduk->foto, $komplain->penduduk->sex) }}" alt="user image">
+                            <span class="username">
+                                <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
+                            </span>
+                            <span class="description">PELAPOR : {{ $komplain->nama }}</span>
+                        </div>
+                        <!-- /.user-block -->
+                        <br>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <th>KATEGORI</th>
+                                <td>{{ $komplain->kategori_komplain->nama }}</td>
+                            </tr>
+                            <tr>
+                                <th>TANGGAL LAPOR</th>
+                                <td>{{ format_datetime($komplain->created_at) }}</td>
+                            </tr>
+                            <tr>
+                                <th>STATUS</th>
+                                <td>{{ ucfirst(strtolower($komplain->status)) }}</td>
+                            </tr>
+                        </table>
+
+                        <div class="pull-right">
+                            <div class="control-group">
+                                @php $user = auth()->user(); @endphp
+                                @if (isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
+                                    @if ($komplain->status != 'SELESAI')
+                                        <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                    @endif
+                                @else
+                                    @if ($komplain->status != 'SELESAI')
+                                        <a id="btn-reply" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Beri Komentar</a>
+                                    @endif
+                                @endif
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="box-footer clearfix">
-                    <a href="{{ route('sistem-komplain.index') }}" class="pull-right">
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Kembali</button>
-                    </a>
-                </div>
             </div>
-        </div>
-<!-- Modal HTML -->
-<div id="modalReply" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Jawab Keluhan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="box-footer clearfix">
+                <a href="{{ route('sistem-komplain.index') }}" class="pull-right">
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Kembali</button>
+                </a>
             </div>
-            {!! Form::open(['id' => 'form-reply', 'method' => 'POST']) !!}
-            <div class="modal-body mx-3">
-                <div id="form-errors"></div>
-                <div class="md-form mb-4">
-                    <label>Jawaban</label>
-                    {{ csrf_field() }}
-                    {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab', 'required']) }}
-                </div>
-
-                <legend>Verifikasi Data Penjawab</legend>
-
-                <div class="md-form mb-4{{ $errors->has('nik') ? ' has-error' : '' }}">
-                    <label class="control-label">NIK <span class="required">*</span></label>
-
-                    {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required', 'id' => 'nik']) !!}
-                    @if ($errors->has('nik'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('nik') }}</strong>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="md-form mb-4{{ $errors->has('tanggal_lahir') ? ' has-error' : '' }}">
-                    <label class="control-label">Tanggal Lahir <span class="required">*</span></label>
-
-
-                    {!! Form::text('tanggal_lahir', null, ['placeholder' => '1990-01-01', 'class' => 'form-control datepicker', 'required', 'id' => 'tanggal_lahir']) !!}
-                    @if ($errors->has('tanggal_lahir'))
-                        <span class="help-block">
-                        <strong>{{ $errors->first('tanggal_lahir') }}</strong>
-                        </span>
-                    @endif
-
-                </div>
-
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-            {{ Form::close() }}
         </div>
     </div>
-</div>
-
-<div id="modalReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Jawab Keluhan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            {!! Form::open(['id' => 'form-reply-admin', 'method' => 'POST']) !!}
-            <div class="modal-body mx-3">
-                <div id="form-errors-admin"></div>
-                <div class="md-form mb-4">
-                    <label>Jawaban</label>
-                    {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab-admin', 'required']) }}
-                    {{ Form::hidden('nik', '999') }}
+    <!-- Modal HTML -->
+    <div id="modalReply" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Jawab Keluhan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                {!! Form::open(['id' => 'form-reply', 'method' => 'POST']) !!}
+                <div class="modal-body mx-3">
+                    <div id="form-errors"></div>
+                    <div class="md-form mb-4">
+                        <label>Jawaban</label>
+                        {{ csrf_field() }}
+                        {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab', 'required']) }}
+                    </div>
 
+                    <legend>Verifikasi Data Penjawab</legend>
+
+                    <div class="md-form mb-4{{ $errors->has('nik') ? ' has-error' : '' }}">
+                        <label class="control-label">NIK <span class="required">*</span></label>
+
+                        {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required', 'id' => 'nik']) !!}
+                        @if ($errors->has('nik'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('nik') }}</strong>
+                            </span>
+                        @endif
+
+                    </div>
+                    <div class="md-form mb-4{{ $errors->has('tanggal_lahir') ? ' has-error' : '' }}">
+                        <label class="control-label">Tanggal Lahir <span class="required">*</span></label>
+
+                        {!! Form::text('tanggal_lahir', null, ['placeholder' => '1990-01-01', 'class' => 'form-control datepicker', 'required', 'id' => 'tanggal_lahir']) !!}
+                        @if ($errors->has('tanggal_lahir'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('tanggal_lahir') }}</strong>
+                            </span>
+                        @endif
+
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+                {{ Form::close() }}
             </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-            {{ Form::close() }}
         </div>
     </div>
-</div>
 
-<div id="modalUbahReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h4 class="modal-title w-100 font-weight-bold">Ubah Jawaban Keluhan</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            {!! Form::open(['id' => 'form-ubah-reply-admin', 'method' => 'POST']) !!}
-            <div class="modal-body mx-3">
-                <div id="form-errors-admin"></div>
-                <div class="md-form mb-4">
-                    <label>Jawaban</label>
-                    {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'ubah-jawab-admin', 'required']) }}
-                    {{ Form::hidden('nik', '999') }}
-                    {{ Form::hidden('id', null, ['id' => 'id_jawab']) }}
-                    {{ Form::hidden('_method', 'PUT') }}
+    <div id="modalReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Jawab Keluhan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
+                {!! Form::open(['id' => 'form-reply-admin', 'method' => 'POST']) !!}
+                <div class="modal-body mx-3">
+                    <div id="form-errors-admin"></div>
+                    <div class="md-form mb-4">
+                        <label>Jawaban</label>
+                        {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab-admin', 'required']) }}
+                        {{ Form::hidden('nik', '999') }}
+                    </div>
 
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+                {{ Form::close() }}
             </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-            {{ Form::close() }}
         </div>
     </div>
-</div>
 
+    <div id="modalUbahReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4 class="modal-title w-100 font-weight-bold">Ubah Jawaban Keluhan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {!! Form::open(['id' => 'form-ubah-reply-admin', 'method' => 'POST']) !!}
+                <div class="modal-body mx-3">
+                    <div id="form-errors-admin"></div>
+                    <div class="md-form mb-4">
+                        <label>Jawaban</label>
+                        {{ Form::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'ubah-jawab-admin', 'required']) }}
+                        {{ Form::hidden('nik', '999') }}
+                        {{ Form::hidden('id', null, ['id' => 'id_jawab']) }}
+                        {{ Form::hidden('_method', 'PUT') }}
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+                {{ Form::close() }}
+            </div>
+        </div>
+    </div>
 
 @endsection
 
 @include('partials.asset_fancybox')
 @push('scripts')
-<script type="application/javascript">
+    <script type="application/javascript">
 
 
     $(function () {
@@ -446,23 +443,19 @@
         });
     }
 </script>
-
 @endpush
-@include(('partials.asset_datetimepicker'))
+@include('partials.asset_datetimepicker')
 @push('scripts')
+    <script type="text/javascript">
+        $(function() {
 
-<script type="text/javascript">
-    $(function () {
-
-        $('.datepicker').each(function () {
-            var $this = $(this);
-            $this.datetimepicker({
-                format: 'YYYY-MM-DD'
+            $('.datepicker').each(function() {
+                var $this = $(this);
+                $this.datetimepicker({
+                    format: 'YYYY-MM-DD'
+                });
             });
-        });
 
-    })
-
-</script>
-
+        })
+    </script>
 @endpush

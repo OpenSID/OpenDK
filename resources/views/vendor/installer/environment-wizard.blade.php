@@ -62,7 +62,7 @@
                         <option value="other">{{ trans('installer_messages.environment.wizard.form.app_environment_label_other') }}</option>
                     </select>
                     <div id="environment_text_input" style="display: none;">
-                        <input type="text" name="environment_custom" id="environment_custom" placeholder="{{ trans('installer_messages.environment.wizard.form.app_environment_placeholder_other') }}"/>
+                        <input type="text" name="environment_custom" id="environment_custom" placeholder="{{ trans('installer_messages.environment.wizard.form.app_environment_placeholder_other') }}" />
                     </div>
                     @if ($errors->has('app_name'))
                         <span class="error-block">
@@ -309,7 +309,7 @@
                     </div>
                 </div>
                 <div class="block">
-                    <input type="radio" name="appSettingsTabs" id="appSettingsTab2" value="null"/>
+                    <input type="radio" name="appSettingsTabs" id="appSettingsTab2" value="null" />
                     <label for="appSettingsTab2">
                         <span>
                             {{ trans('installer_messages.environment.wizard.form.app_tabs.redis_label') }}
@@ -359,7 +359,7 @@
                     </div>
                 </div>
                 <div class="block">
-                    <input type="radio" name="appSettingsTabs" id="appSettingsTab3" value="null"/>
+                    <input type="radio" name="appSettingsTabs" id="appSettingsTab3" value="null" />
                     <label for="appSettingsTab3">
                         <span>
                             {{ trans('installer_messages.environment.wizard.form.app_tabs.mail_label') }}
@@ -437,7 +437,7 @@
                     </div>
                 </div>
                 <div class="block margin-bottom-2">
-                    <input type="radio" name="appSettingsTabs" id="appSettingsTab4" value="null"/>
+                    <input type="radio" name="appSettingsTabs" id="appSettingsTab4" value="null" />
                     <label for="appSettingsTab4">
                         <span>
                             {{ trans('installer_messages.environment.wizard.form.app_tabs.pusher_label') }}
@@ -499,16 +499,18 @@
 @section('scripts')
     <script type="text/javascript">
         function checkEnvironment(val) {
-            var element=document.getElementById('environment_text_input');
-            if(val=='other') {
-                element.style.display='block';
+            var element = document.getElementById('environment_text_input');
+            if (val == 'other') {
+                element.style.display = 'block';
             } else {
-                element.style.display='none';
+                element.style.display = 'none';
             }
         }
+
         function showDatabaseSettings() {
             document.getElementById('tab2').checked = true;
         }
+
         function showApplicationSettings() {
             document.getElementById('tab3').checked = true;
         }

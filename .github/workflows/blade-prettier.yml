@@ -1,4 +1,4 @@
-name: Fix styling
+name: Blade Prettier
 
 on:
   pull_request:
@@ -7,22 +7,25 @@ on:
       - master
 
 jobs:
-  php-cs-fixer:
+  prettier:
     runs-on: ubuntu-latest
     # Check if contains [ci skip] will be skip github action
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    permissions:
+      # Allow ad-m/github-push-action to push commit to branch gh-pages
+      contents: write
+    if: (github.repository == 'OpenSID/OpenDK')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+      - name: Install dependency
+        run: npm install
 
-      - name: Run PHP CS Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
-        with:
-          args: --config=.php-cs-fixer.php --allow-risky=yes
+      - name: Pretier Blade
+        run: npm run prettier-blade
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Fix styling"
+          commit_message: "Blade Prettier Code"

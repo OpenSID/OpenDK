@@ -2,14 +2,14 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('nama', null, ['placeholder' => 'Nama','class' => 'form-control', 'required'=>true]) !!}
+        {!! Form::text('nama', null, ['placeholder' => 'Nama', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">URL <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('url', null, ['placeholder' => 'Link URL','class' => 'form-control', 'required'=>true]) !!}
+        {!! Form::text('url', null, ['placeholder' => 'Link URL', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -18,11 +18,11 @@
         <input type="file" name="logo" id="logo" accept="jpg,jpeg,png" class="form-control" {{ $medsos ? '' : 'required' }}>
         <br>
 
-        <img src="@if(isset($medsos->logo)) {{ asset($medsos->logo) }} @else {{ "http://placehold.it/1000x600" }} @endif"  id="showgambar" style="max-width:400px;max-height:250px;float:left;"/>
+        <img src="@if (isset($medsos->logo)) {{ asset($medsos->logo) }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
 
     </div>
 </div>
- <div class="form-group">
+<div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::select('status', ['1' => 'Aktif', '0' => 'Tidak Aktif'], null, ['class' => 'form-control']) !!}
@@ -33,5 +33,5 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\MediaSosialRequest', '#form-media-sosial') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\MediaSosialRequest', '#form-media-sosial') !!}
 @endpush

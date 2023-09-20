@@ -18,7 +18,7 @@
             <div class="col-md-12">
                 @include('partials.flash_message')
 
-                {!! Form::open(['route' => 'data.data-desa.store', 'method' => 'post', 'id' => 'form-desa', 'class' => 'form-horizontal form-label-left']) !!}
+                {!! Form::open(['route' => 'data.data-desa.store', 'method' => 'post', 'id' => 'form-datadesa', 'class' => 'form-horizontal form-label-left']) !!}
 
                 <div class="box-body">
 

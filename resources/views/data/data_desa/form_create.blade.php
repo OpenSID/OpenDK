@@ -40,5 +40,5 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\DesaRequest', '#form-desa') !!}
+{!! JsValidator::formRequest('App\Http\Requests\DesaRequest', '#form-datadesa') !!}
 @endpush

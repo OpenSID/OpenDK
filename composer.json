@@ -14,12 +14,12 @@
         "cocur/slugify": "4.2.0",
         "cviebrock/eloquent-sluggable": "^7.0",
         "doctrine/dbal": "^2.9",
-        "fideloper/proxy": "^4.0",
+        "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1 || ^7.0.1",
         "jaybizzle/crawler-detect": "1.*",
         "laracasts/flash": "^3.0",
-        "laravel/framework": "^7.0",
+        "laravel/framework": "^7.29",
         "laravel/helpers": "^1.3",
         "laravel/ui": "^2.0",
         "laravelcollective/html": "^6.2",
@@ -85,13 +85,13 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover"
+            "@php artisan package:discover --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate"
+            "@php artisan key:generate --ansi"
         ]
     }
 }

@@ -33,31 +33,49 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cross-Origin Resource Sharing (CORS) Configuration
+    | Default Hash Driver
     |--------------------------------------------------------------------------
     |
-    | Here you may configure your settings for cross-origin resource sharing
-    | or "CORS". This determines what cross-origin operations may execute
-    | in web browsers. You are free to adjust these settings as needed.
+    | This option controls the default hash driver that will be used to hash
+    | passwords for your application. By default, the bcrypt algorithm is
+    | used; however, you remain free to modify this option if you wish.
     |
-    | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+    | Supported: "bcrypt", "argon", "argon2id"
     |
     */
 
-    'paths' => ['api/*'],
+    'driver' => 'bcrypt',
 
-    'allowed_methods' => ['*'],
+    /*
+    |--------------------------------------------------------------------------
+    | Bcrypt Options
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the configuration options that should be used when
+    | passwords are hashed using the Bcrypt algorithm. This will allow you
+    | to control the amount of time it takes to hash the given password.
+    |
+    */
 
-    'allowed_origins' => ['*'],
+    'bcrypt' => [
+        'rounds' => env('BCRYPT_ROUNDS', 10),
+    ],
 
-    'allowed_origins_patterns' => [],
+    /*
+    |--------------------------------------------------------------------------
+    | Argon Options
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the configuration options that should be used when
+    | passwords are hashed using the Argon algorithm. These will allow you
+    | to control the amount of time it takes to hash the given password.
+    |
+    */
 
-    'allowed_headers' => ['*'],
-
-    'exposed_headers' => [],
-
-    'max_age' => 0,
-
-    'supports_credentials' => false,
+    'argon' => [
+        'memory' => 1024,
+        'threads' => 2,
+        'time' => 2,
+    ],
 
 ];

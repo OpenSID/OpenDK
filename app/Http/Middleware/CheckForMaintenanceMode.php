@@ -31,20 +31,16 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode as Middleware;
 
-class Authenticate extends Middleware
+class CheckForMaintenanceMode extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * The URIs that should be reachable while maintenance mode is enabled.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return string|null
+     * @var array
      */
-    protected function redirectTo($request)
-    {
-        if (! $request->expectsJson()) {
-            return route('login');
-        }
-    }
+    protected $except = [
+        //
+    ];
 }

@@ -8,12 +8,16 @@
             name="desa_id"
             type="text"
             required
-            readonly
+            @if ($status_pantau) readonly @endif
         />
     </div>
     <input id="nama" type="hidden" name="nama" />
     <div class="col-md-4 col-sm-4 col-xs-12">
-        <select class="form-control" id="list_desa" name="desa_id" data-placeholder="Pilih Desa" style="width: 100%;"></select>
+        @if ($status_pantau)
+            <select class="form-control" id="list_desa" name="desa_id" data-placeholder="Pilih Desa" style="width: 100%;"></select>
+        @else
+            <input type="text" class="form-control" name="nama">
+        @endif
     </div>
 </div>
 
@@ -32,3 +36,9 @@
 </div>
 
 <div class="ln_solid"></div>
+
+@include('partials.asset_jqueryvalidation')
+
+@push('scripts')
+{!! JsValidator::formRequest('App\Http\Requests\DesaRequest', '#form-desa') !!}
+@endpush

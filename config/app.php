@@ -45,7 +45,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'server_pantau' => env('SERVER_PANTAU', 'https://pantau.opensid.my.id'),
+    'server_pantau' => env('SERVER_PANTAU', 'https://pantau.opensid.my.idasd'),
     
     /*
     |--------------------------------------------------------------------------

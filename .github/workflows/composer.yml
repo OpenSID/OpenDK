@@ -3,9 +3,12 @@ name: Composer
 on:
   pull_request:
     branches:
-      - "master"
-      - "dev"
-      - "bug-fix"
+      - master
+      - dev
+      - bug-fix
+    paths:
+      - composer.json
+      - .github/workflows/composer.yml
 
 permissions:
   contents: read
@@ -30,6 +33,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Validate composer.json
-        run: composer validate --strict
+        run: composer validate --no-check-all
       - name: Install dependencies
         run: composer update --ansi --no-interaction

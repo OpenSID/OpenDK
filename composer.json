@@ -11,6 +11,7 @@
     "require": {
         "php": ">=7.4.0",
         "bensampo/laravel-enum": "^2.2 || ^4.0",
+        "cocur/slugify": "4.2.0",
         "cviebrock/eloquent-sluggable": "^7.0",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.0",

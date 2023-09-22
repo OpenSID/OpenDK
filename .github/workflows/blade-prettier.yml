@@ -5,13 +5,17 @@ on:
     branches:
       - dev
       - master
+      - bug-fix
+    paths:
+      - '.github/workflows/blade-prettier.yml'
+      - 'resources/views/**'
+      - package.json
+      - package-lock.json
 
 jobs:
   prettier:
     runs-on: ubuntu-latest
-    # Check if contains [ci skip] will be skip github action
     permissions:
-      # Allow ad-m/github-push-action to push commit to branch gh-pages
       contents: write
     if: (github.repository == 'OpenSID/OpenDK')
     steps:
@@ -19,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+
       - name: Install dependency
         run: npm install
 

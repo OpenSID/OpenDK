@@ -14,10 +14,10 @@ on:
 
 jobs:
   prettier:
+    if: (github.repository == 'OpenSID/OpenDK')
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: (github.repository == 'OpenSID/OpenDK')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

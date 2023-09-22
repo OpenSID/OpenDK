@@ -88,8 +88,7 @@
                             'class' => 'textarea',
                             'id' => 'reply_message',
                             'placeholder' => 'Balas Pesan',
-                            'style' => 'width: 100%;
-                                                             height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                            'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
                         ]) !!}
                         <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i class="fa fa-reply"></i> Balas</button>
                         {!! Form::close() !!}

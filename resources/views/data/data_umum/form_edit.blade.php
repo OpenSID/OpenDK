@@ -36,8 +36,7 @@
                     <div class="col-md-7">
                         {!! Form::number('luas_wilayah', $luas_wilayah, [
                             'placeholder' => '0',
-                            'class' => 'form-control
-                                    luas_wilayah',
+                            'class' => 'form-control luas_wilayah',
                             'required',
                             'style' => 'text-align:right;',
                             'placeholder' => 'Luas Wilayah Kecamatan',

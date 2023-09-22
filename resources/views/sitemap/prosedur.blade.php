@@ -3,7 +3,7 @@
     @foreach ($prosedurs as $prosedur)
         <url>
             <loc>{{ url('/unduhan/' . str_slug($prosedur->judul_prosedur)) }}</loc>
-            <lastmod>{{ $prosedur->created_at->toAtomString() }}</lastmod>
+            <lastmod>{{ \Carbon\Carbon::parse($prosedur->created_at)->toAtomString() }}</lastmod>
             <changefreq>weekly</changefreq>
             <priority>0.6</priority>
         </url>

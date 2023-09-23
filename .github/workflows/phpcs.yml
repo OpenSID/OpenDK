@@ -3,9 +3,9 @@ name: Fix styling
 on:
   pull_request:
     branches:
-      - dev
-      - master
-      - bug-fix
+      - 'dev'
+      - 'master'
+      - 'bug-fix'
     paths:
       - '**.php'
       - '!**.blade.php'

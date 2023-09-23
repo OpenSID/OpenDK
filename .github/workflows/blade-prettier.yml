@@ -3,14 +3,14 @@ name: Blade Prettier
 on:
   pull_request:
     branches:
-      - dev
-      - master
-      - bug-fix
+      - 'dev'
+      - 'master'
+      - 'bug-fix'
     paths:
       - '.github/workflows/blade-prettier.yml'
       - 'resources/views/**'
-      - package.json
-      - package-lock.json
+      - 'package.json'
+      - 'package-lock.json'
 
 jobs:
   prettier:

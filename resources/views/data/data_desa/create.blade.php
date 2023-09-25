@@ -18,7 +18,7 @@
             <div class="col-md-12">
                 @include('partials.flash_message')
 
-                {!! Form::open(['route' => 'data.data-desa.store', 'method' => 'post', 'id' => 'datadesa-ektp', 'class' => 'form-horizontal form-label-left']) !!}
+                {!! Form::open(['route' => 'data.data-desa.store', 'method' => 'post', 'id' => 'form-datadesa', 'class' => 'form-horizontal form-label-left']) !!}
 
                 <div class="box-body">
 
@@ -54,10 +54,16 @@
         </div>
     </section>
 @endsection
+
 @include('partials.asset_select2')
+@include('partials.asset_inputmask')
+
 @push('scripts')
     @include('partials.desa_select2')
     <script>
+
+        $('#desa_id').inputmask('99.99.99.9999');  
+
         $(function() {
 
             $('#list_desa').change(function() {

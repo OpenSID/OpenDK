@@ -31,20 +31,19 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Http\Middleware\TrustHosts as Middleware;
 
-class Authenticate extends Middleware
+class TrustHosts extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Get the host patterns that should be trusted.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return string|null
+     * @return array
      */
-    protected function redirectTo($request)
+    public function hosts()
     {
-        if (! $request->expectsJson()) {
-            return route('login');
-        }
+        return [
+            $this->allSubdomainsOfApplicationUrl(),
+        ];
     }
 }

@@ -3,22 +3,27 @@ name: Blade Prettier
 on:
   pull_request:
     branches:
-      - dev
-      - master
+      - 'dev'
+      - 'master'
+      - 'bug-fix'
+    paths:
+      - '.github/workflows/blade-prettier.yml'
+      - 'resources/views/**'
+      - 'package.json'
+      - 'package-lock.json'
 
 jobs:
   prettier:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
-    # Check if contains [ci skip] will be skip github action
     permissions:
-      # Allow ad-m/github-push-action to push commit to branch gh-pages
       contents: write
-    if: (github.repository == 'OpenSID/OpenDK')
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
+
       - name: Install dependency
         run: npm install
 

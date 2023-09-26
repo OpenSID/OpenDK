@@ -8,7 +8,7 @@ on:
       - 'bug-fix'
     paths:
       - '**.php'
-      - '!**.blade.php'
+      - '!resources/views/**'
       - '.github/workflows/phpcs.yml'
 
 jobs:

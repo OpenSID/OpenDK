@@ -1,7 +1,15 @@
 <div class="form-group">
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Kode / Nama Desa <span class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        <input id="desa_id" name="desa_id" class="form-control" placeholder="00.00.00.0000" type="text" @if ($status_pantau) readonly @endif value="{{ $desa->desa_id }}" />
+        <input
+            id="desa_id"
+            name="desa_id"
+            class="form-control"
+            placeholder="00.00.00.0000"
+            type="text"
+            @if ($status_pantau) readonly @endif
+            value="{{ $desa->desa_id }}"
+        />
     </div>
     <input id="nama" type="hidden" name="nama" value="{{ $desa->nama }}" />
     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -37,5 +45,5 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\DesaRequest', '#form-datadesa') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\DesaRequest', '#form-datadesa') !!}
 @endpush

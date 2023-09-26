@@ -61,8 +61,7 @@
 @push('scripts')
     @include('partials.desa_select2')
     <script>
-
-        $('#desa_id').inputmask('99.99.99.9999');  
+        $('#desa_id').inputmask('99.99.99.9999');
 
         $(function() {
 

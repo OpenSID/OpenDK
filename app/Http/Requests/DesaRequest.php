@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidDesa;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DesaRequest extends FormRequest
@@ -30,7 +31,7 @@ class DesaRequest extends FormRequest
         }
 
         return [
-            'desa_id'      => 'required|regex:/^[0-9.]+$/|min:13|max:13|unique:das_data_desa,desa_id' . $id,
+            'desa_id'      => ['required', 'regex:/^[0-9.]+$/', 'min:13', 'max:13', 'unique:das_data_desa,desa_id' . $id, new ValidDesa()],
             'nama'         => 'required|string',
             'website'      => 'nullable|url',
             'luas_wilayah' => 'required|numeric',

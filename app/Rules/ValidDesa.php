@@ -29,41 +29,45 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Rules;
 
-use App\Rules\ValidDesa;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Profil;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Str;
 
-class DesaRequest extends FormRequest
+class ValidDesa implements Rule
 {
+    protected $nama_kecamatan;
+
     /**
-     * Determine if the user is authorized to make this request.
+     * Create a new rule instance.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function __construct()
     {
-        return true;
+        $this->nama_kecamatan = Profil::first()->nama_kecamatan;
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Determine if the validation rule passes.
      *
-     * @return array
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
      */
-    public function rules()
+    public function passes($attribute, $value)
     {
-        if ($this->id) {
-            $id = "," . $this->id;
-        } else {
-            $id = "";
-        }
+        return Profil::first()->kecamatan_id == Str::substr($value, 0, 8);
+    }
 
-        return [
-            'desa_id'      => ['required', 'regex:/^[0-9.]+$/', 'min:13', 'max:13', 'unique:das_data_desa,desa_id' . $id, new ValidDesa()],
-            'nama'         => 'required|string',
-            'website'      => 'nullable|url',
-            'luas_wilayah' => 'required|numeric',
-        ];
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return 'Kode desa tidak dikenal di OpenDK Kecamatan ' . $this->nama_kecamatan;
     }
 }

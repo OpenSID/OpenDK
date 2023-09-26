@@ -11,6 +11,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi.
 6. [#862](https://github.com/OpenSID/OpenDK/issues/862) Perbaikan tambah pengguna baru.
 7. [#865](https://github.com/OpenSID/OpenDK/issues/865) Perbaikan notifikasi pada halaman ganti password default.
 8. [#875](https://github.com/OpenSID/OpenDK/issues/875) Perbaikan pengurutan pada tanggal terbit artikel.
+9. [#821](https://github.com/OpenSID/OpenDK/issues/821) Perbaikan migrasi rollback.
 
 #### Penyesuaian Teknis
 1. [#797](https://github.com/OpenSID/OpenDK/issues/797) Penyesuaian editor menggunakan tinymce pada form profil keacamtan.

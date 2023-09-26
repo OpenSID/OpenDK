@@ -9,6 +9,7 @@ Terima kasih pada [untuk diisi] yang terus berkontribusi.
 4. [#844](https://github.com/OpenSID/OpenDK/issues/844) Perbaikan tidak bisa tambah atau ubah profil jika tidak ada akses pantau.
 5. [#861](https://github.com/OpenSID/OpenDK/issues/861) Perbaikan tidak bisa tambah atau ubah data desa jika tidak ada akses pantau.
 6. [#862](https://github.com/OpenSID/OpenDK/issues/862) Perbaikan tambah pengguna baru.
+7. [#865](https://github.com/OpenSID/OpenDK/issues/865) Perbaikan notifikasi pada halaman ganti password default.
 
 
 #### Penyesuaian Teknis

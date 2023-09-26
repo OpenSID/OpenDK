@@ -31,13 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
-use GuzzleHttp\Client;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\DesaRequest;
 use App\Models\DataDesa;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Http\Requests\DesaRequest;
-use App\Http\Controllers\Controller;
 
 class DataDesaController extends Controller
 {

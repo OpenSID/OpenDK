@@ -304,7 +304,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // Data Umum
-                Route::group(['prefix' => 'data-umum', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
+                Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
                     Route::get('getdataajax', ['as' => 'data.data-umum.getdataajax', 'uses' => 'DataUmumController@getDataUmumAjax']);
                     Route::put('update/{id}', ['as' => 'data.data-umum.update', 'uses' => 'DataUmumController@update']);

@@ -1,54 +1,53 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('informasi.form-dokumen.index') }}">Daftar Dokumen</a></li>
-        <li class="active">{{ $page_description ?? '' }}</li>
-    </ol>
-</section>
+    <section class="content-header">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{{ route('informasi.form-dokumen.index') }}">Daftar Dokumen</a></li>
+            <li class="active">{{ $page_description ?? '' }}</li>
+        </ol>
+    </section>
 
-<section class="content container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
 
-                <div class="box-body">
-                    <!-- form start -->
-                    {!! Form::open( [ 'route' => 'informasi.form-dokumen.store', 'method' => 'post', 'files' => true, 'id' => 'form-dokumen', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                    <div class="box-body">
+                        <!-- form start -->
+                        {!! Form::open(['route' => 'informasi.form-dokumen.store', 'method' => 'post', 'files' => true, 'id' => 'form-dokumen', 'class' => 'form-horizontal form-label-left']) !!}
 
-                    @if (count($errors) > 0)
+                        @if (count($errors) > 0)
+                            <div class="alert alert-danger">
+                                <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-                        <div class="alert alert-danger">
-                            <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                        @include('flash::message')
+                        @include('informasi.form_dokumen.form_create')
 
-                    @include( 'flash::message' )
-                    @include('informasi.form_dokumen.form_create')
-
-                </div>
-                <div class="box-footer">
-                    <div class="pull-right">
-                        <div class="control-group">
-                            <button type="reset" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
+                    </div>
+                    <div class="box-footer">
+                        <div class="pull-right">
+                            <div class="control-group">
+                                <button type="reset" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
+                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
+                            </div>
                         </div>
                     </div>
+                    {!! Form::close() !!}
                 </div>
-                {!! Form::close() !!}
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection

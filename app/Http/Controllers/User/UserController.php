@@ -82,7 +82,7 @@ class UserController extends Controller
         try {
             $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
-            $user = User::create($request->all());
+            $user = User::create($request->validated());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
             }
@@ -138,7 +138,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            $user->update($request->all());
+            $user->update($request->validated());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
             }

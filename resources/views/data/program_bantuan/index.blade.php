@@ -1,6 +1,5 @@
 @extends('layouts.dashboard_template')
 
-
 @section('content')
     <section class="content-header">
         <h1>
@@ -22,8 +21,7 @@
                 <div class="float-right">
                     <div class="btn-group">
                         <a href="{{ route('data.program-bantuan.import') }}">
-                            <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i
-                                    class="fa fa-upload"></i>&ensp;Impor</button>
+                            <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
                         </a>
                     </div>
                 </div>

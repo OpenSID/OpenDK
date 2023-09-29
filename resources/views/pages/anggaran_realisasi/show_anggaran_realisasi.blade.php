@@ -12,7 +12,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_months" name="m">
                                     <option value="Semua">Semua</option>
-                                    @foreach(months_list() as $key=> $month)
+                                    @foreach (months_list() as $key => $month)
                                         <option value="{{ $key }}">{{ $month }}</option>
                                     @endforeach
                                 </select>
@@ -27,7 +27,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
                                     <option value="Semua">Semua</option>
-                                    @foreach($year_list as $year)
+                                    @foreach ($year_list as $year)
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endforeach
                                 </select>
@@ -49,9 +49,9 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: 0%" id="total_belanja_persen_bar"></div>
                         </div>
-					  <span class="progress-description">
-						<b>TOTAL BELANJA</b>
-					  </span>
+                        <span class="progress-description">
+                            <b>TOTAL BELANJA</b>
+                        </span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -70,9 +70,11 @@
                         <div class="progress">
                             <div class="progress-bar" style="width: 0%" id="selisih_anggaran_realisasi_persen_bar"></div>
                         </div>
-					  <span class="progress-description">
-						<b><font size="3">SELISIH ANGGARAN DAN REALISASI</font></b>
-					  </span>
+                        <span class="progress-description">
+                            <b>
+                                <font size="3">SELISIH ANGGARAN DAN REALISASI</font>
+                            </b>
+                        </span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -96,9 +98,11 @@
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 0%" id="belanja_pegawai_persen_bar"></div>
                                 </div>
-                  <span class="progress-description">
-                    <b><font size="2">BELANJA PEGAWAI</font></b>
-                  </span>
+                                <span class="progress-description">
+                                    <b>
+                                        <font size="2">BELANJA PEGAWAI</font>
+                                    </b>
+                                </span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -115,9 +119,11 @@
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 0%" id="belanja_barang_jasa_persen_bar"></div>
                                 </div>
-                  <span class="progress-description">
-                    <b><font size="1">BELANJA BARANG DAN JASA</font></b>
-                  </span>
+                                <span class="progress-description">
+                                    <b>
+                                        <font size="1">BELANJA BARANG DAN JASA</font>
+                                    </b>
+                                </span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -134,9 +140,11 @@
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 0%" id="belanja_modal_persen_bar"></div>
                                 </div>
-                  <span class="progress-description">
-                    <b><font size="2">BELANJA  MODAL</font></b>
-                  </span>
+                                <span class="progress-description">
+                                    <b>
+                                        <font size="2">BELANJA MODAL</font>
+                                    </b>
+                                </span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -153,9 +161,11 @@
                                 <div class="progress">
                                     <div class="progress-bar" style="width: 0%" id="belanja_tidak_langsung_persen_bar"></div>
                                 </div>
-                  <span class="progress-description">
-                    <b><font size="2">BELANJA TIDAK LANGSUNG</font></b>
-                  </span>
+                                <span class="progress-description">
+                                    <b>
+                                        <font size="2">BELANJA TIDAK LANGSUNG</font>
+                                    </b>
+                                </span>
                             </div>
                             <!-- /.info-box-content -->
                         </div>
@@ -183,132 +193,132 @@
         </div>
 
     </div>
-    @endsection
+@endsection
 
 @include('partials.asset_amcharts')
 @include('partials.asset_select2')
 @include('partials.asset_numeraljs')
 @push('scripts')
-<script>
-    $(function () {
+    <script>
+        $(function() {
 
-        // Select 2 Kecamatan
-        $('#list_months').select2();
-        $('#list_year').select2();
+            // Select 2 Kecamatan
+            $('#list_months').select2();
+            $('#list_year').select2();
 
-        var mid = $('#list_months').find(":selected").val();
-        var year = $('#list_year').find(":selected").val();
-
-        /*
-         Initial Chart Dashboard Pendidikan
-         */
-        change_das_anggaran(mid, year);
-        /*
-         End Initial
-         */
-
-
-        // Change div das_kependudukan when Kecamatan changed
-        $('#list_months').on('select2:select', function (e) {
             var mid = $('#list_months').find(":selected").val();
             var year = $('#list_year').find(":selected").val();
+
+            /*
+             Initial Chart Dashboard Pendidikan
+             */
             change_das_anggaran(mid, year);
+            /*
+             End Initial
+             */
 
+
+            // Change div das_kependudukan when Kecamatan changed
+            $('#list_months').on('select2:select', function(e) {
+                var mid = $('#list_months').find(":selected").val();
+                var year = $('#list_year').find(":selected").val();
+                change_das_anggaran(mid, year);
+
+            });
+
+            $('#list_year').on('select2:select', function(e) {
+                var mid = $('#list_months').find(":selected").val();
+                var year = $('#list_year').find(":selected").val();
+
+                change_das_anggaran(mid, year);
+            });
         });
 
-        $('#list_year').on('select2:select', function (e) {
-            var mid = $('#list_months').find(":selected").val();
-            var year = $('#list_year').find(":selected").val();
+        function change_das_anggaran(mid, year) {
 
-            change_das_anggaran(mid,year);
-        });
-    });
+            $.ajax('{!! route('statistik.chart-anggaran-realisasi') !!}', {
+                data: {
+                    mid: mid,
+                    y: year
+                }
+            }).done(function(data) {
 
-    function change_das_anggaran(mid, year) {
+                $('#total_belanja').html('Rp ' + numeral(data.sum.total_belanja).format());
+                $('#total_belanja_persen').html(numeral(data.sum.total_belanja_persen).format() + '%');
+                $('#total_belanja_persen_bar').css('width', data.sum.total_belanja_persen + '%');
 
-        $.ajax('{!! route('statistik.chart-anggaran-realisasi') !!}', {
-            data: {mid: mid, y: year}
-        }).done(function (data) {
-            
-            $('#total_belanja').html('Rp '+numeral(data.sum.total_belanja).format());
-            $('#total_belanja_persen').html(numeral(data.sum.total_belanja_persen).format()+'%');
-            $('#total_belanja_persen_bar').css('width', data.sum.total_belanja_persen+ '%');
+                $('#selisih_anggaran_realisasi').html('Rp ' + numeral(data.sum.selisih_anggaran_realisasi).format());
+                $('#selisih_anggaran_realisasiPersen').html(numeral(data.sum.selisih_anggaran_realisasi_persen).format() + '%');
+                $('#selisih_anggaran_realisasiPersen_bar').css('width', data.sum.selisih_anggaran_realisasi_persen + '%');
 
-            $('#selisih_anggaran_realisasi').html('Rp '+numeral(data.sum.selisih_anggaran_realisasi).format());
-            $('#selisih_anggaran_realisasiPersen').html(numeral(data.sum.selisih_anggaran_realisasi_persen).format()+'%');
-            $('#selisih_anggaran_realisasiPersen_bar').css('width', data.sum.selisih_anggaran_realisasi_persen+'%');
+                $('#belanja_pegawai').html('Rp ' + numeral(data.sum.belanja_pegawai).format());
+                $('#belanja_pegawai_persen').html(numeral(data.sum.belanja_pegawai_persen).format() + '%');
+                $('#belanja_pegawai_persen_bar').css('width', data.sum.belanja_pegawai_persen + '%');
 
-            $('#belanja_pegawai').html('Rp '+numeral(data.sum.belanja_pegawai).format());
-            $('#belanja_pegawai_persen').html(numeral(data.sum.belanja_pegawai_persen).format()+'%');
-            $('#belanja_pegawai_persen_bar').css('width', data.sum.belanja_pegawai_persen+'%');
+                $('#belanja_barang_jasa').html('Rp ' + numeral(data.sum.belanja_barang_jasa).format());
+                $('#belanja_barang_jasa_persen').html(numeral(data.sum.belanja_barang_jasa_persen).format() + '%');
+                $('#belanja_barang_jasa_persen_bar').css('width', data.sum.belanja_barang_jasa_persen_bar + '%');
 
-            $('#belanja_barang_jasa').html('Rp '+numeral(data.sum.belanja_barang_jasa).format());
-            $('#belanja_barang_jasa_persen').html(numeral(data.sum.belanja_barang_jasa_persen).format()+'%');
-            $('#belanja_barang_jasa_persen_bar').css('width', data.sum.belanja_barang_jasa_persen_bar+'%');
+                $('#belanja_modal').html('Rp ' + numeral(data.sum.belanja_modal).format());
+                $('#belanja_modal_persen').html(numeral(data.sum.belanja_modal_persen).format() + '%');
+                $('#belanja_modal_persen_bar').css('width', data.sum.belanja_modal_persen_bar + '%');
 
-            $('#belanja_modal').html('Rp '+ numeral(data.sum.belanja_modal).format());
-            $('#belanja_modal_persen').html(numeral(data.sum.belanja_modal_persen).format()+'%');
-            $('#belanja_modal_persen_bar').css('width', data.sum.belanja_modal_persen_bar+'%');
-
-            $('#belanja_tidak_langsung').html('Rp '+ numeral(data.sum.belanja_tidak_langsung).format());
-            $('#belanja_tidak_langsung_persen').html(numeral(data.sum.belanja_tidak_langsung_persen).format()+'%');
-            $('#belanja_tidak_langsung_persen_bar').css('width', data.sum.belanja_tidak_langsung_persen_bar+'%');
+                $('#belanja_tidak_langsung').html('Rp ' + numeral(data.sum.belanja_tidak_langsung).format());
+                $('#belanja_tidak_langsung_persen').html(numeral(data.sum.belanja_tidak_langsung_persen).format() + '%');
+                $('#belanja_tidak_langsung_persen_bar').css('width', data.sum.belanja_tidak_langsung_persen_bar + '%');
 
 
-            create_chart_anggaran(data.chart);
-        });
+                create_chart_anggaran(data.chart);
+            });
 
-    }
-
-
-    function create_chart_anggaran(data) {
-        /**
-         * Define data for each year
-         */
-        var chartData = data;
-
-        /**
-         * Create the chart
-         */
-        var chart = AmCharts.makeChart( "chartdiv", {
-            "hideCredits": true,
-            "type": "pie",
-            "theme": "light",
-            "dataProvider": chartData,
-            "valueField": "value",
-            "titleField": "anggaran",
-            "outlineAlpha": 0.4,
-            "depth3D": 15,
-            "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-            "angle": 30,
-            "export": {
-                "enabled": true,
-                "pageOrigin":false,
-                "fileName":"Persentase Anggaran Kecamatan",
-            },
-            "allLabels": [{
-                "text": "Persentase Anggaran Kecamatan",
-                "align": "center",
-                "bold": true,
-                "size": 20,
-                "y": -4
-            }],
-            "legend":{
-                "position":"bottom",
-                "marginRight":20,
-                "autoMargins":false,
-                "valueWidth": 120
-            },
-            "marginTop" : 50,
-            "numberFormatter": {
-                "precision": 2,
-                "decimalSeparator": ",",
-                "thousandsSeparator": "."
-            }
-        } );
-    }
+        }
 
 
-</script>
+        function create_chart_anggaran(data) {
+            /**
+             * Define data for each year
+             */
+            var chartData = data;
 
+            /**
+             * Create the chart
+             */
+            var chart = AmCharts.makeChart("chartdiv", {
+                "hideCredits": true,
+                "type": "pie",
+                "theme": "light",
+                "dataProvider": chartData,
+                "valueField": "value",
+                "titleField": "anggaran",
+                "outlineAlpha": 0.4,
+                "depth3D": 15,
+                "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+                "angle": 30,
+                "export": {
+                    "enabled": true,
+                    "pageOrigin": false,
+                    "fileName": "Persentase Anggaran Kecamatan",
+                },
+                "allLabels": [{
+                    "text": "Persentase Anggaran Kecamatan",
+                    "align": "center",
+                    "bold": true,
+                    "size": 20,
+                    "y": -4
+                }],
+                "legend": {
+                    "position": "bottom",
+                    "marginRight": 20,
+                    "autoMargins": false,
+                    "valueWidth": 120
+                },
+                "marginTop": 50,
+                "numberFormatter": {
+                    "precision": 2,
+                    "decimalSeparator": ",",
+                    "thousandsSeparator": "."
+                }
+            });
+        }
+    </script>
 @endpush

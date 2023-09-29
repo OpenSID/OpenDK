@@ -57,6 +57,7 @@ class AddPengurusUser extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['pengurus_id']);
             $table->dropColumn('pengurus_id');
         });
     }

@@ -22,8 +22,7 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah"
-                        data-toggle="tab">Info Wilyah</a></li>
+                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" data-toggle="tab">Info Wilyah</a></li>
                 <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a>
                 </li>
             </ul>
@@ -44,7 +43,7 @@
                             </div>
                         </div>
                     </div>
-                    <br/>
+                    <br />
                     <a id="reset">
                         <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
                             Reset Peta</button>
@@ -70,7 +69,7 @@
     </section>
 @endsection
 
-@include('partials.asset_wysihtml5')
+@include('partials.tinymce_min')
 @include('partials.asset_select2')
 @include('partials.asset_sweetalert')
 @include('partials.asset_leaflet')
@@ -155,7 +154,6 @@
                 }
             });
         }
-        $('.textarea').wysihtml5();
 
         var overlayLayers = {};
 
@@ -201,30 +199,30 @@
             }
         };
 
-        $('#reset').on('click', function () {
+        $('#reset').on('click', function() {
             Swal.fire({
-            title: 'Apakah anda yakin ingin mereset peta?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya!',
-            cancelButtonText: 'Tidak!',
-            showLoaderOnConfirm: true,
-            preConfirm: () => {
-                return fetch(`{{ route('data.data-umum.resetpeta', $data_umum->id) }}`)
-                .then(response => {
-                    if (!response.ok) {
-                    throw new Error(response.statusText)
-                    }
-                    return response.json()
-                })
-                .catch(error => {
-                    Swal.showValidationMessage(
-                    `Request failed: ${error}`
-                    )
-                })
-            }
+                title: 'Apakah anda yakin ingin mereset peta?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!',
+                cancelButtonText: 'Tidak!',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return fetch(`{{ route('data.data-umum.resetpeta', $data_umum->id) }}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                }
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire(

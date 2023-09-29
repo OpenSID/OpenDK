@@ -59,7 +59,8 @@ class AlterTableDasKeluarga extends Migration
     {
         $this->charType();
         Schema::table('das_keluarga', function (Blueprint $table) {
-            $table->char('desa_id', 10)->nullable()->change();
+            // sebelumnya bernilai 10, tapi bemasalah karena data yang ada kini bernilai 13
+            $table->char('desa_id', 13)->nullable()->change();
         });
     }
 

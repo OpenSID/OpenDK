@@ -3,26 +3,55 @@ name: Fix styling
 on:
   pull_request:
     branches:
-      - dev
-      - master
+      - 'dev'
+      - 'master'
+      - 'bug-fix'
+    paths:
+      - '**.php'
+      - '!resources/views/**'
+      - '.github/workflows/phpcs.yml'
 
 jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
-    # Check if contains [ci skip] will be skip github action
-    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+
+      - name: Check if PR repo matches base repo
+        id: check_repo
+        run: |
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]]; then
+            echo "match=true" >> $GITHUB_OUTPUT
+            else
+            echo "match=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup PHP 7.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+
+      - name: Install dependencies
+        run: |
+          if [ -f composer.lock ]; then
+            composer install --no-progress
+          else
+            composer update --no-progress
+          fi
 
       - name: Run PHP CS Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
-        with:
-          args: --config=.php-cs-fixer.php --allow-risky=yes
+        run: |
+          if [[ "${{ steps.check_repo.outputs.match }}" == "true" ]]; then
+            ./vendor/bin/php-cs-fixer fix --allow-risky=yes
+            else
+            ./vendor/bin/php-cs-fixer fix --allow-risky=yes --verbose --ansi --dry-run --using-cache=no --diff
+          fi
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Fix styling"
+          commit_message: "Fix styling by PHP-CS-FIXER"

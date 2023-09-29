@@ -55,7 +55,9 @@ class AlterTableArtikeChangeFieldGambar extends Migration
     public function down()
     {
         Schema::table('das_artikel', function (Blueprint $table) {
-            $table->string('gambar')->nullable(false)->change();
+            // semestinya bernillai null
+            // tapi data terkini akan membuat error jika dikembalikan ke nilai asal
+            $table->string('gambar')->nullable()->change();
         });
     }
 }

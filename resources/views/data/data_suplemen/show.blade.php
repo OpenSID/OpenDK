@@ -16,7 +16,7 @@
     <section class="content container-fluid">
 
         @include('partials.flash_message')
-        
+
         <div class="box box-primary">
             <div class="box-header with-border">
                 <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
@@ -66,29 +66,62 @@
 @include('partials.asset_datatables')
 
 @push('scripts')
-<script type="text/javascript">
-    $(document).ready(function () {
-        var data = $('#suplemen-terdata-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{!! route( 'data.data-suplemen.getsuplementerdata', $suplemen->id) !!}",
-            columns: [
-                {data: 'aksi', name: 'aksi', class: 'text-center', searchable: false, orderable: false},
-                {data: 'penduduk.desa.nama', name: 'penduduk.desa.nama'},
-                {data: 'penduduk.no_kk', name: 'penduduk.no_kk'},
-                {data: 'penduduk.nik', name: 'penduduk.nik'},
-                {data: 'penduduk.nama', name: 'penduduk.nama'},
-                {data: 'penduduk.tempat_lahir', name: 'penduduk.tempat_lahir'},
-                {data: 'penduduk.tanggal_lahir', name: 'penduduk.tanggal_lahir'},
-                {data: 'penduduk.sex', name: 'penduduk.sex'},
-                {data: 'penduduk.alamat', name: 'penduduk.alamat'},
-                {data: 'keterangan', name: 'keterangan'},
-            ],
-            order: [[1, 'asc']]
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var data = $('#suplemen-terdata-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{!! route('data.data-suplemen.getsuplementerdata', $suplemen->id) !!}",
+                columns: [{
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center',
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
+                        data: 'penduduk.desa.nama',
+                        name: 'penduduk.desa.nama'
+                    },
+                    {
+                        data: 'penduduk.no_kk',
+                        name: 'penduduk.no_kk'
+                    },
+                    {
+                        data: 'penduduk.nik',
+                        name: 'penduduk.nik'
+                    },
+                    {
+                        data: 'penduduk.nama',
+                        name: 'penduduk.nama'
+                    },
+                    {
+                        data: 'penduduk.tempat_lahir',
+                        name: 'penduduk.tempat_lahir'
+                    },
+                    {
+                        data: 'penduduk.tanggal_lahir',
+                        name: 'penduduk.tanggal_lahir'
+                    },
+                    {
+                        data: 'penduduk.sex',
+                        name: 'penduduk.sex'
+                    },
+                    {
+                        data: 'penduduk.alamat',
+                        name: 'penduduk.alamat'
+                    },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan'
+                    },
+                ],
+                order: [
+                    [1, 'asc']
+                ]
+            });
         });
-    });
-</script>
-@include('forms.datatable-vertical')
-@include('forms.delete-modal')
-
+    </script>
+    @include('forms.datatable-vertical')
+    @include('forms.delete-modal')
 @endpush

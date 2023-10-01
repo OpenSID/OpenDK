@@ -32,10 +32,10 @@
     <meta name="twitter:image" content="{{ is_img($page_image ?? '') }}?auto=format&amp;fit=max&amp;w=1200">
     <link rel="alternate" href="/feed.xml" type="application/atom+xml" data-title="{{ Request::url() }}">
 
-    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}"/>
+    <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}" />
     <link rel="mask-icon" href="{{ is_logo($profil->file_logo) }}" color="#5bbad5">
     <link rel="manifest" href="{{ asset('manifest.webmanifest') }}" />
-    
+
     <link href="{{ asset('/css/placeholder-loading.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css') }}">
@@ -46,10 +46,8 @@
     <!-- Link Swiper's CSS -->
     <link rel="stylesheet" href="{{ asset('css/swiper.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
-        rel="stylesheet">
-        <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+    <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
@@ -97,11 +95,11 @@
     <!-- REQUIRED JS SCRIPTS -->
     <!-- jQuery 3 -->
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
-        <script>
-		setTimeout(function(){
-		$('.preloader_bg').fadeToggle();
-		}, 500);
-	</script>
+    <script>
+        setTimeout(function() {
+            $('.preloader_bg').fadeToggle();
+        }, 500);
+    </script>
     <script src="{{ asset('/bower_components/jquery/dist/jquery.socialShare.js') }}"></script>
     <!-- Bootstrap 3.3.7 -->
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -113,4 +111,5 @@
     <script src="{{ asset('/js/custom.js') }}"></script>
     @stack('scripts')
 </body>
+
 </html>

@@ -67,10 +67,11 @@ class AlterTableDasProfilAddName extends Migration
      */
     public function down()
     {
-        Schema::table('users', function ($table) {
+        Schema::table('das_profil', function (Blueprint $table) {
             $table->dropColumn('nama_provinsi');
             $table->dropColumn('nama_kabupaten');
             $table->dropColumn('nama_kecamatan');
+            $table->string('kecamatan_id', 8)->nullable(false)->change();
         });
     }
 }

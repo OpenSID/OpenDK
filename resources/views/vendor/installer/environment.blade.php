@@ -10,7 +10,6 @@
 @endsection
 
 @section('container')
-
     <p class="text-center">
         {!! trans('installer_messages.environment.menu.desc') !!}
     </p>
@@ -22,5 +21,4 @@
             <i class="fa fa-code fa-fw" aria-hidden="true"></i> {{ trans('installer_messages.environment.menu.classic-button') }}
         </a>
     </div>
-
 @endsection

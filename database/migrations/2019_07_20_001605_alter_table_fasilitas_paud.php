@@ -56,8 +56,10 @@ class AlterTableFasilitasPaud extends Migration
     public function down()
     {
         Schema::table('das_fasilitas_paud', function (Blueprint $table) {
-            $table->string('kecamatan_id', 7)->change();
-            $table->string('desa_id', 10)->change();
+            // sebelumnya bernilai 7, tapi bemasalah karena data yang ada kini bernilai 8
+            $table->string('kecamatan_id', 8)->change();
+            // sebelumnya bernilai 10, tapi bemasalah karena data yang ada kini bernilai 13
+            $table->string('desa_id', 13)->change();
         });
     }
 }

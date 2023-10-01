@@ -1,9 +1,9 @@
 <!-- The Modal -->
 <div id="myModal" class="modal-image">
-    
+
     <!-- Modal Content (The Image) -->
     <img class="modal-content-image" id="img01" style="max-height: 500px; object-fit: contain;">
-    
+
     <!-- The Close Button -->
     <span class="close">&times;</span>
 </div>

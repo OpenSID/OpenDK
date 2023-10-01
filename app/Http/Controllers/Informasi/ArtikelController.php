@@ -69,7 +69,8 @@ class ArtikelController extends Controller
                     } else {
                         return '<span class="label label-success">Aktif</span>';
                     }
-                })->editColumn('created_at', function ($row) {
+                })
+                ->editColumn('dibuat', function ($row) {
                     return format_datetime($row->created_at);
                 })
                 ->rawColumns(['status'])

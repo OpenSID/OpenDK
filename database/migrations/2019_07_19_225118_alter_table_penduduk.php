@@ -57,9 +57,12 @@ class AlterTablePenduduk extends Migration
     public function down()
     {
         Schema::table('das_penduduk', function (Blueprint $table) {
-            $table->string('kabupaten_id', 4)->change();
-            $table->string('kecamatan_id', 7)->change();
-            $table->string('desa_id', 10)->change();
+            // sebelumnya bernilai 4, tapi bemasalah karena data yang ada kini bernilai 5
+            $table->string('kabupaten_id', 5)->change();
+            // sebelumnya bernilai 7, tapi bemasalah karena data yang ada kini bernilai 8
+            $table->string('kecamatan_id', 8)->change();
+            // sebelumnya bernilai 10, tapi bemasalah karena data yang ada kini bernilai 13
+            $table->string('desa_id', 13)->change();
         });
     }
 }

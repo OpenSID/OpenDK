@@ -1,31 +1,31 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? "Page Title" }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('data.pengurus.index') }}">Daftar Pengurus</a></li>
-        <li class="active">{{ $page_description }}</li>
-    </ol>
-</section>
+    <section class="content-header">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{{ route('data.pengurus.index') }}">Daftar Pengurus</a></li>
+            <li class="active">{{ $page_description }}</li>
+        </ol>
+    </section>
 
-<section class="content container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
 
                     <!-- form start -->
-                    {!!  Form::model($pengurus, [ 'route' => ['data.pengurus.update', $pengurus->id], 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left' ] ) !!}
+                    {!! Form::model($pengurus, ['route' => ['data.pengurus.update', $pengurus->id], 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
 
                         {{ method_field('PUT') }}
-                        @include( 'flash::message' )
+                        @include('flash::message')
                         @include('data.pengurus.form')
 
                     </div>
@@ -41,43 +41,43 @@
                         </div>
                     </div>
                     {!! Form::close() !!}
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @push('scripts')
-<script>
-    $(function () {
+    <script>
+        $(function() {
 
-        var fileTypes = ['jpg', 'jpeg', 'png'];  //acceptable file types
+            var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
-                        isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
+                        isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
-                if (isSuccess) { //yes
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
+                    if (isSuccess) { //yes
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
 
-                    $('#showfoto').attr('src', e.target.result);
-                    $('#showfoto').removeClass('hide');
-                }
+                            $('#showfoto').attr('src', e.target.result);
+                            $('#showfoto').removeClass('hide');
+                        }
 
-                    reader.readAsDataURL(input.files[0]);
-                } else { //no
-                    //warning
-                    $("#foto").val('');
-                    alert('File tersebut tidak diperbolehkan.');
+                        reader.readAsDataURL(input.files[0]);
+                    } else { //no
+                        //warning
+                        $("#foto").val('');
+                        alert('File tersebut tidak diperbolehkan.');
+                    }
                 }
             }
-        }
 
-        $("#foto").change(function () {
-            readURL(this);
+            $("#foto").change(function() {
+                readURL(this);
+            });
         });
-    });
-</script>
+    </script>
 @endpush

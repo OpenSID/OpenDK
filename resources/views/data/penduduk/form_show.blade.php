@@ -5,7 +5,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Foto</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                <img src="{{ is_user($penduduk->foto, $penduduk->sex) }}" id="showgambar" style="max-width:120px;max-height:150px;float:left;"/>
+                <img src="{{ is_user($penduduk->foto, $penduduk->sex) }}" id="showgambar" style="max-width:120px;max-height:150px;float:left;" />
             </div>
         </div>
 
@@ -13,7 +13,7 @@
             <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Nama</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('nama', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'nama']) !!}
+                {!! Form::text('nama', null, ['class' => 'form-control', 'disabled' => true, 'id' => 'nama']) !!}
             </div>
         </div>
 
@@ -21,7 +21,7 @@
             <label for="nik" class="control-label col-md-4 col-sm-3 col-xs-12">NIK</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('nik', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'nik']) !!}
+                {!! Form::text('nik', null, ['class' => 'form-control', 'disabled' => true, 'id' => 'nik']) !!}
             </div>
         </div>
 
@@ -29,7 +29,7 @@
             <label for="no_kk_sebelumnya" class="control-label col-md-4 col-sm-3 col-xs-12">No KK Sebelumnya</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('no_kk_sebelumnya', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'no_kk_sebelumnya']) !!}
+                {!! Form::text('no_kk_sebelumnya', null, ['class' => 'form-control', 'disabled' => true, 'id' => 'no_kk_sebelumnya']) !!}
             </div>
         </div>
 
@@ -37,7 +37,7 @@
             <label for="kk_level" class="control-label col-md-4 col-sm-3 col-xs-12">Hubungan dalam Keluarga</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::select('kk_level', \App\Models\HubunganKeluarga::pluck('nama', 'id'), null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'kk_level']) !!}
+                {!! Form::select('kk_level', \App\Models\HubunganKeluarga::pluck('nama', 'id'), null, ['class' => 'form-control', 'disabled' => true, 'id' => 'kk_level']) !!}
             </div>
         </div>
         <div class="form-group">
@@ -47,11 +47,27 @@
                 &nbsp;
                 &nbsp;
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary btn-sm @if($penduduk->sex == 1) active @endif" disabled>
-                        <input type="radio" name="sex" id="jenis_kelamin" disabled value="1" autocomplete="off" @if($penduduk->sex == 1) checked @endif> Laki-Laki
+                    <label class="btn btn-primary btn-sm @if ($penduduk->sex == 1) active @endif" disabled>
+                        <input
+                            type="radio"
+                            name="sex"
+                            id="jenis_kelamin"
+                            disabled
+                            value="1"
+                            autocomplete="off"
+                            @if ($penduduk->sex == 1) checked @endif
+                        > Laki-Laki
                     </label>
-                    <label class="btn btn-primary btn-sm @if($penduduk->sex == 2) active @endif disabled">
-                        <input type="radio" name="sex" id="jenis_kelamin" disabled value="2" autocomplete="off" @if($penduduk->sex == 2) checked @endif> Perempuan
+                    <label class="btn btn-primary btn-sm @if ($penduduk->sex == 2) active @endif disabled">
+                        <input
+                            type="radio"
+                            name="sex"
+                            id="jenis_kelamin"
+                            disabled
+                            value="2"
+                            autocomplete="off"
+                            @if ($penduduk->sex == 2) checked @endif
+                        > Perempuan
                     </label>
                 </div>
             </div>
@@ -61,7 +77,7 @@
             <label for="agama_id" class="control-label col-md-4 col-sm-3 col-xs-12">Agama</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::select('agama_id', \App\Models\Agama::pluck('nama', 'id'), null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'agama_id']) !!}
+                {!! Form::select('agama_id', \App\Models\Agama::pluck('nama', 'id'), null, ['class' => 'form-control', 'disabled' => true, 'id' => 'agama_id']) !!}
             </div>
         </div>
 
@@ -72,14 +88,38 @@
                 &nbsp;
                 &nbsp;
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary btn-sm @if($penduduk->status == 1) active @endif" disabled>
-                        <input type="radio" name="status" id="status" value="1" disabled autocomplete="off" @if($penduduk->status == 1) checked @endif> Tetap
+                    <label class="btn btn-primary btn-sm @if ($penduduk->status == 1) active @endif" disabled>
+                        <input
+                            type="radio"
+                            name="status"
+                            id="status"
+                            value="1"
+                            disabled
+                            autocomplete="off"
+                            @if ($penduduk->status == 1) checked @endif
+                        > Tetap
                     </label>
-                    <label class="btn btn-primary btn-sm @if($penduduk->status == 2) active @endif" disabled>
-                        <input type="radio" name="status" id="status" value="2" disabled autocomplete="off" @if($penduduk->status == 2) checked @endif> Tidak Aktif
+                    <label class="btn btn-primary btn-sm @if ($penduduk->status == 2) active @endif" disabled>
+                        <input
+                            type="radio"
+                            name="status"
+                            id="status"
+                            value="2"
+                            disabled
+                            autocomplete="off"
+                            @if ($penduduk->status == 2) checked @endif
+                        > Tidak Aktif
                     </label>
-                    <label class="btn btn-primary btn-sm @if($penduduk->status == 3) active @endif" disabled>
-                        <input type="radio" name="status" id="status" value="3" disabled autocomplete="off" @if($penduduk->status == 3) checked @endif> Pendatang
+                    <label class="btn btn-primary btn-sm @if ($penduduk->status == 3) active @endif" disabled>
+                        <input
+                            type="radio"
+                            name="status"
+                            id="status"
+                            value="3"
+                            disabled
+                            autocomplete="off"
+                            @if ($penduduk->status == 3) checked @endif
+                        > Pendatang
                     </label>
                 </div>
             </div>
@@ -89,7 +129,7 @@
             <label for="akta_lahir" class="control-label col-md-4 col-sm-3 col-xs-12">Akta Lahir</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('akta_lahir', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'akta_lahir']) !!}
+                {!! Form::text('akta_lahir', null, ['class' => 'form-control', 'disabled' => true, 'id' => 'akta_lahir']) !!}
             </div>
         </div>
 
@@ -97,7 +137,7 @@
             <label for="tempat_lahir" class="control-label col-md-4 col-sm-3 col-xs-12">Tempat Lahir</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tempat_lahir', null, ['class' => 'form-control', 'disabled'=>true, 'id' => 'tempat_lahir']) !!}
+                {!! Form::text('tempat_lahir', null, ['class' => 'form-control', 'disabled' => true, 'id' => 'tempat_lahir']) !!}
             </div>
         </div>
 
@@ -105,24 +145,24 @@
             <label for="tanggal_lahir" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Lahir</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('tanggal_lahir', format_date($penduduk->tanggal_lahir), ['class' => 'form-control', 'disabled'=>true, 'id' => 'tanggal_lahir']) !!}
+                {!! Form::text('tanggal_lahir', format_date($penduduk->tanggal_lahir), ['class' => 'form-control', 'disabled' => true, 'id' => 'tanggal_lahir']) !!}
             </div>
         </div>
 
         <?php
-            $wajib_ktp = is_wajib_ktp(convert_born_date_to_age($penduduk->tanggal_lahir), $penduduk->status_kawin);
-            if($wajib_ktp){
-                $status_ktp = 'Ya';
-            }else{
-                $status_ktp = 'Tidak';
-            }
-
-            ?>
+        $wajib_ktp = is_wajib_ktp(convert_born_date_to_age($penduduk->tanggal_lahir), $penduduk->status_kawin);
+        if ($wajib_ktp) {
+            $status_ktp = 'Ya';
+        } else {
+            $status_ktp = 'Tidak';
+        }
+        
+        ?>
         <div class="form-group">
             <label for="wajib_ktp" class="control-label col-md-4 col-sm-3 col-xs-12">Wajib KTP</label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::text('wajib_ktp',$status_ktp, ['class' => 'form-control', 'disabled', 'id' => 'wajib_ktp']) !!}
+                {!! Form::text('wajib_ktp', $status_ktp, ['class' => 'form-control', 'disabled', 'id' => 'wajib_ktp']) !!}
             </div>
         </div>
 
@@ -141,11 +181,27 @@
                 &nbsp;
                 &nbsp;
                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary btn-sm @if($penduduk->ktp_el == 1) active @endif" disabled>
-                        <input type="radio" name="ktp_el" id="ktp_el" value="1" disabled autocomplete="off" @if($penduduk->ktp_el == 1) checked @endif> Ya
+                    <label class="btn btn-primary btn-sm @if ($penduduk->ktp_el == 1) active @endif" disabled>
+                        <input
+                            type="radio"
+                            name="ktp_el"
+                            id="ktp_el"
+                            value="1"
+                            disabled
+                            autocomplete="off"
+                            @if ($penduduk->ktp_el == 1) checked @endif
+                        > Ya
                     </label>
-                    <label class="btn btn-primary btn-sm @if($penduduk->ktp_el == 2) active @endif" disabled>
-                        <input type="radio" name="ktp_el" id="ktp_el" value="2" disabled autocomplete="off" @if($penduduk->ktp_el == 2) checked @endif> Tidak
+                    <label class="btn btn-primary btn-sm @if ($penduduk->ktp_el == 2) active @endif" disabled>
+                        <input
+                            type="radio"
+                            name="ktp_el"
+                            id="ktp_el"
+                            value="2"
+                            disabled
+                            autocomplete="off"
+                            @if ($penduduk->ktp_el == 2) checked @endif
+                        > Tidak
                     </label>
                 </div>
             </div>
@@ -349,7 +405,7 @@
                 {!! Form::select('cara_kb_id', \App\Models\CaraKB::pluck('nama', 'id'), null, ['class' => 'form-control', 'disabled', 'id' => 'cara_kb_id']) !!}
             </div>
         </div>
-        @includeWhen($penduduk->sex == 2 && $penduduk->status_kawin > 1,'data.penduduk.form_show_status_kehamilan')
+        @includeWhen($penduduk->sex == 2 && $penduduk->status_kawin > 1, 'data.penduduk.form_show_status_kehamilan')
     </div>
 </div>
 

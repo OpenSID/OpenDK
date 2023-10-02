@@ -66,14 +66,23 @@
                         orderable: false
                     },
                     {
+                        data: 'dibuat',
+                        name: 'dibuat',
+                        class: 'text-center',
+                        searchable: false,
+                        orderData: 4,
+                    },
+                    {
                         data: 'created_at',
                         name: 'created_at',
                         class: 'text-center',
-                        searchable: false
+                        searchable: false,
+                        orderable: false,
+                        visible: false
                     },
                 ],
                 order: [
-                    [3, 'desc']
+                    [4, 'desc']
                 ]
             });
         });

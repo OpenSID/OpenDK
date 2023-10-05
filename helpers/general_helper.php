@@ -421,3 +421,16 @@ if (! function_exists('checkWebsiteAccessibility')) {
         return false;
     }
 }
+
+if (!function_exists('parsedown')) {
+    function parsedown($params = null)
+    {
+        $parsedown = new \App\Http\Controllers\Helpers\Parsedown();
+
+        if (null !== $params) {
+            return $parsedown->text(file_get_contents($params));
+        }
+
+        return $parsedown;
+    }
+}

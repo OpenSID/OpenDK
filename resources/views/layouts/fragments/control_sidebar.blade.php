@@ -12,6 +12,15 @@
             <br>
             <a href="{{ asset('storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf') }}" target="_blank" class="btn btn-primary btn-lg col-md-12"><i class="fa fa-download"></i> Unduh Panduan</a>
             <!-- /.control-sidebar-menu -->
+            <br>
+            <br>
+            <br>
+            <h3>Catatan Rilis</h3>
+            @php
+                $files = base_path('catatan_rilis.md');
+                $content = parsedown($files);
+            @endphp
+            {!! $content !!}
         </div>
         <!-- /.tab-pane -->
     </div>

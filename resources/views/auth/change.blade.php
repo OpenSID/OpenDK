@@ -30,48 +30,22 @@
 </head>
 
 <body class="hold-transition login-page">
-<div class="login-box" style="background-color: white;">
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <div class="login-logo" style="padding-top: 10px;">
-            <a href="{{ route('beranda') }}">
-                <img class="" src="{{ is_logo($profil->file_logo) }}" style="max-width:80px;white-space:normal" alt=""  width="70px">
-                <h3>PEMERINTAH KAB. {{ strtoupper($profil->nama_kabupaten) }}<br/><b>{{ strtoupper($sebutan_wilayah . ' ' . $profil->nama_kecamatan) }}</b></h3>
-            </a>
-        </div>
-        <hr/>
-
-        <div class="alert alert-danger">Kata sandi anda tidak memenuhi syarat keamanan dan harus diganti</div>
-        
-        @include('partials.flash_message')
-        <form method="POST" action="{{ route('changedefault.store') }}">
-            @csrf
-            <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
-                @if ($errors->has('password'))
-                    <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                    </span>
-                @endif
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+    <div class="login-box" style="background-color: white;">
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <div class="login-logo" style="padding-top: 10px;">
+                <a href="{{ route('beranda') }}">
+                    <img class="" src="{{ is_logo($profil->file_logo) }}" style="max-width:80px;white-space:normal" alt="" width="70px">
+                    <h3>PEMERINTAH KAB. {{ strtoupper($profil->nama_kabupaten) }}<br /><b>{{ strtoupper($sebutan_wilayah . ' ' . $profil->nama_kecamatan) }}</b></h3>
+                </a>
             </div>
+            <hr />
 
-            <div class="form-group has-feedback {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-              <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required placeholder="Ulangi Password">
-                @if ($errors->has('password_confirmation'))
-                  <span class="help-block">
-                      <strong>{{ $errors->first('password_confirmation') }}</strong>
-                  </span>
-              @endif
-              <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            <div class="row">
-            
-                <!-- /.col -->
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan</button>
-                </div>
+            <div class="alert alert-danger">Kata sandi anda tidak memenuhi syarat keamanan dan harus diganti</div>
 
+            @include('partials.flash_message')
+            <form method="POST" action="{{ route('changedefault.store') }}">
+                @csrf
                 <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
                     <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
                     @if ($errors->has('password'))
@@ -82,7 +56,7 @@
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
+                <div class="form-group has-feedback {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                     <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required placeholder="Ulangi Password">
                     @if ($errors->has('password_confirmation'))
                         <span class="help-block">
@@ -97,8 +71,34 @@
                     <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan</button>
                     </div>
-                    <!-- /.col -->
-                </div>
+
+                    <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
+                        <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
+                        @if ($errors->has('password'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+
+                    <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
+                        <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required placeholder="Ulangi Password">
+                        @if ($errors->has('password_confirmation'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password_confirmation') }}</strong>
+                            </span>
+                        @endif
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+                    <div class="row">
+
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
             </form>
 
             <hr />

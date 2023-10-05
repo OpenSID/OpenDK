@@ -37,7 +37,15 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v2309.0.1',
+    'version' => 'v2310.0.0',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Server Pantau
+    |--------------------------------------------------------------------------
+    */
+
+    'server_pantau' => env('SERVER_PANTAU', 'https://pantau.opensid.my.id'),
 
     /*
     |--------------------------------------------------------------------------
@@ -165,7 +173,7 @@ return [
     |
     */
 
-    'key' => env('APP_KEY'),
+    'key' => env('APP_KEY', 'base64:rN3vXWFRHDKFP2sMySe9f4gna7WulisoXTqn7Yo4Ye8='),
 
     'cipher' => 'AES-256-CBC',
 
@@ -240,8 +248,6 @@ return [
         App\Providers\EventServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // iSeed
-        Orangehill\Iseed\IseedServiceProvider::class,
         //Captcha
         Mews\Captcha\CaptchaServiceProvider::class,
 

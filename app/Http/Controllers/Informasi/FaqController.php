@@ -76,7 +76,6 @@ class FaqController extends Controller
                     }
                 })
                 ->rawColumns(['status'])
-                ->escapeColumns([])
                 ->make(true);
         }
     }

@@ -42,7 +42,7 @@ class AlterTableKeluarga extends Migration
      */
     public function up()
     {
-        Schema::table('das_penduduk', function (Blueprint $table) {
+        Schema::table('das_keluarga', function (Blueprint $table) {
             $table->string('kabupaten_id', 5)->change();
             $table->string('kecamatan_id', 8)->change();
             $table->string('desa_id', 13)->change();
@@ -56,10 +56,13 @@ class AlterTableKeluarga extends Migration
      */
     public function down()
     {
-        Schema::table('das_penduduk', function (Blueprint $table) {
-            $table->string('kabupaten_id', 4)->change();
-            $table->string('kecamatan_id', 7)->change();
-            $table->string('desa_id', 10)->change();
+        Schema::table('das_keluarga', function (Blueprint $table) {
+            // sebelumnya bernilai 4, tapi bemasalah karena data yang ada kini bernilai 5
+            $table->string('kabupaten_id', 5)->change();
+            // sebelumnya bernilai 7, tapi bemasalah karena data yang ada kini bernilai 8
+            $table->string('kecamatan_id', 8)->change();
+            // sebelumnya bernilai 10, tapi bemasalah karena data yang ada kini bernilai 13
+            $table->string('desa_id', 13)->change();
         });
     }
 }

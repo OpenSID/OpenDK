@@ -54,8 +54,7 @@ class EventRequest extends FormRequest
     {
         return [
             'event_name'  => 'required|string|max:150',
-            'start'       => 'required',
-            'end'         => 'required',
+            'waktu'       => 'required',
             'attendants'  => 'required|string|max:250',
             'description' => 'required',
             'attachment'  => 'file|mimes:jpeg,png,jpg,gif,svg,xlsx,xls,doc,docx,pdf,ppt,pptx|max:2048',

@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DesaRequest;
 use App\Models\DataDesa;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -100,8 +101,9 @@ class DataDesaController extends Controller
         $page_title       = 'Desa';
         $page_description = 'Tambah Desa';
         $profil           = $this->profil;
+        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
-        return view('data.data_desa.create', compact('page_title', 'page_description', 'profil'));
+        return view('data.data_desa.create', compact('page_title', 'page_description', 'profil', 'status_pantau'));
     }
 
     /**
@@ -109,14 +111,8 @@ class DataDesaController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(DesaRequest $request)
     {
-        request()->validate([
-            'desa_id'      => 'required|regex:/^[0-9.]+$/|min:13|max:13|unique:das_data_desa,desa_id',
-            'nama'         => 'required',
-            'luas_wilayah' => 'required|numeric',
-        ]);
-
         try {
             $desa = new DataDesa();
             $desa->fill($request->all());
@@ -146,8 +142,9 @@ class DataDesaController extends Controller
         $page_title       = 'Desa';
         $page_description = 'Ubah Desa : ' . $desa->nama;
         $profil           = $this->profil;
+        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
-        return view('data.data_desa.edit', compact('page_title', 'page_description', 'desa', 'profil'));
+        return view('data.data_desa.edit', compact('page_title', 'page_description', 'desa', 'profil', 'status_pantau'));
     }
 
     /**
@@ -156,14 +153,8 @@ class DataDesaController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(DesaRequest $request, $id)
     {
-        request()->validate([
-            'desa_id'      => "required|unique:das_data_desa,desa_id,{$id}|regex:/^[0-9.]+$/|min:13|max:13",
-            'nama'         => 'required',
-            'luas_wilayah' => 'required|numeric',
-        ]);
-
         try {
             $desa = DataDesa::findOrFail($id);
             $desa->fill($request->all());

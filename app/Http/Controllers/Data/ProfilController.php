@@ -49,8 +49,9 @@ class ProfilController extends Controller
         $profil           = $this->profil;
         $page_title       = 'Profil';
         $page_description = 'Data Profil';
+        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
-        return view('data.profil.edit', compact('page_title', 'page_description', 'profil'));
+        return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau'));
     }
 
     /**

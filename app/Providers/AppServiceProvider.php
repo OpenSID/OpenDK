@@ -53,10 +53,13 @@ class AppServiceProvider extends ServiceProvider
     {
         // default lengt string
         Schema::defaultStringLength(191);
-        $this->penduduk();
-        $this->config();
-        $this->blade();
-        $this->file();
+
+        if (sudahInstal()) {
+            $this->penduduk();
+            $this->config();
+            $this->blade();
+            $this->file();
+        }
     }
 
     protected function penduduk()

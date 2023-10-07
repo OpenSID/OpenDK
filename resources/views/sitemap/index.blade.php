@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <sitemap>
-        <loc>{{ url('sitemap/profil') }}</loc>
-        <lastmod>{{ $profil->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/profil/sejarah') }}</loc>
-        <lastmod>{{ $profil->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/profil/letak-geografis') }}</loc>
-        <lastmod>{{ $profil->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/profil/struktur-pemerintahan') }}</loc>
-        <lastmod>{{ $profil->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/profil/visi-dan-misi') }}</loc>
-        <lastmod>{{ $profil->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/unduhan/prosedur') }}</loc>
-        <lastmod>{{ $prosedur->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/unduhan/regulasi') }}</loc>
-        <lastmod>{{ $regulasi->created_at->toAtomString() }}</lastmod>
-    </sitemap>
-    <sitemap>
-        <loc>{{ url('sitemap/unduhan/form-dokumen') }}</loc>
-        <lastmod>{{ $dokumen->created_at->toAtomString() }}</lastmod>
-    </sitemap>
+    @if ($profil !== null)
+        <sitemap>
+            <loc>{{ url('profil/sejarah') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($profil->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+        <sitemap>
+            <loc>{{ url('profil/letak-geografis') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($profil->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+        <sitemap>
+            <loc>{{ url('profil/struktur-pemerintahan') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($profil->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+        <sitemap>
+            <loc>{{ url('profil/visi-dan-misi') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($profil->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+    @endif
+
+    @if ($prosedur !== null)
+        <sitemap>
+            <loc>{{ url('unduhan/prosedur') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($prosedur->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+    @endif
+
+    @if ($regulasi !== null)
+        <sitemap>
+            <loc>{{ url('unduhan/regulasi') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($regulasi->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+    @endif
+
+    @if ($dokumen !== null)
+        <sitemap>
+            <loc>{{ url('unduhan/form-dokumen') }}</loc>
+            <lastmod>{{ \Carbon\Carbon::parse($dokumen->created_at)->toAtomString() }}</lastmod>
+        </sitemap>
+    @endif
 </sitemapindex>

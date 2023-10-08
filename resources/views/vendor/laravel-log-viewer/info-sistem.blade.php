@@ -56,7 +56,7 @@ if (
         }
     }
 }
-@endphp
+?>
                 <?php $i = 0; ?>
                 <?php foreach ($phpinfo as $name => $section): ?>
                 <?php $i++; ?>

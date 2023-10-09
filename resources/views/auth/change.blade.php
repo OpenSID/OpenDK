@@ -71,34 +71,6 @@
                     <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan</button>
                     </div>
-
-                    <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                        <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
-                        @if ($errors->has('password'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password') }}</strong>
-                            </span>
-                        @endif
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-
-                    <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                        <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required placeholder="Ulangi Password">
-                        @if ($errors->has('password_confirmation'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('password_confirmation') }}</strong>
-                            </span>
-                        @endif
-                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    </div>
-                    <div class="row">
-
-                        <!-- /.col -->
-                        <div class="col-xs-12">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan</button>
-                        </div>
-                        <!-- /.col -->
-                    </div>
             </form>
 
             <hr />

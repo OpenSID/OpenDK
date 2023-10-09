@@ -691,7 +691,10 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         }
     });
 
-    Route::get('/sitemap', 'SitemapController@index');
+    Route::get('/sitemap.xml', 'SitemapController@index')->name('sitemap');
+    Route::get('/sitemap', function () {
+        return redirect()->route('sitemap');
+    });
     Route::get('/sitemap/prosedur', 'SitemapController@prosedur');
 
     // Semua Desa

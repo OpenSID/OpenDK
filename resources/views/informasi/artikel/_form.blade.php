@@ -64,8 +64,6 @@
     <script>
         $(function() {
 
-            $('.textarea').wysihtml5();
-
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
             function readURL(input) {

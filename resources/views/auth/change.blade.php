@@ -46,24 +46,6 @@
             @include('partials.flash_message')
             <form method="POST" action="{{ route('changedefault.store') }}">
                 @csrf
-                <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input
-                        id="email"
-                        type="email"
-                        class="form-control"
-                        name="email"
-                        required
-                        placeholder="Email Baru"
-                        value="{{ old('email') }}"
-                    >
-                    @if ($errors->has('email'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-
                 <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
                     <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
                     @if ($errors->has('password'))
@@ -74,7 +56,7 @@
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
+                <div class="form-group has-feedback {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                     <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required placeholder="Ulangi Password">
                     @if ($errors->has('password_confirmation'))
                         <span class="help-block">
@@ -89,8 +71,6 @@
                     <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Simpan</button>
                     </div>
-                    <!-- /.col -->
-                </div>
             </form>
 
             <hr />

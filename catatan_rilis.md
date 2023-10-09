@@ -6,6 +6,7 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 1. [#871](https://github.com/OpenSID/OpenDK/issues/871) Perbaikan sitemap.
 2. [#847](https://github.com/OpenSID/OpenDK/issues/847) Perbaikan validasi pengecekan ganti password default.
 3. [#881](https://github.com/OpenSID/OpenDK/issues/881) Perbaikan CSP untuk tinymce dan filemanager.
+4. [#892](https://github.com/OpenSID/OpenDK/issues/892) Perbaikan tidak bisa akses data pantau pada mode produksi.
 
 #### Penyesuaian Teknis
 

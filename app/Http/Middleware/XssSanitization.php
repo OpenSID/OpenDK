@@ -50,7 +50,7 @@ class XssSanitization
             $input = strip_tags($input);
         });
 
-        $request->merge($input);
+        $request->merge(array_filter($input));
 
         return $next($request);
     }

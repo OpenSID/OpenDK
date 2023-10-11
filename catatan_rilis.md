@@ -14,6 +14,3 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 #### Penyesuaian Teknis
 
 1. [#802](https://github.com/OpenSID/OpenDK/issues/802) Penyesuaian .gitignore
-
-
-#### Peningkatan Keamanan

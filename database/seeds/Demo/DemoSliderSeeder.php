@@ -49,6 +49,21 @@ class DemoSliderSeeder extends Seeder
                 'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
                 'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/6e15ddc5-cf52-490b-b997-5e8b57f1e446',
             ],
+            [
+                'judul' => 'Batu Siping',
+                'deskripsi' => 'Lokasi: Karampuang, Desa Garassikang, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
+                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/b9a3ba56-8916-4820-ac50-8961a40a279e',
+            ],
+            [
+                'judul' => 'Bukit Sinalu Bulu Jaya',
+                'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
+                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/83fcdfde-07eb-4d58-a57f-689b76bcbaa3',
+            ],
+            [
+                'judul' => 'Pantai Tamarunang',
+                'deskripsi' => 'Lokasi: Tamarunang, Pabiringa, Kecamatan Binamu, Kabupaten Jeneponto, Sulawesi Selatan',
+                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/2eac1709-fa16-4f14-9bde-9853df9d2534',
+            ],
         ];
 
         Slide::insert($data);

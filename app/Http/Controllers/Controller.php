@@ -150,19 +150,19 @@ class Controller extends BaseController
 
     protected function kirimTrack()
     {
-        // if (config('app.demo') == true) { // jika posisi demo, matikan tracking
-        //     return;
-        // }
+        if (config('app.demo') == true) { // jika posisi demo, matikan tracking
+            return;
+        }
 
-        // if (session('track') != null && session('track') == date('Y m d')) {
-        //     return;
-        // }
+        if (cache()->get('track') != null && cache()->get('track') == date('Y m d')) {
+            return;
+        }
 
         $host_pantau = config('app.host_pantau');
         $data = [
             'url' => url('/'),
             'versi' => config('app.version'),
-            'jumlah_desa' => DataDesa::count(),
+            'jml_desa' => DataDesa::count(),
             'desa' => json_encode(DataDesa::select(['desa_id', 'nama', 'sebutan_desa', 'path', 'website'])->get()),
             'jumlahdesa_sinkronisasi' => DataDesa::count(),
             'jumlah_penduduk' => Penduduk::where('status_dasar', 1)->count(),
@@ -190,7 +190,7 @@ class Controller extends BaseController
             $response = Http::withHeaders([
                 'token' => config('app.token_pantau')
             ])->post($host_pantau . 'track/opendk?token=' . config('app.token_pantau'), $data);
-            session(['track' => date('Y m d')]);
+            cache()->put('track', date('Y m d'), 60 * 60 * 24);
             return;
         } catch (Exception $e) {
             Log::notice($e);

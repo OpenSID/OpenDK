@@ -53,6 +53,7 @@ use Database\Seeds\Demo\DemoProsedurSeeder;
 use Database\Seeds\Demo\DemoPutusSekolahSeeder;
 use Database\Seeds\Demo\DemoRegulasiSeeder;
 use Database\Seeds\Demo\DemoSinergiProgramSeeder;
+use Database\Seeds\Demo\DemoSliderSeeder;
 use Database\Seeds\Demo\DemoTingkatPendidikanSeeder;
 use Database\Seeds\Demo\DemoToiletSanitasiSeeder;
 use Illuminate\Database\Seeder;
@@ -95,5 +96,6 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoFaqSeeder::class);
         $this->call(DemoMediaSosialSeeder::class);
         $this->call(DemoSinergiProgramSeeder::class);
+        $this->call(DemoSliderSeeder::class);
     }
 }

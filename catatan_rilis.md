@@ -1,4 +1,4 @@
-Di rilis v2310.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v2310.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 
 Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 
@@ -12,5 +12,6 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 
 
 #### Penyesuaian Teknis
-
 1. [#802](https://github.com/OpenSID/OpenDK/issues/802) Penyesuaian .gitignore
+2. [#835](https://github.com/OpenSID/OpenDK/issues/835) Penyesuaian kirim data ke pantau.
+3. [#773](https://github.com/OpenSID/OpenDK/issues/773) Penyesuaian data demo untuk modul slider.

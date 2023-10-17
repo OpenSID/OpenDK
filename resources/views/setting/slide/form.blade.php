@@ -21,7 +21,7 @@
         <code>Dimensi gambar 1360 x 400 Piksel</code>
         <br>
 
-        <img src="@if (isset($slide->gambar)) {{ asset($slide->gambar) }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="@if (isset($slide->gambar)) {{ Str::contains($slide->gambar, 'storage') ? asset($slide->gambar) : $slide->gambar }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
 
     </div>
 </div>

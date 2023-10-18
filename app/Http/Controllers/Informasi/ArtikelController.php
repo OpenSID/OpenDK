@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ArtikelRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
 {

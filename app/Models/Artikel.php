@@ -72,11 +72,6 @@ class Artikel extends Model
         return str_replace('//storage', '/storage', $this->attributes['isi']);
     }
 
-    public function setIsiAttribute()
-    {
-        return str_replace('//storage', '/storage', $this->attributes['isi']);
-    }
-
     public function scopeStatus($query, $value = 1)
     {
         return $query->where('status', $value);

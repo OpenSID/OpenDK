@@ -6,6 +6,7 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 #### Penyesuaian Teknis
 
 1. [#883](https://github.com/OpenSID/OpenDK/issues/883) Penambahan informasi catatan rilis.
+2. [#528](https://github.com/OpenSID/OpenDK/issues/528) Penambahan fungsi untuk jalankan migrasi lewat admin.
 
 
 #### Perbaikan Bug

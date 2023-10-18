@@ -674,6 +674,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
                 Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
                 Route::get('/queuelisten', ['as' => 'setting.info-sistem.queuelisten', 'uses' => 'LogViewerController@queueListen']);
+                Route::get('/migrasi', ['as' => 'setting.info-sistem.migrasi', 'uses' => 'LogViewerController@migrasi']);
             });
         });
 

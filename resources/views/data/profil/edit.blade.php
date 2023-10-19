@@ -16,6 +16,13 @@
 
         @include('partials.flash_message')
 
+        @if (!$profil->kecamatan_id)
+            <div class="callout callout-warning">
+                <h4><i class="icon fa fa-warning"></i> Peringatan!</h4>
+                <p>Data profil wilayah belum lengkap. Silahkan dilengkapi terlebih dahulu!</p>
+            </div>
+        @endif
+
         <div class="box box-primary">
 
             @if (count($errors) > 0)

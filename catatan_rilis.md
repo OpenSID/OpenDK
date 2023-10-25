@@ -3,9 +3,11 @@ Di rilis v2310.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 
 
-#### Penyesuaian Teknis
+#### Penambahan Fitur
 
 1. [#883](https://github.com/OpenSID/OpenDK/issues/883) Penambahan informasi catatan rilis.
+2. [#528](https://github.com/OpenSID/OpenDK/issues/528) Penambahan fungsi untuk jalankan migrasi lewat admin.
+3. [#567](https://github.com/OpenSID/OpenDK/issues/567) Penambahan pengaturan dan halaman maintenace.
 
 
 #### Perbaikan Bug

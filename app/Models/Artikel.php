@@ -67,6 +67,11 @@ class Artikel extends Model
         return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
     }
 
+    public function getIsiAttribute()
+    {
+        return str_replace('//storage', '/storage', $this->attributes['isi']);
+    }
+
     public function scopeStatus($query, $value = 1)
     {
         return $query->where('status', $value);

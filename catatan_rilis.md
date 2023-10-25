@@ -3,9 +3,10 @@ Di rilis v2310.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
 Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 
 
-#### Penyesuaian Teknis
+#### Penambahan Fitur
 
 1. [#883](https://github.com/OpenSID/OpenDK/issues/883) Penambahan informasi catatan rilis.
+2. [#567](https://github.com/OpenSID/OpenDK/issues/567) Penambahan pengaturan dan halaman maintenace.
 
 
 #### Perbaikan Bug

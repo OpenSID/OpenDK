@@ -105,22 +105,23 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth'             => Authenticate::class,
-        'auth.basic'       => AuthenticateWithBasicAuth::class,
-        'bindings'         => SubstituteBindings::class,
-        'cache.headers'    => SetCacheHeaders::class,
-        'can'              => Authorize::class,
-        'guest'            => RedirectIfAuthenticated::class,
-        'password.confirm' => RequirePassword::class,
-        'signed'           => ValidateSignature::class,
-        'throttle'         => ThrottleRequests::class,
-        'verified'         => EnsureEmailIsVerified::class,
+        'auth'               => Authenticate::class,
+        'auth.basic'         => AuthenticateWithBasicAuth::class,
+        'bindings'           => SubstituteBindings::class,
+        'cache.headers'      => SetCacheHeaders::class,
+        'can'                => Authorize::class,
+        'guest'              => RedirectIfAuthenticated::class,
+        'password.confirm'   => RequirePassword::class,
+        'signed'             => ValidateSignature::class,
+        'throttle'           => ThrottleRequests::class,
+        'verified'           => EnsureEmailIsVerified::class,
         // 'check_role'       => CheckRole::class,
-        'installed'        => KDInstalled::class,
-        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'installed'          => KDInstalled::class,
+        'maintenance'        => \App\Http\Middleware\MaintenanceMode::class,
+        'role'               => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission'         => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-        'xss_sanitization' => \App\Http\Middleware\XssSanitization::class,
+        'xss_sanitization'   => \App\Http\Middleware\XssSanitization::class,
     ];
 
     /**

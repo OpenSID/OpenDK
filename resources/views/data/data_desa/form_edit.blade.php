@@ -27,6 +27,13 @@
 </div>
 
 <div class="form-group">
+    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Sebutan Desa </label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::input('sebutan_desa', 'sebutan_desa', $desa->sebutan_desa, ['class' => 'form-control', 'placeholder' => 'Contoh : desa']) !!}
+    </div>
+</div>
+
+<div class="form-group">
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::input('url', 'website', $desa->website, ['class' => 'form-control', 'id' => 'website', 'placeholder' => 'Contoh : https://berputar.opensid.or.id/']) !!}

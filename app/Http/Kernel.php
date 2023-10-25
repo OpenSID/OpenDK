@@ -95,10 +95,11 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         // 'check_role' => \App\Http\Middleware\CheckRole::class,
         'installed' => \App\Http\Middleware\KDInstalled::class,
+        'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
         'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
-        'xss_sanitization' => \App\Http\Middleware\XssSanitization::class,
+        'xss_sanitization'   => \App\Http\Middleware\XssSanitization::class,
     ];
 
     /**

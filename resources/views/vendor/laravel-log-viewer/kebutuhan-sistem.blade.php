@@ -9,6 +9,9 @@
                     <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-queue">
                         <span class="fa fa-play-circle"></span> Jalankan php artisan queue:listen
                     </a>
+                    <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/migrasi') }}">
+                        <span class="fa fa-play-circle"></span> Jalankan migrasi
+                    </a>
                 </div>
             </div>
             <p id="#ajaxProgress" style="display: none;">asdasd</p>

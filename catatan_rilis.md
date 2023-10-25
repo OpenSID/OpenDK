@@ -10,6 +10,7 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 5. [#890](https://github.com/OpenSID/OpenDK/issues/890) Perbaikan tidak bisa akses modul info-sistem.
 6. [#885](https://github.com/OpenSID/OpenDK/issues/885) Perbaikan validasi form pengurus.
 7. [#901](https://github.com/OpenSID/OpenDK/issues/901) Perbaikan gambar artikel tidak tampil.
+8. [#905](https://github.com/OpenSID/OpenDK/issues/905) Perbaikan masih bisa akses halaman lain ketika profil belum lengkap.
 
 
 #### Penyesuaian Teknis

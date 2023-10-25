@@ -110,6 +110,7 @@ class Kernel extends HttpKernel
         'bindings'         => SubstituteBindings::class,
         'cache.headers'    => SetCacheHeaders::class,
         'can'              => Authorize::class,
+        'complete_profile' => \App\Http\Middleware\CompleteProfile::class,
         'guest'            => RedirectIfAuthenticated::class,
         'password.confirm' => RequirePassword::class,
         'signed'           => ValidateSignature::class,

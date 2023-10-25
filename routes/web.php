@@ -163,7 +163,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     /**
      * Group Routing for Halaman Dahsboard
      */
-    Route::group(['middleware' => 'auth:web'], function () {
+    Route::group(['middleware' => ['auth:web', 'complete_profile']], function () {
         // Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
 
         Route::get('/dashboard', 'DashboardController')->name('dashboard');
@@ -297,7 +297,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
                 // Profil
-                Route::group(['prefix' => 'profil', 'excluded_middleware' => 'xss_sanitization'], function () {
+                Route::group(['prefix' => 'profil', 'excluded_middleware' => ['complete_profile', 'xss_sanitization']], function () {
                     Route::get('/', ['as' => 'data.profil.index', 'uses' => 'ProfilController@index']);
                     Route::put('update/{id}', ['as' => 'data.profil.update', 'uses' => 'ProfilController@update']);
                     Route::get('success/{id}', ['as' => 'data.profil.success', 'uses' => 'ProfilController@success']);

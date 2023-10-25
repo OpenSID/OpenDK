@@ -13,7 +13,7 @@
                             </div>
                         </div>
                         <div class="image">
-                            <img src="{{ asset($slide->gambar) }}">
+                            <img src="{{ Str::contains($slide->gambar, 'storage') ? asset($slide->gambar) : $slide->gambar }}">
                         </div>
                     </div>
                 </div>

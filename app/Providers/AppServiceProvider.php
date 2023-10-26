@@ -34,6 +34,9 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
+use App\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +65,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // default lengt string
         Schema::defaultStringLength(191);
+
+        Paginator::useBootstrap();
+        $this->paginate();
 
         if (sudahInstal()) {
             $this->penduduk();
@@ -196,6 +202,33 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
             return true;
+        });
+    }
+
+    protected function paginate()
+    {
+        /**
+         * Paginate a standard Laravel Collection.
+         *
+         * @param int $perPage
+         * @param int $total
+         * @param int $page
+         * @param string $pageName
+         * @return array
+         */
+        Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page'): LengthAwarePaginator {
+            $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);
+
+            return new LengthAwarePaginator(
+                $this->forPage($page, $perPage)->values(),
+                $total ?: $this->count(),
+                $perPage,
+                $page,
+                [
+                    'path' => LengthAwarePaginator::resolveCurrentPath(),
+                    'pageName' => $pageName,
+                ]
+            );
         });
     }
 }

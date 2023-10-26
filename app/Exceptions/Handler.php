@@ -34,7 +34,7 @@ namespace App\Exceptions;
 use App\Models\Profil;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use Sentry\Laravel\Integration;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -42,7 +42,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array
+     * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
         //
@@ -51,24 +51,22 @@ class Handler extends ExceptionHandler
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $dontFlash = [
+        // 'current_password',
         'password',
         'password_confirmation',
     ];
 
     /**
-     * Report or log an exception.
+     * Register the exception handling callbacks for the application.
      *
-     * @param  \Throwable  $exception
      * @return void
-     *
-     * @throws \Throwable
      */
-    public function report(Throwable $exception)
+    public function register()
     {
-        if (app()->bound('sentry') && $this->shouldReport($exception)) {
+        $this->reportable(function (Throwable $e) {
             \Sentry\configureScope(function (\Sentry\State\Scope $scope) {
                 $profil = Profil::first();
                 $scope->setUser(
@@ -78,7 +76,6 @@ class Handler extends ExceptionHandler
                         'nama_kecamatan' => $profil->nama_kecamatan
                     ]
                 );
-
                 if (Auth::check()) {
                     $scope->setUser([
                         'email' => auth()->user()->email,
@@ -86,44 +83,14 @@ class Handler extends ExceptionHandler
                         'role' => Auth::user()->getRoleNames()
                     ]);
                 }
-
                 $scope->setTags([
                     'kecamatan' =>  $profil->nama_kecamatan,
                     'versi' => config('app.version')
                 ]);
             });
-            app('sentry')->captureException($exception);
-        }
+            app('sentry')->captureException($e);
 
-        parent::report($exception);
-    }
-
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Throwable
-     */
-    public function render($request, Throwable $exception)
-    {
-        return parent::render($request, $exception);
-    }
-
-    /**
-     * Convert a validation exception into a JSON response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Validation\ValidationException  $exception
-     * @return \Illuminate\Http\JsonResponse
-     */
-    protected function invalidJson($request, ValidationException $exception)
-    {
-        return response()->json([
-            'message' => __('validation.header'),
-            'errors' => $exception->errors(),
-        ], $exception->status);
+            Integration::captureUnhandledException($e);
+        });
     }
 }

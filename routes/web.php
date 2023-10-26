@@ -29,6 +29,20 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Informasi\EventController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\Setting\COAController;
+use App\Http\Controllers\Setting\JenisPenyakitController;
+use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\User\UserController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +75,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Halaman Website
          */
-        Route::namespace('Page')->group(function () {
+        Route::namespace('\App\Http\Controllers\Page')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
             Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
@@ -157,9 +171,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
             Route::get('faq', 'WebFaqController@index')->name('faq');
         });
-        Route::get('agenda-kegiatan/{slug}', 'Informasi\EventController@show')->name('event.show');
+        Route::get('agenda-kegiatan/{slug}', [EventController::class, 'show'])->name('event.show');
 
-        Route::namespace('SistemKomplain')->group(function () {
+        Route::namespace('\App\Http\Controllers\SistemKomplain')->group(function () {
             Route::group(['prefix' => 'sistem-komplain'], function () {
                 Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
                 Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
@@ -180,8 +194,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Route::group(['middleware' => ['auth:web', 'complete_profile']], function () {
         // Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
 
-        Route::get('/dashboard', 'DashboardController')->name('dashboard');
-        Route::namespace('Auth')->group(function () {
+        Route::get('/dashboard', DashboardController::class)->name('dashboard');
+
+        Route::namespace('\App\Http\Controllers\Auth')->group(function () {
             Route::group(['prefix' => 'changedefault', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
                 Route::get('/', 'ChangeDefaultController@index')->name('change-default');
                 Route::post('store', ['as' => 'changedefault.store', 'uses' => 'ChangeDefaultController@store']);
@@ -191,7 +206,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Informasi
          */
-        Route::namespace('Informasi')->group(function () {
+        Route::namespace('\App\Http\Controllers\Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
                 // Prosedur
                 Route::group(['prefix' => 'prosedur'], function () {
@@ -308,7 +323,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Data
          */
-        Route::namespace('Data')->group(function () {
+        Route::namespace('\App\Http\Controllers\Data')->group(function () {
             Route::group(['prefix' => 'data'], function () {
                 // Profil
                 Route::group(['prefix' => 'profil', 'excluded_middleware' => ['complete_profile', 'xss_sanitization']], function () {
@@ -535,7 +550,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Pesan
          */
-        Route::namespace('Pesan')->group(function () {
+        Route::namespace('\App\Http\Controllers\Pesan')->group(function () {
             //Routes Resource Pesan
             Route::group(['prefix' => 'pesan'], function () {
                 Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
@@ -554,7 +569,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Pesan
          */
-        Route::namespace('Surat')->group(function () {
+        Route::namespace('\App\Http\Controllers\Surat')->group(function () {
             Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                 //permohonan
                 Route::group(['prefix' => 'permohonan'], function () {
@@ -586,109 +601,109 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'setting'], function () {
             // User Management
-            Route::group(['prefix' => 'user','middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.user.index', 'uses' => 'User\UserController@index']);
-                Route::get('getdata', ['as' => 'setting.user.getdata', 'uses' => 'User\UserController@getDataUser']);
-                Route::get('create', ['as' => 'setting.user.create', 'uses' => 'User\UserController@create']);
-                Route::post('store', ['as' => 'setting.user.store', 'uses' => 'User\UserController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.user.edit', 'uses' => 'User\UserController@edit']);
-                Route::put('update/{id}', ['as' => 'setting.user.update', 'uses' => 'User\UserController@update']);
-                Route::put('updatePassword/{id}', ['as' => 'setting.user.updatePassword', 'uses' => 'User\UserController@updatePassword']);
-                Route::put('password/{id}', ['as' => 'setting.user.password', 'uses' => 'User\UserController@password']);
-                Route::post('destroy/{id}', ['as' => 'setting.user.destroy', 'uses' => 'User\UserController@destroy']);
-                Route::post('active/{id}', ['as' => 'setting.user.active', 'uses' => 'User\UserController@active']);
-                Route::get('photo-profil/{id}', ['as' => 'setting.user.photo', 'uses' => 'User\UserController@photo']);
-                Route::put('update-photo/{id}', ['as' => 'setting.user.uphoto', 'uses' => 'User\UserController@updatePhoto']);
+            Route::group(['prefix' => 'user', 'controller' => UserController::class,'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.user.index');
+                Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
+                Route::get('create', 'create')->name('setting.user.create');
+                Route::post('store', 'store')->name('setting.user.store');
+                Route::get('edit/{id}', 'edit')->name('setting.user.edit');
+                Route::put('update/{id}', 'update')->name('setting.user.update');
+                Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
+                Route::put('password/{id}', 'password')->name('setting.user.password');
+                Route::post('destroy/{id}', 'destroy')->name('setting.user.destroy');
+                Route::post('active/{id}', 'active')->name('setting.user.active');
+                Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
+                Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
 
             // Role Management
-            Route::group(['prefix' => 'role', 'middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.role.index', 'uses' => 'Role\RoleController@index']);
-                Route::get('getdata', ['as' => 'setting.role.getdata', 'uses' => 'Role\RoleController@getData']);
-                Route::get('create', ['as' => 'setting.role.create', 'uses' => 'Role\RoleController@create']);
-                Route::post('store', ['as' => 'setting.role.store', 'uses' => 'Role\RoleController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.role.edit', 'uses' => 'Role\RoleController@edit']);
-                Route::put('update/{id}', ['as' => 'setting.role.update', 'uses' => 'Role\RoleController@update']);
-                Route::delete('destroy/{id}', ['as' => 'setting.role.destroy', 'uses' => 'Role\RoleController@destroy']);
+            Route::group(['prefix' => 'role', 'controller' => RoleController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.role.index');
+                Route::get('getdata', 'getData')->name('setting.role.getdata');
+                Route::get('create', 'create')->name('setting.role.create');
+                Route::post('store', 'store')->name('setting.role.store');
+                Route::get('edit/{id}', 'edit')->name('setting.role.edit');
+                Route::put('update/{id}', 'update')->name('setting.role.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.role.destroy');
             });
 
             // Komplain Kategori
-            Route::group(['prefix' => 'komplain-kategori', 'middleware' => ['role:super-admin|admin-komplain|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.komplain-kategori.index', 'uses' => 'Setting\KategoriKomplainController@index']);
-                Route::get('getdata', ['as' => 'setting.komplain-kategori.getdata', 'uses' => 'Setting\KategoriKomplainController@getData']);
-                Route::get('create', ['as' => 'setting.komplain-kategori.create', 'uses' => 'Setting\KategoriKomplainController@create']);
-                Route::post('store', ['as' => 'setting.komplain-kategori.store', 'uses' => 'Setting\KategoriKomplainController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.komplain-kategori.edit', 'uses' => 'Setting\KategoriKomplainController@edit']);
-                Route::put('update/{id}', ['as' => 'setting.komplain-kategori.update', 'uses' => 'Setting\KategoriKomplainController@update']);
-                Route::delete('destroy/{id}', ['as' => 'setting.komplain-kategori.destroy', 'uses' => 'Setting\KategoriKomplainController@destroy']);
+            Route::group(['prefix' => 'komplain-kategori', 'controller' => KategoriKomplainController::class, 'middleware' => ['role:super-admin|admin-komplain|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.komplain-kategori.index');
+                Route::get('getdata', 'getData')->name('setting.komplain-kategori.getdata');
+                Route::get('create', 'create')->name('setting.komplain-kategori.create');
+                Route::post('store', 'store')->name('setting.komplain-kategori.store');
+                Route::get('edit/{id}', 'edit')->name('setting.komplain-kategori.edit');
+                Route::put('update/{id}', 'update')->name('setting.komplain-kategori.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.komplain-kategori.destroy');
             });
 
             // Tipe Regulasi
-            Route::group(['prefix' => 'tipe-regulasi', 'middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.tipe-regulasi.index', 'uses' => 'Setting\TipeRegulasiController@index']);
-                Route::get('getdata', ['as' => 'setting.tipe-regulasi.getdata', 'uses' => 'Setting\TipeRegulasiController@getData']);
-                Route::get('create', ['as' => 'setting.tipe-regulasi.create', 'uses' => 'Setting\TipeRegulasiController@create']);
-                Route::post('store', ['as' => 'setting.tipe-regulasi.store', 'uses' => 'Setting\TipeRegulasiController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.tipe-regulasi.edit', 'uses' => 'Setting\TipeRegulasiController@edit']);
-                Route::put('update/{id}', ['as' => 'setting.tipe-regulasi.update', 'uses' => 'Setting\TipeRegulasiController@update']);
-                Route::delete('destroy/{id}', ['as' => 'setting.tipe-regulasi.destroy', 'uses' => 'Setting\TipeRegulasiController@destroy']);
+            Route::group(['prefix' => 'tipe-regulasi', 'controller' => TipeRegulasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.tipe-regulasi.index');
+                Route::get('getdata', 'getData')->name('setting.tipe-regulasi.getdata');
+                Route::get('create', 'create')->name('setting.tipe-regulasi.create');
+                Route::post('store', 'store')->name('setting.tipe-regulasi.store');
+                Route::get('edit/{id}', 'edit')->name('setting.tipe-regulasi.edit');
+                Route::put('update/{id}', 'update')->name('setting.tipe-regulasi.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.tipe-regulasi.destroy');
             });
 
             // Jenis Penyakit
-            Route::group(['prefix' => 'jenis-penyakit','middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.jenis-penyakit.index', 'uses' => 'Setting\JenisPenyakitController@index']);
-                Route::get('getdata', ['as' => 'setting.jenis-penyakit.getdata', 'uses' => 'Setting\JenisPenyakitController@getData']);
-                Route::get('create', ['as' => 'setting.jenis-penyakit.create', 'uses' => 'Setting\JenisPenyakitController@create']);
-                Route::post('store', ['as' => 'setting.jenis-penyakit.store', 'uses' => 'Setting\JenisPenyakitController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.jenis-penyakit.edit', 'uses' => 'Setting\JenisPenyakitController@edit']);
-                Route::put('update/{id}', ['as' => 'setting.jenis-penyakit.update', 'uses' => 'Setting\JenisPenyakitController@update']);
-                Route::delete('destroy/{id}', ['as' => 'setting.jenis-penyakit.destroy', 'uses' => 'Setting\JenisPenyakitController@destroy']);
+            Route::group(['prefix' => 'jenis-penyakit', 'controller' => JenisPenyakitController::class, 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.jenis-penyakit.index');
+                Route::get('getdata', 'getData')->name('setting.jenis-penyakit.getdata');
+                Route::get('create', 'create')->name('setting.jenis-penyakit.create');
+                Route::post('store', 'store')->name('setting.jenis-penyakit.store');
+                Route::get('edit/{id}', 'edit')->name('setting.jenis-penyakit.edit');
+                Route::put('update/{id}', 'update')->name('setting.jenis-penyakit.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-penyakit.destroy');
             });
 
             // Tipe Potensi
-            Route::group(['prefix' => 'tipe-potensi','middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.tipe-potensi.index', 'uses' => 'Setting\TipePotensiController@index']);
-                Route::get('getdata', ['as' => 'setting.tipe-potensi.getdata', 'uses' => 'Setting\TipePotensiController@getData']);
-                Route::get('create', ['as' => 'setting.tipe-potensi.create', 'uses' => 'Setting\TipePotensiController@create']);
-                Route::post('store', ['as' => 'setting.tipe-potensi.store', 'uses' => 'Setting\TipePotensiController@store']);
-                Route::get('edit/{id}', ['as' => 'setting.tipe-potensi.edit', 'uses' => 'Setting\TipePotensiController@edit']);
-                Route::put('update/{id}', ['as' => 'setting.tipe-potensi.update', 'uses' => 'Setting\TipePotensiController@update']);
-                Route::delete('destroy/{id}', ['as' => 'setting.tipe-potensi.destroy', 'uses' => 'Setting\TipePotensiController@destroy']);
+            Route::group(['prefix' => 'tipe-potensi', 'controller' => TipePotensiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.tipe-potensi.index');
+                Route::get('getdata', 'getData')->name('setting.tipe-potensi.getdata');
+                Route::get('create', 'create')->name('setting.tipe-potensi.create');
+                Route::post('store', 'store')->name('setting.tipe-potensi.store');
+                Route::get('edit/{id}', 'edit')->name('setting.tipe-potensi.edit');
+                Route::put('update/{id}', 'update')->name('setting.tipe-potensi.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.tipe-potensi.destroy');
             });
 
             // Slide
-            Route::group(['prefix' => 'slide','middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.slide.index', 'uses' => 'Setting\SlideController@index']);
-                Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
-                Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
-                Route::post('store', ['as' => 'setting.slide.store', 'uses' => 'Setting\SlideController@store']);
-                Route::get('edit/{slide}', ['as' => 'setting.slide.edit', 'uses' => 'Setting\SlideController@edit']);
-                Route::get('show/{slide}', ['as' => 'setting.slide.show', 'uses' => 'Setting\SlideController@show']);
-                Route::put('update/{slide}', ['as' => 'setting.slide.update', 'uses' => 'Setting\SlideController@update']);
-                Route::delete('destroy/{slide}', ['as' => 'setting.slide.destroy', 'uses' => 'Setting\SlideController@destroy']);
+            Route::group(['prefix' => 'slide', 'controller' => SlideController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.slide.index');
+                Route::get('getdata', 'getData')->name('setting.slide.getdata');
+                Route::get('create', 'create')->name('setting.slide.create');
+                Route::post('store', 'store')->name('setting.slide.store');
+                Route::get('edit/{slide}', 'edit')->name('setting.slide.edit');
+                Route::get('show/{slide}', 'show')->name('setting.slide.show');
+                Route::put('update/{slide}', 'update')->name('setting.slide.update');
+                Route::delete('destroy/{slide}', 'destroy')->name('setting.slide.destroy');
             });
 
             // COA
-            Route::group(['prefix' => 'coa','middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.coa.index', 'uses' => 'Setting\COAController@index']);
-                Route::get('create', ['as' => 'setting.coa.create', 'uses' => 'Setting\COAController@create']);
-                Route::post('store', ['as' => 'setting.coa.store', 'uses' => 'Setting\COAController@store']);
-                Route::get('sub_coa/{type_id}', ['as' => 'setting.coa.sub_coa', 'uses' => 'Setting\COAController@get_sub_coa']);
-                Route::get('sub_sub_coa/{type_id}/{sub_id}', ['as' => 'setting.coa.sub_sub_coa', 'uses' => 'Setting\COAController@get_sub_sub_coa']);
-                Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
+            Route::group(['prefix' => 'coa', 'controller' => COAController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.coa.index');
+                Route::get('create', 'create')->name('setting.coa.create');
+                Route::post('store', 'store')->name('setting.coa.store');
+                Route::get('sub_coa/{type_id}', 'get_sub_coa')->name('setting.coa.sub_coa');
+                Route::get('sub_sub_coa/{type_id}/{sub_id}', 'get_sub_sub_coa')->name('setting.coa.sub_sub_coa');
+                Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', 'generate_id')->name('setting.coa.generate_id');
             });
 
-            Route::group(['prefix' => 'aplikasi','middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
-                Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
-                Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
+            Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.aplikasi.index');
+                Route::get('/edit/{aplikasi}', 'edit')->name('setting.aplikasi.edit');
+                Route::put('/update/{aplikasi}', 'update')->name('setting.aplikasi.update');
             });
 
-            Route::group(['prefix' => 'info-sistem','middleware' => ['role:super-admin|administrator-website']], function () {
-                Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
-                Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
-                Route::get('/queuelisten', ['as' => 'setting.info-sistem.queuelisten', 'uses' => 'LogViewerController@queueListen']);
-                Route::get('/migrasi', ['as' => 'setting.info-sistem.migrasi', 'uses' => 'LogViewerController@migrasi']);
+            Route::group(['prefix' => 'info-sistem', 'controller' => LogViewerController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.info-sistem');
+                Route::get('/linkstorage', 'linkStorage')->name('setting.info-sistem.linkstorage');
+                Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
+                Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
             });
         });
 
@@ -696,7 +711,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          * Group Routing for Counter
          */
         Route::group(['prefix' => 'counter'], function () {
-            Route::get('/', ['as' => 'counter.index', 'uses' => 'Counter\CounterController@index']);
+            Route::get('/', [CounterController::class, 'index'])->name('counter.index');
         });
     });
 
@@ -706,11 +721,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         }
     });
 
-    Route::get('/sitemap.xml', 'SitemapController@index')->name('sitemap');
-    Route::get('/sitemap', function () {
-        return redirect()->route('sitemap');
+    Route::group(['controller' => SitemapController::class], function () {
+        Route::get('/sitemap.xml', 'index')->name('sitemap');
+        Route::get('/sitemap', function () {
+            return redirect()->route('sitemap');
+        });
+        Route::get('/sitemap/prosedur', 'prosedur');
     });
-    Route::get('/sitemap/prosedur', 'SitemapController@prosedur');
 
     // Semua Desa
     Route::get('/api/desa', function () {

@@ -116,7 +116,7 @@ class User extends Authenticatable implements JWTSubject
         $extension = $image->getClientOriginalExtension();
         $path      = storage_path('app/public/user/');
 
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             File::makeDirectory($path, 0777, true);
         }
 

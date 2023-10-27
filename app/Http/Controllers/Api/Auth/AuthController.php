@@ -65,13 +65,13 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
         $credentials['status'] = true;
 
-        if (! $token = Auth::guard('api')->attempt($credentials)) {
+        if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['message' => 'Pengguna tidak dikenali'], 401);
         }
 
         $user = User::where('email', '=', $request->email)->first();
 
-        if (! $user->hasrole(['super-admin', 'admin-desa'])) {
+        if (!$user->hasrole(['super-admin', 'admin-desa'])) {
             return response()->json(['message' => 'Grup pengguna bukan admin-desa'], 422);
         }
 

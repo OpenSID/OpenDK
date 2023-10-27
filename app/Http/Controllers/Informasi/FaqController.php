@@ -61,7 +61,7 @@ class FaqController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('faq');
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('informasi.faq.edit', $row->id);
                         $data['delete_url'] = route('informasi.faq.destroy', $row->id);
                     }

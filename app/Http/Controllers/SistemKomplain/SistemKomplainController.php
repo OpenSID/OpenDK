@@ -98,7 +98,7 @@ class SistemKomplainController extends Controller
         $id  = mt_rand(100000, 999999);
         $pid = '';
 
-        if (! Komplain::where('komplain_id', '=', $id)->exists()) {
+        if (!Komplain::where('komplain_id', '=', $id)->exists()) {
             $pid = $id;
         } else {
             $this->generateID();

@@ -100,6 +100,7 @@ class Kernel extends HttpKernel
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
         'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
         'xss_sanitization'   => \App\Http\Middleware\XssSanitization::class,
+        'complete_profile' => \App\Http\Middleware\CompleteProfile::class,
     ];
 
     /**

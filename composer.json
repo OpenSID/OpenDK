@@ -66,6 +66,9 @@
             "symfony/thanks": true,
             "php-http/discovery": true
         },
+        "platform": {
+            "php": "8.0"
+        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true

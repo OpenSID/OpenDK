@@ -96,7 +96,7 @@ class RoleController extends Controller
     {
         try {
             $temp = [];
-            if (! empty($request->permissions)) {
+            if (!empty($request->permissions)) {
                 foreach ($request->permissions as $key => $value) {
                     $temp[$key] = $value == 1 ? true : false;
                 }

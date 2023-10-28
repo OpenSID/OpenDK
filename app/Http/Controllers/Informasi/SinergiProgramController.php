@@ -57,7 +57,7 @@ class SinergiProgramController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('informasi.sinergi-program.edit', $row->id);
                         $data['delete_url'] = route('informasi.sinergi-program.destroy', $row->id);
                         $data['naik']       = route('informasi.sinergi-program.urut', [$row->id, -1]);

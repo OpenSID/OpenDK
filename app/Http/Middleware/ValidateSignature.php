@@ -29,15 +29,23 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-$uri = urldecode(
-    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? ''
-);
+namespace App\Http\Middleware;
 
-// This file allows us to emulate Apache's "mod_rewrite" functionality from the
-// built-in PHP web server. This provides a convenient way to test a Laravel
-// application without having installed a "real" web server software here.
-if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
-    return false;
+use Illuminate\Routing\Middleware\ValidateSignature as Middleware;
+
+class ValidateSignature extends Middleware
+{
+    /**
+     * The names of the query string parameters that should be ignored.
+     *
+     * @var array<int, string>
+     */
+    protected $except = [
+        // 'fbclid',
+        // 'utm_campaign',
+        // 'utm_content',
+        // 'utm_medium',
+        // 'utm_source',
+        // 'utm_term',
+    ];
 }
-
-require_once __DIR__.'/public/index.php';

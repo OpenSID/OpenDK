@@ -55,7 +55,7 @@ class JabatanController extends Controller
             return DataTables::of(Jabatan::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('data.jabatan.edit', $row->id);
                         if ($row->jenis == JenisJabatan::JabatanLainnya) {
                             $data['delete_url'] = route('data.jabatan.destroy', $row->id);

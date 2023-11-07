@@ -14,6 +14,8 @@
             {!! Form::textarea('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
         @elseif ($aplikasi->type == 'number')
             {!! Form::number('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
+        @elseif ($aplikasi->type == 'boolean')
+            {!! Form::select('value', ['1' => 'Aktif', '0' => 'Tidak Aktif'], null, ['class' => 'form-control']) !!}
         @else
             {!! Form::text('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
         @endif

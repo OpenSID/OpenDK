@@ -58,8 +58,14 @@ class PageController extends Controller
     public function beritaDesa()
     {
         $this->data = $this->getFeeds();
+
+        // dd(
+        //     $this->data,
+        //     collect($this->data)->sortByDesc('date')->take(30)
+        // );
+
         $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
-        $feeds->all();
+        // $feeds->all();
 
         return view('pages.berita.desa', [
             'page_title'       => 'Berita Desa',

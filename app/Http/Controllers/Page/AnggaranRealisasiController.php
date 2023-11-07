@@ -80,7 +80,7 @@ class AnggaranRealisasiController extends Controller
 
                 $res = $query_result->first();
 
-                if (! empty($res)) {
+                if (!empty($res)) {
                     $total_anggaran         = $res->total_anggaran;
                     $total_belanja          = $res->total_belanja;
                     $belanja_pegawai        = $res->belanja_pegawai;
@@ -150,7 +150,7 @@ class AnggaranRealisasiController extends Controller
 
             $res = $query_result->first();
 
-            if (! empty($res)) {
+            if (!empty($res)) {
                 $total_anggaran         = $res->total_anggaran;
                 $total_belanja          = $res->total_belanja;
                 $belanja_pegawai        = $res->belanja_pegawai;

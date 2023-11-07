@@ -86,12 +86,12 @@ class Controller extends BaseController
             $this->akun_camat      = Pengurus::status()->akunCamat()->first();
             $this->akun_sekretaris = Pengurus::status()->akunSekretaris()->first();
 
-            if (! $this->akun_camat) {
+            if (!$this->akun_camat) {
                 SettingAplikasi::where('key', 'tte')->update(['value' => 0]);
                 SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 0]);
             }
 
-            if (! $this->akun_sekretaris) {
+            if (!$this->akun_sekretaris) {
                 SettingAplikasi::where('key', 'pemeriksaan_sekretaris')->update(['value' => 0]);
             }
 

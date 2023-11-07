@@ -211,4 +211,12 @@ class LogViewerController extends Controller
             'success' => true,
         ], Response::HTTP_OK);
     }
+
+    public function migrasi()
+    {
+        Artisan::call('migrate', ['--force' => true]); // this will do the command line job
+        sleep(2);
+
+        return back()->with('tab', 'ekstensi')->with('success', 'Berhasil menjalankan migrasi');
+    }
 }

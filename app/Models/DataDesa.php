@@ -41,6 +41,7 @@ class DataDesa extends Model
     protected $fillable = [
         'desa_id',
         'nama',
+        'sebutan_desa',
         'website',
         'luas_wilayah',
         'path'

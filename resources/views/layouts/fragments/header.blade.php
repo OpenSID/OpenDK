@@ -49,12 +49,12 @@
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     @if ($user->hasrole(['super-admin', 'admin-kecamatan']))
-                    <li>
-                        <a href={{ route('surat.permohonan') }}>
-                            <i class="fa fa-envelope-o fa-lg" title="Permohonan Surat"></i>&nbsp;
-                            <span class="badge badge-notif">{{ App\Models\Surat::permohonan()->count() > 0 ? App\Models\Surat::permohonan()->count() : '' }}</span>
-                        </a>
-                    </li>
+                        <li>
+                            <a href={{ route('surat.permohonan') }}>
+                                <i class="fa fa-envelope-o fa-lg" title="Permohonan Surat"></i>&nbsp;
+                                <span class="badge badge-notif">{{ App\Models\Surat::permohonan()->count() > 0 ? App\Models\Surat::permohonan()->count() : '' }}</span>
+                            </a>
+                        </li>
                     @endif
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">

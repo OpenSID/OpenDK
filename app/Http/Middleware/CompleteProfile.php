@@ -29,45 +29,26 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Http\Middleware;
 
-use App\Rules\Password;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Profil;
+use Closure;
 
-class UserRequest extends FormRequest
+class CompleteProfile
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Handle an incoming request.
      *
-     * @return bool
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function authorize()
+    public function handle($request, Closure $next)
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
-            $password = '';
-        } else {
-            $id = "";
-            $password = ['required', 'min:8', 'max:32', new Password()];
+        if (!Profil::first()->kecamatan_id) {
+            return redirect()->route('data.profil.index');
         }
-        return [
-            'name'        => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'       => 'required|email|unique:users,email' . $id,
-            'phone'       => 'nullable|numeric|digits_between:10,13',
-            'password'    => $password,
-            'address'     => 'required',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
-            'pengurus_id' => 'nullable|integer',
-        ];
+
+        return $next($request);
     }
 }

@@ -1,12 +1,14 @@
-Di rilis v2310.0.0 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v2310.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
 
 Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 
 
-#### Penyesuaian Teknis
+#### Penambahan Fitur
 
 1. [#883](https://github.com/OpenSID/OpenDK/issues/883) Penambahan informasi catatan rilis.
 2. [#528](https://github.com/OpenSID/OpenDK/issues/528) Penambahan fungsi untuk jalankan migrasi lewat admin.
+3. [#567](https://github.com/OpenSID/OpenDK/issues/567) Penambahan pengaturan dan halaman maintenace.
+4. [#863](https://github.com/OpenSID/OpenDK/issues/863) Penambahan form ubah sebutan desa pada data desa.
 
 
 #### Perbaikan Bug
@@ -16,11 +18,11 @@ Terima kasih pada totoprayogo1916 yang terus berkontribusi.
 4. [#892](https://github.com/OpenSID/OpenDK/issues/892) Perbaikan tidak bisa akses data pantau pada mode produksi.
 5. [#890](https://github.com/OpenSID/OpenDK/issues/890) Perbaikan tidak bisa akses modul info-sistem.
 6. [#885](https://github.com/OpenSID/OpenDK/issues/885) Perbaikan validasi form pengurus.
+7. [#901](https://github.com/OpenSID/OpenDK/issues/901) Perbaikan gambar artikel tidak tampil.
+8. [#905](https://github.com/OpenSID/OpenDK/issues/905) Perbaikan masih bisa akses halaman lain ketika profil belum lengkap.
 
 
 #### Penyesuaian Teknis
-
 1. [#802](https://github.com/OpenSID/OpenDK/issues/802) Penyesuaian .gitignore
-
-
-#### Peningkatan Keamanan
+2. [#835](https://github.com/OpenSID/OpenDK/issues/835) Penyesuaian kirim data ke pantau.
+3. [#773](https://github.com/OpenSID/OpenDK/issues/773) Penyesuaian data demo untuk modul slider.

@@ -20,7 +20,7 @@
             </div>
         @endforelse
         <div class="text-center">
-            {{ $artikel->links() }}
+            {{ $artikel->links('vendor.pagination.bootstrap-4') }}
         </div>
     </div>
 </div>

@@ -66,7 +66,7 @@ class SuplemenController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['detail_url'] = route('data.data-suplemen.show', $row->id);
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('data.data-suplemen.edit', $row->id);
                         $data['delete_url'] = route('data.data-suplemen.destroy', $row->id);
                     }
@@ -205,7 +205,7 @@ class SuplemenController extends Controller
             return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('suplemen_id', $id_terdata)->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]);
                         $data['delete_url'] = route('data.data-suplemen.destroydetail', [$row->id, $row->suplemen_id]);
                     }

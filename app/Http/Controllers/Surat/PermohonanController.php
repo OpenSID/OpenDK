@@ -119,7 +119,7 @@ class PermohonanController extends Controller
             $isAllow = true;
         }
 
-        if (! $isAllow) {
+        if (!$isAllow) {
             return back()->with('error', 'Anda tidak memiliki akses');
         }
 

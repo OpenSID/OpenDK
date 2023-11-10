@@ -1,19 +1,11 @@
-Di rilis v2310.0.1 berisi perbaikan yang diminta Komunitas OpenDK.
+Di rilis v2311.0.1 berisi  [untuk diisi] dan perbaikan yang diminta Komunitas OpenDK.
 
-Terima kasih pada totoprayogo1916 yang terus berkontribusi.
+Terima kasih pada [untuk diisi] yang terus berkontribusi.
+
 
 #### Perbaikan Bug
-1. [#871](https://github.com/OpenSID/OpenDK/issues/871) Perbaikan sitemap.
-2. [#847](https://github.com/OpenSID/OpenDK/issues/847) Perbaikan validasi pengecekan ganti password default.
-3. [#881](https://github.com/OpenSID/OpenDK/issues/881) Perbaikan CSP untuk tinymce dan filemanager.
-4. [#892](https://github.com/OpenSID/OpenDK/issues/892) Perbaikan tidak bisa akses data pantau pada mode produksi.
-5. [#890](https://github.com/OpenSID/OpenDK/issues/890) Perbaikan tidak bisa akses modul info-sistem.
-6. [#885](https://github.com/OpenSID/OpenDK/issues/885) Perbaikan validasi form pengurus.
-7. [#901](https://github.com/OpenSID/OpenDK/issues/901) Perbaikan gambar artikel tidak tampil.
-8. [#905](https://github.com/OpenSID/OpenDK/issues/905) Perbaikan masih bisa akses halaman lain ketika profil belum lengkap.
-
+1. [#912](https://github.com/OpenSID/OpenDK/issues/912) Perbaikan notifikasi yang tampil sesuai hak akses yang diberikan.
+2. [#910](https://github.com/OpenSID/OpenDK/issues/910) Perbaikan editor modul event.
 
 #### Penyesuaian Teknis
-1. [#802](https://github.com/OpenSID/OpenDK/issues/802) Penyesuaian .gitignore
-2. [#835](https://github.com/OpenSID/OpenDK/issues/835) Penyesuaian kirim data ke pantau.
-3. [#773](https://github.com/OpenSID/OpenDK/issues/773) Penyesuaian data demo untuk modul slider.
+1. [#572](https://github.com/OpenSID/OpenDK/issues/572) Peningkatan versi ke laravel 9

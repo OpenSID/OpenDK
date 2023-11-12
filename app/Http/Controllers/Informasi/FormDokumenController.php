@@ -50,7 +50,7 @@ class FormDokumenController extends Controller
     {
         return DataTables::of(FormDokumen::all())
             ->addColumn('aksi', function ($row) {
-                if (! auth()->guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url']   = route('informasi.form-dokumen.edit', $row->id);
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }

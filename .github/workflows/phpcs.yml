@@ -30,10 +30,10 @@ jobs:
             echo "match=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Setup PHP 7.4
+      - name: Setup PHP 8.0
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.0
 
       - name: Install dependencies
         run: |

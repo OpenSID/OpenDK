@@ -34,7 +34,7 @@
                                     <td>{{ ucwords(str_replace('_', ' ', $setting->key)) }}</td>
                                     @if ($setting->type == 'boolean')
                                         <td>{{ $setting->value == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
-                                    @else 
+                                    @else
                                         <td>{{ $setting->value }}</td>
                                     @endif
                                     <td>{{ $setting->description }}</td>

@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Log;
  * @param string $content
  * @return string
  */
-if (! function_exists('get_tag_image')) {
+if (!function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
         if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
@@ -332,14 +332,14 @@ function avatar($foto)
     return is_img($foto, $default);
 }
 
-if (! function_exists('divnum')) {
+if (!function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
 
-if (! function_exists('format_number_id')) {
+if (!function_exists('format_number_id')) {
     function format_number_id($inp = 0)
     {
         return number_format($inp, 2, ',', '.');
@@ -381,7 +381,7 @@ if (!function_exists('sudahInstal')) {
      */
     function sudahInstal(): bool
     {
-        if (! file_exists(storage_path('installed'))) {
+        if (!file_exists(storage_path('installed'))) {
             return false;
         }
         return true;
@@ -395,7 +395,7 @@ if (!function_exists('sudahInstal')) {
  *
  * @return bool
  */
-if (! function_exists('checkWebsiteAccessibility')) {
+if (!function_exists('checkWebsiteAccessibility')) {
     function checkWebsiteAccessibility($url)
     {
         $options = [

@@ -56,7 +56,7 @@ class ArtikelController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('informasi.artikel.edit', $row->id);
                         $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }

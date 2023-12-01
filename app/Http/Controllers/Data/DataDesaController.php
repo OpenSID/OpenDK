@@ -94,7 +94,7 @@ class DataDesaController extends Controller
      */
     public function create()
     {
-        if (! $this->profil->kecamatan_id) {
+        if (!$this->profil->kecamatan_id) {
             return redirect()->route('data.data-desa.index');
         }
 
@@ -134,7 +134,7 @@ class DataDesaController extends Controller
      */
     public function edit($id)
     {
-        if (! $this->profil->kecamatan_id) {
+        if (!$this->profil->kecamatan_id) {
             return redirect()->route('data.data-desa.index');
         }
 

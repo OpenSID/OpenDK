@@ -80,7 +80,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $status = ! empty($request->status) ? 1 : 1;
+            $status = !empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
             $user = User::create($request->validated());
             if ($request->hasFile('image')) {
@@ -143,7 +143,7 @@ class UserController extends Controller
                 $user->uploadImage($request->image);
             }
 
-            if (! empty($request->role)) {
+            if (!empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }

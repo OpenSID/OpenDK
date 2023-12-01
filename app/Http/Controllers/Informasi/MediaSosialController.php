@@ -57,7 +57,7 @@ class MediaSosialController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url']   = route('informasi.media-sosial.edit', $row->id);
                         $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
                     }

@@ -80,9 +80,9 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -116,7 +116,7 @@ class User extends Authenticatable implements JWTSubject
         $extension = $image->getClientOriginalExtension();
         $path      = storage_path('app/public/user/');
 
-        if (! file_exists($path)) {
+        if (!file_exists($path)) {
             File::makeDirectory($path, 0777, true);
         }
 

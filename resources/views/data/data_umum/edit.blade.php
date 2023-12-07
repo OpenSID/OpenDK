@@ -23,7 +23,7 @@
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilyah</a></li>
-                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab" onclick="handleClick('peta')">Peta Wilayah</a>
+                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a>
                 </li>
             </ul>
             <div class="tab-content">

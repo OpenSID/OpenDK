@@ -15,6 +15,15 @@
     <section class="content container-fluid">
 
         @include('partials.flash_message')
+        @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
         {!! Form::model($data_umum, ['route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left']) !!}
 
@@ -81,7 +90,6 @@
             // Check if the form is valid
             if (!myForm.checkValidity()) {
                 // The form is not valid, show an alert or perform other actions
-                alert('Silakan isi semua bidang yang wajib diisi.');
                 document.getElementById('wilayahTab').click();
             }
         }

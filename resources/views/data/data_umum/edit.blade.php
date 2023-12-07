@@ -85,7 +85,7 @@
                 document.getElementById('wilayahTab').click();
             }
         }
-        
+
         $(function() {
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
                 if (e.target.hash == '#peta') {

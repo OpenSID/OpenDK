@@ -15,15 +15,6 @@
     <section class="content container-fluid">
 
         @include('partials.flash_message')
-        @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
         {!! Form::model($data_umum, ['route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left']) !!}
 

@@ -22,7 +22,7 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" data-toggle="tab">Info Wilyah</a></li>
+                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilyah</a></li>
                 <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a>
                 </li>
             </ul>
@@ -58,7 +58,7 @@
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp;
                                 Batal</button>
                         </a>
-                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp;
+                        <button type="submit" class="btn btn-primary btn-sm" onclick="validateForm()"><i class="fa fa-save"></i>&nbsp;
                             Simpan</button>
                     </div>
                 </div>
@@ -76,6 +76,15 @@
 
 @push('scripts')
     <script>
+        function validateForm() {
+            var myForm = document.getElementById('form-event');
+            // Check if the form is valid
+            if (!myForm.checkValidity()) {
+                // The form is not valid, show an alert or perform other actions
+                document.getElementById('wilayahTab').click();
+            }
+        }
+
         $(function() {
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
                 if (e.target.hash == '#peta') {

@@ -24,7 +24,7 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
                 <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a></li>
-                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>                
+                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="wilayah">
@@ -73,7 +73,7 @@
                             <input type="text" class="form-control input-sm lng" name="lng" id="lng" value="{{ $data_umum->lng }}">
                         </div>
                     </div>
-                </div>                
+                </div>
             </div>
 
             <div class="box-footer">
@@ -137,7 +137,7 @@
 
                 if (e.target.hash == '#lokasi-kantor') {
                     tampil_lokasi_kantor()
-                }                
+                }
 
             })
             // on page loaded
@@ -240,12 +240,12 @@
 
         function tampil_lokasi_kantor() {
             // Inisialisasi tampilan peta
-            var posisi = [ {{ $data_umum->lat ?? -1.0546279422758742 }}, {{ $data_umum->lng ?? 116.71875000000001 }}]; 
+            var posisi = [{{ $data_umum->lat ?? -1.0546279422758742 }}, {{ $data_umum->lng ?? 116.71875000000001 }}];
             const zoom = 13;
             var lokasi_kantor = L.map('tampil-lokasi-kantor', {
                 center: posisi,
                 zoom: zoom
-            });                    
+            });
 
             var baseLayers = getBaseLayers(lokasi_kantor, '');
             L.control.layers(baseLayers, overlayLayers, {

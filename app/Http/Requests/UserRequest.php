@@ -61,12 +61,13 @@ class UserRequest extends FormRequest
             $password = ['required', 'min:8', 'max:32', new Password()];
         }
         return [
-            'name'       => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'      => 'required|email|unique:users,email' . $id,
-            'phone'      => 'nullable|numeric|digits_between:10,13',
-            'password'   => $password,
-            'address'    => 'required',
-            'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'name'        => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
+            'email'       => 'required|email|unique:users,email' . $id,
+            'phone'       => 'nullable|numeric|digits_between:10,13',
+            'password'    => $password,
+            'address'     => 'required',
+            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'pengurus_id' => 'nullable|integer',
         ];
     }
 }

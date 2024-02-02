@@ -1,12 +1,5 @@
 @php $user = auth()->user(); @endphp
 
-@if (isset($user) && !$profil->kecamatan_id && !Request::is('changedefault'))
-    <div class="callout callout-warning">
-        <h4><i class="icon fa fa-warning"></i> Peringatan!</h4>
-        <p>Data profil wilayah belum lengkap. Silahkan dilengkapi terlebih dahulu!. <a href="{{ route('data.profil.index') }}">Lengkapi</a></p>
-    </div>
-@endif
-
 @if ($message = Session::get('success'))
     <div id="notifikasi" class="alert alert-success alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -24,5 +17,15 @@
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <h4><i class="icon fa fa-check"></i> Perhatian!</h4>
         <p>{{ $message }}</p>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
 @endif

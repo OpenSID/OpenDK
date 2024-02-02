@@ -53,7 +53,7 @@ class SuratController extends Controller
      */
     public function index(Request $request)
     {
-        if (! $this->settings['tte']) {
+        if (!$this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
 
@@ -63,7 +63,7 @@ class SuratController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+        if (!in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
             Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
@@ -80,7 +80,7 @@ class SuratController extends Controller
      */
     public function store(Request $request)
     {
-        if (! $this->settings['tte']) {
+        if (!$this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
 
@@ -97,7 +97,7 @@ class SuratController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+        if (!in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
             Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
@@ -136,7 +136,7 @@ class SuratController extends Controller
      */
     public function download(Request $request)
     {
-        if (! $this->settings['tte']) {
+        if (!$this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
 
@@ -149,7 +149,7 @@ class SuratController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+        if (!in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
             Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }

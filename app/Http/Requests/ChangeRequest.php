@@ -54,9 +54,8 @@ class ChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|unique:users,email',
             'password' => ['required', 'min:8', 'max:32', new Password()],
-            'password_confirmation' => ['required_with:password', 'same:password', 'min:8', 'max:32', new Password()],
+            'password_confirmation' => ['required_with:password', 'same:password'],
         ];
     }
 }

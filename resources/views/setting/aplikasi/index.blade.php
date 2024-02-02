@@ -23,7 +23,7 @@
                         <thead>
                             <tr>
                                 <th>Judul</th>
-                                <th>Isi</th>
+                                <th>Nilai</th>
                                 <th>Deskripsi</th>
                                 <th style="max-width: 100px;">Aksi</th>
                             </tr>
@@ -32,7 +32,11 @@
                             @forelse($settings as $setting)
                                 <tr>
                                     <td>{{ ucwords(str_replace('_', ' ', $setting->key)) }}</td>
-                                    <td>{{ $setting->value }}</td>
+                                    @if ($setting->type == 'boolean')
+                                        <td>{{ $setting->value == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
+                                    @else
+                                        <td>{{ $setting->value }}</td>
+                                    @endif
                                     <td>{{ $setting->description }}</td>
                                     <td>
                                         <a href="{{ route('setting.aplikasi.edit', $setting->id) }}" title="Ubah" data-button="edit">

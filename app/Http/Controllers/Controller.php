@@ -86,12 +86,12 @@ class Controller extends BaseController
             $this->akun_camat      = Pengurus::status()->akunCamat()->first();
             $this->akun_sekretaris = Pengurus::status()->akunSekretaris()->first();
 
-            if (! $this->akun_camat) {
+            if (!$this->akun_camat) {
                 SettingAplikasi::where('key', 'tte')->update(['value' => 0]);
                 SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 0]);
             }
 
-            if (! $this->akun_sekretaris) {
+            if (!$this->akun_sekretaris) {
                 SettingAplikasi::where('key', 'pemeriksaan_sekretaris')->update(['value' => 0]);
             }
 
@@ -150,19 +150,19 @@ class Controller extends BaseController
 
     protected function kirimTrack()
     {
-        // if (config('app.demo') == true) { // jika posisi demo, matikan tracking
-        //     return;
-        // }
+        if (config('app.demo') == true) { // jika posisi demo, matikan tracking
+            return;
+        }
 
-        // if (session('track') != null && session('track') == date('Y m d')) {
-        //     return;
-        // }
+        if (cache()->get('track') != null && cache()->get('track') == date('Y m d')) {
+            return;
+        }
 
         $host_pantau = config('app.host_pantau');
         $data = [
             'url' => url('/'),
             'versi' => config('app.version'),
-            'jumlah_desa' => DataDesa::count(),
+            'jml_desa' => DataDesa::count(),
             'desa' => json_encode(DataDesa::select(['desa_id', 'nama', 'sebutan_desa', 'path', 'website'])->get()),
             'jumlahdesa_sinkronisasi' => DataDesa::count(),
             'jumlah_penduduk' => Penduduk::where('status_dasar', 1)->count(),
@@ -190,7 +190,7 @@ class Controller extends BaseController
             $response = Http::withHeaders([
                 'token' => config('app.token_pantau')
             ])->post($host_pantau . 'track/opendk?token=' . config('app.token_pantau'), $data);
-            session(['track' => date('Y m d')]);
+            cache()->put('track', date('Y m d'), 60 * 60 * 24);
             return;
         } catch (Exception $e) {
             Log::notice($e);

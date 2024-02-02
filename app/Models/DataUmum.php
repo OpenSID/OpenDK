@@ -61,7 +61,9 @@ class DataUmum extends Model
         'jml_pasar',
         'jml_balai_pertemuan',
         'embed_peta',
-        'path'
+        'path',
+        'lat',
+        'lng'
     ];
 
     protected $appends = ['luas_wilayah_dari_data_desa'];

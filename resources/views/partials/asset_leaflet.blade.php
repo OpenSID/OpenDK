@@ -548,5 +548,60 @@
 
             return wilayah_property;
         }
+
+        function showCurrentPoint(posisi1, layerpeta, mode = true) {
+            var lokasi_kantor = L.marker(posisi1, { draggable: mode }).addTo(layerpeta);
+            lokasi_kantor.on("dragend", function (e) {
+                $("#lat").val(e.target._latlng.lat);
+                $("#lng").val(e.target._latlng.lng);
+                $("#map_tipe").val("HYBRID");
+                $("#zoom").val(layerpeta.getZoom());
+            });
+
+            layerpeta.on("zoomstart zoomend", function (e) {
+                $("#zoom").val(layerpeta.getZoom());
+            });
+
+            var geojson = lokasi_kantor.toGeoJSON();
+            var shape_for_db = JSON.stringify(geojson);
+            var gpxData = togpx(JSON.parse(shape_for_db));
+
+            $("#exportGPX").on("click", function (event) {
+                data = "data:text/xml;charset=utf-8," + encodeURIComponent(gpxData);
+                $(this).attr({
+                href: data,
+                target: "_blank",
+                });
+            });
+
+            var lc = L.control
+                .locate({
+                drawCircle: false,
+                icon: "fa fa-map-marker",
+                strings: {
+                    title: "Lokasi Saya",
+                    locateOptions: { enableHighAccuracy: true },
+                    popup: "Anda berada disekitar {distance} {unit} dari titik ini",
+                },
+                })
+                .addTo(layerpeta);
+
+            layerpeta.on("locationfound", function (e) {
+                $("#lat").val(e.latlng.lat);
+                $("#lng").val(e.latlng.lng);
+                lokasi_kantor.setLatLng(e.latlng);
+                layerpeta.setView(e.latlng);
+            });
+
+            layerpeta
+                .on("startfollowing", function () {
+                layerpeta.on("dragstart", lc._stopFollowing, lc);
+                })
+                .on("stopfollowing", function () {
+                layerpeta.off("dragstart", lc._stopFollowing, lc);
+                });
+
+            return showCurrentPoint;
+            }
     </script>
 @endpush

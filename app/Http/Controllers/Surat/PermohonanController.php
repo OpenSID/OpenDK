@@ -197,14 +197,14 @@ class PermohonanController extends Controller
             $height    = 90;
             $tag       = '[qr_camat]';
 
-            $response = $client->post('', [
+            $response = $client->post('api/sign/pdf', [
                 'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
                     ['name' => 'file', 'contents' => Psr7\Utils::tryFopen($file_path, 'r')],
                     ['name' => 'nik', 'contents' => $surat->pengurus->nik],
                     ['name' => 'passphrase', 'contents' => $request['passphrase']],
                     ['name' => 'tampilan', 'contents' => 'visible'],
-                    ['name' => 'linkQR', 'contents' => route('surat.arsip.qrcode', $surat->id)],
+                    ['name' => 'linkQR', 'contents' => route('surat.arsip.qrcode', $surat->id)],                    
                     ['name' => 'width', 'contents' => $width],
                     ['name' => 'height', 'contents' => $height],
                     ['name' => 'tag_koordinat', 'contents' => $tag],

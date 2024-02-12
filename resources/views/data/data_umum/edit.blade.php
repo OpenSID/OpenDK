@@ -22,9 +22,9 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilyah</a></li>
-                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a>
-                </li>
+                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
+                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a></li>
+                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="wilayah">
@@ -48,6 +48,31 @@
                         <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
                             Reset Peta</button>
                     </a>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="lokasi-kantor">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="tampil-lokasi-kantor" style="height:500px">
+                                <div class="text-center" style="margin-top: 35vh">
+                                    <h1>Memuat Lokasi Kantor</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="lat">Latitude</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control input-sm lat" name="lat" id="lat" value="{{ $data_umum->lat }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="lat">Longitude</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control input-sm lng" name="lng" id="lng" value="{{ $data_umum->lng }}">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -110,6 +135,10 @@
                     });
                 }
 
+                if (e.target.hash == '#lokasi-kantor') {
+                    tampil_lokasi_kantor()
+                }
+
             })
             // on page loaded
             updateValueLuasWilayah();
@@ -169,10 +198,10 @@
         function tampil_peta() {
             // Inisialisasi tampilan peta
             var posisi = [-1.0546279422758742, 116.71875000000001];
-            var zoom = 10;
+            var zoom = 13;
             var peta_wilayah = L.map('tampil-map', {
                 center: posisi,
-                zoom: 13
+                zoom: zoom
             });
 
             var path_kec = new Array();
@@ -206,6 +235,27 @@
                 return
                 feature.geometry;
             }
+            $('.leaflet-bar-part.leaflet-bar-part-single .fa-map-marker').css('font-size', '24px')
+        };
+
+        function tampil_lokasi_kantor() {
+            // Inisialisasi tampilan peta
+            var posisi = [{{ $data_umum->lat ?? -1.0546279422758742 }}, {{ $data_umum->lng ?? 116.71875000000001 }}];
+            const zoom = 13;
+            var lokasi_kantor = L.map('tampil-lokasi-kantor', {
+                center: posisi,
+                zoom: zoom
+            });
+
+            var baseLayers = getBaseLayers(lokasi_kantor, '');
+            L.control.layers(baseLayers, overlayLayers, {
+                position: 'topleft',
+                collapsed: true
+            }).addTo(lokasi_kantor);
+
+            // Menampilkan dan Menambahkan Peta wilayah + Geolocation GPS
+            showCurrentPoint(posisi, lokasi_kantor);
+            $('.leaflet-bar-part.leaflet-bar-part-single .fa-map-marker').css('font-size', '24px')
         };
 
         $('#reset').on('click', function() {

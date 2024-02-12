@@ -183,7 +183,9 @@ class Controller extends BaseController
             'nama_kecamatan' => $this->profil->nama_kecamatan,
             'nama_kabupaten' => $this->profil->nama_kabupaten,
             'nama_provinsi' => $this->profil->nama_provinsi,
-            'nama_camat' => $this->nama_camat
+            'nama_camat' => $this->nama_camat,
+            'lat' => $this->umum->lat,
+            'lng' => $this->umum->lng
         ];
 
         try {

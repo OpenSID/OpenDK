@@ -83,7 +83,7 @@ class DataUmumController extends Controller
             'jml_pasar'              => 'required',
             'jml_balai_pertemuan'    => 'required',
             'lat'                    => 'required',
-            'lng'                    => 'required',   
+            'lng'                    => 'required',
         ]);
 
         try {

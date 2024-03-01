@@ -1,4 +1,4 @@
-Di rilis versi v2402.0.0 di versi ini terdapat perbaikan [isi disini].
+Di rilis versi v2403.0.0 di versi ini terdapat penambahan lokasi kantor kecamatan dan perbaikan lain yang diminta Komunitas.
 
 #### Penambahan Fitur
 

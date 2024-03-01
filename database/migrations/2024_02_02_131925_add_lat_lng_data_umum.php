@@ -33,8 +33,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RenameDataUmumTipologi extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      *
@@ -43,7 +42,8 @@ class RenameDataUmumTipologi extends Migration
     public function up()
     {
         Schema::table('das_data_umum', function (Blueprint $table) {
-            $table->renameColumn('tipologi', 'sejarah');
+            $table->string('lng', 20)->after('path')->nullable();
+            $table->string('lat', 20)->after('path')->nullable();
         });
     }
 
@@ -55,7 +55,8 @@ class RenameDataUmumTipologi extends Migration
     public function down()
     {
         Schema::table('das_data_umum', function (Blueprint $table) {
-            $table->renameColumn('sejarah', 'tipologi');
+            $table->dropColumn('lng');
+            $table->dropColumn('lat');
         });
     }
-}
+};

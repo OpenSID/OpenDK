@@ -40,12 +40,12 @@
         </a>
     @endif
     @if( isset( $active_url ) )
-        <a href="javascript:void(0)" class="{!! empty( $active_url ) ? 'disabled' : '' !!}" title="Aktif" data-href="{!! empty( $active_url ) ? 'javascript:void(0)' : $active_url !!}" data-button="delete" id="activeModal">
+        <a href="{!! empty( $active_url ) ? 'javascript:void(0)' : $active_url !!}" class="{!! empty( $active_url ) ? 'disabled' : '' !!}" title="Aktif" data-href="{!! empty( $active_url ) ? 'javascript:void(0)' : $active_url !!}" data-button="delete" id="activeModal">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-check" aria-hidden="true"></i></button>
         </a>
     @endif
     @if( isset( $suspend_url ) )
-        <a href="javascript:void(0)" class="{!! empty( $suspend_url ) ? 'disabled' : '' !!}" title="Suspend" data-href="{!! empty( $suspend_url ) ? 'javascript:void(0)' : $suspend_url !!}" data-button="delete" id="suspendModal">
+        <a href="{!! empty( $suspend_url ) ? 'javascript:void(0)' : $suspend_url !!}" class="{!! empty( $suspend_url ) ? 'disabled' : '' !!}" title="Suspend" data-href="{!! empty( $suspend_url ) ? 'javascript:void(0)' : $suspend_url !!}" data-button="delete" id="suspendModal">
             <button type="button" class="btn btn-icon btn-danger btn-sm" style="width: 40px; background-color: #FFA500; border-color: #FFA500;"><i class="fa fa-power-off" aria-hidden="true"></i>
             </button>
         </a>

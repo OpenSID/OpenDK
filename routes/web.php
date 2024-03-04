@@ -572,7 +572,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'setting'], function () {
             // User Management
-            Route::group(['prefix' => 'user','middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'user', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.user.index', 'uses' => 'User\UserController@index']);
                 Route::get('getdata', ['as' => 'setting.user.getdata', 'uses' => 'User\UserController@getDataUser']);
                 Route::get('create', ['as' => 'setting.user.create', 'uses' => 'User\UserController@create']);
@@ -621,7 +621,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             // Jenis Penyakit
-            Route::group(['prefix' => 'jenis-penyakit','middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
+            Route::group(['prefix' => 'jenis-penyakit', 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.jenis-penyakit.index', 'uses' => 'Setting\JenisPenyakitController@index']);
                 Route::get('getdata', ['as' => 'setting.jenis-penyakit.getdata', 'uses' => 'Setting\JenisPenyakitController@getData']);
                 Route::get('create', ['as' => 'setting.jenis-penyakit.create', 'uses' => 'Setting\JenisPenyakitController@create']);
@@ -632,7 +632,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             // Tipe Potensi
-            Route::group(['prefix' => 'tipe-potensi','middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'tipe-potensi', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.tipe-potensi.index', 'uses' => 'Setting\TipePotensiController@index']);
                 Route::get('getdata', ['as' => 'setting.tipe-potensi.getdata', 'uses' => 'Setting\TipePotensiController@getData']);
                 Route::get('create', ['as' => 'setting.tipe-potensi.create', 'uses' => 'Setting\TipePotensiController@create']);
@@ -643,7 +643,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             // Slide
-            Route::group(['prefix' => 'slide','middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'slide', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.slide.index', 'uses' => 'Setting\SlideController@index']);
                 Route::get('getdata', ['as' => 'setting.slide.getdata', 'uses' => 'Setting\SlideController@getData']);
                 Route::get('create', ['as' => 'setting.slide.create', 'uses' => 'Setting\SlideController@create']);
@@ -655,7 +655,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             // COA
-            Route::group(['prefix' => 'coa','middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'coa', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.coa.index', 'uses' => 'Setting\COAController@index']);
                 Route::get('create', ['as' => 'setting.coa.create', 'uses' => 'Setting\COAController@create']);
                 Route::post('store', ['as' => 'setting.coa.store', 'uses' => 'Setting\COAController@store']);
@@ -664,16 +664,29 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', ['as' => 'setting.coa.generate_id', 'uses' => 'Setting\COAController@generate_id']);
             });
 
-            Route::group(['prefix' => 'aplikasi','middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'aplikasi', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.aplikasi.index', 'uses' => 'Setting\AplikasiController@index']);
                 Route::get('/edit/{aplikasi}', ['as' => 'setting.aplikasi.edit', 'uses' => 'Setting\AplikasiController@edit']);
                 Route::put('/update/{aplikasi}', ['as' => 'setting.aplikasi.update', 'uses' => 'Setting\AplikasiController@update']);
             });
 
-            Route::group(['prefix' => 'info-sistem','middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'info-sistem', 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', ['as' => 'setting.info-sistem', 'uses' => 'LogViewerController@index']);
                 Route::get('/linkstorage', ['as' => 'setting.info-sistem.linkstorage', 'uses' => 'LogViewerController@linkStorage']);
                 Route::get('/queuelisten', ['as' => 'setting.info-sistem.queuelisten', 'uses' => 'LogViewerController@queueListen']);
+            });
+
+            // Widget
+            Route::group(['prefix' => 'widget', 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
+                Route::get('/', ['as' => 'setting.widget.index', 'uses' => 'Setting\WidgetController@index']);
+                Route::get('getdata', ['as' => 'setting.widget.getdata', 'uses' => 'Setting\WidgetController@getData']);
+                Route::get('urut/{id}/{arah}', ['as' => 'setting.widget.urut', 'uses' => 'Setting\WidgetController@urut']);
+                Route::get('create', ['as' => 'setting.widget.create', 'uses' => 'Setting\WidgetController@create']);
+                // Route::post('store', ['as' => 'setting.widget.store', 'uses' => 'Setting\WidgetController@store']);
+                Route::get('enable/{id}', ['as' => 'setting.widget.enable', 'uses' => 'Setting\WidgetController@enableWidget']);
+                Route::get('disable/{id}', ['as' => 'setting.widget.disable', 'uses' => 'Setting\WidgetController@disableWidget']);
+                // Route::put('update/{id}', ['as' => 'setting.widget.update', 'uses' => 'Setting\WidgetController@update']);
+                // Route::delete('destroy/{id}', ['as' => 'setting.widget.destroy', 'uses' => 'Setting\WidgetController@destroy']);
             });
         });
 

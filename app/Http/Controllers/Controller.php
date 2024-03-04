@@ -46,6 +46,7 @@ use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
 use App\Models\Slide;
 use App\Models\TipePotensi;
+use App\Models\Widget;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -81,12 +82,12 @@ class Controller extends BaseController
         $this->akun_camat      = Pengurus::status()->akunCamat()->first();
         $this->akun_sekretaris = Pengurus::status()->akunSekretaris()->first();
 
-        if (! $this->akun_camat) {
+        if (!$this->akun_camat) {
             SettingAplikasi::where('key', 'tte')->update(['value' => 0]);
             SettingAplikasi::where('key', 'pemeriksaan_camat')->update(['value' => 0]);
         }
 
-        if (! $this->akun_sekretaris) {
+        if (!$this->akun_sekretaris) {
             SettingAplikasi::where('key', 'pemeriksaan_sekretaris')->update(['value' => 0]);
         }
 
@@ -125,6 +126,7 @@ class Controller extends BaseController
         $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
         $pengurus   = Pengurus::status()->get();
         $slides     = Slide::orderBy('created_at', 'DESC')->get();
+        $widgets    = Widget::where('enabled', 1)->orderBy('urut', 'ASC')->get();
 
         View::share([
             'profil'                 => $this->profil,
@@ -139,6 +141,7 @@ class Controller extends BaseController
             'camat'                  => $this->nama_camat,
             'pengurus'               => $pengurus->sortBy('jabatan.jenis'),
             'slides'                 => $slides,
+            'widgets'                => $widgets,
         ]);
     }
 

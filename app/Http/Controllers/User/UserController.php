@@ -82,6 +82,11 @@ class UserController extends Controller
         try {
             $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
+
+            if (empty($request->pengurus_id)){
+                $request->merge(['pengurus_id' => null]);
+            }
+
             $user = User::create($request->all());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);

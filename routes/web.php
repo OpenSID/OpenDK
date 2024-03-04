@@ -41,6 +41,7 @@ use App\Http\Controllers\Setting\KategoriKomplainController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\WidgetController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\User\UserController;
 use App\Models\DataDesa;
@@ -601,7 +602,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'setting'], function () {
             // User Management
-            Route::group(['prefix' => 'user', 'controller' => UserController::class,'middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
@@ -704,6 +705,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/linkstorage', 'linkStorage')->name('setting.info-sistem.linkstorage');
                 Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
+            });
+
+            // Widget
+            Route::group(['prefix' => 'widget', 'controller' => WidgetController::class, 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.widget.index');
+                Route::get('getdata', 'getData')->name('setting.widget.getdata');
+                Route::get('urut/{id}/{arah}', 'urut')->name('setting.widget.urut');
+                Route::get('create', 'create')->name('setting.widget.create');
+                Route::get('enable/{id}', 'enableWidget')->name('setting.widget.enable');
+                Route::get('disable/{id}', 'disableWidget')->name('setting.widget.disable');
             });
         });
 

@@ -46,6 +46,7 @@ use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
 use App\Models\Slide;
 use App\Models\TipePotensi;
+use App\Models\Widget;
 use Exception;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -130,6 +131,7 @@ class Controller extends BaseController
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus   = Pengurus::status()->get();
             $slides     = Slide::orderBy('created_at', 'DESC')->get();
+            $widgets    = Widget::where('enabled', 1)->orderBy('urut', 'ASC')->get();
 
             View::share([
                 'profil'                 => $this->profil,
@@ -144,6 +146,7 @@ class Controller extends BaseController
                 'camat'                  => $this->nama_camat,
                 'pengurus'               => $pengurus->sortBy('jabatan.jenis'),
                 'slides'                 => $slides,
+                'widgets'                 => $widgets,
             ]);
         }
     }

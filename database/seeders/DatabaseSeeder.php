@@ -68,5 +68,6 @@ class DatabaseSeeder extends Seeder
         // Other
         $this->call(DasProfilTableSeeder::class);
         $this->call(DasDataUmumTableSeeder::class);
+        $this->call(WidgetSeeder::class);
     }
 }

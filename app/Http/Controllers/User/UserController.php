@@ -82,6 +82,11 @@ class UserController extends Controller
         try {
             $status = !empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
+
+            if (empty($request->pengurus_id)) {
+                $request->merge(['pengurus_id' => null]);
+            }
+
             $user = User::create($request->validated());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
@@ -231,22 +236,22 @@ class UserController extends Controller
     public function getDataUser()
     {
         return DataTables::of(User::datatables())
-        ->editColumn('status', function ($user) {
-            return $user->status == 1 ? 'Active' : 'Not Active';
-        })
-        ->addColumn('aksi', function ($user) {
-            if ($user->id != 1) {
-                if ($user->status == 1) {
-                    $data['suspend_url'] = route('setting.user.destroy', $user->id);
-                } else {
-                    $data['active_url'] = route('setting.user.active', $user->id);
+            ->editColumn('status', function ($user) {
+                return $user->status == 1 ? 'Active' : 'Not Active';
+            })
+            ->addColumn('aksi', function ($user) {
+                if ($user->id != 1) {
+                    if ($user->status == 1) {
+                        $data['suspend_url'] = route('setting.user.destroy', $user->id);
+                    } else {
+                        $data['active_url'] = route('setting.user.active', $user->id);
+                    }
                 }
-            }
 
-            $data['edit_url'] = route('setting.user.edit', $user->id);
+                $data['edit_url'] = route('setting.user.edit', $user->id);
 
-            return view('forms.aksi', $data);
-        })
-        ->make(true);
+                return view('forms.aksi', $data);
+            })
+            ->make(true);
     }
 }

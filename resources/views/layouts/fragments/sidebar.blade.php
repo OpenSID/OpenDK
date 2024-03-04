@@ -321,17 +321,24 @@
                         <li {{ (Request::is(['setting/hasrole/*', 'setting/hasrole'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.hasrole.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a></li>
                         @endif --}}
-                            @if ($user->hasrole(['super-admin', 'administrator-website']))
-                                <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
-                            @endif
-                            @if ($user->hasrole(['super-admin', 'administrator-website']))
-                                <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
-                            @endif
-                            @if ($user->hasrole(['super-admin', 'administrator-website']))
-                                <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
-                            @endif
-                        </ul>
-                    </li>
+                        @if($user->hasrole(['super-admin', 'administrator-website']))
+                        <li {{ (Request::is(['setting/user*'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
+                        @endif
+                        @if($user->hasrole(['super-admin', 'administrator-website']))
+                        <li {{ (Request::is(['setting/aplikasi*'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
+                        @endif
+                        @if($user->hasrole(['super-admin', 'administrator-website']))
+                        <li {{ (Request::is(['setting/info-sistem*'])? 'class=active' : '') }}><a
+                                    href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
+                        @endif
+                        @if($user->hasrole(['super-admin', 'administrator-website']))
+                        <li {{ (Request::is(['setting/widget*'])? 'class=active' : '') }}>
+                            <a href="{{ route('setting.widget.index') }}"><i class="fa fa-circle-o"></i>Widget</a></li>
+                        @endif
+                    </ul>
+                </li>
                 @endif
             @endif
             <li class="header">VISITOR COUNTER</li>

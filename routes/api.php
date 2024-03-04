@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,11 +24,20 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\LaporanApbdesController;
+use App\Http\Controllers\Api\LaporanPendudukController;
+use App\Http\Controllers\Api\PembangunanController;
+use App\Http\Controllers\Api\PendudukController;
+use App\Http\Controllers\Api\PesanController;
+use App\Http\Controllers\Api\ProfilDesaController;
+use App\Http\Controllers\Api\ProgamBantuanController;
+use App\Http\Controllers\Api\SuratController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,71 +59,71 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
     /**
      * Authentication api
      */
-    Route::group(['prefix' => 'auth'], function () {
-        Route::post('login', 'Api\Auth\AuthController@login');
-        Route::post('logout', 'Api\Auth\AuthController@logout');
-        Route::post('refresh', 'Api\Auth\AuthController@refresh');
-        Route::get('me', 'Api\Auth\AuthController@me');
+    Route::group(['prefix' => 'auth', 'controller' => AuthController::class], function () {
+        Route::post('login', 'login');
+        Route::post('logout', 'logout');
+        Route::post('refresh', 'refresh');
+        Route::get('me', 'me');
     });
 
     Route::group(['middleware' => ['auth:api', 'role:admin-desa']], function () {
         /**
          * Penduduk
          */
-        Route::group(['prefix' => 'penduduk'], function () {
-            Route::post('/', 'Api\PendudukController@store');
-            Route::post('storedata', 'Api\PendudukController@storedata');
-            Route::post('test', 'Api\PendudukController@test');
+        Route::group(['prefix' => 'penduduk', 'controller' => PendudukController::class], function () {
+            Route::post('/', 'store');
+            Route::post('storedata', 'storedata');
+            Route::post('test', 'test');
         });
 
         /**
          * Laporan Apbdes
          */
-        Route::group(['prefix' => 'laporan-apbdes'], function () {
-            Route::post('/', 'Api\LaporanApbdesController@store');
+        Route::group(['prefix' => 'laporan-apbdes', 'controller' => LaporanApbdesController::class], function () {
+            Route::post('/', 'store');
         });
 
         /**
          * Laporan Penduduk
          */
-        Route::group(['prefix' => 'laporan-penduduk'], function () {
-            Route::post('/', 'Api\LaporanPendudukController@store');
+        Route::group(['prefix' => 'laporan-penduduk', 'controller' => LaporanPendudukController::class], function () {
+            Route::post('/', 'store');
         });
 
-        Route::group(['prefix' => 'pesan'], function () {
-            Route::post('/', 'Api\PesanController@store');
-            Route::post('getpesan', 'Api\PesanController@getPesan');
-            Route::get('detail', 'Api\PesanController@detail');
+        Route::group(['prefix' => 'pesan', 'controller' => PesanController::class], function () {
+            Route::post('/', 'store');
+            Route::post('getpesan', 'getPesan');
+            Route::get('detail', 'detail');
         });
 
         /**
         * Pembangunan
         */
-        Route::group(['prefix' => 'pembangunan'], function () {
-            Route::post('/', 'Api\PembangunanController@store');
-            Route::post('dokumentasi', 'Api\PembangunanController@storeDokumentasi');
+        Route::group(['prefix' => 'pembangunan', 'controller' => PembangunanController::class], function () {
+            Route::post('/', 'store');
+            Route::post('dokumentasi', 'storeDokumentasi');
         });
 
         /**
         * Identitas Desa
         */
-        Route::group(['prefix' => 'identitas-desa'], function () {
-            Route::post('/', 'Api\ProfilDesaController@store');
+        Route::group(['prefix' => 'identitas-desa', 'controller' => ProfilDesaController::class], function () {
+            Route::post('/', 'store');
         });
 
         /**
         * Program Bantuan
         */
-        Route::group(['prefix' => 'program-bantuan'], function () {
-            Route::post('/', 'Api\ProgamBantuanController@store');
-            Route::post('peserta', 'Api\ProgamBantuanController@storePeserta');
+        Route::group(['prefix' => 'program-bantuan', 'controller' => ProgamBantuanController::class], function () {
+            Route::post('/', 'store');
+            Route::post('peserta', 'storePeserta');
         });
 
         //Surat
-        Route::group(['prefix' => 'surat'], function () {
-            Route::get('/', 'Api\SuratController@index');
-            Route::post('kirim', 'Api\SuratController@store');
-            Route::get('download', 'Api\SuratController@download');
+        Route::group(['prefix' => 'surat', 'controller' => SuratController::class], function () {
+            Route::get('/', 'index');
+            Route::post('kirim', 'store');
+            Route::get('download', 'download');
         });
     });
 });

@@ -8,7 +8,7 @@
             {!! Form::open(['id' => 'active', 'method' => 'POST', 'route' => 'admin.news.importxml', 'files' => true]) !!}
 
             <div class="modal-body">
-                {!! Form::file( 'file', [ 'class' => 'form-control', 'accept' => 'text/xml'] ) !!}                
+                {!! Form::file('file', ['class' => 'form-control', 'accept' => 'text/xml']) !!}
                 <a href="{{ route('admin.news.download') }}">Download example xml</a>
             </div>
 
@@ -16,11 +16,11 @@
 
                 <a id="active-modal-cancel" href="#" class="btn btn-danger waves-effect waves-light" data-dismiss="modal">Cancel</a>
 
-                {!! Form::submit('Import', [ 'class' => 'btn btn-primary waves-effect waves-light' ]) !!}
+                {!! Form::submit('Import', ['class' => 'btn btn-primary waves-effect waves-light']) !!}
 
             </div>
             {!! Form::close() !!}
-            @push( 'scripts' )
+            @push('scripts')
                 {!! JsValidator::formRequest('App\Http\Requests\Backend\ImportNewsRequest', '#active') !!}
             @endpush
         </div>
@@ -29,9 +29,9 @@
 <script>
     $(document).ready(function() {
 
-     $(document).on('click', '#importxml', function(e) {
-        $('#active-modal').modal('show');
-        e.preventDefault();
+        $(document).on('click', '#importxml', function(e) {
+            $('#active-modal').modal('show');
+            e.preventDefault();
+        });
     });
- });
 </script>

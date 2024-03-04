@@ -1,0 +1,38 @@
+name: Composer
+
+on:
+  pull_request:
+    branches:
+      - master
+      - dev
+      - bug-fix
+    paths:
+      - composer.json
+      - .github/workflows/composer.yml
+
+permissions:
+  contents: read
+
+jobs:
+  composer:
+    name: composer validate in PHP ${{ matrix.php-versions }}
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-versions: ["8.0", "8.1", "8.2"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          coverage: xdebug
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Validate composer.json
+        run: composer validate --no-check-all
+      - name: Install dependencies
+        run: composer update --ansi --no-interaction

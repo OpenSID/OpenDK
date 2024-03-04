@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -58,7 +58,11 @@ class EventController extends Controller
     public function store(EventRequest $request)
     {
         try {
+            $waktu = explode("-", $request->waktu);
+
             $input = $request->input();
+            $input['start']  = date('Y-m-d H:i', strtotime($waktu[0]));
+            $input['end']    = date('Y-m-d H:i', strtotime($waktu[1]));
             $input['status'] = 'OPEN';
             Event::create($input);
         } catch (\Exception $e) {
@@ -73,6 +77,7 @@ class EventController extends Controller
     {
         $page_title       = 'Event';
         $page_description = 'Ubah Event';
+        $event->waktu     = $event->start . ' - ' . $event->end;
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }
@@ -80,6 +85,7 @@ class EventController extends Controller
     public function update(EventRequest $request, Event $event)
     {
         try {
+            $waktu = explode("-", $request->waktu);
             $input = $request->all();
 
             if ($request->hasFile('attachment')) {
@@ -90,6 +96,8 @@ class EventController extends Controller
                 $lampiran->move(base_path('public/'.$path), $fileName);
                 $input['attachment'] = $path . $fileName;
             }
+            $input['end']    = date('Y-m-d H:i', strtotime($waktu[1]));
+            $input['start']  = date('Y-m-d H:i', strtotime($waktu[0]));
 
             $event->update($input);
         } catch (\Exception $e) {

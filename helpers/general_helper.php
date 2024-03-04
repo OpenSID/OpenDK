@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -32,6 +32,7 @@
 use App\Models\Menu;
 use App\Models\Role;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Parsing url image dari rss feed description
@@ -39,7 +40,7 @@ use Illuminate\Support\Carbon;
  * @param string $content
  * @return string
  */
-if (! function_exists('get_tag_image')) {
+if (!function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
         if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
@@ -331,14 +332,14 @@ function avatar($foto)
     return is_img($foto, $default);
 }
 
-if (! function_exists('divnum')) {
+if (!function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
 
-if (! function_exists('format_number_id')) {
+if (!function_exists('format_number_id')) {
     function format_number_id($inp = 0)
     {
         return number_format($inp, 2, ',', '.');
@@ -370,4 +371,66 @@ function terbilang($angka)
     }
 
     return $terbilang;
+}
+
+if (!function_exists('sudahInstal')) {
+    /**
+     * Cek apakah sudah install OpenDK atau belum
+     *
+     * @return bool True jika sudah install, False jika belum install
+     */
+    function sudahInstal(): bool
+    {
+        if (!file_exists(storage_path('installed'))) {
+            return false;
+        }
+        return true;
+    }
+}
+
+/**
+ * Cek akses website.
+ *
+ * @param string $url
+ *
+ * @return bool
+ */
+if (!function_exists('checkWebsiteAccessibility')) {
+    function checkWebsiteAccessibility($url)
+    {
+        $options = [
+            'http' => [
+                'method'  => 'GET',
+                'timeout' => 3,
+            ],
+        ];
+        $context = stream_context_create($options);
+        $headers = @get_headers($url, 0, $context);
+
+        if ($headers) {
+            $status = substr($headers[0], 9, 3);
+            if ($status == '200') {
+                return true;
+            }
+
+            $status = "(Status: {$status})";
+        }
+
+        Log::debug("Website tidak dapat diakses");
+
+        return false;
+    }
+}
+
+if (!function_exists('parsedown')) {
+    function parsedown($params = null)
+    {
+        $parsedown = new \App\Http\Controllers\Helpers\Parsedown();
+
+        if (null !== $params) {
+            return $parsedown->text(file_get_contents($params));
+        }
+
+        return $parsedown;
+    }
 }

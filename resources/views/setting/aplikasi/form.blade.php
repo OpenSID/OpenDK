@@ -10,12 +10,14 @@
 <div class="form-group">
     <label for="value" class="control-label col-md-4 col-sm-3 col-xs-12">Isi</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        @if($aplikasi->type == 'textarea')
-        {!! Form::textarea('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
+        @if ($aplikasi->type == 'textarea')
+            {!! Form::textarea('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
         @elseif ($aplikasi->type == 'number')
-        {!! Form::number('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
+            {!! Form::number('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
+        @elseif ($aplikasi->type == 'boolean')
+            {!! Form::select('value', ['1' => 'Aktif', '0' => 'Tidak Aktif'], null, ['class' => 'form-control']) !!}
         @else
-        {!! Form::text('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
+            {!! Form::text('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
         @endif
         <small></small>
     </div>

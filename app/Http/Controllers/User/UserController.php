@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -80,14 +80,14 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $status = ! empty($request->status) ? 1 : 1;
+            $status = !empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
 
-            if (empty($request->pengurus_id)){
+            if (empty($request->pengurus_id)) {
                 $request->merge(['pengurus_id' => null]);
             }
 
-            $user = User::create($request->all());
+            $user = User::create($request->validated());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
             }
@@ -143,12 +143,12 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
 
-            $user->update($request->all());
+            $user->update($request->validated());
             if ($request->hasFile('image')) {
                 $user->uploadImage($request->image);
             }
 
-            if (! empty($request->role)) {
+            if (!empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }
@@ -236,22 +236,22 @@ class UserController extends Controller
     public function getDataUser()
     {
         return DataTables::of(User::datatables())
-        ->editColumn('status', function ($user) {
-            return $user->status == 1 ? 'Active' : 'Not Active';
-        })
-        ->addColumn('aksi', function ($user) {
-            if ($user->id != 1) {
-                if ($user->status == 1) {
-                    $data['suspend_url'] = route('setting.user.destroy', $user->id);
-                } else {
-                    $data['active_url'] = route('setting.user.active', $user->id);
+            ->editColumn('status', function ($user) {
+                return $user->status == 1 ? 'Active' : 'Not Active';
+            })
+            ->addColumn('aksi', function ($user) {
+                if ($user->id != 1) {
+                    if ($user->status == 1) {
+                        $data['suspend_url'] = route('setting.user.destroy', $user->id);
+                    } else {
+                        $data['active_url'] = route('setting.user.active', $user->id);
+                    }
                 }
-            }
 
-            $data['edit_url'] = route('setting.user.edit', $user->id);
+                $data['edit_url'] = route('setting.user.edit', $user->id);
 
-            return view('forms.aksi', $data);
-        })
-        ->make(true);
+                return view('forms.aksi', $data);
+            })
+            ->make(true);
     }
 }

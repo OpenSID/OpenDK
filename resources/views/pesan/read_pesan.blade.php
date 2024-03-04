@@ -33,8 +33,7 @@
                                     'id' => 'form-arisp-pesan',
                                 ]) !!}
                                 {!! Form::text('id', $pesan->id, ['hidden' => true]) !!}
-                                <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
-                                        class="fa fa-archive"></i> Arsipkan </button>
+                                <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan </button>
                                 {!! Form::close() !!}
                             @endif
                             {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
@@ -77,8 +76,7 @@
                             </div>
                         @endforeach
                     </div>
-                    <div style="padding-right: 10px; padding-left: 10px"
-                        class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
+                    <div style="padding-right: 10px; padding-left: 10px" class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
                         {!! Form::open([
                             'route' => 'pesan.reply.post',
                             'class' => 'form-group inline',
@@ -90,11 +88,9 @@
                             'class' => 'textarea',
                             'id' => 'reply_message',
                             'placeholder' => 'Balas Pesan',
-                            'style' => 'width: 100%;
-                                     height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                            'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
                         ]) !!}
-                        <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i
-                                class="fa fa-reply"></i> Balas</button>
+                        <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i class="fa fa-reply"></i> Balas</button>
                         {!! Form::close() !!}
                     </div>
                 </div>

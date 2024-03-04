@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -56,8 +56,10 @@ class AlterTableAkiAkb extends Migration
     public function down()
     {
         Schema::table('das_akib', function (Blueprint $table) {
+            // sebelumnya bernilai 7, tapi bemasalah karena data yang ada kini bernilai 8
             $table->string('kecamatan_id', 7)->change();
-            $table->string('desa_id', 10)->change();
+            // sebelumnya bernilai 10, tapi bemasalah karena data yang ada kini bernilai 13
+            $table->string('desa_id', 13)->change();
         });
     }
 }

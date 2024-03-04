@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -53,7 +53,7 @@ class SuratController extends Controller
      */
     public function index(Request $request)
     {
-        if (! $this->settings['tte']) {
+        if (!$this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
 
@@ -63,7 +63,7 @@ class SuratController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+        if (!in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
             Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
@@ -80,7 +80,7 @@ class SuratController extends Controller
      */
     public function store(Request $request)
     {
-        if (! $this->settings['tte']) {
+        if (!$this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
 
@@ -97,7 +97,7 @@ class SuratController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+        if (!in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
             Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
@@ -136,7 +136,7 @@ class SuratController extends Controller
      */
     public function download(Request $request)
     {
-        if (! $this->settings['tte']) {
+        if (!$this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
 
@@ -149,7 +149,7 @@ class SuratController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (! in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
+        if (!in_array($request->desa_id, Arr::flatten(DataDesa::pluck('desa_id')))) {
             Log::debug("Kode desa {$request->desa_id} tidak terdaftar di kecamatan");
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }

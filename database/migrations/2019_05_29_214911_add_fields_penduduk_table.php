@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -45,12 +45,11 @@ class AddFieldsPendudukTable extends Migration
         // add id_pend_desa (id pada tweb_penduduk di OpenSID desa)
         Schema::table('das_penduduk', function (Blueprint $table) {
             $table->integer('id_pend_desa')->nullable(true);
-        });
-        Schema::table('das_penduduk', function (Blueprint $table) {
             $table->dateTime('imported_at')->nullable(true);
+
+            // ubah NIK supaya tidak harus unik, karena NIK mungkin 0, kalau belum ada
+            $table->dropUnique('das_penduduk_nik_unique');
         });
-        // ubah NIK supaya tidak harus unik, karena NIK mungkin 0, kalau belum ada
-        DB::statement("ALTER TABLE das_penduduk DROP INDEX das_penduduk_nik_unique");
     }
 
     /**
@@ -60,12 +59,10 @@ class AddFieldsPendudukTable extends Migration
      */
     public function down()
     {
-        Schema::table('das_penduduk', function ($table) {
-            $table->dropColumn('id_pend_desa');
-        });
         Schema::table('das_penduduk', function (Blueprint $table) {
+            $table->dropColumn('id_pend_desa');
             $table->dropColumn('imported_at');
+            $table->unique('nik');
         });
-        DB::statement("ALTER TABLE das_penduduk ADD CONSTRAINT das_penduduk_nik_unique UNIQUE (nik)");
     }
 }

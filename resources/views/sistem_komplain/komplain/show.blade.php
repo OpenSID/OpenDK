@@ -112,7 +112,7 @@
             </div>
             <div class="box-footer clearfix">
                 <a href="{{ route('sistem-komplain.index') }}" class="pull-right">
-                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Kembali</button>
+                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button>
                 </a>
             </div>
         </div>

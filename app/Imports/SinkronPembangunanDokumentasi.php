@@ -51,27 +51,24 @@ class SinkronPembangunanDokumentasi implements ToCollection, WithHeadingRow, Wit
         return 1000;
     }
 
-    /**
-    * @param Collection $collection
-    */
     public function collection(Collection $collection)
     {
         foreach ($collection as $value) {
             $insert = [
-                "desa_id"        => $value['desa_id'],
-                "id"             => $value['id'],
-                "id_pembangunan" => $value['id_pembangunan'],
-                "gambar"         => $value['gambar'],
-                "persentase"     => $value['persentase'],
-                "keterangan"     => $value['keterangan'],
-                "created_at"     => $value['created_at'],
-                "updated_at"     => $value['updated_at'],
+                'desa_id' => $value['desa_id'],
+                'id' => $value['id'],
+                'id_pembangunan' => $value['id_pembangunan'],
+                'gambar' => $value['gambar'],
+                'persentase' => $value['persentase'],
+                'keterangan' => $value['keterangan'],
+                'created_at' => $value['created_at'],
+                'updated_at' => $value['updated_at'],
             ];
 
             PembangunanDokumentasi::updateOrCreate([
-                'desa_id'        => $insert['desa_id'],
-                'id'             => $insert['id'],
-                'id_pembangunan' => $insert['id_pembangunan']
+                'desa_id' => $insert['desa_id'],
+                'id' => $insert['id'],
+                'id_pembangunan' => $insert['id_pembangunan'],
             ], $insert);
         }
     }

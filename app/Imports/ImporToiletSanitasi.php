@@ -42,7 +42,7 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow, WithChunkReading, 
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -64,11 +64,11 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow, WithChunkReading, 
     public function model(array $row)
     {
         return new ToiletSanitasi([
-            'desa_id'      => $row['desa_id'],
-            'bulan'        => $this->request['bulan'],
-            'tahun'        => $this->request['tahun'],
-            'toilet'       => $row['toilet'],
-            'sanitasi'     => $row['sanitasi'],
+            'desa_id' => $row['desa_id'],
+            'bulan' => $this->request['bulan'],
+            'tahun' => $this->request['tahun'],
+            'toilet' => $row['toilet'],
+            'sanitasi' => $row['sanitasi'],
         ]);
     }
 }

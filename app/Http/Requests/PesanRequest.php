@@ -56,14 +56,14 @@ class PesanRequest extends FormRequest
         $rules = [];
 
         if (Request::has('pesan_id')) {
-            $rules['pesan']     = 'required';
-            $rules['pesan_id']  = 'required|exists:das_pesan,id';
-            $rules['pengirim']  = 'sometimes|required';
-            $rules['nama_pengirim']  = 'sometimes|required';
+            $rules['pesan'] = 'required';
+            $rules['pesan_id'] = 'required|exists:das_pesan,id';
+            $rules['pengirim'] = 'sometimes|required';
+            $rules['nama_pengirim'] = 'sometimes|required';
         } else {
-            $rules['pesan']     = 'required';
-            $rules['judul']     = 'required';
-            $rules['kode_desa']     = 'required|string|min:13|max:13';
+            $rules['pesan'] = 'required';
+            $rules['judul'] = 'required';
+            $rules['kode_desa'] = 'required|string|min:13|max:13';
         }
 
         return $rules;

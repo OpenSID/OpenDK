@@ -41,6 +41,6 @@ class Prosedur extends Model
         'judul_prosedur',
         'file_prosedur',
         'mime_type',
-        'slug'
+        'slug',
     ];
 }

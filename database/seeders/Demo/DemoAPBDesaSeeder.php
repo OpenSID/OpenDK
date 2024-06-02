@@ -49,7 +49,7 @@ class DemoAPBDesaSeeder extends Seeder
             new ImporAPBDesa([
                 'bulan' => now()->month,
                 'tahun' => now()->year,
-                'desa'  => DataDesa::first()->desa_id,
+                'desa' => DataDesa::first()->desa_id,
             ]),
             'template_upload/Format_Upload_APBDes.xlsx',
             'public'

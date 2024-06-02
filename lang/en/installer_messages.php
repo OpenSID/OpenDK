@@ -32,9 +32,7 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Laravel Installer',
     'next' => 'Next Step',
@@ -45,32 +43,26 @@ return [
     ],
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
         'templateTitle' => 'Welcome',
-        'title'   => 'Laravel Installer',
+        'title' => 'Laravel Installer',
         'message' => 'Easy Installation and Setup Wizard.',
-        'next'    => 'Check Requirements',
+        'next' => 'Check Requirements',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'templateTitle' => 'Step 1 | Server Requirements',
         'title' => 'Server Requirements',
-        'next'    => 'Check Permissions',
+        'next' => 'Check Permissions',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'templateTitle' => 'Step 2 | Permissions',
@@ -79,9 +71,7 @@ return [
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
         'menu' => [
@@ -97,7 +87,7 @@ return [
             'tabs' => [
                 'environment' => 'Environment',
                 'database' => 'Database',
-                'application' => 'Application'
+                'application' => 'Application',
             ],
             'form' => [
                 'name_required' => 'An environment name is required.',
@@ -199,18 +189,14 @@ return [
     'install' => 'Install',
 
     /**
-     *
      * Installed Log translations.
-     *
      */
     'installed' => [
         'success_log_message' => 'Laravel Installer successfully INSTALLED on ',
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Installation Finished',
@@ -224,43 +210,33 @@ return [
     ],
 
     /**
-     *
      * Update specific translations
-     *
      */
     'updater' => [
         /**
-         *
          * Shared translations.
-         *
          */
         'title' => 'Laravel Updater',
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'welcome' => [
-            'title'   => 'Welcome To The Updater',
+            'title' => 'Welcome To The Updater',
             'message' => 'Welcome to the update wizard.',
         ],
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'overview' => [
-            'title'   => 'Overview',
+            'title' => 'Overview',
             'message' => 'There is 1 update.|There are :number updates.',
-            'install_updates' => "Install Updates"
+            'install_updates' => 'Install Updates',
         ],
 
         /**
-         *
          * Final page translations.
-         *
          */
         'final' => [
             'title' => 'Finished',

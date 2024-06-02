@@ -51,16 +51,16 @@ class TambahkanDataSettingAplikasi extends Migration
 
         foreach ($collection as $value) {
             $insert = [
-                'key'         => $value['key'],
-                'value'         => $value['value'],
-                'type'          => $value['type'],
-                'description'   => $value['description'],
-                'kategori'      => $value['kategori'],
-                'option'        => $value['option'],
+                'key' => $value['key'],
+                'value' => $value['value'],
+                'type' => $value['type'],
+                'description' => $value['description'],
+                'kategori' => $value['kategori'],
+                'option' => $value['option'],
             ];
 
             SettingAplikasi::updateOrInsert([
-                'key'              => $insert['key'],
+                'key' => $insert['key'],
             ], $insert);
         }
     }

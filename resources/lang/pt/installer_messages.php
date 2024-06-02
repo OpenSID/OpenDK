@@ -32,46 +32,36 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Instalação de Laravel',
     'next' => 'Próximo Passo',
     'finish' => 'Instalar',
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
-        'title'   => 'Bem-vindo ao Instalador',
+        'title' => 'Bem-vindo ao Instalador',
         'message' => 'Bem-vindo ao assistente de configuração.',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'title' => 'Requisitos',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'title' => 'Permissões',
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
         'title' => 'Configurações de Ambiente',
@@ -81,9 +71,7 @@ return [
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Terminado',

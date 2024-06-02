@@ -32,45 +32,35 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Procesul de instalare Laravel',
     'next' => 'Pasul următor',
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
-        'title'   => 'Bun venit în procesul de instalare...',
+        'title' => 'Bun venit în procesul de instalare...',
         'message' => 'Bun venit în configurarea asistată.',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'title' => 'Cerințe',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'title' => 'Permisiuni',
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
         'title' => 'Settări ale mediului',
@@ -80,9 +70,7 @@ return [
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Am terminat',

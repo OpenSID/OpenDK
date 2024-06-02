@@ -97,23 +97,23 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         });
 
         /**
-        * Pembangunan
-        */
+         * Pembangunan
+         */
         Route::group(['prefix' => 'pembangunan', 'controller' => PembangunanController::class], function () {
             Route::post('/', 'store');
             Route::post('dokumentasi', 'storeDokumentasi');
         });
 
         /**
-        * Identitas Desa
-        */
+         * Identitas Desa
+         */
         Route::group(['prefix' => 'identitas-desa', 'controller' => ProfilDesaController::class], function () {
             Route::post('/', 'store');
         });
 
         /**
-        * Program Bantuan
-        */
+         * Program Bantuan
+         */
         Route::group(['prefix' => 'program-bantuan', 'controller' => ProgamBantuanController::class], function () {
             Route::post('/', 'store');
             Route::post('peserta', 'storePeserta');

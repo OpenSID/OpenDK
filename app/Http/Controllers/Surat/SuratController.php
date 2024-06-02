@@ -44,7 +44,7 @@ class SuratController extends Controller
 {
     public function arsip()
     {
-        $page_title       = 'Arsip Surat';
+        $page_title = 'Arsip Surat';
         $page_description = 'Daftar Arsip Surat';
 
         return view('surat.arsip', compact('page_title', 'page_description'));
@@ -54,7 +54,7 @@ class SuratController extends Controller
     {
         return DataTables::of(Surat::arsip())
             ->addColumn('aksi', function ($row) {
-                $data['download_url']   = route('surat.arsip.download', $row->id);
+                $data['download_url'] = route('surat.arsip.download', $row->id);
 
                 return view('forms.aksi', $data);
             })
@@ -69,21 +69,22 @@ class SuratController extends Controller
         try {
             $surat = Surat::findOrFail($id);
 
-            return Storage::download('public/surat/' . $surat->file);
+            return Storage::download('public/surat/'.$surat->file);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }
 
     public function pengaturan()
     {
-        $formAction        = route('surat.pengaturan.update');
-        $camat             = $this->akun_camat;
-        $sekretaris        = $this->akun_sekretaris;
-        $profil            = Profil::first();
-        $page_title        = 'Pegaturan Surat';
-        $page_description  = 'Daftar Pegaturan Surat';
+        $formAction = route('surat.pengaturan.update');
+        $camat = $this->akun_camat;
+        $sekretaris = $this->akun_sekretaris;
+        $profil = Profil::first();
+        $page_title = 'Pegaturan Surat';
+        $page_description = 'Daftar Pegaturan Surat';
 
         return view('surat.pengaturan', compact('page_title', 'page_description', 'formAction', 'camat', 'sekretaris'));
     }
@@ -96,6 +97,7 @@ class SuratController extends Controller
             }
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Pengaturan Surat gagal diubah!');
         }
 
@@ -104,7 +106,7 @@ class SuratController extends Controller
 
     public function qrcode($id)
     {
-        $surat  = Surat::where('id', '=', $id)->where('status', '=', StatusSurat::Arsip)->firstOrFail();
+        $surat = Surat::where('id', '=', $id)->where('status', '=', StatusSurat::Arsip)->firstOrFail();
         $profil = Profil::first();
 
         return view('surat.qrcode', compact('surat', 'profil'));

@@ -46,7 +46,7 @@ class KeluargaController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Keluarga';
+        $page_title = 'Keluarga';
         $page_description = 'Daftar Keluarga';
 
         return view('data.keluarga.index', compact('page_title', 'page_description'));
@@ -60,12 +60,12 @@ class KeluargaController extends Controller
         if (request()->ajax()) {
             return DataTables::of(Keluarga::has('kepala_kk')->get())
                 ->addColumn('aksi', function ($row) {
-                    $data['show_url']   = route('data.keluarga.show', $row->id);
+                    $data['show_url'] = route('data.keluarga.show', $row->id);
 
                     return view('forms.aksi', $data);
                 })
                 ->addColumn('foto', function ($row) {
-                    return '<img src="' . is_user($row->kepala_kk->foto, $row->kepala_kk->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="'.is_user($row->kepala_kk->foto, $row->kepala_kk->sex).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })->editColumn('tgl_cetak_kk', function ($row) {
                     return format_datetime($row->tgl_cetak_kk);
                 })
@@ -82,10 +82,10 @@ class KeluargaController extends Controller
      */
     public function show($id)
     {
-        $page_title       = 'Detail Keluarga';
+        $page_title = 'Detail Keluarga';
         $page_description = 'Detail Data Keluarga';
-        $penduduk         = Penduduk::select(['nik', 'nama'])->get();
-        $keluarga         = Keluarga::findOrFail($id);
+        $penduduk = Penduduk::select(['nik', 'nama'])->get();
+        $keluarga = Keluarga::findOrFail($id);
 
         return view('data.keluarga.show', compact('page_title', 'page_description', 'penduduk', 'keluarga'));
     }

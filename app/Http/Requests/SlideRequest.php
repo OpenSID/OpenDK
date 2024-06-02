@@ -53,9 +53,9 @@ class SlideRequest extends FormRequest
     public function rules()
     {
         return [
-            'judul'     => 'required',
+            'judul' => 'required',
             'deskripsi' => 'required',
-            'gambar'    => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'gambar' => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
         ];
     }
 }

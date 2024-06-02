@@ -62,30 +62,30 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
 
         try {
             foreach ($collection as $value) {
-                $file_name = $value['desa_id'] . '_laporan_penduduk_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
+                $file_name = $value['desa_id'].'_laporan_penduduk_'.$value['bulan'].'_'.$value['tahun'].'.'.explode('.', $value['nama_file'])[1];
 
                 $insert = [
-                    'judul'                => $value['judul'],
-                    'bulan'                => $value['bulan'],
-                    'tahun'                => $value['tahun'],
-                    'nama_file'            => $file_name,
-                    'desa_id'              => $value['desa_id'],
-                    'id_laporan_penduduk'  => $value['id'],
-                    'imported_at'          => now(),
+                    'judul' => $value['judul'],
+                    'bulan' => $value['bulan'],
+                    'tahun' => $value['tahun'],
+                    'nama_file' => $file_name,
+                    'desa_id' => $value['desa_id'],
+                    'id_laporan_penduduk' => $value['id'],
+                    'imported_at' => now(),
                 ];
 
                 LaporanPenduduk::updateOrInsert([
-                    'desa_id'              => $insert['desa_id'],
-                    'id_laporan_penduduk'  => $insert['id_laporan_penduduk']
+                    'desa_id' => $insert['desa_id'],
+                    'id_laporan_penduduk' => $insert['id_laporan_penduduk'],
                 ], $insert);
 
                 // Hapus file yang lama
-                if (Storage::exists('public/laporan_penduduk/' . $file_name)) {
-                    Storage::delete('public/laporan_penduduk/' . $file_name);
+                if (Storage::exists('public/laporan_penduduk/'.$file_name)) {
+                    Storage::delete('public/laporan_penduduk/'.$file_name);
                 }
 
                 // Pindahkan file yang dibutuhkan saja
-                Storage::move('temp/laporan_penduduk/' . $value['nama_file'], 'public/laporan_penduduk/' . $file_name);
+                Storage::move('temp/laporan_penduduk/'.$value['nama_file'], 'public/laporan_penduduk/'.$file_name);
             }
 
             DB::commit();

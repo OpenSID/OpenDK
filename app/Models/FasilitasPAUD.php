@@ -35,7 +35,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class FasilitasPAUD extends Model
 {
-    protected $table    = 'das_fasilitas_paud';
+    protected $table = 'das_fasilitas_paud';
+
     protected $fillable = [
         'kecamatan_id',
         'desa_id',

@@ -35,8 +35,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class PesanDetail extends Model
 {
-    protected $table     = 'das_pesan_detail';
-    protected $fillable = ['text','pesan_id','pengirim', 'nama_pengirim','jenis'];
+    protected $table = 'das_pesan_detail';
+
+    protected $fillable = ['text', 'pesan_id', 'pengirim', 'nama_pengirim', 'jenis'];
 
     public function headerPesan()
     {

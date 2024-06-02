@@ -42,17 +42,17 @@ class AplikasiController extends Controller
         $settings = SettingAplikasi::where('kategori', '!=', 'surat')->get();
         if ($settings->isEmpty()) {
             SettingAplikasi::insert([
-                'key'         => SettingAplikasi::KEY_BROWSER_TITLE,
-                'value'       => $this->browser_title,
-                'type'        => "input",
-                'description' => "Judul halaman aplikasi.",
-                'kategori'    => "-",
-                'option'      => '{}'
+                'key' => SettingAplikasi::KEY_BROWSER_TITLE,
+                'value' => $this->browser_title,
+                'type' => 'input',
+                'description' => 'Judul halaman aplikasi.',
+                'kategori' => '-',
+                'option' => '{}',
             ]);
             $settings = SettingAplikasi::all();
         }
 
-        $page_title       = 'Pegaturan Aplikasi';
+        $page_title = 'Pegaturan Aplikasi';
         $page_description = 'Daftar Pegaturan Aplikasi';
 
         return view('setting.aplikasi.index', compact('page_title', 'page_description', 'settings'));
@@ -60,8 +60,8 @@ class AplikasiController extends Controller
 
     public function edit(SettingAplikasi $aplikasi)
     {
-        $page_title             = 'Pengaturan Aplikasi';
-        $page_description       = 'Ubah Pengaturan Aplikasi';
+        $page_title = 'Pengaturan Aplikasi';
+        $page_description = 'Ubah Pengaturan Aplikasi';
 
         return view('setting.aplikasi.edit', compact('page_title', 'page_description', 'aplikasi'));
     }
@@ -80,6 +80,7 @@ class AplikasiController extends Controller
             $this->browser_title = $request->input('value');
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Pengaturan aplikasi gagal diubah!');
         }
 

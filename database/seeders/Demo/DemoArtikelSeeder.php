@@ -46,7 +46,7 @@ class DemoArtikelSeeder extends Seeder
     {
         Artikel::truncate();
 
-        $faker = Factory::create("id-ID");
+        $faker = Factory::create('id-ID');
 
         foreach (range(1, 20) as $index) {
             Artikel::create([

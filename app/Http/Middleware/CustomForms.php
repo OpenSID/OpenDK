@@ -32,12 +32,9 @@
 namespace App\Http\Middleware;
 
 use function array_diff_key;
-
 use Closure;
 use Form;
-
 use Illuminate\Http\Request;
-
 use function session;
 use function sprintf;
 
@@ -46,7 +43,7 @@ class CustomForms
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -58,7 +55,7 @@ class CustomForms
         // with configured default options...
         Form::macro('modelHorizontal', function ($model, $options = []) {
             $options = array_diff_key([
-                'class'        => 'form-horizontal',
+                'class' => 'form-horizontal',
                 'autocomplete' => 'off',
             ], $options) + $options;
 
@@ -71,7 +68,6 @@ class CustomForms
                 return ' has-error';
             }
 
-            return;
         });
 
         // Generate error message if the given field has errors...
@@ -80,7 +76,6 @@ class CustomForms
                 return sprintf('<p class="help-block text-danger">%s</p>', $errors->first($field));
             }
 
-            return;
         });
 
         return $next($request);

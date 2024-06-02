@@ -45,13 +45,11 @@ class Artikel extends Model
         'judul',
         'gambar',
         'isi',
-        'status'
+        'status',
     ];
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
@@ -64,7 +62,7 @@ class Artikel extends Model
 
     public function getGambarAttribute()
     {
-        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
+        return $this->attributes['gambar'] ? Storage::url('artikel/'.$this->attributes['gambar']) : null;
     }
 
     public function getIsiAttribute()

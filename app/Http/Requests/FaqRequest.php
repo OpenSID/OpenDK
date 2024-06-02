@@ -54,7 +54,7 @@ class FaqRequest extends FormRequest
     {
         return [
             'question' => 'required|string|max:255',
-            'answer'   => 'required',
+            'answer' => 'required',
         ];
     }
 }

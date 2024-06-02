@@ -102,7 +102,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getFotoAttribute()
     {
-        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
+        return $this->attributes['image'] ? Storage::url('user/'.$this->attributes['image']) : null;
     }
 
     /**
@@ -114,15 +114,15 @@ class User extends Authenticatable implements JWTSubject
     public function uploadImage($image)
     {
         $extension = $image->getClientOriginalExtension();
-        $path      = storage_path('app/public/user/');
+        $path = storage_path('app/public/user/');
 
-        if (!file_exists($path)) {
+        if (! file_exists($path)) {
             File::makeDirectory($path, 0777, true);
         }
 
-        $name = $this->id . '.' . $extension;
-        $img  = Image::make($image->getRealPath());
-        $img->save($path . $name);
+        $name = $this->id.'.'.$extension;
+        $img = Image::make($image->getRealPath());
+        $img->save($path.$name);
 
         return $this->update(['image' => $name]);
     }
@@ -134,7 +134,6 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * Hash password
-     * @param $input
      */
     public function setPasswordAttribute($input)
     {

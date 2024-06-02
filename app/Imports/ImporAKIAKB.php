@@ -48,7 +48,7 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -73,24 +73,24 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [
-                'desa_id'      => $value['desa_id'],
-                'bulan'        => $this->request['bulan'],
-                'tahun'        => $this->request['tahun'],
-                'aki'          => $value['jumlah_aki'],
-                'akb'          => $value['jumlah_akb'],
+                'desa_id' => $value['desa_id'],
+                'bulan' => $this->request['bulan'],
+                'tahun' => $this->request['tahun'],
+                'aki' => $value['jumlah_aki'],
+                'akb' => $value['jumlah_akb'],
             ];
 
             AkiAkb::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'bulan'     => $insert['bulan'],
-                'tahun'        => $insert['tahun'],
+                'desa_id' => $insert['desa_id'],
+                'bulan' => $insert['bulan'],
+                'tahun' => $insert['tahun'],
             ], $insert);
         }
         DB::commit(); // commit data dan simpan ke dalam database

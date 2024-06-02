@@ -46,12 +46,12 @@ class RoleSpatieSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement("SET foreign_key_checks=0");
+        DB::statement('SET foreign_key_checks=0');
         DB::table('roles')->truncate();
         DB::table('permissions')->truncate();
         DB::table('role_has_permissions')->truncate();
         DB::table('model_has_roles')->truncate();
-        DB::statement("SET foreign_key_checks=1");
+        DB::statement('SET foreign_key_checks=1');
 
         // DB::table('roles')->truncate();
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
@@ -62,7 +62,7 @@ class RoleSpatieSeeder extends Seeder
         Permission::create(['name' => 'edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'delete', 'guard_name' => 'web']);
 
-        $role_admin =   Role::create(['name' => 'super-admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        $role_admin = Role::create(['name' => 'super-admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
         // cek user admin
         $user = User::where('email', 'admin@mail.com')->first();
 

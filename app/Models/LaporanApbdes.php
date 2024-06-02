@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LaporanApbdes extends Model
 {
-    protected $table     = 'das_apbdes';
+    protected $table = 'das_apbdes';
 
     protected $fillable = [
         'judul',
@@ -43,10 +43,10 @@ class LaporanApbdes extends Model
         'semester',
         'nama_file',
         'desa_id',
-        'imported_at'
+        'imported_at',
     ];
 
-    protected $guarded   = [];
+    protected $guarded = [];
 
     /**
      * Relation Methods

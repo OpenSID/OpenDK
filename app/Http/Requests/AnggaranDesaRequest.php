@@ -53,8 +53,8 @@ class AnggaranDesaRequest extends FormRequest
     public function rules()
     {
         return [
-            'desa'  => 'required',
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'desa' => 'required',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required',
             'tahun' => 'required',
         ];

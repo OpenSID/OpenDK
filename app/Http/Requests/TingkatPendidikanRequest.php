@@ -54,9 +54,9 @@ class TingkatPendidikanRequest extends FormRequest
     {
         return [
             'desa_id' => 'required',
-            'file'     => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'semester' => 'required',
-            'tahun'    => 'required',
+            'tahun' => 'required',
         ];
     }
 }

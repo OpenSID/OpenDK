@@ -37,10 +37,10 @@ use Illuminate\Support\Facades\Log;
 /**
  * Parsing url image dari rss feed description
  *
- * @param string $content
+ * @param  string  $content
  * @return string
  */
-if (!function_exists('get_tag_image')) {
+if (! function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
         if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
@@ -55,12 +55,12 @@ if (!function_exists('get_tag_image')) {
  * { function_description }
  *
  * @param      <type>  $parent_id  The parent identifier
- *
  * @return     <type>  ( description_of_the_return_value )
  */
 function define_child($parent_id)
 {
     $child = Menu::Where('parent_id', $parent_id)->where('is_active', true)->get();
+
     return $child;
 }
 
@@ -69,7 +69,6 @@ function define_child($parent_id)
  *
  * @param      <type>  $id          The identifier
  * @param      <type>  $permission  The permission
- *
  * @return     <type>  ( description_of_the_return_value )
  */
 function permission_val($id, $permission)
@@ -77,6 +76,7 @@ function permission_val($id, $permission)
     $role = Role::findOrFail($id);
     $format = json_decode(json_encode($role), true);
     $result = (isset($format['permissions'][$permission]) && $format['permissions'][$permission] != '' ? 1 : 0);
+
     return $result;
 }
 
@@ -84,29 +84,28 @@ function permission_val($id, $permission)
  * Uploads an image.
  *
  * @param      <type>  $image  The image
- * @param      string $file The file
- *
+ * @param  string  $file The file
  * @return     string  ( description_of_the_return_value )
  */
 function upload_image($image, $file)
 {
     $extension = $image->getClientOriginalExtension();
-    $path = public_path('uploads/' . $file . '/');
-    if (!file_exists($path)) {
+    $path = public_path('uploads/'.$file.'/');
+    if (! file_exists($path)) {
         File::makeDirectory($path, 0777, true);
     }
 
-    $name = time() . uniqid();
+    $name = time().uniqid();
     $img = Image::make($image->getRealPath());
-    $img->save($path . $name . '.' . $extension);
-    return $name . '.' . $extension;
+    $img->save($path.$name.'.'.$extension);
+
+    return $name.'.'.$extension;
 }
 
 /**
  * Generate Password
  *
- * @param      integer $length Length Character
- *
+ * @param  int  $length Length Character
  * @return     string   voucher
  */
 function generate_password($length = 6)
@@ -123,6 +122,7 @@ function generate_password($length = 6)
         $randomString .= $number[rand(0, $numberLength - 1)];
     }
     $randomString = str_shuffle($randomString);
+
     return $randomString;
 }
 
@@ -135,8 +135,9 @@ function respon_meta($code, $message)
 {
     $meta = [
         'code' => $code,
-        'message' => $message
+        'message' => $message,
     ];
+
     return $meta;
 }
 
@@ -144,16 +145,18 @@ function convert_xml_to_array($filename)
 {
     try {
         $xml = file_get_contents($filename);
-        $convert = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOCDATA);
+        $convert = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA);
         $json = json_encode($convert);
         $array = json_decode($json, true);
+
         return $array;
     } catch (\Exception $e) {
         \Log::info([
-            "ERROR MESSAGE" => $e->getMessage(),
-            "LINE" => $e->getLine(),
-            "FILE" => $e->getFile()
+            'ERROR MESSAGE' => $e->getMessage(),
+            'LINE' => $e->getLine(),
+            'FILE' => $e->getFile(),
         ]);
+
         return false;
         // throw new \UnexpectedValueException(trans('message.news.import-error'), 1);
     }
@@ -162,7 +165,8 @@ function convert_xml_to_array($filename)
 function convert_born_date_to_age($date)
 {
     $from = new DateTime($date);
-    $to   = new DateTime('today');
+    $to = new DateTime('today');
+
     return $from->diff($to)->y;
 }
 
@@ -173,7 +177,7 @@ function random_color_part()
 
 function random_color()
 {
-    return random_color_part() . random_color_part() . random_color_part();
+    return random_color_part().random_color_part().random_color_part();
 }
 
 function years_list()
@@ -210,6 +214,7 @@ function months_list()
 function get_words($sentence, $count = 10)
 {
     preg_match("/(?:\w+(?:\W+|$)){0,$count}/", $sentence, $matches);
+
     return $matches[0];
 }
 
@@ -250,7 +255,7 @@ function kuartal_bulan()
             10 => 'Oktober',
             11 => 'November',
             12 => 'Desember',
-        ]
+        ],
     ];
 }
 
@@ -272,7 +277,7 @@ function semester()
             10 => 'Oktober',
             11 => 'November',
             12 => 'Desember',
-        ]
+        ],
     ];
 }
 
@@ -286,7 +291,7 @@ function status_rekam()
         5 => 'PRINT READY RECORD',
         6 => 'CARD SHIPPED',
         7 => 'SENT FOR CARD PRINTING',
-        8 => 'CARD ISSUED'
+        8 => 'CARD ISSUED',
     ];
 }
 
@@ -296,7 +301,8 @@ function is_wajib_ktp($umur, $status_kawin)
     if ($umur === null) {
         return null;
     }
-    $wajib_ktp = (($umur > 16) or (!empty($status_kawin) and $status_kawin != 1));
+    $wajib_ktp = (($umur > 16) or (! empty($status_kawin) and $status_kawin != 1));
+
     return $wajib_ktp;
 }
 
@@ -312,11 +318,11 @@ function is_logo($url = '', $file = '/img/logo.png')
 
 function is_user($url = null, $sex = 1, $pengurus = null)
 {
-    if ($url && !$pengurus) {
-        $url = 'storage/penduduk/foto/' . $url;
+    if ($url && ! $pengurus) {
+        $url = 'storage/penduduk/foto/'.$url;
     }
 
-    $default = 'img/pengguna/' . (($sex == 2) ? 'wuser.png' : 'kuser.png');
+    $default = 'img/pengguna/'.(($sex == 2) ? 'wuser.png' : 'kuser.png');
 
     return is_img($url, $default);
 }
@@ -324,7 +330,7 @@ function is_user($url = null, $sex = 1, $pengurus = null)
 function avatar($foto)
 {
     if ($foto) {
-        $foto = 'storage/user/' . $foto;
+        $foto = 'storage/user/'.$foto;
     }
 
     $default = 'bower_components/admin-lte/dist/img/user2-160x160.jpg';
@@ -332,14 +338,14 @@ function avatar($foto)
     return is_img($foto, $default);
 }
 
-if (!function_exists('divnum')) {
+if (! function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
 
-if (!function_exists('format_number_id')) {
+if (! function_exists('format_number_id')) {
     function format_number_id($inp = 0)
     {
         return number_format($inp, 2, ',', '.');
@@ -349,31 +355,31 @@ if (!function_exists('format_number_id')) {
 function terbilang($angka)
 {
     $angka = abs($angka);
-    $baca = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+    $baca = ['', 'Satu', 'Dua', 'Tiga', 'Empat', 'Lima', 'Enam', 'Tujuh', 'Delapan', 'Sembilan', 'Sepuluh', 'Sebelas'];
 
-    $terbilang = "";
+    $terbilang = '';
     if ($angka < 12) {
-        $terbilang = " " . $baca[$angka];
+        $terbilang = ' '.$baca[$angka];
     } elseif ($angka < 20) {
-        $terbilang = terbilang($angka - 10) . " Belas";
+        $terbilang = terbilang($angka - 10).' Belas';
     } elseif ($angka < 100) {
-        $terbilang = terbilang($angka / 10) . " Puluh" . terbilang($angka % 10);
+        $terbilang = terbilang($angka / 10).' Puluh'.terbilang($angka % 10);
     } elseif ($angka < 200) {
-        $terbilang = " seratus" . terbilang($angka - 100);
+        $terbilang = ' seratus'.terbilang($angka - 100);
     } elseif ($angka < 1000) {
-        $terbilang = terbilang($angka / 100) . " Ratus" . terbilang($angka % 100);
+        $terbilang = terbilang($angka / 100).' Ratus'.terbilang($angka % 100);
     } elseif ($angka < 2000) {
-        $terbilang = " seribu" . terbilang($angka - 1000);
+        $terbilang = ' seribu'.terbilang($angka - 1000);
     } elseif ($angka < 1000000) {
-        $terbilang = terbilang($angka / 1000) . " Ribu" . terbilang($angka % 1000);
+        $terbilang = terbilang($angka / 1000).' Ribu'.terbilang($angka % 1000);
     } elseif ($angka < 1000000000) {
-        $terbilang = terbilang($angka / 1000000) . " Juta" . terbilang($angka % 1000000);
+        $terbilang = terbilang($angka / 1000000).' Juta'.terbilang($angka % 1000000);
     }
 
     return $terbilang;
 }
 
-if (!function_exists('sudahInstal')) {
+if (! function_exists('sudahInstal')) {
     /**
      * Cek apakah sudah install OpenDK atau belum
      *
@@ -381,9 +387,10 @@ if (!function_exists('sudahInstal')) {
      */
     function sudahInstal(): bool
     {
-        if (!file_exists(storage_path('installed'))) {
+        if (! file_exists(storage_path('installed'))) {
             return false;
         }
+
         return true;
     }
 }
@@ -391,16 +398,15 @@ if (!function_exists('sudahInstal')) {
 /**
  * Cek akses website.
  *
- * @param string $url
- *
+ * @param  string  $url
  * @return bool
  */
-if (!function_exists('checkWebsiteAccessibility')) {
+if (! function_exists('checkWebsiteAccessibility')) {
     function checkWebsiteAccessibility($url)
     {
         $options = [
             'http' => [
-                'method'  => 'GET',
+                'method' => 'GET',
                 'timeout' => 3,
             ],
         ];
@@ -416,13 +422,13 @@ if (!function_exists('checkWebsiteAccessibility')) {
             $status = "(Status: {$status})";
         }
 
-        Log::debug("Website tidak dapat diakses");
+        Log::debug('Website tidak dapat diakses');
 
         return false;
     }
 }
 
-if (!function_exists('parsedown')) {
+if (! function_exists('parsedown')) {
     function parsedown($params = null)
     {
         $parsedown = new \App\Http\Controllers\Helpers\Parsedown();

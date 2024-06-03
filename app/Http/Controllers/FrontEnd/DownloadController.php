@@ -29,16 +29,16 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontEndController;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class DownloadController extends Controller
+class DownloadController extends FrontEndController
 {
     public function indexProsedur()
     {
@@ -130,7 +130,7 @@ class DownloadController extends Controller
 
     public function showDokumen($nama_dokumen)
     {
-        $dokumen = dokumen::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
+        $dokumen = Dokumen::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
         $page_title = 'Detail Dokumen :'.$dokumen->judul;
 
         return view('pages.unduhan.dokumen_show', compact('page_title', 'dokumen'));

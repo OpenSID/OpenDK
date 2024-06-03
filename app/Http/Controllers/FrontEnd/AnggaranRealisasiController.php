@@ -29,14 +29,14 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
 use Illuminate\Support\Facades\DB;
 
-class AnggaranRealisasiController extends Controller
+class AnggaranRealisasiController extends FrontEndController
 {
     /**
      * Menampilkan Data Anggaran Dan realisasi Kecamatan

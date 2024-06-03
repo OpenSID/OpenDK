@@ -16,11 +16,13 @@
 
         @include('partials.flash_message')
 
+        @if($kategoriPotensi->count() > 0)
+
         <div class="box box-primary">
             <div class="box-header with-border">
                 <a href="{{ route('informasi.potensi.create') }}" class="btn btn-primary btn-sm {{ auth()->guest() ? 'hidden' : '' }}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
                 <div class="box-tools pull-right col-sm-4">
-                    {!! Form::select('kategori_id', \App\Models\TipePotensi::pluck('nama_kategori', 'id'), isset($_GET['id']) ? $_GET['id'] : 0, ['placeholder' => 'Semua Kategori', 'class' => 'form-control', 'id' => 'kategori_id', 'required' => true, 'onchange' => 'changeCategori(this)']) !!}
+                    {!! Form::select('kategori_id', $kategoriPotensi, isset($_GET['id']) ? $_GET['id'] : 0, ['placeholder' => 'Semua Kategori', 'class' => 'form-control', 'id' => 'kategori_id', 'required' => true, 'onchange' => 'changeCategori(this)']) !!}
                 </div>
             </div>
             <!-- /.box-header -->
@@ -57,6 +59,13 @@
                     {{ $potensis->links() }}
                 </div>
             </div>
+        </div>
+        @else
+            <div class="alert alert-warning">
+                <h4><i class="icon fa fa-warning"></i> Informasi!</h4>
+                Kategori potensi belum tersedia. Silahkan tambahkan <a href="{{ route('setting.tipe-potensi.index') }}"><b>kategori potensi</b></a> terlebih dahulu.
+            </div>
+        @endif
     </section>
 @endsection
 

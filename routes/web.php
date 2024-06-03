@@ -165,6 +165,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::permanentRedirect('/', '/');
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
+                    Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
                 });
             });
 

@@ -32,11 +32,12 @@
 namespace App\Http\Controllers\Page;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
-use Illuminate\Support\Facades\DB;
+use App\Models\FormDokumen;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class DownloadController extends Controller
 {
@@ -118,28 +119,17 @@ class DownloadController extends Controller
 
     public function getDataDokumen()
     {
-        $query = DB::table('das_form_dokumen')->selectRaw('id, nama_dokumen, file_dokumen');
-
-        return DataTables::of($query->get())
+        return DataTables::of(FormDokumen::query())
             ->addColumn('aksi', function ($row) {
-                $data['download_url'] = asset($row->file_dokumen);
+                $data['show_url'] = asset($row->file_dokumen);
+                $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();
     }
 
-    public function showDokumen($nama_dokumen)
+    public function downloadDokumen(FormDokumen $file)
     {
-        $dokumen = dokumen::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
-        $page_title = 'Detail Dokumen :'.$dokumen->judul;
-
-        return view('pages.unduhan.dokumen_show', compact('page_title', 'dokumen'));
-    }
-
-    public function downloadDokumen($file)
-    {
-        $getFile = Dokumen::where('judul', str_replace('-', ' ', $file))->firstOrFail();
-
-        return response()->download($getFile->file_dokumen);
+        return response()->download($file->file_dokumen);
     }
 }

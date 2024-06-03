@@ -31,14 +31,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Themes;
 use Hexadog\ThemesManager\Facades\ThemesManager;
 
-class FrontEndController extends Controller
+class BackEndController extends Controller
 {
     public function __construct()
     {
         parent::__construct();
-        theme_active();
     }
 }

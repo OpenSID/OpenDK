@@ -29,16 +29,36 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use App\Models\Themes;
-use Hexadog\ThemesManager\Facades\ThemesManager;
+use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
 
-class FrontEndController extends Controller
+class Themes extends Model
 {
-    public function __construct()
+    protected $table = 'das_themes';
+
+    protected $guarded = [];
+
+    // append slug attribute
+    protected $appends = ['slug'];
+
+    public function getSlugAttribute()
     {
-        parent::__construct();
-        theme_active();
+        return $this->vendor . '/' . $this->name;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($themes) {
+            if ($themes->system != 0) {
+                $path = base_path('themes/' . $themes->slug);
+                if (file_exists($path)) {
+                    File::deleteDirectory($path);
+                }
+            }
+        });
     }
 }

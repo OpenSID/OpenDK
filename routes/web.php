@@ -29,25 +29,26 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Http\Controllers\Counter\CounterController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Informasi\EventController;
-use App\Http\Controllers\LogViewerController;
-use App\Http\Controllers\Role\RoleController;
-use App\Http\Controllers\Setting\AplikasiController;
-use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\Setting\JenisPenyakitController;
-use App\Http\Controllers\Setting\KategoriKomplainController;
-use App\Http\Controllers\Setting\SlideController;
-use App\Http\Controllers\Setting\TipePotensiController;
-use App\Http\Controllers\Setting\TipeRegulasiController;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\User\UserController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Setting\COAController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\BackEnd\ThemesController;
+use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\Informasi\EventController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisPenyakitController;
+use App\Http\Controllers\Setting\KategoriKomplainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -690,6 +691,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('sub_coa/{type_id}', 'get_sub_coa')->name('setting.coa.sub_coa');
                 Route::get('sub_sub_coa/{type_id}/{sub_id}', 'get_sub_sub_coa')->name('setting.coa.sub_sub_coa');
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', 'generate_id')->name('setting.coa.generate_id');
+            });
+
+            // Themes
+            Route::group(['prefix' => 'themes', 'controller' => ThemesController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.themes.index');
+                Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
+                Route::get('rescan', 'rescan')->name('setting.themes.rescan');
+                // post to-upload
+                Route::post('upload', 'upload')->name('setting.themes.upload');
+                Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
             });
 
             Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {

@@ -50,8 +50,9 @@ class EpidemiPenyakitController extends Controller
     {
         $page_title = 'Epidemi Penyakit';
         $page_description = 'Daftar Epidemi Penyakit';
+        $jenisPenyakit = JenisPenyakit::pluck('nama', 'id');
 
-        return view('data.epidemi_penyakit.index', compact('page_title', 'page_description'));
+        return view('data.epidemi_penyakit.index', compact('page_title', 'page_description', 'jenisPenyakit'));
     }
 
     /**

@@ -16,6 +16,7 @@
 
         @include('partials.flash_message')
 
+        @if($jenisPenyakit->count() > 0)
         <div class="box box-primary">
             <div class="box-header with-border">
                 <div class="control-group">
@@ -41,6 +42,13 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="callout callout-warning">
+            <h4>Informasi!</h4>
+            <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a
+                    href="{{ route('setting.jenis-penyakit.create') }}">jenis penyakit</a></b> terlebih dahulu.</p>
+        </div>
+        @endif
     </section>
 @endsection
 

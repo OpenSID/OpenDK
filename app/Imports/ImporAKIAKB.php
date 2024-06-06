@@ -85,6 +85,8 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
                 'tahun' => $this->request['tahun'],
                 'aki' => $value['jumlah_aki'],
                 'akb' => $value['jumlah_akb'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             AkiAkb::updateOrInsert([

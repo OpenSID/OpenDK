@@ -50,6 +50,8 @@ class DemoDokumenSeeder extends Seeder
             ],
         ];
 
-        FormDokumen::insert($data);
+        foreach ($data as $key => $value) {
+            FormDokumen::create($value);
+        }
     }
 }

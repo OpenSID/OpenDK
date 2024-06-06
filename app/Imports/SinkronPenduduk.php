@@ -119,6 +119,8 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
                 'created_at' => $value['created_at'],
                 'updated_at' => $value['updated_at'],
                 'imported_at' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             Penduduk::updateOrInsert([

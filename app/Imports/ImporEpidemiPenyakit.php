@@ -85,6 +85,8 @@ class ImporEpidemiPenyakit implements ToCollection, WithHeadingRow, WithChunkRea
                 'tahun' => $this->request['tahun'],
                 'penyakit_id' => $this->request['penyakit_id'],
                 'jumlah_penderita' => $value['jumlah_penderita'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             EpidemiPenyakit::updateOrInsert([

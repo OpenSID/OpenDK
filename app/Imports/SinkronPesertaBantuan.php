@@ -92,6 +92,8 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
                 'kartu_tanggal_lahir' => $value['kartu_tanggal_lahir'],
                 'kartu_alamat' => $value['kartu_alamat'],
                 'kartu_peserta' => $value['kartu_peserta'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             PesertaProgram::updateOrCreate([

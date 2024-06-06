@@ -72,6 +72,8 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'start_date' => $value['sdate'],
                 'end_date' => $value['edate'],
                 'description' => $value['ndesc'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             Program::updateOrCreate([

@@ -75,6 +75,8 @@ class ImporPutusSekolah implements ToModel, WithHeadingRow, WithChunkReading, Sh
             'anak_usia_sma' => $row['anak_usia_sma_ma'],
             'semester' => $this->request['semester'],
             'tahun' => $this->request['tahun'],
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

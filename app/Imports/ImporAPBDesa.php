@@ -85,6 +85,8 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
                 'no_akun' => $value['no_akun'],
                 'nama_akun' => $value['nama_akun'],
                 'jumlah' => $value['jumlah'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             AnggaranDesa::updateOrInsert([

@@ -31,11 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
+use App\Models\DataDesa;
+use App\Imports\ImporAKIAKB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
 class AKIAKBController extends Controller
@@ -60,7 +61,16 @@ class AKIAKBController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(AkiAkb::with(['desa'])->get())
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
+
+            return DataTables::of(
+                AkiAkb::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+            )
             ->addColumn('aksi', function ($row) {
                 $data['edit_url'] = route('data.aki-akb.edit', $row->id);
                 $data['delete_url'] = route('data.aki-akb.destroy', $row->id);
@@ -70,7 +80,9 @@ class AKIAKBController extends Controller
             ->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })
-            ->rawColumns(['aksi'])->make();
+            ->rawColumns(['aksi'])
+            ->make();
+        }
     }
 
     /**

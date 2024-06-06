@@ -31,12 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Models\DataDesa;
+use Illuminate\Http\Request;
+use App\Models\JenisPenyakit;
+use Illuminate\Http\Response;
+use App\Models\EpidemiPenyakit;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporEpidemiPenyakit;
-use App\Models\EpidemiPenyakit;
-use App\Models\JenisPenyakit;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Yajra\DataTables\Facades\DataTables;
 
 class EpidemiPenyakitController extends Controller
@@ -61,17 +62,28 @@ class EpidemiPenyakitController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(EpidemiPenyakit::with(['penyakit', 'desa'])->get())
-            ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.epidemi-penyakit.edit', $row->id);
-                $data['delete_url'] = route('data.epidemi-penyakit.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })
-            ->editColumn('bulan', function ($row) {
-                return months_list()[$row->bulan];
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                EpidemiPenyakit::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with(['penyakit', 'desa'])
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['edit_url'] = route('data.epidemi-penyakit.edit', $row->id);
+                    $data['delete_url'] = route('data.epidemi-penyakit.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })
+                ->editColumn('bulan', function ($row) {
+                    return months_list()[$row->bulan];
+                })
+                ->rawColumns(['aksi'])
+                ->make();
+        }
     }
 
     /**

@@ -31,12 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
-use App\Imports\ImporImunisasi;
+use App\Models\DataDesa;
 use App\Models\Imunisasi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Imports\ImporImunisasi;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class ImunisasiController extends Controller
 {
@@ -60,17 +61,28 @@ class ImunisasiController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(Imunisasi::with(['desa'])->get())
-            ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.imunisasi.edit', $row->id);
-                $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })
-            ->editColumn('bulan', function ($row) {
-                return months_list()[$row->bulan];
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                Imunisasi::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['edit_url'] = route('data.imunisasi.edit', $row->id);
+                    $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })
+                ->editColumn('bulan', function ($row) {
+                    return months_list()[$row->bulan];
+                })
+                ->rawColumns(['aksi'])
+                ->make();
+        }
     }
 
     /**

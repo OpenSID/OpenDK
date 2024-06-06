@@ -60,17 +60,27 @@ class ToiletSanitasiController extends Controller
      */
     public function getDataAKIAKB()
     {
-        return DataTables::of(ToiletSanitasi::with(['desa']))
-            ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.toilet-sanitasi.edit', $row->id);
-                $data['delete_url'] = route('data.toilet-sanitasi.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })
-            ->editColumn('bulan', function ($row) {
-                return months_list()[$row->bulan];
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                ToiletSanitasi::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['edit_url'] = route('data.toilet-sanitasi.edit', $row->id);
+                    $data['delete_url'] = route('data.toilet-sanitasi.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })
+                ->editColumn('bulan', function ($row) {
+                    return months_list()[$row->bulan];
+                })
+                ->rawColumns(['aksi'])->make();
+        }
     }
 
     /**

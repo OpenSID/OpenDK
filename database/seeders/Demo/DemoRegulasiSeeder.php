@@ -31,7 +31,9 @@
 
 namespace Database\Seeders\Demo;
 
+use App\Models\Profil;
 use App\Models\Regulasi;
+use App\Models\TipeRegulasi;
 use Illuminate\Database\Seeder;
 
 class DemoRegulasiSeeder extends Seeder
@@ -43,18 +45,21 @@ class DemoRegulasiSeeder extends Seeder
      */
     public function run()
     {
+        $profil_id = Profil::first()->id;
+        $tipe_regulasi = TipeRegulasi::first()->id;
+
         $data = [
             [
-                'profil_id' => 1,
-                'tipe_regulasi' => 2,
+                'profil_id' => $profil_id,
+                'tipe_regulasi' => $tipe_regulasi,
                 'judul' => 'Regulasi 1',
                 'deskripsi' => 'Deskripsi regulasi 1',
                 'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
                 'mime_type' => 'pdf',
             ],
             [
-                'profil_id' => 1,
-                'tipe_regulasi' => 2,
+                'profil_id' => $profil_id,
+                'tipe_regulasi' => $tipe_regulasi,
                 'judul' => 'Regulasi 2',
                 'deskripsi' => 'Deskripsi regulasi 2',
                 'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
@@ -62,6 +67,8 @@ class DemoRegulasiSeeder extends Seeder
             ],
         ];
 
-        Regulasi::insert($data);
+        foreach ($data as $regulasi) {
+            Regulasi::create($regulasi);
+        }
     }
 }

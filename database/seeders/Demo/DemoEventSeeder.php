@@ -45,20 +45,6 @@ class DemoEventSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create('id-ID');
-
-        foreach (range(1, 10) as $index) {
-            $title = $faker->name();
-            $slug = Str::slug($title);
-            Event::create([
-                'event_name' => $title,
-                'slug' => $slug,
-                'start' => $faker->dateTime()->format('Y-m-d H:i:s'),
-                'end' => $faker->dateTime()->format('Y-m-d H:i:s'),
-                'attendants' => 'Camat',
-                'description' => '<p>'.$faker->name().'</p>',
-                'status' => 'OPEN',
-            ]);
-        }
+        Event::factory()->count(20)->create();
     }
 }

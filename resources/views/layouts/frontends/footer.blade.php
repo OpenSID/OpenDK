@@ -25,7 +25,7 @@
             <ul class="no-padding">
                 <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i> {{ $profil->alamat }}</small></li>
                 <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-fax"></i> {{ $profil->kode_pos }}</small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><a href="http://mailto:{{ $profil->email }}" target="_blank"><i class="fa fa-envelope"></i> {{ $profil->email }}</a></small></li>
+                <li><small style="text-indent: 0px ;font-size:15px"><a href="mailto:{{ $profil->email }}" target="_blank"><i class="fa fa-envelope"></i> {{ $profil->email }}</a></small></li>
                 <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i> {{ $profil->telepon }}</small></li>
             </ul>
         </div>

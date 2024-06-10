@@ -130,7 +130,7 @@ class DownloadController extends FrontEndController
 
     public function showDokumen($nama_dokumen)
     {
-        $dokumen = Dokumen::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
+        $dokumen = dokumen::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
         $page_title = 'Detail Dokumen :'.$dokumen->judul;
 
         return view('pages.unduhan.dokumen_show', compact('page_title', 'dokumen'));

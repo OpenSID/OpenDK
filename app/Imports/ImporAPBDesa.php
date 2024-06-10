@@ -71,11 +71,11 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
 
-        foreach ($collection as $value) {
+        foreach ($collection as $index => $value) {
             if (! in_array($this->request['desa'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [

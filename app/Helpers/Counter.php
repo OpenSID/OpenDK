@@ -34,15 +34,12 @@ namespace App\Helpers;
 use App\Models\CounterPage;
 use App\Models\CounterVisitor;
 use Carbon\Carbon;
-
 use function config;
 use function env;
 use function hash;
-
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
-
 use function number_format;
 
 class Counter
@@ -50,7 +47,7 @@ class Counter
     public function __construct(CrawlerDetect $visitor)
     {
         $this->visitor = $visitor;
-        $this->hasDnt  = isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1 ? true : false;
+        $this->hasDnt = isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1 ? true : false;
     }
 
     /**
@@ -60,6 +57,7 @@ class Counter
      * @var bool
      */
     private static $ignore_bots = true;
+
     /**
      * Check to determine if we will count hits
      * from visitors that send a DO NOT TRACK header.
@@ -67,25 +65,28 @@ class Counter
      * @var bool
      */
     private static $honor_do_not_track = false;
+
     /**
      * Singleton for the $page in question
      *
      * @var null|object
      */
     private static $current_page;
+
     /**
      * Show view count for the requested page.
      *
      * Use this when you just want to show the current view count
      * for the page in question. Does not add counts.
      *
-     * @param string $identifier A unique string to the page you are tracking
-     * @param null|integer $id A unique identifier for dynamic page tracking
+     * @param  string  $identifier A unique string to the page you are tracking
+     * @param  null|int  $id A unique identifier for dynamic page tracking
      * @return string Unique view count for requested resource
      */
     public function show($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);
+
         return self::countHits($page);
     }
 
@@ -97,14 +98,15 @@ class Counter
      * Use this for pages that you want to show the count, while
      * also incrementing the count.
      *
-     * @param string $identifier
-     * @param null|integer $id
+     * @param  string  $identifier
+     * @param  null|int  $id
      * @return string Unique view count for requested resource
      */
     public function showAndCount($identifier, $id = null)
     {
         $page = self::pageId($identifier, $id);
         self::processHit($page);
+
         return self::countHits($page);
     }
 
@@ -116,8 +118,8 @@ class Counter
      * if conditions are met. Ex: Count profile views, but only
      * show the view count to the profile user with show()
      *
-     * @param string $identifier
-     * @param null|integer $id
+     * @param  string  $identifier
+     * @param  null|int  $id
      * @return null
      */
     public function count($identifier, $id = null)
@@ -134,16 +136,16 @@ class Counter
      * Example: Show total views for the last 30 days
      * Counter::allHits(30)
      *
-     * @param null|integer $days
+     * @param  null|int  $days
      * @return string Unique view count for all pages
      */
     public function allHits($days = null)
     {
-        $prefix = config('database.connections.' . config('database.default') . '.prefix');
+        $prefix = config('database.connections.'.config('database.default').'.prefix');
         if ($days) {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = DB::table($prefix.'das_counter_page_visitor')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
         } else {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')->count();
+            $hits = DB::table($prefix.'das_counter_page_visitor')->count();
         }
 
         return number_format($hits);
@@ -157,16 +159,16 @@ class Counter
      * Example: Show total visitors for the last 30 days
      * Counter::allVisitors(30)
      *
-     * @param null|integer $days
+     * @param  null|int  $days
      * @return string Unique visitor count for all pages
      */
     public function allVisitors($days = null)
     {
-        $prefix = config('database.connections.' . config('database.default') . '.prefix');
+        $prefix = config('database.connections.'.config('database.default').'.prefix');
         if ($days) {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')->distinct('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = DB::table($prefix.'das_counter_page_visitor')->distinct('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
         } else {
-            $hits = DB::table($prefix . 'das_counter_page_visitor')->distinct('visitor_id')->count();
+            $hits = DB::table($prefix.'das_counter_page_visitor')->distinct('visitor_id')->count();
         }
 
         return number_format($hits);
@@ -176,7 +178,7 @@ class Counter
     /**
      * Processes the hit request for the page in question.
      *
-     * @param string $page
+     * @param  string  $page
      * @return null
      */
     private function processHit($page)
@@ -202,16 +204,17 @@ class Counter
      */
     private static function hashVisitor()
     {
-        $cookie  = Cookie::get(env('COUNTER_COOKIE', 'kd_session'));
+        $cookie = Cookie::get(env('COUNTER_COOKIE', 'kd_session'));
         $visitor = $cookie !== false ? $cookie : $_SERVER['REMOTE_ADDR'];
-        return hash("SHA256", env('APP_KEY') . $visitor);
+
+        return hash('SHA256', env('APP_KEY').$visitor);
     }
 
     /**
      * Generates a hash based on page identifier
      *
-     * @param string $identifier
-     * @param null|integer $id
+     * @param  string  $identifier
+     * @param  null|int  $id
      * @return string
      */
     private static function pageId($identifier, $id = null)
@@ -225,7 +228,7 @@ class Counter
 
         $uuid5 = $identifier;
         if ($id) {
-            $uuid5 = $identifier . '|' . $id;
+            $uuid5 = $identifier.'|'.$id;
         }
 
         return $uuid5;
@@ -234,7 +237,7 @@ class Counter
     /**
      * Create and/or grab the visitor record
      *
-     * @param string $visitor hash provided by hashVisitor()
+     * @param  string  $visitor hash provided by hashVisitor()
      * @return object Visitor eloquent object.
      */
     private static function createVisitorRecordIfNotPresent($visitor)
@@ -245,7 +248,7 @@ class Counter
     /**
      * Create and/or grab the page record
      *
-     * @param string $page hash provided by pageId()
+     * @param  string  $page hash provided by pageId()
      * @return object Page eloquent object.
      */
     private static function createPageIfNotPresent($page)
@@ -256,13 +259,13 @@ class Counter
     /**
      * Create the count record if it does not exist.
      *
-     * @param string $page hash provided by pageId()
+     * @param  string  $page hash provided by pageId()
      * @return null
      */
     private static function createCountIfNotPresent($page)
     {
-        $page_record    = self::createPageIfNotPresent($page);
-        $visitor        = self::hashVisitor();
+        $page_record = self::createPageIfNotPresent($page);
+        $visitor = self::hashVisitor();
         $visitor_record = self::createVisitorRecordIfNotPresent($visitor);
         $page_record->visitors()->sync([$visitor_record->id => ['created_at' => Carbon::now()]], false);
     }
@@ -270,12 +273,13 @@ class Counter
     /**
      * Returns hit count for the requested resource.
      *
-     * @param string $page hash provided by pageId()
+     * @param  string  $page hash provided by pageId()
      * @return string Unique view count for requested resource
      */
     private static function countHits($page)
     {
         $page_record = self::createPageIfNotPresent($page);
+
         return number_format($page_record->visitors->count());
     }
 }

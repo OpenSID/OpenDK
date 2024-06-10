@@ -53,9 +53,9 @@ class MediaSosialRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama'   => 'required|string|max:100',
-            'url'    => 'required|url',
-            'logo'   => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'nama' => 'required|string|max:100',
+            'url' => 'required|url',
+            'logo' => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
             'status' => 'required',
         ];
     }

@@ -42,7 +42,7 @@ class AnggaranDesaController extends Controller
 {
     public function index()
     {
-        $page_title       = 'APBDes';
+        $page_title = 'APBDes';
         $page_description = 'Data APBDes';
 
         return view('data.anggaran_desa.index', compact('page_title', 'page_description'));
@@ -66,11 +66,11 @@ class AnggaranDesaController extends Controller
 
     public function import()
     {
-        $page_title       = 'APBDes';
+        $page_title = 'APBDes';
         $page_description = 'Import APBDes';
-        $years_list       = years_list();
-        $months_list      = months_list();
-        $list_desa        = DataDesa::all();
+        $years_list = years_list();
+        $months_list = months_list();
+        $list_desa = DataDesa::all();
 
         return view('data.anggaran_desa.import', compact('page_title', 'page_description', 'years_list', 'months_list', 'list_desa'));
     }
@@ -82,6 +82,7 @@ class AnggaranDesaController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 
@@ -94,6 +95,7 @@ class AnggaranDesaController extends Controller
             AnggaranDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus.');
         }
 

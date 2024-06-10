@@ -49,7 +49,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Group Pengguna';
+        $page_title = 'Group Pengguna';
         $page_description = 'Daftar Data';
 
         return view('role.index', compact('page_title', 'page_description'));
@@ -64,7 +64,7 @@ class RoleController extends Controller
     {
         return DataTables::of(Role::datatables())
         ->addColumn('aksi', function ($role) {
-            $data['edit_url']   = route('setting.role.edit', $role->id);
+            $data['edit_url'] = route('setting.role.edit', $role->id);
             $data['delete_url'] = route('setting.role.destroy', $role->id);
 
             return view('forms.aksi', $data);
@@ -80,7 +80,7 @@ class RoleController extends Controller
     public function create()
     {
         $permissions = Role::getListPermission();
-        $page_title       = 'Group Pengguna';
+        $page_title = 'Group Pengguna';
         $page_description = 'Tambah Group Pengguna';
 
         return view('role.create', compact('page_title', 'page_description', 'permissions'));
@@ -89,24 +89,24 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function store(RoleRequest $request)
     {
         try {
             $temp = [];
-            if (!empty($request->permissions)) {
+            if (! empty($request->permissions)) {
                 foreach ($request->permissions as $key => $value) {
                     $temp[$key] = $value == 1 ? true : false;
                 }
             }
 
             $request['permissions'] = $temp;
-            $role                   = Role::create($request->all());
+            $role = Role::create($request->all());
             flash()->success(trans('message.role.create-success', [
                 'attribute' => trans('island.role'),
-                'detail'    => '#' . $role->id . ' | ' . $role->slug,
+                'detail' => '#'.$role->id.' | '.$role->slug,
             ]));
 
             return redirect()->route('setting.role.index');
@@ -128,10 +128,10 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-        $role             = Role::findOrFail($id);
-        $permissions      = Role::getListPermission();
-        $menu             = Menu::get();
-        $page_title       = 'Group Pengguna';
+        $role = Role::findOrFail($id);
+        $permissions = Role::getListPermission();
+        $menu = Menu::get();
+        $page_title = 'Group Pengguna';
         $page_description = 'Ubah Data';
 
         return view('role.edit', compact('page_title', 'page_description', 'role', 'permissions', 'menu'));
@@ -156,11 +156,12 @@ class RoleController extends Controller
                 $role = Role::findOrFail($id);
                 flash()->success(trans('message.role.update-success', [
                     'attribute' => trans('island.role'),
-                    'detail'    => '#' . $role->id . ' | ' . $role->slug,
+                    'detail' => '#'.$role->id.' | '.$role->slug,
                 ]));
             } else {
                 Role::findOrFail($id)->update(['name' => $request->name, 'permissions' => []]);
             }
+
             return redirect()->route('setting.role.index');
         } catch (\Exception $e) {
             report($e);
@@ -191,6 +192,7 @@ class RoleController extends Controller
                 $role = Role::findOrFail($id);
                 $role->delete();
                 flash()->success(trans('general.destroy-success'));
+
                 return redirect()->route('setting.role.index');
             }
         } catch (\Exception $e) {

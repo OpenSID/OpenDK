@@ -51,9 +51,9 @@ class LaporanPendudukController extends Controller
      */
     public function index(LaporanPenduduk $penduduk)
     {
-        $page_title       = 'Laporan Penduduk';
+        $page_title = 'Laporan Penduduk';
         $page_description = 'Daftar Laporan Penduduk';
-        $list_desa        = DataDesa::get();
+        $list_desa = DataDesa::get();
 
         return view('data.laporan-penduduk.index', compact('page_title', 'page_description', 'list_desa'));
     }
@@ -61,7 +61,6 @@ class LaporanPendudukController extends Controller
     /**
      * Return datatable Data Laporan Penduduk.
      *
-     * @param Request $request
      * @return DataTables
      */
     public function getData(Request $request)
@@ -88,7 +87,7 @@ class LaporanPendudukController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.laporan-penduduk.destroy', $row->id);
-                $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
+                $data['download_url'] = asset('storage/laporan_penduduk/'.$row->nama_file);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -105,11 +104,12 @@ class LaporanPendudukController extends Controller
             $penduduk = LaporanPenduduk::findOrFail($id);
 
             // Hapus file penduduk
-            Storage::disk('public')->delete('laporan_penduduk/' . $penduduk->nama_file);
+            Storage::disk('public')->delete('laporan_penduduk/'.$penduduk->nama_file);
 
             $penduduk->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.laporan-penduduk.index')->with('error', 'Data gagal dihapus!');
         }
 
@@ -123,7 +123,7 @@ class LaporanPendudukController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Laporan Penduduk';
+        $page_title = 'Laporan Penduduk';
         $page_description = 'Import Laporan Penduduk';
 
         return view('data.laporan-penduduk.import', compact('page_title', 'page_description'));
@@ -159,9 +159,10 @@ class LaporanPendudukController extends Controller
 
             // Proses impor excell
             (new ImporLaporanPenduduk())
-                ->queue($extract . basename($fileExtracted[0]));
+                ->queue($extract.basename($fileExtracted[0]));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 

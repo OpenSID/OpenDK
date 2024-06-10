@@ -82,19 +82,19 @@ class Handler extends ExceptionHandler
                     [
                         'nama_provinsi' => $profil->nama_provinsi,
                         'nama_kabupaten' => $profil->nama_kabupaten,
-                        'nama_kecamatan' => $profil->nama_kecamatan
+                        'nama_kecamatan' => $profil->nama_kecamatan,
                     ]
                 );
                 if (Auth::check()) {
                     $scope->setUser([
                         'email' => auth()->user()->email,
                         'name' => auth()->user()->name,
-                        'role' => Auth::user()->getRoleNames()
+                        'role' => Auth::user()->getRoleNames(),
                     ]);
                 }
                 $scope->setTags([
-                    'kecamatan' =>  $profil->nama_kecamatan,
-                    'versi' => config('app.version')
+                    'kecamatan' => $profil->nama_kecamatan,
+                    'versi' => config('app.version'),
                 ]);
             });
 

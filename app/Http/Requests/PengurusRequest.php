@@ -53,29 +53,29 @@ class PengurusRequest extends FormRequest
     public function rules()
     {
         if ($this->isMethod('put')) {
-            $id = "," . $this->penguru;
+            $id = ','.$this->penguru;
         } else {
-            $id = "";
+            $id = '';
         }
 
         return [
-            'foto'              => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
-            'nama'              =>  "required|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
-            'gelar_depan'       =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
-            'gelar_belakang'    =>  "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
-            'nik'               => 'required|integer|digits:16|unique:das_pengurus,nik' . $id,
-            'nip'               => 'nullable|integer|digits:18|unique:das_pengurus,nip' . $id,
-            'tempat_lahir'      => "required|regex:/^[a-zA-Z0-9 '\.,\-\/]+$/",
-            'tanggal_lahir'     => "required|date",
-            'jenis_kelamin'     => 'integer',
-            'pendidikan'        => 'integer',
-            'agama'             => 'integer',
-            'pangkat'           => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'no_sk'             => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'tanggal_sk'        => 'nullable|date',
-            'no_henti'          => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
-            'tanggal_henti'     => 'nullable|date',
-            'masa_jabatan'      => 'required|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
+            'nama' => "required|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'gelar_depan' => "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'gelar_belakang' => "nullable|regex:/^[a-zA-Z '\.,\-]+$/|max:150",
+            'nik' => 'required|integer|digits:16|unique:das_pengurus,nik'.$id,
+            'nip' => 'nullable|integer|digits:18|unique:das_pengurus,nip'.$id,
+            'tempat_lahir' => "required|regex:/^[a-zA-Z0-9 '\.,\-\/]+$/",
+            'tanggal_lahir' => 'required|date',
+            'jenis_kelamin' => 'integer',
+            'pendidikan' => 'integer',
+            'agama' => 'integer',
+            'pangkat' => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'no_sk' => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'tanggal_sk' => 'nullable|date',
+            'no_henti' => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'tanggal_henti' => 'nullable|date',
+            'masa_jabatan' => 'required|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
         ];
     }
 }

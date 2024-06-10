@@ -63,7 +63,7 @@ class DataUmum extends Model
         'embed_peta',
         'path',
         'lat',
-        'lng'
+        'lng',
     ];
 
     protected $appends = ['luas_wilayah_dari_data_desa'];

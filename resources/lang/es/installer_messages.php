@@ -32,46 +32,36 @@
 return [
 
     /**
-     *
      * Traducciones compartidas.
-     *
      */
     'title' => 'Instalador de Laravel',
     'next' => 'Siguiente',
     'finish' => 'Instalar',
 
     /**
-     *
      * Traducciones de la página principal.
-     *
      */
     'welcome' => [
-        'title'   => 'Bienvenido al instalador',
+        'title' => 'Bienvenido al instalador',
         'message' => 'Bienvenido al asistente de configuración',
     ],
 
     /**
-     *
      * Tranducciones de la página de requisitos.
-     *
      */
     'requirements' => [
         'title' => 'Requisitos',
     ],
 
     /**
-     *
      * Traducciones de la pagina de permisos.
-     *
      */
     'permissions' => [
         'title' => 'Permisos',
     ],
 
     /**
-     *
      * Traducciones de la página de entorno.
-     *
      */
     'environment' => [
         'title' => 'Configuraciones del entorno',
@@ -81,9 +71,7 @@ return [
     ],
 
     /**
-     *
      * Traducciones de la página final.
-     *
      */
     'final' => [
         'title' => 'Finalizado.',

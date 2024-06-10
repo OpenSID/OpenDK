@@ -45,7 +45,7 @@ class ProfilController extends Controller
     {
         Counter::count('profil.sejarah');
 
-        $profil     = Profil::with(['dataUmum'])->first();
+        $profil = Profil::with(['dataUmum'])->first();
         $page_title = 'Sejarah';
         if (isset($profil)) {
             $page_description = $this->browser_title;
@@ -61,9 +61,9 @@ class ProfilController extends Controller
     {
         Counter::count('profil.letak-geografis');
 
-        $profil         = Profil::with(['dataDesa'])->first();
-        $wilayah_desa   = DataDesa::whereNotNull('path')->get();
-        $data_umum      = DataUmum::first();
+        $profil = Profil::with(['dataDesa'])->first();
+        $wilayah_desa = DataDesa::whereNotNull('path')->get();
+        $data_umum = DataUmum::first();
         $page_title = 'Letak Geografis';
         if (isset($profil)) {
             $page_description = $this->browser_title;
@@ -76,8 +76,8 @@ class ProfilController extends Controller
     {
         Counter::count('profil.struktur-pemerintahan');
 
-        $profil     = $this->profil;
-        $pengurus   = Pengurus::status()->get()->sortBy('jabatan.jenis');
+        $profil = $this->profil;
+        $pengurus = Pengurus::status()->get()->sortBy('jabatan.jenis');
         $page_title = 'Struktur Pemerintahan';
         if (isset($profil)) {
             $page_description = $this->browser_title;
@@ -90,7 +90,7 @@ class ProfilController extends Controller
     {
         Counter::count('profil.visi-misi');
 
-        $profil     = $this->profil;
+        $profil = $this->profil;
         $page_title = 'Visi dan Misi';
         if (isset($profil)) {
             $page_description = $this->browser_title;
@@ -103,10 +103,10 @@ class ProfilController extends Controller
     {
         Counter::count('profil.kependudukan');
 
-        $data['page_title']       = 'Kependudukan';
+        $data['page_title'] = 'Kependudukan';
         $data['page_description'] = 'Statistik Kependudukan';
-        $data['year_list']        = years_list();
-        $data['list_desa']        = DataDesa::all();
+        $data['year_list'] = years_list();
+        $data['list_desa'] = DataDesa::all();
 
         $data = array_merge($data, $this->createDashboardKependudukan('Semua', date('Y')));
 
@@ -115,8 +115,8 @@ class ProfilController extends Controller
 
     public function showProfile()
     {
-        $profil     = $this->profil;
-        $dokumen    = DB::table('das_form_dokumen')->take(5)->get();
+        $profil = $this->profil;
+        $dokumen = DB::table('das_form_dokumen')->take(5)->get();
 
         $page_title = 'Profil';
         if (isset($profil)) {

@@ -53,7 +53,7 @@ class JabatanRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama'    => 'required|regex:/^[a-zA-Z\s]*$/',
+            'nama' => 'required|regex:/^[a-zA-Z\s]*$/',
             'tupoksi' => 'nullable|string',
         ];
     }

@@ -32,9 +32,7 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Kurulum',
     'next' => 'Sonraki Adım',
@@ -45,32 +43,26 @@ return [
     ],
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
         'templateTitle' => 'Kurulum\'a Hoşgeldiniz',
-        'title'   => 'Kurulum',
+        'title' => 'Kurulum',
         'message' => 'Kolay Kurulum Sihirbazı.',
-        'next'    => 'Gereksinimleri Denetle',
+        'next' => 'Gereksinimleri Denetle',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'templateTitle' => 'Adım 1 | Sunucu Gereksinimleri',
         'title' => 'Sunucu Gereksinimleri',
-        'next'    => 'İzinleri Kontrol Et',
+        'next' => 'İzinleri Kontrol Et',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'templateTitle' => 'Adım 2 | İzinler',
@@ -79,9 +71,7 @@ return [
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
         'menu' => [
@@ -97,7 +87,7 @@ return [
             'tabs' => [
                 'environment' => 'Ortam',
                 'database' => 'Veritabanı',
-                'application' => 'Uygulama'
+                'application' => 'Uygulama',
             ],
             'form' => [
                 'name_required' => 'Bir ortam adı gerekiyor.',
@@ -198,18 +188,14 @@ return [
     'install' => 'Kurulum',
 
     /**
-     *
      * Installed Log translations.
-     *
      */
     'installed' => [
         'success_log_message' => 'Uygulama başarıyla KURULDU ',
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Kurulum Bitti',
@@ -223,22 +209,16 @@ return [
     ],
 
     /**
-     *
      * Update specific translations
-     *
      */
     'updater' => [
         /**
-         *
          * Shared translations.
-         *
          */
         'title' => 'Güncelleyici',
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'welcome' => [
             'title' => 'Güncelleyiciye Hoş Geldiniz',
@@ -246,20 +226,16 @@ return [
         ],
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'overview' => [
-            'title'   => 'Genel bakış',
+            'title' => 'Genel bakış',
             'message' => '1 güncelleme var.| :number güncellemeleri var.',
-            'install_updates' => "Güncellemeyi yükle"
+            'install_updates' => 'Güncellemeyi yükle',
         ],
 
         /**
-         *
          * Final page translations.
-         *
          */
         'final' => [
             'title' => 'Tamamlandı',

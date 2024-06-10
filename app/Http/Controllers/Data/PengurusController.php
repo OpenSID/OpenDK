@@ -53,7 +53,7 @@ class PengurusController extends Controller
      */
     public function index(Request $request)
     {
-        $page_title       = 'Data Pengurus';
+        $page_title = 'Data Pengurus';
         $page_description = 'Daftar Data Pengurus';
 
         if ($request->ajax()) {
@@ -62,8 +62,8 @@ class PengurusController extends Controller
             return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('data.pengurus.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('data.pengurus.edit', $row->id);
                         $data['delete_url'] = route('data.pengurus.destroy', $row->id);
                         if ($row->status == Status::Aktif) {
                             $data['suspend_url'] = route('data.pengurus.lock', [$row->id, Status::TidakAktif]);
@@ -75,16 +75,17 @@ class PengurusController extends Controller
                     return view('forms.aksi', $data);
                 })
                 ->editColumn('foto', function ($row) {
-                    return '<img src="' . is_user($row->foto, $row->sex, true) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="'.is_user($row->foto, $row->sex, true).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->editColumn('identitas', function ($row) {
-                    return $row->namaGelar . ',<br> NIP: ' . $row->nip . ',<br> NIK: ' . $row->nik;
+                    return $row->namaGelar.',<br> NIP: '.$row->nip.',<br> NIK: '.$row->nik;
                 })
                 ->editColumn('ttl', function ($row) {
-                    return $row->tempat_lahir . ',' . format_date($row->tanggal_lahir);
+                    return $row->tempat_lahir.','.format_date($row->tanggal_lahir);
                 })
                 ->editColumn('sex', function ($row) {
                     $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
+
                     return $sex[$row->sex];
                 })
                 ->editColumn('tanggal_sk', function ($row) {
@@ -114,13 +115,13 @@ class PengurusController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Pengurus';
+        $page_title = 'Pengurus';
         $page_description = 'Tambah Pengurus';
-        $pendidikan       = PendidikanKK::pluck('nama', 'id');
-        $agama            = Agama::pluck('nama', 'id');
-        $pengurus         = new Pengurus();
-        $kecuali          = $pengurus->cekPengurus();
-        $jabatan          = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
+        $pendidikan = PendidikanKK::pluck('nama', 'id');
+        $agama = Agama::pluck('nama', 'id');
+        $pengurus = new Pengurus();
+        $kecuali = $pengurus->cekPengurus();
+        $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
 
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan'));
     }
@@ -135,15 +136,16 @@ class PengurusController extends Controller
         try {
             $input = $request->all();
             if ($request->hasFile('foto')) {
-                $file           = $request->file('foto');
-                $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() .  '_' . $original_name;
+                $file = $request->file('foto');
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time().'_'.$original_name;
                 Storage::putFileAs('public/pengurus', $file, $file_name);
-                $input['foto']  = $file_name;
+                $input['foto'] = $file_name;
             }
             Pengurus::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Pengurus gagal ditambah!');
         }
 
@@ -153,17 +155,17 @@ class PengurusController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $pengurus         = Pengurus::findOrFail($id);
-        $page_title       = 'Pengurus';
-        $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
-        $pendidikan       = PendidikanKK::pluck('nama', 'id');
-        $agama            = Agama::pluck('nama', 'id');
-        $kecuali          = $pengurus->cekPengurus();
+        $pengurus = Pengurus::findOrFail($id);
+        $page_title = 'Pengurus';
+        $page_description = 'Ubah Pengurus : '.$pengurus->nama;
+        $pendidikan = PendidikanKK::pluck('nama', 'id');
+        $agama = Agama::pluck('nama', 'id');
+        $kecuali = $pengurus->cekPengurus();
 
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
                     ->pluck('nama', 'id');
@@ -174,10 +176,9 @@ class PengurusController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
-
     public function update(PengurusRequest $request, $id)
     {
         $pengurus = Pengurus::findOrFail($id);
@@ -186,19 +187,20 @@ class PengurusController extends Controller
             $input = $request->all();
 
             if ($request->hasFile('foto')) {
-                $file           = $request->file('foto');
-                $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() .  '_' . $original_name;
+                $file = $request->file('foto');
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time().'_'.$original_name;
                 Storage::putFileAs('public/pengurus', $file, $file_name);
                 if ($pengurus->foto) {
-                    Storage::delete('public/pengurus/' . $pengurus->getRawOriginal('foto'));
+                    Storage::delete('public/pengurus/'.$pengurus->getRawOriginal('foto'));
                 }
-                $input['foto']  = $file_name;
+                $input['foto'] = $file_name;
             }
 
             $pengurus->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Pengurus gagal diubah!');
         }
 
@@ -208,7 +210,7 @@ class PengurusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -216,11 +218,12 @@ class PengurusController extends Controller
         try {
             $pengurus = Pengurus::findOrFail($id);
             if ($pengurus->foto) {
-                Storage::delete('public/pengurus/' . $pengurus->getRawOriginal('foto'));
+                Storage::delete('public/pengurus/'.$pengurus->getRawOriginal('foto'));
             }
             $pengurus->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.pengurus.index')->with('error', 'Pengurus gagal dihapus!');
         }
 
@@ -230,7 +233,7 @@ class PengurusController extends Controller
     /**
      * Update status resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function lock($id, $status)
@@ -251,6 +254,7 @@ class PengurusController extends Controller
             $pengurus->update(['status' => $status]);
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.pengurus.index')->with('error', 'Status Pengurus gagal diubah!');
         }
 

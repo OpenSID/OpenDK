@@ -32,45 +32,35 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Laravel Installer',
     'next' => 'Volgende stap',
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
-        'title'   => 'Welkom bij het installatie proces...',
+        'title' => 'Welkom bij het installatie proces...',
         'message' => 'Welkom bij de installatiewizard',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'title' => 'Vereisten',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'title' => 'Permissies',
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
         'title' => 'Environment Settings',
@@ -80,9 +70,7 @@ return [
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Voltooid',

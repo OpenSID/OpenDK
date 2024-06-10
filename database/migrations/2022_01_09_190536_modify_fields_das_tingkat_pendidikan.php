@@ -41,8 +41,8 @@ class ModifyFieldsDasTingkatPendidikan extends Migration
      */
     public function up()
     {
-        DB::statement("ALTER TABLE `das_tingkat_pendidikan` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP");
-        DB::statement("ALTER TABLE `das_tingkat_pendidikan` CHANGE `updated_at` `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+        DB::statement('ALTER TABLE `das_tingkat_pendidikan` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP');
+        DB::statement('ALTER TABLE `das_tingkat_pendidikan` CHANGE `updated_at` `updated_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
     }
 
     /**
@@ -52,7 +52,7 @@ class ModifyFieldsDasTingkatPendidikan extends Migration
      */
     public function down()
     {
-        DB::statement("ALTER TABLE `das_tingkat_pendidikan` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT NULL");
-        DB::statement("ALTER TABLE `das_tingkat_pendidikan` CHANGE `updated_at` `updated_at` TIMESTAMP NULL DEFAULT NULL");
+        DB::statement('ALTER TABLE `das_tingkat_pendidikan` CHANGE `created_at` `created_at` TIMESTAMP NULL DEFAULT NULL');
+        DB::statement('ALTER TABLE `das_tingkat_pendidikan` CHANGE `updated_at` `updated_at` TIMESTAMP NULL DEFAULT NULL');
     }
 }

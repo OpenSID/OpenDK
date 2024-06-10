@@ -59,23 +59,24 @@ class ProgamBantuanController extends Controller
             $zip->close();
 
             (new SinkronBantuan())
-                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.$csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
+
             return response()->json([
-                "status" => "danger",
-                "message" => $e->getMessage(),
+                'status' => 'danger',
+                'message' => $e->getMessage(),
             ]);
         }
 
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan' . $csvName);
+        Storage::disk('public')->delete('bantuan'.$csvName);
 
         return response()->json([
-            "message" => "Data Bantuan Sedang di Sinkronkan",
-            "status" => "success"
+            'message' => 'Data Bantuan Sedang di Sinkronkan',
+            'status' => 'success',
         ]);
     }
 
@@ -95,21 +96,23 @@ class ProgamBantuanController extends Controller
             $zip->close();
             // Proses impor excell
             (new SinkronPesertaBantuan())
-                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.$csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
+
             return response()->json([
-                "status" => "danger",
-                "message" => $e->getMessage(),
+                'status' => 'danger',
+                'message' => $e->getMessage(),
             ]);
         }
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan/' . $csvName);
+        Storage::disk('public')->delete('bantuan/'.$csvName);
+
         return response()->json([
-            "status" => "success",
-            "message" => "Data Bantuan Sedang di Sinkronkan",
+            'status' => 'success',
+            'message' => 'Data Bantuan Sedang di Sinkronkan',
         ]);
     }
 }

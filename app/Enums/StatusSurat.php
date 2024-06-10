@@ -39,6 +39,8 @@ use BenSampo\Enum\Enum;
 final class StatusSurat extends Enum
 {
     public const Permohonan = 1;
-    public const Arsip      = 2;
-    public const Ditolak    = 3;
+
+    public const Arsip = 2;
+
+    public const Ditolak = 3;
 }

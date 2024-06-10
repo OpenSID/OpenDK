@@ -42,6 +42,7 @@ class KDServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = false;
+
     public function register()
     {
         $this->app->singleton('Counter', function () {

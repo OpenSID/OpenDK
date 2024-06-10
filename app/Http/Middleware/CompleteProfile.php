@@ -40,12 +40,11 @@ class CompleteProfile
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (!Profil::first()->kecamatan_id) {
+        if (! Profil::first()->kecamatan_id) {
             return redirect()->route('data.profil.index');
         }
 

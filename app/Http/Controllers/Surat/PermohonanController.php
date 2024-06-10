@@ -48,7 +48,7 @@ class PermohonanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Permohonan Surat';
+        $page_title = 'Permohonan Surat';
         $page_description = 'Daftar Permohonan Surat';
 
         return view('surat.permohonan.index', compact('page_title', 'page_description'));
@@ -102,8 +102,8 @@ class PermohonanController extends Controller
 
     public function show($id)
     {
-        $surat            = Surat::findOrFail($id);
-        $page_title       = 'Detail Surat';
+        $surat = Surat::findOrFail($id);
+        $page_title = 'Detail Surat';
         $page_description = "Detail Data Surat: {$surat->nama}";
 
         // Cek pemeriksa
@@ -119,7 +119,7 @@ class PermohonanController extends Controller
             $isAllow = true;
         }
 
-        if (!$isAllow) {
+        if (! $isAllow) {
             return back()->with('error', 'Anda tidak memiliki akses');
         }
 
@@ -131,9 +131,10 @@ class PermohonanController extends Controller
         try {
             $surat = Surat::findOrFail($id);
 
-            return Storage::download('public/surat/' . $surat->file);
+            return Storage::download('public/surat/'.$surat->file);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }
@@ -141,7 +142,7 @@ class PermohonanController extends Controller
     public function setujui($id)
     {
         try {
-            $surat        = Surat::findOrFail($id);
+            $surat = Surat::findOrFail($id);
             $log_sekarang = $surat->log_verifikasi;
 
             if ($log_sekarang == LogVerifikasiSurat::Operator) {
@@ -160,6 +161,7 @@ class PermohonanController extends Controller
         } catch (\Exception $e) {
             report($e);
         }
+
         return response()->json();
     }
 
@@ -168,12 +170,13 @@ class PermohonanController extends Controller
         try {
             Surat::findOrFail($id)->update([
                 'log_verifikasi' => LogVerifikasiSurat::Ditolak,
-                'status'         => StatusSurat::Ditolak,
-                'keterangan'     => $request['keterangan'],
+                'status' => StatusSurat::Ditolak,
+                'keterangan' => $request['keterangan'],
             ]);
         } catch (\Exception $e) {
             report($e);
         }
+
         return response()->json();
     }
 
@@ -185,7 +188,7 @@ class PermohonanController extends Controller
 
         $client = new \GuzzleHttp\Client([
             'base_uri' => $this->settings['tte_api'],
-            'auth'     => [
+            'auth' => [
                 $this->settings['tte_username'],
                 $this->settings['tte_password'],
             ],
@@ -193,12 +196,12 @@ class PermohonanController extends Controller
 
         try {
             $file_path = public_path("storage/surat/{$surat->file}");
-            $width     = 90;
-            $height    = 90;
-            $tag       = '[qr_camat]';
+            $width = 90;
+            $height = 90;
+            $tag = '[qr_camat]';
 
             $response = $client->post('api/sign/pdf', [
-                'headers'   => ['X-Requested-With' => 'XMLHttpRequest'],
+                'headers' => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
                     ['name' => 'file', 'contents' => Psr7\Utils::tryFopen($file_path, 'r')],
                     ['name' => 'nik', 'contents' => $surat->pengurus->nik],
@@ -213,7 +216,7 @@ class PermohonanController extends Controller
 
             $surat->update([
                 'status' => StatusSurat::Arsip,
-                'log_verifikasi' => LogVerifikasiSurat::SudahTTE
+                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
             ]);
 
             DB::commit();
@@ -226,9 +229,9 @@ class PermohonanController extends Controller
             }
 
             return $this->response([
-                'status'      => true,
+                'status' => true,
                 'pesan_error' => 'success',
-                'jenis'       => 'success',
+                'jenis' => 'success',
             ]);
         } catch (ClientException $e) {
             report($e);
@@ -236,9 +239,9 @@ class PermohonanController extends Controller
             DB::rollback();
 
             return $this->response([
-                'status'      => false,
+                'status' => false,
                 'pesan_error' => $e->getMessage(),
-                'jenis'       => 'ClientException',
+                'jenis' => 'ClientException',
             ]);
         }
     }
@@ -247,7 +250,7 @@ class PermohonanController extends Controller
     {
         LogTte::create([
             'pesan_error' => $notif['pesan_error'],
-            'jenis'       => $notif['jenis'],
+            'jenis' => $notif['jenis'],
         ]);
 
         return response()->json($notif);
@@ -255,7 +258,7 @@ class PermohonanController extends Controller
 
     public function ditolak()
     {
-        $page_title       = 'Permohonan Surat Ditolak';
+        $page_title = 'Permohonan Surat Ditolak';
         $page_description = 'Daftar Permohonan Surat Ditolak';
 
         return view('surat.permohonan.ditolak', compact('page_title', 'page_description'));

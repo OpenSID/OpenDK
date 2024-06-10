@@ -49,12 +49,12 @@ class Pengurus extends Model
     ];
 
     protected $appends = [
-        'namaGelar'
+        'namaGelar',
     ];
 
     public function getFotoAttribute()
     {
-        return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;
+        return $this->attributes['foto'] ? Storage::url('pengurus/'.$this->attributes['foto']) : null;
     }
 
     /**
@@ -64,10 +64,10 @@ class Pengurus extends Model
      */
     public function getNamaGelarAttribute()
     {
-        $nama = $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'];
+        $nama = $this->attributes['gelar_depan'].' '.$this->attributes['nama'];
 
         if ($this->attributes['gelar_belakang']) {
-            $nama = $nama . ', ' . $this->attributes['gelar_belakang'];
+            $nama = $nama.', '.$this->attributes['gelar_belakang'];
         }
 
         return $nama;

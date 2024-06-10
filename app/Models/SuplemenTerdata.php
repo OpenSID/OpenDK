@@ -40,7 +40,7 @@ class SuplemenTerdata extends Model
     protected $fillable = [
         'suplemen_id',
         'penduduk_id',
-        'keterangan'
+        'keterangan',
     ];
 
     public function suplemen()

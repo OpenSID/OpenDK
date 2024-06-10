@@ -42,7 +42,7 @@ class TingkatPendidikanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Tingkat Pendidikan';
+        $page_title = 'Tingkat Pendidikan';
         $page_description = 'Daftar Tingkat Pendidikan';
 
         return view('data.tingkat_pendidikan.index', compact('page_title', 'page_description'));
@@ -71,10 +71,10 @@ class TingkatPendidikanController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Tingkat Pendidikan';
+        $page_title = 'Tingkat Pendidikan';
         $page_description = 'Import Tingkat Pendidikan';
-        $years_list       = years_list();
-        $months_list      = months_list();
+        $years_list = years_list();
+        $months_list = months_list();
 
         return view('data.tingkat_pendidikan.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
@@ -91,6 +91,7 @@ class TingkatPendidikanController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Data gagal diimpor');
         }
 
@@ -100,7 +101,7 @@ class TingkatPendidikanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -109,6 +110,7 @@ class TingkatPendidikanController extends Controller
             TingkatPendidikan::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
 

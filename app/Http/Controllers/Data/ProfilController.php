@@ -46,10 +46,10 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        $profil           = $this->profil;
-        $page_title       = 'Profil';
+        $profil = $this->profil;
+        $page_title = 'Profil';
         $page_description = 'Data Profil';
-        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
+        $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau'));
     }
@@ -57,7 +57,7 @@ class ProfilController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(ProfilRequest $request, $id)
@@ -68,28 +68,29 @@ class ProfilController extends Controller
 
             $dataumum = DataUmum::where('profil_id', $id)->first();
 
-            if ($request->file('file_struktur_organisasi') == "") {
+            if ($request->file('file_struktur_organisasi') == '') {
                 $profil->file_struktur_organisasi = $profil->file_struktur_organisasi;
             } else {
-                $file     = $request->file('file_struktur_organisasi');
+                $file = $request->file('file_struktur_organisasi');
                 $fileName = $file->getClientOriginalName();
-                $request->file('file_struktur_organisasi')->move("storage/profil/struktur_organisasi/", $fileName);
-                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/' . $fileName;
+                $request->file('file_struktur_organisasi')->move('storage/profil/struktur_organisasi/', $fileName);
+                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/'.$fileName;
             }
 
-            if ($request->file('file_logo') == "") {
+            if ($request->file('file_logo') == '') {
                 $profil->file_logo = $profil->file_logo;
             } else {
-                $fileLogo     = $request->file('file_logo');
+                $fileLogo = $request->file('file_logo');
                 $fileLogoName = $fileLogo->getClientOriginalName();
-                $request->file('file_logo')->move("storage/profil/file_logo/", $fileLogoName);
-                $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
+                $request->file('file_logo')->move('storage/profil/file_logo/', $fileLogoName);
+                $profil->file_logo = 'storage/profil/file_logo/'.$fileLogoName;
             }
 
             $profil->update();
             $dataumum->update();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
 
@@ -99,12 +100,12 @@ class ProfilController extends Controller
     /**
      * Redirect to edit Data Umum if success
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function success($id)
     {
-        $page_title       = 'Profil';
+        $page_title = 'Profil';
         $page_description = 'Konfirmasi?';
 
         return view('data.profil.save_success', compact('id', 'page_title', 'page_description'));

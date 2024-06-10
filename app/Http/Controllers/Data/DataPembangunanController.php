@@ -42,9 +42,9 @@ class DataPembangunanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Pembangunan';
+        $page_title = 'Pembangunan';
         $page_description = 'Data Pembangunan';
-        $list_desa        = DataDesa::get();
+        $list_desa = DataDesa::get();
 
         return view('data.pembangunan.index', compact('page_title', 'page_description', 'list_desa'));
     }
@@ -62,7 +62,8 @@ class DataPembangunanController extends Controller
 
             return DataTables::of($pembangunan)
                 ->addColumn('aksi', function ($row) {
-                    $data['detail_url']   = route('data.pembangunan.rincian', ['id' => $row->id,'desa_id' => $row->desa_id]);
+                    $data['detail_url'] = route('data.pembangunan.rincian', ['id' => $row->id, 'desa_id' => $row->desa_id]);
+
                     return view('forms.aksi', $data);
                 })->make();
         }
@@ -70,9 +71,9 @@ class DataPembangunanController extends Controller
 
     public function rincian($id, $desa_id)
     {
-        $page_title       = 'Pembangunan';
+        $page_title = 'Pembangunan';
         $page_description = 'Rincian Pembangunan';
-        $pembangunan =  Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first();
+        $pembangunan = Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first();
 
         return view('data.pembangunan.rincian', compact('page_title', 'page_description', 'pembangunan'));
     }
@@ -81,6 +82,7 @@ class DataPembangunanController extends Controller
     {
         if (request()->ajax()) {
             $pembangunanDokumentasi = PembangunanDokumentasi::where('desa_id', $desa_id)->where('id_pembangunan', $id)->get();
+
             return DataTables::of($pembangunanDokumentasi)
             ->addIndexColumn()
             ->editColumn('created_at', function ($row) {

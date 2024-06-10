@@ -40,16 +40,16 @@ class PotensiController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Potensi';
+        $page_title = 'Potensi';
         $page_description = 'Daftar Potensi';
-        $potensis         = Potensi::latest()->paginate(10);
+        $potensis = Potensi::latest()->paginate(10);
 
         return view('informasi.potensi.index', compact('page_title', 'page_description', 'potensis'));
     }
 
     public function kategori()
     {
-        $page_title       = 'Potensi';
+        $page_title = 'Potensi';
 
         if ($_GET['id'] != null) {
             $potensis = Potensi::where('kategori_id', $_GET['id'])->latest()->paginate(10);
@@ -59,7 +59,7 @@ class PotensiController extends Controller
             $kategori = 'Semua';
         }
 
-        $page_description = 'Kategori Potensi : ' . $kategori;
+        $page_description = 'Kategori Potensi : '.$kategori;
 
         return view('informasi.potensi.index', compact('page_title', 'page_description', 'potensis'));
     }
@@ -80,14 +80,15 @@ class PotensiController extends Controller
             if ($request->hasFile('file_gambar')) {
                 $lampiran = $request->file('file_gambar');
                 $fileName = $lampiran->getClientOriginalName();
-                $path     = "storage/potensi_kecamatan/";
+                $path = 'storage/potensi_kecamatan/';
                 $lampiran->move($path, $fileName);
-                $input['file_gambar'] = $path . $fileName;
+                $input['file_gambar'] = $path.$fileName;
             }
 
             Potensi::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
 
@@ -96,7 +97,7 @@ class PotensiController extends Controller
 
     public function show(Potensi $potensi)
     {
-        $page_title       = 'Potensi';
+        $page_title = 'Potensi';
         $page_description = 'Detail Potensi';
 
         return view('informasi.potensi.show', compact('page_title', 'page_description', 'potensi'));
@@ -104,7 +105,7 @@ class PotensiController extends Controller
 
     public function edit(Potensi $potensi)
     {
-        $page_title       = 'Potensi';
+        $page_title = 'Potensi';
         $page_description = 'Ubah Potensi';
 
         return view('informasi.potensi.edit', compact('page_title', 'page_description', 'potensi'));
@@ -118,19 +119,20 @@ class PotensiController extends Controller
             if ($request->hasFile('file_gambar')) {
                 $lampiran = $request->file('file_gambar');
                 $fileName = $lampiran->getClientOriginalName();
-                $path     = "storage/potensi_kecamatan/";
+                $path = 'storage/potensi_kecamatan/';
                 $lampiran->move($path, $fileName);
 
-                if ($potensi->file_gambar && file_exists(base_path('public/' . $potensi->file_gambar))) {
-                    unlink(base_path('public/' . $potensi->file_gambar));
+                if ($potensi->file_gambar && file_exists(base_path('public/'.$potensi->file_gambar))) {
+                    unlink(base_path('public/'.$potensi->file_gambar));
                 }
 
-                $input['file_gambar'] = $path . $fileName;
+                $input['file_gambar'] = $path.$fileName;
             }
 
             $potensi->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Data Potensi gagal disimpan!');
         }
 
@@ -141,10 +143,11 @@ class PotensiController extends Controller
     {
         try {
             if ($potensi->delete()) {
-                unlink(base_path('public/' . $potensi->file_gambar));
+                unlink(base_path('public/'.$potensi->file_gambar));
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Potensi gagal dihapus!');
         }
 

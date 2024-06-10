@@ -46,10 +46,10 @@ class ProgramBantuanController extends Controller
     {
         Counter::count('statistik.program-bantuan');
 
-        $page_title       = 'Program Bantuan';
+        $page_title = 'Program Bantuan';
         $page_description = 'Data Program Bantuan';
-        $year_list        = years_list();
-        $list_desa        = DataDesa::all();
+        $year_list = years_list();
+        $list_desa = DataDesa::all();
 
         return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'year_list', 'list_desa'));
     }
@@ -67,9 +67,9 @@ class ProgramBantuanController extends Controller
     // TODO : Gunakan relasi antar tabel.
     private function get_data(int $sasaran = 1)
     {
-        $did  = request('did');
+        $did = request('did');
         $year = request('y');
-        $data    = [];
+        $data = [];
         $program = Program::where('sasaran', $sasaran)->get();
 
         foreach ($program as $prog) {
@@ -88,6 +88,7 @@ class ProgramBantuanController extends Controller
 
             $data[] = ['program' => $prog->nama, 'value' => $query_result->count()];
         }
+
         return $data;
     }
 }

@@ -15,4 +15,4 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 
 #### TEKNIS
 
-1. 
+1. [845](https://github.com/OpenSID/OpenDK/issues/845) Penggunaan laravel pint.

@@ -49,9 +49,9 @@ class PageController extends Controller
         Counter::count('beranda');
 
         return view('pages.index', [
-            'page_title'       => 'Beranda',
-            'cari'             => null,
-            'artikel'          => Artikel::latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
+            'page_title' => 'Beranda',
+            'cari' => null,
+            'artikel' => Artikel::latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
         ]);
     }
 
@@ -68,11 +68,11 @@ class PageController extends Controller
         // $feeds->all();
 
         return view('pages.berita.desa', [
-            'page_title'       => 'Berita Desa',
-            'cari'             => null,
-            'cari_desa'        => null,
-            'list_desa'        => DataDesa::orderBy('desa_id')->get(),
-            'feeds'            => $feeds,
+            'page_title' => 'Berita Desa',
+            'cari' => null,
+            'cari_desa' => null,
+            'list_desa' => DataDesa::orderBy('desa_id')->get(),
+            'feeds' => $feeds,
         ]);
     }
 
@@ -88,17 +88,17 @@ class PageController extends Controller
             $getFeeds = FeedsFacade::make($desa['website'], 5, true);
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
-                    'desa_id'     => $desa['desa_id'],
-                    'nama_desa'   => $desa['nama'],
-                    'feed_link'   => $item->get_feed()->get_permalink(),
-                    'feed_title'  => $item->get_feed()->get_title(),
-                    'link'        => $item->get_link(),
-                    'date'        => \Carbon\Carbon::parse($item->get_date('U')),
-                    'author'      => $item->get_author()->get_name() ?? 'Administrator',
-                    'title'       => $item->get_title(),
-                    'image'       => get_tag_image($item->get_description()),
-                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
-                    'content'     => $item->get_content(),
+                    'desa_id' => $desa['desa_id'],
+                    'nama_desa' => $desa['nama'],
+                    'feed_link' => $item->get_feed()->get_permalink(),
+                    'feed_title' => $item->get_feed()->get_title(),
+                    'link' => $item->get_link(),
+                    'date' => \Carbon\Carbon::parse($item->get_date('U')),
+                    'author' => $item->get_author()->get_name() ?? 'Administrator',
+                    'title' => $item->get_title(),
+                    'image' => get_tag_image($item->get_description()),
+                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250).'[...]'),
+                    'content' => $item->get_content(),
                 ];
             }
         }
@@ -123,7 +123,7 @@ class PageController extends Controller
         $req = $request->cari;
         if ($req != '') {
             $feeds = $feeds->filter(function ($value, $key) use ($req) {
-                return (stripos($value['title'], $req) || stripos($value['description'], $req));
+                return stripos($value['title'], $req) || stripos($value['description'], $req);
             });
         }
 
@@ -137,11 +137,11 @@ class PageController extends Controller
 
         $feeds->all();
 
-        $html =  view('pages.berita.feeds', [
-            'page_title'       => 'Beranda',
-            'cari_desa'        => null,
-            'list_desa'        => DataDesa::orderBy('desa_id')->get(),
-            'feeds'            => $feeds,
+        $html = view('pages.berita.feeds', [
+            'page_title' => 'Beranda',
+            'cari_desa' => null,
+            'list_desa' => DataDesa::orderBy('desa_id')->get(),
+            'feeds' => $feeds,
         ])->render();
 
         return response()->json(compact('html'));
@@ -149,8 +149,8 @@ class PageController extends Controller
 
     public function PotensiByKategory($slug)
     {
-        $kategoriPotensi  = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
-        $page_title       = 'Potensi';
+        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+        $page_title = 'Potensi';
         $page_description = 'Potensi-Potensi';
 
         $potensis = DB::table('das_potensi')->where('kategori_id', $kategoriPotensi->id)->simplePaginate(10);
@@ -160,10 +160,10 @@ class PageController extends Controller
 
     public function PotensiShow($kategori, $slug)
     {
-        $kategoriPotensi  = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
-        $page_title       = 'Potensi';
+        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+        $page_title = 'Potensi';
         $page_description = 'Potensi-Potensi Kecamatan';
-        $potensi          = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
+        $potensi = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
 
         return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi', 'kategoriPotensi']));
     }
@@ -172,8 +172,8 @@ class PageController extends Controller
     {
         // Counter::count('desa.show');
 
-        $desa             = DataDesa::nama($slug)->firstOrFail();
-        $page_title       = 'Desa ' . $desa->nama;
+        $desa = DataDesa::nama($slug)->firstOrFail();
+        $page_title = 'Desa '.$desa->nama;
         $page_description = 'Data Desa';
 
         return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
@@ -187,8 +187,8 @@ class PageController extends Controller
     public function detailBerita($slug)
     {
         $artikel = Artikel::where('slug', $slug)->status()->firstOrFail();
-        $page_title       = $artikel->judul;
-        $page_description = substr($artikel->isi, 0, 300) . ' ...';
+        $page_title = $artikel->judul;
+        $page_description = substr($artikel->isi, 0, 300).' ...';
         $page_image = $artikel->gambar;
 
         return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel'));
@@ -196,8 +196,8 @@ class PageController extends Controller
 
     public function eventDetail($slug)
     {
-        $event            = Event::slug($slug)->firstOrFail();
-        $page_title       = $event->event_name;
+        $event = Event::slug($slug)->firstOrFail();
+        $page_title = $event->event_name;
         $page_description = $event->description;
 
         return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));

@@ -40,16 +40,16 @@ class EventController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Event';
+        $page_title = 'Event';
         $page_description = 'Daftar Event';
-        $events           = Event::getOpenEvents();
+        $events = Event::getOpenEvents();
 
         return view('informasi.event.index', compact('page_title', 'page_description', 'events'));
     }
 
     public function create()
     {
-        $page_title       = 'Event';
+        $page_title = 'Event';
         $page_description = 'Tambah Event';
 
         return view('informasi.event.create', compact('page_title', 'page_description'));
@@ -58,15 +58,16 @@ class EventController extends Controller
     public function store(EventRequest $request)
     {
         try {
-            $waktu = explode("-", $request->waktu);
+            $waktu = explode('-', $request->waktu);
 
             $input = $request->input();
-            $input['start']  = date('Y-m-d H:i', strtotime($waktu[0]));
-            $input['end']    = date('Y-m-d H:i', strtotime($waktu[1]));
+            $input['start'] = date('Y-m-d H:i', strtotime($waktu[0]));
+            $input['end'] = date('Y-m-d H:i', strtotime($waktu[1]));
             $input['status'] = 'OPEN';
             Event::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
 
@@ -75,9 +76,9 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
-        $page_title       = 'Event';
+        $page_title = 'Event';
         $page_description = 'Ubah Event';
-        $event->waktu     = $event->start . ' - ' . $event->end;
+        $event->waktu = $event->start.' - '.$event->end;
 
         return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
     }
@@ -85,23 +86,24 @@ class EventController extends Controller
     public function update(EventRequest $request, Event $event)
     {
         try {
-            $waktu = explode("-", $request->waktu);
+            $waktu = explode('-', $request->waktu);
             $input = $request->all();
 
             if ($request->hasFile('attachment')) {
                 $lampiran = $request->file('attachment');
                 $fileName = $lampiran->getClientOriginalName();
-                $path     = "event/" . $event->id . '/';
-                File::deleteDirectory(base_path('public/' . $path)); //hapus directory sebelumnya
+                $path = 'event/'.$event->id.'/';
+                File::deleteDirectory(base_path('public/'.$path)); //hapus directory sebelumnya
                 $lampiran->move(base_path('public/'.$path), $fileName);
-                $input['attachment'] = $path . $fileName;
+                $input['attachment'] = $path.$fileName;
             }
-            $input['end']    = date('Y-m-d H:i', strtotime($waktu[1]));
-            $input['start']  = date('Y-m-d H:i', strtotime($waktu[0]));
+            $input['end'] = date('Y-m-d H:i', strtotime($waktu[1]));
+            $input['start'] = date('Y-m-d H:i', strtotime($waktu[0]));
 
             $event->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Ubah Event gagal!');
         }
 
@@ -112,12 +114,13 @@ class EventController extends Controller
     {
         try {
             if ($event->delete()) {
-                if ($event->file_dokumen != null &&  File::exists(base_path('public/' . $event->file_dokumen))) {
-                    unlink(base_path('public/' . $event->file_dokumen));
+                if ($event->file_dokumen != null && File::exists(base_path('public/'.$event->file_dokumen))) {
+                    unlink(base_path('public/'.$event->file_dokumen));
                 }
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
         }
 

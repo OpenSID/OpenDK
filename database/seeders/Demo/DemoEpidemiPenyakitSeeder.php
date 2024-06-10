@@ -48,8 +48,8 @@ class DemoEpidemiPenyakitSeeder extends Seeder
         Excel::import(
             new ImporEpidemiPenyakit([
                 'penyakit_id' => JenisPenyakit::first()->id,
-                'bulan'       => now()->month,
-                'tahun'       => now()->year,
+                'bulan' => now()->month,
+                'tahun' => now()->year,
             ]),
             'template_upload/Format_Upload_Epidemi_Penyakit.xlsx',
             'public'

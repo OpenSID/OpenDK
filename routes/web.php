@@ -71,7 +71,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     });
 
     Route::group(['middleware' => 'maintenance'], function () {
-
         /**
          * Group Routing for Halaman Website
          */
@@ -601,7 +600,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'setting'], function () {
             // User Management
-            Route::group(['prefix' => 'user', 'controller' => UserController::class,'middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
@@ -736,14 +735,14 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
     Route::get('/api/list-penduduk', function () {
         return Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(nik) LIKE \'%' . strtolower(request('q')) . '%\'')
+            ->whereRaw('lower(nama) LIKE \'%'.strtolower(request('q')).'%\' or lower(nik) LIKE \'%'.strtolower(request('q')).'%\'')
             ->paginate(10);
     });
 
     // TODO : Peserta KK gunakan das_keluarga
     Route::get('/api/list-kk', function () {
         return Penduduk::selectRaw('no_kk as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(no_kk) LIKE \'%' . strtolower(request('q')) . '%\'')
+            ->whereRaw('lower(nama) LIKE \'%'.strtolower(request('q')).'%\' or lower(no_kk) LIKE \'%'.strtolower(request('q')).'%\'')
             ->where('kk_level', 1)
             ->paginate(10);
     });

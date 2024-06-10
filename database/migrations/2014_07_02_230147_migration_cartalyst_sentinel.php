@@ -118,7 +118,7 @@ class MigrationCartalystSentinel extends Migration
             $table->text('address')->nullable();
             $table->string('ip_address')->nullable();
             $table->string('phone')->nullable();
-            $table->enum('gender', [ 'Male', 'Female' ])->nullable();
+            $table->enum('gender', ['Male', 'Female'])->nullable();
             $table->integer('status')->nullable();
             $table->timestamps();
             $table->softDeletes();

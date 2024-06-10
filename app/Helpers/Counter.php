@@ -31,16 +31,16 @@
 
 namespace App\Helpers;
 
+use App\Models\CounterPage;
+use App\Models\CounterVisitor;
+use Carbon\Carbon;
+use function config;
 use function env;
 use function hash;
-use function config;
-use App\Models\CounterPage;
-use function number_format;
-use App\Models\CounterVisitor;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use function number_format;
 
 class Counter
 {

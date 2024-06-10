@@ -40,13 +40,11 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="modal-upload-label">Unggah Tema</h4>
                 </div>
-                <form id="upload-form" class="form-horizontal" method="post" enctype="multipart/form-data">
+                <form id="upload-form" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="file" class="control-label col-md-3 col-sm-3 col-xs-12">File</label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <input type="file" name="file" id="file" class="form-control" required>
-                        </div>
+                        <label for="file" class="control-label">File<code>.zip</code></label>
+                        <input type="file" name="file" id="file" class="form-control" accept=".zip" required>
                     </div>
                 </div>
                 <div class="modal-footer">

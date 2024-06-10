@@ -37,6 +37,14 @@ class ThemesController extends BackEndController
     {
         try {
             $file = request()->file('file');
+
+            if ($file->getClientOriginalExtension() !== 'zip') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'File harus berformat .zip',
+                ]);
+            }
+
             $fileName = $file->getClientOriginalName();
             $filePath = storage_path('framework/themes');
             $file->move($filePath, $fileName);

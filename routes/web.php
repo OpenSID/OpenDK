@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Informasi\EventController;
@@ -690,6 +691,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('sub_coa/{type_id}', 'get_sub_coa')->name('setting.coa.sub_coa');
                 Route::get('sub_sub_coa/{type_id}/{sub_id}', 'get_sub_sub_coa')->name('setting.coa.sub_sub_coa');
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', 'generate_id')->name('setting.coa.generate_id');
+            });
+
+            // Themes
+            Route::group(['prefix' => 'themes', 'controller' => ThemesController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.themes.index');
+                Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
+                Route::get('rescan', 'rescan')->name('setting.themes.rescan');
+                // post to-upload
+                Route::post('upload', 'upload')->name('setting.themes.upload');
+                Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
             });
 
             Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {

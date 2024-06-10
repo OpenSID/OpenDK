@@ -29,13 +29,36 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-class FrontEndController extends Controller
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
+
+class Themes extends Model
 {
-    public function __construct()
+    protected $table = 'das_themes';
+
+    protected $guarded = [];
+
+    // append slug attribute
+    protected $appends = ['slug'];
+
+    public function getSlugAttribute()
     {
-        parent::__construct();
-        theme_active();
+        return $this->vendor.'/'.$this->name;
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($themes) {
+            if ($themes->system != 0) {
+                $path = base_path('themes/'.$themes->slug);
+                if (file_exists($path)) {
+                    File::deleteDirectory($path);
+                }
+            }
+        });
     }
 }

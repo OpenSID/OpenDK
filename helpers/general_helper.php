@@ -447,7 +447,7 @@ if (! function_exists('scan_themes')) {
         $themes = \Hexadog\ThemesManager\Facades\ThemesManager::all();
         foreach ($themes as $theme) {
             // akse agar symlink dibuat
-            \Hexadog\ThemesManager\Facades\ThemesManager::set($theme->getVendor() . '/' . $theme->getName());
+            \Hexadog\ThemesManager\Facades\ThemesManager::set($theme->getVendor().'/'.$theme->getName());
             \App\Models\Themes::UpdateOrCreate([
                 'vendor' => $theme->getVendor(),
                 'name' => $theme->getName(),

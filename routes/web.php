@@ -29,26 +29,26 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\BackEnd\ThemesController;
+use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Informasi\EventController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\Setting\COAController;
+use App\Http\Controllers\Setting\JenisPenyakitController;
+use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\User\UserController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LogViewerController;
-use App\Http\Controllers\Role\RoleController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\Setting\SlideController;
-use App\Http\Controllers\BackEnd\ThemesController;
-use App\Http\Controllers\Counter\CounterController;
-use App\Http\Controllers\Informasi\EventController;
-use App\Http\Controllers\Setting\AplikasiController;
-use App\Http\Controllers\Setting\TipePotensiController;
-use App\Http\Controllers\Setting\TipeRegulasiController;
-use App\Http\Controllers\Setting\JenisPenyakitController;
-use App\Http\Controllers\Setting\KategoriKomplainController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

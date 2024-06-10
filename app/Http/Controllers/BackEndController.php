@@ -31,8 +31,6 @@
 
 namespace App\Http\Controllers;
 
-use Hexadog\ThemesManager\Facades\ThemesManager;
-
 class BackEndController extends Controller
 {
     public function __construct()

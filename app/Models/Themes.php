@@ -31,8 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 
 class Themes extends Model
 {
@@ -45,7 +45,7 @@ class Themes extends Model
 
     public function getSlugAttribute()
     {
-        return $this->vendor . '/' . $this->name;
+        return $this->vendor.'/'.$this->name;
     }
 
     public static function boot()
@@ -54,7 +54,7 @@ class Themes extends Model
 
         static::deleting(function ($themes) {
             if ($themes->system != 0) {
-                $path = base_path('themes/' . $themes->slug);
+                $path = base_path('themes/'.$themes->slug);
                 if (file_exists($path)) {
                     File::deleteDirectory($path);
                 }

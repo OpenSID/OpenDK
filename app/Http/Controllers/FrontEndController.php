@@ -31,9 +31,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Themes;
-use Hexadog\ThemesManager\Facades\ThemesManager;
-
 class FrontEndController extends Controller
 {
     public function __construct()

@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\BackEnd;
 
-use App\Models\Themes;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\File;
 use App\Http\Controllers\BackEndController;
-use Hexadog\ThemesManager\Facades\ThemesManager;
+use App\Models\Themes;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class ThemesController extends BackEndController
 {
     public function index()
     {
-        $page_title       = 'Tema';
+        $page_title = 'Tema';
         $page_description = 'Daftar Tema';
-        $themes           = Themes::orderBy('active', 'desc')->get();
+        $themes = Themes::orderBy('active', 'desc')->get();
 
         return view('backend.themes.index', compact('page_title', 'page_description', 'themes'));
     }
@@ -44,7 +42,7 @@ class ThemesController extends BackEndController
             $file->move($filePath, $fileName);
 
             $zip = new \ZipArchive;
-            if ($zip->open("$filePath/$fileName") === TRUE) {
+            if ($zip->open("$filePath/$fileName") === true) {
                 $extractedPath = base_path('themes/extracted');
                 $zip->extractTo($extractedPath);
                 $zip->close();
@@ -54,8 +52,8 @@ class ThemesController extends BackEndController
 
                 if (file_exists($composerPath)) {
                     $composerData = json_decode(file_get_contents($composerPath), true);
-                    $newFolder = base_path('themes/' . $composerData['name']);
-                    
+                    $newFolder = base_path('themes/'.$composerData['name']);
+
                     if (File::move("$extractedPath/$folderTheme", $newFolder)) {
                         File::deleteDirectory($extractedPath);
                         File::deleteDirectory($filePath);
@@ -64,7 +62,7 @@ class ThemesController extends BackEndController
 
                         return response()->json([
                             'status' => 'success',
-                            'message' => 'Tema berhasil diunggah'
+                            'message' => 'Tema berhasil diunggah',
                         ]);
                     } else {
                         File::deleteDirectory($extractedPath);
@@ -73,16 +71,14 @@ class ThemesController extends BackEndController
                 }
             }
         } catch (\Exception $e) {
-            Log::error('File upload failed: ' . $e->getMessage());
+            Log::error('File upload failed: '.$e->getMessage());
         }
 
         return response()->json([
             'status' => 'error',
-            'message' => 'Tema gagal diunggah'
+            'message' => 'Tema gagal diunggah',
         ]);
     }
-
-
 
     // destroy
     public function destroy(Themes $themes)

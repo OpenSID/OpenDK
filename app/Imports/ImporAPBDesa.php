@@ -48,7 +48,6 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
 {
     use Importable;
 
-    /** @var $request */
     protected $request;
 
     public function __construct(array $request)
@@ -73,26 +72,26 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $index => $value) {
-            if (!in_array($this->request['desa'], $kode_desa)) {
+            if (! in_array($this->request['desa'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa pada baris ke-'. $index + 2 .' tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [
-                'desa_id'   => $this->request['desa'],
-                'bulan'     => $this->request['bulan'],
-                'tahun'     => $this->request['tahun'],
-                'no_akun'   => $value['no_akun'],
+                'desa_id' => $this->request['desa'],
+                'bulan' => $this->request['bulan'],
+                'tahun' => $this->request['tahun'],
+                'no_akun' => $value['no_akun'],
                 'nama_akun' => $value['nama_akun'],
-                'jumlah'    => $value['jumlah'],
+                'jumlah' => $value['jumlah'],
             ];
 
             AnggaranDesa::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'bulan'        => $insert['bulan'],
-                'tahun'        => $insert['tahun'],
-                'no_akun'      => $value['no_akun'],
+                'desa_id' => $insert['desa_id'],
+                'bulan' => $insert['bulan'],
+                'tahun' => $insert['tahun'],
+                'no_akun' => $value['no_akun'],
             ], $insert);
         }
         DB::commit();

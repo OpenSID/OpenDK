@@ -73,10 +73,10 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $index => $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa pada baris ke-'. $index + 2 .' tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [

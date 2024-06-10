@@ -67,91 +67,91 @@ class ImporPendudukKeluarga implements ToCollection, WithHeadingRow, WithChunkRe
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $index => $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
 
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                 Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
-                throw  new Exception('kode Desa pada baris ke-'. $index + 2 .' tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             // Data Keluarga
             if ($value['hubungan_keluarga'] == 1) {
                 $keluarga = [
-                    'no_kk'                 => $value['nomor_kk'],
-                    'nik_kepala'            => $value['nomor_nik'],
-                    'tgl_daftar'            => $value['tgl_daftar'] ?? now(),
-                    'tgl_cetak_kk'          => $value['tgl_cetak_kk'] ?? now(),
-                    'alamat'                => $value['alamat'],
-                    'dusun'                 => $value['dusun'],
-                    'rw'                    => $value['rw'],
-                    'rt'                    => $value['rt'],
-                    'desa_id'               => $value['desa_id'],
-                    'created_at'            => now(),
-                    'updated_at'            => now(),
+                    'no_kk' => $value['nomor_kk'],
+                    'nik_kepala' => $value['nomor_nik'],
+                    'tgl_daftar' => $value['tgl_daftar'] ?? now(),
+                    'tgl_cetak_kk' => $value['tgl_cetak_kk'] ?? now(),
+                    'alamat' => $value['alamat'],
+                    'dusun' => $value['dusun'],
+                    'rw' => $value['rw'],
+                    'rt' => $value['rt'],
+                    'desa_id' => $value['desa_id'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
 
                 Keluarga::updateOrInsert([
-                    'desa_id'      => $keluarga['desa_id'],
-                    'no_kk'        => $keluarga['no_kk']
+                    'desa_id' => $keluarga['desa_id'],
+                    'no_kk' => $keluarga['no_kk'],
                 ], $keluarga);
             }
 
             // Data Penduduk
             $penduduk = [
-                'nik'                   => $value['nomor_nik'],
-                'nama'                  => $value['nama'],
-                'no_kk'                 => $value['nomor_kk'],
-                'sex'                   => $value['jenis_kelamin'],
-                'tempat_lahir'          => $value['tempat_lahir'],
-                'tanggal_lahir'         => $value['tanggal_lahir'],
-                'agama_id'              => $value['agama'],
-                'pendidikan_kk_id'      => $value['pendidikan_dlm_kk'],
-                'pendidikan_sedang_id'  => $value['pendidikan_sdg_ditempuh'],
-                'pekerjaan_id'          => $value['pekerjaan'],
-                'status_kawin'          => $value['kawin'],
-                'kk_level'              => $value['hubungan_keluarga'],
-                'warga_negara_id'       => $value['kewarganegaraan'],
-                'nama_ibu'              => $value['nama_ibu'],
-                'nama_ayah'             => $value['nama_ayah'],
-                'golongan_darah_id'     => $value['gol_darah'],
-                'akta_lahir'            => $value['akta_lahir'],
-                'dokumen_pasport'       => $value['nomor_dokumen_pasport'],
+                'nik' => $value['nomor_nik'],
+                'nama' => $value['nama'],
+                'no_kk' => $value['nomor_kk'],
+                'sex' => $value['jenis_kelamin'],
+                'tempat_lahir' => $value['tempat_lahir'],
+                'tanggal_lahir' => $value['tanggal_lahir'],
+                'agama_id' => $value['agama'],
+                'pendidikan_kk_id' => $value['pendidikan_dlm_kk'],
+                'pendidikan_sedang_id' => $value['pendidikan_sdg_ditempuh'],
+                'pekerjaan_id' => $value['pekerjaan'],
+                'status_kawin' => $value['kawin'],
+                'kk_level' => $value['hubungan_keluarga'],
+                'warga_negara_id' => $value['kewarganegaraan'],
+                'nama_ibu' => $value['nama_ibu'],
+                'nama_ayah' => $value['nama_ayah'],
+                'golongan_darah_id' => $value['gol_darah'],
+                'akta_lahir' => $value['akta_lahir'],
+                'dokumen_pasport' => $value['nomor_dokumen_pasport'],
                 'tanggal_akhir_pasport' => $value['tanggal_akhir_pasport'],
-                'dokumen_kitas'         => $value['nomor_dokumen_kitas'],
-                'ayah_nik'              => $value['nik_ayah'],
-                'ibu_nik'               => $value['nik_ibu'],
-                'akta_perkawinan'       => $value['nomor_akta_perkawinan'],
-                'tanggal_perkawinan'    => $value['tanggal_perkawinan'],
-                'akta_perceraian'       => $value['nomor_akta_perceraian'],
-                'tanggal_perceraian'    => $value['tanggal_perceraian'],
-                'cacat_id'              => $value['cacat'],
-                'cara_kb_id'            => $value['cara_kb'],
-                'hamil'                 => $value['hamil'],
+                'dokumen_kitas' => $value['nomor_dokumen_kitas'],
+                'ayah_nik' => $value['nik_ayah'],
+                'ibu_nik' => $value['nik_ibu'],
+                'akta_perkawinan' => $value['nomor_akta_perkawinan'],
+                'tanggal_perkawinan' => $value['tanggal_perkawinan'],
+                'akta_perceraian' => $value['nomor_akta_perceraian'],
+                'tanggal_perceraian' => $value['tanggal_perceraian'],
+                'cacat_id' => $value['cacat'],
+                'cara_kb_id' => $value['cara_kb'],
+                'hamil' => $value['hamil'],
 
                 // Tambahan
-                'foto'            => $value['foto'],
+                'foto' => $value['foto'],
                 'alamat_sekarang' => $value['alamat_sekarang'],
-                'alamat'          => $value['alamat'],
-                'dusun'           => $value['dusun'],
-                'rw'              => $value['rw'],
-                'rt'              => $value['rt'],
-                'desa_id'         => $value['desa_id'],
-                'status_dasar'    => $value['status_dasar'],
-                'status_rekam'    => $value['status_rekam'],
-                'created_at'      => $value['created_at'],
-                'updated_at'      => $value['updated_at'],
-                'imported_at'     => now(),
+                'alamat' => $value['alamat'],
+                'dusun' => $value['dusun'],
+                'rw' => $value['rw'],
+                'rt' => $value['rt'],
+                'desa_id' => $value['desa_id'],
+                'status_dasar' => $value['status_dasar'],
+                'status_rekam' => $value['status_rekam'],
+                'created_at' => $value['created_at'],
+                'updated_at' => $value['updated_at'],
+                'imported_at' => now(),
             ];
 
             Penduduk::updateOrInsert([
-                'desa_id'      => $penduduk['desa_id'],
-                'nik'          => $penduduk['nik'],
+                'desa_id' => $penduduk['desa_id'],
+                'nik' => $penduduk['nik'],
             ], $penduduk);
 
             if ($value['foto']) {
-                $temp_foto = 'temp/penduduk/foto/' . $value['foto'];
-                $public_foto = 'public/penduduk/foto/' . $value['foto'];
+                $temp_foto = 'temp/penduduk/foto/'.$value['foto'];
+                $public_foto = 'public/penduduk/foto/'.$value['foto'];
 
                 // Salin file yang dibutuhkan
                 if (Storage::exists($temp_foto)) {

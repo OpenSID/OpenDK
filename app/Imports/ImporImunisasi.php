@@ -48,7 +48,7 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -73,23 +73,23 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $index => $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa pada baris ke-'. $index + 2 .' tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [
-                'desa_id'           => $value['desa_id'],
-                'bulan'             => $this->request['bulan'],
-                'tahun'             => $this->request['tahun'],
+                'desa_id' => $value['desa_id'],
+                'bulan' => $this->request['bulan'],
+                'tahun' => $this->request['tahun'],
                 'cakupan_imunisasi' => $value['cakupan_imunisasi'],
             ];
 
             Imunisasi::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'bulan'        => $insert['bulan'],
-                'tahun'        => $insert['tahun'],
+                'desa_id' => $insert['desa_id'],
+                'bulan' => $insert['bulan'],
+                'tahun' => $insert['tahun'],
             ], $insert);
         }
         DB::commit();

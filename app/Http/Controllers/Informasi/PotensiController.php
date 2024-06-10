@@ -43,9 +43,8 @@ class PotensiController extends Controller
         $page_title = 'Potensi';
         $page_description = 'Daftar Potensi';
         $potensis = Potensi::latest()->paginate(10);
-        $kategoriPotensi = TipePotensi::pluck('nama_kategori', 'id');
 
-        return view('informasi.potensi.index', compact('page_title', 'page_description', 'potensis', 'kategoriPotensi'));
+        return view('informasi.potensi.index', compact('page_title', 'page_description', 'potensis'));
     }
 
     public function kategori()

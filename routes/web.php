@@ -284,6 +284,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'potensi'], function () {
                     Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
                     Route::get('show/{potensi}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                     Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
                     Route::post('store', ['as' => 'informasi.potensi.store', 'uses' => 'PotensiController@store']);
                     Route::get('edit/{potensi}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);

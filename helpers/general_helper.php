@@ -440,3 +440,39 @@ if (! function_exists('parsedown')) {
         return $parsedown;
     }
 }
+
+if (! function_exists('scan_themes')) {
+    function scan_themes()
+    {
+        $themes = \Hexadog\ThemesManager\Facades\ThemesManager::all();
+        foreach ($themes as $theme) {
+            // akse agar symlink dibuat
+            \Hexadog\ThemesManager\Facades\ThemesManager::set($theme->getVendor().'/'.$theme->getName());
+            \App\Models\Themes::UpdateOrCreate([
+                'vendor' => $theme->getVendor(),
+                'name' => $theme->getName(),
+            ], [
+                'version' => $theme->getVersion(),
+                'description' => $theme->getDescription(),
+                'path' => $theme->getPath(),
+                'screenshot' => $theme->getScreenshotImageUrl(),
+                'system' => true,
+                'options' => null,
+            ]);
+        }
+    }
+}
+
+if (! function_exists('theme_active')) {
+    function theme_active()
+    {
+        $themeActive = \App\Models\Themes::where('active', 1)->first();
+        if (! $themeActive) {
+            $themeActive = \App\Models\Themes::where('system', 1)->first();
+            $themeActive->active = 1;
+            $themeActive->save();
+        }
+
+        return \Hexadog\ThemesManager\Facades\ThemesManager::set($themeActive->slug);
+    }
+}

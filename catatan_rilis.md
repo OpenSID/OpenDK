@@ -3,7 +3,7 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 
 #### FITUR
 
-1. 
+1. [#262](https://github.com/OpenSID/OpenDK/issues/262) Penambahan modul themes.
 
 
 #### BUG

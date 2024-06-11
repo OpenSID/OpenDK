@@ -29,17 +29,17 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Pengurus;
 use App\Models\Profil;
 use Illuminate\Support\Facades\DB;
 
-class ProfilController extends Controller
+class ProfilController extends FrontEndController
 {
     public function sejarah()
     {

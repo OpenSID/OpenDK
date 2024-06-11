@@ -15,6 +15,7 @@
         "cviebrock/eloquent-sluggable": "^9.0",
         "doctrine/dbal": "^2.9",
         "guzzlehttp/guzzle": "^7.2",
+        "hexadog/laravel-themes-manager": "^1.13",
         "jaybizzle/crawler-detect": "1.*",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^9.19",
@@ -64,7 +65,8 @@
     "config": {
         "allow-plugins": {
             "symfony/thanks": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "hexadog/laravel-theme-installer": true
         },
         "platform": {
             "php": "8.0.30"

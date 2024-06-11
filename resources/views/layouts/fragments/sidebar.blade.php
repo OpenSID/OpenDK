@@ -322,6 +322,10 @@
                                     href="{{ route('setting.hasrole.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a></li>
                         @endif --}}
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
+                            <li {{ Request::is(['setting/themes*']) ? 'class=active' : '' }}><a href="{{ route('setting.themes.index') }}"><i
+                                        class="fa fa-circle-o"></i>Themes</a></li>
+                            @endif
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))

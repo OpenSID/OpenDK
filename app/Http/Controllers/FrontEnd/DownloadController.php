@@ -29,9 +29,10 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
+use App\Http\Controllers\FrontEndController;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
 use App\Models\FormDokumen;
@@ -39,7 +40,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class DownloadController extends Controller
+class DownloadController extends FrontEndController
 {
     public function indexProsedur()
     {

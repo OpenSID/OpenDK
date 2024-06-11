@@ -1,0 +1,20 @@
+{
+    "name": "opendk/default",
+    "description": "Tema bawaan OpenDK",
+    "type": "laravel-theme",
+    "version": "1.0.0",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Arifpriadi",
+            "email": "arifpriadi@gmail.com"
+        }
+    ],
+    "extra": {
+        "theme": {
+            "parent": "",
+            "active": true,
+            "screenshot": "screenshot.png"
+        }
+    }
+}

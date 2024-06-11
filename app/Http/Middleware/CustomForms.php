@@ -67,7 +67,6 @@ class CustomForms
             if ($errors && $errors->has($field)) {
                 return ' has-error';
             }
-
         });
 
         // Generate error message if the given field has errors...
@@ -75,7 +74,6 @@ class CustomForms
             if ($errors && $errors->has($field)) {
                 return sprintf('<p class="help-block text-danger">%s</p>', $errors->first($field));
             }
-
         });
 
         return $next($request);

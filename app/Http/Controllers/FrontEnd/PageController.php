@@ -29,10 +29,10 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontEndController;
 use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\Event;
@@ -40,7 +40,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use willvincent\Feeds\Facades\FeedsFacade;
 
-class PageController extends Controller
+class PageController extends FrontEndController
 {
     protected $data = [];
 
@@ -59,13 +59,7 @@ class PageController extends Controller
     {
         $this->data = $this->getFeeds();
 
-        // dd(
-        //     $this->data,
-        //     collect($this->data)->sortByDesc('date')->take(30)
-        // );
-
         $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
-        // $feeds->all();
 
         return view('pages.berita.desa', [
             'page_title' => 'Berita Desa',

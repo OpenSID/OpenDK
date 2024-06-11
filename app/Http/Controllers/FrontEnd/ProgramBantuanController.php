@@ -29,15 +29,15 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
 use App\Models\Program;
 use Illuminate\Support\Facades\DB;
 
-class ProgramBantuanController extends Controller
+class ProgramBantuanController extends FrontEndController
 {
     /**
      * Menampilkan Data Program Bantuan

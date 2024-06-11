@@ -29,18 +29,13 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Faq;
-
-class WebFaqController extends Controller
+class FrontEndController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        $faq = Faq::where('status', 1)->latest()->paginate(10);
-        $page_title = 'Pertanyaan Yang Sering Diajukan';
-
-        return view('pages.faq.index', compact('page_title', 'faq'));
+        parent::__construct();
+        theme_active();
     }
 }

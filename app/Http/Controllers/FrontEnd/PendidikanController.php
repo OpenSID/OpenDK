@@ -29,14 +29,14 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Page;
+namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
 use Illuminate\Support\Facades\DB;
 
-class PendidikanController extends Controller
+class PendidikanController extends FrontEndController
 {
     public $nama_kuartal = ['q1' => 'Kuartal 1', 'q2' => 'Kuartal 2', 'q3' => 'Kuartal 3', 'q4' => 'Kuartal 4'];
 

@@ -55,25 +55,14 @@ class PutusSekolahController extends Controller
      */
     public function getDataPutusSekolah()
     {
-        if (request()->ajax()) {
-            $desa = request()->input('desa');
+        return DataTables::of(PutusSekolah::with(['desa'])->get())
+            ->addColumn('aksi', function ($row) {
+                $data['edit_url'] = route('data.putus-sekolah.edit', $row->id);
+                $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
 
-            return DataTables::of(
-                PutusSekolah::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
-                        return $query->where('desa_id', $desa);
-                    })
-                    ->with('desa')
-                    ->get()
-                )
-                ->addColumn('aksi', function ($row) {
-                    $data['edit_url'] = route('data.putus-sekolah.edit', $row->id);
-                    $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
-
-                    return view('forms.aksi', $data);
-                })
-                ->rawColumns(['aksi'])
-                ->make();
-        }
+                return view('forms.aksi', $data);
+            })
+            ->rawColumns(['aksi'])->make();
     }
 
     /**

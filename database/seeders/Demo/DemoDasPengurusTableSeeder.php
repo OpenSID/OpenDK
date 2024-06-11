@@ -31,7 +31,6 @@
 
 namespace Database\Seeders\Demo;
 
-use App\Models\Pengurus;
 use App\Enums\JenisJabatan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -45,6 +44,29 @@ class DemoDasPengurusTableSeeder extends Seeder
      */
     public function run()
     {
-        Pengurus::factory()->count(1)->create();
+        $data = [
+            'nama' => 'H. Hadi Fathurrahman, S.Sos, M.AP',
+            'gelar_depan' => null,
+            'gelar_belakang' => null,
+            'nip' => null,
+            'nik' => random_int(16, 16),
+            'status' => 1,
+            'foto' => null,
+            'tempat_lahir' => 'Mangsit',
+            'tanggal_lahir' => now(),
+            'sex' => 1,
+            'pendidikan_id' => 1,
+            'agama_id' => 1,
+            'no_sk' => null,
+            'tanggal_sk' => now(),
+            'masa_jabatan' => 5,
+            'pangkat' => 'Camat',
+            'no_henti' => null,
+            'tanggal_henti' => null,
+            'jabatan_id' => JenisJabatan::Camat,
+            'created_at' => now(),
+        ];
+
+        DB::table('das_pengurus')->insert($data);
     }
 }

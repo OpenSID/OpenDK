@@ -32,8 +32,8 @@
 namespace Database\Seeders\Demo;
 
 use App\Models\Artikel;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
-use Database\Factories\ArtikelFactory;
 
 class DemoArtikelSeeder extends Seeder
 {
@@ -44,6 +44,19 @@ class DemoArtikelSeeder extends Seeder
      */
     public function run()
     {
-        Artikel::factory()->count(20)->create();
+        Artikel::truncate();
+
+        $faker = Factory::create('id-ID');
+
+        foreach (range(1, 20) as $index) {
+            Artikel::create([
+                'judul' => $faker->sentence(),
+                'gambar' => '/img/no-image.png',
+                'isi' => $faker->paragraph(),
+                'status' => 1, //$faker->randomElement([0, 1]),
+                'created_at' => $faker->dateTimeThisYear(),
+                'updated_at' => $faker->dateTimeThisYear(),
+            ]);
+        }
     }
 }

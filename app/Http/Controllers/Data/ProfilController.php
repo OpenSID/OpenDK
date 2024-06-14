@@ -50,8 +50,9 @@ class ProfilController extends Controller
         $page_title = 'Profil';
         $page_description = 'Data Profil';
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
+        $adaDesa       = DataUmum::where('profil_id', $profil->id)->exists();
 
-        return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau'));
+        return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau', 'adaDesa'));
     }
 
     /**

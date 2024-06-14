@@ -7,4 +7,10 @@
     <!-- Select2 -->
     <script src="{{ asset('/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('/bower_components/select2/dist/js/i18n/en.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
 @endpush

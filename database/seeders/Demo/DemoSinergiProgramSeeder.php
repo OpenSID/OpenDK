@@ -54,6 +54,8 @@ class DemoSinergiProgramSeeder extends Seeder
             ],
         ];
 
-        SinergiProgram::insert($data);
+        foreach ($data as $program) {
+            SinergiProgram::create($program);
+        }
     }
 }

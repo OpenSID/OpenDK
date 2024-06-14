@@ -31,10 +31,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PotensiRequest;
 use App\Models\Potensi;
 use App\Models\TipePotensi;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PotensiRequest;
+use Yajra\DataTables\Facades\DataTables;
 
 class PotensiController extends Controller
 {
@@ -42,9 +43,24 @@ class PotensiController extends Controller
     {
         $page_title = 'Potensi';
         $page_description = 'Daftar Potensi';
-        $potensis = Potensi::latest()->paginate(10);
 
-        return view('informasi.potensi.index', compact('page_title', 'page_description', 'potensis'));
+        return view('informasi.potensi.index', compact('page_title', 'page_description'));
+    }
+
+    public function getDataPotensi()
+    {
+        return DataTables::of(Potensi::query())
+            ->addColumn('aksi', function ($row) {
+                $data['show_url'] = route('informasi.potensi.show', $row->id);
+
+                if (! auth()->guest()) {
+                    $data['edit_url'] = route('informasi.potensi.edit', $row->id);
+                    $data['delete_url'] = route('informasi.potensi.destroy', $row->id);
+                }
+
+                return view('forms.aksi', $data);
+            })
+            ->make();
     }
 
     public function kategori()

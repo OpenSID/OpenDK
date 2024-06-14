@@ -25,6 +25,8 @@
                 </div>
             </div>
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="aki-table">
                         <thead>
@@ -44,6 +46,7 @@
     </section>
 @endsection
 
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
@@ -52,7 +55,12 @@
             var data = $('#aki-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.aki-akb.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.aki-akb.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -86,6 +94,10 @@
                 order: [
                     [1, 'desc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
             });
         });
     </script>

@@ -31,11 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class KeluargaController extends Controller
 {
@@ -48,8 +49,9 @@ class KeluargaController extends Controller
     {
         $page_title = 'Keluarga';
         $page_description = 'Daftar Keluarga';
+        $list_desa = DataDesa::get();
 
-        return view('data.keluarga.index', compact('page_title', 'page_description'));
+        return view('data.keluarga.index', compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**
@@ -58,7 +60,15 @@ class KeluargaController extends Controller
     public function getKeluarga()
     {
         if (request()->ajax()) {
-            return DataTables::of(Keluarga::has('kepala_kk')->get())
+            $desa = request('desa');
+
+            return DataTables::of(Keluarga::has('kepala_kk')
+                ->when($desa, function ($query) use ($desa) {
+                    return $desa === 'Semua'
+                        ? $query
+                        : $query->where('das_data_desa.desa_id', $desa);
+                })
+                ->get())
                 ->addColumn('aksi', function ($row) {
                     $data['show_url'] = route('data.keluarga.show', $row->id);
 

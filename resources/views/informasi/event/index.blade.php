@@ -1,6 +1,5 @@
-<?php
-use Carbon\Carbon;
-?>
+@php use Illuminate\Support\Carbon; @endphp
+
 @extends('layouts.dashboard_template')
 
 @section('content')

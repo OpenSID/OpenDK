@@ -45,22 +45,26 @@ class DemoPotensiSeeder extends Seeder
     public function run()
     {
         $kategori = [
-            ['nama_kategori' => 'Kategori 1', 'slug' => 'kategori-1'],
-            ['nama_kategori' => 'Kategori 2', 'slug' => 'kategori-2'],
+            ['nama_kategori' => 'Kategori 1'],
+            ['nama_kategori' => 'Kategori 2'],
         ];
 
-        TipePotensi::insert($kategori);
+        foreach ($kategori as $k) {
+            TipePotensi::create($k);
+        }
+
+        $kategori_id = TipePotensi::first()->id;
 
         $potensi = [
             [
-                'kategori_id' => 1,
+                'kategori_id' => $kategori_id,
                 'nama_potensi' => 'Potensi 1',
                 'deskripsi' => 'Deskripsi potensi 1',
                 'lokasi' => 'Lokasi potensi 1',
                 'file_gambar' => '/img/no-image.png',
             ],
             [
-                'kategori_id' => 1,
+                'kategori_id' => $kategori_id,
                 'nama_potensi' => 'Potensi 2',
                 'deskripsi' => 'Deskripsi potensi 2',
                 'lokasi' => 'Lokasi potensi 2',
@@ -68,6 +72,8 @@ class DemoPotensiSeeder extends Seeder
             ],
         ];
 
-        Potensi::insert($potensi);
+        foreach ($potensi as $p) {
+            Potensi::create($p);
+        }
     }
 }

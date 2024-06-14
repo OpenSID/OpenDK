@@ -52,6 +52,8 @@ class DemoFaqSeeder extends Seeder
             ],
         ];
 
-        Faq::insert($data);
+        foreach ($data as $faq) {
+            Faq::create($faq);
+        }
     }
 }

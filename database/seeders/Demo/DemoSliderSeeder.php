@@ -66,6 +66,9 @@ class DemoSliderSeeder extends Seeder
             ],
         ];
 
-        Slide::insert($data);
+        foreach ($data as $slide) {
+            Slide::create($slide);
+        }
+
     }
 }

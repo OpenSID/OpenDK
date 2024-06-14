@@ -50,18 +50,29 @@ class AnggaranDesaController extends Controller
 
     public function getDataAnggaran()
     {
-        return DataTables::of(AnggaranDesa::with('desa')->get())
-            ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })->editColumn('bulan', function ($row) {
-                return months_list()[$row->bulan];
-            })
-            ->editColumn('jumlah', function ($row) {
-                return number_format($row->jumlah, 2);
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                AnggaranDesa::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })->editColumn('bulan', function ($row) {
+                    return months_list()[$row->bulan];
+                })
+                ->editColumn('jumlah', function ($row) {
+                    return number_format($row->jumlah, 2);
+                })
+                ->rawColumns(['aksi'])
+                ->make();
+        }
     }
 
     public function import()

@@ -20,3 +20,4 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 
 1. [#845](https://github.com/OpenSID/OpenDK/issues/845) Penggunaan laravel pint.
 2. [#957](https://github.com/OpenSID/OpenDK/issues/957) Penyesuaian carbon menggunakan bawaan laravel.
+3. [#968](https://github.com/OpenSID/OpenDK/issues/968) Penyesuaian modul regulasi menggunakan datatable.

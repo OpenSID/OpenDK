@@ -43,13 +43,9 @@ class DemoDokumenSeeder extends Seeder
      */
     public function run()
     {
-        $data = [
-            [
-                'nama_dokumen' => 'Panduan OpenDK',
-                'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-            ],
-        ];
-
-        FormDokumen::insert($data);
+        FormDokumen::create([
+            'nama_dokumen' => 'Panduan OpenDK',
+            'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+        ]);
     }
 }

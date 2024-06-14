@@ -31,9 +31,10 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Models\Regulasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
-use App\Models\Regulasi;
+use Yajra\DataTables\Facades\DataTables;
 
 class RegulasiController extends Controller
 {
@@ -41,9 +42,25 @@ class RegulasiController extends Controller
     {
         $page_title = 'Regulasi';
         $page_description = 'Daftar Regulasi';
-        $regulasi = Regulasi::latest()->paginate(10); // TODO : Gunakan datatable
 
-        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi'));
+        return view('informasi.regulasi.index', compact('page_title', 'page_description'));
+    }
+
+    public function getDataRegulasi()
+    {
+        return DataTables::of(Regulasi::query())
+            ->addColumn('aksi', function ($row) {
+                $data['show_url'] = route('informasi.regulasi.show', $row->id);
+
+                if (! auth()->guest()) {
+                    $data['edit_url'] = route('informasi.regulasi.edit', $row->id);
+                    $data['delete_url'] = route('informasi.regulasi.destroy', $row->id);
+                }
+
+                $data['download_url'] = route('informasi.regulasi.download', $row->id);
+
+                return view('forms.aksi', $data);
+            })->make();
     }
 
     public function create()

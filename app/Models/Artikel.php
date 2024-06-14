@@ -31,13 +31,15 @@
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Artikel extends Model
 {
     use Sluggable;
+    use HasFactory;
 
     protected $table = 'das_artikel';
 

@@ -11,7 +11,8 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 1. [#930](https://github.com/OpenSID/OpenDK/issues/930) Perbaikan link email pada halaman website.
 2. [#934](https://github.com/OpenSID/OpenDK/issues/934) Perbaikan tampilan widget pegawai kecamatan.
 3. [#927](https://github.com/OpenSID/OpenDK/issues/927) Perbaikan keterangan gagal impor jika desa tidak terdaftar.
-4. [#963](https://github.com/OpenSID/OpenDK/issues/963) Perbaikan slug pada menu. 
+4. [#963](https://github.com/OpenSID/OpenDK/issues/963) Perbaikan slug pada menu.
+5. [#961](https://github.com/OpenSID/OpenDK/issues/961) Perbaikan ubah profil saat data desa sudah ada.
 
 
 #### TEKNIS

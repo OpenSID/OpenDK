@@ -55,13 +55,24 @@ class TingkatPendidikanController extends Controller
      */
     public function getData()
     {
-        return DataTables::of(TingkatPendidikan::with(['desa'])->get())
-            ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                TingkatPendidikan::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })
+                ->rawColumns(['aksi'])
+                ->make();
+        }
     }
 
     /**

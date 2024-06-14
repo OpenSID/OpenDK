@@ -3,7 +3,10 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Provinsi <span class="required">*</span></label>
             <div class="col-md-2 col-sm-3 col-xs-12">
-                @if ($status_pantau)
+
+                @if ($adaDesa)
+                    <input name="provinsi_id" class="form-control" placeholder="00" type="text" value="{{ $profil->provinsi_id }}" readonly />
+                @elseif ($status_pantau)
                     <input id="provinsi_id" class="form-control" placeholder="00" type="text" readonly value="{{ $profil->provinsi_id }}" />
                     <input id="nama_provinsi" type="hidden" name="nama_provinsi" value="{{ $profil->nama_provinsi }}" />
                 @else
@@ -11,7 +14,9 @@
                 @endif
             </div>
             <div class="col-md-5 col-sm-6 col-xs-12">
-                @if ($status_pantau)
+                @if ($adaDesa)
+                    <input name="nama_provinsi" class="form-control" type="text" value="{{ $profil->nama_provinsi }}" readonly />
+                @elseif ($status_pantau)
                     <select class="form-control" id="list_provinsi" name="provinsi_id" style="width: 100%;">
                         <option selected value="" disabled>Pilih Provinsi</option>
                         @if ($profil->provinsi_id || $profil->nama_provinsi)
@@ -27,7 +32,9 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kabupaten <span class="required">*</span></label>
             <div class="col-md-2 col-sm-3 col-xs-12">
-                @if ($status_pantau)
+                @if ($adaDesa)
+                    <input name="kabupaten_id" class="form-control" placeholder="00.00" type="text" value="{{ $profil->kabupaten_id }}" readonly />
+                @elseif ($status_pantau)
                     <input id="kabupaten_id" class="form-control" placeholder="00.00" type="text" readonly value="{{ $profil->kabupaten_id }}" />
                     <input id="nama_kabupaten" type="hidden" name="nama_kabupaten" value="{{ $profil->nama_kabupaten }}" />
                 @else
@@ -35,7 +42,9 @@
                 @endif
             </div>
             <div class="col-md-5 col-sm-6 col-xs-12">
-                @if ($status_pantau)
+                @if ($adaDesa)
+                <input name="nama_kabupaten" class="form-control" type="text" value="{{ $profil->nama_kabupaten }}" readonly />
+                @elseif ($status_pantau)
                     <select class="form-control" id="list_kabupaten" name="kabupaten_id" style="width: 100%;">
                         <option selected value="" disabled>Pilih Kabupaten</option>
                         @if ($profil->kabupaten_id || $profil->nama_kabupaten)
@@ -51,7 +60,9 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kecamatan <span class="required">*</span></label>
             <div class="col-md-2 col-sm-3 col-xs-12">
-                @if ($status_pantau)
+                @if ($adaDesa)
+                    <input name="kecamatan_id" class="form-control" placeholder="00.00.00" type="text" value="{{ $profil->kecamatan_id }}" readonly />
+                @elseif ($status_pantau)
                     <input id="kecamatan_id" class="form-control" placeholder="00.00.00" type="text" readonly value="{{ $profil->kecamatan_id }}" />
                     <input id="nama_kecamatan" type="hidden" name="nama_kecamatan" value="{{ $profil->nama_kecamatan }}" />
                 @else
@@ -59,7 +70,9 @@
                 @endif
             </div>
             <div class="col-md-5 col-sm-6 col-xs-12">
-                @if ($status_pantau)
+                @if ($adaDesa)
+                    <input name="nama_kecamatan" class="form-control" type="text" value="{{ $profil->nama_kecamatan }}" readonly />
+                @elseif ($status_pantau)
                     <select class="form-control" id="list_kecamatan" name="kecamatan_id" data-placeholder="Pilih kecamatan" style="width: 100%;">
                         <option selected value="" disabled>Pilih Kecamatan</option>
                         @if ($profil->kecamatan_id || $profil->nama_kecamatan)

@@ -41,7 +41,7 @@
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 110px;">Aksi</th>
+                                <th style="min-width: 130px;">Aksi</th>
                                 <th>Foto</th>
                                 <th style="min-width: 150px;">Nama, NIP, NIK</th>
                                 <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
@@ -149,7 +149,8 @@
                         data: 'masa_jabatan',
                         name: 'masa_jabatan'
                     },
-                ]
+                ],
+                aaSorting: [],
             });
 
             $('#status').on('change', function(e) {

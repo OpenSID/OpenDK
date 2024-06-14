@@ -15,6 +15,7 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 3. [#927](https://github.com/OpenSID/OpenDK/issues/927) Perbaikan keterangan gagal impor jika desa tidak terdaftar.
 4. [#963](https://github.com/OpenSID/OpenDK/issues/963) Perbaikan slug pada menu.
 5. [#961](https://github.com/OpenSID/OpenDK/issues/961) Perbaikan ubah profil saat data desa sudah ada.
+6. [#966](https://github.com/OpenSID/OpenDK/issues/966) Perbaikan order pada modul pengurus.
 
 
 #### TEKNIS

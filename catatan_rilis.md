@@ -24,3 +24,4 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 3. [#968](https://github.com/OpenSID/OpenDK/issues/968) Penyesuaian modul regulasi menggunakan datatable.
 4. [#969](https://github.com/OpenSID/OpenDK/issues/969) Penyesuaian modul potensi menggunakan datatable.
 5. [#965](https://github.com/OpenSID/OpenDK/issues/965) Penyesuaian seeders dan factories.
+6. [#964](https://github.com/OpenSID/OpenDK/issues/964) Penyesuaian Lang (bahasa) yang tidak digunakan.

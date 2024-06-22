@@ -25,6 +25,8 @@
                 </div>
             </div>
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="toilet-table">
                         <thead>
@@ -43,14 +45,22 @@
         </div>
     </section>
 @endsection
+
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
+
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
             var data = $('#toilet-table').DataTable({
                 processing: false,
                 serverSide: false,
-                ajax: "{!! route('data.toilet-sanitasi.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.toilet-sanitasi.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -82,6 +92,10 @@
                 order: [
                     [1, 'asc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
             });
         });
     </script>

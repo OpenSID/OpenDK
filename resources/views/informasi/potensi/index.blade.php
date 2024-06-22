@@ -13,58 +13,31 @@
     </section>
 
     <section class="content container-fluid">
-
         @include('partials.flash_message')
 
-        @if($kategoriPotensi->count() > 0)
-
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <a href="{{ route('informasi.potensi.create') }}" class="btn btn-primary btn-sm {{ auth()->guest() ? 'hidden' : '' }}" title="Tambah Data"><i class="fa fa-plus"></i>&ensp; Tambah</a>
-                <div class="box-tools pull-right col-sm-4">
-                    {!! Form::select('kategori_id', $kategoriPotensi, isset($_GET['id']) ? $_GET['id'] : 0, ['placeholder' => 'Semua Kategori', 'class' => 'form-control', 'id' => 'kategori_id', 'required' => true, 'onchange' => 'changeCategori(this)']) !!}
+        @if ($kategoriPotensi->count() > 0)
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <a href="{{ route('informasi.potensi.create') }}"
+                        class="btn btn-success btn-sm btn-social {{ auth()->guest() ? 'hidden' : '' }}"
+                        title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="potensi-table">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 150px;">Aksi</th>
+                                    <th>Potensi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                @if (count($potensis) > 0)
-                    @foreach ($potensis as $potensi)
-                        <div class="row overflow-x">
-                            <div class="col-md-3">
-                                <img src="{{ is_img($potensi->file_gambar ?? null) }}" width="100%">
-                            </div>
-                            <div class="col-md-8">
-                                <h3>{{ $potensi->nama_potensi }}</h3>
-                                <article>
-                                    <p>{{ str_limit($potensi->deskripsi, 200, ' ...') }}</p>
-                                </article>
-                                <div class="pull-right button-group" style="position:relative; bottom:0px; margin-bottom: 0px;">
-                                    <a href="{{ route('informasi.potensi.show', $potensi->id) }}" class="btn btn-sm btn-info"><i class="fa fa-eye"></i>&nbsp; Detail</a>
-                                    @unless (!Auth::check())
-                                        <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
-
-                                        <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.potensi.destroy', $potensi->id) !!}" data-button="delete" id="deleteModal">
-                                            <button type="button" class="btn btn-icon btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp; Hapus</button>
-                                        </a>
-                                    @endunless
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    @endforeach
-                @else
-                    <h3>Data tidak ditemukan.</h3>
-                @endif
-                <div class="box-footer clearfix" style="padding:0px; margin: 0px !important;">
-                    {{ $potensis->links() }}
-                </div>
-            </div>
-        </div>
         @else
-            <div class="alert alert-warning">
-                <h4><i class="icon fa fa-warning"></i> Informasi!</h4>
-                Kategori potensi belum tersedia. Silahkan tambahkan <a href="{{ route('setting.tipe-potensi.index') }}"><b>kategori potensi</b></a> terlebih dahulu.
-            </div>
+            <h3>Data tidak ditemukan.</h3>
         @endif
     </section>
 @endsection
@@ -73,9 +46,28 @@
 
 @push('scripts')
     <script type="text/javascript">
-        function changeCategori(obj) {
-            document.location = "{{ route('informasi.potensi.kategori') }}" + '?id=' + obj.value;
-        }
+        $(document).ready(function() {
+            var data = $('#potensi-table').DataTable({
+                processing: true,
+                serverSide: false,
+                ajax: "{!! route('informasi.potensi.getdata') !!}",
+                columns: [{
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center text-nowrap',
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
+                        data: 'nama_potensi',
+                        name: 'nama_potensi'
+                    },
+                ],
+                order: [
+                    [1, 'asc']
+                ]
+            });
+        });
     </script>
     @include('forms.datatable-vertical')
     @include('forms.delete-modal')

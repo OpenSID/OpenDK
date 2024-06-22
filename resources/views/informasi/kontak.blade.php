@@ -1,6 +1,3 @@
-<?php
-use Carbon\Carbon;
-?>
 @extends('layouts.dashboard_template')
 
 @section('content')

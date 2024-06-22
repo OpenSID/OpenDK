@@ -29,7 +29,7 @@
                     <table class="table table-striped table-bordered" id="jabatan-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="width: 5%;">Aksi</th>
                                 <th>Nama</th>
                                 <th>Tupoksi</th>
                             </tr>
@@ -65,7 +65,8 @@
                         data: 'tupoksi',
                         name: 'tupoksi'
                     },
-                ]
+                ],
+                aaSorting: [],
             });
         });
     </script>

@@ -87,8 +87,6 @@ class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkR
                     'tamat_sma' => $value['tamat_sma_sederajat'],
                     'tamat_diploma_sederajat' => $value['tamat_diploma_sederajat'],
                     'import_id' => $import->id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ];
 
                 TingkatPendidikan::updateOrInsert([

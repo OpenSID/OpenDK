@@ -70,8 +70,6 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
             'jumlah_siswa_paud' => $row['jumlah_siswa_paud_ra'],
             'semester' => $this->request['semester'],
             'tahun' => $this->request['tahun'],
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
     }
 }

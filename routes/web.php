@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Informasi\EventController;
@@ -74,7 +75,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Halaman Website
          */
-        Route::namespace('\App\Http\Controllers\Page')->group(function () {
+        Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
             Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
@@ -165,6 +166,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::permanentRedirect('/', '/');
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
+                    Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
                 });
             });
 
@@ -224,6 +226,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'regulasi'], function () {
                     Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
                     Route::get('show/{regulasi}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.regulasi.getdata', 'uses' => 'RegulasiController@getDataRegulasi']);
                     Route::get('create', ['as' => 'informasi.regulasi.create', 'uses' => 'RegulasiController@create']);
                     Route::post('store', ['as' => 'informasi.regulasi.store', 'uses' => 'RegulasiController@store']);
                     Route::get('edit/{regulasi}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
@@ -283,6 +286,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'potensi'], function () {
                     Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
                     Route::get('show/{potensi}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                     Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
                     Route::post('store', ['as' => 'informasi.potensi.store', 'uses' => 'PotensiController@store']);
                     Route::get('edit/{potensi}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);
@@ -690,6 +694,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('sub_coa/{type_id}', 'get_sub_coa')->name('setting.coa.sub_coa');
                 Route::get('sub_sub_coa/{type_id}/{sub_id}', 'get_sub_sub_coa')->name('setting.coa.sub_sub_coa');
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', 'generate_id')->name('setting.coa.generate_id');
+            });
+
+            // Themes
+            Route::group(['prefix' => 'themes', 'controller' => ThemesController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.themes.index');
+                Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
+                Route::get('rescan', 'rescan')->name('setting.themes.rescan');
+                // post to-upload
+                Route::post('upload', 'upload')->name('setting.themes.upload');
+                Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
             });
 
             Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {

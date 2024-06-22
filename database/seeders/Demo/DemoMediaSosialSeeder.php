@@ -53,8 +53,8 @@ class DemoMediaSosialSeeder extends Seeder
             ],
         ];
 
-        foreach ($data as $mediaSosial) {
-            MediaSosial::create($mediaSosial);
+        foreach ($data as $media) {
+            MediaSosial::create($media);
         }
     }
 }

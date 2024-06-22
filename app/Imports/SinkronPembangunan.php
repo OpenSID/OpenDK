@@ -75,8 +75,6 @@ class SinkronPembangunan implements ToCollection, WithHeadingRow, WithChunkReadi
                 'manfaat' => $value['manfaat'],
                 'waktu' => $value['waktu'],
                 'foto' => $value['foto'],
-                'created_at' => now(),
-                'updated_at' => now(),
             ];
 
             Pembangunan::updateOrCreate([

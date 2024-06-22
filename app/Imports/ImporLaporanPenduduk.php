@@ -72,8 +72,6 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
                     'desa_id' => $value['desa_id'],
                     'id_laporan_penduduk' => $value['id'],
                     'imported_at' => now(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
                 ];
 
                 LaporanPenduduk::updateOrInsert([

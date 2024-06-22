@@ -34,6 +34,7 @@ namespace App\Http\Controllers\BackEnd;
 use App\Models\Event;
 use Illuminate\Support\Carbon;
 use App\Http\Requests\EventRequest;
+use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\BackEndController;
 
@@ -57,11 +58,17 @@ class EventController extends BackEndController
                 return Carbon::parse($row->end)->format('d-m-Y H:i');
             })
             ->addColumn('aksi', function ($row) {
-                $data['show_url'] = route('informasi.event.show', $row->id);
+                if ($row->status == 'OPEN') {
+                    $data['show_url'] = route('event.detail', $row->slug);
 
-                if (! auth()->guest()) {
-                    $data['edit_url'] = route('informasi.event.edit', $row->id);
-                    $data['delete_url'] = route('informasi.event.destroy', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.event.edit', $row->id);
+                        $data['delete_url'] = route('informasi.event.destroy', $row->id);
+                    }
+                }
+                
+                if ($row->status == 'CLOSED' && $row->attachment != null) {
+                    $data['download_url'] = route('informasi.event.download', $row->id);
                 }
 
                 return view('forms.aksi', $data);
@@ -80,15 +87,12 @@ class EventController extends BackEndController
     public function store(EventRequest $request)
     {
         try {
-            $input = $request->input();
+            $waktu = explode('-', $request->waktu);
 
-            if ($request->hasFile('file_gambar')) {
-                $lampiran = $request->file('file_gambar');
-                $fileName = $lampiran->getClientOriginalName();
-                $path = 'storage/Event_kecamatan/';
-                $lampiran->move($path, $fileName);
-                $input['file_gambar'] = $path.$fileName;
-            }
+            $input = $request->input();
+            $input['start'] = date('Y-m-d H:i', strtotime($waktu[0]));
+            $input['end'] = date('Y-m-d H:i', strtotime($waktu[1]));
+            $input['status'] = 'OPEN';
 
             Event::create($input);
         } catch (\Exception $e) {
@@ -100,41 +104,36 @@ class EventController extends BackEndController
         return redirect()->route('informasi.event.index')->with('success', 'Event berhasil disimpan!');
     }
 
-    public function show(Event $Event)
-    {
-        $page_title = 'Event';
-        $page_description = 'Detail Event';
-
-        return view('backend.event.show', compact('page_title', 'page_description', 'Event'));
-    }
-
     public function edit(Event $event)
     {
+        if ($event->status == 'CLOSED') {
+            return redirect()->route('informasi.event.index')->with('error', 'Event sudah ditutup! Tidak bisa diubah!');
+        }
+
         $page_title = 'Event';
         $page_description = 'Ubah Event';
 
         return view('backend.event.edit', compact('page_title', 'page_description', 'event'));
     }
 
-    public function update(EventRequest $request, Event $Event)
+    public function update(EventRequest $request, Event $event)
     {
         try {
+            $waktu = explode('-', $request->waktu);
             $input = $request->all();
 
-            if ($request->hasFile('file_gambar')) {
-                $lampiran = $request->file('file_gambar');
+            if ($request->hasFile('attachment')) {
+                $lampiran = $request->file('attachment');
                 $fileName = $lampiran->getClientOriginalName();
-                $path = 'storage/Event_kecamatan/';
-                $lampiran->move($path, $fileName);
-
-                if ($Event->file_gambar && file_exists(base_path('public/'.$Event->file_gambar))) {
-                    unlink(base_path('public/'.$Event->file_gambar));
-                }
-
-                $input['file_gambar'] = $path.$fileName;
+                $path = 'event/'.$event->id.'/';
+                File::deleteDirectory(base_path('public/'.$path)); //hapus directory sebelumnya
+                $lampiran->move(base_path('public/'.$path), $fileName);
+                $input['attachment'] = $path.$fileName;
             }
+            $input['end'] = date('Y-m-d H:i', strtotime($waktu[1]));
+            $input['start'] = date('Y-m-d H:i', strtotime($waktu[0]));
 
-            $Event->update($input);
+            $event->update($input);
         } catch (\Exception $e) {
             report($e);
 
@@ -144,18 +143,30 @@ class EventController extends BackEndController
         return redirect()->route('informasi.event.index')->with('success', 'Data Event berhasil disimpan!');
     }
 
-    public function destroy(Event $Event)
+    public function destroy(Event $event)
     {
+        if ($event->status == 'CLOSED') {
+            return redirect()->route('informasi.event.index')->with('error', 'Event sudah ditutup! Tidak bisa dihapus!');
+        }
+
         try {
-            if ($Event->delete()) {
-                unlink(base_path('public/'.$Event->file_gambar));
+            if ($event->delete()) {
+                if ($event->attachment != null && File::exists(base_path('public/'.$event->attachment))) {
+                    unlink(base_path('public/'.$event->attachment));
+                }
             }
         } catch (\Exception $e) {
             report($e);
 
-            return redirect()->route('backend.form-dokumen.index')->with('error', 'Event gagal dihapus!');
+            return redirect()->route('informasi.event.index')->with('error', 'Event Gagal dihapus!');
         }
 
         return redirect()->route('informasi.event.index')->with('success', 'Event Berhasil dihapus!');
+    }
+
+    // download
+    public function download(Event $event)
+    {
+        return response()->download(base_path('public/'.$event->attachment));
     }
 }

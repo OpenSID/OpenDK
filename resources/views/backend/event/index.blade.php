@@ -27,7 +27,7 @@
                 <table class="table table-striped table-bordered" id="event-table">
                     <thead>
                         <tr>
-                            <th style="max-width: 150px;">Aksi</th>
+                            <th class="text-center" style="max-width: 150px;">Aksi</th>
                             <th>Kegiatan</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Selesai</th>
@@ -54,7 +54,7 @@
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
-                        class: 'text-center text-nowrap',
+                        class: 'text-nowrap',
                         searchable: false,
                         orderable: false
                     },

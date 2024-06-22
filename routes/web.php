@@ -212,13 +212,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Event
                 Route::group(['prefix' => 'event'], function () {
                     Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
-                    Route::get('show/{event}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
                     Route::get('getdata', ['as' => 'informasi.event.getdata', 'uses' => 'EventController@datatables']);
                     Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
                     Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
                     Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
                     Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
                     Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                    Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
                 });
             });
         });

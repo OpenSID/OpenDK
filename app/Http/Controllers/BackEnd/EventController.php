@@ -164,7 +164,6 @@ class EventController extends BackEndController
         return redirect()->route('informasi.event.index')->with('success', 'Event Berhasil dihapus!');
     }
 
-    // download
     public function download(Event $event)
     {
         return response()->download(base_path('public/'.$event->attachment));

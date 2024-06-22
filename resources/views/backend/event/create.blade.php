@@ -18,15 +18,15 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    <!-- form start -->
-                    {!! Form::model($event, ['route' => ['informasi.event.update', $event->id], 'method' => 'post', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                    {!! Form::open(['route' => 'informasi.event.store', 'method' => 'post', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left']) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
+
                         @include('flash::message')
-                        @include('informasi.event.form_edit')
+                        @include('backend.event.form_create')
+
                     </div>
-                    <!-- /.box-body -->
                     <div class="box-footer">
                         <div class="pull-right">
                             <div class="control-group">

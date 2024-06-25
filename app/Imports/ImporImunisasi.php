@@ -84,6 +84,8 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'bulan' => $this->request['bulan'],
                 'tahun' => $this->request['tahun'],
                 'cakupan_imunisasi' => $value['cakupan_imunisasi'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             Imunisasi::updateOrInsert([

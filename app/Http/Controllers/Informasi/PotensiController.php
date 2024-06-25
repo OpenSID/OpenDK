@@ -43,8 +43,9 @@ class PotensiController extends Controller
     {
         $page_title = 'Potensi';
         $page_description = 'Daftar Potensi';
+        $kategoriPotensi  = TipePotensi::all();
 
-        return view('informasi.potensi.index', compact('page_title', 'page_description'));
+        return view('informasi.potensi.index', compact('page_title', 'page_description', 'kategoriPotensi'));
     }
 
     public function getDataPotensi()

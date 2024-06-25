@@ -37,7 +37,11 @@
                 </div>
             </div>
         @else
-            <h3>Data tidak ditemukan.</h3>
+            <div class="callout callout-warning">
+                <h4>Informasi!</h4>
+                <p>Data tipe potensi belum tersedia. Silahkan tambah data <b><a
+                            href="{{ route('setting.tipe-potensi.create') }}">tipe potensi</a></b> terlebih dahulu.</p>
+            </div>
         @endif
     </section>
 @endsection

@@ -6,6 +6,7 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 1. [#262](https://github.com/OpenSID/OpenDK/issues/262) Penambahan modul themes.
 2. [#960](https://github.com/OpenSID/OpenDK/issues/960) Penambahan filter berdasarkan desa pada modul berkaitan dengan data desa.
 3. [#962](https://github.com/OpenSID/OpenDK/issues/962) Penambahan unduh dan lihat pada halaman unduhan dokumen website.
+4. [#640](https://github.com/OpenSID/OpenDK/issues/640) Penambahan halaman tipologi.
 
 
 #### BUG

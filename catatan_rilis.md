@@ -6,6 +6,8 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 1. [#262](https://github.com/OpenSID/OpenDK/issues/262) Penambahan modul themes.
 2. [#960](https://github.com/OpenSID/OpenDK/issues/960) Penambahan filter berdasarkan desa pada modul berkaitan dengan data desa.
 3. [#962](https://github.com/OpenSID/OpenDK/issues/962) Penambahan unduh dan lihat pada halaman unduhan dokumen website.
+4. [#958](https://github.com/OpenSID/OpenDK/issues/958) Penambahan informasi jika jenis penyakit belum tersedia pada modul epidemi penyakit.
+5. [#959](https://github.com/OpenSID/OpenDK/issues/959) Penambahan informasi jika tipe potensi belum tersedia pada modul potensi.
 
 
 #### BUG

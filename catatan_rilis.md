@@ -8,6 +8,7 @@ Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain 
 3. [#962](https://github.com/OpenSID/OpenDK/issues/962) Penambahan unduh dan lihat pada halaman unduhan dokumen website.
 4. [#958](https://github.com/OpenSID/OpenDK/issues/958) Penambahan informasi jika jenis penyakit belum tersedia pada modul epidemi penyakit.
 5. [#959](https://github.com/OpenSID/OpenDK/issues/959) Penambahan informasi jika tipe potensi belum tersedia pada modul potensi.
+6. [#640](https://github.com/OpenSID/OpenDK/issues/640) Penambahan halaman web tipologi.
 
 
 #### BUG

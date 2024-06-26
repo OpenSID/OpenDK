@@ -23,6 +23,7 @@
                                 <ul class="row megamenu">
                                     <li class="col-md-4 col-sm-2">
                                         <ul class="mega-list">
+                                            <li class="@if (Request::is('profil/tipologi')) active @endif"> <a class="text-bold" href="{{ route('profil.tipologi') }}"><i class="fa  fa-arrow-circle-right text-blue"></i> Tipologi</a></li>
                                             <li class="@if (Request::is('profil/sejarah')) active @endif"> <a class="text-bold" href="{{ route('profil.sejarah') }}"><i class="fa  fa-arrow-circle-right text-blue"></i> Sejarah</a></li>
                                             <li class="@if (Request::is('profil/letak-geografis')) active @endif"><a href="{{ route('profil.letak-geografis') }}"><i class="fa  fa-arrow-circle-right text-blue"></i> Letak Geografis</a></li>
                                             <li class="@if (Request::is('profil/struktur-pemerintahan')) active @endif"><a href="{{ route('profil.struktur-pemerintahan') }}"><i class="fa  fa-arrow-circle-right text-blue"></i> Struktur Pemerintahan</a></li>

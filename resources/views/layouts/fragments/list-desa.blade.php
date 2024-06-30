@@ -5,7 +5,7 @@
             <select class="form-control select2" id="list_desa">
                 <option value="Semua">Semua Desa</option>
                 @foreach (\App\Models\DataDesa::pluck('nama', 'desa_id') as $key => $value)
-                <option value="{{ $key }}">{{ $value }}</option>
+                    <option value="{{ $key }}">{{ $value }}</option>
                 @endforeach
             </select>
         </div>

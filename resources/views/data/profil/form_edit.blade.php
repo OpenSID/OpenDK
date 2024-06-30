@@ -43,7 +43,7 @@
             </div>
             <div class="col-md-5 col-sm-6 col-xs-12">
                 @if ($adaDesa)
-                <input name="nama_kabupaten" class="form-control" type="text" value="{{ $profil->nama_kabupaten }}" readonly />
+                    <input name="nama_kabupaten" class="form-control" type="text" value="{{ $profil->nama_kabupaten }}" readonly />
                 @elseif ($status_pantau)
                     <select class="form-control" id="list_kabupaten" name="kabupaten_id" style="width: 100%;">
                         <option selected value="" disabled>Pilih Kabupaten</option>

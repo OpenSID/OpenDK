@@ -1,5 +1,6 @@
-Di rilis versi v2406.1.0 di versi ini terdapat [untuk diisi] dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2407.0.0 di versi ini terdapat modul themes dan perbaikan lain yang diminta Komunitas.
 
+Terima kasih pada @arifpriadi dan @nyomanjyotisa telah ikut berkontribusi.
 
 #### FITUR
 

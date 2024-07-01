@@ -57,11 +57,11 @@ class SinergiProgramController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('informasi.sinergi-program.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.sinergi-program.edit', $row->id);
                         $data['delete_url'] = route('informasi.sinergi-program.destroy', $row->id);
-                        $data['naik']       = route('informasi.sinergi-program.urut', [$row->id, -1]);
-                        $data['turun']      = route('informasi.sinergi-program.urut', [$row->id, 1]);
+                        $data['naik'] = route('informasi.sinergi-program.urut', [$row->id, -1]);
+                        $data['turun'] = route('informasi.sinergi-program.urut', [$row->id, 1]);
                     }
 
                     return view('forms.aksi', $data);
@@ -74,7 +74,7 @@ class SinergiProgramController extends Controller
                     }
                 })
                 ->editColumn('gambar', function ($row) {
-                    return '<img src="' .  asset($row->gambar) . '" style="max-width:100px; max-height:60px;"/>';
+                    return '<img src="'.asset($row->gambar).'" style="max-width:100px; max-height:60px;"/>';
                 })
                 ->rawColumns(['status'])
                 ->escapeColumns([])
@@ -89,8 +89,8 @@ class SinergiProgramController extends Controller
      */
     public function create()
     {
-        $sinergi          = null;
-        $page_title       = 'Sinergi Program';
+        $sinergi = null;
+        $page_title = 'Sinergi Program';
         $page_description = 'Tambah Sinergi Program';
 
         return view('informasi.sinergi_program.create', compact('page_title', 'page_description', 'sinergi'));
@@ -106,16 +106,17 @@ class SinergiProgramController extends Controller
         try {
             $input = $request->validated();
             if ($request->hasFile('gambar')) {
-                $file           = $request->file('gambar');
-                $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/sinergi/";
+                $file = $request->file('gambar');
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time().rand(100, 999).'_'.$original_name;
+                $path = 'storage/sinergi/';
                 $file->move($path, $file_name);
-                $input['gambar'] = $path . $file_name;
+                $input['gambar'] = $path.$file_name;
             }
             SinergiProgram::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Sinergi Program gagal disimpan!');
         }
 
@@ -125,14 +126,14 @@ class SinergiProgramController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $sinergi          = SinergiProgram::findOrFail($id);
-        $page_title       = 'Sinergi Program';
-        $page_description = 'Ubah Sinergi Program : ' . $sinergi->nama;
+        $sinergi = SinergiProgram::findOrFail($id);
+        $page_title = 'Sinergi Program';
+        $page_description = 'Ubah Sinergi Program : '.$sinergi->nama;
 
         return view('informasi.sinergi_program.edit', compact('page_title', 'page_description', 'sinergi'));
     }
@@ -140,10 +141,9 @@ class SinergiProgramController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
-
     public function update(SinergiProgramRequest $request, $id)
     {
         $sinergi = SinergiProgram::findOrFail($id);
@@ -152,18 +152,19 @@ class SinergiProgramController extends Controller
             $input = $request->validated();
 
             if ($request->hasFile('gambar')) {
-                $file           = $request->file('gambar');
-                $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/sinergi/";
+                $file = $request->file('gambar');
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time().rand(100, 999).'_'.$original_name;
+                $path = 'storage/sinergi/';
                 $file->move($path, $file_name);
-                unlink(base_path('public/' . $sinergi->gambar));
-                $input['gambar'] = $path . $file_name;
+                unlink(base_path('public/'.$sinergi->gambar));
+                $input['gambar'] = $path.$file_name;
             }
 
             $sinergi->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Sinergi Program gagal diubah!');
         }
 
@@ -173,7 +174,7 @@ class SinergiProgramController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -181,10 +182,11 @@ class SinergiProgramController extends Controller
         try {
             $sinergi = SinergiProgram::findOrFail($id);
             if ($sinergi->delete()) {
-                unlink(base_path('public/' . $sinergi->gambar));
+                unlink(base_path('public/'.$sinergi->gambar));
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.sinergi-program.index')->with('error', 'Sinergi Program gagal dihapus!');
         }
 
@@ -194,7 +196,7 @@ class SinergiProgramController extends Controller
     /**
      * Update urutan daftar sinergi program.
      *
-     * @param  int $id, $urutan
+     * @param  int  $id, $urutan
      * @return Response
      */
     public function urut($id, $urutan)
@@ -212,6 +214,7 @@ class SinergiProgramController extends Controller
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program gagal diubah!');
         }
 

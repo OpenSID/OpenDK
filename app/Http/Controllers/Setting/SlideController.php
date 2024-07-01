@@ -40,7 +40,7 @@ class SlideController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Slide';
+        $page_title = 'Slide';
         $page_description = 'Daftar Slide';
 
         return view('setting.slide.index', compact('page_title', 'page_description'));
@@ -50,7 +50,7 @@ class SlideController extends Controller
     {
         return DataTables::of(Slide::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('setting.slide.edit', $row->id);
+                $data['edit_url'] = route('setting.slide.edit', $row->id);
                 $data['delete_url'] = route('setting.slide.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -62,8 +62,8 @@ class SlideController extends Controller
 
     public function create()
     {
-        $slide            = null;
-        $page_title       = 'Slide';
+        $slide = null;
+        $page_title = 'Slide';
         $page_description = 'Tambah Slide';
 
         return view('setting.slide.create', compact('page_title', 'page_description', 'slide'));
@@ -75,16 +75,17 @@ class SlideController extends Controller
             $input = $request->validated();
 
             if ($request->hasFile('gambar')) {
-                $file     = $request->file('gambar');
+                $file = $request->file('gambar');
                 $fileName = $file->getClientOriginalName();
-                $path     = "storage/slide/";
+                $path = 'storage/slide/';
                 $file->move($path, $fileName);
 
-                $input['gambar'] = $path . $fileName;
+                $input['gambar'] = $path.$fileName;
             }
             Slide::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Slide gagal ditambah!');
         }
 
@@ -93,15 +94,15 @@ class SlideController extends Controller
 
     public function show(Slide $slide)
     {
-        $page_title = 'Detail Slide :' . $slide->judul;
+        $page_title = 'Detail Slide :'.$slide->judul;
 
         return view('setting.slide.show', compact('page_title', 'page_description', 'slide'));
     }
 
     public function edit(Slide $slide)
     {
-        $page_title       = 'Slide';
-        $page_description = 'Ubah Slide : ' . $slide->judul;
+        $page_title = 'Slide';
+        $page_description = 'Ubah Slide : '.$slide->judul;
 
         return view('setting.slide.edit', compact('page_title', 'page_description', 'slide'));
     }
@@ -112,17 +113,18 @@ class SlideController extends Controller
             $input = $request->validated();
 
             if ($request->hasFile('gambar')) {
-                $file     = $request->file('gambar');
+                $file = $request->file('gambar');
                 $fileName = $file->getClientOriginalName();
-                $path     = "storage/slide/";
+                $path = 'storage/slide/';
                 $file->move($path, $fileName);
-                unlink(base_path('public/' . $slide->gambar));
+                unlink(base_path('public/'.$slide->gambar));
 
-                $input['gambar'] = $path . $fileName;
+                $input['gambar'] = $path.$fileName;
             }
             $slide->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Data Slide gagal disimpan!');
         }
 
@@ -133,10 +135,11 @@ class SlideController extends Controller
     {
         try {
             if ($slide->delete()) {
-                unlink(base_path('public/' . $slide->gambar));
+                unlink(base_path('public/'.$slide->gambar));
             }
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Slide gagal dihapus!');
         }
 

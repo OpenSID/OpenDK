@@ -64,15 +64,15 @@ class RefPekerjaanTableSeeder extends Seeder
             ],
             4 => [
                 'id' => 5,
-            'nama' => 'PEGAWAI NEGERI SIPIL (PNS)',
+                'nama' => 'PEGAWAI NEGERI SIPIL (PNS)',
             ],
             5 => [
                 'id' => 6,
-            'nama' => 'TENTARA NASIONAL INDONESIA (TNI)',
+                'nama' => 'TENTARA NASIONAL INDONESIA (TNI)',
             ],
             6 => [
                 'id' => 7,
-            'nama' => 'KEPOLISIAN RI (POLRI)',
+                'nama' => 'KEPOLISIAN RI (POLRI)',
             ],
             7 => [
                 'id' => 8,

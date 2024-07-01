@@ -46,14 +46,16 @@ class PendudukQueueJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $timeout = 0;
+
     /** @var array request data */
     protected $request;
 
     /**
      * Create a new job instance.
      *
-     * @param array $request
+     * @param  array  $request
      * @return void
      */
     public function __construct($request)
@@ -95,7 +97,7 @@ class PendudukQueueJob implements ShouldQueue
 
                 // Hapus file foto di folder
                 foreach ($foto as $hapusfoto) {
-                    Storage::disk('public')->delete('penduduk/foto/' . 'kecil_' . $hapusfoto);
+                    Storage::disk('public')->delete('penduduk/foto/'.'kecil_'.$hapusfoto);
                 }
             }
 

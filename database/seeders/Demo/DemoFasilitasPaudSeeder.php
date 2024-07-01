@@ -48,8 +48,8 @@ class DemoFasilitasPaudSeeder extends Seeder
         Excel::import(
             new ImporFasilitasPaud([
                 'semester' => 1,
-                'tahun'    => now()->year,
-                'desa_id'  => DataDesa::first()->desa_id,
+                'tahun' => now()->year,
+                'desa_id' => DataDesa::first()->desa_id,
             ]),
             'template_upload/Format_Upload_Fasilitas_PAUD.xlsx',
             'public'

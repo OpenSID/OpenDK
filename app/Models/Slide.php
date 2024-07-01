@@ -40,6 +40,6 @@ class Slide extends Model
     protected $fillable = [
         'gambar',
         'judul',
-        'deskripsi'
+        'deskripsi',
     ];
 }

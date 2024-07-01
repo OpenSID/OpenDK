@@ -40,7 +40,7 @@ class LaporanApbdesController extends Controller
     /**
      * Tambah / Ubah Data Apbdes Sesuai OpenSID
      *
-     * @param ApbdesRequest $request
+     * @param  ApbdesRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(LaporanApbdesRequest $request)

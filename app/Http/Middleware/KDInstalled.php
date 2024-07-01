@@ -32,9 +32,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
 use Illuminate\Http\Request;
-
 use function redirect;
 
 class KDInstalled
@@ -42,14 +40,15 @@ class KDInstalled
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if (!sudahInstal()) {
+        if (! sudahInstal()) {
             return redirect()->to('install');
         }
+
         return $next($request);
     }
 }

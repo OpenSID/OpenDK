@@ -43,7 +43,7 @@ class ImporAnggaranRealisasi implements ToModel, WithHeadingRow, WithChunkReadin
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -65,15 +65,15 @@ class ImporAnggaranRealisasi implements ToModel, WithHeadingRow, WithChunkReadin
     public function model(array $row)
     {
         return new AnggaranRealisasi([
-            'profil_id'              => Profil::first()->id,
-            'total_anggaran'         => $row['total_anggaran'],
-            'total_belanja'          => $row['total_belanja'],
-            'belanja_pegawai'        => $row['belanja_pegawai'],
-            'belanja_barang_jasa'    => $row['belanja_barang_jasa'],
-            'belanja_modal'          => $row['belanja_modal'],
+            'profil_id' => Profil::first()->id,
+            'total_anggaran' => $row['total_anggaran'],
+            'total_belanja' => $row['total_belanja'],
+            'belanja_pegawai' => $row['belanja_pegawai'],
+            'belanja_barang_jasa' => $row['belanja_barang_jasa'],
+            'belanja_modal' => $row['belanja_modal'],
             'belanja_tidak_langsung' => $row['belanja_tidak_langsung'],
-            'bulan'                  => $this->request['bulan'],
-            'tahun'                  => $this->request['tahun'],
+            'bulan' => $this->request['bulan'],
+            'tahun' => $this->request['tahun'],
         ]);
     }
 }

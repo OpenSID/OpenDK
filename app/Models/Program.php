@@ -45,7 +45,7 @@ class Program extends Model
         'end_date',
         'description',
         'desa_id',
-        'status'
+        'status',
     ];
 
     public function pesertas()

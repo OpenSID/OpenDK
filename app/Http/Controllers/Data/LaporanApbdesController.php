@@ -51,9 +51,9 @@ class LaporanApbdesController extends Controller
      */
     public function index(LaporanApbdes $apbdes)
     {
-        $page_title       = 'Laporan APBDes';
+        $page_title = 'Laporan APBDes';
         $page_description = 'Daftar Laporan APBDes';
-        $list_desa        = DataDesa::get();
+        $list_desa = DataDesa::get();
 
         return view('data.laporan-apbdes.index', compact('page_title', 'page_description', 'list_desa'));
     }
@@ -61,7 +61,6 @@ class LaporanApbdesController extends Controller
     /**
      * Return datatable Data Apbdes.
      *
-     * @param Request $request
      * @return DataTables
      */
     public function getApbdes(Request $request)
@@ -105,11 +104,12 @@ class LaporanApbdesController extends Controller
             $apbdes = LaporanApbdes::findOrFail($id);
 
             // Hapus file apbdes
-            Storage::disk('public')->delete('apbdes/' . $apbdes->nama_file);
+            Storage::disk('public')->delete('apbdes/'.$apbdes->nama_file);
 
             $apbdes->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.laporan-apbdes.index')->with('error', 'Data gagal dihapus!');
         }
 
@@ -123,7 +123,7 @@ class LaporanApbdesController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Laporan APBDes';
+        $page_title = 'Laporan APBDes';
         $page_description = 'Import Laporan APBDes';
 
         return view('data.laporan-apbdes.import', compact('page_title', 'page_description'));
@@ -160,9 +160,10 @@ class LaporanApbdesController extends Controller
 
             // Proses impor excell
             (new ImporLaporanApbdes())
-                ->queue($extract . basename($fileExtracted[0]));
+                ->queue($extract.basename($fileExtracted[0]));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 
@@ -172,7 +173,7 @@ class LaporanApbdesController extends Controller
     /**
      * Download the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function download($id)
@@ -180,9 +181,10 @@ class LaporanApbdesController extends Controller
         try {
             $getFile = LaporanApbdes::findOrFail($id);
 
-            return Storage::download('public/apbdes/' . $getFile->nama_file);
+            return Storage::download('public/apbdes/'.$getFile->nama_file);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }

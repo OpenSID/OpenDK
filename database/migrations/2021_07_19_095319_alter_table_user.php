@@ -46,7 +46,7 @@ class AlterTableUser extends Migration
         // Gabung kolom first_name dan last_name
         DB::table('users')
             ->update([
-                "first_name" => DB::raw("CONCAT(`first_name`, ' ', `last_name`)"),
+                'first_name' => DB::raw("CONCAT(`first_name`, ' ', `last_name`)"),
             ]);
         // Pakai DB::statement karena ada kolom enum di tabel users
         DB::statement('ALTER TABLE users CHANGE `first_name` `name` VARCHAR(191) default null');

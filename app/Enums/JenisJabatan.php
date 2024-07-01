@@ -38,7 +38,9 @@ use BenSampo\Enum\Enum;
  */
 final class JenisJabatan extends Enum
 {
-    public const Camat          = 1;
-    public const Sekretaris     = 2;
+    public const Camat = 1;
+
+    public const Sekretaris = 2;
+
     public const JabatanLainnya = 3;
 }

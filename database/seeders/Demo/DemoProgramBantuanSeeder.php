@@ -61,11 +61,12 @@ class DemoProgramBantuanSeeder extends Seeder
 
             // Proses impor excell
             (new SinkronBantuan())
-                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.Str::replaceLast('zip', 'csv', $name));
             (new SinkronPesertaBantuan())
-                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+                ->queue($extract.Str::replaceLast('zip', 'csv', 'peserta_'.$name));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
     }

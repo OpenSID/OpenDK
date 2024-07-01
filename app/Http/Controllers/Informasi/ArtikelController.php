@@ -42,7 +42,7 @@ class ArtikelController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Artikel';
+        $page_title = 'Artikel';
         $page_description = 'Daftar Artikel';
 
         return view('informasi.artikel.index', compact('page_title', 'page_description'));
@@ -56,8 +56,8 @@ class ArtikelController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('informasi.artikel.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.artikel.edit', $row->id);
                         $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }
 
@@ -80,7 +80,7 @@ class ArtikelController extends Controller
 
     public function create()
     {
-        $page_title       = 'Artikel';
+        $page_title = 'Artikel';
         $page_description = 'Tambah Artikel';
 
         return view('informasi.artikel.create', compact('page_title', 'page_description'));
@@ -94,12 +94,13 @@ class ArtikelController extends Controller
                 $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
-                $input['gambar'] = substr($path, 15) ;
+                $input['gambar'] = substr($path, 15);
             }
 
             Artikel::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
 
@@ -108,7 +109,7 @@ class ArtikelController extends Controller
 
     public function edit(Artikel $artikel)
     {
-        $page_title       = 'Artikel';
+        $page_title = 'Artikel';
         $page_description = 'Ubah Artikel';
 
         return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description'));
@@ -123,14 +124,15 @@ class ArtikelController extends Controller
                 $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
-                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
+                Storage::delete('public/artikel/'.$artikel->getRawOriginal('gambar'));
 
-                $input['gambar'] = substr($path, 15) ;
+                $input['gambar'] = substr($path, 15);
             }
 
             $artikel->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Artikel gagal dihapus!');
         }
 
@@ -141,10 +143,11 @@ class ArtikelController extends Controller
     {
         try {
             if ($artikel->delete()) {
-                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
+                Storage::delete('public/artikel/'.$artikel->getRawOriginal('gambar'));
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }
 

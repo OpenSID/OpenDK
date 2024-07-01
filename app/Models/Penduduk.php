@@ -36,17 +36,19 @@ use Illuminate\Database\Eloquent\Model;
 class Penduduk extends Model
 {
     public $incrementing = false;
-    protected $table     = 'das_penduduk';
-    protected $fillable  = [];
-    protected $guarded   = [];
+
+    protected $table = 'das_penduduk';
+
+    protected $fillable = [];
+
+    protected $guarded = [];
 
     /**
      * Relation Methods
      * */
-
     public function getPendudukAktif($did, $year)
     {
-        $penduduk =  $this
+        $penduduk = $this
             ->where('status_dasar', 1)
             ->whereYear('created_at', '<=', $year);
 

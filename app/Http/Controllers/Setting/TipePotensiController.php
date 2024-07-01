@@ -46,8 +46,8 @@ class TipePotensiController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Kategori Potensi';
-        $page_description = 'Daftar ' . 'Kategori Potensi';
+        $page_title = 'Kategori Potensi';
+        $page_description = 'Daftar '.'Kategori Potensi';
 
         return view('setting.tipe_potensi.index', compact('page_title', 'page_description'));
     }
@@ -57,7 +57,7 @@ class TipePotensiController extends Controller
     {
         return DataTables::of(TipePotensi::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('setting.tipe-potensi.edit', $row->id);
+                $data['edit_url'] = route('setting.tipe-potensi.edit', $row->id);
                 $data['delete_url'] = route('setting.tipe-potensi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -72,7 +72,7 @@ class TipePotensiController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Kategori Potensi';
+        $page_title = 'Kategori Potensi';
         $page_description = 'Tambah Kategori Potensi';
 
         return view('setting.tipe_potensi.create', compact('page_title', 'page_description'));
@@ -90,10 +90,11 @@ class TipePotensiController extends Controller
         ]);
 
         try {
-            $tipe       = new TipePotensi($request->all());
+            $tipe = new TipePotensi($request->all());
             $tipe->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Tipe Potensi gagal dikirim!');
         }
 
@@ -108,9 +109,9 @@ class TipePotensiController extends Controller
      */
     public function edit($id)
     {
-        $tipe             = TipePotensi::findOrFail($id);
-        $page_title       = 'Kategori Potensi';
-        $page_description = 'Ubah  Kategori Potensi : ' . $tipe->nama_kategori;
+        $tipe = TipePotensi::findOrFail($id);
+        $page_title = 'Kategori Potensi';
+        $page_description = 'Ubah  Kategori Potensi : '.$tipe->nama_kategori;
 
         return view('setting.tipe_potensi.edit', compact('page_title', 'page_description', 'tipe'));
     }
@@ -133,6 +134,7 @@ class TipePotensiController extends Controller
             $tipe->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Kategori Potensi gagal diupdate!');
         }
 
@@ -151,6 +153,7 @@ class TipePotensiController extends Controller
             TipePotensi::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Tipe Potensi gagal dihapus!');
         }
 

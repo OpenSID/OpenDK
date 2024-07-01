@@ -54,13 +54,13 @@ class LaporanApbdesRequest extends FormRequest
     public function rules()
     {
         return [
-            "desa_id" => ['required', 'string', new CekDesa()],
-            "laporan_apbdes.*.id" => "required|integer",
-            "laporan_apbdes.*.judul" => "required|string",
-            "laporan_apbdes.*.tahun" => "required|integer",
-            "laporan_apbdes.*.semester" => "required|integer",
-            "laporan_apbdes.*.nama_file" => "required|string",
-            "laporan_apbdes.*.file" => "required|string",
+            'desa_id' => ['required', 'string', new CekDesa()],
+            'laporan_apbdes.*.id' => 'required|integer',
+            'laporan_apbdes.*.judul' => 'required|string',
+            'laporan_apbdes.*.tahun' => 'required|integer',
+            'laporan_apbdes.*.semester' => 'required|integer',
+            'laporan_apbdes.*.nama_file' => 'required|string',
+            'laporan_apbdes.*.file' => 'required|string',
         ];
     }
 }

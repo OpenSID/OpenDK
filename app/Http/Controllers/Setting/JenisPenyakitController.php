@@ -40,7 +40,7 @@ class JenisPenyakitController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Jenis Penyakit';
+        $page_title = 'Jenis Penyakit';
         $page_description = 'Daftar Jenis Penyakit';
 
         return view('setting.jenis_penyakit.index', compact('page_title', 'page_description'));
@@ -51,7 +51,7 @@ class JenisPenyakitController extends Controller
     {
         return DataTables::of(JenisPenyakit::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('setting.jenis-penyakit.edit', $row->id);
+                $data['edit_url'] = route('setting.jenis-penyakit.edit', $row->id);
                 $data['delete_url'] = route('setting.jenis-penyakit.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -62,7 +62,7 @@ class JenisPenyakitController extends Controller
     // Create Action
     public function create()
     {
-        $page_title       = 'Jenis Penyakit';
+        $page_title = 'Jenis Penyakit';
         $page_description = 'Tambah Jenis Penyakit';
 
         return view('setting.jenis_penyakit.create', compact('page_title', 'page_description'));
@@ -80,6 +80,7 @@ class JenisPenyakitController extends Controller
             $penyakit->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
@@ -88,9 +89,9 @@ class JenisPenyakitController extends Controller
 
     public function edit($id)
     {
-        $penyakit         = JenisPenyakit::findOrFail($id);
-        $page_title       = 'Jenis Penyakit';
-        $page_description = 'Ubah Jenis Penyakit : ' . $penyakit->nama;
+        $penyakit = JenisPenyakit::findOrFail($id);
+        $page_title = 'Jenis Penyakit';
+        $page_description = 'Ubah Jenis Penyakit : '.$penyakit->nama;
 
         return view('setting.jenis_penyakit.edit', compact('page_title', 'page_description', 'penyakit'));
     }
@@ -107,6 +108,7 @@ class JenisPenyakitController extends Controller
             $penyakit->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal diupdate!');
         }
 
@@ -119,6 +121,7 @@ class JenisPenyakitController extends Controller
             JenisPenyakit::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal dihapus!');
         }
 

@@ -45,7 +45,7 @@ class CreatePermissionTables extends Migration
      */
     public function up()
     {
-        DB::statement("SET foreign_key_checks=0");
+        DB::statement('SET foreign_key_checks=0');
 
         // cek table dari sentinel
         Schema::dropIfExists('role_users');
@@ -163,7 +163,7 @@ class CreatePermissionTables extends Migration
             $table->primary([PermissionRegistrar::$pivotPermission, PermissionRegistrar::$pivotRole], 'role_has_permissions_permission_id_role_id_primary');
         });
 
-        DB::statement("SET foreign_key_checks=1");
+        DB::statement('SET foreign_key_checks=1');
         Artisan::call('db:seed', [
             '--class' => 'RoleSpatieSeeder',
             '--force' => true,

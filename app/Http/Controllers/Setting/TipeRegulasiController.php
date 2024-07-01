@@ -40,7 +40,7 @@ class TipeRegulasiController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Tipe Regulasi';
+        $page_title = 'Tipe Regulasi';
         $page_description = 'Daftar TIpe Regulasi';
 
         return view('setting.tipe_regulasi.index', compact('page_title', 'page_description'));
@@ -51,7 +51,7 @@ class TipeRegulasiController extends Controller
     {
         return DataTables::of(TipeRegulasi::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('setting.tipe-regulasi.edit', $row->id);
+                $data['edit_url'] = route('setting.tipe-regulasi.edit', $row->id);
                 $data['delete_url'] = route('setting.tipe-regulasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -62,7 +62,7 @@ class TipeRegulasiController extends Controller
     // Create Action
     public function create()
     {
-        $page_title       = 'Tipe Regulasi';
+        $page_title = 'Tipe Regulasi';
         $page_description = 'Tambah Tipe Regulasi';
 
         return view('setting.tipe_regulasi.create', compact('page_title', 'page_description'));
@@ -76,10 +76,11 @@ class TipeRegulasiController extends Controller
         ]);
 
         try {
-            $tipe       = new TipeRegulasi($request->all());
+            $tipe = new TipeRegulasi($request->all());
             $tipe->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dikirim!');
         }
 
@@ -88,9 +89,9 @@ class TipeRegulasiController extends Controller
 
     public function edit($id)
     {
-        $tipe             = TipeRegulasi::findOrFail($id);
-        $page_title       = 'Tipe Regulasi';
-        $page_description = 'Ubah Tipe Regulasi : ' . $tipe->nama;
+        $tipe = TipeRegulasi::findOrFail($id);
+        $page_title = 'Tipe Regulasi';
+        $page_description = 'Ubah Tipe Regulasi : '.$tipe->nama;
 
         return view('setting.tipe_regulasi.edit', compact('page_title', 'page_description', 'tipe'));
     }
@@ -107,6 +108,7 @@ class TipeRegulasiController extends Controller
             $tipe->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Tipe Regulasi gagal diupdate!');
         }
 
@@ -119,6 +121,7 @@ class TipeRegulasiController extends Controller
             TipeRegulasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dihapus!');
         }
 

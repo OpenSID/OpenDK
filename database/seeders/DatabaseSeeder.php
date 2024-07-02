@@ -68,6 +68,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RefCoaTableSeeder::class);
         $this->call(DasMenuTableSeeder::class);
         $this->call(DasSettingTableSeeder::class);
+        $this->call(DasNavigationTableSeeder::class);
         // Other
         $this->call(DasProfilTableSeeder::class);
         $this->call(DasDataUmumTableSeeder::class);

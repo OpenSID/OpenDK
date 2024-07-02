@@ -287,6 +287,9 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
+                            <li {{ Request::is(['setting/navigation*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.navigation.index') }}"><i class="fa fa-circle-o"></i>Navigasi</a>
+                            </li>    
                             <li {{ Request::is(['setting/tipe-potensi*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.tipe-potensi.index') }}"><i class="fa fa-circle-o"></i>Kategori Potensi</a>
                             </li>

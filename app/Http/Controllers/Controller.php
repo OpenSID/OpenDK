@@ -38,6 +38,7 @@ use App\Models\Event;
 use App\Models\Jabatan;
 use App\Models\Keluarga;
 use App\Models\MediaSosial;
+use App\Models\Navigation;
 use App\Models\Penduduk;
 use App\Models\Pengurus;
 use App\Models\Profil;
@@ -139,6 +140,28 @@ class Controller extends BaseController
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
             $slides = Slide::orderBy('created_at', 'DESC')->get();
+            $parent_navigations = Navigation::where('is_active', 1)->where('parent_id', 0)->orderBy('order', 'asc')->get();
+            $childs_navigations = Navigation::where('is_active', 1)->where('parent_id', '>', 0)->orderBy('order', 'asc')->get();
+            $structured_navs = [];
+            foreach ($parent_navigations as $nav) {
+                $structured_navs[$nav->id] = [
+                    'id' => $nav->id,
+                    'name' => $nav->name,
+                    'slug' => $nav->slug,
+                    'url' => $nav->url,
+                    'childs' => [],
+                ];
+            }
+
+            foreach ($childs_navigations as $nav) {
+                $structured_navs[$nav->parent_id]['childs'][] = [
+                    'id' => $nav->id,
+                    'name' => $nav->name,
+                    'slug' => $nav->slug,
+                    'url' => $nav->url,
+                    'childs' => [],
+                ];
+            }
 
             View::share([
                 'profil' => $this->profil,
@@ -153,6 +176,7 @@ class Controller extends BaseController
                 'camat' => $this->nama_camat,
                 'pengurus' => $pengurus->sortBy('jabatan.jenis'),
                 'slides' => $slides,
+                'navigations' => $structured_navs,
             ]);
         }
     }

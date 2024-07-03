@@ -41,6 +41,19 @@ use Illuminate\Support\Facades\DB;
 
 class ProfilController extends FrontEndController
 {
+    public function tipologi()
+    {
+        Counter::count('profil.tipologi');
+
+        $profil = Profil::with(['dataUmum'])->first();
+        $page_title = 'Tipologi';
+        if (isset($profil)) {
+            $page_description = $this->browser_title;
+        }
+
+        return view('pages.profil.tipologi', compact('page_title', 'page_description', 'profil'));
+    }
+
     public function sejarah()
     {
         Counter::count('profil.sejarah');

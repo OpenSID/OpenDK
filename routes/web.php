@@ -29,27 +29,28 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Http\Controllers\BackEnd\ThemesController;
-use App\Http\Controllers\Counter\CounterController;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Informasi\EventController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Setting\NavigationController;
 use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\Setting\JenisPenyakitController;
-use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\BackEnd\EventController;
 use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\BackEnd\ThemesController;
+use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\User\UserController;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Setting\JenisPenyakitController;
+use App\Http\Controllers\Setting\KategoriKomplainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
                 Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
                 Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
+                Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
             });
 
@@ -208,6 +210,24 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Informasi
          */
+        Route::namespace('\App\Http\Controllers\BackEnd')->group(function () {
+            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                // Event
+                Route::group(['prefix' => 'event'], function () {
+                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
+                    Route::get('getdata', ['as' => 'informasi.event.getdata', 'uses' => 'EventController@datatables']);
+                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
+                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
+                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
+                    Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
+                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                    Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
+                });
+            });
+        });
+        /**
+         * Group Routing for Informasi
+         */
         Route::namespace('\App\Http\Controllers\Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
                 // Prosedur
@@ -246,17 +266,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.faq.edit', 'uses' => 'FaqController@edit']);
                     Route::post('update/{id}', ['as' => 'informasi.faq.update', 'uses' => 'FaqController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.faq.destroy', 'uses' => 'FaqController@destroy']);
-                });
-
-                // Events
-                Route::group(['prefix' => 'event', 'excluded_middleware' => 'xss_sanitization'], function () {
-                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
-                    Route::get('show/{event}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
-                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
-                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
-                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
-                    Route::post('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
-                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
                 });
 
                 // Artikel

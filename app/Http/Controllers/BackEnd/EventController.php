@@ -29,22 +29,51 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Informasi;
+namespace App\Http\Controllers\BackEnd;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EventRequest;
 use App\Models\Event;
+use Illuminate\Support\Carbon;
+use App\Http\Requests\EventRequest;
 use Illuminate\Support\Facades\File;
+use Yajra\DataTables\Facades\DataTables;
+use App\Http\Controllers\BackEndController;
 
-class EventController extends Controller
+class EventController extends BackEndController
 {
     public function index()
     {
         $page_title = 'Event';
         $page_description = 'Daftar Event';
-        $events = Event::getOpenEvents();
 
-        return view('informasi.event.index', compact('page_title', 'page_description', 'events'));
+        return view('backend.event.index', compact('page_title', 'page_description'));
+    }
+
+    public function datatables()
+    {
+        return DataTables::of(Event::query())
+            ->editColumn('start', function ($row) {
+                return Carbon::parse($row->start)->format('d-m-Y H:i');
+            })
+            ->editColumn('end', function ($row) {
+                return Carbon::parse($row->end)->format('d-m-Y H:i');
+            })
+            ->addColumn('aksi', function ($row) {
+                if ($row->status == 'OPEN') {
+                    $data['show_url'] = route('event.detail', $row->slug);
+
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.event.edit', $row->id);
+                        $data['delete_url'] = route('informasi.event.destroy', $row->id);
+                    }
+                }
+                
+                if ($row->status == 'CLOSED' && $row->attachment != null) {
+                    $data['download_url'] = route('informasi.event.download', $row->id);
+                }
+
+                return view('forms.aksi', $data);
+            })
+            ->make();
     }
 
     public function create()
@@ -52,7 +81,7 @@ class EventController extends Controller
         $page_title = 'Event';
         $page_description = 'Tambah Event';
 
-        return view('informasi.event.create', compact('page_title', 'page_description'));
+        return view('backend.event.create', compact('page_title', 'page_description'));
     }
 
     public function store(EventRequest $request)
@@ -64,6 +93,7 @@ class EventController extends Controller
             $input['start'] = date('Y-m-d H:i', strtotime($waktu[0]));
             $input['end'] = date('Y-m-d H:i', strtotime($waktu[1]));
             $input['status'] = 'OPEN';
+
             Event::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -76,11 +106,14 @@ class EventController extends Controller
 
     public function edit(Event $event)
     {
+        if ($event->status == 'CLOSED') {
+            return redirect()->route('informasi.event.index')->with('error', 'Event sudah ditutup! Tidak bisa diubah!');
+        }
+
         $page_title = 'Event';
         $page_description = 'Ubah Event';
-        $event->waktu = $event->start.' - '.$event->end;
 
-        return view('informasi.event.edit', compact('page_title', 'page_description', 'event'));
+        return view('backend.event.edit', compact('page_title', 'page_description', 'event'));
     }
 
     public function update(EventRequest $request, Event $event)
@@ -104,26 +137,35 @@ class EventController extends Controller
         } catch (\Exception $e) {
             report($e);
 
-            return back()->withInput()->with('error', 'Ubah Event gagal!');
+            return back()->with('error', 'Data Event gagal disimpan!');
         }
 
-        return redirect()->route('informasi.event.index')->with('success', 'Ubah Event sukses!');
+        return redirect()->route('informasi.event.index')->with('success', 'Data Event berhasil disimpan!');
     }
 
     public function destroy(Event $event)
     {
+        if ($event->status == 'CLOSED') {
+            return redirect()->route('informasi.event.index')->with('error', 'Event sudah ditutup! Tidak bisa dihapus!');
+        }
+
         try {
             if ($event->delete()) {
-                if ($event->file_dokumen != null && File::exists(base_path('public/'.$event->file_dokumen))) {
-                    unlink(base_path('public/'.$event->file_dokumen));
+                if ($event->attachment != null && File::exists(base_path('public/'.$event->attachment))) {
+                    unlink(base_path('public/'.$event->attachment));
                 }
             }
         } catch (\Exception $e) {
             report($e);
 
-            return redirect()->route('informasi.event.index')->with('error', 'Event gagal dihapus!');
+            return redirect()->route('informasi.event.index')->with('error', 'Event Gagal dihapus!');
         }
 
-        return redirect()->route('informasi.event.index')->with('success', 'Event berhasil dihapus!');
+        return redirect()->route('informasi.event.index')->with('success', 'Event Berhasil dihapus!');
+    }
+
+    public function download(Event $event)
+    {
+        return response()->download(base_path('public/'.$event->attachment));
     }
 }

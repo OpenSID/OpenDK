@@ -31,6 +31,8 @@
 
 namespace App\Http\Controllers\Data;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
@@ -39,6 +41,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\Exports\ExportPenduduk;
 
 class PendudukController extends Controller
 {
@@ -176,5 +179,20 @@ class PendudukController extends Controller
         }
 
         return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
+    }
+
+    /**
+     * Export data penduduk ke dalam file Excel.
+     *
+     * @return Response
+     */
+    public function exportExcel(Penduduk $penduduk) {
+        try {
+            return Excel::download(new ExportPenduduk, 'data-penduduk.xlsx');
+        } catch (\Exception $e) {
+            report($e);
+
+            return back()->with('error', 'Export data gagal. '.$e->getMessage());
+        }
     }
 }

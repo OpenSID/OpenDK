@@ -28,6 +28,11 @@
                             <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
                         </a>
                     </div>
+                    <div class="btn-group" style="padding-left: 2.5px;">
+                        <a href="{{ route('data.penduduk.export-excel') }}">
+                            <button type="button" class="btn btn-primary btn-sm" title="Unggah Data"><i class="fa fa-download"></i>&ensp;Export</button>
+                        </a>
+                    </div>
                 </div>
             </div>
 

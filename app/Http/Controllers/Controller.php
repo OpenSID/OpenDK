@@ -140,26 +140,14 @@ class Controller extends BaseController
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
             $slides = Slide::orderBy('created_at', 'DESC')->get();
-            $parent_navigations = Navigation::where('is_active', 1)->where('parent_id', 0)->orderBy('order', 'asc')->get();
-            $childs_navigations = Navigation::where('is_active', 1)->where('parent_id', '>', 0)->orderBy('order', 'asc')->get();
-            $structured_navs = [];
-            foreach ($parent_navigations as $nav) {
-                $structured_navs[$nav->id] = [
+            $navigations = [];
+            foreach (define_nav_child(0) as $nav) {
+                $navigations[] = [
                     'id' => $nav->id,
                     'name' => $nav->name,
                     'slug' => $nav->slug,
                     'url' => $nav->url,
-                    'childs' => [],
-                ];
-            }
-
-            foreach ($childs_navigations as $nav) {
-                $structured_navs[$nav->parent_id]['childs'][] = [
-                    'id' => $nav->id,
-                    'name' => $nav->name,
-                    'slug' => $nav->slug,
-                    'url' => $nav->url,
-                    'childs' => [],
+                    'childs' => define_nav_child($nav->id)
                 ];
             }
 
@@ -176,7 +164,7 @@ class Controller extends BaseController
                 'camat' => $this->nama_camat,
                 'pengurus' => $pengurus->sortBy('jabatan.jenis'),
                 'slides' => $slides,
-                'navigations' => $structured_navs,
+                'navigations' => $navigations,
             ]);
         }
     }

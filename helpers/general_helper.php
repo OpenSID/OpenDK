@@ -30,6 +30,7 @@
  */
 
 use App\Models\Menu;
+use App\Models\Navigation;
 use App\Models\Role;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -62,6 +63,19 @@ function define_child($parent_id)
     $child = Menu::Where('parent_id', $parent_id)->where('is_active', true)->get();
 
     return $child;
+}
+
+/**
+ * { function_description }
+ *
+ * @param      <type>  $parent_id  The parent identifier
+ * @return     <type>  ( description_of_the_return_value )
+ */
+function define_nav_child($parent_id)
+{
+    $child = Navigation::Where('parent_id', $parent_id)->where('is_active', true)->orderBy('order', 'asc')->get();
+
+    return $child->isEmpty() ? [] : $child;
 }
 
 /**

@@ -44,9 +44,9 @@ return new class extends Migration
     {
         Schema::create('das_navigation', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_id')->nullable();
-            $table->string('name')->nullable();
-            $table->string('slug')->nullable();
+            $table->integer('parent_id')->default(0);
+            $table->string('name');
+            $table->string('slug')->unique();
             $table->enum('nav_type', ['system', 'external'])->nullable();
             $table->string('url')->nullable();
             $table->integer('order')->nullable();

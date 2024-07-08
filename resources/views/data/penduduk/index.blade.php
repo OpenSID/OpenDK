@@ -25,12 +25,12 @@
                 <div class="float-right">
                     <div class="btn-group">
                         <a href="{{ route('data.penduduk.import') }}">
-                            <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Import</button>
+                            <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Unggah</button>
                         </a>
                     </div>
                     <div class="btn-group" style="padding-left: 2.5px;">
                         <a href="{{ route('data.penduduk.export-excel') }}">
-                            <button type="button" class="btn btn-primary btn-sm" title="Download Data"><i class="fa fa-download"></i>&ensp;Export</button>
+                            <button type="button" class="btn btn-primary btn-sm" title="Download Data"><i class="fa fa-download"></i>&ensp;Unduh</button>
                         </a>
                     </div>
                 </div>

@@ -32,9 +32,9 @@
 namespace Database\Seeders;
 
 use App\Models\Navigation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DasNavigationTableSeeder extends Seeder
 {
@@ -51,56 +51,56 @@ class DasNavigationTableSeeder extends Seeder
         DB::table('das_navigation')->insert([
             [                
                 'name' => 'Beranda',
-                'slug' => 'beranda',
+                'slug' => Str::slug('Beranda'),
                 'nav_type' => 'system',
                 'url' => '/',
                 'order' => 1                
             ],
             [                
                 'name' => 'Berita Desa',
-                'slug' => 'berita-desa',
+                'slug' => Str::slug('Berita Desa'),
                 'nav_type' => 'system',
                 'url' => '/berita-desa',
                 'order' => 2                
             ],
             [                
                 'name' => 'Profil',
-                'slug' => 'profil',
+                'slug' => Str::slug('Profil'),
                 'nav_type' => 'system',
                 'url' => '/#',
                 'order' => 3                
             ],
             [                
                 'name' => 'Desa',
-                'slug' => 'desa',
+                'slug' => Str::slug('Desa'),
                 'nav_type' => 'system',
                 'url' => '/#',
                 'order' => 4                
             ],
             [                
                 'name' => 'Potensi',
-                'slug' => 'potensi',
+                'slug' => Str::slug('Potensi'),
                 'nav_type' => 'system',
                 'url' => '/#',
                 'order' => 5                
             ],
             [                
                 'name' => 'Statistik',
-                'slug' => 'statistik',
+                'slug' => Str::slug('Statistik'),
                 'nav_type' => 'system',
                 'url' => '/#',
                 'order' => 6                
             ],
             [                
                 'name' => 'Unduhan',
-                'slug' => 'unduhan',
+                'slug' => Str::slug('Unduhan'),
                 'nav_type' => 'system',
                 'url' => '/#',
                 'order' => 7                
             ],
             [                
                 'name' => 'FAQ',
-                'slug' => 'faq',
+                'slug' => Str::slug('FAQ'),
                 'nav_type' => 'system',
                 'url' => '/faq',
                 'order' => 8                
@@ -168,7 +168,7 @@ class DasNavigationTableSeeder extends Seeder
             [    
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,                
                 'name' => 'Program dan Bantuan',
-                'slug' => 'statistik-program-bantuan',
+                'slug' => 'statistik-program-dan-bantuan',
                 'nav_type' => 'system',
                 'url' => '/statistik/program-dan-bantuan',
                 'order' => 4                
@@ -176,7 +176,7 @@ class DasNavigationTableSeeder extends Seeder
             [ 
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,                   
                 'name' => 'Anggaran dan Realisasi',
-                'slug' => 'statistik-anggaran-realisasi',
+                'slug' => 'statistik-anggaran-dan-realisasi',
                 'nav_type' => 'system',
                 'url' => '/statistik/anggaran-dan-realisasi',
                 'order' => 5                
@@ -208,7 +208,7 @@ class DasNavigationTableSeeder extends Seeder
             [      
                 'parent_id' => Navigation::where('slug', 'unduhan')->first()->id,          
                 'name' => 'Dokumen',
-                'slug' => 'unduhan-form-dokumen',
+                'slug' => 'unduhan-dokumen',
                 'nav_type' => 'system',
                 'url' => '/unduhan/form-dokumen',
                 'order' => 3                

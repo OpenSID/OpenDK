@@ -29,37 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Navigation extends Model
+class NavigationRequest extends FormRequest
 {
-
     /**
-     * {@inheritDoc}
-     */
-    protected $table = 'das_navigation';
-
-    /**
-     * {@inheritDoc}
-     */
-    protected $fillable = ['name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'is_active'];
-
-    /**
-     * Return user's query for Datatables.
+     * Determine if the user is authorized to make this request.
      *
-     * @return Builder
+     * @return bool
      */
-    public static function datatables()
+    public function authorize()
     {
-        return static::select('name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'id', 'is_active')->get();
+        return true;
     }
 
-    public static function lastOrder($parent_id = 0)
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
     {
-        return static::where('parent_id', $parent_id)->max('order');
+        return [
+            'name' => 'required',
+            'nav_type' => 'required',
+            'url' => 'required',
+        ];
     }
 }

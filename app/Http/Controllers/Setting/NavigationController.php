@@ -33,9 +33,10 @@ namespace App\Http\Controllers\Setting;
 
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NavigationRequest;
 use App\Models\Navigation;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
 class NavigationController extends Controller
@@ -65,11 +66,13 @@ class NavigationController extends Controller
     {
         return DataTables::of(Navigation::where('parent_id', $parent_id)->orderBy('order', 'asc')->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('setting.navigation.edit', $row->id);
-                $data['delete_url'] = route('setting.navigation.destroy', $row->id);
-                $data['detail_url'] = route('setting.navigation.index', $row->id);
-                $data['naik'] = route('setting.navigation.order', [$row->id, 'up']);
-                $data['turun'] = route('setting.navigation.order', [$row->id, 'down']);
+                if (! auth()->guest()) {
+                    $data['edit_url'] = route('setting.navigation.edit', $row->id);
+                    $data['delete_url'] = route('setting.navigation.destroy', $row->id);
+                    $data['detail_url'] = route('setting.navigation.index', $row->id);
+                    $data['naik'] = route('setting.navigation.order', [$row->id, 'up']);
+                    $data['turun'] = route('setting.navigation.order', [$row->id, 'down']);
+                }
 
                 return view('forms.aksi', $data);
             })
@@ -94,19 +97,21 @@ class NavigationController extends Controller
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(NavigationRequest $request)
     {
-        request()->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'nav_type' => 'required',
-            'url' => 'required',
-        ]);
-
         $parent_id = $request->input('parent_id');
 
         try {
-            $navigation = new Navigation($request->all());
+            
+            $data = $request->all();
+            
+            // generate slug
+            $parent = Navigation::where('id', $parent_id)->first();            
+            $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
+
+            // set latest order
+            $data['order'] = Navigation::lastOrder($parent_id) + 1;
+            $navigation = new Navigation($data);
             $navigation->save();
         } catch (\Exception $e) {
             report($e);
@@ -139,20 +144,19 @@ class NavigationController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(NavigationRequest $request, $id)
     {
-        request()->validate([
-            'name' => 'required',
-            'slug' => 'required',
-            'nav_type' => 'required',
-            'url' => 'required',
-        ]);
-
         $parent_id = $request->input('parent_id');
 
         try {
+            $data = $request->all();
+
+            // generate slug
+            $parents_slug = Navigation::where('id', $parent_id)->first()->slug;
+            $data['slug'] = (!empty($parents_slug)) ? $parents_slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
+
             $navigation = Navigation::findOrFail($id);
-            $navigation->fill($request->all());
+            $navigation->fill($data);
             $navigation->save();
         } catch (\Exception $e) {
             report($e);
@@ -172,6 +176,9 @@ class NavigationController extends Controller
     public function destroy($id)
     {
         try {
+            // delete childs
+            Navigation::where('parent_id', $id)->delete();
+            
             $navigation = Navigation::findOrFail($id);
             $navigation->delete();
 

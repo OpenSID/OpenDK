@@ -18,9 +18,7 @@
         @if ($kategoriPotensi->count() > 0)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.potensi.create') }}"
-                        class="btn btn-success btn-sm btn-social {{ auth()->guest() ? 'hidden' : '' }}"
-                        title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
+                    <a href="{{ route('informasi.potensi.create') }}" class="btn btn-success btn-sm btn-social {{ auth()->guest() ? 'hidden' : '' }}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -39,8 +37,7 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data tipe potensi belum tersedia. Silahkan tambah data <b><a
-                            href="{{ route('setting.tipe-potensi.create') }}">tipe potensi</a></b> terlebih dahulu.</p>
+                <p>Data tipe potensi belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.tipe-potensi.create') }}">tipe potensi</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>

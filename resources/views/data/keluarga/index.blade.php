@@ -29,7 +29,7 @@
                             <select class="form-control" id="list_desa">
                                 <option value="Semua">Semua Desa</option>
                                 @foreach ($list_desa as $desa)
-                                <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                 @endforeach
                             </select>
                         </div>

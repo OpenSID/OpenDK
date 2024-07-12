@@ -380,6 +380,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{id}', ['as' => 'data.penduduk.show', 'uses' => 'PendudukController@show']);
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
+                    Route::get('export-excel', ['as' => 'data.penduduk.export-excel', 'uses' => 'PendudukController@exportExcel']);
                 });
 
                 // Keluarga

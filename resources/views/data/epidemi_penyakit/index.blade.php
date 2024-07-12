@@ -16,40 +16,39 @@
 
         @include('partials.flash_message')
 
-        @if($jenisPenyakit->count() > 0)
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('data.epidemi-penyakit.import') }}">
-                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                    </a>
+        @if ($jenisPenyakit->count() > 0)
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div class="control-group">
+                        <a href="{{ route('data.epidemi-penyakit.import') }}">
+                            <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        @include('layouts.fragments.list-desa')
+                        <hr>
+                        <table class="table table-bordered table-hover dataTable" id="aki-table">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 100px;">Aksi</th>
+                                    <th>Desa</th>
+                                    <th>Jenis Penyakit</th>
+                                    <th>Jumlah Penderita</th>
+                                    <th>Bulan</th>
+                                    <th>Tahun</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="box-body">
-                <div class="table-responsive">
-                    @include('layouts.fragments.list-desa')
-                    <hr>
-                    <table class="table table-bordered table-hover dataTable" id="aki-table">
-                        <thead>
-                            <tr>
-                                <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
-                                <th>Jenis Penyakit</th>
-                                <th>Jumlah Penderita</th>
-                                <th>Bulan</th>
-                                <th>Tahun</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
         @else
-        <div class="callout callout-warning">
-            <h4>Informasi!</h4>
-            <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a
-                    href="{{ route('setting.jenis-penyakit.create') }}">jenis penyakit</a></b> terlebih dahulu.</p>
-        </div>
+            <div class="callout callout-warning">
+                <h4>Informasi!</h4>
+                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-penyakit.create') }}">jenis penyakit</a></b> terlebih dahulu.</p>
+            </div>
         @endif
     </section>
 @endsection

@@ -147,13 +147,13 @@ class NavigationController extends Controller
     public function update(NavigationRequest $request, $id)
     {
         $parent_id = $request->input('parent_id');
-
+        
         try {
             $data = $request->all();
-
+            
             // generate slug
-            $parents_slug = Navigation::where('id', $parent_id)->first()->slug;
-            $data['slug'] = (!empty($parents_slug)) ? $parents_slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
+            $parent = Navigation::where('id', $parent_id)->first();            
+            $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
 
             $navigation = Navigation::findOrFail($id);
             $navigation->fill($data);

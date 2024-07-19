@@ -29,28 +29,47 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers;
+namespace App\Models;
 
-use App\Models\Event;
-use App\Models\Slide;
-use App\Models\Navigation;
-use App\Models\MediaSosial;
-use App\Models\SinergiProgram;
-use Illuminate\Support\Facades\View;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
 
-class FrontEndController extends Controller
+class Navigation extends Model
 {
-    public function __construct()
-    {
-        parent::__construct();
-        theme_active();
 
-        View::share([
-            'events' => Event::getOpenEvents(),
-            'medsos' => MediaSosial::where('status', 1)->get(),
-            'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
-            'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
-            'slides' => Slide::orderBy('created_at', 'DESC')->get(),
-        ]);
+    /**
+     * {@inheritDoc}
+     */
+    protected $table = 'das_navigation';
+
+    /**
+     * {@inheritDoc}
+     */
+    protected $fillable = ['name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'status'];
+
+    /**
+     * Return user's query for Datatables.
+     *
+     * @return Builder
+     */
+    public static function datatables()
+    {
+        return static::select('name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'id', 'status')->get();
+    }
+
+    public static function lastOrder($parent_id = 0)
+    {
+        return static::where('parent_id', $parent_id)->max('order');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Navigation::class, 'parent_id');
+    }
+
+    public function childrens()
+    {
+        return $this->hasMany(Navigation::class, 'parent_id');
     }
 }

@@ -26,31 +26,46 @@
  * @author     Tim Pengembang OpenDesa
  * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link       https://github.com/OpenSID/opendk
+ * @
  */
 
-namespace App\Http\Controllers;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
 
-use App\Models\Event;
-use App\Models\Slide;
-use App\Models\Navigation;
-use App\Models\MediaSosial;
-use App\Models\SinergiProgram;
-use Illuminate\Support\Facades\View;
-
-class FrontEndController extends Controller
+return new class extends Migration
 {
-    public function __construct()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
-        parent::__construct();
-        theme_active();
+        Schema::create('das_navigation', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('parent_id')->nullable();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->enum('nav_type', ['system', 'external'])->nullable();
+            $table->string('url')->nullable();
+            $table->integer('order')->nullable();
+            $table->tinyInteger('status')->default(0);
 
-        View::share([
-            'events' => Event::getOpenEvents(),
-            'medsos' => MediaSosial::where('status', 1)->get(),
-            'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
-            'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
-            'slides' => Slide::orderBy('created_at', 'DESC')->get(),
-        ]);
+            $table->timestamps();
+        });
+
+        Artisan::call('db:seed', ['--class' => 'DasNavigationTableSeeder']);
     }
-}
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('das_navigation');
+    }
+};

@@ -38,13 +38,14 @@ use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\NavigationController;
+use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Setting\COAController;
 use App\Http\Controllers\BackEnd\EventController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
-use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
@@ -726,6 +727,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/linkstorage', 'linkStorage')->name('setting.info-sistem.linkstorage');
                 Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
+            });
+
+            // Navigasi
+            Route::group(['prefix' => 'navigation', 'controller' => NavigationController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('getdata/{parent_id}', 'getData')->name('setting.navigation.getdata');
+                Route::get('create/{parent_id}', 'create')->name('setting.navigation.create');
+                Route::post('store', 'store')->name('setting.navigation.store');
+                Route::get('edit/{id}', 'edit')->name('setting.navigation.edit');
+                Route::put('update/{id}', 'update')->name('setting.navigation.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.navigation.destroy');
+                Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
+                Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
             });
         });
 

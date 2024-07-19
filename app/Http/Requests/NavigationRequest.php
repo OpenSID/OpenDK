@@ -29,28 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers;
+namespace App\Http\Requests;
 
-use App\Models\Event;
-use App\Models\Slide;
-use App\Models\Navigation;
-use App\Models\MediaSosial;
-use App\Models\SinergiProgram;
-use Illuminate\Support\Facades\View;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FrontEndController extends Controller
+class NavigationRequest extends FormRequest
 {
-    public function __construct()
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
     {
-        parent::__construct();
-        theme_active();
+        return true;
+    }
 
-        View::share([
-            'events' => Event::getOpenEvents(),
-            'medsos' => MediaSosial::where('status', 1)->get(),
-            'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
-            'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
-            'slides' => Slide::orderBy('created_at', 'DESC')->get(),
-        ]);
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'name' => 'required',
+            'nav_type' => 'required',
+            'url' => 'required',
+        ];
     }
 }

@@ -62,9 +62,13 @@ class NavigationController extends Controller
     }
 
     // Get Data Navigasi
-    public function getData($parent_id = 0)
+    public function getData($parent_id = null)
     {
-        return DataTables::of(Navigation::where('parent_id', $parent_id)->orderBy('order', 'asc')->get())
+        $query = Navigation::when($parent_id, function ($query) use ($parent_id) {
+            return $query->where('parent_id', $parent_id);
+        })->orderBy('order', 'asc');
+
+        return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 if (! auth()->guest()) {
                     $data['edit_url'] = route('setting.navigation.edit', $row->id);

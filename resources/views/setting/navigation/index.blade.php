@@ -19,14 +19,14 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <div class="control-group">
-                    @if (!empty($parent_id))
-                    <a href="{{ route('setting.navigation.index', $prev_parent) }}">
-                        <button type="button" class="btn btn-success btn-sm" title="Kembali"><i class="fa fa-angle-left"></i> Kembali</button>
-                    </a>
-                    @endif
                     <a href="{{ route('setting.navigation.create', $parent_id) }}">
                         <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Navigasi</button>
                     </a>
+                    @if (!empty($parent_id))
+                        <a href="{{ route('setting.navigation.index', $prev_parent) }}">
+                            <button type="button" class="btn btn-info btn-sm" title="Kembali"><i class="fa fa-arrow-left"></i> Kembali</button>
+                        </a>
+                    @endif
                 </div>
             </div>
             <div class="box-body">
@@ -85,8 +85,8 @@
                         orderable: false
                     },
                     {
-                        data: 'is_active',
-                        name: 'is_active',
+                        data: 'status',
+                        name: 'status',
                         orderable: false,
                         render: function(data) {
                             return (data) ? `<span class="badge badge-success">Aktif</span>`:`<span class="badge badge-danger">Nonaktif</span>`;

@@ -18,9 +18,9 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="is_active" class="control-label col-md-4 col-sm-3 col-xs-12">Aktif <span class="required">*</span></label>
+    <label for="status" class="control-label col-md-4 col-sm-3 col-xs-12">Aktif <span class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        {!! Form::select('is_active', ['1' => 'Ya', '0' => 'Tidak'], 1, ['class' => 'form-control', 'required' => true, 'id' => 'is_active']) !!}
+        {!! Form::select('status', ['1' => 'Ya', '0' => 'Tidak'], 1, ['class' => 'form-control', 'required' => true, 'id' => 'status']) !!}
     </div>
 </div>
 <div class="ln_solid"></div>

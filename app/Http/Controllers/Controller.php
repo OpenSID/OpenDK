@@ -133,38 +133,20 @@ class Controller extends BaseController
             // TODO : Gunakan untuk semua pengaturan jika sudah tersedia
             $this->browser_title = SettingAplikasi::where('key', 'judul_aplikasi')->first()->value ?? ucwords($this->sebutan_wilayah.' '.$this->profil->nama_kecamatan);
 
-            $events = Event::getOpenEvents();
-            $sinergi = SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get();
-            $medsos = MediaSosial::where('status', 1)->get();
             $navdesa = DataDesa::all();
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
-            $slides = Slide::orderBy('created_at', 'DESC')->get();
-            $navigations = [];
-            foreach (define_nav_child(0) as $nav) {
-                $navigations[] = [
-                    'id' => $nav->id,
-                    'name' => $nav->name,
-                    'slug' => $nav->slug,
-                    'url' => $nav->url,
-                    'childs' => define_nav_child($nav->id)
-                ];
-            }
+            
 
             View::share([
                 'profil' => $this->profil,
                 'sebutan_wilayah' => $this->sebutan_wilayah,
                 'sebutan_kepala_wilayah' => $this->sebutan_kepala_wilayah,
                 'browser_title' => $this->browser_title,
-                'events' => $events,
-                'sinergi' => $sinergi,
-                'medsos' => $medsos,
                 'navdesa' => $navdesa,
                 'navpotensi' => $navpotensi,
                 'camat' => $this->nama_camat,
                 'pengurus' => $pengurus->sortBy('jabatan.jenis'),
-                'slides' => $slides,
-                'navigations' => $navigations,
             ]);
         }
     }

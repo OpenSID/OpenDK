@@ -31,6 +31,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -44,16 +45,18 @@ return new class extends Migration
     {
         Schema::create('das_navigation', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('parent_id')->default(0);
+            $table->integer('parent_id')->nullable();
             $table->string('name');
             $table->string('slug')->unique();
             $table->enum('nav_type', ['system', 'external'])->nullable();
             $table->string('url')->nullable();
             $table->integer('order')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->tinyInteger('status')->default(0);
 
             $table->timestamps();
         });
+
+        Artisan::call('db:seed', ['--class' => 'DasNavigationTableSeeder']);
     }
 
     /**

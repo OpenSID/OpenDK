@@ -46,7 +46,7 @@ class Navigation extends Model
     /**
      * {@inheritDoc}
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'is_active'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'status'];
 
     /**
      * Return user's query for Datatables.
@@ -55,11 +55,21 @@ class Navigation extends Model
      */
     public static function datatables()
     {
-        return static::select('name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'id', 'is_active')->get();
+        return static::select('name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'id', 'status')->get();
     }
 
     public static function lastOrder($parent_id = 0)
     {
         return static::where('parent_id', $parent_id)->max('order');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Navigation::class, 'parent_id');
+    }
+
+    public function childrens()
+    {
+        return $this->hasMany(Navigation::class, 'parent_id');
     }
 }

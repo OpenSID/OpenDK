@@ -68,19 +68,6 @@ function define_child($parent_id)
 /**
  * { function_description }
  *
- * @param      <type>  $parent_id  The parent identifier
- * @return     <type>  ( description_of_the_return_value )
- */
-function define_nav_child($parent_id)
-{
-    $child = Navigation::Where('parent_id', $parent_id)->where('is_active', true)->orderBy('order', 'asc')->get();
-
-    return $child->isEmpty() ? [] : $child;
-}
-
-/**
- * { function_description }
- *
  * @param      <type>  $id          The identifier
  * @param      <type>  $permission  The permission
  * @return     <type>  ( description_of_the_return_value )

@@ -134,9 +134,7 @@ class SlideController extends Controller
     public function destroy(Slide $slide)
     {
         try {
-            if ($slide->delete()) {
-                unlink(base_path('public/'.$slide->gambar));
-            }
+            $slide->delete();
         } catch (\Exception $e) {
             report($e);
 

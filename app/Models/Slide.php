@@ -42,4 +42,14 @@ class Slide extends Model
         'judul',
         'deskripsi',
     ];
+
+    public static function booted()
+    {
+        static::deleting(function ($slide) {
+            $slidePath = public_path($slide->gambar);
+            if (file_exists($slidePath)) {
+                unlink($slidePath);
+            }
+        });
+    }
 }

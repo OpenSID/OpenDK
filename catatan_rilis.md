@@ -9,7 +9,7 @@ Terima kasih pada [untuk diisi] telah ikut berkontribusi.
 
 #### BUG
  
-1. 
+1. [#932](https://github.com/OpenSID/OpenDK/issues/932) Sesuaikan tombol batal dan kembali.
 
 
 #### TEKNIS

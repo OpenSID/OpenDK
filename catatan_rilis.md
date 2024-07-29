@@ -14,4 +14,4 @@ Terima kasih pada [untuk diisi] telah ikut berkontribusi.
 
 #### TEKNIS
 
-1. 
+1. [#982](https://github.com/OpenSID/OpenDK/issues/982) Perbaikan celah di API list penduduk dan kk.

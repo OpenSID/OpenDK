@@ -7,7 +7,7 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <a href="{{ route('unduhan.regulasi') }}">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Kembali
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i> Kembali
                             </button>
                         </a>
                         <a href="{{ route('unduhan.regulasi.download', ['file' => str_slug($regulasi->judul)]) }}">

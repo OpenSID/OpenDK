@@ -170,7 +170,7 @@
                 <div class="pull-right">
                     <div class="control-group">
                         <a href="{{ route('sistem-komplain.index') }}">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-times"></i> Batal
                             </button>
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-paper-plane"></i> Kirim

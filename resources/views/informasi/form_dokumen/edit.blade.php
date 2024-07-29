@@ -40,12 +40,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <div class="pull-right">
-                            <div class="control-group">
-                                <button type="reset" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
-                            </div>
-                        </div>
+                        @include('partials.button_reset_submit')
                     </div>
                     {!! Form::close() !!}
                 </div>

@@ -30,6 +30,7 @@
  */
 
 use App\Models\Menu;
+use App\Models\Navigation;
 use App\Models\Role;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;

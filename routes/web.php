@@ -38,13 +38,14 @@ use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\NavigationController;
+use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Setting\COAController;
 use App\Http\Controllers\BackEnd\EventController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
-use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
@@ -379,6 +380,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{id}', ['as' => 'data.penduduk.show', 'uses' => 'PendudukController@show']);
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
+                    Route::get('export-excel', ['as' => 'data.penduduk.export-excel', 'uses' => 'PendudukController@exportExcel']);
                 });
 
                 // Keluarga
@@ -726,6 +728,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
             });
+
+            // Navigasi
+            Route::group(['prefix' => 'navigation', 'controller' => NavigationController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('getdata/{parent_id}', 'getData')->name('setting.navigation.getdata');
+                Route::get('create/{parent_id}', 'create')->name('setting.navigation.create');
+                Route::post('store', 'store')->name('setting.navigation.store');
+                Route::get('edit/{id}', 'edit')->name('setting.navigation.edit');
+                Route::put('update/{id}', 'update')->name('setting.navigation.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.navigation.destroy');
+                Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
+                Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
+            });
         });
 
         /**
@@ -753,19 +767,5 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     // Semua Desa
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
-    });
-
-    Route::get('/api/list-penduduk', function () {
-        return Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%'.strtolower(request('q')).'%\' or lower(nik) LIKE \'%'.strtolower(request('q')).'%\'')
-            ->paginate(10);
-    });
-
-    // TODO : Peserta KK gunakan das_keluarga
-    Route::get('/api/list-kk', function () {
-        return Penduduk::selectRaw('no_kk as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%'.strtolower(request('q')).'%\' or lower(no_kk) LIKE \'%'.strtolower(request('q')).'%\'')
-            ->where('kk_level', 1)
-            ->paginate(10);
     });
 });

@@ -44,7 +44,7 @@
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/skins/skin-blue.min.css') }}">
     <!-- Link Swiper's CSS -->
-    <link rel="stylesheet" href="{{ asset('css/swiper.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/css/swiper.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,600,600i,700,700i|Roboto+Condensed:400,700,700i|Roboto:400,400i,500,500i,700,700i&display=swap"
@@ -53,7 +53,7 @@
 </head>
 
 <body class="hold-transition skin-blue layout-top-nav">
-    @include('partialspage.preloader')
+    @include('components.preloader')
     <!-- overlay !-->
     <div class="wrapper">
         <div id="search" class="fades animated">
@@ -66,10 +66,10 @@
             </form>
         </div>
         <!--- /overlay -->
-        @include('layouts.frontends.topheader')
-        @include('layouts.frontends.header')
+        @include('components.topheader')
+        @include('components.header')
         <div class="content-wrapper">
-            @include('layouts.frontends.slider')
+            @include('components.slider')
             <div class="container">
                 <!-- Main content -->
                 <section class="content">
@@ -77,7 +77,7 @@
 
                         @yield('content')
 
-                        @include('layouts.frontends.sidebar')
+                        @include('components.sidebar')
                     </div>
                 </section>
                 <!-- /.content -->
@@ -85,7 +85,7 @@
             <!-- /.container -->
         </div>
         <!-- /.content-wrapper -->
-        @include('layouts.frontends.footer')
+        @include('components.footer')
     </div>
     <!-- ./wrapper -->
     <div class="scroll-top-wrapper ">

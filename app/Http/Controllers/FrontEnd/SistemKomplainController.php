@@ -29,17 +29,17 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\SistemKomplain;
+namespace App\Http\Controllers\FrontEnd;
 
-use App\Http\Controllers\Controller;
-use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
+use App\Models\JawabKomplain;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\FrontEndController;
 
-class SistemKomplainController extends Controller
+class SistemKomplainController extends FrontEndController
 {
     public function index()
     {
@@ -51,7 +51,7 @@ class SistemKomplainController extends Controller
             ->where('status', '<>', 'REVIEW')
             ->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
+        return view('pages.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
     // TODO : Cek digunakan dimana ?
@@ -61,7 +61,7 @@ class SistemKomplainController extends Controller
         $page_description = 'Sistem Keluhan Masyarakat';
         $komplains = Komplain::where('kategori', '=', $slug)->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
+        return view('pages.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
     // TODO : Cek digunakan dimana ?
@@ -71,7 +71,7 @@ class SistemKomplainController extends Controller
         $page_description = 'Sistem Keluhan Masyarakat';
         $komplains = Komplain::where('status', '=', 'Selesai')->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('sistem_komplain.komplain.index', compact('page_title', 'page_description', 'komplains'));
+        return view('pages.komplain.index', compact('page_title', 'page_description', 'komplains'));
     }
 
     public function kirim()
@@ -79,7 +79,7 @@ class SistemKomplainController extends Controller
         $page_title = 'Kirim Keluhan';
         $page_description = 'Kirim Keluhan Baru';
 
-        return view('sistem_komplain.komplain.kirim', compact('page_title', 'page_description'));
+        return view('pages.komplain.kirim', compact('page_title', 'page_description'));
     }
 
     public function tracking(Request $request)
@@ -202,7 +202,7 @@ class SistemKomplainController extends Controller
         $page_title = 'Laporan';
         $page_description = 'Detail Laporan : '.$komplain->judul;
 
-        return view('sistem_komplain.komplain.show', compact('page_title', 'page_description', 'komplain'));
+        return view('pages.komplain.show', compact('page_title', 'page_description', 'komplain'));
     }
 
     public function reply(Request $request, $id)
@@ -260,6 +260,6 @@ class SistemKomplainController extends Controller
         $jawabans = JawabKomplain::where('komplain_id', $request->input('id'))->orderBy('id', 'desc')->get();
         $komplain = Komplain::where('komplain_id', $request->input('id'))->get()[0];
 
-        return view('sistem_komplain.komplain.jawabans', compact('jawabans', 'komplain'))->render();
+        return view('pages.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
 }

@@ -106,7 +106,7 @@ class PendidikanController extends FrontEndController
             foreach (semester() as $key => $value) {
                 $query_pendidikan = DB::table('das_tingkat_pendidikan')
                     ->selectRaw('sum(tidak_tamat_sekolah) as tidak_tamat_sekolah, sum(tamat_sd) as tamat_sd, sum(tamat_smp) as tamat_smp, sum(tamat_sma) as tamat_sma, sum(tamat_diploma_sederajat) as tamat_diploma_sederajat')
-                    ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
+                    // ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
                     ->where('tahun', $year)
                     ->where('desa_id', '=', $did)
                     ->get()->first();

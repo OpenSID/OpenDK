@@ -25,3 +25,7 @@ composer.lock
 .php-cs-fixer.cache
 .phpcs-cache
 /.vscode
+
+# Themes
+/themes/*
+!/themes/opendk/

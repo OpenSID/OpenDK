@@ -29,26 +29,28 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Http\Controllers\Counter\CounterController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Informasi\EventController;
-use App\Http\Controllers\LogViewerController;
-use App\Http\Controllers\Role\RoleController;
-use App\Http\Controllers\Setting\AplikasiController;
-use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\Setting\JenisPenyakitController;
-use App\Http\Controllers\Setting\KategoriKomplainController;
-use App\Http\Controllers\Setting\SlideController;
-use App\Http\Controllers\Setting\TipePotensiController;
-use App\Http\Controllers\Setting\TipeRegulasiController;
-use App\Http\Controllers\Setting\WidgetController;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\User\UserController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\NavigationController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Setting\COAController;
+use App\Http\Controllers\BackEnd\EventController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\BackEnd\ThemesController;
+use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisPenyakitController;
+use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\WidgetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,11 +74,10 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     });
 
     Route::group(['middleware' => 'maintenance'], function () {
-
         /**
          * Group Routing for Halaman Website
          */
-        Route::namespace('\App\Http\Controllers\Page')->group(function () {
+        Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
             Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
@@ -90,6 +91,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
                 Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
                 Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
+                Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
             });
 
@@ -167,6 +169,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::permanentRedirect('/', '/');
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
+                    Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
                 });
             });
 
@@ -207,6 +210,24 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Informasi
          */
+        Route::namespace('\App\Http\Controllers\BackEnd')->group(function () {
+            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                // Event
+                Route::group(['prefix' => 'event'], function () {
+                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
+                    Route::get('getdata', ['as' => 'informasi.event.getdata', 'uses' => 'EventController@datatables']);
+                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
+                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
+                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
+                    Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
+                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                    Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
+                });
+            });
+        });
+        /**
+         * Group Routing for Informasi
+         */
         Route::namespace('\App\Http\Controllers\Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
                 // Prosedur
@@ -226,6 +247,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'regulasi'], function () {
                     Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
                     Route::get('show/{regulasi}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.regulasi.getdata', 'uses' => 'RegulasiController@getDataRegulasi']);
                     Route::get('create', ['as' => 'informasi.regulasi.create', 'uses' => 'RegulasiController@create']);
                     Route::post('store', ['as' => 'informasi.regulasi.store', 'uses' => 'RegulasiController@store']);
                     Route::get('edit/{regulasi}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
@@ -244,17 +266,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('edit/{id}', ['as' => 'informasi.faq.edit', 'uses' => 'FaqController@edit']);
                     Route::post('update/{id}', ['as' => 'informasi.faq.update', 'uses' => 'FaqController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.faq.destroy', 'uses' => 'FaqController@destroy']);
-                });
-
-                // Events
-                Route::group(['prefix' => 'event', 'excluded_middleware' => 'xss_sanitization'], function () {
-                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
-                    Route::get('show/{event}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
-                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
-                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
-                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
-                    Route::post('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
-                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
                 });
 
                 // Artikel
@@ -285,6 +296,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'potensi'], function () {
                     Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
                     Route::get('show/{potensi}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                     Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
                     Route::post('store', ['as' => 'informasi.potensi.store', 'uses' => 'PotensiController@store']);
                     Route::get('edit/{potensi}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);
@@ -369,6 +381,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{id}', ['as' => 'data.penduduk.show', 'uses' => 'PendudukController@show']);
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
+                    Route::get('export-excel', ['as' => 'data.penduduk.export-excel', 'uses' => 'PendudukController@exportExcel']);
                 });
 
                 // Keluarga
@@ -694,6 +707,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', 'generate_id')->name('setting.coa.generate_id');
             });
 
+            // Themes
+            Route::group(['prefix' => 'themes', 'controller' => ThemesController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.themes.index');
+                Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
+                Route::get('rescan', 'rescan')->name('setting.themes.rescan');
+                // post to-upload
+                Route::post('upload', 'upload')->name('setting.themes.upload');
+                Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
+            });
+
             Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.aplikasi.index');
                 Route::get('/edit/{aplikasi}', 'edit')->name('setting.aplikasi.edit');
@@ -705,6 +728,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/linkstorage', 'linkStorage')->name('setting.info-sistem.linkstorage');
                 Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
+            });
+
+            // Navigasi
+            Route::group(['prefix' => 'navigation', 'controller' => NavigationController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('getdata/{parent_id}', 'getData')->name('setting.navigation.getdata');
+                Route::get('create/{parent_id}', 'create')->name('setting.navigation.create');
+                Route::post('store', 'store')->name('setting.navigation.store');
+                Route::get('edit/{id}', 'edit')->name('setting.navigation.edit');
+                Route::put('update/{id}', 'update')->name('setting.navigation.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.navigation.destroy');
+                Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
+                Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
             });
 
             // Widget
@@ -744,19 +779,5 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     // Semua Desa
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
-    });
-
-    Route::get('/api/list-penduduk', function () {
-        return Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(nik) LIKE \'%' . strtolower(request('q')) . '%\'')
-            ->paginate(10);
-    });
-
-    // TODO : Peserta KK gunakan das_keluarga
-    Route::get('/api/list-kk', function () {
-        return Penduduk::selectRaw('no_kk as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(no_kk) LIKE \'%' . strtolower(request('q')) . '%\'')
-            ->where('kk_level', 1)
-            ->paginate(10);
     });
 });

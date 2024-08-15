@@ -36,8 +36,10 @@ use Illuminate\Database\Eloquent\Model;
 class Pembangunan extends Model
 {
     protected $table = 'das_pembangunan';
-    protected $fillable  = [];
-    protected $guarded   = [];
+
+    protected $fillable = [];
+
+    protected $guarded = [];
 
     public function dokumentasi()
     {

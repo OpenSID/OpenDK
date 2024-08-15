@@ -92,6 +92,6 @@ return [
      * \BeyondCode\QueryDetector\Outputs\Log::class
      */
     'output' => [
-        \BeyondCode\QueryDetector\Outputs\Debugbar::class
-    ]
+        \BeyondCode\QueryDetector\Outputs\Debugbar::class,
+    ],
 ];

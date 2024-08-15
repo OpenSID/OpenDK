@@ -36,7 +36,6 @@ use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 use Yajra\DataTables\Facades\DataTables;
 
 class AKIAKBController extends Controller
@@ -48,7 +47,7 @@ class AKIAKBController extends Controller
      */
     public function index()
     {
-        $page_title       = 'AKI & AKB';
+        $page_title = 'AKI & AKB';
         $page_description = 'Daftar Kematian Ibu & Bayi';
 
         return view('data.aki_akb.index', compact('page_title', 'page_description'));
@@ -63,7 +62,7 @@ class AKIAKBController extends Controller
     {
         return DataTables::of(AkiAkb::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.aki-akb.edit', $row->id);
+                $data['edit_url'] = route('data.aki-akb.edit', $row->id);
                 $data['delete_url'] = route('data.aki-akb.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -81,10 +80,10 @@ class AKIAKBController extends Controller
      */
     public function import()
     {
-        $page_title       = 'AKI & AKB';
+        $page_title = 'AKI & AKB';
         $page_description = 'Import AKI & AKB';
-        $years_list       = years_list();
-        $months_list      = months_list();
+        $years_list = years_list();
+        $months_list = months_list();
 
         return view('data.aki_akb.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
@@ -97,7 +96,7 @@ class AKIAKBController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required',
             'tahun' => 'required',
         ]);
@@ -107,22 +106,24 @@ class AKIAKBController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. '. $e->getMessage());
+
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
+
         return redirect()->route('data.aki-akb.index')->with('success', 'Import data sukses.');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $akib             = AkiAkb::findOrFail($id);
-        $page_title       = 'AKI & AKB';
-        $page_description = 'Ubah AKI & AKB : ' . $akib->id;
+        $akib = AkiAkb::findOrFail($id);
+        $page_title = 'AKI & AKB';
+        $page_description = 'Ubah AKI & AKB : '.$akib->id;
 
         return view('data.aki_akb.edit', compact('page_title', 'page_description', 'akib'));
     }
@@ -130,7 +131,7 @@ class AKIAKBController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(Request $request, $id)
@@ -144,6 +145,7 @@ class AKIAKBController extends Controller
             AkiAkb::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
 
@@ -153,7 +155,7 @@ class AKIAKBController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -162,6 +164,7 @@ class AKIAKBController extends Controller
             AkiAkb::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.aki-akb.index')->with('error', 'Data gagal dihapus!');
         }
 

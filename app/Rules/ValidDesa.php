@@ -68,6 +68,6 @@ class ValidDesa implements Rule
      */
     public function message()
     {
-        return 'Kode desa tidak dikenal di OpenDK Kecamatan ' . $this->nama_kecamatan;
+        return 'Kode desa tidak dikenal di OpenDK Kecamatan '.$this->nama_kecamatan;
     }
 }

@@ -39,6 +39,7 @@ class DataUmum extends Model
     protected $table = 'das_data_umum';
 
     protected $fillable = [
+        'tipologi',
         'sejarah',
         'ketinggian',
         'sumber_luas_wilayah',
@@ -63,7 +64,7 @@ class DataUmum extends Model
         'embed_peta',
         'path',
         'lat',
-        'lng'
+        'lng',
     ];
 
     protected $appends = ['luas_wilayah_dari_data_desa'];

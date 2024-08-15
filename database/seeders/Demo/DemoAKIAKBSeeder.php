@@ -46,8 +46,8 @@ class DemoAKIAKBSeeder extends Seeder
     {
         Excel::import(
             new ImporAKIAKB([
-                'bulan'   => now()->month,
-                'tahun'   => now()->year,
+                'bulan' => now()->month,
+                'tahun' => now()->year,
             ]),
             'template_upload/Format_Upload_AKI_&_AKB.xlsx',
             'public'

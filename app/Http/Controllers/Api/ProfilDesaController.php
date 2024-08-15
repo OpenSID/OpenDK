@@ -42,7 +42,7 @@ class ProfilDesaController extends Controller
         DataDesa::where('desa_id', $request->kode_desa)->update([
             'website' => $request->website,
             'sebutan_desa' => $request->sebutan_desa,
-            'path' => $request->path
+            'path' => $request->path,
         ]);
 
         return response()->json([

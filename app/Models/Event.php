@@ -31,12 +31,14 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
+    use HasFactory;
     use Sluggable;
 
     protected $table = 'das_events';
@@ -49,12 +51,11 @@ class Event extends Model
         'attendants',
         'status',
         'attachment',
+        'slug',
     ];
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {

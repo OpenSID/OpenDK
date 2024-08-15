@@ -40,7 +40,7 @@ class FormDokumenController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Dokumen';
+        $page_title = 'Dokumen';
         $page_description = 'Daftar Dokumen';
 
         return view('informasi.form_dokumen.index', compact('page_title', 'page_description'));
@@ -50,8 +50,8 @@ class FormDokumenController extends Controller
     {
         return DataTables::of(FormDokumen::all())
             ->addColumn('aksi', function ($row) {
-                if (!auth()->guest()) {
-                    $data['edit_url']   = route('informasi.form-dokumen.edit', $row->id);
+                if (! auth()->guest()) {
+                    $data['edit_url'] = route('informasi.form-dokumen.edit', $row->id);
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }
 
@@ -63,7 +63,7 @@ class FormDokumenController extends Controller
 
     public function create()
     {
-        $page_title       = 'Dokumen';
+        $page_title = 'Dokumen';
         $page_description = 'Tambah Dokumen';
 
         return view('informasi.form_dokumen.create', compact('page_title', 'page_description'));
@@ -75,17 +75,18 @@ class FormDokumenController extends Controller
             $input = $request->input();
 
             if ($request->hasFile('file_dokumen')) {
-                $file     = $request->file('file_dokumen');
+                $file = $request->file('file_dokumen');
                 $fileName = $file->getClientOriginalName();
-                $path     = "storage/form_dokumen/";
+                $path = 'storage/form_dokumen/';
                 $file->move($path, $fileName);
 
-                $input['file_dokumen'] = $path . $fileName;
+                $input['file_dokumen'] = $path.$fileName;
             }
 
             FormDokumen::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Dokumen gagal disimpan!');
         }
 
@@ -94,8 +95,8 @@ class FormDokumenController extends Controller
 
     public function edit(FormDokumen $dokumen)
     {
-        $page_title       = 'Dokumen';
-        $page_description = 'Ubah Dokumen ' . $dokumen->nama_dokumen;
+        $page_title = 'Dokumen';
+        $page_description = 'Ubah Dokumen '.$dokumen->nama_dokumen;
 
         return view('informasi.form_dokumen.edit', compact('page_title', 'page_description', 'dokumen'));
     }
@@ -106,18 +107,19 @@ class FormDokumenController extends Controller
             $input = $request->all();
 
             if ($request->hasFile('file_dokumen')) {
-                $file     = $request->file('file_dokumen');
+                $file = $request->file('file_dokumen');
                 $fileName = $file->getClientOriginalName();
-                $path     = "storage/form_dokumen/";
+                $path = 'storage/form_dokumen/';
                 $file->move($path, $fileName);
-                unlink(base_path('public/' . $dokumen->file_dokumen));
+                unlink(base_path('public/'.$dokumen->file_dokumen));
 
-                $input['file_dokumen'] = $path . $fileName;
+                $input['file_dokumen'] = $path.$fileName;
             }
 
             $dokumen->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Dokumen gagal diubah!');
         }
 
@@ -128,10 +130,11 @@ class FormDokumenController extends Controller
     {
         try {
             if ($dokumen->delete()) {
-                unlink(base_path('public/' . $dokumen->file_dokumen));
+                unlink(base_path('public/'.$dokumen->file_dokumen));
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Dokumen gagal dihapus!');
         }
 
@@ -144,6 +147,7 @@ class FormDokumenController extends Controller
             return response()->download($dokumen->file_dokumen);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }

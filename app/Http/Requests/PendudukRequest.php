@@ -54,9 +54,9 @@ class PendudukRequest extends FormRequest
     {
         return [
             // Batch delete validation
-            "hapus_penduduk.*.id_pend_desa" => "present|integer",
-            "hapus_penduduk.*.foto" => "nullable",
-            "hapus_penduduk.*.desa_id" => "present|string|exists:das_data_desa,desa_id",
+            'hapus_penduduk.*.id_pend_desa' => 'present|integer',
+            'hapus_penduduk.*.foto' => 'nullable',
+            'hapus_penduduk.*.desa_id' => 'present|string|exists:das_data_desa,desa_id',
         ];
     }
 }

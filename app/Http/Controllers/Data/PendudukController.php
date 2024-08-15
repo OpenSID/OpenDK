@@ -31,6 +31,8 @@
 
 namespace App\Http\Controllers\Data;
 
+use Maatwebsite\Excel\Facades\Excel;
+
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
@@ -39,6 +41,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\Exports\ExportPenduduk;
 
 class PendudukController extends Controller
 {
@@ -49,9 +52,9 @@ class PendudukController extends Controller
      */
     public function index(Penduduk $penduduk)
     {
-        $page_title       = 'Penduduk';
+        $page_title = 'Penduduk';
         $page_description = 'Data Penduduk';
-        $list_desa        = DataDesa::get();
+        $list_desa = DataDesa::get();
 
         return view('data.penduduk.index', compact('page_title', 'page_description', 'list_desa'));
     }
@@ -59,7 +62,6 @@ class PendudukController extends Controller
     /**
      * Return datatable Data Penduduk.
      *
-     * @param Request $request
      * @return DataTables
      */
     public function getPenduduk(Request $request)
@@ -95,12 +97,12 @@ class PendudukController extends Controller
 
             return DataTables::of($query)
                 ->addColumn('aksi', function ($row) {
-                    $data['show_url']   = route('data.penduduk.show', $row->id);
+                    $data['show_url'] = route('data.penduduk.show', $row->id);
 
                     return view('forms.aksi', $data);
                 })
                 ->addColumn('foto', function ($row) {
-                    return '<img src="' . is_user($row->foto, $row->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="'.is_user($row->foto, $row->sex).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->addColumn('tanggal_lahir', function ($row) {
                     return convert_born_date_to_age($row->tanggal_lahir);
@@ -112,14 +114,14 @@ class PendudukController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param Penduduk $penduduk
+     * @param  Penduduk  $penduduk
      * @return Response
      */
     public function show($id)
     {
-        $penduduk         = Penduduk::findOrFail($id);
-        $page_title       = 'Detail Penduduk';
-        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
+        $penduduk = Penduduk::findOrFail($id);
+        $page_title = 'Detail Penduduk';
+        $page_description = 'Detail Data Penduduk: '.ucwords(strtolower($penduduk->nama));
 
         return view('data.penduduk.show', compact('page_title', 'page_description', 'penduduk'));
     }
@@ -131,9 +133,9 @@ class PendudukController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Impor';
+        $page_title = 'Impor';
         $page_description = 'Impor Data Penduduk';
-        $list_desa        = DataDesa::all();
+        $list_desa = DataDesa::all();
 
         return view('data.penduduk.import', compact('page_title', 'page_description', 'list_desa'));
     }
@@ -169,12 +171,28 @@ class PendudukController extends Controller
 
             // Proses impor excell
             (new ImporPendudukKeluarga())
-                ->queue($extract . basename($fileExtracted[0]));
+                ->queue($extract.basename($fileExtracted[0]));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. '. $e->getMessage());
+
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
 
         return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
+    }
+
+    /**
+     * Export data penduduk ke dalam file Excel.
+     *
+     * @return Response
+     */
+    public function exportExcel(Penduduk $penduduk) {
+        try {
+            return Excel::download(new ExportPenduduk, 'data-penduduk.xlsx');
+        } catch (\Exception $e) {
+            report($e);
+
+            return back()->with('error', 'Export data gagal. '.$e->getMessage());
+        }
     }
 }

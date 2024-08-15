@@ -57,8 +57,8 @@ class MediaSosialController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('informasi.media-sosial.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.media-sosial.edit', $row->id);
                         $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
                     }
 
@@ -84,8 +84,8 @@ class MediaSosialController extends Controller
      */
     public function create()
     {
-        $medsos           = null;
-        $page_title       = 'Media Sosial';
+        $medsos = null;
+        $page_title = 'Media Sosial';
         $page_description = 'Tambah Media Sosial';
 
         return view('informasi.media_sosial.create', compact('page_title', 'page_description', 'medsos'));
@@ -101,17 +101,18 @@ class MediaSosialController extends Controller
         try {
             $input = $request->validated();
             if ($request->hasFile('logo')) {
-                $file     = $request->file('logo');
+                $file = $request->file('logo');
                 $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time() . rand(100, 999) . '_' . $original_name;
-                $path     = "storage/medsos/";
+                $file_name = time().rand(100, 999).'_'.$original_name;
+                $path = 'storage/medsos/';
                 $file->move($path, $file_name);
-                $input['logo'] = $path . $file_name;
+                $input['logo'] = $path.$file_name;
             }
 
             MediaSosial::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Media Sosial gagal disimpan!');
         }
 
@@ -121,14 +122,14 @@ class MediaSosialController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $medsos           = MediaSosial::findOrFail($id);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Ubah Media Sosial : ' . $medsos->nama;
+        $medsos = MediaSosial::findOrFail($id);
+        $page_title = 'Media Sosial';
+        $page_description = 'Ubah Media Sosial : '.$medsos->nama;
 
         return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'medsos'));
     }
@@ -136,10 +137,9 @@ class MediaSosialController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
-
     public function update(MediaSosialRequest $request, $id)
     {
         $medsos = MediaSosial::findOrFail($id);
@@ -148,18 +148,19 @@ class MediaSosialController extends Controller
             $input = $request->validated();
 
             if ($request->hasFile('logo')) {
-                $file           = $request->file('logo');
-                $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/medsos/";
+                $file = $request->file('logo');
+                $original_name = strtolower(trim($file->getClientOriginalName()));
+                $file_name = time().rand(100, 999).'_'.$original_name;
+                $path = 'storage/medsos/';
                 $file->move($path, $file_name);
-                unlink(base_path('public/' . $medsos->logo));
-                $input['logo'] = $path . $file_name;
+                unlink(base_path('public/'.$medsos->logo));
+                $input['logo'] = $path.$file_name;
             }
 
             $medsos->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Media Sosial gagal diubah!');
         }
 
@@ -169,7 +170,7 @@ class MediaSosialController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -177,10 +178,11 @@ class MediaSosialController extends Controller
         try {
             $medsos = MediaSosial::findOrFail($id);
             if ($medsos->delete()) {
-                unlink(base_path('public/' . $medsos->logo));
+                unlink(base_path('public/'.$medsos->logo));
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.media-sosial.index')->with('error', 'Media Sosial gagal dihapus!');
         }
 

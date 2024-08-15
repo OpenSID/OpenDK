@@ -31,24 +31,41 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Models\Regulasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
-use App\Models\Regulasi;
+use Yajra\DataTables\Facades\DataTables;
 
 class RegulasiController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Regulasi';
+        $page_title = 'Regulasi';
         $page_description = 'Daftar Regulasi';
-        $regulasi         = Regulasi::latest()->paginate(10); // TODO : Gunakan datatable
 
-        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'regulasi'));
+        return view('informasi.regulasi.index', compact('page_title', 'page_description'));
+    }
+
+    public function getDataRegulasi()
+    {
+        return DataTables::of(Regulasi::query())
+            ->addColumn('aksi', function ($row) {
+                $data['show_url'] = route('informasi.regulasi.show', $row->id);
+
+                if (! auth()->guest()) {
+                    $data['edit_url'] = route('informasi.regulasi.edit', $row->id);
+                    $data['delete_url'] = route('informasi.regulasi.destroy', $row->id);
+                }
+
+                $data['download_url'] = route('informasi.regulasi.download', $row->id);
+
+                return view('forms.aksi', $data);
+            })->make();
     }
 
     public function create()
     {
-        $page_title       = 'Regulasi';
+        $page_title = 'Regulasi';
         $page_description = 'Tambah Regulasi';
 
         return view('informasi.regulasi.create', compact('page_title', 'page_description'));
@@ -63,16 +80,17 @@ class RegulasiController extends Controller
             if ($request->hasFile('file_regulasi')) {
                 $lampiran1 = $request->file('file_regulasi');
                 $fileName1 = $lampiran1->getClientOriginalName();
-                $path      = "storage/regulasi/";
+                $path = 'storage/regulasi/';
                 $request->file('file_regulasi')->move($path, $fileName1);
 
-                $input['file_regulasi'] = $path . $fileName1;
+                $input['file_regulasi'] = $path.$fileName1;
                 $input['mime_type'] = $lampiran1->getClientOriginalExtension();
             }
 
             Regulasi::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
@@ -81,15 +99,15 @@ class RegulasiController extends Controller
 
     public function show(Regulasi $regulasi)
     {
-        $page_title       = "Regulasi";
-        $page_description = "Detail Regulasi";
+        $page_title = 'Regulasi';
+        $page_description = 'Detail Regulasi';
 
         return view('informasi.regulasi.show', compact('page_title', 'page_description', 'regulasi'));
     }
 
     public function edit(Regulasi $regulasi)
     {
-        $page_title       = 'Regulasi';
+        $page_title = 'Regulasi';
         $page_description = 'Ubah Regulasi';
 
         return view('informasi.regulasi.edit', compact('page_title', 'page_description', 'regulasi'));
@@ -104,16 +122,17 @@ class RegulasiController extends Controller
             if ($request->hasFile('file_regulasi')) {
                 $lampiran1 = $request->file('file_regulasi');
                 $fileName1 = $lampiran1->getClientOriginalName();
-                $path      = "storage/regulasi/";
+                $path = 'storage/regulasi/';
                 $lampiran1->move($path, $fileName1);
-                unlink(base_path('public/' . $regulasi->file_regulasi));
+                unlink(base_path('public/'.$regulasi->file_regulasi));
 
-                $input['file_regulasi'] = $path . $fileName1;
+                $input['file_regulasi'] = $path.$fileName1;
                 $input['mime_type'] = $lampiran1->getClientOriginalExtension();
             }
             $regulasi->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
@@ -124,10 +143,11 @@ class RegulasiController extends Controller
     {
         try {
             if ($regulasi->delete()) {
-                unlink(base_path('public/' . $regulasi->file_regulasi));
+                unlink(base_path('public/'.$regulasi->file_regulasi));
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
 
@@ -140,6 +160,7 @@ class RegulasiController extends Controller
             return response()->download($regulasi->file_regulasi);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Dokumen regulasi tidak ditemukan');
         }
     }

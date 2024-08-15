@@ -48,15 +48,15 @@ class JabatanController extends Controller
      */
     public function index(Request $request)
     {
-        $page_title       = 'Data Jabatan';
+        $page_title = 'Data Jabatan';
         $page_description = 'Daftar Data Jabatan';
 
         if ($request->ajax()) {
             return DataTables::of(Jabatan::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('data.jabatan.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('data.jabatan.edit', $row->id);
                         if ($row->jenis == JenisJabatan::JabatanLainnya) {
                             $data['delete_url'] = route('data.jabatan.destroy', $row->id);
                         }
@@ -78,7 +78,7 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Jabatan';
+        $page_title = 'Jabatan';
         $page_description = 'Tambah Jabatan';
 
         return view('data.jabatan.create', compact('page_title', 'page_description'));
@@ -95,6 +95,7 @@ class JabatanController extends Controller
             Jabatan::create($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Jabatan gagal ditambah!');
         }
 
@@ -104,14 +105,14 @@ class JabatanController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $jabatan          = Jabatan::findOrFail($id);
-        $page_title       = 'Jabatan';
-        $page_description = 'Ubah Jabatan : ' . $jabatan->nama;
+        $jabatan = Jabatan::findOrFail($id);
+        $page_title = 'Jabatan';
+        $page_description = 'Ubah Jabatan : '.$jabatan->nama;
 
         return view('data.jabatan.edit', compact('page_title', 'page_description', 'jabatan'));
     }
@@ -119,16 +120,16 @@ class JabatanController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
-
     public function update(JabatanRequest $request, $id)
     {
         try {
             Jabatan::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Jabatan gagal diubah!');
         }
 
@@ -138,7 +139,7 @@ class JabatanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -147,6 +148,7 @@ class JabatanController extends Controller
             Jabatan::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.jabatan.index')->with('error', 'Jabatan gagal dihapus!');
         }
 

@@ -39,5 +39,6 @@ use BenSampo\Enum\Enum;
 final class Status extends Enum
 {
     public const TidakAktif = 0;
-    public const Aktif      = 1;
+
+    public const Aktif = 1;
 }

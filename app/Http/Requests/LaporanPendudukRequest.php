@@ -54,12 +54,12 @@ class LaporanPendudukRequest extends FormRequest
     public function rules()
     {
         return [
-            "desa_id" => ['required', 'string', new CekDesa()],
-            "laporan_penduduk.*.id" => "required|integer",
-            "laporan_penduduk.*.judul" => "required|string",
-            "laporan_penduduk.*.bulan" => "required|integer",
-            "laporan_penduduk.*.tahun" => "required|integer",
-            "laporan_penduduk.*.file" => "required|string",
+            'desa_id' => ['required', 'string', new CekDesa()],
+            'laporan_penduduk.*.id' => 'required|integer',
+            'laporan_penduduk.*.judul' => 'required|string',
+            'laporan_penduduk.*.bulan' => 'required|integer',
+            'laporan_penduduk.*.tahun' => 'required|integer',
+            'laporan_penduduk.*.file' => 'required|string',
         ];
     }
 }

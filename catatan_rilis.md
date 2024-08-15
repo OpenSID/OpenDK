@@ -1,13 +1,17 @@
-Di rilis versi v2403.0.0 di versi ini terdapat penambahan lokasi kantor kecamatan dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2408.0.1 di versi ini [untuk diisi] dan perbaikan lain yang diminta Komunitas.
 
-#### Penambahan Fitur
+Terima kasih pada [untuk diisi] telah ikut berkontribusi.
 
-1. [#908](https://github.com/OpenSID/OpenDK/issues/908) Buat menu lokasi kantor kecamatan.
+#### FITUR
 
-#### Perbaikan BUG
+1. [#511](https://github.com/OpenSID/OpenDK/issues/511) Penambahan modul navigasi halaman publik.
+
+
+#### BUG
  
-1. [#666](https://github.com/OpenSID/OpenDK/issues/666) Download File surat TTE Camat di OpenDK/OpenSID tidak dapat dibuka.
+1. [#932](https://github.com/OpenSID/OpenDK/issues/932) Sesuaikan tombol batal dan kembali.
 
-#### Perbaikan Teknis
 
-1. [#730](https://github.com/OpenSID/OpenDK/issues/730) Penambahan fungsi kirim data yang dikirim ke http://pantau.opensid.my.id/.
+#### TEKNIS
+
+1. [#982](https://github.com/OpenSID/OpenDK/issues/982) Perbaikan celah di API list penduduk dan kk.

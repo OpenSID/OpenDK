@@ -48,8 +48,8 @@ class DemoTingkatPendidikanSeeder extends Seeder
         Excel::import(
             new ImporTingkatPendidikan([
                 'semester' => 1,
-                'tahun'    => now()->year,
-                'desa_id'  => DataDesa::first()->desa_id,
+                'tahun' => now()->year,
+                'desa_id' => DataDesa::first()->desa_id,
             ]),
             'template_upload/Format_Upload_Tingkat_Pendidikan.xlsx',
             'public'

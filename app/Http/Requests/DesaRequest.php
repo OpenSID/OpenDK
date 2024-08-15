@@ -54,15 +54,15 @@ class DesaRequest extends FormRequest
     public function rules()
     {
         if ($this->id) {
-            $id = "," . $this->id;
+            $id = ','.$this->id;
         } else {
-            $id = "";
+            $id = '';
         }
 
         return [
-            'desa_id'      => ['required', 'regex:/^[0-9.]+$/', 'min:13', 'max:13', 'unique:das_data_desa,desa_id' . $id, new ValidDesa()],
-            'nama'         => 'required|string',
-            'website'      => 'nullable|url',
+            'desa_id' => ['required', 'regex:/^[0-9.]+$/', 'min:13', 'max:13', 'unique:das_data_desa,desa_id'.$id, new ValidDesa()],
+            'nama' => 'required|string',
+            'website' => 'nullable|url',
             'luas_wilayah' => 'required|numeric',
         ];
     }

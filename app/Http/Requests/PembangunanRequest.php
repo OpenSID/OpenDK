@@ -55,7 +55,7 @@ class PembangunanRequest extends FormRequest
     {
         return [
             'file' => 'file|mimes:zip|max:5120',
-            "desa_id" => ['required', 'string', new CekDesa()],
+            'desa_id' => ['required', 'string', new CekDesa()],
         ];
     }
 }

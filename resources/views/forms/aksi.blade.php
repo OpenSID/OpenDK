@@ -15,7 +15,7 @@
         </a>
     @endif
     @if (isset($show_url))
-        <a href="{!! empty($show_url) ? 'javascript:void(0)' : $show_url !!}" class="{!! empty($show_url) ? 'disabled' : '' !!}" title="Lihat" data-button="show">
+        <a href="{!! empty($show_url) ? 'javascript:void(0)' : $show_url !!}" class="{!! empty($show_url) ? 'disabled' : '' !!}" title="Lihat" data-button="show" target="_blank">
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
         </a>
     @endif

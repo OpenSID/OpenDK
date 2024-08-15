@@ -59,6 +59,7 @@ class ChangeDefaultController extends Controller
     public function store(ChangeRequest $request)
     {
         auth()->user()->update(['password' => $request->password]);
+
         return redirect()->route('dashboard');
     }
 }

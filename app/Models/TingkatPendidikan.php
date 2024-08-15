@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TingkatPendidikan extends Model
 {
-    protected $table    = 'das_tingkat_pendidikan';
+    protected $table = 'das_tingkat_pendidikan';
 
     protected $fillable = [
         'desa_id',

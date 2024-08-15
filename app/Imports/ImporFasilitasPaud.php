@@ -42,7 +42,7 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -64,12 +64,12 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
     public function model(array $row)
     {
         return new FasilitasPAUD([
-            'desa_id'           => $this->request['desa_id'],
-            'jumlah_paud'       => $row['jumlah_paud_ra'],
-            'jumlah_guru_paud'  => $row['jumlah_guru_paud_ra'],
+            'desa_id' => $this->request['desa_id'],
+            'jumlah_paud' => $row['jumlah_paud_ra'],
+            'jumlah_guru_paud' => $row['jumlah_guru_paud_ra'],
             'jumlah_siswa_paud' => $row['jumlah_siswa_paud_ra'],
-            'semester'          => $this->request['semester'],
-            'tahun'             => $this->request['tahun'],
+            'semester' => $this->request['semester'],
+            'tahun' => $this->request['tahun'],
         ]);
     }
 }

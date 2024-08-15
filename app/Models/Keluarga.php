@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Keluarga extends Model
 {
-    protected $table   = 'das_keluarga';
+    protected $table = 'das_keluarga';
 
     protected $fillable = [
         'nik_kepala',

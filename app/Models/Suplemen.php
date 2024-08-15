@@ -41,7 +41,7 @@ class Suplemen extends Model
         'nama',
         'slug',
         'sasaran',
-        'keterangan'
+        'keterangan',
     ];
 
     public function terdata()

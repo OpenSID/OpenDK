@@ -46,18 +46,19 @@ class DemoProsedurSeeder extends Seeder
         $data = [
             [
                 'judul_prosedur' => 'Prosedur 1',
-                'slug' => 'prosedur-1',
                 'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
                 'mime_type' => 'pdf',
             ],
             [
                 'judul_prosedur' => 'Prosedur 2',
-                'slug' => 'prosedur-2',
                 'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
                 'mime_type' => 'pdf',
             ],
         ];
 
-        Prosedur::insert($data);
+        foreach ($data as $prosedur) {
+            Prosedur::create($prosedur);
+        }
+
     }
 }

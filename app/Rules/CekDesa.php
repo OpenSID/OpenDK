@@ -38,6 +38,7 @@ use Illuminate\Contracts\Validation\Rule;
 class CekDesa implements Rule
 {
     protected $nama_kecamatan;
+
     protected $value;
 
     /**
@@ -71,6 +72,6 @@ class CekDesa implements Rule
      */
     public function message()
     {
-        return 'Kode desa ' . $this->value . ' tidak dikenal di OpenDK Kecamatan ' . $this->nama_kecamatan;
+        return 'Kode desa '.$this->value.' tidak dikenal di OpenDK Kecamatan '.$this->nama_kecamatan;
     }
 }

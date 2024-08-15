@@ -373,7 +373,7 @@ class RefCoaTableSeeder extends Seeder
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 1,
-            'coa_name' => 'Belanja Perlengkapan Barang Konsumsi (Makan/minum) - Belanja Barang Konsumsi',
+                'coa_name' => 'Belanja Perlengkapan Barang Konsumsi (Makan/minum) - Belanja Barang Konsumsi',
             ],
             47 => [
                 'id' => '07',
@@ -625,7 +625,7 @@ class RefCoaTableSeeder extends Seeder
                 'type_id' => 5,
                 'sub_id' => 2,
                 'sub_sub_id' => 6,
-            'coa_name' => 'Belanja Pemeliharaan Jaringan dan Instalasi (Listrik, Telepon, Internet, Komunikasi, dll)',
+                'coa_name' => 'Belanja Pemeliharaan Jaringan dan Instalasi (Listrik, Telepon, Internet, Komunikasi, dll)',
             ],
             83 => [
                 'id' => '90-99',

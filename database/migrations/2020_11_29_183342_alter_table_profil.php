@@ -44,7 +44,7 @@ class AlterTableProfil extends Migration
      */
     public function up()
     {
-        if (!Type::hasType('char')) {
+        if (! Type::hasType('char')) {
             Type::addType('char', StringType::class);
         }
         Schema::table('das_profil', function (Blueprint $table) {

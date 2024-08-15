@@ -38,7 +38,7 @@ class TipePotensi extends Model
 {
     use Sluggable;
 
-    protected $table    = 'das_tipe_potensi';
+    protected $table = 'das_tipe_potensi';
 
     protected $fillable = [
         'nama_kategori',
@@ -47,8 +47,6 @@ class TipePotensi extends Model
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {

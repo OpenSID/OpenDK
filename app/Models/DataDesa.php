@@ -44,7 +44,7 @@ class DataDesa extends Model
         'sebutan_desa',
         'website',
         'luas_wilayah',
-        'path'
+        'path',
     ];
 
     /**
@@ -60,9 +60,10 @@ class DataDesa extends Model
 
         $desa = [
             'desa_id' => $this->desa_id,
-            'nama'    => ucwords($this->sebutan_desa . ' ' . $this->nama),
-            'website' => $this->website . 'index.php/feed'
+            'nama' => ucwords($this->sebutan_desa.' '.$this->nama),
+            'website' => $this->website.'index.php/feed',
         ];
+
         return $desa;
     }
 
@@ -102,7 +103,7 @@ class DataDesa extends Model
     /**
      * Scope query untuk website desa.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWebsiteUrl($query)

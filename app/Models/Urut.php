@@ -47,34 +47,51 @@ class Urut extends Model
 
     public function urutMax($subset = [])
     {
+        if (!empty($subset)){
+            return DB::table($this->tabel)
+                ->where($subset)
+                ->max('urut');
+        }
         return DB::table($this->tabel)
-            ->where($subset)
             ->max('urut');
     }
 
     private function urutSemua($subset = [])
     {
-        $urutDuplikat = DB::table($this->tabel)
+        // Check for duplicates and unassigned 'urut' values
+        $urutDuplikatQuery = DB::table($this->tabel)
             ->select('urut', DB::raw('COUNT(*) as c'))
-            ->where($subset)
             ->groupBy('urut')
-            ->havingRaw('c > 1')
-            ->get();
+            ->havingRaw('c > 1');
 
-        $belumDiurut = DB::table($this->tabel)
-            ->where($subset)
-            ->whereNull('urut')
-            ->first();
+        $belumDiurutQuery = DB::table($this->tabel)
+            ->whereNull('urut');
 
-        $daftar = [];
-        if ($urutDuplikat->isNotEmpty() || $belumDiurut) {
-            $daftar = DB::table($this->tabel)
-                ->select($this->kolomId)
-                ->where($subset)
-                ->orderBy('urut')
-                ->get();
+        // If a subset is provided, apply it to the queries
+        if (!empty($subset)) {
+            $urutDuplikatQuery->where($subset);
+            $belumDiurutQuery->where($subset);
         }
 
+        $urutDuplikat = $urutDuplikatQuery->get();
+        $belumDiurut = $belumDiurutQuery->first();
+
+        // Initialize an empty array for the list of items to reorder
+        $daftar = [];
+        if ($urutDuplikat->isNotEmpty() || $belumDiurut) {
+            $daftarQuery = DB::table($this->tabel)
+                ->select($this->kolomId)
+                ->orderBy('urut');
+
+            // Apply the subset if provided
+            if (!empty($subset)) {
+                $daftarQuery->where($subset);
+            }
+
+            $daftar = $daftarQuery->get();
+        }
+
+        // Update the 'urut' field with new values
         foreach ($daftar as $index => $item) {
             DB::table($this->tabel)
                 ->where($this->kolomId, $item->{$this->kolomId})

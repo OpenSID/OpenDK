@@ -37,6 +37,15 @@
             <div class="box box-widget">
                 @include('widgets.visitor')
             </div>
+        @else
+            <div class="box box-widget">
+                <div class="box-header text-center  with-border bg-blue">
+                    <h2 class="box-title text-bold">{{$widget->judul}}</h2>
+                </div>
+                <div class="pad text-bold bg-white">
+                    {!! $widget->isi !!}
+                </div>
+            </div>
         @endif
     @endforeach
 </div>

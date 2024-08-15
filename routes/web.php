@@ -713,6 +713,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('getdata', 'getData')->name('setting.widget.getdata');
                 Route::get('urut/{id}/{arah}', 'urut')->name('setting.widget.urut');
                 Route::get('create', 'create')->name('setting.widget.create');
+                Route::post('store', 'storeWidget')->name('setting.widget.store');
                 Route::get('enable/{id}', 'enableWidget')->name('setting.widget.enable');
                 Route::get('disable/{id}', 'disableWidget')->name('setting.widget.disable');
             });

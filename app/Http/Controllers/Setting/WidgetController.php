@@ -35,7 +35,7 @@ use Illuminate\Http\Request;
 use App\Models\Widget;
 use Yajra\DataTables\DataTables;
 
-define('LOKASI_WIDGET', base_path() . 'resources/views/widgets/');
+define('LOKASI_WIDGET', base_path() . '/resources/views/widgets/');
 
 class WidgetController extends Controller
 {
@@ -51,8 +51,13 @@ class WidgetController extends Controller
     public function getData()
     {
         return DataTables::of(Widget::orderBy('urut', 'ASC')->get())
-            ->addColumn('aksi', function ($row) {
+            ->addColumn('urut', function ($row){
                 $data = [];
+                $data['naik'] = route('setting.widget.urut', ['id' => $row->id, 'arah' => 2]);
+                $data['turun']   = route('setting.widget.urut', ['id' => $row->id, 'arah' => 1]);
+                return view('forms.aksi', $data);
+            })
+            ->addColumn('aksi', function ($row) {
                 if ($row->jenis_widget != 1) {
                     $data['edit_url']   = route('setting.widget.index', $row->id);
                     $data['delete_url'] = route('setting.widget.index', $row->id);
@@ -63,10 +68,6 @@ class WidgetController extends Controller
                 } else {
                     $data['active_url'] = route('setting.widget.enable', $row->id);
                 }
-
-                $data['naik'] = route('setting.widget.urut', ['id' => $row->id, 'arah' => 2]);
-                $data['turun']   = route('setting.widget.urut', ['id' => $row->id, 'arah' => 1]);
-
                 return view('forms.aksi', $data);
             })
             ->make();
@@ -77,8 +78,9 @@ class WidgetController extends Controller
         $page_title       = 'Widget';
         $page_description = 'Tambah Widget';
         $widget = null;
+        $widget_list = $this->getNewWidget();
 
-        return view('setting.widget.create', compact('page_title', 'page_description', 'widget'));
+        return view('setting.widget.create', compact('page_title', 'page_description', 'widget', 'widget_list'));
     }
 
     public function urut($id = 0, $arah = 0)
@@ -110,11 +112,16 @@ class WidgetController extends Controller
 
     public function getNewWidget()
     {
-        $widgetList = [];
-        $defaultThemeWidget = $this->widget(LOKASI_WIDGET . '*.php');
-        $widgetList = array_merge($widgetList, $defaultThemeWidget);
+        $defaultThemeWidget = $this->widget(str_replace("/","\\", LOKASI_WIDGET) . '*.php');
 
-        return $widgetList;
+        // Return hanya nama file saja
+        // Cohtoh : event.blalde.php
+        $widget_list = array_map(function ($file){
+            $parts = explode('\\', $file);
+            return end($parts);
+        }, $defaultThemeWidget);
+
+        return array_combine($widget_list, $widget_list);
     }
 
     public function widget($lokasi)
@@ -127,5 +134,41 @@ class WidgetController extends Controller
         }
 
         return $l_widget;
+    }
+
+
+    public function storeWidget(Request $request)
+    {
+        $data = $request->all();
+        $data['urut'] = Widget::max('urut') + 1;
+        $data['isi'] = $data['isi-dinamis'] ?? $data['isi-statis'];
+
+        if ($data['jenis_widget'] == 3){
+            $data['isi'] = $this->bersihkan_html($data['isi']);
+        }
+
+        $existing = Widget::where('isi', $data['isi'])->first();
+        if ($existing != null){
+            return back()->withInput()->with('error', 'Widget ini sudah tersedia.');
+        }
+        Widget::create($data);
+        return redirect()->route('setting.widget.index')->with('success', 'Widget berhasil ditambahkan.');
+    }
+
+    private function bersihkan_html($isi)
+    {
+        // Konfigurasi tidy
+        $config = [
+            'indent'         => true,
+            'output-xhtml'   => true,
+            'show-body-only' => true,
+            'clean'          => true,
+            'coerce-endtags' => true,
+        ];
+        $tidy = new \tidy();
+        $tidy->parseString($isi, $config, 'utf8');
+        $tidy->cleanRepair();
+
+        return tidy_get_output($tidy);
     }
 }

@@ -18,7 +18,7 @@
         <div class="col-md-12">
             @include( 'partials.flash_message' )
                 <div class="box box-primary">
-                    {!! Form::open( [ 'route' => 'setting.widget.index', 'method' => 'post','id' => 'form-widget', 'class' => 'form-horizontal form-label-left'] ) !!}
+                    {!! Form::open( [ 'route' => 'setting.widget.store', 'method' => 'post','id' => 'form-widget', 'class' => 'form-horizontal form-label-left'] ) !!}
 
                     <div class="box-body">
 

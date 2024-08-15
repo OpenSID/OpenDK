@@ -28,7 +28,10 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class WidgetSeeder extends Seeder
 {

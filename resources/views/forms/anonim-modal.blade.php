@@ -33,12 +33,12 @@
         $('#anonim-modal').on('show.bs.modal', function(e) {
             // Ambil teks dari kolom 'anonim'
             var anonimValue = _trSelected.find('td.anonim').text().trim();
-            
+
             // Konversi teks ke nilai yang sesuai
             var selectValue = (anonimValue === 'Disembunyikan') ? '1' : '0';
-            
+
             // Set nilai select
-            $(this).find('select').val(selectValue);    
+            $(this).find('select').val(selectValue);
         });
     });
 </script>

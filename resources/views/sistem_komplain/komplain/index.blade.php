@@ -18,7 +18,7 @@
                                     <a href="{{ route('sistem-komplain.komplain', $item->slug) }}">{{ $item->judul }}</a>
                                     <a href="#" class="pull-right btn-box-tool"><span class="label label-default">{{ $item->kategori_komplain->nama }}</span></a>
                                 </span>
-                                <span class="description">{{ $item->nama }} melaporkan - {{ diff_for_humans($item->created_at) }}</span>
+                                <span class="description">{{ (auth()->guest() && $item->anonim) ? 'Anonim' : $item->nama }} melaporkan - {{ diff_for_humans($item->created_at) }}</span>
                             </div>
                             <p>
                                 {!! get_words($item->laporan, 35) !!} ...

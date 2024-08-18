@@ -73,7 +73,7 @@
                             <span class="username">
                                 <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                             </span>
-                            <span class="description">PELAPOR : {{ $komplain->nama }}</span>
+                            <span class="description">PELAPOR : {{ (auth()->guest() && $komplain->anonim) ? 'ANONIM' : $komplain->nama }}</span>
                         </div>
                         <!-- /.user-block -->
                         <br>

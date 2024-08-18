@@ -29,43 +29,15 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Enums;
 
-use Illuminate\Database\Eloquent\Model;
+use BenSampo\Enum\Enum;
 
-class Komplain extends Model
+/**
+ * Status untuk melihat aktif dan tidak aktif
+ */
+final class Anonim extends Enum
 {
-    protected $table = 'das_komplain';
-
-    protected $fillable = [
-        'kategori',
-        'nik',
-        'nama',
-        'judul',
-        'slug',
-        'laporan',
-        'status',
-        'lampiran1',
-        'lampiran2',
-        'lampiran3',
-        'lampiran4',
-        'anonim',
-    ];
-
-    protected $with = ['penduduk'];
-
-    public function kategori_komplain()
-    {
-        return $this->hasOne(KategoriKomplain::class, 'id', 'kategori');
-    }
-
-    public function jawabs()
-    {
-        return $this->hasMany(JawabKomplain::class, 'komplain_id', 'komplain_id');
-    }
-
-    public function penduduk()
-    {
-        return $this->hasOne(Penduduk::class, 'nik', 'nik');
-    }
+    public const Tampilkan = 0;
+    public const Sembunyikan = 1;
 }

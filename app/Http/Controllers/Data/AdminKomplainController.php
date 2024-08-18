@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Enums\Anonim;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\JawabKomplain;
@@ -93,10 +94,10 @@ class AdminKomplainController extends Controller
             })
             ->editColumn('anonim', function ($row) {
                 $anonim = '';
-                if ($row->anonim == 0) {
+                if ($row->anonim == Anonim::Tampilkan) {
                     $anonim = '<span class="label label-success">Ditampilkan</span>';
                 }
-                if ($row->anonim == 1) {
+                if ($row->anonim == Anonim::Sembunyikan) {
                     $anonim = '<span class="label label-danger">Disembunyikan</span>';
                 }
 

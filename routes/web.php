@@ -50,6 +50,7 @@ use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\WidgetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -739,6 +740,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::delete('destroy/{id}', 'destroy')->name('setting.navigation.destroy');
                 Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
                 Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
+            });
+
+            // Widget
+            Route::group(['prefix' => 'widget', 'controller' => WidgetController::class, 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.widget.index');
+                Route::get('getdata', 'getData')->name('setting.widget.getdata');
+                Route::get('urut/{id}/{arah}', 'urut')->name('setting.widget.urut');
+                Route::get('create', 'create')->name('setting.widget.create');
+                Route::post('store', 'storeWidget')->name('setting.widget.store');
+                Route::get('enable/{id}', 'enableWidget')->name('setting.widget.enable');
+                Route::get('disable/{id}', 'disableWidget')->name('setting.widget.disable');
             });
         });
 

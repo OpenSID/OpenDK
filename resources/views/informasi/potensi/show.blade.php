@@ -19,7 +19,7 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <a href="{{ route('informasi.potensi.index') }}">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Kembali</button>
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i>&nbsp; Kembali</button>
                         </a>
                         <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
 

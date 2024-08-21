@@ -15,3 +15,4 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### TEKNIS
 
 1. [#982](https://github.com/OpenSID/OpenDK/issues/982) Perbaikan celah di API list penduduk dan kk.
+2. [#1006](https://github.com/OpenSID/OpenDK/issues/1006) Template Issue Label Fitur

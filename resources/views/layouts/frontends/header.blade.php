@@ -16,8 +16,8 @@
                 <ul class="nav navbar-nav">
                     @foreach ($navigations as $nav)
                         @if (!empty($nav['childs']))
-                            @if ($nav['slug']==='profil')
-                                <li class="dropdown @if (Request::is($nav['slug'].'/*')) active @endif menu-large">
+                            @if ($nav['slug'] === 'profil')
+                                <li class="dropdown @if (Request::is($nav['slug'] . '/*')) active @endif menu-large">
                                     <a href="{{ $nav['url'] }}" class="dropdown-toggle" data-toggle="dropdown"> {{ strtoupper($nav['name']) }} <span class="caret"></span></a>
                                     <div class="dropdown-menu  fadeIn animated">
                                         <div class="container">
@@ -25,7 +25,7 @@
                                                 <li class="col-md-4 col-sm-2">
                                                     <ul class="mega-list">
                                                         @foreach ($nav['childs'] as $child)
-                                                            <li class="@if (Request::is($child['url'])) active @endif"><a class="text-bold" href="{{ $child['url'] }}"><i class="fa fa-arrow-circle-right text-blue"></i> {{ $child['name'] }}</a></li>                                   
+                                                            <li class="@if (Request::is($child['url'])) active @endif"><a class="text-bold" href="{{ $child['url'] }}"><i class="fa fa-arrow-circle-right text-blue"></i> {{ $child['name'] }}</a></li>
                                                         @endforeach
                                                     </ul>
                                                 </li>
@@ -46,20 +46,20 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </li>                            
+                                </li>
                             @else
-                                <li class="dropdown @if (Request::is($nav['slug'].'/*')) active @endif">
+                                <li class="dropdown @if (Request::is($nav['slug'] . '/*')) active @endif">
                                     <a href="{{ $nav['url'] }}" class="dropdown-toggle" data-toggle="dropdown"> {{ strtoupper($nav['name']) }} <span class="caret"></span></a>
                                     <ul class="dropdown-menu fadeIn animated" role="menu">
                                         @foreach ($nav['childs'] as $child)
-                                            <li><a href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>                                   
+                                            <li><a href="{{ $child['url'] }}">{{ $child['name'] }}</a></li>
                                         @endforeach
                                     </ul>
                                 </li>
-                            @endif                        
+                            @endif
                         @else
-                            @if ($nav['slug']==='desa')
-                                <li class="dropdown scroll @if (Request::is($nav['slug'].'/*')) active @endif">
+                            @if ($nav['slug'] === 'desa')
+                                <li class="dropdown scroll @if (Request::is($nav['slug'] . '/*')) active @endif">
                                     <a href="{{ $nav['url'] }}" class="dropdown-toggle" data-toggle="dropdown"> {{ strtoupper($nav['name']) }} <span class="caret"></span></a>
                                     <ul class="dropdown-menu fadeIn animated" style="overflow-y : none; " role="menu">
                                         @foreach ($navdesa->chunk(2) as $desa)
@@ -69,8 +69,8 @@
                                         @endforeach
                                     </ul>
                                 </li>
-                            @elseif ($nav['slug']==='potensi')
-                                <li class="dropdown @if (Request::is($nav['slug'].'/*')) active @endif">
+                            @elseif ($nav['slug'] === 'potensi')
+                                <li class="dropdown @if (Request::is($nav['slug'] . '/*')) active @endif">
                                     <a href="{{ $nav['url'] }}" class="dropdown-toggle" data-toggle="dropdown"> {{ strtoupper($nav['name']) }} <span class="caret"></span></a>
                                     <ul class="dropdown-menu fadeIn animated" role="menu">
                                         @foreach ($navpotensi as $d)
@@ -79,11 +79,14 @@
                                     </ul>
                                 </li>
                             @else
-                                <li class="@if (Request::is($nav['slug'])) active @endif"><a href="{{ $nav['url'] }}">{{ strtoupper($nav['name']) }} @if ($nav['slug'] === 'beranda') <span class="sr-only">(current)</span> @endif</a></li>
+                                <li class="@if (Request::is($nav['slug'])) active @endif"><a href="{{ $nav['url'] }}">{{ strtoupper($nav['name']) }} @if ($nav['slug'] === 'beranda')
+                                            <span class="sr-only">(current)</span>
+                                        @endif
+                                    </a></li>
                             @endif
                         @endif
                     @endforeach
-                    
+
                     @if (auth()->guest())
                         <li><a href="{{ route('login') }}">LOGIN<span class="sr-only">(current)</span></a></li>
                     @else

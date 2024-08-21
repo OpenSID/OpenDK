@@ -768,18 +768,4 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
     });
-
-    Route::get('/api/list-penduduk', function () {
-        return Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%'.strtolower(request('q')).'%\' or lower(nik) LIKE \'%'.strtolower(request('q')).'%\'')
-            ->paginate(10);
-    });
-
-    // TODO : Peserta KK gunakan das_keluarga
-    Route::get('/api/list-kk', function () {
-        return Penduduk::selectRaw('no_kk as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%'.strtolower(request('q')).'%\' or lower(no_kk) LIKE \'%'.strtolower(request('q')).'%\'')
-            ->where('kk_level', 1)
-            ->paginate(10);
-    });
 });

@@ -31,14 +31,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <a href="{{ route('data.pengurus.index') }}">
-                                    <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp; Batal</button>
-                                </a>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i>&nbsp; Simpan</button>
-                            </div>
-                        </div>
+                        @include('partials.button_reset_submit')
                     </div>
                     {!! Form::close() !!}
                 </div>

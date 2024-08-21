@@ -89,7 +89,7 @@
                         name: 'status',
                         orderable: false,
                         render: function(data) {
-                            return (data) ? `<span class="badge badge-success">Aktif</span>`:`<span class="badge badge-danger">Nonaktif</span>`;
+                            return (data) ? `<span class="badge badge-success">Aktif</span>` : `<span class="badge badge-danger">Nonaktif</span>`;
                         }
                     }
                 ]

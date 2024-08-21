@@ -483,12 +483,12 @@ if (! function_exists('theme_active')) {
 if (! function_exists('getFeeds')) {
     function getFeeds()
     {
-        $all_desa = DataDesa::websiteUrl()->get()
-        ->map(function ($desa) {
-            return $desa->website_url_feed;
-        })->all();
-
-        return cache()->remember('feeds_desa', 60 * 60, function () use ($all_desa) {
+        return cache()->remember('feeds_desa', 60 * 60, function () {
+            $all_desa = DataDesa::websiteUrl()->get()
+            ->map(function ($desa) {
+                return $desa->website_url_feed;
+            })->all();
+    
             $feeds = [];
             foreach ($all_desa as $desa) {
                 $getFeeds = FeedsFacade::make($desa['website'], 5, true);

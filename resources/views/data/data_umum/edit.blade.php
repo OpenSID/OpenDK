@@ -77,16 +77,7 @@
             </div>
 
             <div class="box-footer">
-                <div class="pull-right">
-                    <div class="control-group">
-                        <a href="{{ route('data.data-umum.index') }}">
-                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i>&nbsp;
-                                Batal</button>
-                        </a>
-                        <button type="submit" class="btn btn-primary btn-sm" onclick="validateForm()"><i class="fa fa-save"></i>&nbsp;
-                            Simpan</button>
-                    </div>
-                </div>
+                @include('partials.button_reset_submit')
             </div>
         </div>
 

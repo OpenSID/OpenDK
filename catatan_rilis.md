@@ -10,7 +10,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### BUG
  
 1. [#932](https://github.com/OpenSID/OpenDK/issues/932) Sesuaikan tombol batal dan kembali.
-
+2. [#980](https://github.com/OpenSID/OpenDK/issues/980) Hapus media sosial pada profile
 
 #### TEKNIS
 

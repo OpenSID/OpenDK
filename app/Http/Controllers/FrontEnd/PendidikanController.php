@@ -219,7 +219,7 @@ class PendidikanController extends FrontEndController
             // Quartal
             foreach (semester() as $key => $kuartal) {
                 $query_pendidikan = DB::table('das_putus_sekolah')
-                    ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
+                    // ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
                     ->where('tahun', $year)
                     ->where('desa_id', '=', $did);
 

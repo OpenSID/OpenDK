@@ -1,6 +1,6 @@
-Di rilis versi v2408.0.1 di versi ini [untuk diisi] dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2408.0.1 di versi ini terdapat modul navigasi halaman publik dan perbaikan lain yang diminta Komunitas.
 
-Terima kasih pada [untuk diisi] telah ikut berkontribusi.
+Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 #### FITUR
 
@@ -10,8 +10,10 @@ Terima kasih pada [untuk diisi] telah ikut berkontribusi.
 #### BUG
  
 1. [#932](https://github.com/OpenSID/OpenDK/issues/932) Sesuaikan tombol batal dan kembali.
-
-
+2. [#980](https://github.com/OpenSID/OpenDK/issues/980) Hapus media sosial pada profile
+3. [#1002](https://github.com/OpenSID/OpenDK/issues/1002) Fix Error Statistik Pendidikan
 #### TEKNIS
 
 1. [#982](https://github.com/OpenSID/OpenDK/issues/982) Perbaikan celah di API list penduduk dan kk.
+2. [#1006](https://github.com/OpenSID/OpenDK/issues/1006) Template Issue Label Fitur
+3. [#988](https://github.com/OpenSID/OpenDK/pull/988) Hapus pengecekan settings kosong

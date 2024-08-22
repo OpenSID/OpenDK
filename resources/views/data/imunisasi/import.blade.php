@@ -79,14 +79,7 @@
 
                 </div>
                 <div class="box-footer">
-                    <div class="pull-right">
-                        <div class="control-group">
-                            <a href="{{ route('data.imunisasi.index') }}">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal</button>
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                        </div>
-                    </div>
+                    @include('partials.button_reset_impor')
                 </div>
                 {!! Form::close() !!}
             </div>

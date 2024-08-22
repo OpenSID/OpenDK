@@ -12,6 +12,8 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 1. [#932](https://github.com/OpenSID/OpenDK/issues/932) Sesuaikan tombol batal dan kembali.
 2. [#980](https://github.com/OpenSID/OpenDK/issues/980) Hapus media sosial pada profile
 3. [#1002](https://github.com/OpenSID/OpenDK/issues/1002) Fix Error Statistik Pendidikan
+4. [#1008](https://github.com/OpenSID/OpenDK/issues/1008) Perbaikan error tidak bisa mengirim keluhan di sikema.
+
 #### TEKNIS
 
 1. [#982](https://github.com/OpenSID/OpenDK/issues/982) Perbaikan celah di API list penduduk dan kk.

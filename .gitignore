@@ -28,4 +28,4 @@ composer.lock
 
 # Themes
 /themes/*
-!/themes/opendk/
+!/themes/opendk/default/

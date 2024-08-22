@@ -2,7 +2,7 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-circle-left"></i> Kembali</button></a>
+                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
@@ -52,8 +52,7 @@
             </div>
 
             <div class="box-footer">
-                <button type="reset" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Batal</button>
-                <button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i> Simpan</button>
+                @include('partials.button_reset_submit')
             </div>
         </div>
     </div>

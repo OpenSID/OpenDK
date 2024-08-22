@@ -36,8 +36,6 @@
                         <tr>
                             <th style="max-width: 250px;">Aksi</th>
                             <th>Navigasi</th>
-                            <th>Slug</th>
-                            <th>Tipe</th>
                             <th>Url</th>
                             <th>Active</th>
                         </tr>
@@ -67,16 +65,6 @@
                     {
                         data: 'name',
                         name: 'name',
-                        orderable: false
-                    },
-                    {
-                        data: 'slug',
-                        name: 'slug',
-                        orderable: false
-                    },
-                    {
-                        data: 'nav_type',
-                        name: 'nav_type',
                         orderable: false
                     },
                     {

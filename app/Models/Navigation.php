@@ -31,9 +31,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Cviebrock\EloquentSluggable\Sluggable;
+use App\Enums\MenuTipe;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Navigation extends Model
 {
@@ -46,7 +48,11 @@ class Navigation extends Model
     /**
      * {@inheritDoc}
      */
-    protected $fillable = ['name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'status'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'type', 'url', 'order', 'status'];
+
+    protected $appends = [
+        'full_url',
+    ];
 
     /**
      * Return user's query for Datatables.
@@ -55,7 +61,7 @@ class Navigation extends Model
      */
     public static function datatables()
     {
-        return static::select('name', 'slug', 'parent_id', 'nav_type', 'url', 'order', 'id', 'status')->get();
+        return static::select('name', 'slug', 'parent_id', 'type', 'url', 'order', 'id', 'status')->get();
     }
 
     public static function lastOrder($parent_id = 0)
@@ -71,5 +77,40 @@ class Navigation extends Model
     public function childrens()
     {
         return $this->hasMany(Navigation::class, 'parent_id');
+    }
+
+    public function setParentIdAttribute($value)
+    {
+        $this->attributes['parent_id'] = $value == 0 ? null : $value;
+    }
+
+    public function setUrlAttribute($value)
+    {
+        // jika tike != 0, maka hapus url()
+        if ($this->type != MenuTipe::EKSTERNAL) {
+            $this->attributes['url'] = str_replace(url('/') . '/', '', $value);
+        } else {
+            $this->attributes['url'] = $value;
+        }
+    }
+
+    public function getFullUrlAttribute()
+    {
+        Log::info($this->type);
+        switch ($this->type) {
+            case MenuTipe::PROFIL:
+            case MenuTipe::DESA:
+            case MenuTipe::STATISTIK:
+            case MenuTipe::POTENSI:
+            case MenuTipe::UNDUHAN:
+                return url($this->url);
+                break;
+            case MenuTipe::EKSTERNAL:
+                return $this->url;
+                break;
+            default:
+                return '#';
+                break;
+        }
     }
 }

@@ -84,9 +84,13 @@ class Navigation extends Model
         $this->attributes['parent_id'] = $value == 0 ? null : $value;
     }
 
+    public function setNavTypeAttribute($value)
+    {
+        $this->attributes['nav_type'] = 'system';
+    }
+
     public function setUrlAttribute($value)
     {
-        // jika tike != 0, maka hapus url()
         if ($this->type != MenuTipe::EKSTERNAL) {
             $this->attributes['url'] = str_replace(url('/') . '/', '', $value);
         } else {
@@ -96,7 +100,6 @@ class Navigation extends Model
 
     public function getFullUrlAttribute()
     {
-        Log::info($this->type);
         switch ($this->type) {
             case MenuTipe::PROFIL:
             case MenuTipe::DESA:

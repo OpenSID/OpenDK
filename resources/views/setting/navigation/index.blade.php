@@ -68,8 +68,8 @@
                         orderable: false
                     },
                     {
-                        data: 'url',
-                        name: 'url',
+                        data: 'full_url',
+                        name: 'full_url',
                         orderable: false
                     },
                     {

@@ -13,6 +13,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 2. [#980](https://github.com/OpenSID/OpenDK/issues/980) Hapus media sosial pada profile
 3. [#1002](https://github.com/OpenSID/OpenDK/issues/1002) Fix Error Statistik Pendidikan
 4. [#1008](https://github.com/OpenSID/OpenDK/issues/1008) Perbaikan error tidak bisa mengirim keluhan di sikema.
+5. [#985](https://github.com/OpenSID/OpenDK/issues/985) Perbaikan navigasi default
 
 #### TEKNIS
 

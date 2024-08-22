@@ -54,7 +54,7 @@ class NavigationRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'nav_type' => 'required',
+            'type' => 'required',
             'url' => 'required',
         ];
     }

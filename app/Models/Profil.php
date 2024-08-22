@@ -56,13 +56,8 @@ class Profil extends Model
         'file_struktur_organisasi',
         'file_logo',
         'sambutan',
-        'socialmedia',
         'visi',
         'misi',
-    ];
-
-    protected $cast = [
-        'socialmedia' => 'array',
     ];
 
     public static function getProfilTanpaDataUmum()

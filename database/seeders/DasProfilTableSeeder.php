@@ -82,7 +82,6 @@ class DasProfilTableSeeder extends Seeder
             'file_logo' => null,
             'visi' => null,
             'misi' => null,
-            'socialmedia' => json_encode($socialmedia),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

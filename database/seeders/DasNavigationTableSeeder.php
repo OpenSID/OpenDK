@@ -31,10 +31,11 @@
 
 namespace Database\Seeders;
 
+use App\Enums\MenuTipe;
 use App\Models\Navigation;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DasNavigationTableSeeder extends Seeder
 {
@@ -47,82 +48,84 @@ class DasNavigationTableSeeder extends Seeder
     {
         DB::table('das_navigation')->delete();
 
-        // insert parents
-        DB::table('das_navigation')->insert([
+        // Menu Utama
+        $menuUtama = [
             [
                 'name' => 'Beranda',
                 'slug' => Str::slug('Beranda'),
-                'nav_type' => 'system',
-                'url' => '/',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => url('/'),
                 'order' => 1,
                 'status' => 1,
             ],
             [
                 'name' => 'Berita Desa',
                 'slug' => Str::slug('Berita Desa'),
-                'nav_type' => 'system',
-                'url' => '/berita-desa',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => url('berita-desa'),
                 'order' => 2,
                 'status' => 1,
             ],
             [
                 'name' => 'Profil',
                 'slug' => Str::slug('Profil'),
-                'nav_type' => 'system',
-                'url' => '/#',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => '#',
                 'order' => 3,
                 'status' => 1,
             ],
             [
                 'name' => 'Desa',
                 'slug' => Str::slug('Desa'),
-                'nav_type' => 'system',
-                'url' => '/#',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => '#',
                 'order' => 4,
                 'status' => 1,
             ],
             [
                 'name' => 'Potensi',
                 'slug' => Str::slug('Potensi'),
-                'nav_type' => 'system',
-                'url' => '/#',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => '#',
                 'order' => 5,
                 'status' => 1,
             ],
             [
                 'name' => 'Statistik',
                 'slug' => Str::slug('Statistik'),
-                'nav_type' => 'system',
-                'url' => '/#',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => '#',
                 'order' => 6,
                 'status' => 1,
             ],
             [
                 'name' => 'Unduhan',
                 'slug' => Str::slug('Unduhan'),
-                'nav_type' => 'system',
-                'url' => '/#',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => '#',
                 'order' => 7,
                 'status' => 1,
             ],
             [
                 'name' => 'FAQ',
                 'slug' => Str::slug('FAQ'),
-                'nav_type' => 'system',
-                'url' => '/faq',
+                'type' => MenuTipe::EKSTERNAL,
+                'url' => url('faq'),
                 'order' => 8,
                 'status' => 1,
             ],
-        ]);
+        ];
 
-        // insert childs
-        DB::table('das_navigation')->insert([
+        DB::table('das_navigation')->insert($menuUtama);
+
+        // Submenu
+        $subMenu = [
             [
                 'parent_id' => Navigation::where('slug', 'profil')->first()->id,
                 'name' => 'Sejarah',
                 'slug' => 'profil-sejarah',
-                'nav_type' => 'system',
-                'url' => '/profil/sejarah',
+                'type' => MenuTipe::PROFIL,
+                'url' => 'profil/sejarah',
                 'order' => 1,
                 'status' => 1,
             ],
@@ -130,8 +133,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'profil')->first()->id,
                 'name' => 'Letak Geografis',
                 'slug' => 'profil-letak-geografis',
-                'nav_type' => 'system',
-                'url' => '/profil/letak-geografis',
+                'type' => MenuTipe::PROFIL,
+                'url' => 'profil/letak-geografis',
                 'order' => 2,
                 'status' => 1,
             ],
@@ -139,8 +142,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'profil')->first()->id,
                 'name' => 'Struktur Pemerintahan',
                 'slug' => 'profil-struktur-pemerintahan',
-                'nav_type' => 'system',
-                'url' => '/profil/struktur-pemerintahan',
+                'type' => MenuTipe::PROFIL,
+                'url' => 'profil/struktur-pemerintahan',
                 'order' => 3,
                 'status' => 1,
             ],
@@ -148,8 +151,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'profil')->first()->id,
                 'name' => 'Visi & Misi',
                 'slug' => 'profil-visi-misi',
-                'nav_type' => 'system',
-                'url' => '/profil/visi-misi',
+                'type' => MenuTipe::PROFIL,
+                'url' => 'profil/visi-misi',
                 'order' => 4,
                 'status' => 1,
             ],
@@ -157,8 +160,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,
                 'name' => 'Penduduk',
                 'slug' => 'statistik-penduduk',
-                'nav_type' => 'system',
-                'url' => '/statistik/kependudukan',
+                'type' => MenuTipe::STATISTIK,
+                'url' => 'statistik/kependudukan',
                 'order' => 1,
                 'status' => 1,
             ],
@@ -166,8 +169,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,
                 'name' => 'Pendidikan',
                 'slug' => 'statistik-pendidikan',
-                'nav_type' => 'system',
-                'url' => '/statistik/pendidikan',
+                'type' => MenuTipe::STATISTIK,
+                'url' => 'statistik/pendidikan',
                 'order' => 2,
                 'status' => 1,
             ],
@@ -175,8 +178,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,
                 'name' => 'Kesehatan',
                 'slug' => 'statistik-kesehatan',
-                'nav_type' => 'system',
-                'url' => '/statistik/kesehatan',
+                'type' => MenuTipe::STATISTIK,
+                'url' => 'statistik/kesehatan',
                 'order' => 3,
                 'status' => 1,
             ],
@@ -184,8 +187,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,
                 'name' => 'Program dan Bantuan',
                 'slug' => 'statistik-program-dan-bantuan',
-                'nav_type' => 'system',
-                'url' => '/statistik/program-dan-bantuan',
+                'type' => MenuTipe::STATISTIK,
+                'url' => 'statistik/program-dan-bantuan',
                 'order' => 4,
                 'status' => 1,
             ],
@@ -193,8 +196,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,
                 'name' => 'Anggaran dan Realisasi',
                 'slug' => 'statistik-anggaran-dan-realisasi',
-                'nav_type' => 'system',
-                'url' => '/statistik/anggaran-dan-realisasi',
+                'type' => MenuTipe::STATISTIK,
+                'url' => 'statistik/anggaran-dan-realisasi',
                 'order' => 5,
                 'status' => 1,
             ],
@@ -202,8 +205,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'statistik')->first()->id,
                 'name' => 'Anggaran Desa',
                 'slug' => 'statistik-anggaran-desa',
-                'nav_type' => 'system',
-                'url' => '/statistik/anggaran-desa',
+                'type' => MenuTipe::STATISTIK,
+                'url' => 'statistik/anggaran-desa',
                 'order' => 6,
                 'status' => 1,
             ],
@@ -211,8 +214,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'unduhan')->first()->id,
                 'name' => 'Prosedur',
                 'slug' => 'unduhan-prosedur',
-                'nav_type' => 'system',
-                'url' => '/unduhan/prosedur',
+                'type' => MenuTipe::UNDUHAN,
+                'url' => 'unduhan/prosedur',
                 'order' => 1,
                 'status' => 1,
             ],
@@ -220,8 +223,8 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'unduhan')->first()->id,
                 'name' => 'Regulasi',
                 'slug' => 'unduhan-regulasi',
-                'nav_type' => 'system',
-                'url' => '/unduhan/regulasi',
+                'type' => MenuTipe::UNDUHAN,
+                'url' => 'unduhan/regulasi',
                 'order' => 2,
                 'status' => 1,
             ],
@@ -229,11 +232,38 @@ class DasNavigationTableSeeder extends Seeder
                 'parent_id' => Navigation::where('slug', 'unduhan')->first()->id,
                 'name' => 'Dokumen',
                 'slug' => 'unduhan-dokumen',
-                'nav_type' => 'system',
-                'url' => '/unduhan/form-dokumen',
+                'type' => MenuTipe::UNDUHAN,
+                'url' => 'unduhan/form-dokumen',
                 'order' => 3,
                 'status' => 1,
             ]
-        ]);
+        ];
+
+        DB::table('das_data_desa')->get()->each(function ($data) use (&$subMenu) {
+            $slug = $data->sebutan_desa . '-' . Str::slug($data->nama);
+            $subMenu[] = [
+                'parent_id' => Navigation::where('slug', 'desa')->first()->id,
+                'name' => ucwords($data->sebutan_desa . ' ' . $data->nama),
+                'slug' => $slug,
+                'type' => MenuTipe::DESA,
+                'url' => 'desa/' . $slug,
+                'order' => $data->id,
+                'status' => 1,
+            ];
+        });
+
+        DB::table('das_tipe_potensi')->get()->each(function ($data) use (&$subMenu) {
+            $subMenu[] = [
+                'parent_id' => Navigation::where('slug', 'potensi')->first()->id,
+                'name' => $data->nama_kategori,
+                'slug' => 'potensi-' . $data->slug,
+                'type' => MenuTipe::POTENSI,
+                'url' => 'potensi/' . $data->slug,
+                'order' => $data->id,
+                'status' => 1,
+            ];
+        });
+
+        DB::table('das_navigation')->insert($subMenu);
     }
 }

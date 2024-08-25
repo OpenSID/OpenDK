@@ -60,6 +60,7 @@ use Database\Seeders\Demo\DemoDasPengurusTableSeeder;
 use Database\Seeders\Demo\DemoPendudukKeluargaSeeder;
 use Database\Seeders\Demo\DemoAnggaranRealisasiSeeder;
 use Database\Seeders\Demo\DemoTingkatPendidikanSeeder;
+use Database\Seeders\Demo\DemoDasNavigationTableSeeder;
 
 class DemoDatabaseSeeder extends Seeder
 {
@@ -102,6 +103,7 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoMediaSosialSeeder::class);
         $this->call(DemoSinergiProgramSeeder::class);
         $this->call(DemoSliderSeeder::class);
+        $this->call(DemoDasNavigationTableSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

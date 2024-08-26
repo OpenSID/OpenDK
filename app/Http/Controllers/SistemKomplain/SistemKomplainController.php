@@ -31,15 +31,15 @@
 
 namespace App\Http\Controllers\SistemKomplain;
 
-use App\Http\Controllers\Controller;
-use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
+use App\Models\JawabKomplain;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\FrontEndController;
 
-class SistemKomplainController extends Controller
+class SistemKomplainController extends FrontEndController
 {
     public function index()
     {

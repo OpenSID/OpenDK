@@ -76,11 +76,9 @@ class SlideController extends Controller
 
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
-                $fileName = $file->getClientOriginalName();
-                $path = 'storage/slide/';
-                $file->move($path, $fileName);
-
-                $input['gambar'] = $path.$fileName;
+                $fileName = $file->hashName();
+                $path = $file->storeAs('public/slide', $fileName);
+                $input['gambar'] = str_replace('public/', 'storage/', $path);
             }
             Slide::create($input);
         } catch (\Exception $e) {
@@ -94,7 +92,7 @@ class SlideController extends Controller
 
     public function show(Slide $slide)
     {
-        $page_title = 'Detail Slide :'.$slide->judul;
+        $page_title = 'Detail Slide :' . $slide->judul;
 
         return view('setting.slide.show', compact('page_title', 'page_description', 'slide'));
     }
@@ -102,7 +100,7 @@ class SlideController extends Controller
     public function edit(Slide $slide)
     {
         $page_title = 'Slide';
-        $page_description = 'Ubah Slide : '.$slide->judul;
+        $page_description = 'Ubah Slide : ' . $slide->judul;
 
         return view('setting.slide.edit', compact('page_title', 'page_description', 'slide'));
     }
@@ -114,12 +112,9 @@ class SlideController extends Controller
 
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
-                $fileName = $file->getClientOriginalName();
-                $path = 'storage/slide/';
-                $file->move($path, $fileName);
-                unlink(base_path('public/'.$slide->gambar));
-
-                $input['gambar'] = $path.$fileName;
+                $fileName = $file->hashName();
+                $path = $file->storeAs('public/slide', $fileName);
+                $input['gambar'] = str_replace('public/', 'storage/', $path);
             }
             $slide->update($input);
         } catch (\Exception $e) {

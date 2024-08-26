@@ -29,12 +29,15 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Database\Seeders;
+namespace Database\Seeders\Demo;
 
+use App\Enums\MenuTipe;
+use App\Models\Navigation;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class DasProfilTableSeeder extends Seeder
+class DemoDasNavigationTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -43,47 +46,34 @@ class DasProfilTableSeeder extends Seeder
      */
     public function run()
     {
-        $socialmedia = [
-            0 => [
-                'icon' => 'fa fa-facebook',
-                'link' => null,
-            ],
-            1 => [
-                'icon' => 'fa fa-twitter',
-                'link' => null,
-            ],
-            2 => [
-                'icon' => 'fa fa-instagram',
-                'link' => null,
-            ],
-            3 => [
-                'icon' => 'fa fa-youtube',
-                'link' => null,
-            ],
-        ];
+        // Submenu
+        $subMenu = [];
 
-        DB::table('das_profil')->truncate();
+        DB::table('das_data_desa')->get()->each(function ($data) use (&$subMenu) {
+            $slug = $data->sebutan_desa . '-' . Str::slug($data->nama);
+            $subMenu[] = [
+                'parent_id' => Navigation::where('slug', 'desa')->first()->id,
+                'name' => ucwords($data->sebutan_desa . ' ' . $data->nama),
+                'slug' => $slug,
+                'type' => MenuTipe::DESA,
+                'url' => 'desa/' . $slug,
+                'order' => $data->id,
+                'status' => 1,
+            ];
+        });
 
-        DB::table('das_profil')->insert([
-            'id' => 1,
-            'provinsi_id' => null,
-            'nama_provinsi' => null,
-            'kabupaten_id' => null,
-            'nama_kabupaten' => null,
-            'kecamatan_id' => null,
-            'nama_kecamatan' => null,
-            'alamat' => null,
-            'kode_pos' => null,
-            'telepon' => null,
-            'email' => null,
-            'tahun_pembentukan' => null,
-            'dasar_pembentukan' => null,
-            'file_struktur_organisasi' => null,
-            'file_logo' => null,
-            'visi' => null,
-            'misi' => null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        DB::table('das_tipe_potensi')->get()->each(function ($data) use (&$subMenu) {
+            $subMenu[] = [
+                'parent_id' => Navigation::where('slug', 'potensi')->first()->id,
+                'name' => $data->nama_kategori,
+                'slug' => 'potensi-' . $data->slug,
+                'type' => MenuTipe::POTENSI,
+                'url' => 'potensi/' . $data->slug,
+                'order' => $data->id,
+                'status' => 1,
+            ];
+        });
+
+        DB::table('das_navigation')->insert($subMenu);
     }
 }

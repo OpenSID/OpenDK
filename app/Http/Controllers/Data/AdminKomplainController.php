@@ -50,7 +50,7 @@ class AdminKomplainController extends Controller
         $page_title = 'Keluhan';
         $page_description = 'Daftar Keluhan';
 
-        return view('sistem_komplain.admin_komplain.index', compact('page_title', 'page_description'));
+        return view('sistem_komplain.index', compact('page_title', 'page_description'));
     }
 
     /**
@@ -147,7 +147,7 @@ class AdminKomplainController extends Controller
         $page_description = 'Detail Keluhan : '.$komplain->judul;
         $penduduk = Penduduk::where('nik', $komplain->nik)->first();
 
-        return view('sistem_komplain.admin_komplain.show', compact('page_title', 'page_description', 'komplain', 'penduduk'));
+        return view('sistem_komplain.show', compact('page_title', 'page_description', 'komplain', 'penduduk'));
     }
 
     /**
@@ -162,7 +162,7 @@ class AdminKomplainController extends Controller
         $page_title = 'Keluhan';
         $page_description = 'Ubah Keluhan'.$komplain->komplain_id;
 
-        return view('sistem_komplain.admin_komplain.edit', compact('page_title', 'page_description', 'komplain'));
+        return view('sistem_komplain.edit', compact('page_title', 'page_description', 'komplain'));
     }
 
     /**
@@ -258,7 +258,7 @@ class AdminKomplainController extends Controller
         $chart_status = $this->getChartStatus();
         $chart_desa = $this->getChartDesa();
 
-        return view('sistem_komplain.admin_komplain.statistik', compact('page_title', 'page_description', 'chart_kategori', 'chart_status', 'chart_desa'));
+        return view('sistem_komplain.statistik', compact('page_title', 'page_description', 'chart_kategori', 'chart_status', 'chart_desa'));
     }
 
     protected function getChartKategori()

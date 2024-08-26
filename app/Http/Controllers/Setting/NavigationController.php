@@ -31,7 +31,6 @@
 
 namespace App\Http\Controllers\Setting;
 
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NavigationRequest;
 use App\Models\Navigation;
@@ -92,8 +91,9 @@ class NavigationController extends Controller
     {
         $page_title = 'Navigasi';
         $page_description = 'Tambah Navigasi';
+        $navigation = null;
 
-        return view('setting.navigation.create', compact('page_title', 'page_description', 'parent_id'));
+        return view('setting.navigation.create', compact('page_title', 'page_description', 'parent_id', 'navigation'));
     }
 
     /**
@@ -110,7 +110,7 @@ class NavigationController extends Controller
             $data = $request->all();
             
             // generate slug
-            $parent = Navigation::where('id', $parent_id)->first();            
+            $parent = Navigation::where('id', $parent_id)->first();
             $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
 
             // set latest order

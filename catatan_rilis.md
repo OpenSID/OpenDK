@@ -18,6 +18,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 6. [#990](https://github.com/OpenSID/OpenDK/issues/990) Perbaikan error ketika hapus slide tanpa gambar
 7. [#994](https://github.com/OpenSID/OpenDK/issues/994) Perbaikan error migrasi tema.
 8. [#992](https://github.com/OpenSID/OpenDK/issues/992) Perbaikan error setelah update terbaru.
+10. [#993](https://github.com/OpenSID/OpenDK/issues/993) Perbaikan penduduk nik ganda.
 
 #### TEKNIS
 

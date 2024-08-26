@@ -5,6 +5,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### FITUR
 
 1. [#511](https://github.com/OpenSID/OpenDK/issues/511) Penambahan modul navigasi halaman publik.
+2. [#998](https://github.com/OpenSID/OpenDK/issues/998) Penambahan sambutan pada daftar menu navigasi.
 
 
 #### BUG

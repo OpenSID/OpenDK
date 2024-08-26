@@ -23,3 +23,4 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 2. [#1006](https://github.com/OpenSID/OpenDK/issues/1006) Template Issue Label Fitur
 3. [#988](https://github.com/OpenSID/OpenDK/pull/988) Hapus pengecekan settings kosong
 4. [#1004](https://github.com/OpenSID/OpenDK/issues/1004) Gunakan cache untuk mempercepat pengambilan data feeds berita desa
+5. [#1000](https://github.com/OpenSID/OpenDK/issues/1000) Pindahkan halaman frontend ke folder themes

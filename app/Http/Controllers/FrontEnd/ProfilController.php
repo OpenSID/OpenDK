@@ -138,4 +138,17 @@ class ProfilController extends FrontEndController
 
         return view('pages.profil.show_profil', compact('page_title', 'page_description', 'profil', 'dokumen'));
     }
+
+    public function Sambutan()
+    {
+        Counter::count('profil.sambutan');
+
+        $profil = $this->profil;
+        $page_title = 'Sambutan';
+        if (isset($profil)) {
+            $page_description = $this->browser_title;
+        }
+
+        return view('pages.profil.sambutan', compact('page_title', 'page_description', 'profil'));
+    }
 }

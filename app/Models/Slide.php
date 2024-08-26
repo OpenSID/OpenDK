@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Database\Eloquent\Model;
 
 class Slide extends Model
@@ -42,4 +43,25 @@ class Slide extends Model
         'judul',
         'deskripsi',
     ];
+
+    public static function booted()
+    {
+        static::updating(function ($model) {
+            static::deleteImg($model);
+        });
+
+        static::deleting(function ($model) {
+            static::deleteImg($model, true);
+        });
+    }
+
+    protected static function deleteImg($model, $deleting = false)
+    {
+        if ($model->isDirty('gambar') || $deleting) {
+            $slidePath = public_path($model->getOriginal('gambar'));
+            if (file_exists($slidePath)) {
+                unlink($slidePath);
+            }
+        }
+    }
 }

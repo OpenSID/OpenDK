@@ -92,6 +92,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
+                Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
             });
 
             Route::group(['prefix' => 'event'], function () {

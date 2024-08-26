@@ -16,6 +16,8 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 4. [#1008](https://github.com/OpenSID/OpenDK/issues/1008) Perbaikan error tidak bisa mengirim keluhan di sikema.
 5. [#985](https://github.com/OpenSID/OpenDK/issues/985) Perbaikan navigasi default
 6. [#990](https://github.com/OpenSID/OpenDK/issues/990) Perbaikan error ketika hapus slide tanpa gambar
+7. [#994](https://github.com/OpenSID/OpenDK/issues/994) Perbaikan error migrasi tema.
+8. [#992](https://github.com/OpenSID/OpenDK/issues/992) Perbaikan error setelah update terbaru.
 
 #### TEKNIS
 

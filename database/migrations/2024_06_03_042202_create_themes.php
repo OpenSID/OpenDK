@@ -1,8 +1,12 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Enums\Status;
+use App\Enums\Tema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -13,21 +17,31 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('das_themes', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('vendor');
-            $table->string('version');
-            $table->string('description')->nullable();
-            $table->string('path');
-            $table->string('screenshot')->nullable();
-            $table->boolean('active')->default(0);
-            $table->boolean('system')->default(0);
-            $table->mediumText('options')->nullable();
-            $table->timestamps();
-        });
+        // cek apakah tabel das_themes ada
+        if (Schema::hasTable('das_themes')) {
+            // Kosongkan tabel
+            DB::table('das_themes')->truncate();
+        } else {
+            Schema::create('das_themes', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('vendor');
+                $table->string('version');
+                $table->string('description')->nullable();
+                $table->string('path');
+                $table->string('screenshot')->nullable();
+                $table->boolean('active')->default(Status::TidakAktif);
+                $table->boolean('system')->default(Tema::TemaKostum);
+                $table->mediumText('options')->nullable();
+                $table->timestamps();
+            });
+        }
 
-        scan_themes();
+        try {
+            scan_themes();
+        } catch (\Exception $e) {
+            Log::error('Error scanning themes: ' . $e->getMessage());
+        }
     }
 
     /**

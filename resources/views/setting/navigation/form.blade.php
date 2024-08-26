@@ -11,29 +11,29 @@
         <select name="type" id="type" class="form-control select2" required>
             <option value="">Pilih URL</option>
             <optgroup label="Profil">
-                @foreach(\App\Enums\MenuTipe::getProfil() as $key => $value)
-                <option value="1" data-value="{{ 'profil/' . $key }}" @selected('profil/' . $key == optional($navigation)->url))>{{ $value }}</option>
+                @foreach (\App\Enums\MenuTipe::getProfil() as $key => $value)
+                    <option value="1" data-value="{{ 'profil/' . $key }}" @selected('profil/' . $key == optional($navigation)->url))>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <optgroup label="Desa">
-                @foreach(\App\Enums\MenuTipe::getDesa() as $key => $value)
-                @php $nama_desa  = ucwords($key . ' ' . $value); @endphp
-                <option value="2" data-value="{{ 'desa/' . Str::slug($nama_desa) }}" @selected('desa/' . Str::slug($nama_desa) == optional($navigation)->url)>{{ $nama_desa }}</option>
+                @foreach (\App\Enums\MenuTipe::getDesa() as $key => $value)
+                    @php $nama_desa  = ucwords($key . ' ' . $value); @endphp
+                    <option value="2" data-value="{{ 'desa/' . Str::slug($nama_desa) }}" @selected('desa/' . Str::slug($nama_desa) == optional($navigation)->url)>{{ $nama_desa }}</option>
                 @endforeach
             </optgroup>
             <optgroup label="Statistik">
-                @foreach(\App\Enums\MenuTipe::getStatistik() as $key => $value)
-                <option value="3" data-value="{{ 'statistik/' . $key }}" @selected('statistik/' . $key == optional($navigation)->url)>{{ $value }}</option>
+                @foreach (\App\Enums\MenuTipe::getStatistik() as $key => $value)
+                    <option value="3" data-value="{{ 'statistik/' . $key }}" @selected('statistik/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <optgroup label="Potensi">
-                @foreach(\App\Enums\MenuTipe::getPotensi() as $key => $value)
-                <option value="3" data-value="{{ 'potensi/' . $key }}" @selected('potensi/' . $key == optional($navigation)->url)>{{ $value }}</option>
+                @foreach (\App\Enums\MenuTipe::getPotensi() as $key => $value)
+                    <option value="3" data-value="{{ 'potensi/' . $key }}" @selected('potensi/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <optgroup label="Unduhan">
-                @foreach(\App\Enums\MenuTipe::getUnduhan() as $key => $value)
-                <option value="4" data-value="{{ 'unduhan/' . $key }}" @selected('unduhan/' . $key == optional($navigation)->url)>{{ $value }}</option>
+                @foreach (\App\Enums\MenuTipe::getUnduhan() as $key => $value)
+                    <option value="4" data-value="{{ 'unduhan/' . $key }}" @selected('unduhan/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <option value="0" @selected('0' == optional($navigation)->type)>Eksternal</option>
@@ -55,9 +55,9 @@
 <div class="ln_solid"></div>
 @push('scripts')
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var base = '{{ url('/') }}';
-    
+
             function toggleUrlFields(type) {
                 var url = $('#url');
                 var viewUrl = $('#view-url');
@@ -73,8 +73,8 @@
                     }
                 }
             }
-    
-            $('#type').on('change', function () {
+
+            $('#type').on('change', function() {
                 toggleUrlFields($(this).val());
             }).trigger('change');
         });

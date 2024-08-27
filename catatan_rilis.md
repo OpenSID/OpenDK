@@ -6,6 +6,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 1. [#511](https://github.com/OpenSID/OpenDK/issues/511) Penambahan modul navigasi halaman publik.
 2. [#998](https://github.com/OpenSID/OpenDK/issues/998) Penambahan sambutan pada daftar menu navigasi.
+3. [#669](https://github.com/OpenSID/OpenDK/issues/669) Penambahan identitas pelapor.
 
 
 #### BUG

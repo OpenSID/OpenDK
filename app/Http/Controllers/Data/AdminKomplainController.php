@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Enums\Anonim;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\JawabKomplain;
@@ -61,6 +62,7 @@ class AdminKomplainController extends Controller
     {
         return DataTables::of(Komplain::with(['kategori_komplain']))
             ->addColumn('aksi', function ($row) {
+                $data['anonim'] = route('admin-komplain.anonim', $row->id);
                 $data['agree_url'] = route('admin-komplain.setuju', $row->id);
                 $data['show_url'] = route('admin-komplain.show', $row->id);
                 $data['delete_url'] = route('admin-komplain.destroy', $row->id);
@@ -90,7 +92,18 @@ class AdminKomplainController extends Controller
 
                 return $status;
             })
-            ->rawColumns(['aksi', 'status'])->make();
+            ->editColumn('anonim', function ($row) {
+                $anonim = '';
+                if ($row->anonim == Anonim::Tampilkan) {
+                    $anonim = '<span class="label label-success">Ditampilkan</span>';
+                }
+                if ($row->anonim == Anonim::Sembunyikan) {
+                    $anonim = '<span class="label label-danger">Disembunyikan</span>';
+                }
+
+                return $anonim;
+            })
+            ->rawColumns(['aksi', 'status', 'anonim'])->make();
     }
 
     public function disetujui(Request $request, $id)
@@ -108,6 +121,23 @@ class AdminKomplainController extends Controller
         }
 
         return redirect()->route('admin-komplain.index')->with('success', 'Status Keluhan berhasil disimpan!');
+    }
+
+    public function anonim(Request $request, $id)
+    {
+        request()->validate([
+            'anonim' => 'required',
+        ]);
+
+        try {
+            Komplain::findOrFail($id)->update($request->all());
+        } catch (\Exception $e) {
+            report($e);
+
+            return back()->withInput()->with('error', 'Identitas Pelapor Keluhan gagal diperbarui!');
+        }
+
+        return redirect()->route('admin-komplain.index')->with('success', 'Identitas Pelapor Keluhan berhasil diperbarui!');
     }
 
     public function show($id)

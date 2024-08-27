@@ -550,6 +550,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::put('update/{id}', ['as' => 'admin-komplain.update', 'uses' => 'AdminKomplainController@update']);
                 Route::delete('destroy/{id}', ['as' => 'admin-komplain.destroy', 'uses' => 'AdminKomplainController@destroy']);
                 Route::put('setuju/{id}', ['as' => 'admin-komplain.setuju', 'uses' => 'AdminKomplainController@disetujui']);
+                Route::put('anonim/{id}', ['as' => 'admin-komplain.anonim', 'uses' => 'AdminKomplainController@anonim']);
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
                 Route::get('show/{id}', ['as' => 'admin-komplain.show', 'uses' => 'AdminKomplainController@show']);
                 Route::delete('deletekomentar/{id}', ['as' => 'admin-komplain.deletekomentar', 'uses' => 'AdminKomplainController@deletekomentar']);

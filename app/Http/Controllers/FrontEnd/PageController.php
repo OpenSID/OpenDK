@@ -31,14 +31,16 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
-use App\Facades\Counter;
-use App\Http\Controllers\FrontEndController;
-use App\Models\Artikel;
-use App\Models\DataDesa;
 use App\Models\Event;
+use App\Models\Artikel;
+use App\Facades\Counter;
+use App\Models\DataDesa;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
+use App\Http\Controllers\FrontEndController;
 
 class PageController extends FrontEndController
 {
@@ -73,9 +75,9 @@ class PageController extends FrontEndController
     private function getFeeds()
     {
         $all_desa = DataDesa::websiteUrl()->get()
-        ->map(function ($desa) {
-            return $desa->website_url_feed;
-        })->all();
+            ->map(function ($desa) {
+                return $desa->website_url_feed;
+            })->all();
 
         $feeds = [];
         foreach ($all_desa as $desa) {
@@ -91,7 +93,7 @@ class PageController extends FrontEndController
                     'author' => $item->get_author()->get_name() ?? 'Administrator',
                     'title' => $item->get_title(),
                     'image' => get_tag_image($item->get_description()),
-                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250).'[...]'),
+                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
                     'content' => $item->get_content(),
                 ];
             }
@@ -167,7 +169,7 @@ class PageController extends FrontEndController
         // Counter::count('desa.show');
 
         $desa = DataDesa::nama($slug)->firstOrFail();
-        $page_title = 'Desa '.$desa->nama;
+        $page_title = 'Desa ' . $desa->nama;
         $page_description = 'Data Desa';
 
         return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
@@ -180,13 +182,88 @@ class PageController extends FrontEndController
 
     public function detailBerita($slug)
     {
-        $artikel = Artikel::where('slug', $slug)->status()->firstOrFail();
+
+        // Temukan artikel berdasarkan slug
+        $artikel = Artikel::where('slug', $slug)
+            ->with(['comments' => function ($query) {
+                // Hanya mengambil komentar utama (tanpa parent)
+                $query->whereNull('comment_id')
+                    ->where('status', 'enable')
+                    ->with(['replies' => function ($query) {
+                        $query->where('status', 'enable');
+                    }]);
+            }])
+            ->firstOrFail();
+
         $page_title = $artikel->judul;
-        $page_description = substr($artikel->isi, 0, 300).' ...';
+        $page_description = substr($artikel->isi, 0, 300) . ' ...';
         $page_image = $artikel->gambar;
 
-        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel'));
+        // Ambil komentar utama yang terkait dengan artikel ini
+        $comments = $artikel->comments;
+
+        return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel', 'comments'));
     }
+
+    public function kirimKomentar(Request $request)
+    {
+        $validated  = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'body' => 'required|string',
+            'das_artikel_id' => 'required|exists:das_artikel,id',
+            'captcha_main' => 'required|captcha',
+        ]);
+
+        try {
+            // Save comment or reply
+            $comment = \App\Models\Comment::create([
+                'nama' => $validated['nama'],
+                'email' => $validated['email'],
+                'body' => $validated['body'],
+                'status' => 'enable',
+                'das_artikel_id' => $validated['das_artikel_id'],
+                'comment_id' => $request->input('comment_id', null),
+            ]);
+
+            return redirect()->back()->with('success', 'Komentar Anda telah ditambahkan.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withInput($request->all())->withErrors([$th->getMessage()]);
+        }
+    }
+
+    public function modalKirimBalasan(Request $request)
+    {
+        $commentId = $request->input('comment_id');
+        $artikelId = $request->input('artikel_id');
+        return view('pages.berita.comment', compact('commentId', 'artikelId'));
+    }
+
+    public function kirimBalasan(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'body' => 'required|string',
+            'captcha_main' => 'required|captcha',
+        ]);
+
+        try {
+            \App\Models\Comment::create([
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'body' => $request->body,
+                'status' => 'enable',
+                'das_artikel_id' => $request->das_artikel_id,
+                'comment_id' => $request->comment_id,
+            ]);
+
+            return redirect()->back()->with('success', 'Balasan berhasil dikirim.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->withInput($request->all())->withErrors([$th->getMessage()]);
+        }
+    }
+
 
     public function eventDetail($slug)
     {

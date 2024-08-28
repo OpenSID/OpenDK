@@ -46,6 +46,7 @@ use App\Http\Controllers\BackEnd\EventController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\FrontEnd\PageController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
@@ -85,6 +86,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::permanentRedirect('/', '/');
                 Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');
             });
+
+            // Rute untuk kirim dan balas komentar artikel
+            Route::post('comments/store', [PageController::class, 'kirimKomentar'])->name('comments.store');
+            Route::get('comments/modal', [PageController::class, 'modalKirimBalasan'])->name('comments.modal');
+            Route::post('comments/reply', [PageController::class, 'kirimBalasan'])->name('comments.modal.store');
 
             Route::group(['prefix' => 'profil'], function () {
                 Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
@@ -277,6 +283,15 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{artikel}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArtikelController@destroy']);
                     Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArtikelController@getDataArtikel']);
                 });
+
+                // Komentar Artikel
+                Route::group(['prefix' => 'komentar-artikel', 'excluded_middleware' => 'xss_sanitization'], function () {
+                    Route::get('/', ['as' => 'informasi.komentar-artikel.index', 'uses' => 'KomentarArtikelController@index']);
+                    Route::get('getdata', ['as' => 'informasi.komentar-artikel.getdata', 'uses' => 'KomentarArtikelController@getDataKomentar']);
+                    Route::post('update-status', ['as' => 'informasi.komentar-artikel.updateStatus', 'uses' => 'KomentarArtikelController@updateStatus']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
+                });
+                
 
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {

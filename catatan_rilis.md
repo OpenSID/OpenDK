@@ -11,3 +11,4 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 #### TEKNIS
 
+1. [#1014](https://github.com/OpenSID/OpenDK/issues/1014) Fix pages themes.

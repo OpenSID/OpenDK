@@ -8,6 +8,11 @@
         <div class="col-md-4 col-sm-2 hidden-xs no-padding">
             <div class="navbar-right">
                 <ul class="social-icon list-inline m-0">
+                    <span>
+                        <i class="fa fa-circle" style="color: green;">
+                        </i>
+                        {{ $visitorCount }} user sedang online
+                    </span>
                     @if (isset($profil->socialmedia))
                         @foreach (json_decode($profil->socialmedia) as $sosmed)
                             <li><a target="_BLANK" href="{{ $sosmed->link ?? '' }}" class="site-button-link facebook hover"><i class="{{ $sosmed->icon ?? '' }}"></i></a></li>

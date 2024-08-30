@@ -92,6 +92,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
+                Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
             });
 
             Route::group(['prefix' => 'event'], function () {
@@ -173,10 +174,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             Route::get('faq', 'WebFaqController@index')->name('faq');
-        });
-        Route::get('agenda-kegiatan/{slug}', [EventController::class, 'show'])->name('event.show');
 
-        Route::namespace('\App\Http\Controllers\SistemKomplain')->group(function () {
             Route::group(['prefix' => 'sistem-komplain'], function () {
                 Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
                 Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
@@ -552,6 +550,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::put('update/{id}', ['as' => 'admin-komplain.update', 'uses' => 'AdminKomplainController@update']);
                 Route::delete('destroy/{id}', ['as' => 'admin-komplain.destroy', 'uses' => 'AdminKomplainController@destroy']);
                 Route::put('setuju/{id}', ['as' => 'admin-komplain.setuju', 'uses' => 'AdminKomplainController@disetujui']);
+                Route::put('anonim/{id}', ['as' => 'admin-komplain.anonim', 'uses' => 'AdminKomplainController@anonim']);
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
                 Route::get('show/{id}', ['as' => 'admin-komplain.show', 'uses' => 'AdminKomplainController@show']);
                 Route::delete('deletekomentar/{id}', ['as' => 'admin-komplain.deletekomentar', 'uses' => 'AdminKomplainController@deletekomentar']);

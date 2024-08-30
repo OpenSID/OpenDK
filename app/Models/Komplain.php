@@ -44,12 +44,12 @@ class Komplain extends Model
         'judul',
         'slug',
         'laporan',
-        'anonim',
         'status',
         'lampiran1',
         'lampiran2',
         'lampiran3',
         'lampiran4',
+        'anonim',
     ];
 
     protected $with = ['penduduk'];

@@ -68,6 +68,7 @@ final class MenuTipe extends Enum
             'visi-dan-misi' => 'Visi dan Misi',
             'letak-geografis' => 'Letak Geografis',
             'struktur-pemerintahan' => 'Struktur Pemerintahan',
+            'sambutan' => 'Sambutan'
         ];
     }
 

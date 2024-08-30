@@ -37,6 +37,7 @@ use App\Models\Navigation;
 use App\Models\MediaSosial;
 use App\Models\SinergiProgram;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
 
 class FrontEndController extends Controller
 {
@@ -45,12 +46,16 @@ class FrontEndController extends Controller
         parent::__construct();
         theme_active();
 
+        $visitors = Cache::get('online_visitors', []);
+        $visitorCount = count($visitors);
+
         View::share([
             'events' => Event::getOpenEvents(),
             'medsos' => MediaSosial::where('status', 1)->get(),
             'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
             'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
             'slides' => Slide::orderBy('created_at', 'DESC')->get(),
+            'visitorCount' => $visitorCount
         ]);
     }
 }

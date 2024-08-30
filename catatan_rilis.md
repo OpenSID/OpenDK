@@ -12,3 +12,4 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### TEKNIS
 
 1. [#1014](https://github.com/OpenSID/OpenDK/issues/1014) Fix pages themes.
+2. [#936](https://github.com/OpenSID/OpenDK/issues/936) Sesuaikan value tracking.

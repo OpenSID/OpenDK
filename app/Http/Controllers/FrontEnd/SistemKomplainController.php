@@ -85,7 +85,7 @@ class SistemKomplainController extends FrontEndController
     public function tracking(Request $request)
     {
         try {
-            $komplain = Komplain::where('komplain_id', '=', $request->post('q'))->firstOrFail();
+            $komplain = Komplain::where('komplain_id', '=', $request->komplain_id)->firstOrFail();
 
             return redirect()->route('sistem-komplain.komplain', $komplain->slug);
         } catch (\Exception $e) {

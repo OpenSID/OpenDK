@@ -27,6 +27,7 @@
                                 <th>Pelapor</th>
                                 <th>Kategori</th>
                                 <th>Status</th>
+                                <th>Identitas Pelapor</th>
                             </tr>
                         </thead>
                     </table>
@@ -69,6 +70,11 @@
                         name: 'status',
                         class: 'status'
                     },
+                    {
+                        data: 'anonim',
+                        name: 'anonim',
+                        class: 'anonim'
+                    },
                 ],
                 order: [
                     [1, 'asc']
@@ -79,4 +85,5 @@
     @include('forms.datatable-vertical')
     @include('forms.delete-modal')
     @include('forms.agree-modal')
+    @include('forms.anonim-modal')
 @endpush

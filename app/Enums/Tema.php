@@ -26,49 +26,18 @@
  * @author     Tim Pengembang OpenDesa
  * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
- * @
+ * @link       https://github.com/OpenSID/opendk
  */
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+namespace App\Enums;
+
+use BenSampo\Enum\Enum;
+
+/**
+ * Status untuk melihat aktif dan tidak aktif
+ */
+final class Tema extends Enum
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-{
-    if (!Schema::hasTable('das_navigation')) {
-        Schema::create('das_navigation', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('parent_id')->nullable();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->enum('nav_type', ['system', 'external'])->nullable();
-            $table->string('url')->nullable();
-            $table->integer('order')->nullable();
-            $table->tinyInteger('status')->default(0);
-            $table->integer('type')->nullable();
-
-            $table->timestamps();
-        });
-
-        Artisan::call('db:seed', ['--class' => 'DasNavigationTableSeeder']);
-    }
+    public const TemaKostum = 0;
+    public const TemaSistem = 1;
 }
-
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('das_navigation');
-    }
-};

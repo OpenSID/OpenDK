@@ -15,9 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('das_navigation', function (Blueprint $table) {
-            $table->tinyInteger('type')->default(0)->after('slug');
-        });
+        if (!Schema::hasColumn('das_navigation', 'type')) {
+            Schema::table('das_navigation', function (Blueprint $table) {
+                $table->tinyInteger('type')->default(0)->after('slug');
+            });   
+        }        
 
         Navigation::where('url', 'like', '%profil/%')->update(['type' => MenuTipe::PROFIL]);
         Navigation::where('url', 'like', '%desa/%')->update(['type' => MenuTipe::DESA]);

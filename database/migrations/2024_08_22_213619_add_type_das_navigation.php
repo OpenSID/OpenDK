@@ -16,7 +16,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('das_navigation', function (Blueprint $table) {
-            $table->tinyInteger('type')->default(0)->after('slug');
+            $table->tinyInteger('type')->default(0)->after('slug')->change();
         });
 
         Navigation::where('url', 'like', '%profil/%')->update(['type' => MenuTipe::PROFIL]);

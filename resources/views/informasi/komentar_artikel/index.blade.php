@@ -100,7 +100,7 @@
                                 <th>User</th>
                                 <th>Komentar</th>
                                 <th>Artikel</th>
-                                <th>Disable/Enable</th>
+                                <th>Tampilkan Komentar?</th>
                                 <th>Tanggal Komentar</th>
                             </tr>
                         </thead>

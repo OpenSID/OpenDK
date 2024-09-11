@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
 use App\Http\Controllers\FrontEndController;
+use Jenssegers\Agent\Agent;
 
 class PageController extends FrontEndController
 {
@@ -180,17 +181,26 @@ class PageController extends FrontEndController
         return response()->json(['captcha' => captcha_img('mini')]);
     }
 
-    public function detailBerita($slug)
+    public function detailBerita($slug, Request $request)
     {
-
         // Temukan artikel berdasarkan slug
         $artikel = Artikel::where('slug', $slug)
-            ->with(['comments' => function ($query) {
-                // Hanya mengambil komentar utama (tanpa parent)
+            ->with(['comments' => function ($query) use ($request) {
+                // Ambil komentar yang di-approve atau yang milik user dari session
+                $userCommentIds = $request->session()->get('session_user_comments', []);
+
+                // Ambil komentar utama (tanpa parent) yang di-approve atau yang dimiliki oleh user
                 $query->whereNull('comment_id')
-                    ->where('status', 'enable')
-                    ->with(['replies' => function ($query) {
-                        $query->where('status', 'enable');
+                    ->where(function ($query) use ($userCommentIds) {
+                        $query->where('status', 'enable')
+                            ->orWhereIn('id', $userCommentIds);
+                    })
+                    ->with(['replies' => function ($query) use ($userCommentIds) {
+                        // Ambil balasan yang di-approve atau yang milik user
+                        $query->where(function ($query) use ($userCommentIds) {
+                            $query->where('status', 'enable')
+                                ->orWhereIn('id', $userCommentIds);
+                        });
                     }]);
             }])
             ->firstOrFail();
@@ -205,9 +215,12 @@ class PageController extends FrontEndController
         return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel', 'comments'));
     }
 
+
     public function kirimKomentar(Request $request)
     {
-        $validated  = $request->validate([
+
+        // Validasi input
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'body' => 'required|string',
@@ -216,18 +229,37 @@ class PageController extends FrontEndController
         ]);
 
         try {
-            // Save comment or reply
+            // Mendeteksi IP address
+            $ipAddress = $request->ip();
+
+            // Mendeteksi device menggunakan jenssegers/agent
+            $agent = new Agent();
+            $device = $agent->device() ?: 'Desktop';
+            $platform = $agent->platform() ?: 'Unknown Platform';
+            $browser = $agent->browser() ?: 'Unknown Browser';
+
+            // Format informasi device
+            $deviceInfo = "{$device} on {$platform} using {$browser}";
+
+            // Simpan komentar baru
             $comment = \App\Models\Comment::create([
                 'nama' => $validated['nama'],
                 'email' => $validated['email'],
                 'body' => $validated['body'],
-                'status' => 'enable',
+                'status' => 'disable', // Set status default ke 'disable' untuk moderasi
                 'das_artikel_id' => $validated['das_artikel_id'],
-                'comment_id' => $request->input('comment_id', null),
+                'comment_id' => $request->input('comment_id', null), // Jika ini adalah balasan
+                'ip_address' => $ipAddress,
+                'device' => $deviceInfo,
             ]);
 
+            // Simpan comment_id ke dalam session agar user bisa melihat komentarnya sendiri
+            $request->session()->push('session_user_comments', $comment->id);
+
+            // Redirect dengan pesan sukses
             return redirect()->back()->with('success', 'Komentar Anda telah ditambahkan.');
         } catch (\Throwable $th) {
+            // Penanganan kesalahan
             return redirect()->back()->withInput($request->all())->withErrors([$th->getMessage()]);
         }
     }
@@ -246,17 +278,36 @@ class PageController extends FrontEndController
             'email' => 'required|email|max:255',
             'body' => 'required|string',
             'captcha_main' => 'required|captcha',
+            'das_artikel_id' => 'required|exists:das_artikel,id', // Pastikan artikel terkait ada
+            'comment_id' => 'required|exists:das_artikel_comment,id', // Pastikan comment_id ada
         ]);
 
         try {
-            \App\Models\Comment::create([
+            // Mendeteksi IP address
+            $ipAddress = $request->ip();
+
+            // Mendeteksi device menggunakan jenssegers/agent
+            $agent = new Agent();
+            $device = $agent->device() ?: 'Desktop';
+            $platform = $agent->platform() ?: 'Unknown Platform';
+            $browser = $agent->browser() ?: 'Unknown Browser';
+
+            // Format informasi device
+            $deviceInfo = "{$device} on {$platform} using {$browser}";
+
+            $comment = \App\Models\Comment::create([
                 'nama' => $request->nama,
                 'email' => $request->email,
                 'body' => $request->body,
-                'status' => 'enable',
+                'status' => 'disable',
                 'das_artikel_id' => $request->das_artikel_id,
                 'comment_id' => $request->comment_id,
+                'ip_address' => $ipAddress,
+                'device' => $deviceInfo
             ]);
+
+            // Simpan comment_id ke dalam session agar user bisa melihat komentarnya sendiri
+            $request->session()->push('session_user_comments', $comment->id);
 
             return redirect()->back()->with('success', 'Balasan berhasil dikirim.');
         } catch (\Throwable $th) {

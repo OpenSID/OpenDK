@@ -128,6 +128,16 @@
                     background-color: #5bc0de;
                     border-color: #46b8da;
                 }
+
+                /* Penyesuaian untuk layar kecil (mobile) */
+                @media (max-width: 767px) {
+                    .media-date {
+                        position: static;
+                        margin-top: 5px;
+                        margin-left: 0px;
+                        /* Memberikan jarak di antara nama dan tanggal */
+                    }
+                }
             </style>
 
             <div class="sectionComment">
@@ -224,7 +234,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="nama" name="nama"
-                                        placeholder="Nama" required>
+                                        placeholder="Nama" required value="{{ old('nama') }}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -232,7 +242,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="email" name="email"
-                                        placeholder="Email" required>
+                                        placeholder="Email" required value="{{ old('email') }}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -240,12 +250,12 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-sm-10">
                                     <textarea class="form-control" id="body" name="body" rows="3" placeholder="Tulis balasan disini.."
-                                        required></textarea>
+                                        required>{{ old('body') }}</textarea>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">&nbsp;</label>
+                                <label class="col-sm-2 control-label hidden-xs">&nbsp;</label>
                                 <div class="col-sm-10">
                                     <div class="captcha">
                                         <span>{!! captcha_img('mini') !!}</span>
@@ -256,7 +266,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">&nbsp;</label>
+                                <label class="col-sm-2 control-label hidden-xs">&nbsp;</label>
                                 <div class="col-sm-10">
                                     <input id="captcha-main" type="text" class="form-control"
                                         placeholder="Masukan Kode Verifikasi" name="captcha_main" required>

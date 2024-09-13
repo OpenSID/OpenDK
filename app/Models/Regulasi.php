@@ -31,10 +31,13 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
 class Regulasi extends Model
 {
+    use HandlesResourceDeletion;
+
     protected $table = 'das_regulasi';
 
     protected $fillable = [
@@ -44,6 +47,15 @@ class Regulasi extends Model
         'deskripsi',
         'file_regulasi',
         'mime_type',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'file_regulasi',
     ];
 
     public function tipe()

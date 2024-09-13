@@ -31,10 +31,13 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
 class MediaSosial extends Model
 {
+    use HandlesResourceDeletion;
+
     protected $table = 'das_media_sosial';
 
     protected $fillable = [
@@ -42,5 +45,14 @@ class MediaSosial extends Model
         'url',
         'nama',
         'status',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'logo',
     ];
 }

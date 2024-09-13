@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -40,6 +41,7 @@ class Artikel extends Model
 {
     use Sluggable;
     use HasFactory;
+    use HandlesResourceDeletion;
 
     protected $table = 'das_artikel';
 
@@ -48,6 +50,15 @@ class Artikel extends Model
         'gambar',
         'isi',
         'status',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'gambar',
     ];
 
     /**

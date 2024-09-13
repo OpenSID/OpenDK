@@ -31,14 +31,17 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use Illuminate\Http\Request;
+use App\Models\SinergiProgram;
+use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SinergiProgramRequest;
-use App\Models\SinergiProgram;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 
 class SinergiProgramController extends Controller
 {
+    use HandlesFileUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -105,14 +108,7 @@ class SinergiProgramController extends Controller
     {
         try {
             $input = $request->validated();
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().rand(100, 999).'_'.$original_name;
-                $path = 'storage/sinergi/';
-                $file->move($path, $file_name);
-                $input['gambar'] = $path.$file_name;
-            }
+            $this->handleFileUpload($request, $input, 'gambar', 'sinergi/');
             SinergiProgram::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -150,16 +146,7 @@ class SinergiProgramController extends Controller
 
         try {
             $input = $request->validated();
-
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().rand(100, 999).'_'.$original_name;
-                $path = 'storage/sinergi/';
-                $file->move($path, $file_name);
-                unlink(base_path('public/'.$sinergi->gambar));
-                $input['gambar'] = $path.$file_name;
-            }
+            $this->handleFileUpload($request, $input, 'gambar', 'sinergi/');
 
             $sinergi->update($input);
         } catch (\Exception $e) {

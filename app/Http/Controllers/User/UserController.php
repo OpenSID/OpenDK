@@ -31,18 +31,21 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Models\Pengurus;
 use App\Models\User;
+use App\Models\Pengurus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Requests\UserRequest;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
+    use HandlesFileUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -82,11 +85,9 @@ class UserController extends Controller
         try {
             $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
-            $user = User::create($request->validated());
-            if ($request->hasFile('image')) {
-                $user->uploadImage($request->image);
-            }
-
+            $input = $request->validated();
+            $this->handleFileUpload($request, $input, 'image', 'user');
+            $user = User::create($input);
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 
@@ -138,13 +139,10 @@ class UserController extends Controller
     public function update(UserRequest $request, $id)
     {
         try {
+            $input = $request->validated();
             $user = User::findOrFail($id);
-
-            $user->update($request->validated());
-            if ($request->hasFile('image')) {
-                $user->uploadImage($request->image);
-            }
-
+            $this->handleFileUpload($request, $input, 'image', 'user');
+            $user->update($input);
             if (! empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);

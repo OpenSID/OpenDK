@@ -31,21 +31,24 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Enums\JenisJabatan;
 use App\Enums\Status;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PengurusRequest;
 use App\Models\Agama;
 use App\Models\Jabatan;
-use App\Models\PendidikanKK;
 use App\Models\Pengurus;
+use App\Enums\JenisJabatan;
+use App\Models\PendidikanKK;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PengurusRequest;
+use Illuminate\Support\Facades\Storage;
 
 class PengurusController extends Controller
 {
+    use HandlesFileUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -135,13 +138,7 @@ class PengurusController extends Controller
     {
         try {
             $input = $request->all();
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().'_'.$original_name;
-                Storage::putFileAs('public/pengurus', $file, $file_name);
-                $input['foto'] = $file_name;
-            }
+            $this->handleFileUpload($request, $input, 'foto', 'pengurus');
             Pengurus::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -185,18 +182,7 @@ class PengurusController extends Controller
 
         try {
             $input = $request->all();
-
-            if ($request->hasFile('foto')) {
-                $file = $request->file('foto');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().'_'.$original_name;
-                Storage::putFileAs('public/pengurus', $file, $file_name);
-                if ($pengurus->foto) {
-                    Storage::delete('public/pengurus/'.$pengurus->getRawOriginal('foto'));
-                }
-                $input['foto'] = $file_name;
-            }
-
+            $this->handleFileUpload($request, $input, 'foto', 'pengurus');
             $pengurus->update($input);
         } catch (\Exception $e) {
             report($e);
@@ -217,9 +203,6 @@ class PengurusController extends Controller
     {
         try {
             $pengurus = Pengurus::findOrFail($id);
-            if ($pengurus->foto) {
-                Storage::delete('public/pengurus/'.$pengurus->getRawOriginal('foto'));
-            }
             $pengurus->delete();
         } catch (\Exception $e) {
             report($e);

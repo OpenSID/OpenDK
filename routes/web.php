@@ -654,7 +654,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'tipe-regulasi', 'controller' => TipeRegulasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.tipe-regulasi.index');
                 Route::get('getdata', 'getData')->name('setting.tipe-regulasi.getdata');
-                Route::get('create', 'create')->name('setting.tipe-regulasi.create');
                 Route::post('store', 'store')->name('setting.tipe-regulasi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-regulasi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-regulasi.update');

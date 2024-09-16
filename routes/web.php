@@ -643,7 +643,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'komplain-kategori', 'controller' => KategoriKomplainController::class, 'middleware' => ['role:super-admin|admin-komplain|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.komplain-kategori.index');
                 Route::get('getdata', 'getData')->name('setting.komplain-kategori.getdata');
-                Route::get('create', 'create')->name('setting.komplain-kategori.create');
                 Route::post('store', 'store')->name('setting.komplain-kategori.store');
                 Route::get('edit/{id}', 'edit')->name('setting.komplain-kategori.edit');
                 Route::put('update/{id}', 'update')->name('setting.komplain-kategori.update');

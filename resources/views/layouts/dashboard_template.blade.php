@@ -95,6 +95,7 @@ desired effect
     <script src="{{ asset('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
     <!-- iCheck -->
     <script src="{{ asset('/bower_components/admin-lte/plugins/iCheck/icheck.min.js') }}"></script>
+    <script src="{{ asset('/js/admin.js') }}"></script>
     @stack('scripts')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.

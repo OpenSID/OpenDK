@@ -38,3 +38,9 @@
     </button>
 </a>
 @endif
+
+@if (isset($modal_url))
+<button type="button" class="btn btn-success btn-sm btn-social" data-toggle="modal" data-target="{{ $modal_url }}">
+    <i class="fa fa-plus"></i>{{ $modal_text ?? 'Tambah' }}
+</button>
+@endif

@@ -33,6 +33,7 @@ namespace App\Http\Controllers\BackEnd;
 
 use App\Models\Event;
 use Illuminate\Support\Carbon;
+use App\Traits\HandlesFileUpload;
 use App\Http\Requests\EventRequest;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\Facades\DataTables;
@@ -40,6 +41,8 @@ use App\Http\Controllers\BackEndController;
 
 class EventController extends BackEndController
 {
+    use HandlesFileUpload;
+
     public function index()
     {
         $page_title = 'Event';
@@ -121,15 +124,7 @@ class EventController extends BackEndController
         try {
             $waktu = explode('-', $request->waktu);
             $input = $request->all();
-
-            if ($request->hasFile('attachment')) {
-                $lampiran = $request->file('attachment');
-                $fileName = $lampiran->getClientOriginalName();
-                $path = 'event/'.$event->id.'/';
-                File::deleteDirectory(base_path('public/'.$path)); //hapus directory sebelumnya
-                $lampiran->move(base_path('public/'.$path), $fileName);
-                $input['attachment'] = $path.$fileName;
-            }
+            $this->handleFileUpload($request, $input, 'attachment', "event/{$event->id}");
             $input['end'] = date('Y-m-d H:i', strtotime($waktu[1]));
             $input['start'] = date('Y-m-d H:i', strtotime($waktu[0]));
 
@@ -150,11 +145,7 @@ class EventController extends BackEndController
         }
 
         try {
-            if ($event->delete()) {
-                if ($event->attachment != null && File::exists(base_path('public/'.$event->attachment))) {
-                    unlink(base_path('public/'.$event->attachment));
-                }
-            }
+            $event->delete();
         } catch (\Exception $e) {
             report($e);
 

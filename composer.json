@@ -17,6 +17,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "hexadog/laravel-themes-manager": "^1.13",
         "jaybizzle/crawler-detect": "1.*",
+        "jenssegers/agent": "^2.6",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^9.19",
         "laravel/helpers": "^1.3",

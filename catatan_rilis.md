@@ -6,7 +6,8 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 #### BUG
 
-1. [#1028]https://github.com/OpenSID/OpenDK/issues/1028) Perbaikan migrasi navigasi.
+1. [#1028](https://github.com/OpenSID/OpenDK/issues/1028) Perbaikan migrasi navigasi.
 
 #### TEKNIS
 
+1. [#936](https://github.com/OpenSID/OpenDK/issues/936) Perbaikan value 'name' pada input field tidak menggunakan value yang general. 

@@ -722,7 +722,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'jenis-penyakit', 'controller' => JenisPenyakitController::class, 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.jenis-penyakit.index');
                 Route::get('getdata', 'getData')->name('setting.jenis-penyakit.getdata');
-                Route::get('create', 'create')->name('setting.jenis-penyakit.create');
                 Route::post('store', 'store')->name('setting.jenis-penyakit.store');
                 Route::get('edit/{id}', 'edit')->name('setting.jenis-penyakit.edit');
                 Route::put('update/{id}', 'update')->name('setting.jenis-penyakit.update');

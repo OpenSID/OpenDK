@@ -15,6 +15,7 @@
         "cviebrock/eloquent-sluggable": "^9.0",
         "doctrine/dbal": "^2.9",
         "guzzlehttp/guzzle": "^7.2",
+        "hexadog/laravel-themes-manager": "^1.13",
         "jaybizzle/crawler-detect": "1.*",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^9.19",
@@ -39,7 +40,7 @@
         "beyondcode/laravel-query-detector": "^1.5",
         "fakerphp/faker": "^1.9.1",
         "filp/whoops": "~2.0",
-        "friendsofphp/php-cs-fixer": "^3.9",
+        "laravel/pint": "^1.5",
         "laravel/tinker": "^2.7",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
@@ -64,7 +65,8 @@
     "config": {
         "allow-plugins": {
             "symfony/thanks": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "hexadog/laravel-theme-installer": true
         },
         "platform": {
             "php": "8.0.30"
@@ -91,6 +93,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "pint": [
+            "./vendor/bin/pint"
         ]
     },
     "minimum-stability": "dev",

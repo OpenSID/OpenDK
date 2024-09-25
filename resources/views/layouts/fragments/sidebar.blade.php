@@ -287,6 +287,9 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
+                            <li {{ Request::is(['setting/navigation*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.navigation.index') }}"><i class="fa fa-circle-o"></i>Navigasi</a>
+                            </li>
                             <li {{ Request::is(['setting/tipe-potensi*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.tipe-potensi.index') }}"><i class="fa fa-circle-o"></i>Kategori Potensi</a>
                             </li>
@@ -321,6 +324,9 @@
                         <li {{ (Request::is(['setting/hasrole/*', 'setting/hasrole'])? 'class=active' : '') }}><a
                                     href="{{ route('setting.hasrole.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a></li>
                         @endif --}}
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/themes*']) ? 'class=active' : '' }}><a href="{{ route('setting.themes.index') }}"><i class="fa fa-circle-o"></i>Themes</a></li>
+                            @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif

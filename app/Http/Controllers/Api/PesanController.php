@@ -48,7 +48,7 @@ class PesanController extends Controller
     {
         $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
         if ($desa == null) {
-            return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
+            return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar']);
         }
 
         if ($request->has('pesan_id')) {
@@ -58,13 +58,13 @@ class PesanController extends Controller
                     'pesan_id' => (int) $request->pesan_id,
                     'text' => $request->pesan,
                     'pengirim' => $request->pengirim,
-                    'nama_pengirim' => $request->nama_pengirim
+                    'nama_pengirim' => $request->nama_pengirim,
                 ]);
                 Pesan::where('id', (int) $request->pesan_id)->update(['sudah_dibaca' => 0]);
 
-                return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
+                return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan']);
             } catch (Exception $e) {
-                return response()->json(['status' => false, 'message' => 'error Exception' ]);
+                return response()->json(['status' => false, 'message' => 'error Exception']);
             }
         } else {
             try {
@@ -79,13 +79,13 @@ class PesanController extends Controller
                         'pesan_id' => $id,
                         'text' => Purify::clean($request->get('pesan')),
                         'pengirim' => $request->pengirim,
-                        'nama_pengirim' => $request->nama_pengirim
+                        'nama_pengirim' => $request->nama_pengirim,
                     ]);
                 });
 
-                return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan' ]);
+                return response()->json(['status' => true, 'message' => 'Berhasil mengirim pesan']);
             } catch (Exception $e) {
-                return response()->json(['status' => false, 'message' => 'error Exception' ]);
+                return response()->json(['status' => false, 'message' => 'error Exception']);
             }
         }
 
@@ -98,7 +98,7 @@ class PesanController extends Controller
         $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
 
         if ($desa == null) {
-            return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar' ]);
+            return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar']);
         }
 
         $pesan = Pesan::whereHas('detailPesan', function ($q) use ($request) {
@@ -124,19 +124,21 @@ class PesanController extends Controller
 
             return response()->json(['status' => true, 'data' => $pesan]);
         }
-        return response()->json(['status' => true, 'message' => 'Tidak ada Pesan untuk ditampilkan' ]);
+
+        return response()->json(['status' => true, 'message' => 'Tidak ada Pesan untuk ditampilkan']);
     }
 
     public function setArsipPesan(Request $request)
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
-            'diarsipkan' => Pesan::MASUK_ARSIP
+            'diarsipkan' => Pesan::MASUK_ARSIP,
         ]);
 
         if ($pesan > 0) {
             return back()->with('success', 'Pesan berhasil ditandai!');
         }
+
         return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
     }
 }

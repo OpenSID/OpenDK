@@ -45,26 +45,27 @@ class ProgramBantuanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Program Bantuan';
+        $page_title = 'Program Bantuan';
         $page_description = 'Daftar Program Bantuan';
-        $list_desa        = DataDesa::all();
+        $list_desa = DataDesa::all();
 
         return view('data.program_bantuan.index', compact('page_title', 'page_description', 'list_desa'));
     }
 
     public function getaProgramBantuan(Request $request)
     {
-        return DataTables::of(Program::when(!empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
+        return DataTables::of(Program::when(! empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
                 $data['detail_url'] = route('data.program-bantuan.show', [$row->id, $row->desa_id]);
 
                 return view('forms.aksi', $data);
             })
             ->addColumn('masa_berlaku', function ($row) {
-                return format_date($row->start_date) . ' - ' . format_date($row->end_date);
+                return format_date($row->start_date).' - '.format_date($row->end_date);
             })
             ->editColumn('sasaran', function ($row) {
                 $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
+
                 return $sasaran[$row->sasaran];
             })
             ->rawColumns(['aksi'])->make();
@@ -72,18 +73,18 @@ class ProgramBantuanController extends Controller
 
     public function show($id, $desa_id)
     {
-        $program          = Program::with('desa')->findOrFail($id);
-        $page_title       = 'Detail Program';
-        $page_description = 'Program Bantuan ' . $program->nama;
-        $sasaran          = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
-        $peserta          = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
+        $program = Program::with('desa')->findOrFail($id);
+        $page_title = 'Detail Program';
+        $page_description = 'Program Bantuan '.$program->nama;
+        $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
+        $peserta = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
 
         return view('data.program_bantuan.show', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
     }
 
     public function import()
     {
-        $page_title       = 'Impor';
+        $page_title = 'Impor';
         $page_description = 'Impor Data Program Bantuan';
 
         return view('data.program_bantuan.import', compact('page_title', 'page_description'));
@@ -113,12 +114,13 @@ class ProgramBantuanController extends Controller
             glob($extract.'*.csv');
 
             (new SinkronBantuan())
-                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.Str::replaceLast('zip', 'csv', $name));
             (new SinkronPesertaBantuan())
-                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+                ->queue($extract.Str::replaceLast('zip', 'csv', 'peserta_'.$name));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. '. $e->getMessage());
+
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Import data sukses.');

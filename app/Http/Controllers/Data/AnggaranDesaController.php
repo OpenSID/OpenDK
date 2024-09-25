@@ -42,7 +42,7 @@ class AnggaranDesaController extends Controller
 {
     public function index()
     {
-        $page_title       = 'APBDes';
+        $page_title = 'APBDes';
         $page_description = 'Data APBDes';
 
         return view('data.anggaran_desa.index', compact('page_title', 'page_description'));
@@ -50,27 +50,38 @@ class AnggaranDesaController extends Controller
 
     public function getDataAnggaran()
     {
-        return DataTables::of(AnggaranDesa::with('desa')->get())
-            ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })->editColumn('bulan', function ($row) {
-                return months_list()[$row->bulan];
-            })
-            ->editColumn('jumlah', function ($row) {
-                return number_format($row->jumlah, 2);
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                AnggaranDesa::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })->editColumn('bulan', function ($row) {
+                    return months_list()[$row->bulan];
+                })
+                ->editColumn('jumlah', function ($row) {
+                    return number_format($row->jumlah, 2);
+                })
+                ->rawColumns(['aksi'])
+                ->make();
+        }
     }
 
     public function import()
     {
-        $page_title       = 'APBDes';
+        $page_title = 'APBDes';
         $page_description = 'Import APBDes';
-        $years_list       = years_list();
-        $months_list      = months_list();
-        $list_desa        = DataDesa::all();
+        $years_list = years_list();
+        $months_list = months_list();
+        $list_desa = DataDesa::all();
 
         return view('data.anggaran_desa.import', compact('page_title', 'page_description', 'years_list', 'months_list', 'list_desa'));
     }
@@ -82,6 +93,7 @@ class AnggaranDesaController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 
@@ -94,6 +106,7 @@ class AnggaranDesaController extends Controller
             AnggaranDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus.');
         }
 

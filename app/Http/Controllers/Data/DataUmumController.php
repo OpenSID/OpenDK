@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Data;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DataUmumRequest;
 use App\Models\DataUmum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -45,9 +46,9 @@ class DataUmumController extends Controller
      */
     public function index()
     {
-        $data_umum        = DataUmum::first();
-        $luas_wilayah     = $data_umum['luas_wilayah_value'];
-        $page_title       = 'Data Umum';
+        $data_umum = DataUmum::first();
+        $luas_wilayah = $data_umum['luas_wilayah_value'];
+        $page_title = 'Data Umum';
         $page_description = 'Ubah Data Umum';
 
         return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah'));
@@ -59,38 +60,14 @@ class DataUmumController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(DataUmumRequest $request, $id)
     {
-        request()->validate([
-            'sejarah'                => 'required',
-            'sumber_luas_wilayah'    => 'required',
-            'luas_wilayah'           => 'required',
-            'bts_wil_utara'          => 'required',
-            'bts_wil_timur'          => 'required',
-            'bts_wil_selatan'        => 'required',
-            'bts_wil_barat'          => 'required',
-            'jml_puskesmas'          => 'required',
-            'jml_puskesmas_pembantu' => 'required',
-            'jml_posyandu'           => 'required',
-            'jml_pondok_bersalin'    => 'required',
-            'jml_paud'               => 'required',
-            'jml_sd'                 => 'required',
-            'jml_smp'                => 'required',
-            'jml_sma'                => 'required',
-            'jml_masjid_besar'       => 'required',
-            'jml_mushola'            => 'required',
-            'jml_gereja'             => 'required',
-            'jml_pasar'              => 'required',
-            'jml_balai_pertemuan'    => 'required',
-            'lat'                    => 'required',
-            'lng'                    => 'required',
-        ]);
-
         try {
             $data = ($request->sumber_luas_wilayah == 1) ? $request->all() : $request->except('luas_wilayah');
             DataUmum::findOrFail($id)->update($data);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Update Data Umum gagal!');
         }
 
@@ -111,6 +88,7 @@ class DataUmumController extends Controller
         } catch (\Exception $e) {
             report($e);
         }
+
         return response()->json();
     }
 }

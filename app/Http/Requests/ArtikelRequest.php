@@ -53,10 +53,10 @@ class ArtikelRequest extends FormRequest
     public function rules()
     {
         return [
-            'judul'     => 'required|string|max:191',
-            'isi'       => 'required',
-            'status'    => 'required',
-            'gambar'    => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
+            'judul' => 'required|string|max:191',
+            'isi' => 'required',
+            'status' => 'required',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
         ];
     }
 }

@@ -71,7 +71,7 @@ class InstallDev extends Command
 
         $this->line('Kunci akses penginstal web');
 
-        if (!sudahInstal()) {
+        if (! sudahInstal()) {
             file_put_contents(
                 storage_path('installed'),
                 sprintf('%s berhasil DIPASANG pada %s', config('app.name'), now())

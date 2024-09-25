@@ -31,11 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
 
 class KeluargaController extends Controller
 {
@@ -46,10 +47,11 @@ class KeluargaController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Keluarga';
+        $page_title = 'Keluarga';
         $page_description = 'Daftar Keluarga';
+        $list_desa = DataDesa::get();
 
-        return view('data.keluarga.index', compact('page_title', 'page_description'));
+        return view('data.keluarga.index', compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**
@@ -58,14 +60,22 @@ class KeluargaController extends Controller
     public function getKeluarga()
     {
         if (request()->ajax()) {
-            return DataTables::of(Keluarga::has('kepala_kk')->get())
+            $desa = request('desa');
+
+            return DataTables::of(Keluarga::has('kepala_kk')
+                ->when($desa, function ($query) use ($desa) {
+                    return $desa === 'Semua'
+                        ? $query
+                        : $query->where('das_data_desa.desa_id', $desa);
+                })
+                ->get())
                 ->addColumn('aksi', function ($row) {
-                    $data['show_url']   = route('data.keluarga.show', $row->id);
+                    $data['show_url'] = route('data.keluarga.show', $row->id);
 
                     return view('forms.aksi', $data);
                 })
                 ->addColumn('foto', function ($row) {
-                    return '<img src="' . is_user($row->kepala_kk->foto, $row->kepala_kk->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="'.is_user($row->kepala_kk->foto, $row->kepala_kk->sex).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })->editColumn('tgl_cetak_kk', function ($row) {
                     return format_datetime($row->tgl_cetak_kk);
                 })
@@ -82,10 +92,10 @@ class KeluargaController extends Controller
      */
     public function show($id)
     {
-        $page_title       = 'Detail Keluarga';
+        $page_title = 'Detail Keluarga';
         $page_description = 'Detail Data Keluarga';
-        $penduduk         = Penduduk::select(['nik', 'nama'])->get();
-        $keluarga         = Keluarga::findOrFail($id);
+        $penduduk = Penduduk::select(['nik', 'nama'])->get();
+        $keluarga = Keluarga::findOrFail($id);
 
         return view('data.keluarga.show', compact('page_title', 'page_description', 'penduduk', 'keluarga'));
     }

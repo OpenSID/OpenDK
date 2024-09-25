@@ -37,16 +37,7 @@
 
                 </div>
                 <div class="box-footer">
-                    <div class="pull-right">
-                        <div class="control-group">
-                            <a href="{{ route('setting.tipe-regulasi.index') }}">
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> Batal
-                                </button>
-                            </a>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Simpan
-                            </button>
-                        </div>
-                    </div>
+                    @include('partials.button_reset_submit')
                 </div>
                 {!! Form::close() !!}
             </div>

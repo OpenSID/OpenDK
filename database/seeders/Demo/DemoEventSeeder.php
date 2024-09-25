@@ -45,7 +45,7 @@ class DemoEventSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create("id-ID");
+        $faker = Factory::create('id-ID');
 
         foreach (range(1, 10) as $index) {
             $title = $faker->name();
@@ -56,7 +56,7 @@ class DemoEventSeeder extends Seeder
                 'start' => $faker->dateTime()->format('Y-m-d H:i:s'),
                 'end' => $faker->dateTime()->format('Y-m-d H:i:s'),
                 'attendants' => 'Camat',
-                'description' => "<p>" . $faker->name() . "</p>",
+                'description' => '<p>'.$faker->name().'</p>',
                 'status' => 'OPEN',
             ]);
         }

@@ -32,15 +32,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prosedur extends Model
 {
+    use HasFactory;
+    use Sluggable;
+
     protected $table = 'das_prosedur';
 
     protected $fillable = [
         'judul_prosedur',
         'file_prosedur',
         'mime_type',
-        'slug'
+        'slug',
     ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     */
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'judul_prosedur',
+            ],
+        ];
+    }
+
 }
+

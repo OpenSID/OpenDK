@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class LaporanPenduduk extends Model
 {
-    protected $table     = 'das_laporan_penduduk';
+    protected $table = 'das_laporan_penduduk';
 
     protected $fillable = [
         'judul',
@@ -43,7 +43,7 @@ class LaporanPenduduk extends Model
         'tahun',
         'nama_file',
         'desa_id',
-        'imported_at'
+        'imported_at',
     ];
 
     public function desa()

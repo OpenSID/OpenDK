@@ -49,7 +49,7 @@ class SuplemenController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Data Suplemen';
+        $page_title = 'Data Suplemen';
         $page_description = 'Daftar Data Suplemen';
 
         return view('data.data_suplemen.index', compact('page_title', 'page_description'));
@@ -66,8 +66,8 @@ class SuplemenController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['detail_url'] = route('data.data-suplemen.show', $row->id);
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('data.data-suplemen.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('data.data-suplemen.edit', $row->id);
                         $data['delete_url'] = route('data.data-suplemen.destroy', $row->id);
                     }
 
@@ -75,6 +75,7 @@ class SuplemenController extends Controller
                 })
                 ->editColumn('sasaran', function ($row) {
                     $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
+
                     return $sasaran[$row->sasaran];
                 })
                 ->make();
@@ -88,7 +89,7 @@ class SuplemenController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Data Suplemen';
+        $page_title = 'Data Suplemen';
         $page_description = 'Tambah Data Suplemen';
 
         return view('data.data_suplemen.create', compact('page_title', 'page_description'));
@@ -97,7 +98,6 @@ class SuplemenController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -112,6 +112,7 @@ class SuplemenController extends Controller
             Suplemen::create($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data Suplemen gagal ditambah!');
         }
 
@@ -126,9 +127,9 @@ class SuplemenController extends Controller
      */
     public function edit($id)
     {
-        $suplemen         = Suplemen::findOrFail($id);
-        $page_title       = 'Data Suplemen';
-        $page_description = 'Ubah Data Suplemen : ' . $suplemen->nama;
+        $suplemen = Suplemen::findOrFail($id);
+        $page_title = 'Data Suplemen';
+        $page_description = 'Ubah Data Suplemen : '.$suplemen->nama;
 
         return view('data.data_suplemen.edit', compact('page_title', 'page_description', 'suplemen'));
     }
@@ -136,7 +137,6 @@ class SuplemenController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -152,6 +152,7 @@ class SuplemenController extends Controller
             Suplemen::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data Suplemen gagal diubah!');
         }
 
@@ -174,6 +175,7 @@ class SuplemenController extends Controller
             Suplemen::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.data-suplemen.index')->with('error', 'Data Suplemen gagal dihapus!');
         }
 
@@ -188,10 +190,10 @@ class SuplemenController extends Controller
      */
     public function show($id)
     {
-        $suplemen         = Suplemen::findOrFail($id);
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
-        $page_title       = 'Anggota Suplemen';
-        $page_description = 'Anggota Suplemen: ' . ucwords(strtolower($suplemen->nama));
+        $suplemen = Suplemen::findOrFail($id);
+        $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
+        $page_title = 'Anggota Suplemen';
+        $page_description = 'Anggota Suplemen: '.ucwords(strtolower($suplemen->nama));
 
         return view('data.data_suplemen.show', compact('page_title', 'page_description', 'suplemen', 'sasaran'));
     }
@@ -205,8 +207,8 @@ class SuplemenController extends Controller
             return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('suplemen_id', $id_terdata)->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]);
                         $data['delete_url'] = route('data.data-suplemen.destroydetail', [$row->id, $row->suplemen_id]);
                     }
 
@@ -214,6 +216,7 @@ class SuplemenController extends Controller
                 })
                 ->editColumn('penduduk.sex', function ($row) {
                     $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
+
                     return $sex[$row->penduduk->sex];
                 })
                 ->make();
@@ -233,6 +236,7 @@ class SuplemenController extends Controller
         }
 
         $data = Penduduk::where('desa_id', $desa)->whereNotIn('id', $penduduk)->get();
+
         return response()->json($data);
     }
 
@@ -243,12 +247,12 @@ class SuplemenController extends Controller
      */
     public function createDetail($id_suplemen)
     {
-        $suplemen         = Suplemen::findOrFail($id_suplemen);
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
-        $page_title       = 'Anggota Suplemen';
+        $suplemen = Suplemen::findOrFail($id_suplemen);
+        $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
+        $page_title = 'Anggota Suplemen';
         $page_description = 'Tambah Anggota Suplemen';
-        $desa             = DataDesa::all();
-        $anggota          = null;
+        $desa = DataDesa::all();
+        $anggota = null;
 
         if ($suplemen->sasaran == 1) {
             $data = Penduduk::get();
@@ -262,13 +266,12 @@ class SuplemenController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function storeDetail(Request $request)
     {
         request()->validate(
-            ['penduduk_id' => 'required',],
+            ['penduduk_id' => 'required'],
             ['penduduk_id.required' => 'isian warga atau penduduk wajib diisi']
         );
 
@@ -276,6 +279,7 @@ class SuplemenController extends Controller
             SuplemenTerdata::create($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Anggota Suplemen gagal ditambah!');
         }
 
@@ -290,13 +294,13 @@ class SuplemenController extends Controller
      */
     public function editDetail($id, $id_suplemen)
     {
-        $suplemen         = Suplemen::findOrFail($id_suplemen);
-        $sasaran          = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
-        $page_title       = 'Anggota Suplemen';
+        $suplemen = Suplemen::findOrFail($id_suplemen);
+        $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
+        $page_title = 'Anggota Suplemen';
         $page_description = 'Ubah Anggota Suplemen';
-        $anggota          = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
-        $data             = Penduduk::where('id', $anggota->penduduk_id)->get();
-        $desa             = DataDesa::all();
+        $anggota = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
+        $data = Penduduk::where('id', $anggota->penduduk_id)->get();
+        $desa = DataDesa::all();
 
         return view('data.data_suplemen.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
     }
@@ -304,7 +308,6 @@ class SuplemenController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -314,6 +317,7 @@ class SuplemenController extends Controller
             SuplemenTerdata::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Anggota Suplemen gagal diubah!');
         }
 
@@ -332,6 +336,7 @@ class SuplemenController extends Controller
             SuplemenTerdata::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('error', 'Anggota Suplemen gagal dihapus!');
         }
 

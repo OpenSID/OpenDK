@@ -42,7 +42,7 @@ class COAController extends Controller
 {
     public function index()
     {
-        $page_title       = 'COA';
+        $page_title = 'COA';
         $page_description = 'Daftar COA';
 
         return view('setting.coa.index', compact('page_title', 'page_description'));
@@ -50,7 +50,7 @@ class COAController extends Controller
 
     public function create()
     {
-        $page_title       = "COA";
+        $page_title = 'COA';
         $page_description = 'Tambah COA';
 
         return view('setting.coa.create', compact('page_title', 'page_description'));
@@ -59,24 +59,25 @@ class COAController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'type_id'    => 'required',
-            'sub_id'     => 'required',
+            'type_id' => 'required',
+            'sub_id' => 'required',
             'sub_sub_id' => 'required',
-            'coa_name'   => 'required',
-            'id'         => 'required',
+            'coa_name' => 'required',
+            'id' => 'required',
         ]);
 
         try {
             $data = [
-                'type_id'    => $request->input('type_id'),
-                'sub_id'     => $request->input('sub_id'),
+                'type_id' => $request->input('type_id'),
+                'sub_id' => $request->input('sub_id'),
                 'sub_sub_id' => $request->input('sub_sub_id'),
-                'coa_name'   => $request->input('coa_name'),
-                'id'         => $request->input('id'),
+                'coa_name' => $request->input('coa_name'),
+                'id' => $request->input('id'),
             ];
             DB::table('ref_coa')->insert($data);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }
 

@@ -40,7 +40,7 @@ class KategoriKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Kategori Komplain';
+        $page_title = 'Kategori Komplain';
         $page_description = 'Daftar Kategori Komplain';
 
         return view('setting.komplain_kategori.index', compact('page_title', 'page_description'));
@@ -51,7 +51,7 @@ class KategoriKomplainController extends Controller
     {
         return DataTables::of(KategoriKomplain::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('setting.komplain-kategori.edit', $row->id);
+                $data['edit_url'] = route('setting.komplain-kategori.edit', $row->id);
                 $data['delete_url'] = route('setting.komplain-kategori.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -62,7 +62,7 @@ class KategoriKomplainController extends Controller
     // Create Action
     public function create()
     {
-        $page_title       = 'Kategori Komplain';
+        $page_title = 'Kategori Komplain';
         $page_description = 'Tambah Kategori Komplain';
 
         return view('setting.komplain_kategori.create', compact('page_title', 'page_description'));
@@ -76,10 +76,11 @@ class KategoriKomplainController extends Controller
         ]);
 
         try {
-            $kategori       = new KategoriKomplain($request->all());
+            $kategori = new KategoriKomplain($request->all());
             $kategori->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Kategori Komplain gagal dikirim!');
         }
 
@@ -88,9 +89,9 @@ class KategoriKomplainController extends Controller
 
     public function edit($id)
     {
-        $kategori         = KategoriKomplain::findOrFail($id);
-        $page_title       = 'Kategori Komplain';
-        $page_description = 'Ubah Kategori Komplain : ' . $kategori->nama;
+        $kategori = KategoriKomplain::findOrFail($id);
+        $page_title = 'Kategori Komplain';
+        $page_description = 'Ubah Kategori Komplain : '.$kategori->nama;
 
         return view('setting.komplain_kategori.edit', compact('page_title', 'page_description', 'kategori'));
     }
@@ -107,6 +108,7 @@ class KategoriKomplainController extends Controller
             $kategori->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Kategori Komplain gagal diupdate!');
         }
 
@@ -119,6 +121,7 @@ class KategoriKomplainController extends Controller
             KategoriKomplain::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Kategori Komplain gagal dihapus!');
         }
 

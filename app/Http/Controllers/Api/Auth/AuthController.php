@@ -58,20 +58,20 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email'    => 'required|email',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
         $credentials = $request->only(['email', 'password']);
         $credentials['status'] = true;
 
-        if (!$token = Auth::guard('api')->attempt($credentials)) {
+        if (! $token = Auth::guard('api')->attempt($credentials)) {
             return response()->json(['message' => 'Pengguna tidak dikenali'], 401);
         }
 
         $user = User::where('email', '=', $request->email)->first();
 
-        if (!$user->hasrole(['super-admin', 'admin-desa'])) {
+        if (! $user->hasrole(['super-admin', 'admin-desa'])) {
             return response()->json(['message' => 'Grup pengguna bukan admin-desa'], 422);
         }
 
@@ -91,7 +91,7 @@ class AuthController extends Controller
     /**
      * Log the user out (Invalidate the token).
      *
-     * @param Response $response
+     * @param  Response  $response
      * @return JsonResponse
      */
     public function logout()
@@ -114,15 +114,15 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
+     * @param  string  $token
      * @return JsonResponse
      */
     protected function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
-            'token_type'   => 'Bearer',
-            'expires_in'   => Auth::guard('api')->factory()->getTTL() * 60,
+            'token_type' => 'Bearer',
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
         ]);
     }
 }

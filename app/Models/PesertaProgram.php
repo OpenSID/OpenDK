@@ -48,7 +48,7 @@ class PesertaProgram extends Model
         'kartu_tanggal_lahir',
         'kartu_alamat',
         'kartu_peserta',
-        'desa_id'
+        'desa_id',
     ];
 
     public function penduduk()

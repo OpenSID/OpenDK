@@ -56,7 +56,7 @@ class DataDesaController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Desa';
+        $page_title = 'Desa';
         $page_description = 'Daftar Desa';
 
         return view('data.data_desa.index', compact('page_title', 'page_description'));
@@ -67,7 +67,7 @@ class DataDesaController extends Controller
         return DataTables::of(DataDesa::get())
             ->addColumn('aksi', function ($row) {
                 if ($this->profil->kecamatan_id) {
-                    $data['edit_url']   = route('data.data-desa.edit', $row->id);
+                    $data['edit_url'] = route('data.data-desa.edit', $row->id);
                 }
                 $data['peta'] = route('data.data-desa.peta', $row->id);
                 $data['delete_url'] = route('data.data-desa.destroy', $row->id);
@@ -75,7 +75,7 @@ class DataDesaController extends Controller
                 return view('forms.aksi', $data);
             })
             ->editColumn('website', function ($row) {
-                return '<a href="' . htmlentities($row->website) . '" target="_blank">' . htmlentities($row->website) . '</a>';
+                return '<a href="'.htmlentities($row->website).'" target="_blank">'.htmlentities($row->website).'</a>';
             })
             ->rawColumns(['website', 'aksi'])->make();
     }
@@ -94,14 +94,14 @@ class DataDesaController extends Controller
      */
     public function create()
     {
-        if (!$this->profil->kecamatan_id) {
+        if (! $this->profil->kecamatan_id) {
             return redirect()->route('data.data-desa.index');
         }
 
-        $page_title       = 'Desa';
+        $page_title = 'Desa';
         $page_description = 'Tambah Desa';
-        $profil           = $this->profil;
-        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
+        $profil = $this->profil;
+        $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
         return view('data.data_desa.create', compact('page_title', 'page_description', 'profil', 'status_pantau'));
     }
@@ -120,6 +120,7 @@ class DataDesaController extends Controller
             $desa->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -134,15 +135,15 @@ class DataDesaController extends Controller
      */
     public function edit($id)
     {
-        if (!$this->profil->kecamatan_id) {
+        if (! $this->profil->kecamatan_id) {
             return redirect()->route('data.data-desa.index');
         }
 
-        $desa             = DataDesa::findOrFail($id);
-        $page_title       = 'Desa';
-        $page_description = 'Ubah Desa : ' . $desa->nama;
-        $profil           = $this->profil;
-        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
+        $desa = DataDesa::findOrFail($id);
+        $page_title = 'Desa';
+        $page_description = 'Ubah Desa : '.$desa->nama;
+        $profil = $this->profil;
+        $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
         return view('data.data_desa.edit', compact('page_title', 'page_description', 'desa', 'profil', 'status_pantau'));
     }
@@ -162,6 +163,7 @@ class DataDesaController extends Controller
             $desa->save();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
 
@@ -200,6 +202,7 @@ class DataDesaController extends Controller
             DataDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!');
         }
 
@@ -233,12 +236,13 @@ class DataDesaController extends Controller
                     ];
 
                     DataDesa::query()->updateOrInsert([
-                        'desa_id' => $value['kode_desa']
+                        'desa_id' => $value['kode_desa'],
                     ], $insert);
                 }
             }
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
         }
 
@@ -247,9 +251,9 @@ class DataDesaController extends Controller
 
     public function peta($id)
     {
-        $desa             = DataDesa::findOrFail($id);
-        $page_title       = 'Desa';
-        $page_description = 'Peta Desa : ' . $desa->nama;
+        $desa = DataDesa::findOrFail($id);
+        $page_title = 'Desa';
+        $page_description = 'Peta Desa : '.$desa->nama;
 
         return view('data.data_desa.peta', compact('page_title', 'page_description', 'desa'));
     }
@@ -257,11 +261,12 @@ class DataDesaController extends Controller
     public function getAjaxPetaDesa(Request $request)
     {
         if (request()->ajax()) {
-            $data             = DataDesa::all();
+            $data = DataDesa::all();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Proses sinkronisasi identitas desa sudah selesai',
-                'data' => $data
+                'data' => $data,
             ]);
         }
     }

@@ -71,7 +71,7 @@ class AlterTableLogImpor extends Migration
      */
     protected function charType()
     {
-        if (!Type::hasType('char')) {
+        if (! Type::hasType('char')) {
             Type::addType('char', StringType::class);
         }
     }

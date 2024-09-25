@@ -15,7 +15,7 @@
         </a>
     @endif
     @if (isset($show_url))
-        <a href="{!! empty($show_url) ? 'javascript:void(0)' : $show_url !!}" class="{!! empty($show_url) ? 'disabled' : '' !!}" title="Lihat" data-button="show">
+        <a href="{!! empty($show_url) ? 'javascript:void(0)' : $show_url !!}" class="{!! empty($show_url) ? 'disabled' : '' !!}" title="Lihat" data-button="show" target="_blank">
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
         </a>
     @endif
@@ -63,6 +63,12 @@
     @if (isset($agree_url))
         <a href="javascript:void(0)" class="{!! empty($agree_url) ? 'disabled' : '' !!}" title="Ubah Status" data-href="{!! empty($agree_url) ? 'javascript:void(0)' : $agree_url !!}" data-button="delete" id="agreeModal">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-check" aria-hidden="true"></i>
+            </button>
+        </a>
+    @endif
+    @if (isset($anonim))
+        <a href="javascript:void(0)" class="{!! empty($anonim) ? 'disabled' : '' !!}" title="Ubah Status" data-href="{!! empty($anonim) ? 'javascript:void(0)' : $anonim !!}" data-button="delete" id="anonimModal">
+            <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #252725; border-color: #252725;"><i class="fa fa-user" aria-hidden="true"></i>
             </button>
         </a>
     @endif

@@ -31,13 +31,16 @@
 
 namespace App\Models;
 
-use App\Enums\JenisJabatan;
 use App\Enums\Status;
+use App\Enums\JenisJabatan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pengurus extends Model
 {
+    use HasFactory;
+
     protected $table = 'das_pengurus';
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
@@ -49,12 +52,12 @@ class Pengurus extends Model
     ];
 
     protected $appends = [
-        'namaGelar'
+        'namaGelar',
     ];
 
     public function getFotoAttribute()
     {
-        return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;
+        return $this->attributes['foto'] ? Storage::url('pengurus/'.$this->attributes['foto']) : null;
     }
 
     /**
@@ -64,10 +67,10 @@ class Pengurus extends Model
      */
     public function getNamaGelarAttribute()
     {
-        $nama = $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'];
+        $nama = $this->attributes['gelar_depan'].' '.$this->attributes['nama'];
 
         if ($this->attributes['gelar_belakang']) {
-            $nama = $nama . ', ' . $this->attributes['gelar_belakang'];
+            $nama = $nama.', '.$this->attributes['gelar_belakang'];
         }
 
         return $nama;

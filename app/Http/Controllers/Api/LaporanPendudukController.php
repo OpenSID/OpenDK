@@ -40,7 +40,6 @@ class LaporanPendudukController extends Controller
     /**
      * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
      *
-     * @param LaporanPendudukRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(LaporanPendudukRequest $request)
@@ -49,7 +48,7 @@ class LaporanPendudukController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
+            'message' => 'Proses sync data Laporan Penduduk OpenSID sedang berjalan',
         ]);
     }
 }

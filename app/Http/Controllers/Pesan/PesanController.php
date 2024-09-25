@@ -55,16 +55,19 @@ class PesanController extends Controller
             ->where('diarsipkan', Pesan::NON_ARSIP)
             ->orderBy('sudah_dibaca', 'ASC')
             ->orderBy('created_at', 'DESC')
-            ->when(!empty($request->get('desa_id')), function ($q) use ($request, &$data) {
+            ->when(! empty($request->get('desa_id')), function ($q) use ($request, &$data) {
                 $data->put('desa_id', $request->get('desa_id'));
+
                 return  $q->where('das_data_desa_id', $request->get('desa_id'));
             })
-            ->when(!empty($request->get('q')), function ($q) use ($request, &$data) {
+            ->when(! empty($request->get('q')), function ($q) use ($request, &$data) {
                 $data->put('search_query', $request->get('q'));
+
                 return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
             })
             ->when($request->get('sudahdibaca') !== null, function ($q) use ($request, &$data) {
                 $data->put('sudah_dibaca', $request->get('sudahdibaca'));
+
                 return $q->where('sudah_dibaca', (int) $request->get('sudahdibaca'));
             })
             ->paginate(Pesan::PER_PAGE);
@@ -78,11 +81,11 @@ class PesanController extends Controller
 
     protected function loadCounter()
     {
-        $counter_unread =  Pesan::where([
+        $counter_unread = Pesan::where([
             'jenis' => Pesan::PESAN_MASUK,
             'diarsipkan' => Pesan::NON_ARSIP,
             'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
-        $counter_unread_keluar =  Pesan::where([
+        $counter_unread_keluar = Pesan::where([
             'jenis' => Pesan::PESAN_KELUAR,
             'diarsipkan' => Pesan::NON_ARSIP,
             'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
@@ -90,7 +93,7 @@ class PesanController extends Controller
         return [
             'counter_unread' => $counter_unread,
             'counter_unread_keluar' => $counter_unread_keluar,
-         ];
+        ];
     }
 
     public function loadPesanKeluar(Request $request)
@@ -106,12 +109,14 @@ class PesanController extends Controller
             ->where('jenis', Pesan::PESAN_KELUAR)
             ->where('diarsipkan', Pesan::NON_ARSIP)
             ->orderBy('created_at', 'DESC')
-            ->when(!empty($request->get('desa_id')), function ($q) use ($request, &$data) {
+            ->when(! empty($request->get('desa_id')), function ($q) use ($request, &$data) {
                 $data->put('desa_id', $request->get('desa_id'));
+
                 return  $q->where('das_data_desa_id', $request->get('desa_id'));
             })
-            ->when(!empty($request->get('q')), function ($q) use ($request, &$data) {
+            ->when(! empty($request->get('q')), function ($q) use ($request, &$data) {
                 $data->put('search_query', $request->get('q'));
+
                 return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
             })
             ->paginate(Pesan::PER_PAGE);
@@ -135,12 +140,14 @@ class PesanController extends Controller
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('diarsipkan', Pesan::MASUK_ARSIP)
             ->orderBy('created_at', 'DESC')
-            ->when(!empty($request->get('desa_id')), function ($q) use ($request, &$data) {
+            ->when(! empty($request->get('desa_id')), function ($q) use ($request, &$data) {
                 $data->put('desa_id', $request->get('desa_id'));
+
                 return  $q->where('das_data_desa_id', $request->get('desa_id'));
             })
-            ->when(!empty($request->get('q')), function ($q) use ($request, &$data) {
+            ->when(! empty($request->get('q')), function ($q) use ($request, &$data) {
                 $data->put('search_query', $request->get('q'));
+
                 return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
             })
             ->paginate(Pesan::PER_PAGE);
@@ -148,12 +155,13 @@ class PesanController extends Controller
         $list_desa = DataDesa::get();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
+
         return view('pesan.arsip.index', $data->all());
     }
 
     public function readPesan($id_pesan)
     {
-        $pesan  = Pesan::findOrFail($id_pesan);
+        $pesan = Pesan::findOrFail($id_pesan);
         if ($pesan->sudah_dibaca == Pesan::BELUM_DIBACA) {
             $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
             $pesan->save();
@@ -164,6 +172,7 @@ class PesanController extends Controller
         $data->put('page_description', 'Managemen Pesan');
         $data->put('pesan', $pesan);
         $data = $data->merge($this->loadCounter());
+
         return view('pesan.read_pesan', $data->all());
     }
 
@@ -175,6 +184,7 @@ class PesanController extends Controller
         $list_desa = DataDesa::get();
         $data = $data->merge($this->loadCounter());
         $data->put('list_desa', $list_desa);
+
         return view('pesan.compose_pesan', $data->all());
     }
 
@@ -185,9 +195,9 @@ class PesanController extends Controller
     {
         try {
             $this->validate($request, [
-                'judul'    => 'required',
+                'judul' => 'required',
                 'das_data_desa_id' => 'required|exists:das_data_desa,id',
-                'text' => 'required'
+                'text' => 'required',
             ]);
 
             DB::transaction(function () use ($request) {
@@ -202,13 +212,13 @@ class PesanController extends Controller
                     'pesan_id' => $id,
                     'text' => Purify::clean($request->get('text')),
                     'pengirim' => 'kecamatan',
-                    'nama_pengirim' => 'kecamatan - '. auth()->user()->name,
+                    'nama_pengirim' => 'kecamatan - '.auth()->user()->name,
                 ]);
             });
 
             return redirect()->route('pesan.keluar')->with('success', 'Pesan berhasil dikirim!');
         } catch (\Exception $e) {
-            return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: ' . $e->getMessage());
+            return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: '.$e->getMessage());
         }
     }
 
@@ -219,6 +229,7 @@ class PesanController extends Controller
         if ($pesan->save()) {
             return redirect()->route('pesan.arsip')->with('success', 'Pesan berhasil diarsipkan!');
         }
+
         return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
     }
 
@@ -226,12 +237,13 @@ class PesanController extends Controller
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
-            'sudah_dibaca' => Pesan::SUDAH_DIBACA
+            'sudah_dibaca' => Pesan::SUDAH_DIBACA,
         ]);
 
         if ($pesan > 0) {
             return back()->with('success', 'Pesan berhasil ditandai!');
         }
+
         return back()->withInput()->with('error', 'Pesan gagal ditandai!');
     }
 
@@ -239,12 +251,13 @@ class PesanController extends Controller
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
-            'diarsipkan' => Pesan::MASUK_ARSIP
+            'diarsipkan' => Pesan::MASUK_ARSIP,
         ]);
 
         if ($pesan > 0) {
             return back()->with('success', 'Pesan berhasil ditandai!');
         }
+
         return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
     }
 
@@ -254,12 +267,13 @@ class PesanController extends Controller
             'pesan_id' => $request->get('id'),
             'text' => Purify::clean($request->get('text')),
             'pengirim' => 'kecamatan',
-            'nama_pengirim' => 'kecamatan - '. auth()->user()->name
+            'nama_pengirim' => 'kecamatan - '.auth()->user()->name,
         ]);
 
         if ($pesan) {
             return back()->with('success', 'Pesan berhasil dikirim!');
         }
+
         return back()->withInput()->with('error', 'Pesan gagal dikirim!');
     }
 }

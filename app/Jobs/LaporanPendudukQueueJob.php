@@ -46,14 +46,16 @@ class LaporanPendudukQueueJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $timeout = 0;
+
     /** @var array request data */
     protected $request;
 
     /**
      * Create a new job instance.
      *
-     * @param array $request
+     * @param  array  $request
      * @return void
      */
     public function __construct($request)
@@ -86,29 +88,29 @@ class LaporanPendudukQueueJob implements ShouldQueue
 
             if (isset($this->request['laporan_penduduk'])) {
                 foreach ($this->request['laporan_penduduk'] as $value) {
-                    $file_name = $desa_id . '_laporan_penduduk_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
+                    $file_name = $desa_id.'_laporan_penduduk_'.$value['bulan'].'_'.$value['tahun'].'.'.explode('.', $value['nama_file'])[1];
 
                     $insert = [
-                        'judul'                => $value['judul'],
-                        'bulan'                => $value['bulan'],
-                        'tahun'                => $value['tahun'],
-                        'nama_file'            => $file_name,
-                        'desa_id'              => $desa_id,
-                        'id_laporan_penduduk'  => $value['id'],
-                        'imported_at'          => now(),
+                        'judul' => $value['judul'],
+                        'bulan' => $value['bulan'],
+                        'tahun' => $value['tahun'],
+                        'nama_file' => $file_name,
+                        'desa_id' => $desa_id,
+                        'id_laporan_penduduk' => $value['id'],
+                        'imported_at' => now(),
                     ];
 
                     LaporanPenduduk::updateOrInsert([
-                        'desa_id'              => $insert['desa_id'],
-                        'id_laporan_penduduk'  => $insert['id_laporan_penduduk']
+                        'desa_id' => $insert['desa_id'],
+                        'id_laporan_penduduk' => $insert['id_laporan_penduduk'],
                     ], $insert);
 
                     // Hapus file yang lama
-                    if (Storage::exists('public/laporan_penduduk/' . $file_name)) {
-                        Storage::delete('public/laporan_penduduk/' . $file_name);
+                    if (Storage::exists('public/laporan_penduduk/'.$file_name)) {
+                        Storage::delete('public/laporan_penduduk/'.$file_name);
                     }
 
-                    Storage::disk('public')->put('laporan_penduduk/' . $file_name, base64_decode($value['file']));
+                    Storage::disk('public')->put('laporan_penduduk/'.$file_name, base64_decode($value['file']));
                 }
             }
 

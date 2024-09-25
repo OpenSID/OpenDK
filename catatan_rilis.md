@@ -21,3 +21,4 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 6. [#1053](https://github.com/OpenSID/OpenDK/issues/1053) Simplify and standardize button usage.
 7. [#1054](https://github.com/OpenSID/OpenDK/issues/1054) Change color navigation active.
 8. [#1055](https://github.com/OpenSID/OpenDK/issues/1055) Simple form using a modal to create and update potential category data.
+9. [#1056](https://github.com/OpenSID/OpenDK/issues/1056) Simple form using a modal to create and update complaint category data.

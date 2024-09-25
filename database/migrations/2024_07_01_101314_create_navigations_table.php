@@ -28,7 +28,6 @@
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @
  */
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Artisan;
@@ -42,7 +41,8 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
+{
+    if (!Schema::hasTable('das_navigation')) {
         Schema::create('das_navigation', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('parent_id')->nullable();
@@ -52,12 +52,15 @@ return new class extends Migration
             $table->string('url')->nullable();
             $table->integer('order')->nullable();
             $table->tinyInteger('status')->default(0);
+            $table->integer('type')->nullable();
 
             $table->timestamps();
         });
 
         Artisan::call('db:seed', ['--class' => 'DasNavigationTableSeeder']);
     }
+}
+
 
     /**
      * Reverse the migrations.

@@ -20,11 +20,11 @@
 
         <div class="row">
             <div class="col-md-3">
-                @include('sistem_komplain.komplain._tracking')
+                @include('pages.komplain._tracking')
 
-                @include('sistem_komplain.komplain._komplain_populer')
+                @include('pages.komplain._komplain_populer')
 
-                @include('sistem_komplain.komplain._komplain_sukses')
+                @include('pages.komplain._komplain_sukses')
             </div>
             <div class="col-md-9">
                 <!-- kirim komplain form -->

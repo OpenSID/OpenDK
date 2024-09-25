@@ -39,21 +39,9 @@ class AplikasiController extends Controller
 {
     public function index()
     {
-        $settings = SettingAplikasi::where('kategori', '!=', 'surat')->get();
-        if ($settings->isEmpty()) {
-            SettingAplikasi::insert([
-                'key' => SettingAplikasi::KEY_BROWSER_TITLE,
-                'value' => $this->browser_title,
-                'type' => 'input',
-                'description' => 'Judul halaman aplikasi.',
-                'kategori' => '-',
-                'option' => '{}',
-            ]);
-            $settings = SettingAplikasi::all();
-        }
-
         $page_title = 'Pegaturan Aplikasi';
         $page_description = 'Daftar Pegaturan Aplikasi';
+        $settings = SettingAplikasi::where('kategori', '!=', 'surat')->get();
 
         return view('setting.aplikasi.index', compact('page_title', 'page_description', 'settings'));
     }

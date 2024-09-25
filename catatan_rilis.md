@@ -18,3 +18,4 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 3. [#1050](https://github.com/OpenSID/OpenDK/issues/1050) Use trait to upload and delete files slider.
 4. [#1051](https://github.com/OpenSID/OpenDK/issues/1051) Use trait to upload and delete files event.
 5. [#1052](https://github.com/OpenSID/OpenDK/issues/1052) Move the action title order.
+6. [#1053](https://github.com/OpenSID/OpenDK/issues/1053) Simplify and standardize button usage.

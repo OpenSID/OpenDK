@@ -18,11 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('data.toilet-sanitasi.import') }}">
-                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.toilet-sanitasi.import')])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

@@ -18,11 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('setting.jenis-penyakit.create') }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['create_url' => route('setting.jenis-penyakit.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

@@ -734,7 +734,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'tipe-potensi', 'controller' => TipePotensiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.tipe-potensi.index');
                 Route::get('getdata', 'getData')->name('setting.tipe-potensi.getdata');
-                Route::get('create', 'create')->name('setting.tipe-potensi.create');
                 Route::post('store', 'store')->name('setting.tipe-potensi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-potensi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-potensi.update');

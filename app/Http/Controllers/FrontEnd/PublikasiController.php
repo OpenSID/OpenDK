@@ -29,48 +29,51 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Http\Controllers\FrontEnd;
 
+use App\Facades\Counter;
+use App\Http\Controllers\FrontEndController;
 use App\Models\Album;
 use App\Models\Galeri;
-use App\Observers\AlbumObserver;
-use App\Observers\GaleriObserver;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\DB;
 
-class EventServiceProvider extends ServiceProvider
+class PublikasiController extends FrontEndController
 {
-    /**
-     * The event to listener mappings for the application.
-     *
-     * @var array<class-string, array<int, class-string>>
-     */
-    protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-    ];
-
-    /**
-     * Register any events for your application.
-     *
-     * @return void
-     */
-    public function boot()
+    public function album()
     {
-        Album::observe(AlbumObserver::class);
-        Galeri::observe(GaleriObserver::class);
+        Counter::count('publikasi.galeri');
+
+        $albums = Album::status()->with(['galeris'])->paginate(9);
+
+
+        $page_title = 'Galeri';
+
+
+        return view('pages.publikasi.album', compact('page_title', 'albums'));
     }
 
-    /**
-     * Determine if events and listeners should be automatically discovered.
-     *
-     * @return bool
-     */
-    public function shouldDiscoverEvents()
+    public function galeri($slug)
     {
-        return false;
+        Counter::count('publikasi.galeri');
+
+        $galeris = Galeri::status()->whereRelation('album', 'slug', $slug)->paginate(9);
+        // $album = Album::with(['galeris'])->where('slug', $slug)->first();
+
+        $page_title = 'Galeri';
+
+
+        return view('pages.publikasi.galeri', compact('page_title', 'galeris'));
+    }
+
+    public function galeri_detail($slug)
+    {
+        Counter::count('publikasi.galeri');
+
+        $galeri = Galeri::where('slug', $slug)->first();
+
+        $page_title = 'Galeri';
+
+
+        return view('pages.publikasi.galeri_detail', compact('page_title', 'galeri'));
     }
 }

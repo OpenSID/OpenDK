@@ -76,4 +76,10 @@ class Artikel extends Model
     {
         return $query->where('status', $value);
     }
+
+    // Relasi dengan model Comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'das_artikel_id')->orderBy('created_at', 'desc');
+    }
 }

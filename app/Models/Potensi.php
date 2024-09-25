@@ -31,10 +31,13 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
 class Potensi extends Model
 {
+    use HandlesResourceDeletion;
+
     protected $table = 'das_potensi';
 
     protected $fillable = [
@@ -44,6 +47,15 @@ class Potensi extends Model
         'lokasi',
         'long',
         'lat',
+        'file_gambar',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
         'file_gambar',
     ];
 

@@ -13,4 +13,5 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 #### TEKNIS
 
-1. [#936](https://github.com/OpenSID/OpenDK/issues/936) Perbaikan value 'name' pada input field tidak menggunakan value yang general. 
+1. [#936](https://github.com/OpenSID/OpenDK/issues/936) Perbaikan value 'name' pada input field tidak menggunakan value yang general.
+2. [#1048](https://github.com/OpenSID/OpenDK/issues/1048) Use trait to Upload and Delete File Potensi.

@@ -18,7 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('setting.komplain-kategori.create')])
+                @include('forms.btn-social', ['modal_url' => '#modal-form'])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -33,6 +33,7 @@
                 </div>
             </div>
         </div>
+        @include('setting.komplain_kategori.modal-form')
     </section>
 @endsection
 

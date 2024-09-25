@@ -18,7 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('setting.tipe-potensi.create')])
+                @include('forms.btn-social', ['modal_url' => '#modal-form'])
             </div>
             <div class="box-body">
                 @include('flash::message')
@@ -32,6 +32,7 @@
                 </table>
             </div>
         </div>
+        @include('setting.tipe_potensi.modal-form')
     </section>
 @endsection
 

@@ -25,11 +25,11 @@
                     <table class="table table-striped table-bordered" id="user-table">
                         <thead>
                             <tr>
+                                <th sytle="width: 100px;">Aksi</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Telepon</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -47,6 +47,13 @@
                 serverSide: true,
                 ajax: "{!! route('setting.user.getdata') !!}",
                 columns: [{
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center',
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
                         data: 'name',
                         name: 'name'
                     },
@@ -61,17 +68,10 @@
                     {
                         data: 'status',
                         name: 'status'
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi',
-                        class: 'text-center',
-                        searchable: false,
-                        orderable: false
                     }
                 ],
                 order: [
-                    [0, 'desc']
+                    [1, 'desc']
                 ]
             });
         });

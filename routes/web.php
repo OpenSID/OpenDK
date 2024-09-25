@@ -51,6 +51,8 @@ use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\UploadTemporaryImage;
+use App\Http\Controllers\UploadTemporaryImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +89,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');
             });
 
+            Route::group(['prefix' => 'publikasi'], function () {
+                Route::get('galeri', 'PublikasiController@album')->name('publik.publikasi.album');
+                Route::get('galeri/{slug}', 'PublikasiController@galeri')->name('publik.publikasi.galeri');
+                Route::get('galeri/detail/{slug}', 'PublikasiController@galeri_detail')->name('publik.publikasi.galeri.detail');
+            });
+            
             // Rute untuk kirim dan balas komentar artikel
             Route::post('comments/store', [PageController::class, 'kirimKomentar'])->name('comments.store');
             Route::get('comments/modal', [PageController::class, 'modalKirimBalasan'])->name('comments.modal');
@@ -341,6 +349,41 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{id}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);
                     Route::get('urut/{id}/{arah}', ['as' => 'informasi.sinergi-program.urut', 'uses' => 'SinergiProgramController@urut']);
+                });
+            });
+        });
+
+        /**
+         * Group Routing for Publikasi
+         */
+        Route::namespace('\App\Http\Controllers\Publikasi')->group(function () {
+            Route::group(['prefix' => 'admin/publikasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                // Album
+                Route::group(['prefix' => 'album'], function () {
+                    Route::get('/', ['as' => 'publikasi.album.index', 'uses' => 'AlbumController@index']);
+                    Route::get('create', ['as' => 'publikasi.album.create', 'uses' => 'AlbumController@create']);
+                    Route::get('getdata', ['as' => 'publikasi.album.getdata', 'uses' => 'AlbumController@getDataAlbum']);
+                    Route::post('store', ['as' => 'publikasi.album.store', 'uses' => 'AlbumController@store']);
+                    Route::put('status/{album}', ['as' => 'publikasi.album.status', 'uses' => 'AlbumController@status']);
+                    Route::put('show/{album}', ['as' => 'publikasi.album.show', 'uses' => 'AlbumController@show']);
+                    Route::get('edit/{album}', ['as' => 'publikasi.album.edit', 'uses' => 'AlbumController@edit']);
+                    Route::put('update/{album}', ['as' => 'publikasi.album.update', 'uses' => 'AlbumController@update']);
+                    Route::delete('destroy/{album}', ['as' => 'publikasi.album.destroy', 'uses' => 'AlbumController@destroy']);
+                });
+
+                // Galeri
+                Route::group(['prefix' => 'galeri'], function () {
+                    Route::get('create', ['as' => 'publikasi.galeri.create', 'uses' => 'GaleriController@create']);
+                    Route::post('store', ['as' => 'publikasi.galeri.store', 'uses' => 'GaleriController@store']);
+                    Route::get('/{album}', ['as' => 'publikasi.galeri.index', 'uses' => 'GaleriController@index']);
+                    Route::get(
+                        'getdata/{album}',
+                        ['as' => 'publikasi.galeri.getdata', 'uses' => 'GaleriController@getDatagaleri']
+                    );
+                    Route::put('status/{galeri}', ['as' => 'publikasi.galeri.status', 'uses' => 'GaleriController@status']);
+                    Route::get('edit/{galeri}', ['as' => 'publikasi.galeri.edit', 'uses' => 'GaleriController@edit']);
+                    Route::put('update/{galeri}', ['as' => 'publikasi.galeri.update', 'uses' => 'GaleriController@update']);
+                    Route::delete('destroy/{galeri}', ['as' => 'publikasi.galeri.destroy', 'uses' => 'GaleriController@destroy']);
                 });
             });
         });

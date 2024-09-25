@@ -22,4 +22,5 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 7. [#1054](https://github.com/OpenSID/OpenDK/issues/1054) Change color navigation active.
 8. [#1055](https://github.com/OpenSID/OpenDK/issues/1055) Simple form using a modal to create and update potential category data.
 9. [#1056](https://github.com/OpenSID/OpenDK/issues/1056) Simple form using a modal to create and update complaint category data.
-10.[#1057](https://github.com/OpenSID/OpenDK/issues/1057) Simple form using a modal to create and update disease type data.
+10. [#1057](https://github.com/OpenSID/OpenDK/issues/1057) Simple form using a modal to create and update disease type data.
+11. [#1058](https://github.com/OpenSID/OpenDK/issues/1058) Simple form using a modal to create and update regulation type data.

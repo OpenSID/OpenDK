@@ -14,13 +14,13 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### TEKNIS
 
 1. [#936](https://github.com/OpenSID/OpenDK/issues/936) Perbaikan value 'name' pada input field tidak menggunakan value yang general.
-2. [#1048](https://github.com/OpenSID/OpenDK/issues/1048) Use trait to Upload and Delete File Potensi.
-3. [#1050](https://github.com/OpenSID/OpenDK/issues/1050) Use trait to upload and delete files slider.
-4. [#1051](https://github.com/OpenSID/OpenDK/issues/1051) Use trait to upload and delete files event.
-5. [#1052](https://github.com/OpenSID/OpenDK/issues/1052) Move the action title order.
-6. [#1053](https://github.com/OpenSID/OpenDK/issues/1053) Simplify and standardize button usage.
-7. [#1054](https://github.com/OpenSID/OpenDK/issues/1054) Change color navigation active.
-8. [#1055](https://github.com/OpenSID/OpenDK/issues/1055) Simple form using a modal to create and update potential category data.
-9. [#1056](https://github.com/OpenSID/OpenDK/issues/1056) Simple form using a modal to create and update complaint category data.
-10. [#1057](https://github.com/OpenSID/OpenDK/issues/1057) Simple form using a modal to create and update disease type data.
-11. [#1058](https://github.com/OpenSID/OpenDK/issues/1058) Simple form using a modal to create and update regulation type data.
+2. [#1048](https://github.com/OpenSID/OpenDK/issues/1048) Gunakan trait untuk Mengunggah dan Menghapus File Potensi.
+3. [#1050](https://github.com/OpenSID/OpenDK/issues/1050) Gunakan trait untuk mengunggah dan menghapus file slider.
+4. [#1051](https://github.com/OpenSID/OpenDK/issues/1051) Gunakan trait untuk mengunggah dan menghapus file acara.
+5. [#1052](https://github.com/OpenSID/OpenDK/issues/1052) Pindahkan urutan judul tindakan.
+6. [#1053](https://github.com/OpenSID/OpenDK/issues/1053) Sederhanakan dan standarisasi penggunaan tombol.
+7. [#1054](https://github.com/OpenSID/OpenDK/issues/1054) Ubah warna navigasi yang aktif.
+8. [#1055](https://github.com/OpenSID/OpenDK/issues/1055) Formulir sederhana menggunakan modal untuk membuat dan memperbarui data kategori potensi.
+9. [#1056](https://github.com/OpenSID/OpenDK/issues/1056) Formulir sederhana menggunakan modal untuk membuat dan memperbarui data kategori pengaduan.
+10. [#1057](https://github.com/OpenSID/OpenDK/issues/1057) Formulir sederhana menggunakan modal untuk membuat dan memperbarui data jenis penyakit.
+11. [#1058](https://github.com/OpenSID/OpenDK/issues/1058) Formulir sederhana menggunakan modal untuk membuat dan memperbarui data jenis peraturan.

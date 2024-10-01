@@ -2,13 +2,11 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="javascript:history.back()"><button type="button" class="btn btn-info btn-sm"><i
-                            class="fa fa-arrow-left"></i> Kembali</button></a>
+                <a href="javascript:history.back()"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
-                    <label class="control-label" for="judul">Judul Galeri <span
-                            class="required text-danger">*</span></label>
+                    <label class="control-label" for="judul">Judul Galeri <span class="required text-danger">*</span></label>
 
                     {!! Form::text('judul', null, ['placeholder' => 'Judul Galeri', 'class' => 'form-control']) !!}
                     @if ($errors->has('judul'))
@@ -18,11 +16,10 @@
                 <div class="form-group">
                     <label class="control-label" for="jenis">Jenis <span class="required text-danger">*</span></label>
 
-                    {!! Form::select('jenis', ['file' => 'File', 'url' => 'Link'], null, ['class' =>
-                    'form-control', 'id' => 'jenis']) !!}
+                    {!! Form::select('jenis', ['file' => 'File', 'url' => 'Link'], null, ['class' => 'form-control', 'id' => 'jenis']) !!}
 
                     @if ($errors->has('jenis'))
-                    <span class="help-block" style="color:red">{{ $errors->first('jenis') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('jenis') }}</span>
                     @endif
                 </div>
                 <div class="form-group" id="view-url">
@@ -31,7 +28,7 @@
                     {!! Form::text('link', null, ['class' => 'form-control']) !!}
 
                     @if ($errors->has('link'))
-                    <span class="help-block" style="color:red">{{ $errors->first('link') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('link') }}</span>
                     @endif
                 </div>
                 <div class="form-group" id="image">
@@ -39,16 +36,15 @@
 
                     <div id="preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <!-- Preview Gambar Akan Ditempatkan Di Sini -->
-                        @if(isset($galeri->gambar))
-                        @foreach ($galeri->gambar as $image)
-                        <img src="{{ isThumbnail($image ?? null) }}" style="width:100px; max-height:100px; margin: 5px;">
-                        @endforeach
+                        @if (isset($galeri->gambar))
+                            @foreach ($galeri->gambar as $image)
+                                <img src="{{ isThumbnail($image ?? null) }}" style="width:100px; max-height:100px; margin: 5px;">
+                            @endforeach
                         @endif
                     </div>
 
-                    @if(isset($galeri->gambar) == false)
-                    <img src="{{ asset('/img/no-image.png') }}" id="showthumbnail"
-                        style="width:100%; max-height:250px; float:left;" />
+                    @if (isset($galeri->gambar) == false)
+                        <img src="{{ asset('/img/no-image.png') }}" id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
                     @endif
 
                     {!! Form::file('gambar[]', [
@@ -72,8 +68,7 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="status">Status<span class="required text-danger">*</span></label>
-                    {!! Form::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' =>
-                    'form-control']) !!}
+                    {!! Form::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' => 'form-control']) !!}
                 </div>
             </div>
 

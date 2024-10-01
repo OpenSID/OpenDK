@@ -87,20 +87,20 @@
                 @endif
 
                 @if ($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website', 'kontributor-artikel']))
-                <li class="treeview {{ Request::is(['admin/publikasi/*']) ? 'active' : '' }}">
-                    <a href="#"><i class="fa fa-picture-o"></i> <span>Publikasi</span>
-                        <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
-                        </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        @role('super-admin|admin-kecamatan|administrator-website')
-                        <li {{ Request::is(['admin/publikasi/album*']) ? 'class=active' : '' }}>
-                            <a href="{{ route('publikasi.album.index') }}"><i class="fa fa-circle-o"></i>Album</a>
-                        </li>
-                        @endrole
-                    </ul>
-                </li>
+                    <li class="treeview {{ Request::is(['admin/publikasi/*']) ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-picture-o"></i> <span>Publikasi</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                                <li {{ Request::is(['admin/publikasi/album*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('publikasi.album.index') }}"><i class="fa fa-circle-o"></i>Album</a>
+                                </li>
+                            @endrole
+                        </ul>
+                    </li>
                 @endif
 
                 @if (!$user->hasrole(['admin-komplain', 'kontributor-artikel']))

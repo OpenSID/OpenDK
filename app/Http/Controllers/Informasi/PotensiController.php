@@ -33,12 +33,15 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Models\Potensi;
 use App\Models\TipePotensi;
+use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PotensiRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class PotensiController extends Controller
 {
+    use HandlesFileUpload;
+
     public function index()
     {
         $page_title = 'Potensi';
@@ -94,13 +97,7 @@ class PotensiController extends Controller
         try {
             $input = $request->input();
 
-            if ($request->hasFile('file_gambar')) {
-                $lampiran = $request->file('file_gambar');
-                $fileName = $lampiran->getClientOriginalName();
-                $path = 'storage/potensi_kecamatan/';
-                $lampiran->move($path, $fileName);
-                $input['file_gambar'] = $path.$fileName;
-            }
+            $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan/');
 
             Potensi::create($input);
         } catch (\Exception $e) {
@@ -133,18 +130,7 @@ class PotensiController extends Controller
         try {
             $input = $request->all();
 
-            if ($request->hasFile('file_gambar')) {
-                $lampiran = $request->file('file_gambar');
-                $fileName = $lampiran->getClientOriginalName();
-                $path = 'storage/potensi_kecamatan/';
-                $lampiran->move($path, $fileName);
-
-                if ($potensi->file_gambar && file_exists(base_path('public/'.$potensi->file_gambar))) {
-                    unlink(base_path('public/'.$potensi->file_gambar));
-                }
-
-                $input['file_gambar'] = $path.$fileName;
-            }
+            $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan/');
 
             $potensi->update($input);
         } catch (\Exception $e) {

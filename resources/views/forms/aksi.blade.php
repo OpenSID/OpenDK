@@ -24,9 +24,24 @@
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-map" aria-hidden="true"></i></button>
         </a>
     @endif
+    @if (isset($lock_url))
+        <a href="javascript:void(0)" class="{!! empty($lock_url) ? 'disabled' : '' !!}" title="Tidak Aktif" data-href="{!! empty($lock_url) ? 'javascript:void(0)' : $lock_url !!}" data-button="delete" id="lockModal">
+            <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #252725; border-color: #252725;"><i class="fa fa-lock" aria-hidden="true"></i></button>
+        </a>
+    @endif
+    @if (isset($unlock_url))
+        <a href="javascript:void(0)" class="{!! empty($unlock_url) ? 'disabled' : '' !!}" title="Aktif" data-href="{!! empty($unlock_url) ? 'javascript:void(0)' : $unlock_url !!}" data-button="delete" id="unlockModal">
+            <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-unlock" aria-hidden="true"></i></button>
+        </a>
+    @endif
     @if (isset($edit_url))
         <a href="{!! empty($edit_url) ? 'javascript:void(0)' : $edit_url !!}" class="{!! empty($edit_url) ? 'disabled' : '' !!}" title="Ubah" data-button="edit">
             <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+        </a>
+    @endif
+    @if (isset($modal_form))
+        <a href="javascript:void(0)" class="disabled" title="Ubah" data-button="edit" id="editModal">
+            <button type="button" class="btn btn-warning btn-sm open_form" style="width: 40px;" data-id="{{ $modal_form }}" title="Ubah"><i class="fa fa-edit" aria-hidden="true"></i></button>
         </a>
     @endif
     @if (isset($reply_url))

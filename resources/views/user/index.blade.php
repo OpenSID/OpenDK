@@ -18,20 +18,18 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('setting.user.create') }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
-                </a>
+                @include('forms.btn-social', ['create_url' => route('setting.user.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="user-table">
                         <thead>
                             <tr>
+                                <th sytle="width: 100px;">Aksi</th>
                                 <th>Nama</th>
                                 <th>Alamat</th>
                                 <th>Telepon</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -49,6 +47,13 @@
                 serverSide: true,
                 ajax: "{!! route('setting.user.getdata') !!}",
                 columns: [{
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center',
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
                         data: 'name',
                         name: 'name'
                     },
@@ -63,17 +68,10 @@
                     {
                         data: 'status',
                         name: 'status'
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi',
-                        class: 'text-center',
-                        searchable: false,
-                        orderable: false
                     }
                 ],
                 order: [
-                    [0, 'desc']
+                    [1, 'desc']
                 ]
             });
         });

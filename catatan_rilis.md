@@ -1,4 +1,4 @@
-Di rilis versi v2409.0.0 di versi ini terdapat modul navigasi halaman publik dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2410.0.0 di versi ini terdapat modul navigasi halaman publik dan perbaikan lain yang diminta Komunitas.
 
 Terima kasih pada @uddinmtm telah ikut berkontribusi.
 

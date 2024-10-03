@@ -276,6 +276,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArtikelController@getDataArtikel']);
                 });
 
+                // Route Artikel Kategori
+                Route::group(['prefix' => 'kategori'], function () {
+                    Route::get('/', 'ArtikelKategoriController@index')->name('informasi.artikel-kategori.index');
+                    Route::get('getdata', 'ArtikelKategoriController@getDataKategori')->name('informasi.artikel-kategori.getdata');
+                    Route::get('create', 'ArtikelKategoriController@create')->name('informasi.artikel-kategori.create');
+                    Route::post('store', 'ArtikelKategoriController@store')->name('informasi.artikel-kategori.store');
+                    Route::get('edit/{id}', 'ArtikelKategoriController@edit')->name('informasi.artikel-kategori.edit');
+                    Route::put('update/{id}', 'ArtikelKategoriController@update')->name('informasi.artikel-kategori.update');
+                    Route::delete('destroy/{id}', 'ArtikelKategoriController@destroy')->name('informasi.artikel-kategori.destroy');
+                });
+
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {
                     Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);

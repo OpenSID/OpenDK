@@ -81,6 +81,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
             Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
+            /* route kategori */
+            // Redirect dari /kategori ke halaman home secara permanent
+            Route::redirect('kategori', '/', 301);
+            // kategori artikel aka berita dengan slug
+            Route::get('kategori/{slug}', 'PageController@kategori')->name('berita-kategori');
+
             Route::group(['prefix' => 'berita'], function () {
                 Route::permanentRedirect('/', '/');
                 Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');

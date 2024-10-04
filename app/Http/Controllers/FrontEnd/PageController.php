@@ -51,7 +51,7 @@ class PageController extends FrontEndController
         return view('pages.index', [
             'page_title' => 'Beranda',
             'cari' => null,
-            'artikel' => Artikel::latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
+            'artikel' => Artikel::with('kategori')->latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
         ]);
     }
 
@@ -155,7 +155,7 @@ class PageController extends FrontEndController
 
     public function detailBerita($slug)
     {
-        $artikel = Artikel::where('slug', $slug)->status()->firstOrFail();
+        $artikel = Artikel::with('kategori')->where('slug', $slug)->status()->firstOrFail();
         $page_title = $artikel->judul;
         $page_description = substr($artikel->isi, 0, 300).' ...';
         $page_image = $artikel->gambar;
@@ -170,5 +170,23 @@ class PageController extends FrontEndController
         $page_description = $event->description;
 
         return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));
+    }
+
+    public function kategori($slug)
+    {
+        // Temukan kategori berdasarkan slug
+        $kategori = \App\Models\ArtikelKategori::where('slug', $slug)->firstOrFail();
+
+        // Ambil semua artikel yang termasuk dalam kategori tersebut
+        $berita_kategori = Artikel::with('kategori')
+            ->where('id_kategori', $kategori->id_kategori)
+            ->where('status', '1')
+            ->latest()
+            ->paginate(10);
+
+        return view('pages.berita.kategori', [
+            'artikel' => $berita_kategori,
+            'kategori' => $kategori,
+        ]);
     }
 }

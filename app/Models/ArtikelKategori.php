@@ -27,4 +27,10 @@ class ArtikelKategori extends Model
             ],
         ];
     }
+
+    // Relasi ke Artikel (One-to-Many)
+    public function artikels()
+    {
+        return $this->hasMany(Artikel::class, 'id_kategori');
+    }
 }

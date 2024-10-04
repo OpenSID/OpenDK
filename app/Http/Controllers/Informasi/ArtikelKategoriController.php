@@ -24,14 +24,10 @@ class ArtikelKategoriController extends Controller
         return view('informasi.artikel_kategori.index', compact('page_title', 'page_description'));
     }
 
-    public function getDataKategori(Request $request)
+    /* public function getDataKategori(Request $request)
     {
         if ($request->ajax()) {
-            $data = ArtikelKategori::select(['id_kategori','nama_kategori', 'slug', 'status']);
-
-            if ($request->has('status') && $request->status != '') {
-                $data->where('status', $request->status);
-            }
+            $data = ArtikelKategori::get();
 
             return DataTables::of($data)
                 ->addColumn('aksi', function ($row) {
@@ -42,6 +38,34 @@ class ArtikelKategoriController extends Controller
                     
                     return view('forms.aksi', $data);
                 })
+                ->rawColumns(['aksi'])   //merender content column dalam bentuk html
+                ->make(true);
+        }
+    } */
+    public function getDataKategori(Request $request)
+    {
+        if ($request->ajax()) {
+            // Ambil status dari request
+            $status = $request->input('status');
+    
+            // Buat query dasar
+            $query = ArtikelKategori::query();
+    
+            // Jika status bukan 'All', tambahkan filter berdasarkan status
+            if ($status && $status !== 'All') {
+                $query->where('status', $status);
+            }
+    
+            $data = $query->get();
+    
+            return DataTables::of($data)
+                ->addColumn('aksi', function ($row) {
+                    if (!auth()->guest()) {
+                        $data['edit_url'] = route('informasi.artikel-kategori.edit', $row->id_kategori);
+                        $data['delete_url'] = route('informasi.artikel-kategori.destroy', $row->id_kategori);
+                    }
+                    return view('forms.aksi', $data);
+                })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Ya') {
                         return '<span class="label label-success">Aktif</span>';
@@ -49,10 +73,11 @@ class ArtikelKategoriController extends Controller
                         return '<span class="label label-danger">Tidak</span>';
                     }
                 })
-                ->rawColumns(['aksi','status'])   //merender content column dalam bentuk html
+                ->rawColumns(['aksi', 'status'])
                 ->make(true);
         }
     }
+    
 
     /**
      * Show the form for creating a new resource.

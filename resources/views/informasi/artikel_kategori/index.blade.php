@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label for="filter-status">Filter Status:</label>
                     <select id="filter-status" class="form-control" style="width: 200px;">
-                        <option value="">Semua Status</option>
+                        <option value="All">Semua Status</option>
                         <option value="Ya">Aktif</option>
                         <option value="Tidak">Tidak Aktif</option>
                     </select>
@@ -56,14 +56,8 @@
         $(document).ready(function() {
             var table = $('#datatable-artikel-kategori').DataTable({
                 processing: true,
-                serverSide: true,
-                // ajax: '{!! route('informasi.artikel-kategori.getdata') !!}',
-                ajax: {
-                    url: '{!! route('informasi.artikel-kategori.getdata') !!}',
-                    data: function(d) {
-                        d.status = $('#filter-status').val(); // Kirim data jurusan dari select
-                    }
-                },
+                serverSide: false,
+                ajax: "{!! route('informasi.artikel-kategori.getdata') !!}",
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -86,10 +80,14 @@
                 ]
             });
 
-            // Event listener untuk select filter jurusan
             $('#filter-status').on('change', function() {
-                table.ajax.reload(); // Reload data ketika jurusan berubah
+                var filterValue = $(this).val();  // Ambil value yang dipilih
+                
+                // Lakukan request dengan filter status yang dipilih
+                table.ajax.url('{!! route('informasi.artikel-kategori.getdata') !!}?status=' + filterValue).load();
             });
+
+
         });
     </script>
 

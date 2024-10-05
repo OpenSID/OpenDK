@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
 use App\Http\Controllers\FrontEndController;
+use App\Models\Kategori;
 use Jenssegers\Agent\Agent;
 
 class PageController extends FrontEndController
@@ -179,6 +180,13 @@ class PageController extends FrontEndController
     public function refresh_captcha()
     {
         return response()->json(['captcha' => captcha_img('mini')]);
+    }
+
+    public function kategoriBerita($slug)
+    {
+        $kategori = Kategori::where('slug', $slug)->firstOrFail();
+        $artikel = Artikel::whereRelation('kategori', 'slug', $slug)->paginate(9);
+        return view('pages.berita.kategori', compact('artikel', 'kategori'));
     }
 
     public function detailBerita($slug, Request $request)

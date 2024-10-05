@@ -27,6 +27,7 @@
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
                                 <th>Judul</th>
+                                <th>Kategori</th>
                                 <th style="max-width: 100px;">Status</th>
                                 <th>Tanggal Terbit</th>
                             </tr>
@@ -57,6 +58,10 @@
                     {
                         data: 'judul',
                         name: 'judul'
+                    },
+                    {
+                        data: 'kategori',
+                        name: 'kategori'
                     },
                     {
                         data: 'status',

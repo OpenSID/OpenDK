@@ -42,6 +42,15 @@
                 </div>
 
                 <div class="form-group">
+                    {!! Form::label('kategori_id', 'Kategori') !!}
+                    {!! Form::select('kategori_id', $kategoris, null, ['class' => 'form-control', 'placeholder' => 'Pilih Kategori']) !!}
+
+                    @if ($errors->has('kategori_id'))
+                    <span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>
+                    @endif
+                </div>
+
+                <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 
                     {!! Form::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' => 'form-control']) !!}

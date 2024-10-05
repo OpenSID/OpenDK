@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -51,7 +52,7 @@ class ArtikelController extends Controller
     public function getDataArtikel(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Artikel::all())
+            return DataTables::of(Artikel::with('kategori')->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
@@ -62,6 +63,9 @@ class ArtikelController extends Controller
                     }
 
                     return view('forms.aksi', $data);
+                })
+                ->addColumn('kategori', function ($row) {
+                    return $row->kategori ? $row->kategori->nama : 'Tanpa Kategori';
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
@@ -83,7 +87,9 @@ class ArtikelController extends Controller
         $page_title = 'Artikel';
         $page_description = 'Tambah Artikel';
 
-        return view('informasi.artikel.create', compact('page_title', 'page_description'));
+        $kategoris = Kategori::pluck('nama', 'id')->toArray();
+
+        return view('informasi.artikel.create', compact('page_title', 'page_description', 'kategoris'));
     }
 
     public function store(ArtikelRequest $request)
@@ -112,7 +118,9 @@ class ArtikelController extends Controller
         $page_title = 'Artikel';
         $page_description = 'Ubah Artikel';
 
-        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description'));
+        $kategoris = Kategori::pluck('nama', 'id')->toArray();
+
+        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description', 'kategoris'));
     }
 
     public function update(ArtikelRequest $request, Artikel $artikel)
@@ -124,7 +132,7 @@ class ArtikelController extends Controller
                 $file = $request->file('gambar');
                 $path = Storage::putFile('public/artikel', $file);
 
-                Storage::delete('public/artikel/'.$artikel->getRawOriginal('gambar'));
+                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
 
                 $input['gambar'] = substr($path, 15);
             }
@@ -143,7 +151,7 @@ class ArtikelController extends Controller
     {
         try {
             if ($artikel->delete()) {
-                Storage::delete('public/artikel/'.$artikel->getRawOriginal('gambar'));
+                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
             }
         } catch (\Exception $e) {
             report($e);

@@ -53,6 +53,7 @@ use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
 use App\Http\Controllers\UploadTemporaryImage;
 use App\Http\Controllers\UploadTemporaryImageController;
+use Maatwebsite\Excel\Row;
 
 /*
 |--------------------------------------------------------------------------
@@ -94,7 +95,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('galeri/{slug}', 'PublikasiController@galeri')->name('publik.publikasi.galeri');
                 Route::get('galeri/detail/{slug}', 'PublikasiController@galeri_detail')->name('publik.publikasi.galeri.detail');
             });
-            
+
             // Rute untuk kirim dan balas komentar artikel
             Route::post('comments/store', [PageController::class, 'kirimKomentar'])->name('comments.store');
             Route::get('comments/modal', [PageController::class, 'modalKirimBalasan'])->name('comments.modal');
@@ -297,7 +298,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::post('update-status', ['as' => 'informasi.komentar-artikel.updateStatus', 'uses' => 'KomentarArtikelController@updateStatus']);
                     Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
                 });
-                
+
 
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {
@@ -388,6 +389,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
+        Route::group(['prefix' => 'kerjasama'], function () {
+            Route::get('/pendaftaran-kerjasama', \App\Http\Livewire\Kerjasama\PendaftaranKerjasama::class)->name('kerjasama.pendaftaran.kerjasama');
+            Route::get('/template', [\App\Http\Controllers\Kerjasama\PendaftaranKerjasamaController::class, 'dokumen_template'])->name('kerjasama.pendaftaran.kerjasama.template');
+        });
+
         /**
          * Group Routing for Data
          */
@@ -399,6 +405,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{id}', ['as' => 'data.profil.update', 'uses' => 'ProfilController@update']);
                     Route::get('success/{id}', ['as' => 'data.profil.success', 'uses' => 'ProfilController@success']);
                 });
+
+                // pendaftaran kerjasama
+                // Route::group(['prefix' => 'pendaftaran-kerjasama', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+
+                //     Route::get('/', ['as' => 'data.pendaftaran.kerjasama', 'uses' => 'PendaftaranKerjasamaController@index']);
+
+                //     Route::get('/terdaftar', ['as' => 'data.pendaftaran.kerjasama.terdaftar', 'uses' => 'PendaftaranKerjasamaController@terdaftar']);
+                //     Route::get('/form', ['as' => 'data.pendaftaran.kerjasama.form', 'uses' => 'PendaftaranKerjasamaController@form']);
+                //     Route::get('/dokumen_template', ['as' => 'data.pendaftaran.kerjasama.dokumen_template', 'uses' => 'PendaftaranKerjasamaController@dokumen_template']);
+                //     Route::post('/register', ['as' => 'data.pendaftaran.kerjasama.register', 'uses' => 'PendaftaranKerjasamaController@register']);
+                // });
+
 
                 // Data Umum
                 Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {

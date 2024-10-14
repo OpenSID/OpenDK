@@ -277,7 +277,7 @@
                             <button type="reset" class="btn btn-social btn-danger btn-sm"><i class="fa fa-times"></i>
                                 Batal</button>
                             <button type="button" class="simpan btn btn-social btn-info btn-sm pull-right"
-                                wire:click="register"><i class="fa fa-check"></i> Simpan</button>
+                                wire:click="register" @if(empty($permohonan)) disabled @endif><i class="fa fa-check"></i> Simpan</button>
                         </div>
                     </form>
                 </div>

@@ -45,6 +45,11 @@
             <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
         </a>
     @endif
+    @if (isset($modal_form))
+        <a href="javascript:void(0)" class="disabled" title="Ubah" data-button="edit" id="editModal">
+            <button type="button" class="btn btn-warning btn-sm open_form" style="width: 40px;" data-id="{{ $modal_form }}" title="Ubah"><i class="fa fa-edit" aria-hidden="true"></i></button>
+        </a>
+    @endif
     @if (isset($reply_url))
         <a href="{!! empty($reply_url) ? 'javascript:void(0)' : $reply_url !!}" class="{!! empty($reply_url) ? 'disabled' : '' !!}" title="Reply" data-button="reply">
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;"><i class="fa fa-reply" aria-hidden="true"></i></button>

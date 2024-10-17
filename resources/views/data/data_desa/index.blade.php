@@ -20,14 +20,8 @@
 
             @if ($profil->kecamatan_id)
                 <div class="box-header with-border">
-                    <a href="{{ route('data.data-desa.create') }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</button>
-                    </a>
-                    <form action="{{ route('data.data-desa.getdesa') }}" method="POST" class="inline">
-                        {{ csrf_field() }}
-
-                        <button type="submit" class="btn bg-purple btn-sm" title="Ambil Data Desa Dari TrackSID"><i class="fa fa-retweet"></i>&ensp;Ambil Desa</button>
-                    </form>
+                    @include('forms.btn-social', ['create_url' => route('data.data-desa.create')])
+                    @include('forms.btn-social', ['desa_url' => route('data.data-desa.getdesa')])
                 </div>
             @endif
 

@@ -22,7 +22,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.jabatan.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @include('forms.btn-social', ['import_url' => route('data.jabatan.import')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

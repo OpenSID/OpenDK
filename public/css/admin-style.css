@@ -55,3 +55,11 @@
         width: 100%;
     }
 }
+
+.skin-blue .sidebar-menu .treeview-menu>li.active>a .fa {
+    color: #dd4b39;
+}
+
+.skin-blue .sidebar-menu .treeview.active > a .fa {
+    color: #00c0ef;
+}

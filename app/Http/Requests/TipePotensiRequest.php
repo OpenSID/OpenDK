@@ -29,38 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class Potensi extends Model
+class TipePotensiRequest extends FormRequest
 {
-    use HandlesResourceDeletion;
-
-    protected $table = 'das_potensi';
-
-    protected $fillable = [
-        'kategori_id',
-        'nama_potensi',
-        'deskripsi',
-        'lokasi',
-        'long',
-        'lat',
-        'file_gambar',
-    ];
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
-     * Daftar field-file yang harus dihapus.
+     * Get the validation rules that apply to the request.
      *
-     * @var array
+     * @return array
      */
-    protected $resources = [
-        'file_gambar',
-    ];
-
-    public function tipe()
+    public function rules()
     {
-        return $this->hasOne(TipePotensi::class, 'id', 'kategori_id');
+        return [
+            'nama_kategori' => 'required|string|max:100',
+        ];
     }
 }

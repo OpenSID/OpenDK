@@ -521,6 +521,7 @@ if (! function_exists('getFeeds')) {
 }
 
 
+
 // Email hanya boleh berisi karakter alpha, numeric, titik, strip dan Tanda et,
 function email($str): ?string
 {
@@ -694,3 +695,4 @@ function getBulan(int $bln)
 
     return $bulan[$bln];
 }
+

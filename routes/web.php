@@ -719,7 +719,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'komplain-kategori', 'controller' => KategoriKomplainController::class, 'middleware' => ['role:super-admin|admin-komplain|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.komplain-kategori.index');
                 Route::get('getdata', 'getData')->name('setting.komplain-kategori.getdata');
-                Route::get('create', 'create')->name('setting.komplain-kategori.create');
                 Route::post('store', 'store')->name('setting.komplain-kategori.store');
                 Route::get('edit/{id}', 'edit')->name('setting.komplain-kategori.edit');
                 Route::put('update/{id}', 'update')->name('setting.komplain-kategori.update');
@@ -730,7 +729,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'tipe-regulasi', 'controller' => TipeRegulasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.tipe-regulasi.index');
                 Route::get('getdata', 'getData')->name('setting.tipe-regulasi.getdata');
-                Route::get('create', 'create')->name('setting.tipe-regulasi.create');
                 Route::post('store', 'store')->name('setting.tipe-regulasi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-regulasi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-regulasi.update');
@@ -741,7 +739,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'jenis-penyakit', 'controller' => JenisPenyakitController::class, 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.jenis-penyakit.index');
                 Route::get('getdata', 'getData')->name('setting.jenis-penyakit.getdata');
-                Route::get('create', 'create')->name('setting.jenis-penyakit.create');
                 Route::post('store', 'store')->name('setting.jenis-penyakit.store');
                 Route::get('edit/{id}', 'edit')->name('setting.jenis-penyakit.edit');
                 Route::put('update/{id}', 'update')->name('setting.jenis-penyakit.update');
@@ -752,7 +749,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'tipe-potensi', 'controller' => TipePotensiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.tipe-potensi.index');
                 Route::get('getdata', 'getData')->name('setting.tipe-potensi.getdata');
-                Route::get('create', 'create')->name('setting.tipe-potensi.create');
                 Route::post('store', 'store')->name('setting.tipe-potensi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-potensi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-potensi.update');

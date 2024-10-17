@@ -78,9 +78,11 @@
                 ]
             });
         });
+
 </script>
 @include('forms.datatable-vertical')
 @include('forms.delete-modal')
 @include('forms.lock-modal')
 @include('forms.unlock-modal')
 @endpush
+

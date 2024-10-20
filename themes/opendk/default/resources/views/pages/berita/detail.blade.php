@@ -24,8 +24,14 @@
 
             <div class="isi-artikel">
                 <h3 style="margin-top: 5px; text-align: justify;"><b>{{ $artikel->judul }}</b></h3>
-                <p><i class="fa fa-calendar"></i>&ensp;{{ format_date($artikel->created_at) }}&ensp;|&ensp;<i
-                        class="fa fa-user"></i>&ensp;Administrator</p>
+                <p>
+                    <i class="fa fa-calendar"></i>&ensp;{{ format_date($artikel->created_at) }}&ensp;|&ensp;
+                    <i class="fa fa-user"></i>&ensp;Administrator
+                    @if ($artikel->kategori)
+                    |&ensp;<i class="fa fa-tag"></i>&ensp;<a href="{{ route('berita-kategori', ['slug' => $artikel->kategori->slug]) }}">{{ $artikel->kategori->nama_kategori }}</a>
+                    @endif
+                </p>
+                    
                 <p>{!! $artikel->isi !!}</p>
                 <hr />
                 <div style="margin-top:-10px" class="sharethis-inline-share-buttons"></div>

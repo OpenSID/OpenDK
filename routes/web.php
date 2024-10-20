@@ -85,6 +85,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
             Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
+            /* route kategori */
+            // Redirect dari /kategori ke halaman home secara permanent
+            Route::redirect('kategori', '/', 301);
+            // kategori artikel aka berita dengan slug
+            Route::get('kategori/{slug}', 'PageController@kategori')->name('berita-kategori');
+
             Route::group(['prefix' => 'berita'], function () {
                 Route::permanentRedirect('/', '/');
                 Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');
@@ -289,6 +295,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::post('update/{artikel}', ['as' => 'informasi.artikel.update', 'uses' => 'ArtikelController@update']);
                     Route::delete('destroy/{artikel}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArtikelController@destroy']);
                     Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArtikelController@getDataArtikel']);
+                });
+
+                // Route Artikel Kategori
+                Route::group(['prefix' => 'kategori'], function () {
+                    Route::get('/', 'ArtikelKategoriController@index')->name('informasi.artikel-kategori.index');
+                    Route::get('getdata', 'ArtikelKategoriController@getDataKategori')->name('informasi.artikel-kategori.getdata');
+                    Route::get('create', 'ArtikelKategoriController@create')->name('informasi.artikel-kategori.create');
+                    Route::post('store', 'ArtikelKategoriController@store')->name('informasi.artikel-kategori.store');
+                    Route::get('edit/{id}', 'ArtikelKategoriController@edit')->name('informasi.artikel-kategori.edit');
+                    Route::put('update/{id}', 'ArtikelKategoriController@update')->name('informasi.artikel-kategori.update');
+                    Route::delete('destroy/{id}', 'ArtikelKategoriController@destroy')->name('informasi.artikel-kategori.destroy');
                 });
 
                 // Komentar Artikel

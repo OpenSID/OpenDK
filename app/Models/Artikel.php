@@ -44,6 +44,7 @@ class Artikel extends Model
     protected $table = 'das_artikel';
 
     protected $fillable = [
+        'id_kategori',
         'judul',
         'gambar',
         'isi',
@@ -77,6 +78,12 @@ class Artikel extends Model
         return $query->where('status', $value);
     }
 
+    // Relasi ke ArtikelKategori (Many-to-One)
+    public function kategori()
+    {
+        return $this->belongsTo(ArtikelKategori::class, 'id_kategori');
+
+    }
     // Relasi dengan model Comment
     public function comments()
     {

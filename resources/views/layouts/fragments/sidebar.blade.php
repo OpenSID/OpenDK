@@ -58,6 +58,9 @@
                                 </li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website|kontributor-artikel')
+                                <li {{ Request::is(['informasi/kategori*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.artikel-kategori.index') }}"><i class="fa fa-circle-o"></i>Artikel Kategori</a>
+                                    </li>
                                 <li {{ Request::is(['informasi/komentar-artikel*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('informasi.komentar-artikel.index') }}"><i class="fa fa-circle-o"></i>Komentar Artikel</a>
                                 </li>

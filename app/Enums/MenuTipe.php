@@ -46,6 +46,7 @@ final class MenuTipe extends Enum
     public const STATISTIK = 3;
     public const POTENSI   = 4;
     public const UNDUHAN   = 5;
+    public const PUBLIKASI   = 6;
     public const EKSTERNAL = 0;
 
 
@@ -57,6 +58,7 @@ final class MenuTipe extends Enum
             self::STATISTIK => 'Statistik',
             self::POTENSI => 'Potensi',
             self::UNDUHAN => 'Unduhan',
+            self::PUBLIKASI => 'Publikasi',
             self::EKSTERNAL => 'Eksternal',
         ];
     }
@@ -101,6 +103,13 @@ final class MenuTipe extends Enum
             'formulir' => 'Formulir',
             'laporan' => 'Laporan',
             'dokumen' => 'Dokumen',
+        ];
+    }
+
+    public static function getPublikasi(): array
+    {
+        return [
+            'galeri' => 'Galeri',
         ];
     }
 }

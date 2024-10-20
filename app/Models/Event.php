@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Carbon;
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,6 +41,7 @@ class Event extends Model
 {
     use HasFactory;
     use Sluggable;
+    use HandlesResourceDeletion;
 
     protected $table = 'das_events';
 
@@ -52,6 +54,15 @@ class Event extends Model
         'status',
         'attachment',
         'slug',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'attachment',
     ];
 
     /**

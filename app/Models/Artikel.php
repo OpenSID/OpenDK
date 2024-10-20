@@ -82,5 +82,11 @@ class Artikel extends Model
     public function kategori()
     {
         return $this->belongsTo(ArtikelKategori::class, 'id_kategori');
+
+    }
+    // Relasi dengan model Comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'das_artikel_id')->orderBy('created_at', 'desc');
     }
 }

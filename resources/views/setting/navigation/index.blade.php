@@ -18,16 +18,10 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('setting.navigation.create', $parent_id) }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Navigasi</button>
-                    </a>
-                    @if (!empty($parent_id))
-                        <a href="{{ route('setting.navigation.index', $prev_parent) }}">
-                            <button type="button" class="btn btn-info btn-sm" title="Kembali"><i class="fa fa-arrow-left"></i> Kembali</button>
-                        </a>
-                    @endif
-                </div>
+                @include('forms.btn-social', ['create_url' => route('setting.navigation.create', $parent_id)])
+                @if (!empty($parent_id))
+                    @include('forms.btn-social', ['back_url' => route('setting.navigation.index', $prev_parent)])
+                @endif
             </div>
             <div class="box-body">
                 @include('flash::message')

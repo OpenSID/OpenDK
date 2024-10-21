@@ -519,3 +519,180 @@ if (! function_exists('getFeeds')) {
         });
     }
 }
+
+
+
+// Email hanya boleh berisi karakter alpha, numeric, titik, strip dan Tanda et,
+function email($str): ?string
+{
+    return preg_replace('/[^a-zA-Z0-9@\\.\\-]/', '', htmlentities($str));
+}
+
+function bilangan_titik($str): ?string
+{
+    return preg_replace('/[^0-9\.]/', '', strip_tags($str));
+}
+
+// website hanya boleh berisi karakter alpha, numeric, titik, titik dua dan garis miring
+function alamat_web($str): ?string
+{
+    return preg_replace('/[^a-zA-Z0-9:\\/\\.\\-]/', '', htmlentities($str));
+}
+
+function bilangan($str)
+{
+    if ($str == null) {
+        return null;
+    }
+
+    return preg_replace('/[^0-9]/', '', strip_tags($str));
+}
+
+// Nama hanya boleh berisi karakter alpha, spasi, titik, koma, tanda petik dan strip
+function nama($str): ?string
+{
+    return preg_replace("/[^a-zA-Z '\\.,\\-]/", '', strip_tags($str));
+}
+
+// Kode Wilayah Dengan Titik
+// Dari 5201142005 --> 52.01.14.2005
+function kode_wilayah($kode_wilayah): string
+{
+    $kode_prov_kab_kec = str_split(substr($kode_wilayah, 0, 6), 2);
+    $kode_desa         = (strlen($kode_wilayah) > 6) ? '.' . substr($kode_wilayah, 6) : '';
+
+    return implode('.', $kode_prov_kab_kec) . $kode_desa;
+}
+
+function hari($tgl): string
+{
+    $hari = [
+        0 => 'Minggu',
+        1 => 'Senin',
+        2 => 'Selasa',
+        3 => 'Rabu',
+        4 => 'Kamis',
+        5 => 'Jumat',
+        6 => 'Sabtu',
+    ];
+    $dayofweek = date('w', strtotime($tgl));
+
+    return $hari[$dayofweek];
+}
+
+
+/*
+ * =======================================
+ * Rupiah terbilang
+ */
+function number_to_words($number, $nol_sen = true): string
+{
+    $before_comma = trim(to_word($number));
+    $after_comma  = trim(comma($number));
+    $result       = $before_comma . ($nol_sen ? '' : ' koma ' . $after_comma);
+
+    return ucwords($result . ' Rupiah');
+}
+
+function to_word($number): string
+{
+    $words      = '';
+    $arr_number = [
+        '',
+        'satu',
+        'dua',
+        'tiga',
+        'empat',
+        'lima',
+        'enam',
+        'tujuh',
+        'delapan',
+        'sembilan',
+        'sepuluh',
+        'sebelas',
+    ];
+
+    $unit = ['', 'ribu', 'juta', 'milyar', 'triliun', 'kuadriliun', 'kuintiliun', 'sekstiliun', 'septiliun', 'oktiliun', 'noniliun', 'desiliun', 'undesiliun', 'duodesiliun', 'tredesiliun', 'kuatuordesiliun'];
+
+    if (strpos($number, ',') === true) {
+        $parts       = explode(',', $number);
+        $intPart     = (int) $parts[0];
+        $decimalPart = (int) $parts[1];
+
+        $words = to_word($intPart) . ' koma ' . to_word($decimalPart);
+    } else {
+        $number = (int) str_replace('.', '', $number); // Ubah menjadi integer untuk memastikan hanya bilangan bulat yang diproses
+
+        if ($number < 12) {
+            $words = ' ' . $arr_number[$number];
+        } elseif ($number < 20) {
+            $words = to_word($number - 10) . ' belas';
+        } elseif ($number < 100) {
+            $words = to_word(intdiv($number, 10)) . ' puluh' . to_word($number % 10);
+        } elseif ($number < 200) {
+            $words = ' seratus' . to_word($number - 100);
+        } elseif ($number < 1000) {
+            $words = to_word(intdiv($number, 100)) . ' ratus' . to_word($number % 100);
+        } elseif ($number >= 1000 && $number < 2000) {
+            $words = ' seribu' . to_word($number - 1000);
+        } else {
+            for ($i = count($unit) - 1; $i >= 0; $i--) {
+                $divider = 10 ** (3 * $i);
+                if ($number < $divider) {
+                    continue;
+                }
+
+                $div = intdiv($number, $divider);
+                $mod = $number % $divider;
+
+                $words = to_word($div) . ' ' . $unit[$i] . to_word($mod);
+                break;
+            }
+        }
+    }
+
+    return $words;
+}
+
+function comma($number): string
+{
+    $after_comma = stristr($number, ',');
+    $arr_number  = [
+        'nol',
+        'satu',
+        'dua',
+        'tiga',
+        'empat',
+        'lima',
+        'enam',
+        'tujuh',
+        'delapan',
+        'sembilan',
+    ];
+
+    $results = '';
+    $length  = strlen($after_comma);
+    $i       = 1;
+
+    while ($i < $length) {
+        $get = substr($after_comma, $i, 1);
+        $results .= ' ' . $arr_number[$get];
+        $i++;
+    }
+
+    return $results;
+}
+
+
+function bulan()
+{
+    return [1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'];
+}
+
+function getBulan(int $bln)
+{
+    $bulan = bulan();
+
+    return $bulan[$bln];
+}
+

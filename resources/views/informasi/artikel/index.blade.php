@@ -18,9 +18,20 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.artikel.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @include('forms.btn-social', ['create_url' => route('informasi.artikel.create')])
             </div>
             <div class="box-body">
+                <!-- Filter Dropdown -->
+                <div class="form-group">
+                    <label for="filter-kategori">Filter Kategori:</label>
+                    <select id="filter-kategori" class="form-control" style="width: 200px;">
+                        <option value="">Semua Kategori</option>
+                        @foreach ($kategori as $kate)
+                        <option value="{{ $kate->id_kategori }}">{{ $kate->nama_kategori }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="artikel-table">
                         <thead>
@@ -61,7 +72,7 @@
                     },
                     {
                         data: 'kategori',
-                        name: 'kategori'
+                        name: 'kategori',
                     },
                     {
                         data: 'status',
@@ -89,6 +100,18 @@
                 order: [
                     [4, 'desc']
                 ]
+            });
+
+            // Event listener untuk tombol filter
+            $('#filter-kategori').on('change', function() {
+                var filterValue = $(this).find(":selected").text();
+
+                // Filter DataTable berdasarkan kolom ke-3 (kolom "Kategori")
+                if (filterValue === 'Semua Kategori') {
+                    data.search('').columns().search('').draw();
+                } else {
+                    data.column(2).search(filterValue).draw();
+                }
             });
         });
     </script>

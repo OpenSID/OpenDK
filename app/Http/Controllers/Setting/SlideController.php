@@ -31,13 +31,16 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\SlideRequest;
 use App\Models\Slide;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Requests\SlideRequest;
+use App\Http\Controllers\Controller;
 
 class SlideController extends Controller
 {
+    use HandlesFileUpload;
+
     public function index()
     {
         $page_title = 'Slide';
@@ -73,13 +76,8 @@ class SlideController extends Controller
     {
         try {
             $input = $request->validated();
+            $this->handleFileUpload($request, $input, 'gambar', 'slide');
 
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $fileName = $file->hashName();
-                $path = $file->storeAs('public/slide', $fileName);
-                $input['gambar'] = str_replace('public/', 'storage/', $path);
-            }
             Slide::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -109,13 +107,8 @@ class SlideController extends Controller
     {
         try {
             $input = $request->validated();
+            $this->handleFileUpload($request, $input, 'gambar', 'slide');
 
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $fileName = $file->hashName();
-                $path = $file->storeAs('public/slide', $fileName);
-                $input['gambar'] = str_replace('public/', 'storage/', $path);
-            }
             $slide->update($input);
         } catch (\Exception $e) {
             report($e);

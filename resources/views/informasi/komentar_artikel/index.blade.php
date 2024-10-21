@@ -160,31 +160,29 @@
             });
 
             // Handle the toggle switch change
-        $('#komentar-table').on('change', '.toggle-status', function() {
-            var commentId = $(this).data('id');
-            var newStatus = $(this).prop('checked') ? 'enable' : 'disable';
+            $('#komentar-table').on('change', '.toggle-status', function() {
+                var commentId = $(this).data('id');
+                var newStatus = $(this).prop('checked') ? 'enable' : 'disable';
 
-            $.ajax({
-                url: "{{ route('informasi.komentar-artikel.updateStatus') }}", // Ganti dengan URL yang sesuai untuk update status
-                method: 'POST',
-                data: {
-                    id: commentId,
-                    status: newStatus,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    console.log('Status updated successfully!');
-                    // Optionally, reload the DataTable
-                    data.ajax.reload();
-                },
-                error: function(xhr) {
-                    console.log('Failed to update status');
-                }
+                $.ajax({
+                    url: "{{ route('informasi.komentar-artikel.updateStatus') }}", // Ganti dengan URL yang sesuai untuk update status
+                    method: 'POST',
+                    data: {
+                        id: commentId,
+                        status: newStatus,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log('Status updated successfully!');
+                        // Optionally, reload the DataTable
+                        data.ajax.reload();
+                    },
+                    error: function(xhr) {
+                        console.log('Failed to update status');
+                    }
+                });
             });
         });
-        });
-
-        
     </script>
     @include('forms.datatable-vertical')
     @include('forms.delete-modal')

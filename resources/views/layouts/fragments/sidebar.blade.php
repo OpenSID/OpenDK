@@ -58,6 +58,9 @@
                                 </li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website|kontributor-artikel')
+                                <li {{ Request::is(['informasi/kategori*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.artikel-kategori.index') }}"><i class="fa fa-circle-o"></i>Artikel Kategori</a>
+                                    </li>
                                 <li {{ Request::is(['informasi/komentar-artikel*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('informasi.komentar-artikel.index') }}"><i class="fa fa-circle-o"></i>Komentar Artikel</a>
                                 </li>
@@ -97,6 +100,23 @@
                         @role('super-admin|admin-kecamatan|administrator-website')
                         <li {{ Request::is(['admin/publikasi/album*']) ? 'class=active' : '' }}>
                             <a href="{{ route('publikasi.album.index') }}"><i class="fa fa-circle-o"></i>Album</a>
+                        </li>
+                        @endrole
+                    </ul>
+                </li>
+                @endif
+
+                @if ($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website']))
+                <li class="treeview {{ Request::is(['kerjasama/*']) ? 'active' : '' }}">
+                    <a href="#"><i class="fa fa-handshake-o"></i> <span>Kerjasama</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        @role('super-admin|admin-kecamatan|administrator-website')
+                        <li {{ Request::is(['kerjasama/pendaftaran-kerjasama*']) ? 'class=active' : '' }}>
+                            <a href="{{ route('kerjasama.pendaftaran.kerjasama') }}"><i class="fa fa-circle-o"></i>Pendaftaran Kerjasama</a>
                         </li>
                         @endrole
                     </ul>

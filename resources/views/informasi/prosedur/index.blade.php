@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.prosedur.create') }}" class="btn btn-success btn-sm {{ auth()->guest() ? 'hidden' : '' }}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
+                @include('forms.btn-social', ['create_url' => route('informasi.prosedur.create')])
             </div>
             <!-- /.box-header -->
             <div class="box-body">

@@ -18,7 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.media-sosial.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @include('forms.btn-social', ['create_url' => route('informasi.media-sosial.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

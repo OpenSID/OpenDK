@@ -104,7 +104,7 @@ class ArtikelController extends Controller
     {
         try {
             $input = $request->all();
-            $this->handleFileUpload($request, $input, 'gambar', 'artikel');
+            $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             Artikel::create($input);
         } catch (\Exception $e) {
@@ -130,7 +130,7 @@ class ArtikelController extends Controller
     {
         try {
             $input = $request->all();
-            $this->handleFileUpload($request, $input, 'gambar', 'artikel');
+            $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             $artikel->update($input);
         } catch (\Exception $e) {

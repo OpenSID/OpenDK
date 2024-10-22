@@ -86,7 +86,7 @@ class UserController extends Controller
             $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
             $input = $request->validated();
-            $this->handleFileUpload($request, $input, 'image', 'user');
+            $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user = User::create($input);
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
@@ -141,7 +141,7 @@ class UserController extends Controller
         try {
             $input = $request->validated();
             $user = User::findOrFail($id);
-            $this->handleFileUpload($request, $input, 'image', 'user');
+            $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user->update($input);
             if (! empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];

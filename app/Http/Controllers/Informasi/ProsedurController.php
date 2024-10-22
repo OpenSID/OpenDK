@@ -84,6 +84,7 @@ class ProsedurController extends Controller
             $input['slug'] = str_slug($request->input('judul_prosedur'));
             $this->handleFileUpload($request, $input, 'file_prosedur', 'regulasi');
 
+            $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
             Prosedur::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -116,6 +117,7 @@ class ProsedurController extends Controller
             $input = $request->all();
             $this->handleFileUpload($request, $input, 'file_prosedur', 'regulasi');
 
+            $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
             $prosedur->update($input);
         } catch (\Exception $e) {
             report($e);

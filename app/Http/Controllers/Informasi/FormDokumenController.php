@@ -115,9 +115,7 @@ class FormDokumenController extends Controller
     public function destroy(FormDokumen $dokumen)
     {
         try {
-            if ($dokumen->delete()) {
-                unlink(base_path('public/'.$dokumen->file_dokumen));
-            }
+            $dokumen->delete();
         } catch (\Exception $e) {
             report($e);
 

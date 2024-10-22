@@ -22,7 +22,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.data-suplemen.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @include('forms.btn-social', ['create_url' => route('data.data-suplemen.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

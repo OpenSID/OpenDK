@@ -81,6 +81,7 @@ class RegulasiController extends Controller
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
 
+            $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
             Regulasi::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -114,6 +115,7 @@ class RegulasiController extends Controller
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
 
+            $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
             $regulasi->update($input);
         } catch (\Exception $e) {
             report($e);

@@ -36,6 +36,12 @@
                     <option value="4" data-value="{{ 'unduhan/' . $key }}" @selected('unduhan/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
+            <optgroup label="Publikasi">
+                @foreach (\App\Enums\MenuTipe::getPublikasi() as $key => $value)
+                <option value="4" data-value="{{ 'publikasi/' . $key }}" @selected('publikasi/' . $key==optional($navigation)->url)>{{
+                    $value }}</option>
+                @endforeach
+            </optgroup>
             <option value="0" @selected('0' == optional($navigation)->type)>Eksternal</option>
         </select>
     </div>

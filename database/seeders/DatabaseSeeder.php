@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
+        $this->call(NavMenuTableSeeder::class);
         $this->call(RoleSpatieSeeder::class);
         $this->call(RefKategori::class);
         $this->call(RefPekerjaanTableSeeder::class);

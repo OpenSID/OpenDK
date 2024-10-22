@@ -1,19 +1,18 @@
 <?php
 
-namespace Database\Seeders;
-
 use App\Models\NavMenu;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class NavMenuTableSeeder extends Seeder
+return new class extends Migration
 {
     /**
-     * Run the database seeds.
+     * Run the migrations.
      *
      * @return void
      */
-    public function run()
+    public function up()
     {
         NavMenu::insert([
             [
@@ -258,4 +257,14 @@ class NavMenuTableSeeder extends Seeder
             ],
         ]);
     }
-}
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        //
+    }
+};

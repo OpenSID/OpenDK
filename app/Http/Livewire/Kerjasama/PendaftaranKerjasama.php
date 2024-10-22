@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire\Kerjasama;
 
-use App\Models\SettingAplikasi;
-use App\Services\ApiService;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use App\Services\ApiService;
 use Livewire\WithFileUploads;
+use App\Models\SettingAplikasi;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PendaftaranKerjasama extends Component
 {
@@ -37,6 +38,21 @@ class PendaftaranKerjasama extends Component
         $this->kecamatan_id = view()->shared('profil')->kecamatan_id;
 
         $this->domain = config('app.url');
+
+        // Ambil settings sebagai objek
+        $setting = (object) SettingAplikasi::pluck('value', 'key')->toArray();
+
+        // Periksa apakah 'layanan_opendesa_token' tidak ada
+        if (!property_exists($setting, 'layanan_opendesa_token')) {
+            DB::table('das_setting')->insert([
+                'key' => 'layanan_opendesa_token',
+                'value' => 0,
+                'type' => 'input',
+                'description' => 'Token pelanggan Layanan OpenDESA',
+                'kategori' => 'pelanggan',
+                'option' => '{}',
+            ]);
+        }
     }
 
     public function render()

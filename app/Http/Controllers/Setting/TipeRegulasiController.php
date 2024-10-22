@@ -31,10 +31,10 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Http\Controllers\Controller;
 use App\Models\TipeRegulasi;
-use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TipeRegulasiRequest;
 
 class TipeRegulasiController extends Controller
 {
@@ -51,7 +51,7 @@ class TipeRegulasiController extends Controller
     {
         return DataTables::of(TipeRegulasi::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('setting.tipe-regulasi.edit', $row->id);
+                $data['modal_form'] = $row->id;
                 $data['delete_url'] = route('setting.tipe-regulasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -59,60 +59,54 @@ class TipeRegulasiController extends Controller
             ->make();
     }
 
-    // Create Action
-    public function create()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param TipeRegulasiRequest $request
+     * 
+     * @return Response
+     */
+    public function store(TipeRegulasiRequest $request)
     {
-        $page_title = 'Tipe Regulasi';
-        $page_description = 'Tambah Tipe Regulasi';
-
-        return view('setting.tipe_regulasi.create', compact('page_title', 'page_description'));
-    }
-
-    // Store Data
-    public function store(Request $request)
-    {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
-            $tipe = new TipeRegulasi($request->all());
-            $tipe->save();
+            TipeRegulasi::create($request->validated());
+            return response()->json(['success' => 'Tipe Regulasi berhasil ditambahkan!']);
         } catch (\Exception $e) {
             report($e);
-
-            return back()->withInput()->with('error', 'Tipe Regulasi gagal dikirim!');
+            return response()->json(['error' => 'Tipe Regulasi gagal ditambahkan!']);
         }
-
-        return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil dikirim!');
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
     public function edit($id)
     {
         $tipe = TipeRegulasi::findOrFail($id);
-        $page_title = 'Tipe Regulasi';
-        $page_description = 'Ubah Tipe Regulasi : '.$tipe->nama;
 
-        return view('setting.tipe_regulasi.edit', compact('page_title', 'page_description', 'tipe'));
+        return response()->json($tipe);
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @param TipeRegulasiRequest $request
+     * 
+     * @return Response
+     */
+    public function update(TipeRegulasiRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
-            $tipe = TipeRegulasi::findOrFail($id);
-            $tipe->fill($request->all());
-            $tipe->save();
+            TipeRegulasi::findOrFail($id)->update($request->validated());
+            return response()->json(['success' => 'Tipe Regulasi berhasil diupdate!']);
         } catch (\Exception $e) {
             report($e);
-
-            return back()->withInput()->with('error', 'Tipe Regulasi gagal diupdate!');
+            return response()->json(['error' => 'Tipe Regulasi gagal diupdate!']);
         }
-
-        return redirect()->route('setting.tipe-regulasi.index')->with('success', 'Tipe Regulasi berhasil diupdate!');
     }
 
     public function destroy($id)

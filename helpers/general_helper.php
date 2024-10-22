@@ -35,6 +35,7 @@ use App\Models\DataDesa;
 use App\Models\Navigation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use willvincent\Feeds\Facades\FeedsFacade;
 
 /**
@@ -93,16 +94,16 @@ function permission_val($id, $permission)
 function upload_image($image, $file)
 {
     $extension = $image->getClientOriginalExtension();
-    $path = public_path('uploads/'.$file.'/');
+    $path = public_path('uploads/' . $file . '/');
     if (! file_exists($path)) {
         File::makeDirectory($path, 0777, true);
     }
 
-    $name = time().uniqid();
+    $name = time() . uniqid();
     $img = Image::make($image->getRealPath());
-    $img->save($path.$name.'.'.$extension);
+    $img->save($path . $name . '.' . $extension);
 
-    return $name.'.'.$extension;
+    return $name . '.' . $extension;
 }
 
 /**
@@ -180,7 +181,7 @@ function random_color_part()
 
 function random_color()
 {
-    return random_color_part().random_color_part().random_color_part();
+    return random_color_part() . random_color_part() . random_color_part();
 }
 
 function years_list()
@@ -309,6 +310,11 @@ function is_wajib_ktp($umur, $status_kawin)
     return $wajib_ktp;
 }
 
+function isThumbnail($url = null, $img = '/img/no-image.png')
+{
+    return !empty($url) && Storage::disk('public')->exists($url) ? Storage::disk('public')->url($url) : asset($img);
+}
+
 function is_img($url = null, $img = '/img/no-image.png')
 {
     return asset($url != null && file_exists(public_path($url)) ? $url : $img);
@@ -322,10 +328,10 @@ function is_logo($url = '', $file = '/img/logo.png')
 function is_user($url = null, $sex = 1, $pengurus = null)
 {
     if ($url && ! $pengurus) {
-        $url = 'storage/penduduk/foto/'.$url;
+        $url = 'storage/penduduk/foto/' . $url;
     }
 
-    $default = 'img/pengguna/'.(($sex == 2) ? 'wuser.png' : 'kuser.png');
+    $default = 'img/pengguna/' . (($sex == 2) ? 'wuser.png' : 'kuser.png');
 
     return is_img($url, $default);
 }
@@ -333,7 +339,7 @@ function is_user($url = null, $sex = 1, $pengurus = null)
 function avatar($foto)
 {
     if ($foto) {
-        $foto = 'storage/user/'.$foto;
+        $foto = 'storage/user/' . $foto;
     }
 
     $default = 'bower_components/admin-lte/dist/img/user2-160x160.jpg';
@@ -362,21 +368,21 @@ function terbilang($angka)
 
     $terbilang = '';
     if ($angka < 12) {
-        $terbilang = ' '.$baca[$angka];
+        $terbilang = ' ' . $baca[$angka];
     } elseif ($angka < 20) {
-        $terbilang = terbilang($angka - 10).' Belas';
+        $terbilang = terbilang($angka - 10) . ' Belas';
     } elseif ($angka < 100) {
-        $terbilang = terbilang($angka / 10).' Puluh'.terbilang($angka % 10);
+        $terbilang = terbilang($angka / 10) . ' Puluh' . terbilang($angka % 10);
     } elseif ($angka < 200) {
-        $terbilang = ' seratus'.terbilang($angka - 100);
+        $terbilang = ' seratus' . terbilang($angka - 100);
     } elseif ($angka < 1000) {
-        $terbilang = terbilang($angka / 100).' Ratus'.terbilang($angka % 100);
+        $terbilang = terbilang($angka / 100) . ' Ratus' . terbilang($angka % 100);
     } elseif ($angka < 2000) {
-        $terbilang = ' seribu'.terbilang($angka - 1000);
+        $terbilang = ' seribu' . terbilang($angka - 1000);
     } elseif ($angka < 1000000) {
-        $terbilang = terbilang($angka / 1000).' Ribu'.terbilang($angka % 1000);
+        $terbilang = terbilang($angka / 1000) . ' Ribu' . terbilang($angka % 1000);
     } elseif ($angka < 1000000000) {
-        $terbilang = terbilang($angka / 1000000).' Juta'.terbilang($angka % 1000000);
+        $terbilang = terbilang($angka / 1000000) . ' Juta' . terbilang($angka % 1000000);
     }
 
     return $terbilang;
@@ -450,7 +456,7 @@ if (! function_exists('scan_themes')) {
         $themes = \Hexadog\ThemesManager\Facades\ThemesManager::all();
         foreach ($themes as $theme) {
             // akse agar symlink dibuat
-            \Hexadog\ThemesManager\Facades\ThemesManager::set($theme->getVendor().'/'.$theme->getName());
+            \Hexadog\ThemesManager\Facades\ThemesManager::set($theme->getVendor() . '/' . $theme->getName());
             \App\Models\Themes::UpdateOrCreate([
                 'vendor' => $theme->getVendor(),
                 'name' => $theme->getName(),
@@ -485,10 +491,10 @@ if (! function_exists('getFeeds')) {
     {
         return cache()->remember('feeds_desa', 60 * 60, function () {
             $all_desa = DataDesa::websiteUrl()->get()
-            ->map(function ($desa) {
-                return $desa->website_url_feed;
-            })->all();
-    
+                ->map(function ($desa) {
+                    return $desa->website_url_feed;
+                })->all();
+
             $feeds = [];
             foreach ($all_desa as $desa) {
                 $getFeeds = FeedsFacade::make($desa['website'], 5, true);
@@ -503,7 +509,7 @@ if (! function_exists('getFeeds')) {
                         'author' => $item->get_author()->get_name() ?? 'Administrator',
                         'title' => $item->get_title(),
                         'image' => get_tag_image($item->get_description()),
-                        'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250).'[...]'),
+                        'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
                         'content' => $item->get_content(),
                     ];
                 }
@@ -513,3 +519,180 @@ if (! function_exists('getFeeds')) {
         });
     }
 }
+
+
+
+// Email hanya boleh berisi karakter alpha, numeric, titik, strip dan Tanda et,
+function email($str): ?string
+{
+    return preg_replace('/[^a-zA-Z0-9@\\.\\-]/', '', htmlentities($str));
+}
+
+function bilangan_titik($str): ?string
+{
+    return preg_replace('/[^0-9\.]/', '', strip_tags($str));
+}
+
+// website hanya boleh berisi karakter alpha, numeric, titik, titik dua dan garis miring
+function alamat_web($str): ?string
+{
+    return preg_replace('/[^a-zA-Z0-9:\\/\\.\\-]/', '', htmlentities($str));
+}
+
+function bilangan($str)
+{
+    if ($str == null) {
+        return null;
+    }
+
+    return preg_replace('/[^0-9]/', '', strip_tags($str));
+}
+
+// Nama hanya boleh berisi karakter alpha, spasi, titik, koma, tanda petik dan strip
+function nama($str): ?string
+{
+    return preg_replace("/[^a-zA-Z '\\.,\\-]/", '', strip_tags($str));
+}
+
+// Kode Wilayah Dengan Titik
+// Dari 5201142005 --> 52.01.14.2005
+function kode_wilayah($kode_wilayah): string
+{
+    $kode_prov_kab_kec = str_split(substr($kode_wilayah, 0, 6), 2);
+    $kode_desa         = (strlen($kode_wilayah) > 6) ? '.' . substr($kode_wilayah, 6) : '';
+
+    return implode('.', $kode_prov_kab_kec) . $kode_desa;
+}
+
+function hari($tgl): string
+{
+    $hari = [
+        0 => 'Minggu',
+        1 => 'Senin',
+        2 => 'Selasa',
+        3 => 'Rabu',
+        4 => 'Kamis',
+        5 => 'Jumat',
+        6 => 'Sabtu',
+    ];
+    $dayofweek = date('w', strtotime($tgl));
+
+    return $hari[$dayofweek];
+}
+
+
+/*
+ * =======================================
+ * Rupiah terbilang
+ */
+function number_to_words($number, $nol_sen = true): string
+{
+    $before_comma = trim(to_word($number));
+    $after_comma  = trim(comma($number));
+    $result       = $before_comma . ($nol_sen ? '' : ' koma ' . $after_comma);
+
+    return ucwords($result . ' Rupiah');
+}
+
+function to_word($number): string
+{
+    $words      = '';
+    $arr_number = [
+        '',
+        'satu',
+        'dua',
+        'tiga',
+        'empat',
+        'lima',
+        'enam',
+        'tujuh',
+        'delapan',
+        'sembilan',
+        'sepuluh',
+        'sebelas',
+    ];
+
+    $unit = ['', 'ribu', 'juta', 'milyar', 'triliun', 'kuadriliun', 'kuintiliun', 'sekstiliun', 'septiliun', 'oktiliun', 'noniliun', 'desiliun', 'undesiliun', 'duodesiliun', 'tredesiliun', 'kuatuordesiliun'];
+
+    if (strpos($number, ',') === true) {
+        $parts       = explode(',', $number);
+        $intPart     = (int) $parts[0];
+        $decimalPart = (int) $parts[1];
+
+        $words = to_word($intPart) . ' koma ' . to_word($decimalPart);
+    } else {
+        $number = (int) str_replace('.', '', $number); // Ubah menjadi integer untuk memastikan hanya bilangan bulat yang diproses
+
+        if ($number < 12) {
+            $words = ' ' . $arr_number[$number];
+        } elseif ($number < 20) {
+            $words = to_word($number - 10) . ' belas';
+        } elseif ($number < 100) {
+            $words = to_word(intdiv($number, 10)) . ' puluh' . to_word($number % 10);
+        } elseif ($number < 200) {
+            $words = ' seratus' . to_word($number - 100);
+        } elseif ($number < 1000) {
+            $words = to_word(intdiv($number, 100)) . ' ratus' . to_word($number % 100);
+        } elseif ($number >= 1000 && $number < 2000) {
+            $words = ' seribu' . to_word($number - 1000);
+        } else {
+            for ($i = count($unit) - 1; $i >= 0; $i--) {
+                $divider = 10 ** (3 * $i);
+                if ($number < $divider) {
+                    continue;
+                }
+
+                $div = intdiv($number, $divider);
+                $mod = $number % $divider;
+
+                $words = to_word($div) . ' ' . $unit[$i] . to_word($mod);
+                break;
+            }
+        }
+    }
+
+    return $words;
+}
+
+function comma($number): string
+{
+    $after_comma = stristr($number, ',');
+    $arr_number  = [
+        'nol',
+        'satu',
+        'dua',
+        'tiga',
+        'empat',
+        'lima',
+        'enam',
+        'tujuh',
+        'delapan',
+        'sembilan',
+    ];
+
+    $results = '';
+    $length  = strlen($after_comma);
+    $i       = 1;
+
+    while ($i < $length) {
+        $get = substr($after_comma, $i, 1);
+        $results .= ' ' . $arr_number[$get];
+        $i++;
+    }
+
+    return $results;
+}
+
+
+function bulan()
+{
+    return [1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'];
+}
+
+function getBulan(int $bln)
+{
+    $bulan = bulan();
+
+    return $bulan[$bln];
+}
+

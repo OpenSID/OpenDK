@@ -18,11 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('setting.komplain-kategori.create') }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Kategori</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['modal_url' => '#modal-form'])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -37,6 +33,7 @@
                 </div>
             </div>
         </div>
+        @include('setting.komplain_kategori.modal-form')
     </section>
 @endsection
 

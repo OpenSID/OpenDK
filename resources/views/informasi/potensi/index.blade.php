@@ -18,7 +18,7 @@
         @if ($kategoriPotensi->count() > 0)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <a href="{{ route('informasi.potensi.create') }}" class="btn btn-success btn-sm btn-social {{ auth()->guest() ? 'hidden' : '' }}" title="Tambah Data"><i class="fa fa-plus"></i>&nbsp;Tambah</a>
+                    @include('forms.btn-social', ['create_url' => route('informasi.potensi.create')])
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

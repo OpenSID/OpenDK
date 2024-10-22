@@ -138,7 +138,7 @@ class PengurusController extends Controller
     {
         try {
             $input = $request->all();
-            $this->handleFileUpload($request, $input, 'foto', 'pengurus');
+            $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             Pengurus::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -182,7 +182,7 @@ class PengurusController extends Controller
 
         try {
             $input = $request->all();
-            $this->handleFileUpload($request, $input, 'foto', 'pengurus');
+            $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             $pengurus->update($input);
         } catch (\Exception $e) {
             report($e);
@@ -193,16 +193,9 @@ class PengurusController extends Controller
         return redirect()->route('data.pengurus.index')->with('success', 'Pengurus berhasil diubah!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(Pengurus $pengurus)
     {
         try {
-            $pengurus = Pengurus::findOrFail($id);
             $pengurus->delete();
         } catch (\Exception $e) {
             report($e);

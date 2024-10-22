@@ -19,13 +19,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="float-right">
-                    <div class="btn-group">
-                        <a href="{{ route('data.laporan-apbdes.import') }}">
-                            <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                        </a>
-                    </div>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.laporan-apbdes.import')])
             </div>
 
             <div class="box-body">

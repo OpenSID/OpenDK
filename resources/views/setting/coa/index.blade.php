@@ -18,7 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a class="btn btn-primary btn-sm" href="{{ route('setting.coa.create') }}"><i class="fa fa-plus"></i> Tambah</a>
+                @include('forms.btn-social', ['create_url' => route('setting.coa.create')])
             </div>
             <div class="box-body">
                 <div class="box-group" id="accordion">

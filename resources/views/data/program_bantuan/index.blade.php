@@ -18,13 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="float-right">
-                    <div class="btn-group">
-                        <a href="{{ route('data.program-bantuan.import') }}">
-                            <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                        </a>
-                    </div>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.program-bantuan.import')])
             </div>
             <div class="box-body">
                 <div class="row">

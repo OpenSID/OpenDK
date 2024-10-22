@@ -77,7 +77,7 @@ class SinergiProgramController extends Controller
                     }
                 })
                 ->editColumn('gambar', function ($row) {
-                    return '<img src="'.asset($row->gambar).'" style="max-width:100px; max-height:60px;"/>';
+                    return '<img src="' . asset($row->gambar) . '" style="max-width:100px; max-height:60px;"/>';
                 })
                 ->rawColumns(['status'])
                 ->escapeColumns([])
@@ -119,31 +119,16 @@ class SinergiProgramController extends Controller
         return redirect()->route('informasi.sinergi-program.index')->with('success', 'Sinergi Program berhasil disimpan!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(SinergiProgram $sinergi)
     {
-        $sinergi = SinergiProgram::findOrFail($id);
         $page_title = 'Sinergi Program';
-        $page_description = 'Ubah Sinergi Program : '.$sinergi->nama;
+        $page_description = 'Ubah Sinergi Program : ' . $sinergi->nama;
 
         return view('informasi.sinergi_program.edit', compact('page_title', 'page_description', 'sinergi'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(SinergiProgramRequest $request, $id)
+    public function update(SinergiProgram $sinergi, SinergiProgramRequest $request)
     {
-        $sinergi = SinergiProgram::findOrFail($id);
-
         try {
             $input = $request->validated();
             $this->handleFileUpload($request, $input, 'gambar', 'sinergi/');
@@ -164,13 +149,10 @@ class SinergiProgramController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(SinergiProgram $sinergi)
     {
         try {
-            $sinergi = SinergiProgram::findOrFail($id);
-            if ($sinergi->delete()) {
-                unlink(base_path('public/'.$sinergi->gambar));
-            }
+            $sinergi->delete();
         } catch (\Exception $e) {
             report($e);
 
@@ -180,16 +162,9 @@ class SinergiProgramController extends Controller
         return redirect()->route('informasi.sinergi-program.index')->with('success', 'Sinergi Program berhasil dihapus!');
     }
 
-    /**
-     * Update urutan daftar sinergi program.
-     *
-     * @param  int  $id, $urutan
-     * @return Response
-     */
-    public function urut($id, $urutan)
+    public function urut(SinergiProgram $sinergi, $urutan)
     {
         try {
-            $sinergi = SinergiProgram::findOrFail($id);
             if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
                 return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
             } elseif ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {

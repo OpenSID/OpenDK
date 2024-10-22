@@ -31,19 +31,15 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Http\Controllers\Controller;
 use App\Models\TipePotensi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TipePotensiRequest;
 
 class TipePotensiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
     public function index()
     {
         $page_title = 'Kategori Potensi';
@@ -57,8 +53,8 @@ class TipePotensiController extends Controller
     {
         return DataTables::of(TipePotensi::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('setting.tipe-potensi.edit', $row->id);
-                $data['delete_url'] = route('setting.tipe-potensi.destroy', $row->id);
+                $data['modal_form'] = $row->id;
+                $data['delete_url']  = route('setting.tipe-potensi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })
@@ -66,39 +62,21 @@ class TipePotensiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        $page_title = 'Kategori Potensi';
-        $page_description = 'Tambah Kategori Potensi';
-
-        return view('setting.tipe_potensi.create', compact('page_title', 'page_description'));
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
+     * @param TipePotensiRequest $request
+     * 
      * @return Response
      */
-    public function store(Request $request)
+    public function store(TipePotensiRequest $request)
     {
-        request()->validate([
-            'nama_kategori' => 'required',
-        ]);
-
         try {
-            $tipe = new TipePotensi($request->all());
-            $tipe->save();
+            TipePotensi::create($request->validated());
+            return response()->json(['success' => 'Kategori Potensi berhasil ditambahkan!']);
         } catch (\Exception $e) {
             report($e);
-
-            return back()->withInput()->with('error', 'Tipe Potensi gagal dikirim!');
+            return response()->json(['error' => 'Kategori Potensi gagal ditambahkan!']);
         }
-
-        return redirect()->route('setting.tipe-potensi.index')->with('success', 'Kategori Potensi berhasil dikirim!');
     }
 
     /**
@@ -110,35 +88,27 @@ class TipePotensiController extends Controller
     public function edit($id)
     {
         $tipe = TipePotensi::findOrFail($id);
-        $page_title = 'Kategori Potensi';
-        $page_description = 'Ubah  Kategori Potensi : '.$tipe->nama_kategori;
 
-        return view('setting.tipe_potensi.edit', compact('page_title', 'page_description', 'tipe'));
+        return response()->json($tipe);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
+     * @param TipePotensiRequest $request
+     * 
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(TipePotensiRequest $request, $id)
     {
-        request()->validate([
-            'nama_kategori' => 'required',
-        ]);
-
         try {
-            $tipe = TipePotensi::findOrFail($id);
-            $tipe->fill($request->all());
-            $tipe->save();
+            TipePotensi::findOrFail($id)->update($request->validated());
+            return response()->json(['success' => 'Kategori Potensi berhasil diupdate!']);
         } catch (\Exception $e) {
             report($e);
-
-            return back()->withInput()->with('error', 'Kategori Potensi gagal diupdate!');
+            return response()->json(['error' => 'Kategori Potensi gagal diupdate!']);
         }
-
-        return redirect()->route('setting.tipe-potensi.index')->with('success', 'Kategori Potensi berhasil diupdate!');
     }
 
     /**

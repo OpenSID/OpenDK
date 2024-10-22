@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
+use App\Models\ArtikelKategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -45,13 +46,17 @@ class ArtikelController extends Controller
         $page_title = 'Artikel';
         $page_description = 'Daftar Artikel';
 
-        return view('informasi.artikel.index', compact('page_title', 'page_description'));
+        $kategori = \App\Models\ArtikelKategori::get();
+
+        return view('informasi.artikel.index', compact('page_title', 'page_description','kategori'));
     }
 
     public function getDataArtikel(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Artikel::all())
+            // Mengambil data artikel beserta kategori
+            $data = Artikel::with('kategori')->get();
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
@@ -62,6 +67,10 @@ class ArtikelController extends Controller
                     }
 
                     return view('forms.aksi', $data);
+                })
+                ->addColumn('kategori', function ($row) {
+                    // Cek apakah artikel memiliki kategori
+                    return $row->kategori ? $row->kategori->nama_kategori : '-';
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
@@ -83,7 +92,9 @@ class ArtikelController extends Controller
         $page_title = 'Artikel';
         $page_description = 'Tambah Artikel';
 
-        return view('informasi.artikel.create', compact('page_title', 'page_description'));
+        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori'); // Mengambil nama kategori dan ID
+
+        return view('informasi.artikel.create', compact('page_title', 'page_description', 'kategori'));
     }
 
     public function store(ArtikelRequest $request)
@@ -112,7 +123,9 @@ class ArtikelController extends Controller
         $page_title = 'Artikel';
         $page_description = 'Ubah Artikel';
 
-        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description'));
+        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori'); // Mengambil nama kategori dan ID
+
+        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description', 'kategori'));
     }
 
     public function update(ArtikelRequest $request, Artikel $artikel)

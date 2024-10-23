@@ -42,7 +42,7 @@ class NavMenuController extends Controller
 
     public function index()
     {
-        $page_title = 'Nav Menu';
+        $page_title = 'Pengaturan Menu';
         $page_description = 'Struktur Menu';
         $menus = NavMenu::selectRaw("id, parent_id , name as text, url as href, target, type, is_show,'fa fa-list' as icon")
             ->whereNull('parent_id')

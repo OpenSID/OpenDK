@@ -331,7 +331,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li {{ Request::is(['setting.navmenu*']) ? 'class=active' : '' }}>
-                                <a href="{{ route('setting.navmenu.index') }}"><i class="fa fa-circle-o"></i>Nav Menu</a>
+                                <a href="{{ route('setting.navmenu.index') }}"><i class="fa fa-circle-o"></i>Menu</a>
                             </li>
                             {{-- <li {{ Request::is(['setting/navigation*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.navigation.index') }}"><i class="fa fa-circle-o"></i>Navigasi</a>

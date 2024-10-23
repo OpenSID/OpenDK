@@ -31,10 +31,13 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
 class SinergiProgram extends Model
 {
+    use HandlesResourceDeletion;
+
     protected $table = 'das_sinergi_program';
 
     protected $fillable = [
@@ -43,6 +46,15 @@ class SinergiProgram extends Model
         'nama',
         'status',
         'urutan',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'gambar',
     ];
 
     protected static function boot()

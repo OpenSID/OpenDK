@@ -31,4 +31,5 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 12. [#1049](https://github.com/OpenSID/OpenDK/issues/1049) Penyesuaian use trait to upload and delete files prosedur.
 13. [#1067](https://github.com/OpenSID/OpenDK/issues/1067) Penyesuaian use trait to upload and delete files regulasi.
 14. [#1068](https://github.com/OpenSID/OpenDK/issues/1068) Penyesuaian use trait to upload and delete files artikel. 
-15. [#1069](https://github.com/OpenSID/OpenDK/issues/1069) Peneysuaian use trait to upload and delete files dokumen. 
+15. [#1069](https://github.com/OpenSID/OpenDK/issues/1069) Penyesuaian use trait to upload and delete files dokumen. 
+16. [#1070](https://github.com/OpenSID/OpenDK/issues/1070) Penyesuaian  Use trait to upload and delete files medsos.

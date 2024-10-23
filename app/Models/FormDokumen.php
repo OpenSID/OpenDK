@@ -31,14 +31,26 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
 class FormDokumen extends Model
 {
+    use HandlesResourceDeletion;
+
     protected $table = 'das_form_dokumen';
 
     protected $fillable = [
         'nama_dokumen',
+        'file_dokumen',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
         'file_dokumen',
     ];
 }

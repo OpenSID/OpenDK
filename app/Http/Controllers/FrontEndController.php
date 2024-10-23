@@ -35,6 +35,7 @@ use App\Models\Event;
 use App\Models\Slide;
 use App\Models\Navigation;
 use App\Models\MediaSosial;
+use App\Models\NavMenu;
 use App\Models\SinergiProgram;
 use Illuminate\Support\Facades\View;
 
@@ -49,6 +50,7 @@ class FrontEndController extends Controller
             'events' => Event::getOpenEvents(),
             'medsos' => MediaSosial::where('status', 1)->get(),
             'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
+            'navmenus' => NavMenu::with('children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
             'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
             'slides' => Slide::orderBy('created_at', 'DESC')->get(),
         ]);

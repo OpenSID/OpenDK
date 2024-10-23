@@ -53,7 +53,7 @@
 
                 <div class="form-group">
                     {!! Form::label('kategori_id', 'Kategori') !!}
-                    {!! Form::select('kategori_id', $kategoris, null, ['class' => 'form-control', 'placeholder' => 'Pilih Kategori']) !!}
+                    {!! Form::select('kategori_id', $kategori, null, ['class' => 'form-control', 'placeholder' => 'Pilih Kategori']) !!}
 
                     @if ($errors->has('kategori_id'))
                     <span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>

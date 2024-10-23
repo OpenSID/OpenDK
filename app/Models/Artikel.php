@@ -32,10 +32,12 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Artikel extends Model
 {
@@ -49,6 +51,7 @@ class Artikel extends Model
         'id_kategori',
         'judul',
         'gambar',
+        'kategori_id',
         'isi',
         'status',
     ];
@@ -76,7 +79,7 @@ class Artikel extends Model
 
     public function getGambarAttribute()
     {
-        return $this->attributes['gambar'] ? Storage::url('artikel/'.$this->attributes['gambar']) : null;
+        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
     }
 
     public function getIsiAttribute()
@@ -99,5 +102,10 @@ class Artikel extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class, 'das_artikel_id')->orderBy('created_at', 'desc');
+    }
+
+    public function getLinkAttribute(): string
+    {
+        return  Str::replaceFirst(url('/'), '', route('berita.detail', ['slug' => $this->slug]));
     }
 }

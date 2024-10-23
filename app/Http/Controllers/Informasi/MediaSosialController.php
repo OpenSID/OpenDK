@@ -31,14 +31,17 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MediaSosialRequest;
 use App\Models\MediaSosial;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\MediaSosialRequest;
 
 class MediaSosialController extends Controller
 {
+    use HandlesFileUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -100,14 +103,7 @@ class MediaSosialController extends Controller
     {
         try {
             $input = $request->validated();
-            if ($request->hasFile('logo')) {
-                $file = $request->file('logo');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().rand(100, 999).'_'.$original_name;
-                $path = 'storage/medsos/';
-                $file->move($path, $file_name);
-                $input['logo'] = $path.$file_name;
-            }
+            $this->handleFileUpload($request, $input, 'logo', 'medsos');
 
             MediaSosial::create($input);
         } catch (\Exception $e) {
@@ -119,15 +115,8 @@ class MediaSosialController extends Controller
         return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil disimpan!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(MediaSosial $medsos)
     {
-        $medsos = MediaSosial::findOrFail($id);
         $page_title = 'Media Sosial';
         $page_description = 'Ubah Media Sosial : '.$medsos->nama;
 
@@ -146,16 +135,7 @@ class MediaSosialController extends Controller
 
         try {
             $input = $request->validated();
-
-            if ($request->hasFile('logo')) {
-                $file = $request->file('logo');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().rand(100, 999).'_'.$original_name;
-                $path = 'storage/medsos/';
-                $file->move($path, $file_name);
-                unlink(base_path('public/'.$medsos->logo));
-                $input['logo'] = $path.$file_name;
-            }
+            $this->handleFileUpload($request, $input, 'logo', 'medsos');
 
             $medsos->update($input);
         } catch (\Exception $e) {
@@ -167,19 +147,10 @@ class MediaSosialController extends Controller
         return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil diubah!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(MediaSosial $medsos)
     {
         try {
-            $medsos = MediaSosial::findOrFail($id);
-            if ($medsos->delete()) {
-                unlink(base_path('public/'.$medsos->logo));
-            }
+            $medsos->delete();
         } catch (\Exception $e) {
             report($e);
 

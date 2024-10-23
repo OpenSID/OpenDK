@@ -13,7 +13,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### BUG
 
 1. [#1028](https://github.com/OpenSID/OpenDK/issues/1028) Perbaikan migrasi navigasi.
-
+2. [#1065](https://github.com/OpenSID/OpenDK/issues/1065) Perbaikan preview artikel.
 
 #### TEKNIS
 

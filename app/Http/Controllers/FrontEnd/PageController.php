@@ -195,7 +195,7 @@ class PageController extends FrontEndController
         $artikel = Artikel::with(['kategori', 'comments' => function ($query) use ($request) {
             // Ambil komentar yang di-approve atau yang milik user dari session
             $userCommentIds = $request->session()->get('session_user_comments', []);
-        
+
             // Ambil komentar utama (tanpa parent) yang di-approve atau yang dimiliki oleh user
             $query->whereNull('comment_id')
                 ->where(function ($query) use ($userCommentIds) {
@@ -210,10 +210,10 @@ class PageController extends FrontEndController
                     });
                 }]);
         }])
-        ->where('slug', $slug)
-        ->status() // Pastikan metode 'status' adalah query scope yang benar
-        ->firstOrFail();
-        
+            ->where('slug', $slug)
+            ->when(!auth()->check(), fn($query) => $query->status())
+            ->firstOrFail();
+
 
         $page_title = $artikel->judul;
         $page_description = substr($artikel->isi, 0, 300) . ' ...';

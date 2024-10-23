@@ -31,16 +31,19 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ArtikelRequest;
 use App\Models\Artikel;
 use App\Models\ArtikelKategori;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ArtikelRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
 {
+    use HandlesFileUpload;
+
     public function index()
     {
         $page_title = 'Artikel';
@@ -101,12 +104,7 @@ class ArtikelController extends Controller
     {
         try {
             $input = $request->all();
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $path = Storage::putFile('public/artikel', $file);
-
-                $input['gambar'] = substr($path, 15);
-            }
+            $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             Artikel::create($input);
         } catch (\Exception $e) {
@@ -132,15 +130,7 @@ class ArtikelController extends Controller
     {
         try {
             $input = $request->all();
-
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $path = Storage::putFile('public/artikel', $file);
-
-                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
-
-                $input['gambar'] = substr($path, 15);
-            }
+            $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             $artikel->update($input);
         } catch (\Exception $e) {
@@ -155,9 +145,7 @@ class ArtikelController extends Controller
     public function destroy(Artikel $artikel)
     {
         try {
-            if ($artikel->delete()) {
-                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
-            }
+            $artikel->delete();
         } catch (\Exception $e) {
             report($e);
 

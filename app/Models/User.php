@@ -31,21 +31,23 @@
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Spatie\Permission\Traits\HasRoles;
+use App\Traits\HandlesResourceDeletion;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
 class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
     use HasRoles;
     use Notifiable;
+    use HandlesResourceDeletion;
 
     /**
      * Default password.
@@ -69,6 +71,15 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'last_login',
         'pengurus_id',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'image',
     ];
 
     /**
@@ -103,28 +114,6 @@ class User extends Authenticatable implements JWTSubject
     public function getFotoAttribute()
     {
         return $this->attributes['image'] ? Storage::url('user/'.$this->attributes['image']) : null;
-    }
-
-    /**
-     * Uploads an image.
-     *
-     * @param      <type>  $image  The image
-     * @return     <type>  ( description_of_the_return_value )
-     */
-    public function uploadImage($image)
-    {
-        $extension = $image->getClientOriginalExtension();
-        $path = storage_path('app/public/user/');
-
-        if (! file_exists($path)) {
-            File::makeDirectory($path, 0777, true);
-        }
-
-        $name = $this->id.'.'.$extension;
-        $img = Image::make($image->getRealPath());
-        $img->save($path.$name);
-
-        return $this->update(['image' => $name]);
     }
 
     public function scopeSuspend($query, $email)

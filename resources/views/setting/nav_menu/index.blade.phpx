@@ -1,0 +1,186 @@
+@extends('layouts.dashboard_template')
+
+@push('css')
+    {{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" /> --}}
+    <!-- Styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/davicotico/Menu-Editor@1.1.0/dist/styles.min.css">
+    
+@endpush
+
+@section('content')
+
+<section class="content-header">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
+    </ol>
+</section>
+
+<section class="content container-fluid">
+
+    @include('flash::message')
+
+    <div class="row">
+        {!! Form::open(['route' => 'setting.navmenu.store', 'id' => 'frmEdit']) !!}
+        <div class="col-md-5">
+            <div class="box box-primary">
+                <div class="box-header with-border">Sumber Menu URL</div>
+                <div class="box-body">
+                    @include('setting.nav_menu.field')
+                </div>
+                <div class="box-footer">
+
+                    {!! Form::button('<i class="fa fa-save"></i> Simpan', [
+                    'type' => 'button', 
+                    'class' => 'btn btn-primary btn-lg',
+                    'onclick' => 'handleUpdate()'
+                    ] ) !!}
+
+                    {!! Form::button('<i class="fa fa-plus-square"></i> Tambah', [
+                    'type' => 'button',
+                    'class' => 'btn btn-success btn-lg',
+                    'id' => 'btnAdd',
+                    'onclick' => 'handleAdd()'
+                    ]) !!}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">Struktur Menu</div>
+                        <div class="box-body">
+                            <div id="myEditor"></div>
+                            <div class="hide">
+                                {!! Form::textarea('json_menu', null, ['hidden', 'rows' => 1]) !!}
+                            </div>
+                        </div>
+                        <div class="box-footer">
+
+                            {!! Form::button('<i class="fa fa-times"></i> Batal', [
+                            'type' => 'button', 
+                            'class' => 'btn btn-danger btn-lg',
+                            'onclick' => 'handleReload()'
+                            ] ) !!}
+
+                            {!! Form::button('<i class="fa fa-save"></i> Simpan', [
+                            'type' => 'submit', 
+                            'class' => 'btn btn-primary btn-lg',
+                            'onclick' => 'handleSubmit()'
+                            ] ) !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {!! Form::close() !!}
+    </div>
+    
+</section>
+@endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/gh/davicotico/Menu-Editor@1.1.0/dist/menu-editor.min.js"></script>
+
+<script>
+    var nestedData = {!! $nav_menus !!}
+
+
+    var menuEditor = new MenuEditor('myEditor', { maxLevel: 2 });
+
+    menuEditor.setArray(nestedData);
+
+    menuEditor.mount();
+
+    // Mengambil elemen input berdasarkan ID
+    let sourceLink = document.getElementById('sourceLink');
+    let sourceHalaman = document.getElementById('sourceHalaman');
+    let sourceKategori = document.getElementById('sourceKategori');
+    let sourceModul = document.getElementById('sourceModul');
+
+    let txtText = document.getElementById('text');
+    let txtHref = document.getElementById('href');
+    let txtUrl = document.getElementById('url');
+    let txtTarget = document.getElementById('target');
+    let txtSourcelist = document.getElementById('sourcelist');
+
+    function handleAdd() {
+
+        let link = '';
+
+        if(sourceLink.checked){
+            link = txtHref
+        }else if(sourceHalaman.checked || sourceKategori.checked){
+            link = txtSourcelist.value
+        }else if(sourceModul.checked){
+            link = txtUrl
+        }
+
+        let newItem = {
+            text: txtText.value,
+            href: link,
+            target: txtTarget.value,
+        };
+        menuEditor.add(newItem);
+        clear()
+    }
+
+    function handleUpdate() {
+        alert("Button update!");
+    }
+
+    function handleReload(){
+        window.location.reload()
+    }
+
+    function handleSubmit(event) {
+        // Get the menu as a string
+        var str = menuEditor.getString();
+        
+        // Check if the menu is empty
+        if (str === '[]') {
+            event.preventDefault(); // Prevent form submission
+            return;
+        }
+        
+        // Find the textarea element inside the form with name "json_menu"
+        var form = document.getElementById('frmEdit');
+        var textarea = form.querySelector('textarea[name="json_menu"]');
+        
+        // Set the value of the textarea to the menu string
+        textarea.value = str;
+        
+        return true; // Allow form submission
+    }
+
+    function clear(){
+        txtText.value = '';
+        txtHref.value = '';
+        txtUrl.value = '';
+        txtTarget.selectedIndex = 0;
+        txtSourcelist.value = ''; 
+    }
+
+    menuEditor.onClickDelete((event) => {
+        event.preventDefault();
+    if (confirm('Do you want to delete the item ' + event.item.getDataset().text)) {
+    event.item.remove(); // remove the item
+    }
+    });
+    
+    menuEditor.onClickEdit((event) => {
+    console.log(event); // Lihat apa yang dimiliki oleh event
+    
+    let itemData = event.item.getDataset();
+    console.log(itemData);
+    
+    menuEditor.edit(event.item); // set the item in edit mode
+    });
+
+</script>
+@endpush

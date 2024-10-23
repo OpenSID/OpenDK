@@ -4,9 +4,11 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 #### FITUR
 
-1. [#632](https://github.com/OpenSID/OpenDK/issues/632) Tambahkan fitur penanganan komentar dan balasan komentar pada halaman detail artikel.
-2. [#1024](https://github.com/OpenSID/OpenDK/issues/1024) Tambahkan fitur modul galeri pada website OpenDK.
-3. [#1026](https://github.com/OpenSID/OpenDK/issues/1026) Tambahkan menu kategori artikel.
+1. [#632](https://github.com/OpenSID/OpenDK/issues/632) Penambahan fitur penanganan komentar dan balasan komentar pada halaman detail artikel.
+2. [#1024](https://github.com/OpenSID/OpenDK/issues/1024) Penambahan fitur modul galeri pada website OpenDK.
+3. [#1026](https://github.com/OpenSID/OpenDK/issues/1026) Penambahan menu kategori artikel.
+4. [#1025](https://github.com/OpenSID/OpenDK/issues/1025) Penambahan menu dinamis pada halaman admin & penyesuaian halaman public.
+
 
 #### BUG
 

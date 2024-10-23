@@ -31,13 +31,16 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ProsedurRequest;
 use App\Models\Prosedur;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ProsedurRequest;
 
 class ProsedurController extends Controller
 {
+    use HandlesFileUpload;
+
     public function index()
     {
         $page_title = 'Prosedur';
@@ -78,18 +81,10 @@ class ProsedurController extends Controller
     {
         try {
             $input = $request->all();
+            $input['slug'] = str_slug($request->input('judul_prosedur'));
+            $this->handleFileUpload($request, $input, 'file_prosedur', 'regulasi');
 
-            if ($request->hasFile('file_prosedur')) {
-                $file = $request->file('file_prosedur');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().rand(100, 999).'_'.$original_name;
-                $path = 'storage/regulasi/';
-                $file->move($path, $file_name);
-                $input['slug'] = str_slug($request->input('judul_prosedur'));
-                $input['file_prosedur'] = $path.$file_name;
-                $input['mime_type'] = $file->getClientOriginalExtension();
-            }
-
+            $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
             Prosedur::create($input);
         } catch (\Exception $e) {
             report($e);
@@ -120,20 +115,9 @@ class ProsedurController extends Controller
     {
         try {
             $input = $request->all();
+            $this->handleFileUpload($request, $input, 'file_prosedur', 'regulasi');
 
-            if ($request->hasFile('file_prosedur')) {
-                $file = $request->file('file_prosedur');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time().rand(100, 999).'_'.$original_name;
-                $path = 'storage/regulasi/';
-                $file->move($path, $file_name);
-                unlink(base_path('public/'.$prosedur->file_prosedur));
-
-                $input['file_prosedur'] = $path.$file_name;
-                $input['mime_type'] = $file->getClientOriginalExtension();
-            }
-            $input['slug'] = str_slug($request->input('judul_prosedur'));
-
+            $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
             $prosedur->update($input);
         } catch (\Exception $e) {
             report($e);
@@ -147,9 +131,7 @@ class ProsedurController extends Controller
     public function destroy(Prosedur $prosedur)
     {
         try {
-            if ($prosedur->delete()) {
-                unlink(base_path('public/'.$prosedur->file_prosedur));
-            }
+            $prosedur->delete();
         } catch (\Exception $e) {
             report($e);
 

@@ -51,6 +51,7 @@ use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\NavMenuController;
 use App\Http\Controllers\UploadTemporaryImage;
 use App\Http\Controllers\UploadTemporaryImageController;
 use Maatwebsite\Excel\Row;
@@ -94,6 +95,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'berita'], function () {
                 Route::permanentRedirect('/', '/');
                 Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');
+                Route::get('/kategori/{slug}', 'PageController@kategoriBerita')->name('berita.kategori');
             });
 
             Route::group(['prefix' => 'publikasi'], function () {
@@ -827,6 +829,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::delete('destroy/{id}', 'destroy')->name('setting.navigation.destroy');
                 Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
                 Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
+            });
+
+            // Nav Menu
+            Route::group(['prefix' => 'nav-menu', 'controller' => NavMenuController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.navmenu.index');
+                Route::post('store', 'store')->name('setting.navmenu.store');
             });
         });
 

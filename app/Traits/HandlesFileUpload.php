@@ -15,7 +15,7 @@ trait HandlesFileUpload
      * @param string $directory
      * @return void
      */
-    public function handleFileUpload($request, &$input, $field = 'file', $directory = 'uploads')
+    public function handleFileUpload($request, &$input, $field = 'file', $directory = 'uploads', $withDirectory = true)
     {
         if ($request->hasFile($field)) {
             $file = $request->file($field);
@@ -24,6 +24,10 @@ trait HandlesFileUpload
                 $fileName = $file->hashName();
                 $path = $file->storeAs("public/{$directory}", $fileName);
                 $input[$field] = str_replace('public/', 'storage/', $path);
+
+                if (! $withDirectory) {
+                    $input[$field] = $fileName;
+                }
             }
         }
     }

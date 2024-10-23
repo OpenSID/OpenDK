@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,6 +40,7 @@ class Prosedur extends Model
 {
     use HasFactory;
     use Sluggable;
+    use HandlesResourceDeletion;
 
     protected $table = 'das_prosedur';
 
@@ -47,6 +49,15 @@ class Prosedur extends Model
         'file_prosedur',
         'mime_type',
         'slug',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'file_prosedur',
     ];
 
     /**

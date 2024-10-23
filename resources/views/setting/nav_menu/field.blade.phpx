@@ -1,0 +1,116 @@
+<!-- Name Field -->
+<div class="form-group">
+    <div class="col-12">
+        
+        {!! Form::text('text', null, [
+        'class' => 'form-control item-menu',
+        'maxlength' => 255,
+        'placeholder' => 'Nama Menu',
+        'id' => 'text'
+        ]) !!}
+
+        {!! Form::hidden('icon', 'fa fa-list', ['class' => 'item-menu']) !!}
+    </div>
+</div>
+
+<!-- Asal url -->
+<div class="form-group">
+    <div class="col-12">
+        <label class="form-check-inline">
+            {!! Form::radio('source', 'link', 'link', ['class' => 'form-check-input', 'id' => 'sourceLink']) !!} Link
+        </label>
+        <label class="form-check-inline">
+            {!! Form::radio('source', 'Halaman', null, ['class' => 'form-check-input', 'id' => 'sourceHalaman']) !!} Halaman
+        </label>
+        <label class="form-check-inline">
+            {!! Form::radio('source', 'Kategori', null, ['class' => 'form-check-input', 'id' => 'sourceKategori']) !!} Kategori
+        </label>
+        <label class="form-check-inline">
+            {!! Form::radio('source', 'Modul', null, ['class' => 'form-check-input', 'id' => 'sourceModul']) !!} Modul
+        </label>
+    </div>
+</div>
+
+<!-- Url Field -->
+<div class="form-group">
+    <div class="col-12">
+        {!! Form::select('sourcelist', $sourceItem, null, ['class' => 'form-control', 'id' => 'sourcelist']) !!}
+        {!! Form::text('href', null, ['class' => 'form-control item-menu', 'id' => 'href','maxlength' => 255, 'placeholder' =>
+        'http://contoh.com']) !!}
+        {!! Form::text('url', null, ['class' => 'form-control item-menu', 'id' => 'url','maxlength' => 255, 'placeholder' =>
+        '/publikasi/galeri']) !!}
+    </div>
+</div>
+
+
+<div class="form-group">
+    {!! Form::label('target', 'Target') !!}
+    {!! Form::select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'], null, ['class' => 'form-control item-menu', 'id' => 'target']) !!}
+</div>
+
+@push('scripts')
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Tampilkan input[name=href] dan sembunyikan yang lainnya saat halaman dimuat
+        document.querySelector('input[name=href]').style.display = 'block';
+        document.querySelector('input[name=url]').style.display = 'none';
+        document.querySelector('select[name=sourcelist]').style.display = 'none';
+
+        // Event listener untuk radio button change
+        document.querySelectorAll('input[name=source]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                let _val = this.value;
+
+                // Reset semua input dan select
+                document.querySelector('input[name=href]').value = '';
+                document.querySelector('input[name=href]').style.display = 'none'; // Sembunyikan input href
+                document.querySelector('input[name=url]').value = '';
+                document.querySelector('input[name=url]').style.display = 'none';
+                document.querySelector('select[name=sourcelist]').style.display = 'none';
+
+                // Switch case berdasarkan value radio button
+                switch (_val) {
+                    case 'Kategori':
+                    case 'Halaman':
+                        let select = document.querySelector('select[name=sourcelist]');
+                        select.style.display = 'block'; // Tampilkan select sourcelist
+                        
+                        // Sembunyikan semua optgroup
+                        select.querySelectorAll('optgroup').forEach(function(optgroup) {
+                            optgroup.style.display = 'none';
+                        });
+                        
+                        // Tampilkan optgroup yang sesuai dengan _val
+                        let optgroup = select.querySelector(`optgroup[label="${_val}"]`);
+                        if (optgroup) {
+                            optgroup.style.display = 'block';
+
+                            // Pilih option pertama dalam optgroup
+                            let firstOption = optgroup.querySelector('option');
+                            if (firstOption) {
+                                firstOption.selected = true;
+                            }
+                        }
+                        
+                        // Trigger change event secara manual
+                        select.dispatchEvent(new Event('change'));
+                        break;
+
+                    case 'Modul':
+                        document.querySelector('input[name=url]').style.display = 'block'; // Tampilkan input url
+                        break;
+
+                    default:
+                        document.querySelector('input[name=href]').style.display = 'block'; // Tampilkan kembali input href
+                }
+            });
+        });
+
+        // Event listener untuk select change
+        document.querySelector('select[name=sourcelist]').addEventListener('change', function() {
+            let selectedValue = this.value;
+            document.querySelector('input[name=href]').value = selectedValue;
+        });
+    });
+</script>
+@endpush

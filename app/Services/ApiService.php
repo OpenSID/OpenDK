@@ -17,18 +17,8 @@ class ApiService
 
     public function __construct()
     {
-        $this->setting = json_decode(json_encode(SettingAplikasi::pluck('value', 'key')->toArray()));
-
-        if (isset($this->setting->layanan_opendesa_token) == false) {
-            DB::table('das_setting')->insert([
-                'key' => 'layanan_opendesa_token',
-                'value' => 0,
-                'type' => 'input',
-                'description' => 'Token pelanggan Layanan OpenDESA',
-                'kategori' => 'pelanggan',
-                'option' => '{}',
-            ]);
-        }
+        // Ambil settings sebagai objek
+        $this->setting = (object) SettingAplikasi::pluck('value', 'key')->toArray();
 
         $this->server = config('app.server_layanan');
     }

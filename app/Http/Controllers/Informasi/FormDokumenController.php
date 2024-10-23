@@ -31,13 +31,16 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\DokumenRequest;
 use App\Models\FormDokumen;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\DokumenRequest;
 
 class FormDokumenController extends Controller
 {
+    use HandlesFileUpload;
+
     public function index()
     {
         $page_title = 'Dokumen';
@@ -73,15 +76,7 @@ class FormDokumenController extends Controller
     {
         try {
             $input = $request->input();
-
-            if ($request->hasFile('file_dokumen')) {
-                $file = $request->file('file_dokumen');
-                $fileName = $file->getClientOriginalName();
-                $path = 'storage/form_dokumen/';
-                $file->move($path, $fileName);
-
-                $input['file_dokumen'] = $path.$fileName;
-            }
+            $this->handleFileUpload($request, $input, 'file_dokumen', 'form_dokumen');
 
             FormDokumen::create($input);
         } catch (\Exception $e) {
@@ -105,16 +100,7 @@ class FormDokumenController extends Controller
     {
         try {
             $input = $request->all();
-
-            if ($request->hasFile('file_dokumen')) {
-                $file = $request->file('file_dokumen');
-                $fileName = $file->getClientOriginalName();
-                $path = 'storage/form_dokumen/';
-                $file->move($path, $fileName);
-                unlink(base_path('public/'.$dokumen->file_dokumen));
-
-                $input['file_dokumen'] = $path.$fileName;
-            }
+            $this->handleFileUpload($request, $input, 'file_dokumen', 'form_dokumen');
 
             $dokumen->update($input);
         } catch (\Exception $e) {
@@ -129,9 +115,7 @@ class FormDokumenController extends Controller
     public function destroy(FormDokumen $dokumen)
     {
         try {
-            if ($dokumen->delete()) {
-                unlink(base_path('public/'.$dokumen->file_dokumen));
-            }
+            $dokumen->delete();
         } catch (\Exception $e) {
             report($e);
 

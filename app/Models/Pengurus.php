@@ -33,6 +33,7 @@ namespace App\Models;
 
 use App\Enums\Status;
 use App\Enums\JenisJabatan;
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,10 +41,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Pengurus extends Model
 {
     use HasFactory;
+    use HandlesResourceDeletion;
 
     protected $table = 'das_pengurus';
 
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'foto',
+    ];
 
     protected $with = [
         'jabatan',

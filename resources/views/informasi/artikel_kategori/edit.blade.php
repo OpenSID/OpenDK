@@ -14,11 +14,11 @@
     </section>
 
     <section class="content container-fluid">
-        
+
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    
+
                     {!! Form::model($kategori, ['route' => ['informasi.artikel-kategori.update', $kategori->id_kategori], 'method' => 'put', 'id' => 'form-artikel-kategori', 'class' => 'form-horizontal form-label-left']) !!}
                     @include('layouts.fragments.error_message')
 

@@ -1,12 +1,10 @@
-<div x-data="{ isOnline: navigator.onLine }" x-init="
-    window.addEventListener('online', () => {
-        isOnline = true;
-    });
+<div x-data="{ isOnline: navigator.onLine }" x-init="window.addEventListener('online', () => {
+    isOnline = true;
+});
 
-    window.addEventListener('offline', () => {
-        isOnline = false;
-    });
-">
+window.addEventListener('offline', () => {
+    isOnline = false;
+});">
     <template x-if="!isOnline">
         <div class="box box-danger">
             <div class="box-header with-border">

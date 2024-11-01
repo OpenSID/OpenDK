@@ -55,6 +55,7 @@ class ArtikelRequest extends FormRequest
         return [
             'judul' => 'required|string|max:191',
             'isi' => 'required',
+            //'kategori_id' => 'required',
             'status' => 'required',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
         ];

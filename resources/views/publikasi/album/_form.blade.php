@@ -22,19 +22,16 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="thumbnail">Thumbnail</label>
-
                     <img src="{{ isThumbnail($album->gambar ?? null) }}" id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
 
                     {!! Form::file('gambar', ['placeholder' => 'Thumbnail', 'class' => 'form-control', 'id' => 'file-album', 'accept' => 'jpg,jpeg,png']) !!}
                     @if ($errors->has('thumbnail'))
                         <span class="help-block" style="color:red">{{ $errors->first('thumbnail') }}</span>
                     @endif
-
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="status">Status</label>
-
                     {!! Form::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' => 'form-control']) !!}
                     @if ($errors->has('status'))
                         <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>

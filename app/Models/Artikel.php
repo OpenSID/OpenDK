@@ -31,23 +31,38 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Artikel extends Model
 {
     use Sluggable;
     use HasFactory;
+    use HandlesResourceDeletion;
 
     protected $table = 'das_artikel';
 
     protected $fillable = [
+        'id_kategori',
         'judul',
         'gambar',
+        'kategori_id',
         'isi',
         'status',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'gambar',
     ];
 
     /**
@@ -64,7 +79,7 @@ class Artikel extends Model
 
     public function getGambarAttribute()
     {
-        return $this->attributes['gambar'] ? Storage::url('artikel/'.$this->attributes['gambar']) : null;
+        return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
     }
 
     public function getIsiAttribute()
@@ -77,9 +92,20 @@ class Artikel extends Model
         return $query->where('status', $value);
     }
 
+    // Relasi ke ArtikelKategori (Many-to-One)
+    public function kategori()
+    {
+        return $this->belongsTo(ArtikelKategori::class, 'id_kategori');
+
+    }
     // Relasi dengan model Comment
     public function comments()
     {
         return $this->hasMany(Comment::class, 'das_artikel_id')->orderBy('created_at', 'desc');
+    }
+
+    public function getLinkAttribute(): string
+    {
+        return  Str::replaceFirst(url('/'), '', route('berita.detail', ['slug' => $this->slug]));
     }
 }

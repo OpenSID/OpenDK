@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
 use App\Http\Controllers\FrontEndController;
+use App\Models\Kategori;
 use Jenssegers\Agent\Agent;
 
 class PageController extends FrontEndController
@@ -54,7 +55,7 @@ class PageController extends FrontEndController
         return view('pages.index', [
             'page_title' => 'Beranda',
             'cari' => null,
-            'artikel' => Artikel::latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
+            'artikel' => Artikel::with('kategori')->latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
         ]);
     }
 
@@ -181,29 +182,38 @@ class PageController extends FrontEndController
         return response()->json(['captcha' => captcha_img('mini')]);
     }
 
+    public function kategoriBerita($slug)
+    {
+        $kategori = Kategori::where('slug', $slug)->firstOrFail();
+        $artikel = Artikel::whereRelation('kategori', 'slug', $slug)->paginate(9);
+        return view('pages.berita.kategori', compact('artikel', 'kategori'));
+    }
+
     public function detailBerita($slug, Request $request)
     {
         // Temukan artikel berdasarkan slug
-        $artikel = Artikel::where('slug', $slug)
-            ->with(['comments' => function ($query) use ($request) {
-                // Ambil komentar yang di-approve atau yang milik user dari session
-                $userCommentIds = $request->session()->get('session_user_comments', []);
+        $artikel = Artikel::with(['kategori', 'comments' => function ($query) use ($request) {
+            // Ambil komentar yang di-approve atau yang milik user dari session
+            $userCommentIds = $request->session()->get('session_user_comments', []);
 
-                // Ambil komentar utama (tanpa parent) yang di-approve atau yang dimiliki oleh user
-                $query->whereNull('comment_id')
-                    ->where(function ($query) use ($userCommentIds) {
+            // Ambil komentar utama (tanpa parent) yang di-approve atau yang dimiliki oleh user
+            $query->whereNull('comment_id')
+                ->where(function ($query) use ($userCommentIds) {
+                    $query->where('status', 'enable')
+                        ->orWhereIn('id', $userCommentIds);
+                })
+                ->with(['replies' => function ($query) use ($userCommentIds) {
+                    // Ambil balasan yang di-approve atau yang milik user
+                    $query->where(function ($query) use ($userCommentIds) {
                         $query->where('status', 'enable')
                             ->orWhereIn('id', $userCommentIds);
-                    })
-                    ->with(['replies' => function ($query) use ($userCommentIds) {
-                        // Ambil balasan yang di-approve atau yang milik user
-                        $query->where(function ($query) use ($userCommentIds) {
-                            $query->where('status', 'enable')
-                                ->orWhereIn('id', $userCommentIds);
-                        });
-                    }]);
-            }])
+                    });
+                }]);
+        }])
+            ->where('slug', $slug)
+            ->when(!auth()->check(), fn($query) => $query->status())
             ->firstOrFail();
+
 
         $page_title = $artikel->judul;
         $page_description = substr($artikel->isi, 0, 300) . ' ...';
@@ -323,5 +333,23 @@ class PageController extends FrontEndController
         $page_description = $event->description;
 
         return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));
+    }
+
+    public function kategori($slug)
+    {
+        // Temukan kategori berdasarkan slug
+        $kategori = \App\Models\ArtikelKategori::where('slug', $slug)->firstOrFail();
+
+        // Ambil semua artikel yang termasuk dalam kategori tersebut
+        $berita_kategori = Artikel::with('kategori')
+            ->where('id_kategori', $kategori->id_kategori)
+            ->where('status', '1')
+            ->latest()
+            ->paginate(10);
+
+        return view('pages.berita.kategori', [
+            'artikel' => $berita_kategori,
+            'kategori' => $kategori,
+        ]);
     }
 }

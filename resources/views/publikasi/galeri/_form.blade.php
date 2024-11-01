@@ -15,7 +15,6 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="jenis">Jenis <span class="required text-danger">*</span></label>
-
                     {!! Form::select('jenis', ['file' => 'File', 'url' => 'Link'], null, ['class' => 'form-control', 'id' => 'jenis']) !!}
 
                     @if ($errors->has('jenis'))

@@ -18,8 +18,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.artikel-kategori.create') }}" class="btn btn-primary btn-sm"
-                    judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                <a href="{{ route('informasi.artikel-kategori.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
             </div>
             <div class="box-body">
                 <!-- Filter Dropdown -->
@@ -81,8 +80,8 @@
             });
 
             $('#filter-status').on('change', function() {
-                var filterValue = $(this).val();  // Ambil value yang dipilih
-                
+                var filterValue = $(this).val(); // Ambil value yang dipilih
+
                 // Lakukan request dengan filter status yang dipilih
                 table.ajax.url('{!! route('informasi.artikel-kategori.getdata') !!}?status=' + filterValue).load();
             });

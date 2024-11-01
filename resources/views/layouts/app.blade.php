@@ -131,7 +131,7 @@ desired effect
     });
 </script>
 
-@livewireScripts
+    @livewireScripts
 
 </body>
 

@@ -50,16 +50,16 @@
                         <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
                     @endif
                 </div>
-
+                <!--
                 <div class="form-group">
                     {!! Form::label('kategori_id', 'Kategori') !!}
                     {!! Form::select('kategori_id', $kategori, null, ['class' => 'form-control', 'placeholder' => 'Pilih Kategori']) !!}
 
                     @if ($errors->has('kategori_id'))
-                    <span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>
-                    @endif
+<span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>
+@endif
                 </div>
-
+                -->
                 <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 

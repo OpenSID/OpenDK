@@ -27,7 +27,7 @@
                     <select id="filter-kategori" class="form-control" style="width: 200px;">
                         <option value="">Semua Kategori</option>
                         @foreach ($kategori as $kate)
-                        <option value="{{ $kate->id_kategori }}">{{ $kate->nama_kategori }}</option>
+                            <option value="{{ $kate->id_kategori }}">{{ $kate->nama_kategori }}</option>
                         @endforeach
                     </select>
                 </div>

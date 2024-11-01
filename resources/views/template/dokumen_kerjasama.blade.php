@@ -64,8 +64,7 @@
         </tr>
     </table>
     <p align="justify">
-        Pada hari ini, <strong>{{ $nama_hari }} </strong>Tanggal <strong>{{ $hari }}</strong> Bulan <strong>{{
-            $nama_bulan }}</strong> Tahun <strong>{{ $nama_tahun }}</strong>
+        Pada hari ini, <strong>{{ $nama_hari }} </strong>Tanggal <strong>{{ $hari }}</strong> Bulan <strong>{{ $nama_bulan }}</strong> Tahun <strong>{{ $nama_tahun }}</strong>
         bertempat di {{ $alamat }}, yang bertandatangan di bawah ini :
     </p>
     <table border="0" cellspacing="0" cellpadding="0" width="100%">

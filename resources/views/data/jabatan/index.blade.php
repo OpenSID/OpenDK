@@ -22,7 +22,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => route('data.jabatan.import')])
+                {{-- @include('forms.btn-social', ['import_url' => route('data.jabatan.import')]) --}}
+                @include('forms.btn-social', ['import_url' => route('data.jabatan.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

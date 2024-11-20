@@ -80,34 +80,6 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-                {{-- <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Menu Item</a></li>
-                            <li><a href="#">Menu Item</a></li>
-                            <li class="dropdown-submenu">
-                                <a tabindex="-1" href="#" class="dropdown-submenu-toggle">One Dropdown <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Sub-Menu Item</a></li>
-                                    <li><a href="#">Sub-Menu Item</a></li>
-                                    <li><a href="#">Sub-Menu Item</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown-submenu">
-                            <a tabindex="-1" href="#" class="dropdown-submenu-toggle">Second Dropdown <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Sub-Menu Item</a></li>
-                                <li><a href="#">Sub-Menu Item</a></li>
-                                <li><a href="#">Sub-Menu Item</a></li>
-                            </ul>
-                        </li>
-                            <li><a href="#">Menu Item</a></li>
-                            <li><a href="#">Menu Item</a></li>
-                        </ul>
-                    </li>
-                </ul> --}}
                 <ul class="nav navbar-nav">
                     @foreach ($navmenus as $nav)
                     <li class="{{ $nav['children']->count() > 0 ? 'dropdown' : '' }}">
@@ -185,56 +157,7 @@
                         </form>
                     @endif
                 </ul>
-                {{-- <ul class="nav navbar-nav">
-                    @foreach ($navmenus as $nav)
-                        <li class="{{ $nav['children']->count() > 0 ? 'dropdown' : '' }}">
-                            <a href="{{ $nav['url'] ? url($nav['url']) : '#' }}" 
-                            target="{{ $nav['target'] }}" 
-                            class="{{ $nav['children']->count() > 0 ? 'dropdown-toggle' : '' }}" 
-                            data-toggle="{{ $nav['children']->count() > 0 ? 'dropdown' : '' }}">
-                                {{ $nav['name'] }} 
-                                @if ($nav['children']->count() > 0)
-                                    <span class="caret"></span>
-                                @endif
-                            </a>
-
-                            @if ($nav['children']->count() > 0)
-                                <ul class="dropdown-menu fadeIn animated" role="menu">
-                                    @foreach ($nav['children'] as $child)
-                                        <li class="{{ $child['children']->count() > 0 ? 'dropdown-submenu' : '' }}">
-                                            <a href="{{ $child['url'] ? url($child['url']) : '#' }}" 
-                                            target="{{ $child['target'] }}">
-                                                {{ $child['name'] }}
-                                            </a>
-
-                                            @if ($child['children']->count() > 0)
-                                                <ul class="dropdown-menu fadeIn animated" role="menu">
-                                                    @foreach ($child['children'] as $child1)
-                                                        <li>
-                                                            <a href="{{ $child1['url'] ? url($child1['url']) : '#' }}" target="{{ $child1['target'] }}">
-                                                                {{ $child1['name'] ? $child1['name'] : '#' }}
-                                                            </a>
-                                                        </li>
-                                                    @endforeach
-                                                </ul>
-                                            @endif
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @endif
-                        </li>
-                    @endforeach
-                    
-                    @if (auth()->guest())
-                        <li><a href="{{ route('login') }}">LogIn<span class="sr-only">(current)</span></a></li>
-                    @else
-                        <li><a href="{{ route('dashboard') }}">Admin</a></li>
-                        <li><a id="loggout" href="{{ route('logout') }}">LogOut<span class="sr-only">(current)</span></a></li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    @endif
-                </ul> --}}
+                
             </div>
     </nav>
 </header>

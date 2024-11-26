@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Penduduk extends Model
@@ -92,5 +93,23 @@ class Penduduk extends Model
     public function desa()
     {
         return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+    }
+
+    // Relasi ke DasLembaga
+    public function lembaga()
+    {
+        return $this->hasOne(Lembaga::class, 'penduduk_id');
+    }
+
+    // Relasi ke model LembagaAnggota (One-to-Many)
+    public function lembagaAnggota()
+    {
+        return $this->hasMany(LembagaAnggota::class, 'penduduk_id');
+    }
+
+    // Definisikan relasi belongsTo ke das_penduduk_sex tanpa model
+    public function pendudukSex()
+    {
+        return $this->belongsTo(PendudukSex::class, 'sex', 'id');
     }
 }

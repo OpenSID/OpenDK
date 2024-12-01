@@ -50,7 +50,7 @@ class FrontEndController extends Controller
             'events' => Event::getOpenEvents(),
             'medsos' => MediaSosial::where('status', 1)->get(),
             'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
-            'navmenus' => NavMenu::with('children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
+            'navmenus' => NavMenu::with('children.children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
             'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
             'slides' => Slide::orderBy('created_at', 'DESC')->get(),
         ]);

@@ -90,8 +90,7 @@
                         {!! Form::button('<i class="fa fa-save"></i> Simpan', ['type' => 'button', 'class' => 'btn btn-primary btn-sm', 'id' => 'btnUpdate']) !!}
                         {!! Form::button('<i class="fa fa-plus-square"></i> Tambah', [
                             'type' => 'button',
-                            'class' => 'btn btn-success
-                                                                                            btn-sm',
+                            'class' => 'btn btn-success btn-sm',
                             'id' => 'btnAdd',
                         ]) !!}
                     </div>
@@ -112,7 +111,7 @@
                                 {!! Form::button('<i class="fa fa-times"></i> Batal', [
                                     'type' => 'button',
                                     'class' => 'btn btn-danger btn-sm
-                                                                                                                            reload',
+                                                                                            reload',
                                 ]) !!}
                                 {!! Form::button('<i class="fa fa-save"></i> Simpan', ['type' => 'submit', 'class' => 'btn btn-primary btn-sm']) !!}
                             </div>

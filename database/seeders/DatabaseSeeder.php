@@ -73,6 +73,7 @@ class DatabaseSeeder extends Seeder
         // Other
         $this->call(DasProfilTableSeeder::class);
         $this->call(DasDataUmumTableSeeder::class);
+        $this->call(PendudukSexSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

@@ -4,6 +4,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 
 #### FITUR
 
+1. [#1027](https://github.com/OpenSID/OpenDK/issues/1027) Penambahan halaman lembaga pada OpenDK.
 
 #### BUG
 

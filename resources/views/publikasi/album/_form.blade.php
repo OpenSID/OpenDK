@@ -22,7 +22,7 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="thumbnail">Thumbnail</label>
-                    <img src="{{ isThumbnail($album->gambar ?? null) }}" id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
+                    <img src="{{ isThumbnail(isset($album->gambar) ? "publikasi/album/{$album->gambar}" : null) }}" id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
 
                     {!! Form::file('gambar', ['placeholder' => 'Thumbnail', 'class' => 'form-control', 'id' => 'file-album', 'accept' => 'jpg,jpeg,png']) !!}
                     @if ($errors->has('thumbnail'))

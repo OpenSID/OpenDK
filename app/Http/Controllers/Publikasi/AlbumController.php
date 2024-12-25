@@ -87,7 +87,7 @@ class AlbumController extends Controller
 
     public function create()
     {
-        $page_title = 'Album';
+        $page_title       = 'Album';
         $page_description = 'Tambah Album';
 
         return view('publikasi.album.create', compact('page_title', 'page_description'));
@@ -106,11 +106,8 @@ class AlbumController extends Controller
         try {
             $input = $request->all();
             if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $path = Storage::putFile('public/publikasi/album', $file);
-
-                $input['gambar'] = $path;
-                // $input['gambar'] = substr($path, 15);
+                $file            = $request->file('gambar')->store('public/publikasi/album');
+                $input['gambar'] = basename($file);
             }
 
             Album::create($input);
@@ -156,11 +153,8 @@ class AlbumController extends Controller
             $input = $request->all();
 
             if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $path = Storage::putFile('public/publikasi/album', $file);
-
-                $input['gambar'] = $path;
-                // $input['gambar'] = substr($path, 15);
+                $file            = $request->file('gambar')->store('public/publikasi/album');
+                $input['gambar'] = basename($file);
             }
 
             $album->update($input);

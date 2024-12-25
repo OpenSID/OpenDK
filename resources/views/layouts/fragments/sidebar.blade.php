@@ -273,6 +273,26 @@
                                     <a href="{{ route('data.pembangunan.index') }}"><i class="fa fa-circle-o"></i>Pembangunan</a>
                                 </li>
                             @endif
+
+                            <!-- Kelola Lembaga -->
+                            @if ($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan', 'administrator-website']))
+                            <li class="treeview {{ Request::is(['data/kategori-lembaga*',  'data/lembaga*']) ? 'active' : '' }}">
+                                <a href="#"><i class="fa fa-circle-o"></i>Lembaga
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li  {{ Request::is(['data/lembaga*']) ? 'class=active' : '' }} >
+                                        <a href="{{ route('data.lembaga.index') }}"><i class="fa fa-circle-o"></i>Lembaga</a>
+                                    </li>
+                                    <li {{ Request::is(['data/kategori-lembaga*']) ? 'class=active' : '' }}>
+                                        <a href="{{ route('data.kategori-lembaga.index') }}"><i class="fa fa-circle-o"></i>Kategori Lembaga</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endif
+
                         </ul>
                     </li>
                 @endif

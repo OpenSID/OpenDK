@@ -37,7 +37,7 @@
                         <!-- Preview Gambar Akan Ditempatkan Di Sini -->
                         @if (isset($galeri->gambar))
                             @foreach ($galeri->gambar as $image)
-                                <img src="{{ isThumbnail($image ?? null) }}" style="width:100px; max-height:100px; margin: 5px;">
+                                <img src="{{ isThumbnail("publikasi/galeri/{$image}") }}" style="width:100px; max-height:100px; margin: 5px;">
                             @endforeach
                         @endif
                     </div>

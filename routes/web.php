@@ -113,6 +113,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
                 Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
                 Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
+                Route::get('visi-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
                 Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
@@ -634,6 +635,44 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
                     Route::get('rincian/{id}/{desa_id}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
                     Route::get('getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
+                });
+
+                // Lembaga Kategori
+                Route::group(['prefix' => 'kategori-lembaga', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.kategori-lembaga.index', 'uses' => 'KategoriLembagaController@index']);
+                    Route::get('getdata', ['as' => 'data.kategori-lembaga.getdata', 'uses' => 'KategoriLembagaController@getData']);
+                    Route::get('create', ['as' => 'data.kategori-lembaga.create', 'uses' => 'KategoriLembagaController@create']);
+                    Route::post('store', ['as' => 'data.kategori-lembaga.store', 'uses' => 'KategoriLembagaController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.kategori-lembaga.edit', 'uses' => 'KategoriLembagaController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.kategori-lembaga.update', 'uses' => 'KategoriLembagaController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.kategori-lembaga.destroy', 'uses' => 'KategoriLembagaController@destroy']);
+                });
+
+                // Lembaga
+                Route::group(['prefix' => 'lembaga', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.lembaga.index', 'uses' => 'LembagaController@index']);
+                    Route::get('getdata', ['as' => 'data.lembaga.getdata', 'uses' => 'LembagaController@getData']);
+                    Route::get('create', ['as' => 'data.lembaga.create', 'uses' => 'LembagaController@create']);
+                    Route::post('store', ['as' => 'data.lembaga.store', 'uses' => 'LembagaController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.lembaga.edit', 'uses' => 'LembagaController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.lembaga.update', 'uses' => 'LembagaController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.lembaga.destroy', 'uses' => 'LembagaController@destroy']);
+
+                    // Lembaga Sub Lembaga Anggota
+                    Route::group(['prefix' => '{slug}/anggota', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                        Route::get('/', ['as' => 'data.lembaga_anggota.index', 'uses' => 'LembagaAnggotaController@index']);
+                        Route::get('getdata', ['as' => 'data.lembaga_anggota.getdata', 'uses' => 'LembagaAnggotaController@getData']);
+                        Route::get('create', ['as' => 'data.lembaga_anggota.create', 'uses' => 'LembagaAnggotaController@create']);
+                        Route::post('store', ['as' => 'data.lembaga_anggota.store', 'uses' => 'LembagaAnggotaController@store']);
+                        Route::get('edit/{id}', ['as' => 'data.lembaga_anggota.edit', 'uses' => 'LembagaAnggotaController@edit']);
+                        Route::put('update/{id}', ['as' => 'data.lembaga_anggota.update', 'uses' => 'LembagaAnggotaController@update']);
+                        Route::delete('destroy/{id}', ['as' => 'data.lembaga_anggota.destroy', 'uses' => 'LembagaAnggotaController@destroy']);
+                    });
+
+                    // Redirect dari /data/lembaga/{slug} ke /data/lembaga/{slug}/anggota
+                    Route::get('{slug}', function ($slug) {
+                        return redirect()->route('data.lembaga_anggota.index', ['slug' => $slug]);
+                    });
                 });
             });
 

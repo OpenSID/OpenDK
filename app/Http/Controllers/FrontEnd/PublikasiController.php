@@ -43,11 +43,8 @@ class PublikasiController extends FrontEndController
     {
         Counter::count('publikasi.galeri');
 
-        $albums = Album::status()->with(['galeris'])->paginate(9);
-
-
+        $albums     = Album::status()->with(['galeris'])->paginate(9);
         $page_title = 'Galeri';
-
 
         return view('pages.publikasi.album', compact('page_title', 'albums'));
     }

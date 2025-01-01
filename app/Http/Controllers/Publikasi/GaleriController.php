@@ -106,7 +106,7 @@ class GaleriController extends Controller
                 foreach ($request->file('gambar') as $file) {
                     $path = Storage::putFile('public/publikasi/galeri', $file);
 
-                    $imageNames[] = $path;
+                    $imageNames[] = basename($path);
                 }
                 $input['gambar'] = $imageNames;
             }
@@ -160,7 +160,7 @@ class GaleriController extends Controller
                 foreach ($request->file('gambar') as $file) {
                     $path = Storage::putFile('public/publikasi/galeri', $file);
 
-                    $imageNames[] = $path;
+                    $imageNames[] = basename($path);
                 }
                 $input['gambar'] = $imageNames;
             }

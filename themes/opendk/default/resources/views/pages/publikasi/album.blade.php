@@ -6,7 +6,7 @@
         <div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">
             <div class="row">
                 <div class="col-sm-4">
-                    <img class="img-responsive" src="{{ isThumbnail($item->gambar) }}" alt="{{ $item->slug }}">
+                    <img class="img-responsive" src="{{ isThumbnail("publikasi/album/{$item->gambar}") }}" alt="{{ $item->slug }}">
                 </div>
                 <div class="col-sm-8">
                     <h5 style="margin-top: 5px; text-align: justify;"><b><a href="{{ route('publik.publikasi.galeri', $item->slug) }}">{{ $item->judul

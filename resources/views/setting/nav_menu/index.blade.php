@@ -5,59 +5,18 @@
         .margin-50 {
             margin-left: 50px;
         }
-
         .bolt {
             font-weight: bold;
         }
-
         .btn-dark {
             color: #fff;
             background-color: #343a40;
             border-color: #343a40;
         }
-
         .btn-dark:hover {
             color: #fff;
             background-color: #23272b;
             border-color: #1d2124;
-        }
-
-        .btn-dark:focus,
-        .btn-dark.focus {
-            color: #fff;
-            background-color: #23272b;
-            border-color: #1d2124;
-            box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5);
-        }
-
-        .btn-dark:active,
-        .btn-dark.active,
-        .open>.dropdown-toggle.btn-dark {
-            color: #fff;
-            background-color: #1d2124;
-            border-color: #171a1d;
-        }
-
-        .btn-dark:active:hover,
-        .btn-dark.active:hover,
-        .open>.dropdown-toggle.btn-dark:hover {
-            color: #fff;
-            background-color: #171a1d;
-            border-color: #0c0d0e;
-        }
-
-        .btn-dark.disabled,
-        .btn-dark:disabled {
-            color: #fff;
-            background-color: #343a40;
-            border-color: #343a40;
-        }
-
-        .btn-dark:not(:disabled):not(.disabled):active,
-        .btn-dark:not(:disabled):not(.disabled).active,
-        .show>.btn-dark.dropdown-toggle {
-            background-color: #1d2124;
-            border-color: #171a1d;
         }
     </style>
 @endpush
@@ -75,7 +34,6 @@
     </section>
 
     <section class="content container-fluid">
-
         @include('partials.flash_message')
 
         <div class="row">
@@ -110,7 +68,7 @@
                             <div class="box-footer">
                                 {!! Form::button('<i class="fa fa-times"></i> Batal', [
                                     'type' => 'button',
-                                    'class' => 'btn btn-danger btn-sm
+                                    'class' => 'btn btn-danger btn-sm',
                                 ]) !!}
                                 {!! Form::button('<i class="fa fa-save"></i> Simpan', ['type' => 'submit', 'class' => 'btn btn-primary btn-sm']) !!}
                             </div>
@@ -120,7 +78,6 @@
             </div>
             {!! Form::close() !!}
         </div>
-
     </section>
 @endsection
 
@@ -129,24 +86,22 @@
     <script defer src="{{ asset('bower_components/menu-editor/jquery-menu-editor.js') }}"></script>
     <script>
         $(document).ready(function() {
-            var arrayjson = {!! $nav_menus !!}
+            var arrayjson = {!! $nav_menus !!} || [];
 
-            // icon picker options
             var iconPickerOptions = {
                 searchText: "Buscar...",
                 labelHeader: "{0}/{1}"
             };
-            // sortable list options
+
             var sortableListOptions = {
-                placeholderCss: {
-                    'background-color': "#cccccc"
-                }
+                placeholderCss: { 'background-color': "#cccccc" }
             };
 
             var editor = new MenuEditor('myEditor', {
                 listOptions: sortableListOptions,
                 iconPicker: iconPickerOptions
             });
+
             editor.setForm($('#frmEdit'));
             editor.setUpdateButton($('#btnUpdate'));
             editor.setData(arrayjson);
@@ -161,45 +116,38 @@
             });
 
             $('#btnAdd').click(function() {
-
                 let sourceLink = $('#sourceLink');
                 let sourceHalaman = $('#sourceHalaman');
                 let sourceKategori = $('#sourceKategori');
                 let sourceModul = $('#sourceModul');
 
                 let source = '';
-
-                if (sourceLink.is(':checked')) {
-                    source = sourceLink.val()
-                } else if (sourceHalaman.is(':checked')) {
-                    source = sourceHalaman.val()
-                } else if (sourceKategori.is(':checked')) {
-                    source = sourceKategori.val()
-                } else if (sourceModul.is(':checked')) {
-                    source = sourceModul.val()
-                }
+                if (sourceLink.is(':checked')) source = sourceLink.val();
+                else if (sourceHalaman.is(':checked')) source = sourceHalaman.val();
+                else if (sourceKategori.is(':checked')) source = sourceKategori.val();
+                else if (sourceModul.is(':checked')) source = sourceModul.val();
 
                 editor.add(source);
             });
 
             $('#frmEdit').bind('reset', function(e) {
-                $('select[name=sourcelist]').hide()
-                $('input[name=href]').show()
-            })
+                $('select[name=sourcelist]').hide();
+                $('input[name=href]').show();
+            });
+
             $('#frmEdit').submit(function(e) {
                 var str = editor.getString();
-
                 if (str == '[]') {
                     e.preventDefault();
                     return;
                 }
-                $('#frmEdit').find('textarea[name=json_menu]').val(str)
+                $('#frmEdit').find('textarea[name=json_menu]').val(str);
                 return true;
-            })
+            });
 
             $('button.reload').click(function() {
-                window.location.reload()
-            })
+                window.location.reload();
+            });
         });
     </script>
 @endpush

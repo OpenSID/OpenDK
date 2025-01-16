@@ -5,14 +5,17 @@
         .margin-50 {
             margin-left: 50px;
         }
+
         .bolt {
             font-weight: bold;
         }
+
         .btn-dark {
             color: #fff;
             background-color: #343a40;
             border-color: #343a40;
         }
+
         .btn-dark:hover {
             color: #fff;
             background-color: #23272b;
@@ -94,7 +97,9 @@
             };
 
             var sortableListOptions = {
-                placeholderCss: { 'background-color': "#cccccc" }
+                placeholderCss: {
+                    'background-color': "#cccccc"
+                }
             };
 
             var editor = new MenuEditor('myEditor', {

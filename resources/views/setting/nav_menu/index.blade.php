@@ -135,7 +135,9 @@
             };
 
             var sortableListOptions = {
-                placeholderCss: { 'background-color': "#cccccc" }
+                placeholderCss: {
+                    'background-color': "#cccccc"
+                }
             };
 
             var editor = new MenuEditor('myEditor', {

@@ -29,28 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Middleware;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use App\Models\SettingAplikasi;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class TokenController extends Controller
+class TokenRegistered
 {
     /**
-     * Display a listing of the resource.
+     * Handle an incoming request.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function index()
-    {
-        // Set the token's expiration time, 10 tahun
-        Config::set('jwt.ttl', 10 * 365 * 24 * 60);
-        $user = Auth::user();
-        $token = JWTAuth::fromUser($user);
-
-        // Return the token in a response
-        return response()->json(['token' => $token]);
+    public function handle(Request $request, Closure $next)
+    {        
+        $token = $request->bearerToken();
+        Log::error($token);
+        $checkToken = SettingAplikasi::where(['key' => 'api_key_opendk', 'value' => $token])->exists();
+        if (!$checkToken) {
+            return response()->json([
+                'error' => 'Token not registered'
+            ], 401);
+        }
+        return $next($request);
     }
 }

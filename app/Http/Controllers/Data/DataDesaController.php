@@ -58,8 +58,8 @@ class DataDesaController extends Controller
     {
         $page_title = 'Desa';
         $page_description = 'Daftar Desa';
-
-        return view('data.data_desa.index', compact('page_title', 'page_description'));
+        $view = $this->isDatabaseGabungan() ? 'data.data_desa.gabungan.index' : 'data.data_desa.index';
+        return view($view, compact('page_title', 'page_description'));
     }
 
     public function getDataDesa()

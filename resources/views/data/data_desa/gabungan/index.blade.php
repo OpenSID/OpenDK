@@ -59,6 +59,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
+                            "fields[config]": "id,kode_desa,nama_desa,website,path",
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };

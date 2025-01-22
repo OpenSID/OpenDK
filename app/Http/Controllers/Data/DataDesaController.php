@@ -251,6 +251,9 @@ class DataDesaController extends Controller
 
     public function peta($id)
     {
+        if($this->isDatabaseGabungan()) {
+            return view('data.data_desa.gabungan.peta', compact('id'));
+        }
         $desa = DataDesa::findOrFail($id);
         $page_title = 'Desa';
         $page_description = 'Peta Desa : '.$desa->nama;

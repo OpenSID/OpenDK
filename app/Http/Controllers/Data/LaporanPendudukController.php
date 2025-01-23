@@ -55,7 +55,8 @@ class LaporanPendudukController extends Controller
         $page_description = 'Daftar Laporan Penduduk';
         $list_desa = DataDesa::get();
 
-        return view('data.laporan-penduduk.index', compact('page_title', 'page_description', 'list_desa'));
+        $view = $this->isDatabaseGabungan() ? 'data.laporan-penduduk.gabungan.index' : 'data.laporan-penduduk.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**

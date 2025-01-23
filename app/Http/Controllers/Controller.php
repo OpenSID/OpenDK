@@ -204,4 +204,9 @@ class Controller extends BaseController
             return;
         }
     }
+
+    protected function isDatabaseGabungan()
+    {
+        return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';
+    }
 }

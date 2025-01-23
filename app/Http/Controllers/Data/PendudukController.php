@@ -56,7 +56,8 @@ class PendudukController extends Controller
         $page_description = 'Data Penduduk';
         $list_desa = DataDesa::get();
 
-        return view('data.penduduk.index', compact('page_title', 'page_description', 'list_desa'));
+        $view = $this->isDatabaseGabungan() ? 'data.penduduk.gabungan.index' : 'data.penduduk.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**

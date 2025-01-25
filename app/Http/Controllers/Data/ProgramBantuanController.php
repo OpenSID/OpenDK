@@ -48,8 +48,9 @@ class ProgramBantuanController extends Controller
         $page_title = 'Program Bantuan';
         $page_description = 'Daftar Program Bantuan';
         $list_desa = DataDesa::all();
-
-        return view('data.program_bantuan.index', compact('page_title', 'page_description', 'list_desa'));
+        
+        $view = $this->isDatabaseGabungan() ? 'data.program_bantuan.gabungan.index' : 'data.program_bantuan.gabungan.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     public function getaProgramBantuan(Request $request)
@@ -71,14 +72,18 @@ class ProgramBantuanController extends Controller
             ->rawColumns(['aksi'])->make();
     }
 
-    public function show($id, $desa_id)
+    public function show($id, $desa_id, $nama = '')
     {
-        $program = Program::with('desa')->findOrFail($id);
+        $id = $id;
+        $desa_id = $desa_id;
         $page_title = 'Detail Program';
-        $page_description = 'Program Bantuan '.$program->nama;
         $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
+        $page_description = 'Program Bantuan - '.$nama;
+        $view = $this->isDatabaseGabungan() ? 'data.program_bantuan.gabungan.show' : 'data.program_bantuan.gabungan.show';
+        return view($view, compact('page_title', 'sasaran', 'id', 'desa_id', 'page_description'));
+        $program = Program::with('desa')->findOrFail($id);
+        $page_description = 'Program Bantuan '.$program->nama;
         $peserta = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
-
         return view('data.program_bantuan.show', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
     }
 

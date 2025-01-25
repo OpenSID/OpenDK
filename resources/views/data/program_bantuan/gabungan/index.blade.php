@@ -53,90 +53,114 @@
 @include('partials.asset_datatables')
 
 @push('scripts')
-<script type="text/javascript">
-    $(document).ready(function() {
-        function loadDesa() {
-            $.ajax({
-                url: "http://localhost/openkab/public/index.php/api/v1/opendk/desa",
-                method: "GET",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                success: function(response) {
-                    // Bersihkan select box
-                    $('#list_desa').empty().append('<option value="">Semua Desa</option>');
+    <script type="text/javascript">
+        $(document).ready(function() {
+            function loadDesa() {
+                $.ajax({
+                    url: "http://localhost/openkab/public/index.php/api/v1/opendk/desa",
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    success: function(response) {
+                        // Bersihkan select box
+                        $('#list_desa').empty().append('<option value="">Semua Desa</option>');
 
-                    // Tambahkan data desa ke select box
-                    response.data.forEach(desa => {
-                        $('#list_desa').append(
-                            `<option value="${desa.attributes.kode_desa}">${desa.attributes.nama_desa}</option>`
-                        );
-                    });
+                        // Tambahkan data desa ke select box
+                        response.data.forEach(desa => {
+                            $('#list_desa').append(
+                                `<option value="${desa.attributes.kode_desa}">${desa.attributes.nama_desa}</option>`
+                            );
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Gagal memuat daftar desa:", error);
+                    }
+                });
+            }
+
+            // Panggil fungsi loadDesa untuk memuat data saat halaman dimuat
+            loadDesa();
+
+            // Inisialisasi Select2 untuk dropdown desa
+            $('#list_desa').select2();
+
+            // Konfigurasi DataTables
+            var data = $('#program-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ 'http://localhost/openkab/public/index.php/api/v1/opendk/bantuan' }}",
+                    headers: {
+                        "Accept": "application/ld+json",
+                        "Content-Type": "application/json; charset=utf-8",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                    },
+                    method: 'GET',
+                    data: function(row) {
+                        const desaId = $('#list_desa').val();
+                        return {
+                            "page[size]": row.length,
+                            "page[number]": (row.start / row.length) + 1,
+                            "filter[kode_desa]": desaId || '',
+                            "filter[search]": row.search.value,
+                            "fields[program]": "*",
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]?.name,
+                        };
+                    },
+                    dataSrc: function(json) {
+                        json.recordsTotal = json.meta.pagination.total;
+                        json.recordsFiltered = json.meta.pagination.total;
+
+                        return json.data.map(item => ({
+                            aksi: `<a href="{{ url('data/program-bantuan/show') }}/${item.id}/${item.attributes.kode_desa}/${item.attributes.nama}" class="btn btn-primary btn-sm">Detail</a>`,
+                            nama: item.attributes.nama,
+                            desa: item.attributes.desa || 'N/A',
+                            masa_berlaku: item.attributes.masa_berlaku || '-',
+                            nama_sasaran: item.attributes.nama_sasaran || '-'
+                        }));
+                    },
                 },
-                error: function(xhr, status, error) {
-                    console.error("Gagal memuat daftar desa:", error);
-                }
+                columns: [{
+                        data: 'aksi',
+                        name: 'aksi',
+                        orderable: false,
+                        searchable: false,
+                        class: 'text-center'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'desa',
+                        name: 'desa',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'masa_berlaku',
+                        name: 'masa_berlaku',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nama_sasaran',
+                        name: 'nama_sasaran',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                order: [
+                    [1, 'asc']
+                ]
             });
-        }
 
-        // Panggil fungsi loadDesa untuk memuat data saat halaman dimuat
-        loadDesa();
-
-        // Inisialisasi Select2 untuk dropdown desa
-        $('#list_desa').select2();
-
-        // Konfigurasi DataTables
-        var data = $('#program-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{ 'http://localhost/openkab/public/index.php/api/v1/opendk/bantuan' }}",
-                headers: {
-                    "Accept": "application/ld+json",
-                    "Content-Type": "application/json; charset=utf-8",
-                    "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                },
-                method: 'GET',
-                data: function(row) {
-                    const desaId = $('#list_desa').val();
-                    return {
-                        "page[size]": row.length,
-                        "page[number]": (row.start / row.length) + 1,
-                        "filter[kode_desa]": desaId || '',
-                        "filter[search]": row.search.value,
-                        "fields[program]": "*",
-                        "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]?.name,
-                    };
-                },
-                dataSrc: function(json) {
-                    json.recordsTotal = json.meta.pagination.total;
-                    json.recordsFiltered = json.meta.pagination.total;
-
-                    return json.data.map(item => ({
-                        aksi: `<a href="{{ url('data/program-bantuan/show') }}/${item.id}/${item.attributes.kode_desa}/${item.attributes.nama}" class="btn btn-primary btn-sm">Detail</a>`,
-                        nama: item.attributes.nama,
-                        desa: item.attributes.desa || 'N/A',
-                        masa_berlaku: item.attributes.masa_berlaku || '-',
-                        nama_sasaran: item.attributes.nama_sasaran || '-'
-                    }));
-                },
-            },
-            columns: [
-                { data: 'aksi', name: 'aksi', orderable: false, searchable: false, class: 'text-center' },
-                { data: 'nama', name: 'nama' },
-                { data: 'desa', name: 'desa', orderable: false, searchable: false },
-                { data: 'masa_berlaku', name: 'masa_berlaku', orderable: false, searchable: false },
-                { data: 'nama_sasaran', name: 'nama_sasaran', orderable: false, searchable: false },
-            ],
-            order: [[1, 'asc']]
+            // Reload data tabel ketika desa berubah
+            $('#list_desa').on('select2:select', function() {
+                data.ajax.reload();
+            });
         });
-
-        // Reload data tabel ketika desa berubah
-        $('#list_desa').on('select2:select', function() {
-            data.ajax.reload();
-        });
-    });
-</script>
-
+    </script>
 @endpush

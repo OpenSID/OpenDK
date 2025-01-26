@@ -44,7 +44,7 @@
                 <legend>Daftar Peserta Program</legend>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="program-table">
-                    <thead>
+                        <thead>
                             <tr>
                                 <th style="max-width: 150px;" rowspan="2" valign="center">Aksi</th>
                                 <th rowspan="2">No. KK / NIK</th>
@@ -76,9 +76,10 @@
 
             // Ambil data program dan peserta secara bersamaan menggunakan AJAX
             $.ajax({
-                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan/${idProgram}?'.http_build_query([
-                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
-                            ]) }}`,
+                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan/${idProgram}?' .
+                    http_build_query([
+                        'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
+                    ]) }}`,
                 method: 'GET',
                 success: function(response) {
                     // Tampilkan data program
@@ -104,9 +105,10 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan-peserta/${idProgram}/${kodeDesa}?'.http_build_query([
-                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
-                            ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan-peserta/${idProgram}/${kodeDesa}?' .
+                        http_build_query([
+                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
+                        ]) }}`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "application/json; charset=utf-8",
@@ -138,15 +140,12 @@
                         }));
                     },
                 },
-                columnDefs: [
-                    {
-                        targets: [0, 1, 2],
-                        orderable: false,
-                        searchable: false,
-                    },
-                ],
-                columns: [
-                    {
+                columnDefs: [{
+                    targets: [0, 1, 2],
+                    orderable: false,
+                    searchable: false,
+                }, ],
+                columns: [{
                         data: null,
                         orderable: false,
                         searchable: false,
@@ -155,16 +154,42 @@
                         },
                         title: "No", // Judul kolom
                     },
-                    { data: 'peserta', name: 'peserta' },
-                    { data: 'nama', name: 'nama' },
-                    { data: 'no_id_kartu', name: 'no_id_kartu' },
-                    { data: 'kartu_nik', name: 'kartu_nik' },
-                    { data: 'kartu_nama', name: 'kartu_nama' },
-                    { data: 'kartu_tempat_lahir', name: 'kartu_tempat_lahir' },
-                    { data: 'kartu_tanggal_lahir', name: 'kartu_tanggal_lahir' },
-                    { data: 'kartu_alamat', name: 'kartu_alamat' },
+                    {
+                        data: 'peserta',
+                        name: 'peserta'
+                    },
+                    {
+                        data: 'nama',
+                        name: 'nama'
+                    },
+                    {
+                        data: 'no_id_kartu',
+                        name: 'no_id_kartu'
+                    },
+                    {
+                        data: 'kartu_nik',
+                        name: 'kartu_nik'
+                    },
+                    {
+                        data: 'kartu_nama',
+                        name: 'kartu_nama'
+                    },
+                    {
+                        data: 'kartu_tempat_lahir',
+                        name: 'kartu_tempat_lahir'
+                    },
+                    {
+                        data: 'kartu_tanggal_lahir',
+                        name: 'kartu_tanggal_lahir'
+                    },
+                    {
+                        data: 'kartu_alamat',
+                        name: 'kartu_alamat'
+                    },
                 ],
-                order: [[5, 'asc']]
+                order: [
+                    [5, 'asc']
+                ]
             });
 
         });

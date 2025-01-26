@@ -57,7 +57,9 @@
     $(document).ready(function() {
         function loadDesa() {
             $.ajax({
-                url: "http://localhost/openkab/public/index.php/api/v1/opendk/desa",
+                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/desa?'.http_build_query([
+                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
+                            ]) }}`,
                 method: "GET",
                 headers: {
                     "Accept": "application/json",
@@ -91,7 +93,9 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ 'http://localhost/openkab/public/index.php/api/v1/opendk/bantuan' }}",
+                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan?'.http_build_query([
+                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
+                            ]) }}`,
                 headers: {
                     "Accept": "application/ld+json",
                     "Content-Type": "application/json; charset=utf-8",

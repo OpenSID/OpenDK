@@ -76,7 +76,9 @@
 
             // Ambil data program dan peserta secara bersamaan menggunakan AJAX
             $.ajax({
-                url: `http://localhost/openkab/public/index.php/api/v1/opendk/bantuan/${idProgram}`,  // Endpoint API untuk mengambil data program
+                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan/${idProgram}?'.http_build_query([
+                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
+                            ]) }}`,
                 method: 'GET',
                 success: function(response) {
                     // Tampilkan data program
@@ -102,7 +104,9 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `http://localhost/openkab/public/index.php/api/v1/opendk/bantuan-peserta/${idProgram}/${kodeDesa}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan-peserta/${idProgram}/${kodeDesa}?'.http_build_query([
+                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
+                            ]) }}`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "application/json; charset=utf-8",

@@ -57,9 +57,7 @@
     $(document).ready(function() {
         function loadDesa() {
             $.ajax({
-                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/desa?'.http_build_query([
-                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
-                            ]) }}`,
+                url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/desa/'.str_replace('.','',$profil->kecamatan_id) }}`,
                 method: "GET",
                 headers: {
                     "Accept": "application/json",

@@ -16,7 +16,7 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">            
+        <div class="box box-primary">
 
             <div class="box-body">
                 <div class="table-responsive">
@@ -45,14 +45,15 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/desa?'.http_build_query([
-                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
-                            ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/desa?' .
+                        http_build_query([
+                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
+                        ]) }}`,
                     headers: {
-                            "Accept" : "application/ld+json",
-                            "Content-Type": "text/json; charset=utf-8",
-                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                        },
+                        "Accept": "application/ld+json",
+                        "Content-Type": "text/json; charset=utf-8",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                    },
                     method: 'get',
                     data: function(row) {
                         return {
@@ -73,13 +74,13 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.path === null ? `javascript:void(0)` : `{{ url('data/data-desa/peta')}}/${data.id}`
-                            const _disabled = data.attributes.path === null ? 'disabled' : '' 
+                            const _url = data.attributes.path === null ? `javascript:void(0)` : `{{ url('data/data-desa/peta') }}/${data.id}`
+                            const _disabled = data.attributes.path === null ? 'disabled' : ''
                             return `<a href="${_url}" class="${_disabled}" title="Peta" data-button="peta" target="_blank">
                                 <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-map" aria-hidden="true"></i></button>
                             </a>`;
 
-                        },                
+                        },
                         searchable: false,
                         orderable: false
                     },
@@ -106,8 +107,8 @@
                 order: [
                     [1, 'asc']
                 ]
-            });            
+            });
         });
     </script>
-    @include('forms.datatable-vertical')    
+    @include('forms.datatable-vertical')
 @endpush

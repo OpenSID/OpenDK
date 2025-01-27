@@ -5,6 +5,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### FITUR
 
 1. [#1027](https://github.com/OpenSID/OpenDK/issues/1027) Penambahan halaman lembaga pada OpenDK.
+2. [#1101](https://github.com/OpenSID/OpenDK/issues/1101) Penambahan pengaturan untuk generate token di OpenDK.
 
 #### BUG
 

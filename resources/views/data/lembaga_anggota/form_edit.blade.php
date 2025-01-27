@@ -1,7 +1,8 @@
 <style>
     /* custom error css order */
-    #penduduk_id-error, #jabatan_id-error{
-        order:2
+    #penduduk_id-error,
+    #jabatan_id-error {
+        order: 2
     }
 </style>
 
@@ -10,7 +11,7 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div style="display: flex; flex-direction: column;">
-            {!! Form::select('penduduk_id', $pendudukList, null, ['class' => 'form-control select2', 'placeholder' => 'Pilih Nama Anggota', 'disabled','style' => 'width:100%;']) !!}
+            {!! Form::select('penduduk_id', $pendudukList, null, ['class' => 'form-control select2', 'placeholder' => 'Pilih Nama Anggota', 'disabled', 'style' => 'width:100%;']) !!}
         </div>
     </div>
 </div>
@@ -29,16 +30,18 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div style="display: flex; flex-direction: column;">
-        {!! Form::select('jabatan_id',
-        [
-            1 => 'Ketua', 
-            2 => 'Wakil Ketua',
-            3 => 'Sekretaris',
-            4 => 'Bendahara',
-            5 => 'Anggota',
-        ],
-        $anggota->jabatan, 
-        ['placeholder' => 'Pilih Jabatan', 'class' => 'form-control select2', 'required' => true, 'style' => 'width:100%;']) !!}
+            {!! Form::select(
+                'jabatan_id',
+                [
+                    1 => 'Ketua',
+                    2 => 'Wakil Ketua',
+                    3 => 'Sekretaris',
+                    4 => 'Bendahara',
+                    5 => 'Anggota',
+                ],
+                $anggota->jabatan,
+                ['placeholder' => 'Pilih Jabatan', 'class' => 'form-control select2', 'required' => true, 'style' => 'width:100%;'],
+            ) !!}
         </div>
     </div>
 </div>

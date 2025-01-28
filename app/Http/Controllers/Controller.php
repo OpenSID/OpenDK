@@ -84,9 +84,9 @@ class Controller extends BaseController
     protected $settings;
 
     protected $umum;
-
+    
     public function __construct()
-    {
+    {        
         if (sudahInstal()) {
             $this->profil = Profil::first();
             $this->umum = DataUmum::first();
@@ -136,8 +136,7 @@ class Controller extends BaseController
             $navdesa = DataDesa::all();
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
-            
-
+                        
             View::share([
                 'profil' => $this->profil,
                 'sebutan_wilayah' => $this->sebutan_wilayah,
@@ -204,4 +203,9 @@ class Controller extends BaseController
             return;
         }
     }
+
+    protected function isDatabaseGabungan()
+    {
+        return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';
+    }    
 }

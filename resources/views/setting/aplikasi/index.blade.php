@@ -32,11 +32,7 @@
                             @forelse($settings as $setting)
                                 <tr>
                                     <td>{{ ucwords(str_replace('_', ' ', $setting->key)) }}</td>
-                                    @if ($setting->type == 'boolean')
-                                        <td>{{ $setting->value == 1 ? 'Aktif' : 'Tidak Aktif' }}</td>
-                                    @else
-                                        <td>{{ $setting->value }}</td>
-                                    @endif
+                                    <td style="width:40%; word-break:break-all;">{{ $setting->type == 'boolean' ? ($setting->value == 1 ? 'Aktif' : 'Tidak Aktif') : $setting->value }}</td>
                                     <td>{{ $setting->description }}</td>
                                     <td>
                                         <a href="{{ route('setting.aplikasi.edit', $setting->id) }}" title="Ubah" data-button="edit">

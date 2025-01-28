@@ -59,7 +59,7 @@
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <h4 class="box-title" style="padding: 15px 0px 10px 0px">Anggota Lembaga</h4>
                 <div class="table-responsive">
                     <table class="table nowrap table-striped table-bordered" id="lembaga-anggota-table" style="width: 100%">

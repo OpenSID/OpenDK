@@ -97,8 +97,12 @@ class DataDesa extends Model
 
     public function scopeNama($query, $value)
     {
-        return $query->where('nama', str_replace('-', ' ', $value));
+        // Ganti '-' dengan spasi dan hilangkan titik '.'
+        $formattedValue = str_replace('-', ' ', $value);
+    
+        return $query->whereRaw("REPLACE(nama, '.', '') LIKE ?", ['%' . $formattedValue . '%']);
     }
+    
 
     /**
      * Scope query untuk website desa.

@@ -13,14 +13,13 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-    
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
-                    
+
                     {!! Form::model($lembaga, ['route' => ['data.lembaga.update', $lembaga->id], 'method' => 'PUT', 'id' => 'form-lembaga', 'class' => 'form-horizontal form-label-left']) !!}
-                    
+
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

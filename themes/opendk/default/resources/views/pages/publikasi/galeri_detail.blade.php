@@ -39,7 +39,7 @@
             @foreach ($galeri->gambar as $item)
             <div class="col-md-6 mt-2">
                 <div class="image-container">
-                    <img id="myImg" class="img-fluid" src="{{ isThumbnail($item) }}" alt="Image">
+                    <img id="myImg" class="img-fluid" src="{{ isThumbnail("publikasi/galeri/{$item}") }}" alt="Image">
                 </div>
             </div>
             @endforeach

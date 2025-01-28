@@ -11,14 +11,14 @@
             <li class="active">{{ $page_title }} </li>
         </ol>
     </section>
-    
+
     <section class="content container-fluid">
 
         @include('partials.flash_message')
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.kategori-lembaga.create')]) 
+                @include('forms.btn-social', ['create_url' => route('data.kategori-lembaga.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

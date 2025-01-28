@@ -86,15 +86,15 @@ class PendudukService
         return collect($data)->map(function ($item) {
             return [
                 'ID' => $item['id'],
-                'nama' => $item['attributes']['nama'] ?? 'Tidak Ada Nama',
+                'nama' => $item['attributes']['nama'] ?? '',
                 'nik' => '`' . $item['attributes']['nik'],
-                'no_kk' => $item['attributes']['keluarga']['no_kk'] ?? 'Tidak Ada KK',
-                'nama_desa' => $item['attributes']['config']['nama_desa'] ?? 'Tidak Ada Desa',
-                'alamat' => $item['attributes']['alamat_sekarang'] ?? 'Tidak Ada Alamat',
-                'pendidikan' => $item['attributes']['pendidikan_k_k']['nama'] ?? 'Tidak Ada Pendidikan',
-                'tanggal_lahir' => $item['attributes']['tanggallahir'] ?? 'Tidak Ada Tanggal Lahir',
-                'pekerjaan' => $item['attributes']['pekerjaan']['nama'] ?? 'Tidak Ada Pekerjaan',
-                'status_kawin' => $item['attributes']['status_kawin']['nama'] ?? 'Tidak Ada Status Kawin',
+                'no_kk' => $item['attributes']['keluarga']['no_kk'] ?? '',
+                'nama_desa' => $item['attributes']['config']['nama_desa'] ?? '',
+                'alamat' => $item['attributes']['alamat_sekarang'] ?? '',
+                'pendidikan' => $item['attributes']['pendidikan_k_k']['nama'] ?? '',
+                'tanggal_lahir' => $item['attributes']['tanggallahir'] ?? '',
+                'pekerjaan' => $item['attributes']['pekerjaan']['nama'] ?? '',
+                'status_kawin' => $item['attributes']['status_kawin']['nama'] ?? '',
             ];
         });
     }

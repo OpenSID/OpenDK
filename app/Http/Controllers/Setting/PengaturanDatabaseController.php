@@ -14,13 +14,20 @@ use Illuminate\Support\Facades\Artisan;
 
 use Illuminate\Support\Facades\File;
 
-// use Log;
+use Exception;
 use App\Http\Controllers\Setting\ZipArchive;
-// use App\Models\Backup;
 
 
 class PengaturanDatabaseController extends Controller
 {
+    // lokasi folder backup disimpan
+    protected $destination;
+
+    public function __construct()
+    {
+        $this->destination = config('backup.backup.name');
+    }
+
     public function index()
     {
         $page_title = 'Backup Database';
@@ -32,15 +39,15 @@ class PengaturanDatabaseController extends Controller
     public function getDataBackup()
     {
         $disk = Storage::disk('local');
-        $files = $disk->files(env('APP_NAME')); // path file
+        $files = $disk->files($this->destination); // path file
 
         $backups = collect($files)->map(function ($file) use ($disk) {
             return [
-                'name' => basename($file), // Nama file backup
-                'size' => $this->formatSizeUnits($disk->size($file)), // Ukuran file
-                'date' => Carbon::createFromTimestamp($disk->lastModified($file))->format('d-m-Y H:i:s'), // Tanggal backup
-                'path' => $disk->path($file), // Lokasi penyimpanan
-                'location' => $file, // Lokasi penyimpanan
+                'name' => basename($file),
+                'size' => $this->formatSizeUnits($disk->size($file)),
+                'date' => Carbon::createFromTimestamp($disk->lastModified($file))->format('d-m-Y H:i:s'),
+                'path' => $disk->path($file),
+                'location' => $file,
             ];
         });
 
@@ -63,15 +70,26 @@ class PengaturanDatabaseController extends Controller
 
     public function createBackup()
     {
-        Artisan::call('backup:run');
-        return response()->json(['success' => true]);
+        try {
+            Log::info('Starting backup process.');
+    
+            Artisan::call('backup:run');
+    
+            Log::info('Backup command output: ' . Artisan::output());
+            Log::info('Ending backup process.');
+    
+            return response()->json(['success' => true, 'message' => 'Backup completed successfully']);
+        } catch (\Exception $e) {
+            Log::error('Backup process failed: ' . $e->getMessage(), ['exception' => $e]);
+    
+            return response()->json(['success' => false, 'message' => 'Backup process failed', 'error' => $e->getMessage()], 500);
+        }
     }
 
     public function downloadBackup($file)
     {
         $disk = Storage::disk('local');
-        // $filePath = 'BackupStorage/' . $file;
-        $filePath = env('APP_NAME')  . '/' . $file;
+        $filePath = "{$this->destination}/{$file}";
 
         if ($disk->exists($filePath)) {
             return $disk->download($filePath);
@@ -83,7 +101,7 @@ class PengaturanDatabaseController extends Controller
     public function deleteBackup($file)
     {
         $disk = Storage::disk('local');
-        $filePath = env('APP_NAME')  . '/' . $file;
+        $filePath = "{$this->destination}/{$file}";
 
         if ($disk->exists($filePath)) {
             $disk->delete($filePath);

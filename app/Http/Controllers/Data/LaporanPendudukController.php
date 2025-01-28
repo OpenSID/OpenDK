@@ -31,14 +31,17 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\LaporanPendudukExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanPenduduk;
 use App\Models\DataDesa;
 use App\Models\LaporanPenduduk;
+use App\Services\LaporanPendudukService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
 
@@ -53,7 +56,7 @@ class LaporanPendudukController extends Controller
     {
         $page_title = 'Laporan Penduduk';
         $page_description = 'Daftar Laporan Penduduk';
-        $list_desa = DataDesa::get();
+        $list_desa = $this->isDatabaseGabungan() ? (new LaporanPendudukService)->desa() : DataDesa::get();
 
         $view = $this->isDatabaseGabungan() ? 'data.laporan-penduduk.gabungan.index' : 'data.laporan-penduduk.index';
         return view($view, compact('page_title', 'page_description', 'list_desa'));
@@ -168,5 +171,20 @@ class LaporanPendudukController extends Controller
         }
 
         return redirect()->route('data.laporan-penduduk.index')->with('success', 'Import data sukses');
+    }
+
+    public function exportExcel() {
+        try {
+            if($this->isDatabaseGabungan()){
+
+                return Excel::download(new LaporanPendudukExport(true), 'laporan-penduduk.xlsx');
+            }else{
+
+                return Excel::download(new LaporanPendudukExport(false), 'laporan-penduduk.xlsx');
+            }
+        } catch (\Exception $e) {
+            report($e);
+
+        }
     }
 }

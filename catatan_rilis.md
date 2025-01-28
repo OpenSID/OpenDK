@@ -5,6 +5,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 #### FITUR
 
 1. [#1027](https://github.com/OpenSID/OpenDK/issues/1027) Penambahan halaman lembaga pada OpenDK.
+2. [#1101](https://github.com/OpenSID/OpenDK/issues/1101) Penambahan pengaturan untuk generate token di OpenDK.
 
 #### BUG
 
@@ -13,6 +14,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 3. [#1084](https://github.com/OpenSID/OpenDK/issues/1084) Perbaikan saat Klik Menu Visi dan Misi di halaman website OpenDK.
 4. [#1091](https://github.com/OpenSID/OpenDK/issues/1091) Perbaikan gambar pada publikasi no image found.
 5. [#1087](https://github.com/OpenSID/OpenDK/issues/1087) Perbaikan nama desa yang menggunakan simbol (.) tidak dapat menampilkan data desanya.
+6. [#1100](https://github.com/OpenSID/OpenDK/issues/1100) Perbaikan error pada halaman menu.
 
 #### TEKNIS
 

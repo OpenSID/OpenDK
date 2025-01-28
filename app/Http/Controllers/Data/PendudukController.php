@@ -42,9 +42,12 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use App\Exports\ExportPenduduk;
+use App\Models\SettingAplikasi;
+use App\Services\PendudukService;
 
 class PendudukController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -54,7 +57,7 @@ class PendudukController extends Controller
     {
         $page_title = 'Penduduk';
         $page_description = 'Data Penduduk';
-        $list_desa = DataDesa::get();
+        $list_desa = $this->isDatabaseGabungan() ? (new PendudukService)->desa() : DataDesa::get();
 
         $view = $this->isDatabaseGabungan() ? 'data.penduduk.gabungan.index' : 'data.penduduk.index';
         return view($view, compact('page_title', 'page_description', 'list_desa'));
@@ -189,7 +192,13 @@ class PendudukController extends Controller
      */
     public function exportExcel(Penduduk $penduduk) {
         try {
-            return Excel::download(new ExportPenduduk, 'data-penduduk.xlsx');
+            if($this->isDatabaseGabungan()){
+
+                return Excel::download(new ExportPenduduk(true), 'data-penduduk.xlsx');
+            }else{
+
+                return Excel::download(new ExportPenduduk(false), 'data-penduduk.xlsx');
+            }
         } catch (\Exception $e) {
             report($e);
 

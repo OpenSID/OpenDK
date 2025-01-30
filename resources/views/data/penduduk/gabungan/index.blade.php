@@ -103,10 +103,56 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.path === undefined ? `javascript:void(0)` : `{{ url('data/penduduk/show')}}/${data.id}`
-                            const _disabled = data.attributes.path === undefined ? 'disabled' : '' 
+                            let d = data.attributes
+                            let obj = {
+                                'id': data.id,
+                                'nama': d.nama,
+                                'nik': d.nik,
+                                'no_kk_sebelumnya': d.no_kk_sebelumnya,
+                                'hubungan_dalam_keluarga': d.penduduk_hubungan.nama ?? null,
+                                'jenis_kelamin': d.jenis_kelamin.nama ?? null,
+                                'agama': d.agama.nama,
+                                'status_penduduk': d.penduduk_status.nama ?? null,
+                                'akta_lahir': d.akta_lahir,
+                                'tempat_lahir': d.tempatlahir,
+                                'tanggal_lahir': d.tanggallahir,
+                                'tanggal_lahir': d.tanggallahir,
+                                'wajib_ktp': d.wajibKTP,
+                                'status_rekam': d.status_rekam_ktp.nama ?? null,
+                                'elktp': d.elKTP,
+                                'pendidikan_dalam_kk': d.pendidikan_k_k.nama ?? null,
+                                'pendidikan_sedang_ditempuh': d.pendidikan.nama ?? null,
+                                'pekerjaan': d.pekerjaan.nama ?? null,
+                                'warga_negara': d.warga_negara.nama ?? null,
+                                'nomor_passport': d.dokumen_pasport,
+                                'tanggal_akhir_passport': d.tanggal_akhir_paspor,
+                                'nomor_kitas': d.dokumen_kitas,
+                                'nik_ayah': d.ayah_nik,
+                                'nama_ayah': d.nama_ayah,
+                                'nik_ibu': d.ibu_nik,
+                                'nama_ibu': d.nama_ibu,
+                                'nomor_telepon': d.telepon,
+                                'alamat_sebelumnya': d.alamat_sebelumnya,
+                                'alamat_sekarang': d.alamat_sekarang,
+                                'status_kawin': d.status_kawin.nama ?? null,
+                                'no_akta_nikah': d.akta_perkawinan,
+                                'tanggal_nikah': d.tanggalperkawinan,
+                                'akta_perceraian': d.akta_perceraian,
+                                'tanggal_perceraian': d.tanggalperceraian,
+                                'golongan_darah': d.golongan_darah.nama ?? null,
+                                'cacat': d.cacat.nama ?? null,
+                                'sakit_menahun': d.sakit_menahun.nama ?? null,
+                                'cara_kb': d.kb.nama ?? null,
+                                'status_kehamilan': d.statusHamil
+                            }
+                            
+                            console.log(obj)
+
+                            let jsonData = encodeURIComponent(JSON.stringify(obj));
+
+                            const _url =  data.attributes.path === undefined ? "{{ route('data.penduduk.detail', ['data' => '__DATA__']) }}".replace('__DATA__', jsonData) : `{{ url('data/penduduk/show')}}/${data.id}`
                             return `<a href="${_url}" title="Lihat" data-button="show" target="_blank">
-                                <button type="button" class="btn btn-warning btn-sm" style="width: 40px;" ${_disabled}><i class="fa fa-eye fa-fw"></i></button>
+                                <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
                             </a>`;
                         },               
                         searchable: false,

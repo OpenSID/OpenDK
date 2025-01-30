@@ -130,6 +130,15 @@ class PendudukController extends Controller
         return view('data.penduduk.show', compact('page_title', 'page_description', 'penduduk'));
     }
 
+    public function detail(Request $request)
+    {
+        $penduduk = json_decode($request->data);
+        $page_title = 'Detail Penduduk';
+        $page_description = 'Detail Data Penduduk: '.ucwords(strtolower($penduduk->nama));
+
+        return view('data.penduduk.gabungan.show', compact('page_title', 'page_description', 'penduduk'));
+    }
+
     /**
      * Display a listing of the resource.
      *

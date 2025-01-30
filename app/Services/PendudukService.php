@@ -47,23 +47,16 @@ class PendudukService
         $params = array_merge($defaultParams, $filters);
 
         // Panggil API dan ambil data
-        $data = $this->apiRequest('/api/v1/opendk/sync-penduduk-opendk', $params);
+        $data = $this->apiRequest('/api/v1/desa', $params);
 
         return collect($data)
         ->map(function ($item) {
             return (object)[
-                'kode_desa' => $item['attributes']['config']['kode_desa'] ?? null, // Ambil kode desa
-                'nama_desa' => $item['attributes']['config']['nama_desa'] ?? null, // Ambil nama desa
+                'id' => $item['id'],
+                'kode_desa' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
+                'nama_desa' => $item['attributes']['nama_desa'] ?? null, // Ambil nama desa
             ];
-        })
-        ->filter(function ($item) {
-            // Hapus item yang memiliki kode desa atau nama desa null
-            return $item->kode_desa && $item->nama_desa;
-        })
-        ->unique('kode_desa') // Hapus duplikat berdasarkan kode desa
-        ->values() // Reset indeks koleksi
-        ->all(); // Konversi ke array of objects
-
+        });
     }
 
     /**

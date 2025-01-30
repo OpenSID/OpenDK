@@ -146,8 +146,6 @@
                                 'status_kehamilan': d.statusHamil
                             }
                             
-                            console.log(obj)
-
                             let jsonData = encodeURIComponent(JSON.stringify(obj));
 
                             const _url =  data.attributes.path === undefined ? "{{ route('data.penduduk.detail', ['data' => '__DATA__']) }}".replace('__DATA__', jsonData) : `{{ url('data/penduduk/show')}}/${data.id}`

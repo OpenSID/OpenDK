@@ -30,7 +30,7 @@
                             <select class="form-control" id="list_desa">
                                 <option value="Semua">Semua Desa</option>
                                 @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->kode_desa }}">{{ $desa->nama_desa }}</option>
+                                    <option value="{{ $desa->nama_desa }}">{{ $desa->nama_desa }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -82,10 +82,15 @@
                         },
                     method: 'get',
                     data: function(row) {
+
+                        var selectedDesa = $('#list_desa').val(); 
+                        var searchValue = row.search.value;
+                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : ''; 
+
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": row.search.value,
+                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch,
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };

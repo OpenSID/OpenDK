@@ -513,6 +513,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('import', ['as' => 'data.laporan-penduduk.import', 'uses' => 'LaporanPendudukController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-penduduk.do_import', 'uses' => 'LaporanPendudukController@do_import']);
                     Route::get('export-excel', ['as' => 'data.laporan-penduduk.export-excel', 'uses' => 'LaporanPendudukController@exportExcel']);
+                    Route::get('export-excel-by-id/{data}', ['as' => 'data.laporan-penduduk.export-excel.by-id', 'uses' => 'LaporanPendudukController@exportExcelById']);
                 });
 
                 // AKI & AKB

@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\LaporanPendudukByIdExport;
 use App\Exports\LaporanPendudukExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanPenduduk;
@@ -181,6 +182,21 @@ class LaporanPendudukController extends Controller
             }else{
 
                 return Excel::download(new LaporanPendudukExport(false), 'laporan-penduduk.xlsx');
+            }
+        } catch (\Exception $e) {
+            report($e);
+
+        }
+    }
+    
+    public function exportExcelById($data) {
+        try {
+            if($this->isDatabaseGabungan()){
+
+                return Excel::download(new LaporanPendudukByIdExport(true, $data), 'laporan-penduduk.xlsx');
+            }else{
+
+                return Excel::download(new LaporanPendudukByIdExport(false, $data), 'laporan-penduduk.xlsx');
             }
         } catch (\Exception $e) {
             report($e);

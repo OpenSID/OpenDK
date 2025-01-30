@@ -30,7 +30,7 @@
                             <select class="form-control" id="list_desa">
                                 <option value="Semua">Semua Desa</option>
                                 @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->kode_desa }}">{{ $desa->nama_desa }}</option>
+                                    <option value="{{ $desa->nama_desa }}">{{ $desa->nama_desa }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -78,10 +78,16 @@
                         },
                     method: 'get',
                     data: function(row) {
+                        var selectedDesa = $('#list_desa').val(); // Ambil nilai kode_desa yang dipilih
+                        var searchValue = row.search.value; // Ambil nilai search dari DataTables
+
+                        // Jika searchValue dan selectedDesa kosong, ambil semua data
+                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : ''; 
+
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": row.search.value,
+                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch, // Gunakan filterSearch di sini
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };
@@ -94,10 +100,10 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.path === undefined ? `javascript:void(0)` : `asset('storage/laporan_penduduk')/${data.nama_file}`
+                            const _url = data.attributes.path === undefined ? `{{ route('data.laporan-penduduk.export-excel.by-id', ['data' => '__DATA__']) }}`.replace('__DATA__', encodeURIComponent(JSON.stringify(data))) : `asset('storage/laporan_penduduk')/${data.nama_file}`
                             const _disabled = data.attributes.path === undefined ? 'disabled' : '' 
                             return `<a href="${_url}" title="Unduh" data-button="download" target="_blank">
-                                <button type="button" class="btn btn-info btn-sm" style="width: 40px;" ${_disabled}>download</button>
+                                <button type="button" class="btn btn-info btn-sm">download</button>
                             </a>`;
                         },               
                         searchable: false,
@@ -142,10 +148,13 @@
                 ]
             });     
 
+             // Event saat list desa berubah
             $('#list_desa').on('select2:select', function(e) {
-                data.ajax.reload();
+                let selectedDesa = $(this).val(); // Ambil nilai kode_desa yang dipilih
+
+                data.ajax.reload(); // Reload tabel dengan filter baru
             });
-            
+
         });
     </script>
     @include('forms.datatable-vertical')    

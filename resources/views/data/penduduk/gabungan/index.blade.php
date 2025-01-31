@@ -73,7 +73,7 @@
                 serverSide: true,
                 ajax: {
                     url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/sync-penduduk-opendk?'.http_build_query([
-                                'kode_kecamatan' => str_replace('.','',$profil->kecamatan_id),
+                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
                             ]) }}`,
                     headers: {
                             "Accept" : "application/ld+json",

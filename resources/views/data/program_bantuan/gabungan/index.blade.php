@@ -61,7 +61,8 @@
                     method: "GET",
                     headers: {
                         "Accept": "application/json",
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     success: function(response) {
                         // Bersihkan select box

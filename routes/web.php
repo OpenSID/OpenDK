@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Api\TokenController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
@@ -849,6 +850,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.aplikasi.index');
                 Route::get('/edit/{aplikasi}', 'edit')->name('setting.aplikasi.edit');
                 Route::put('/update/{aplikasi}', 'update')->name('setting.aplikasi.update');
+                Route::get('token', [TokenController::class, 'index'])->name('setting.aplikasi.token');
             });
 
             Route::group(['prefix' => 'info-sistem', 'controller' => LogViewerController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {

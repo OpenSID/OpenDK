@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,36 +24,38 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Middleware;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use App\Models\SettingAplikasi;
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class SettingAplikasi extends Model
+class TokenRegistered
 {
-    protected $table = 'das_setting';
-    
-    protected $fillable = [
-        'value',
-    ];
-
-    public $timestamps = false;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function () {
-            Cache::forget('setting');
-        });
-
-        static::updated(function () {
-            Cache::forget('setting');
-        });
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     */
+    public function handle(Request $request, Closure $next)
+    {        
+        $token = $request->bearerToken();
+        Log::error($token);
+        $checkToken = SettingAplikasi::where(['key' => 'api_key_opendk', 'value' => $token])->exists();
+        if (!$checkToken) {
+            return response()->json([
+                'error' => 'Token not registered'
+            ], 401);
+        }
+        return $next($request);
     }
 }

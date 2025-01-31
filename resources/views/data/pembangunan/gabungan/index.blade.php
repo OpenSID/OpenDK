@@ -119,17 +119,55 @@
                         }));
                     },
                 },
-                columns: [
-                    { data: 'aksi', name: 'aksi', orderable: false, searchable: false, class: 'text-center' },
-                    { data: 'judul', name: 'judul' },
-                    { data: 'sumber_dana', name: 'sumber_dana' },
-                    { data: 'anggaran', name: 'anggaran', orderable: false, searchable: false },
-                    { data: 'volume', name: 'volume', orderable: false, searchable: false },
-                    { data: 'tahun_anggaran', name: 'tahun_anggaran', orderable: false, searchable: false },
-                    { data: 'pelaksana_kegiatan', name: 'pelaksana_kegiatan', orderable: false, searchable: false },
-                    { data: 'lokasi', name: 'lokasi', orderable: false, searchable: false },
+                columns: [{
+                        data: 'aksi',
+                        name: 'aksi',
+                        orderable: false,
+                        searchable: false,
+                        class: 'text-center'
+                    },
+                    {
+                        data: 'judul',
+                        name: 'judul'
+                    },
+                    {
+                        data: 'sumber_dana',
+                        name: 'sumber_dana'
+                    },
+                    {
+                        data: 'anggaran',
+                        name: 'anggaran',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'volume',
+                        name: 'volume',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'tahun_anggaran',
+                        name: 'tahun_anggaran',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'pelaksana_kegiatan',
+                        name: 'pelaksana_kegiatan',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'lokasi',
+                        name: 'lokasi',
+                        orderable: false,
+                        searchable: false
+                    },
                 ],
-                order: [[1, 'asc']]
+                order: [
+                    [1, 'asc']
+                ]
             });
 
             $('#list_desa').on('select2:select', function() {

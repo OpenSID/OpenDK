@@ -40,7 +40,7 @@ class LaporanPendudukService
     {
         // Default parameter
         $defaultParams = [
-            'kode_kecamatan' => str_replace('.', '', config('profil.kecamatan_id')),
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
         ];
 
         // Gabungkan parameter default dengan filter dinamis
@@ -67,7 +67,7 @@ class LaporanPendudukService
     {
         // Default parameter
         $defaultParams = [
-            'kode_kecamatan' => str_replace('.', '', config('profil.kecamatan_id')),
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
         ];
 
         // Gabungkan parameter default dengan filter dinamis

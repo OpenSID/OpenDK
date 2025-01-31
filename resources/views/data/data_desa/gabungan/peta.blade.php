@@ -43,7 +43,6 @@
                 center: posisi,
                 zoom: 13
             });
-
             if (path_desa.length == 0) {
                 $('#tampil-map div.text-center').html(`<h1>Peta Tidak Tersedia</h1>`)
             }

@@ -10,11 +10,11 @@
 <div class="form-group">
     <label for="value" class="control-label col-md-4 col-sm-3 col-xs-12">Isi</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        @if ($aplikasi->type == 'textarea')            
-            @php 
-                $attribute = ['class' => 'form-control', 'required' => true, 'id' => 'value']; 
+        @if ($aplikasi->type == 'textarea')
+            @php
+                $attribute = ['class' => 'form-control', 'required' => true, 'id' => 'value'];
                 $option = json_decode($aplikasi->option, 1);
-                if($option) {
+                if ($option) {
                     $attribute = array_merge($attribute, $option);
                 }
             @endphp

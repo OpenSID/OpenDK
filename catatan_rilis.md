@@ -8,6 +8,7 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 2. [#1101](https://github.com/OpenSID/OpenDK/issues/1101) Penambahan pengaturan untuk generate token di OpenDK.
 3. [#1109](https://github.com/OpenSID/OpenDK/issues/1109) Penambahan Data desa dengan API database gabungan.
 4. [#1114](https://github.com/OpenSID/OpenDK/issues/1114) Penambahan data bantuan opendk yang menggunakan database gabungan.
+5. [#1115](https://github.com/OpenSID/OpenDK/issues/1115) Penambahan data pembangunan opendk yang menggunakan database gabungan.
 
 #### BUG
 

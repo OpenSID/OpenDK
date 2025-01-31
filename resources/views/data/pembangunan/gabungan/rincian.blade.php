@@ -115,8 +115,7 @@
                         }));
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         render: function(data, type, row, meta) {
                             return meta.row + 1; // Menampilkan nomor urut otomatis
@@ -125,9 +124,22 @@
                         searchable: false,
                         orderable: true
                     },
-                    { data: 'persentase', class: 'text-center', orderable: true },
-                    { data: 'keterangan', class: 'text-center', orderable: false },
-                    { data: 'created_at', class: 'text-center', orderable: false, searchable: false }
+                    {
+                        data: 'persentase',
+                        class: 'text-center',
+                        orderable: true
+                    },
+                    {
+                        data: 'keterangan',
+                        class: 'text-center',
+                        orderable: false
+                    },
+                    {
+                        data: 'created_at',
+                        class: 'text-center',
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
         });

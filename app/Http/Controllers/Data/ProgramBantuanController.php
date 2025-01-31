@@ -49,7 +49,7 @@ class ProgramBantuanController extends Controller
         $page_description = 'Daftar Program Bantuan';
         $list_desa = DataDesa::all();
         
-        $view = (!$this->isDatabaseGabungan()) ? 'data.program_bantuan.gabungan.index' : 'data.program_bantuan.index';
+        $view = ($this->isDatabaseGabungan()) ? 'data.program_bantuan.gabungan.index' : 'data.program_bantuan.index';
         return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
@@ -81,7 +81,7 @@ class ProgramBantuanController extends Controller
         $page_description = 'Program Bantuan - '.$nama;
         
         if($this->isDatabaseGabungan()){
-            $view = $this->isDatabaseGabungan() ? 'data.program_bantuan.gabungan.show' : 'data.program_bantuan.gabungan.show';
+            $view = 'data.program_bantuan.gabungan.show';
             return view($view, compact('page_title', 'sasaran', 'id', 'desa_id', 'page_description'));
         }
 

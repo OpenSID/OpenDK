@@ -16,7 +16,7 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">            
+        <div class="box box-primary">
 
             <div class="box-body">
                 <div class="table-responsive">

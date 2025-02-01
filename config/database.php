@@ -90,6 +90,15 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+
+            // Konfigurasi tambahan untuk database dump
+            // https://github.com/spatie/laravel-backup/issues/172#issuecomment-381390641
+            'dump' => [
+                // 'dump_binary_path' => '/usr/bin', // Sesuaikan dengan lokasi binary mysqldump di server
+                // 'use_single_transaction' => true, // InnoDB
+                // 'timeout' => 60, // Waktu timeout dalam detik
+                'add_extra_option' => '--password=' . env('DB_PASSWORD', ''),
+            ],
         ],
 
         'pgsql' => [

@@ -66,7 +66,11 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         Route::get('me', 'me');
     });
 
-    Route::group(['middleware' => ['auth:api', 'role:admin-desa']], function () {
+    Route::group(['middleware' => ['auth:api', 'token.registered']], function () {
+        // digunakan untuk test apakah api berjalan
+        Route::get('test', function () {
+            return response()->json('Welcome to api route');
+        });
         /**
          * Penduduk
          */

@@ -1,6 +1,4 @@
-Di rilis versi v2501.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
-
-Terima kasih pada @uddinmtm telah ikut berkontribusi.
+Di rilis versi v2502.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 #### FITUR
 

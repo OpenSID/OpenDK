@@ -16,8 +16,8 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary"> 
-            
+        <div class="box box-primary">
+
             <div class="box-header with-border">
                 @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')])
             </div>
@@ -66,26 +66,27 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#list_desa').select2();
-            
+
             var data = $('#datadesa-table').DataTable({
                 responsive: true,
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/sync-penduduk-opendk?'.http_build_query([
-                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
-                            ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/sync-penduduk-opendk?' .
+                        http_build_query([
+                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
+                        ]) }}`,
                     headers: {
-                            "Accept" : "application/ld+json",
-                            "Content-Type": "text/json; charset=utf-8",
-                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                        },
+                        "Accept": "application/ld+json",
+                        "Content-Type": "text/json; charset=utf-8",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                    },
                     method: 'get',
                     data: function(row) {
 
-                        var selectedDesa = $('#list_desa').val(); 
+                        var selectedDesa = $('#list_desa').val();
                         var searchValue = row.search.value;
-                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : ''; 
+                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : '';
 
                         return {
                             "page[size]": row.length,
@@ -145,14 +146,14 @@
                                 'cara_kb': d.kb.nama ?? null,
                                 'status_kehamilan': d.statusHamil
                             }
-                            
+
                             let jsonData = encodeURIComponent(JSON.stringify(obj));
 
-                            const _url =  data.attributes.path === undefined ? "{{ route('data.penduduk.detail', ['data' => '__DATA__']) }}".replace('__DATA__', jsonData) : `{{ url('data/penduduk/show')}}/${data.id}`
+                            const _url = data.attributes.path === undefined ? "{{ route('data.penduduk.detail', ['data' => '__DATA__']) }}".replace('__DATA__', jsonData) : `{{ url('data/penduduk/show') }}/${data.id}`
                             return `<a href="${_url}" title="Lihat" data-button="show" target="_blank">
                                 <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
                             </a>`;
-                        },               
+                        },
                         searchable: false,
                         orderable: false
                     },
@@ -241,26 +242,26 @@
                 order: [
                     [1, 'asc']
                 ]
-            });  
-            
+            });
+
             $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
             });
-            
+
             // Fungsi untuk menentukan URL gambar
             function getImageUrl(data, sex) {
                 if (data !== null) {
                     return data; // Jika data tersedia, gunakan data sebagai URL
                 }
                 // Jika data kosong, gunakan gambar default berdasarkan jenis kelamin
-                return sex == 2 
-                    ? `{{ asset('img/pengguna/wuser.png') }}`
-                    : `{{ asset('img/pengguna/kuser.png') }}`;
+                return sex == 2 ?
+                    `{{ asset('img/pengguna/wuser.png') }}` :
+                    `{{ asset('img/pengguna/kuser.png') }}`;
             }
 
 
 
         });
     </script>
-    @include('forms.datatable-vertical')    
+    @include('forms.datatable-vertical')
 @endpush

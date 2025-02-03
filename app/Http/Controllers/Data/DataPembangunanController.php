@@ -46,7 +46,8 @@ class DataPembangunanController extends Controller
         $page_description = 'Data Pembangunan';
         $list_desa = DataDesa::get();
 
-        return view('data.pembangunan.index', compact('page_title', 'page_description', 'list_desa'));
+        $view = ($this->isDatabaseGabungan()) ? 'data.pembangunan.gabungan.index' : 'data.pembangunan.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     public function getPembangunan(Request $request)
@@ -71,11 +72,13 @@ class DataPembangunanController extends Controller
 
     public function rincian($id, $desa_id)
     {
+        $id = $id;
+        $desa_id = $desa_id;
         $page_title = 'Pembangunan';
         $page_description = 'Rincian Pembangunan';
-        $pembangunan = Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first();
-
-        return view('data.pembangunan.rincian', compact('page_title', 'page_description', 'pembangunan'));
+        $pembangunan = Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first() ?? '';
+        $view = ($this->isDatabaseGabungan()) ? 'data.pembangunan.gabungan.rincian' : 'data.pembangunan.rincian ';
+        return view($view, compact('page_title', 'page_description', 'pembangunan', 'id', 'desa_id'));
     }
 
     public function getrinciandata($id, $desa_id)

@@ -1,7 +1,8 @@
 <style>
     /* custom error css order */
-    #lembaga_kategori_id-error, #penduduk_id-error{
-        order:2
+    #lembaga_kategori_id-error,
+    #penduduk_id-error {
+        order: 2
     }
 </style>
 
@@ -36,7 +37,7 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div style="display: flex; flex-direction: column;">
-        {!! Form::select('penduduk_id', $pendudukList, null, ['class' => 'form-control select2', 'placeholder' => 'Pilih Ketua Lembaga', 'required' => true, 'style' => 'width:100%;']) !!}
+            {!! Form::select('penduduk_id', $pendudukList, null, ['class' => 'form-control select2', 'placeholder' => 'Pilih Ketua Lembaga', 'required' => true, 'style' => 'width:100%;']) !!}
         </div>
     </div>
 </div>

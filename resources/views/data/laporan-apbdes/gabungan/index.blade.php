@@ -76,31 +76,36 @@
                     },
                 },
                 columns: [{
-                        data: 'aksi',
-                        name: 'aksi',
-                        class: 'text-center',
-                        "searchable": false,
-                        "orderable": false
+                        data: function(data) {
+                            const _url = data.attributes.url_file;                            
+                            return `<a href="${_url}" title="Unduh" data-button="download" target="_blank">
+                                <button type="button" class="btn btn-info btn-sm">download</button>
+                            </a>`;
+                        },               
+                        searchable: false,
+                        orderable: false
                     },
                     {
-                        data: 'nama_desa',
-                        name: 'config.nama_desa'
+                        data: 'attributes.nama_desa',
+                        name: 'config.nama_desa',
+                        defaultContent: '-'
                     },
                     {
-                        data: 'judul',
+                        data: 'attributes.judul',
                         name: 'judul'
                     },
                     {
-                        data: 'tahun',
+                        data: 'attributes.tahun',
                         name: 'tahun'
                     },
                     {
-                        data: 'semester',
+                        data: 'attributes.semester',
                         name: 'semester'
                     },
                     {
-                        data: 'created_at_local',
-                        name: 'created_at'
+                        data: 'attributes.created_at_local',
+                        name: 'created_at',
+                        searchable: false,
                     },
 
                 ],

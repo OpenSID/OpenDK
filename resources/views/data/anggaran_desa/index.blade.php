@@ -43,7 +43,6 @@
     </section>
 @endsection
 
-@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
@@ -101,6 +100,5 @@
             });
         });
     </script>
-    @include('forms.datatable-vertical')
-    @include('forms.delete-modal')
+    @include('forms.datatable-vertical') 
 @endpush

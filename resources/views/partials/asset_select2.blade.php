@@ -1,6 +1,6 @@
 @push('css')
     <!-- Select2 -->
-    <link rel="stylesheet" href="{{ asset('/bower_components/select2/dist/css/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/bower_components/select2/dist/css/select2.min.css') }}">    
 @endpush
 
 @push('scripts')

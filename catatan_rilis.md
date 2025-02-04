@@ -1,6 +1,4 @@
-Di rilis versi v2501.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
-
-Terima kasih pada @uddinmtm telah ikut berkontribusi.
+Di rilis versi v2502.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 #### FITUR
 
@@ -9,6 +7,8 @@ Terima kasih pada @uddinmtm telah ikut berkontribusi.
 3. [#1109](https://github.com/OpenSID/OpenDK/issues/1109) Penambahan Data desa dengan API database gabungan.
 4. [#1114](https://github.com/OpenSID/OpenDK/issues/1114) Penambahan data bantuan opendk yang menggunakan database gabungan.
 5. [#1115](https://github.com/OpenSID/OpenDK/issues/1115) Penambahan data pembangunan opendk yang menggunakan database gabungan.
+6. [#1118](https://github.com/OpenSID/OpenDK/issues/1118) Penambahan tarik data laporan penduduk dengan API database gabungan.
+7. [#1119](https://github.com/OpenSID/OpenDK/issues/1119) Penambahan tarik data penduduk dengan API database gabungan.
 
 #### BUG
 

@@ -207,5 +207,5 @@ class Controller extends BaseController
     protected function isDatabaseGabungan()
     {
         return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';
-    }    
+    }
 }

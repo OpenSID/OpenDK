@@ -3,7 +3,7 @@
         <div class="form-group">
             <label>Desa</label>
             <select class="form-control" id="list_desa">
-                
+
             </select>
         </div>
     </div>
@@ -27,10 +27,10 @@
                     dataType: 'json',
                     delay: 400,
                     data: function(params) {
-                        return {                            
+                        return {
                             "filter[search]": params.term,
                             "page[number]": params.page,
-                            "fields[config]": "id,nama_desa",                            
+                            "fields[config]": "id,nama_desa",
                         };
                     },
                     processResults: function(response, params) {
@@ -55,12 +55,12 @@
                     // You can find all of the options in the language files provided in the
                     // build. They all must be functions that return the string that should be
                     // displayed.
-                    inputTooShort: function () {
+                    inputTooShort: function() {
                         return "Masukkan minimal 2 karakter";
                     }
                 }
 
-            });            
+            });
         });
-    </script>    
+    </script>
 @endpush

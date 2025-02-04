@@ -16,14 +16,14 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">            
+        <div class="box box-primary">
             <div class="box-body">
                 @include('layouts.fragments.list-desa-gabungan')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="anggaran-table">
                         <thead>
-                            <tr>                                
+                            <tr>
                                 <th>Desa</th>
                                 <th>No Akun</th>
                                 <th>Nama Akun</th>
@@ -57,13 +57,13 @@
                         "Accept": "application/ld+json",
                         "Content-Type": "text/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                    },                    
+                    },
                     data: function(row) {
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": row.search.value,  
-                            "filter[config_id]": $('#list_desa').val(),                         
+                            "filter[search]": row.search.value,
+                            "filter[config_id]": $('#list_desa').val(),
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };
@@ -75,8 +75,7 @@
                         return json.data
                     },
                 },
-                columns: [                
-                    {
+                columns: [{
                         data: 'attributes.nama_desa',
                         name: 'config.nama_desa'
                     },
@@ -86,12 +85,12 @@
                     },
                     {
                         data: 'attributes.uraian',
-                        name: 'keuangan_template.uraian',                        
+                        name: 'keuangan_template.uraian',
                     },
                     {
                         data: 'attributes.anggaran_local',
                         name: 'anggaran',
-                        class: 'text-right',                        
+                        class: 'text-right',
                     },
                     {
                         data: null,
@@ -99,18 +98,20 @@
                         defaultContent: '-',
                         searchable: false,
                         orderable: false,
-                    },                    
+                    },
                     {
                         data: 'attributes.tahun',
                         name: 'tahun'
                     },
                 ],
-                order: [[5, 'desc']],
-                
+                order: [
+                    [5, 'desc']
+                ],
+
             });
             $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
             });
         });
-    </script>   
+    </script>
 @endpush

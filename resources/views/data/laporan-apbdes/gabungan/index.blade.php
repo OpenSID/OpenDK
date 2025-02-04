@@ -17,7 +17,7 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">            
+        <div class="box box-primary">
             <div class="box-body">
                 @include('layouts.fragments.list-desa-gabungan')
                 <hr>
@@ -43,7 +43,7 @@
 
 @push('scripts')
     <script type="text/javascript">
-        $(document).ready(function() {           
+        $(document).ready(function() {
             var data = $('#apbdes-table').DataTable({
                 autoWidth: true,
                 processing: true,
@@ -57,13 +57,13 @@
                         "Accept": "application/ld+json",
                         "Content-Type": "text/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                    },                    
+                    },
                     data: function(row) {
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": row.search.value,  
-                            "filter[config_id]": $('#list_desa').val(),                         
+                            "filter[search]": row.search.value,
+                            "filter[config_id]": $('#list_desa').val(),
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };
@@ -77,11 +77,11 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.url_file;                            
+                            const _url = data.attributes.url_file;
                             return `<a href="${_url}" title="Unduh" data-button="download" target="_blank">
                                 <button type="button" class="btn btn-info btn-sm">download</button>
                             </a>`;
-                        },               
+                        },
                         searchable: false,
                         orderable: false
                     },
@@ -118,6 +118,6 @@
                 data.ajax.reload();
             });
         });
-    </script>    
-    @include('forms.datatable-vertical') 
+    </script>
+    @include('forms.datatable-vertical')
 @endpush

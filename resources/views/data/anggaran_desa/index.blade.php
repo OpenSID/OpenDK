@@ -100,5 +100,5 @@
             });
         });
     </script>
-    @include('forms.datatable-vertical') 
+    @include('forms.datatable-vertical')
 @endpush

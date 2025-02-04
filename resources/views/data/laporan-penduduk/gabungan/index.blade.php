@@ -16,7 +16,7 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">            
+        <div class="box box-primary">
 
             <div class="box-header with-border">
                 @include('forms.btn-social', ['export_url' => route('data.laporan-penduduk.export-excel')])
@@ -68,21 +68,22 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/laporan-penduduk?'.http_build_query([
-                                'filter[kode_kecamatan]' => str_replace('.','',$profil->kecamatan_id),
-                            ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/laporan-penduduk?' .
+                        http_build_query([
+                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
+                        ]) }}`,
                     headers: {
-                            "Accept" : "application/ld+json",
-                            "Content-Type": "text/json; charset=utf-8",
-                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                        },
+                        "Accept": "application/ld+json",
+                        "Content-Type": "text/json; charset=utf-8",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                    },
                     method: 'get',
                     data: function(row) {
                         var selectedDesa = $('#list_desa').val(); // Ambil nilai kode_desa yang dipilih
                         var searchValue = row.search.value; // Ambil nilai search dari DataTables
 
                         // Jika searchValue dan selectedDesa kosong, ambil semua data
-                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : ''; 
+                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : '';
 
                         return {
                             "page[size]": row.length,
@@ -101,11 +102,11 @@
                 columns: [{
                         data: function(data) {
                             const _url = data.attributes.path === undefined ? `{{ route('data.laporan-penduduk.export-excel.by-id', ['data' => '__DATA__']) }}`.replace('__DATA__', encodeURIComponent(JSON.stringify(data))) : `asset('storage/laporan_penduduk')/${data.nama_file}`
-                            const _disabled = data.attributes.path === undefined ? 'disabled' : '' 
+                            const _disabled = data.attributes.path === undefined ? 'disabled' : ''
                             return `<a href="${_url}" title="Unduh" data-button="download" target="_blank">
                                 <button type="button" class="btn btn-info btn-sm">download</button>
                             </a>`;
-                        },               
+                        },
                         searchable: false,
                         orderable: false
                     },
@@ -146,9 +147,9 @@
                 order: [
                     [1, 'asc']
                 ]
-            });     
+            });
 
-             // Event saat list desa berubah
+            // Event saat list desa berubah
             $('#list_desa').on('select2:select', function(e) {
                 let selectedDesa = $(this).val(); // Ambil nilai kode_desa yang dipilih
 
@@ -157,5 +158,5 @@
 
         });
     </script>
-    @include('forms.datatable-vertical')    
+    @include('forms.datatable-vertical')
 @endpush

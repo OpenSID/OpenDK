@@ -42,8 +42,8 @@ class AnggaranRealisasiController extends Controller
 {
     public function index()
     {
-        $page_title = 'Anggran & Realisasi';
-        $page_description = 'Data Anggran & Realisasi';
+        $page_title = 'Anggaran & Realisasi';
+        $page_description = 'Data Anggaran & Realisasi';
 
         return view('data.anggaran_realisasi.index', compact('page_title', 'page_description'));
     }

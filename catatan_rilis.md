@@ -9,6 +9,7 @@ Di rilis versi v2502.0.0 di versi ini terdapat modul komentar pada artikel dan p
 5. [#1115](https://github.com/OpenSID/OpenDK/issues/1115) Penambahan data pembangunan opendk yang menggunakan database gabungan.
 6. [#1118](https://github.com/OpenSID/OpenDK/issues/1118) Penambahan tarik data laporan penduduk dengan API database gabungan.
 7. [#1119](https://github.com/OpenSID/OpenDK/issues/1119) Penambahan tarik data penduduk dengan API database gabungan.
+8. [#1117](https://github.com/OpenSID/OpenDK/issues/1117) Penambahan tarik data API data Laporan APBDes dengan parameter kode kecamatan dari OpenDK.
 
 #### BUG
 

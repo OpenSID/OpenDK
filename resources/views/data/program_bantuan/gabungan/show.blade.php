@@ -82,10 +82,10 @@
                     ]) }}`,
                 method: 'GET',
                 headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "application/json; charset=utf-8",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                    },
+                    "Accept": "application/ld+json",
+                    "Content-Type": "application/json; charset=utf-8",
+                    "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                },
                 success: function(response) {
                     // Tampilkan data program
                     if (response.data) {

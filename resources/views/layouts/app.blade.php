@@ -21,6 +21,8 @@
     @stack('css')
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('js/sweetalert2/sweetalert2.min.css') }}">
     <!--
         AdminLTE Skins. We have chosen the skin-blue for this starter
         page. However, you can choose any other skin. Make sure you
@@ -40,6 +42,24 @@
 
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+    {{-- filepond --}}
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet">
+
+    <style>
+        .pagination {
+            margin: 0; /* Hilangkan margin bawaan */
+            vertical-align: middle; /* Pastikan sejajar */
+        }
+
+        .pagination li {
+            vertical-align: middle; /* Pastikan setiap elemen di dalamnya sejajar */
+        }
+
+    </style>
+
+    @stack('styles')
 
     @livewireStyles
 </head>
@@ -98,40 +118,106 @@ desired effect
     <!-- iCheck -->
     <script src="{{ asset('/bower_components/admin-lte/plugins/iCheck/icheck.min.js') }}"></script>
 
-    {{-- alpine.js --}}
+    <script src="{{ asset('js/sweetalert2/sweetalert2.all.min.js') }}"></script>
+
+    <!-- alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- sortablejs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+    <!-- tom select -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+
+    <!-- filepond -->
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
+    <script>
+        FilePond.registerPlugin(FilePondPluginFileValidateType);
+        FilePond.registerPlugin(FilePondPluginFileValidateSize);
+        FilePond.registerPlugin(FilePondPluginImagePreview);
+    </script>
+
+
     @stack('scripts')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. -->
     <script type="application/javascript">
-    $(document).ready(function(){
+        $(document).ready(function(){
 
-        //Check to see if the window is top if not then display button
-        $(window).scroll(function(){
-            if ($(this).scrollTop() > 100) {
-                $('.scrollToTop').fadeIn();
-            } else {
-                $('.scrollToTop').fadeOut();
-            }
-        });
-
-        //Click event to scroll to top
-        $('.scrollToTop').click(function(){
-            $('html, body').animate({scrollTop : 0},800);
-            return false;
-        });
-
-        window.setTimeout(function() {
-            $("#notifikasi").fadeTo(500, 0).slideUp(500, function(){
-                $(this).remove();
+            //Check to see if the window is top if not then display button
+            $(window).scroll(function(){
+                if ($(this).scrollTop() > 100) {
+                    $('.scrollToTop').fadeIn();
+                } else {
+                    $('.scrollToTop').fadeOut();
+                }
             });
-        }, 5000);
-    });
-</script>
+
+            //Click event to scroll to top
+            $('.scrollToTop').click(function(){
+                $('html, body').animate({scrollTop : 0},800);
+                return false;
+            });
+
+            window.setTimeout(function() {
+                $("#notifikasi").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 5000);
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            
+                window.addEventListener('form', event => {
+                $('#myModal').modal(event.detail.param);
+                });
+
+            window.addEventListener('form-copy', event => {
+                $(`#${event.detail.nameId}`).modal(event.detail.param);
+            });
+
+            window.addEventListener('modal', event => {
+                $(`#${event.detail.nameId}`).modal(event.detail.param);
+            });
+
+                window.addEventListener('modalCetakSemua', event => {
+                $('#myModalCetakSemua').modal(event.detail.param);
+                });
+                
+                window.livewire.on('success', (message) => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: message,
+                    showConfirmButton: true,
+                    timer: 1500
+                })
+                $('#myModal').modal('hide');
+                });
+
+                window.livewire.on('error', (message) => {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: message,
+                    showConfirmButton: true,
+                    timer: 1500
+                })
+                
+                });
+            })
+    </script>
 
     @livewireScripts
+
 
 </body>
 

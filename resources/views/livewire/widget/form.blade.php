@@ -6,7 +6,7 @@
             </x-button>
         </div>
         <div class="box-body">
-            
+
             <form class="form-horizontal" enctype="multipart/form-data">
                 <div class="box-body">
 
@@ -46,7 +46,7 @@
                             <x-input-validation name="widget.jenis_widget" />
                         </div>
                     </x-form-group>
-                    
+
                     @if ($widget->jenis_widget == 2)
                         <x-form-group name="widget.isi">
                             <x-label for="widget.isi">Nama File Widget (.php)</x-label>
@@ -64,7 +64,6 @@
                                             </option>
                                         @endforeach
                                     </x-tom-select>
-                                
                                 @else
                                     <span class="help-block"><code>Widget tidak tersedia atau sudah ditambahkan semua</code></span>
                                 @endif

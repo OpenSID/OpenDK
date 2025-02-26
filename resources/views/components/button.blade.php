@@ -15,4 +15,3 @@
         {{ $slot }}
     @endif
 </button>
-

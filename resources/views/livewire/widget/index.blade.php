@@ -13,15 +13,11 @@
     <section class="content container-fluid">
 
         <livewire:components.alert />
-        
-        @if($form)
 
+        @if ($form)
             @include('livewire.widget.form')
-
         @else
-
             @include('livewire.widget.table')
-
         @endif
     </section>
 </div>

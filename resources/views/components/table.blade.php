@@ -19,12 +19,8 @@
     </div>
 </div>
 
-
 <div class="table-responsive">
-    <table 
-    {{ $attributes }} 
-    {{ $attributes->merge(['class' => 'table table-striped table-bordered']) }}
-    >
+    <table {{ $attributes }} {{ $attributes->merge(['class' => 'table table-striped table-bordered']) }}>
         {{ $slot }}
     </table>
 

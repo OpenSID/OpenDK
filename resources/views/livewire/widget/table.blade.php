@@ -4,8 +4,7 @@
             <x-button color="success" wire:click="create" loading="Tambah...">
                 <i class="fa fa-plus"></i> Tambah
             </x-button>
-            <button wire:click="$emit('deleteSelected')" class="btn btn-danger btn-sm"
-                {{ count($selectedItems) === 0 ? 'disabled' : '' }}>
+            <button wire:click="$emit('deleteSelected')" class="btn btn-danger btn-sm" {{ count($selectedItems) === 0 ? 'disabled' : '' }}>
                 Hapus Terpilih ({{ count($selectedItems) }})
             </button>
         </div>
@@ -33,25 +32,25 @@
                 </x-table-columns>
                 <x-table-rows sortable>
                     @foreach ($widgets as $item)
-                    <x-table-row wire:key="{{ $item->id }}" :id="$item->id" data-id="{{ $item->id }}" class="drag-handle">
-                        <x-table-cell>{{ $loop->iteration }}</x-table-cell>
-                        <x-table-cell>
-                            <x-button-edit-table :param="$item->id" :name="$item->judul" />
-                            <x-button-status-table :param="$item->id" :name="$item->judul" :icon="$item->enabled == 1 ? 'unlock': 'lock'" />
-                            <x-button-hapus-table :param="$item->id" :name="$item->judul" />
-                        </x-table-cell>
-                        <x-table-cell>{{ $item->judul }}</x-table-cell>
-                        <x-table-cell>
-                            @if ($item->jenis_widget == 1)
-                                Sistem
-                            @elseif($item->jenis_widget == 2)
-                                Statis
-                            @elseif($item->jenis_widget == 3)
-                                Dinamis
-                            @endif
-                        </x-table-cell>
-                        <x-table-cell>{{ Str::words($item->isi, 5) }}</x-table-cell>
-                    </x-table-row>
+                        <x-table-row wire:key="{{ $item->id }}" :id="$item->id" data-id="{{ $item->id }}" class="drag-handle">
+                            <x-table-cell>{{ $loop->iteration }}</x-table-cell>
+                            <x-table-cell>
+                                <x-button-edit-table :param="$item->id" :name="$item->judul" />
+                                <x-button-status-table :param="$item->id" :name="$item->judul" :icon="$item->enabled == 1 ? 'unlock' : 'lock'" />
+                                <x-button-hapus-table :param="$item->id" :name="$item->judul" />
+                            </x-table-cell>
+                            <x-table-cell>{{ $item->judul }}</x-table-cell>
+                            <x-table-cell>
+                                @if ($item->jenis_widget == 1)
+                                    Sistem
+                                @elseif($item->jenis_widget == 2)
+                                    Statis
+                                @elseif($item->jenis_widget == 3)
+                                    Dinamis
+                                @endif
+                            </x-table-cell>
+                            <x-table-cell>{{ Str::words($item->isi, 5) }}</x-table-cell>
+                        </x-table-row>
                     @endforeach
                 </x-table-rows>
             </x-table>

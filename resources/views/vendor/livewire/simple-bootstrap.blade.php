@@ -8,7 +8,7 @@
                         <span>@lang('pagination.previous')</span>
                     </li>
                 @else
-                    @if(method_exists($paginator,'getCursorName'))
+                    @if (method_exists($paginator, 'getCursorName'))
                         <li>
                             <a href="javascript:void(0);" dusk="previousPage" wire:click="setPage('{{ $paginator->previousCursor()->encode() }}', '{{ $paginator->getCursorName() }}')" wire:loading.attr="disabled" rel="prev">@lang('pagination.previous')</a>
                         </li>
@@ -21,7 +21,7 @@
 
                 {{-- Next Page Link --}}
                 @if ($paginator->hasMorePages())
-                    @if(method_exists($paginator,'getCursorName'))
+                    @if (method_exists($paginator, 'getCursorName'))
                         <li>
                             <a href="javascript:void(0);" dusk="nextPage" wire:click="setPage('{{ $paginator->nextCursor()->encode() }}', '{{ $paginator->getCursorName() }}')" wire:loading.attr="disabled" rel="next">@lang('pagination.next')</a>
                         </li>

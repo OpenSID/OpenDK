@@ -476,6 +476,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
                     Route::get('export-excel', ['as' => 'data.penduduk.export-excel', 'uses' => 'PendudukController@exportExcel']);
+                    Route::get('detail', ['as' => 'data.penduduk.detail', 'uses' => 'PendudukController@detail']);
                 });
 
                 // Keluarga
@@ -513,6 +514,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('download{id}', ['as' => 'data.laporan-penduduk.download', 'uses' => 'LaporanPendudukController@download']);
                     Route::get('import', ['as' => 'data.laporan-penduduk.import', 'uses' => 'LaporanPendudukController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-penduduk.do_import', 'uses' => 'LaporanPendudukController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.laporan-penduduk.export-excel', 'uses' => 'LaporanPendudukController@exportExcel']);
+                    Route::get('export-excel-by-id/{data}', ['as' => 'data.laporan-penduduk.export-excel.by-id', 'uses' => 'LaporanPendudukController@exportExcelById']);
                 });
 
                 // AKI & AKB
@@ -594,7 +597,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'program-bantuan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.program-bantuan.index', 'uses' => 'ProgramBantuanController@index']);
                     Route::get('getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
-                    Route::get('show/{id}/{id_desa}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
+                    Route::get('show/{id}/{id_desa}/{nama?}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
                 });

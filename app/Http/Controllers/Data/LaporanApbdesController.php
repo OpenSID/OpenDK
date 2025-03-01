@@ -53,9 +53,12 @@ class LaporanApbdesController extends Controller
     {
         $page_title = 'Laporan APBDes';
         $page_description = 'Daftar Laporan APBDes';
-        $list_desa = DataDesa::get();
-
-        return view('data.laporan-apbdes.index', compact('page_title', 'page_description', 'list_desa'));
+        $list_desa = [];
+        $view = $this->isDatabaseGabungan() ? 'data.laporan-apbdes.gabungan.index' : 'data.laporan-apbdes.index';
+        if(!$this->isDatabaseGabungan()) {
+            $list_desa = DataDesa::get();
+        }
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**

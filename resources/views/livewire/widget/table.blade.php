@@ -33,7 +33,7 @@
                 </x-table-columns>
                 <x-table-rows sortable>
                     @foreach ($widgets as $item)
-                    <x-table-row wire:key="{{ $item->id }}" :id="$item->id" data-id="{{ $item->id }}" class="drag-handle">
+                    <x-table-row :id="$item->id">
                         <x-table-cell>{{ $loop->iteration }}</x-table-cell>
                         <x-table-cell>
                             <x-button-edit-table :param="$item->id" :name="$item->judul" />

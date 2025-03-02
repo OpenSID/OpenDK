@@ -49,14 +49,16 @@
 
     <style>
         .pagination {
-            margin: 0; /* Hilangkan margin bawaan */
-            vertical-align: middle; /* Pastikan sejajar */
+            margin: 0;
+            /* Hilangkan margin bawaan */
+            vertical-align: middle;
+            /* Pastikan sejajar */
         }
 
         .pagination li {
-            vertical-align: middle; /* Pastikan setiap elemen di dalamnya sejajar */
+            vertical-align: middle;
+            /* Pastikan setiap elemen di dalamnya sejajar */
         }
-
     </style>
 
     @stack('styles')
@@ -141,7 +143,6 @@ desired effect
         FilePond.registerPlugin(FilePondPluginImagePreview);
     </script>
 
-
     @stack('scripts')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
@@ -175,10 +176,10 @@ desired effect
 
     <script>
         $(document).ready(function() {
-            
-                window.addEventListener('form', event => {
+
+            window.addEventListener('form', event => {
                 $('#myModal').modal(event.detail.param);
-                });
+            });
 
             window.addEventListener('form-copy', event => {
                 $(`#${event.detail.nameId}`).modal(event.detail.param);
@@ -188,11 +189,11 @@ desired effect
                 $(`#${event.detail.nameId}`).modal(event.detail.param);
             });
 
-                window.addEventListener('modalCetakSemua', event => {
+            window.addEventListener('modalCetakSemua', event => {
                 $('#myModalCetakSemua').modal(event.detail.param);
-                });
-                
-                window.livewire.on('success', (message) => {
+            });
+
+            window.livewire.on('success', (message) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -201,9 +202,9 @@ desired effect
                     timer: 1500
                 })
                 $('#myModal').modal('hide');
-                });
+            });
 
-                window.livewire.on('error', (message) => {
+            window.livewire.on('error', (message) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',
@@ -211,13 +212,12 @@ desired effect
                     showConfirmButton: true,
                     timer: 1500
                 })
-                
-                });
-            })
+
+            });
+        })
     </script>
 
     @livewireScripts
-
 
 </body>
 

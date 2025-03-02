@@ -1,4 +1,1 @@
-<input 
-{!! $attributes !!}
-{{ $attributes->merge(['class' => 'form-control input-sm']) }} 
->
+<input {!! $attributes !!} {{ $attributes->merge(['class' => 'form-control input-sm']) }}>

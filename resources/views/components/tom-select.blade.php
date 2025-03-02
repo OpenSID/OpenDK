@@ -1,7 +1,4 @@
-<select
-x-data="{ value: @entangle($attributes->wire('model')).defer }"
-x-init="
-new TomSelect($el,{
+<select x-data="{ value: @entangle($attributes->wire('model')).defer }" x-init="new TomSelect($el, {
     sortField: {
         field: 'name',
         direction: 'asc'
@@ -9,9 +6,6 @@ new TomSelect($el,{
     valueField: 'id',
     labelField: 'name',
     searchField: 'name'
-});
-"
-{{ $attributes }}
->
-{{ $slot }}
+});" {{ $attributes }}>
+    {{ $slot }}
 </select>

@@ -4,8 +4,7 @@
             <x-button color="success" wire:click="create" loading="Tambah...">
                 <i class="fa fa-plus"></i> Tambah
             </x-button>
-            <button wire:click="$emit('deleteSelected')" class="btn btn-danger btn-sm"
-                {{ count($selectedItems) === 0 ? 'disabled' : '' }}>
+            <button wire:click="$emit('deleteSelected')" class="btn btn-danger btn-sm" {{ count($selectedItems) === 0 ? 'disabled' : '' }}>
                 Hapus Terpilih ({{ count($selectedItems) }})
             </button>
         </div>

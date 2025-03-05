@@ -24,18 +24,15 @@ class LaporanPendudukByIdExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        // Mengambil atribut yang relevan dari data
-        $attribute = $this->data->attributes;
-
         // Menyiapkan data sebagai array untuk satu baris
         $arr = [
             [
                 'id' => $this->data->id,
-                'nama_desa' => $attribute->config->nama_desa,
-                'judul' => $attribute->judul,
-                'bulan' => $attribute->bulan,
-                'tahun' => $attribute->tahun,
-                'tanggal_lapor' => $attribute->tanggal_lapor,
+                'nama_desa' => $this->data->nama_desa,
+                'judul' => $this->data->judul,
+                'bulan' => $this->data->bulan,
+                'tahun' => $this->data->tahun,
+                'tanggal_lapor' => $this->data->tanggal_lapor,
             ]
         ];
 

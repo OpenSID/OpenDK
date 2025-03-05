@@ -101,8 +101,22 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.path === undefined ? `{{ route('data.laporan-penduduk.export-excel.by-id', ['data' => '__DATA__']) }}`.replace('__DATA__', encodeURIComponent(JSON.stringify(data))) : `asset('storage/laporan_penduduk')/${data.nama_file}`
+
+                            let d = data.attributes
+                            let obj = {
+                                'id': data.id,
+                                'nama_desa': d.config.nama_desa,
+                                'judul': d.judul,
+                                'bulan': d.bulan,
+                                'tahun': d.tahun,
+                                'tanggal_lapor': d.tanggal_lapor,
+                            }
+
+                            let jsonData = encodeURIComponent(JSON.stringify(obj));
+
+                            const _url = data.attributes.path === undefined ? `{{ route('data.laporan-penduduk.export-excel.by-id', ['data' => '__DATA__']) }}`.replace('__DATA__', jsonData) : `asset('storage/laporan_penduduk')/${data.nama_file}`
                             const _disabled = data.attributes.path === undefined ? 'disabled' : ''
+                            
                             return `<a href="${_url}" title="Unduh" data-button="download" target="_blank">
                                 <button type="button" class="btn btn-info btn-sm">download</button>
                             </a>`;

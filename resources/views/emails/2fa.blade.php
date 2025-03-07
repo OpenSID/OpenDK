@@ -1,5 +1,4 @@
-<!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -39,22 +38,22 @@
                             <td colspan="3" height="20px" bgcolor="#1c459d">
                             </td>
 
-                        </tr>                        
+                        </tr>
                         <tr>
                             <td colspan="3">
-                                <p>                                    
+                                <p>
                                     Kode token 2FA untuk login adalah <br>
-                                    <h2>{{ $token }}</h2> <br>                                       
-                                    Kode akan kadaluarsa dalam {{ config('twofactor-auth.expiry', 2) }} menit dari email ini dikirimkan.<br>
-                                    Jika anda tidak mencoba login, abaikan email ini<br>                                    
-                                    <a href="{{ route('auth.token') }}">Klik disini</a> untuk verifikasi.
-                                </p>                                
+                                <h2>{{ $token }}</h2> <br>
+                                Kode akan kadaluarsa dalam {{ config('twofactor-auth.expiry', 2) }} menit dari email ini dikirimkan.<br>
+                                Jika anda tidak mencoba login, abaikan email ini<br>
+                                <a href="{{ route('auth.token') }}">Klik disini</a> untuk verifikasi.
+                                </p>
                             </td>
 
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <br> <br>Terima kasih dan salam hangat.                                
+                                <br> <br>Terima kasih dan salam hangat.
                             </td>
 
                         </tr>

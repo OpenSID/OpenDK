@@ -5,7 +5,7 @@
             $('select[name=value]').on('change', function() {
                 const val = $(this).val();
                 const elm = $(this)
-                if(val == 0) return;
+                if (val == 0) return;
                 Swal.fire({
                     title: 'Lakukan test kirim email untuk mengaktifkan login dengan 2FA ?',
                     icon: 'warning',

@@ -39,7 +39,7 @@
                     <h3>PEMERINTAH KAB. {{ strtoupper($profil->nama_kabupaten) }}<br /><b>{{ strtoupper($sebutan_wilayah . ' ' . $profil->nama_kecamatan) }}</b></h3>
                 </a>
             </div>
-            <hr />            
+            <hr />
 
             @include('partials.flash_message')
             <form class="form-horizontal" role="form" method="POST" action="{{ route('auth.token') }}">
@@ -49,7 +49,16 @@
                     <label for="token" class="col-md-4 col-form-label text-md-right">Kode Token</label>
 
                     <div class="col-md-6">
-                        <input id="token" type="text" autocomplete="one-time-code" class="form-control{{ $errors->has('token') ? ' is-invalid' : '' }}" name="token" value="{{ old('token') }}" required autofocus>
+                        <input
+                            id="token"
+                            type="text"
+                            autocomplete="one-time-code"
+                            class="form-control{{ $errors->has('token') ? ' is-invalid' : '' }}"
+                            name="token"
+                            value="{{ old('token') }}"
+                            required
+                            autofocus
+                        >
 
                         @if ($errors->has('token'))
                             <span class="invalid-feedback" role="alert">
@@ -59,10 +68,10 @@
                     </div>
                 </div>
 
-                <div class="form-group row mb-0">                    
+                <div class="form-group row mb-0">
                     <div class="col-md-6 col-md-offset-4">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">Verifikasi</button>
-                    </div>                    
+                    </div>
                 </div>
             </form>
 
@@ -79,6 +88,7 @@
     <!-- /.login-box -->
     <!-- jQuery 3 -->
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
-   
+
 </body>
+
 </html>

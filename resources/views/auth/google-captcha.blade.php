@@ -1,7 +1,7 @@
 {!! RecaptchaV3::initJs() !!}
 <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
     <div class="col-md-6">
-        {!! RecaptchaV3::field('login') !!}                
+        {!! RecaptchaV3::field('login') !!}
         @if ($errors->has('g-recaptcha-response'))
             <span class="help-block">
                 <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
@@ -12,9 +12,13 @@
 </div>
 @push('scripts')
     <script type="text/javascript">
-        $(function() {                                   
+        $(function() {
             $('.grecaptcha-badge').appendTo('.recaptcha-container');
-            $('.grecaptcha-badge').css({'position' : 'absolute', 'top' : '0', 'left' : '-15px'});
+            $('.grecaptcha-badge').css({
+                'position': 'absolute',
+                'top': '0',
+                'left': '-15px'
+            });
         })
     </script>
 @endpush

@@ -25,7 +25,7 @@
     <style>
         html {
             height: auto;
-        }                
+        }
     </style>
 </head>
 
@@ -74,9 +74,9 @@
                     @endif
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
-                
+
                 @includeIf($captchaView)
-                
+
                 <div class="row">
                     <div class="col-xs-8">
                         <div class="checkbox icheck">

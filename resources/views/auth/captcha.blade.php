@@ -1,4 +1,4 @@
-<div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">    
+<div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">
     <div class="col-auto">
         <div class="captcha" style="margin-bottom: 10px;">
             <span>{!! captcha_img('mini') !!}</span>
@@ -24,7 +24,7 @@
                         $(".captcha span").html(data.captcha);
                     }
                 });
-            });            
+            });
 
         })
     </script>

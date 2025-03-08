@@ -34,7 +34,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 
 class LoginController extends Controller
 {
@@ -68,6 +70,8 @@ class LoginController extends Controller
         parent::__construct();
 
         $this->middleware('guest')->except('logout');
+        $captchaView = $this->settings['google_recaptcha'] ? 'auth.google-captcha' : 'auth.captcha';
+        View::share('captchaView', $captchaView);
     }
 
     public function redirectTo()
@@ -89,5 +93,35 @@ class LoginController extends Controller
         }
 
         return $this->redirectTo;
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {        
+        $validation = [
+            $this->username() => 'required|string',
+            'password' => 'required|string',            
+        ]; 
+        if($this->settings['google_recaptcha']) {
+            $validation['g-recaptcha-response'] = 'required|recaptchav3:login,0.5';            
+        }else {
+            $validation['captcha'] = 'required|captcha';
+        }        
+        $customMessages = [
+            'captcha.required' => 'Captcha code diperlukan.',
+            'captcha.captcha' => 'Invalid captcha code.',
+            'g-recaptcha-response' => [
+                'recaptchav3' => 'Captcha error message',
+            ],
+        ];
+
+        $request->validate($validation, $customMessages);        
     }
 }

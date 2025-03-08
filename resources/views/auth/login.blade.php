@@ -25,7 +25,7 @@
     <style>
         html {
             height: auto;
-        }
+        }                
     </style>
 </head>
 

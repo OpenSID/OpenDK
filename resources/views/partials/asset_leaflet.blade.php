@@ -96,6 +96,7 @@
         function getBaseLayers(peta, access_token) {
 
             if(access_token ==''){
+                //pakai akun saya di mapbox -Husnul
                 access_token = "pk.eyJ1IjoiaHVzbnVsc2VwdGlhIiwiYSI6ImNtODE5NnpwYjBoNWkyanBpNzRoZzNyMnQifQ.kdePit4Vo48iHuUDKkaCeQ";
                 console.log("Access Token:", access_token);
             }

@@ -18,6 +18,7 @@
         "hexadog/laravel-themes-manager": "^1.13",
         "jaybizzle/crawler-detect": "1.*",
         "jenssegers/agent": "^2.6",
+        "josiasmontag/laravel-recaptchav3": "^1.0",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^9.19",
         "laravel/helpers": "^1.3",

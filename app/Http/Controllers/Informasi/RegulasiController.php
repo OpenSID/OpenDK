@@ -83,13 +83,15 @@ class RegulasiController extends Controller
 
             $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
             Regulasi::create($input);
+
+            return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
+
         } catch (\Exception $e) {
             report($e);
 
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
-        return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
     }
 
     public function show(Regulasi $regulasi)
@@ -115,28 +117,36 @@ class RegulasiController extends Controller
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
 
-            $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
+            
+            if ($request->hasFile('file_regulasi')) {
+                $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
+            }
+
             $regulasi->update($input);
+
+            return redirect()->route('informasi.regulasi.show', $regulasi->id)->with('success', 'Regulasi berhasil disimpan!');
+
         } catch (\Exception $e) {
             report($e);
 
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
-        return redirect()->route('informasi.regulasi.show', $regulasi->id)->with('success', 'Regulasi berhasil disimpan!');
     }
 
     public function destroy(Regulasi $regulasi)
     {
         try {
             $regulasi->delete();
+
+            return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
+
         } catch (\Exception $e) {
             report($e);
 
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
 
-        return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
     }
 
     public function download(Regulasi $regulasi)

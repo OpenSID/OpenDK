@@ -19,7 +19,10 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')])
+                {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
+                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
+                    <i class="fa fa-download"></i>{{ $export_text ?? 'Ekspor' }}
+                </button>
             </div>
 
             <div class="box-body">
@@ -95,6 +98,7 @@
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };
+
                     },
                     dataSrc: function(json) {
                         json.recordsTotal = json.meta.pagination.total
@@ -161,8 +165,6 @@
                         data: 'attributes.foto',
                         name: 'foto',
                         class: 'text-center',
-                        searchable: false,
-                        orderable: false,
                         render: function(data, type, row) {
 
                             const url = getImageUrl(data, row.attributes.sex);
@@ -258,6 +260,18 @@
                     `{{ asset('img/pengguna/wuser.png') }}` :
                     `{{ asset('img/pengguna/kuser.png') }}`;
             }
+
+            $('#export-btn').on('click', function() {
+                var dataTable = $('#datadesa-table').DataTable();
+                var params = dataTable.ajax.params(); // Ambil parameter DataTables
+
+                // Buat URL ekspor dengan query string
+                var exportUrl = `{{ route('data.penduduk.export-excel') }}?` + $.param(params);
+
+                // Redirect ke URL ekspor
+                window.location.href = exportUrl;
+            });
+
 
 
 

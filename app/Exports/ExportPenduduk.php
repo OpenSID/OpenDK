@@ -16,11 +16,19 @@ use Illuminate\Support\Facades\Http;
 
 class ExportPenduduk implements FromCollection, WithHeadings
 {
+    protected int $pageSize;
+    protected int $pageNumber;
+    protected string $filterSearch;
+
     protected bool $gabungan;
     protected PendudukService $pendudukService;
 
-    public function __construct($gabungan)
+    public function __construct($gabungan, $params)
     {
+        $this->pageSize = $params['page']['size'];
+        $this->pageNumber = $params['page']['number'];
+        $this->filterSearch = $params['filter']['search'];
+
         $this->gabungan = $gabungan;
         $this->pendudukService = new PendudukService();
     }
@@ -33,7 +41,7 @@ class ExportPenduduk implements FromCollection, WithHeadings
 
         if($this->gabungan){
 
-            return $this->pendudukService->exportPenduduk();
+            return $this->pendudukService->exportPenduduk($this->pageSize, $this->pageNumber, $this->filterSearch);
 
         }else{
 
@@ -50,6 +58,7 @@ class ExportPenduduk implements FromCollection, WithHeadings
                     'alamat' => $penduduk->alamat,
                     'pendidikan' => $penduduk->pendidikan_kk->nama,
                     'tanggal_lahir' => $penduduk->tanggal_lahir,
+                    'umur' => $penduduk->umur,
                     'pekerjaan' => $penduduk->pekerjaan->nama,
                     'status_kawin' => $penduduk->pekerjaan->nama,
                 ]);
@@ -73,6 +82,7 @@ class ExportPenduduk implements FromCollection, WithHeadings
             'ALAMAT',
             'PENDIDIKAN DALAM KK',
             'TANGGAL LAHIR',
+            'UMUR',
             'PEKERJAAN',
             'STATUS KAWIN'
         ];

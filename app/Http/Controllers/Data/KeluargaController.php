@@ -37,6 +37,8 @@ use App\Models\Penduduk;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
+use App\Services\KeluargaService;
+use App\Services\PendudukService;
 
 class KeluargaController extends Controller
 {
@@ -49,9 +51,10 @@ class KeluargaController extends Controller
     {
         $page_title = 'Keluarga';
         $page_description = 'Daftar Keluarga';
-        $list_desa = DataDesa::get();
+        $list_desa = $this->isDatabaseGabungan() ? (new PendudukService)->desa() : DataDesa::get();
 
-        return view('data.keluarga.index', compact('page_title', 'page_description', 'list_desa'));
+        $view = $this->isDatabaseGabungan() ? 'data.keluarga.gabungan.index' : 'data.keluarga.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     /**
@@ -94,9 +97,11 @@ class KeluargaController extends Controller
     {
         $page_title = 'Detail Keluarga';
         $page_description = 'Detail Data Keluarga';
-        $penduduk = Penduduk::select(['nik', 'nama'])->get();
-        $keluarga = Keluarga::findOrFail($id);
+        $penduduk = $this->isDatabaseGabungan() ? (new KeluargaService)->keluarga($id) : Penduduk::select(['nik', 'nama'])->get();
+        $keluarga = $this->isDatabaseGabungan() ? (new KeluargaService)->keluarga($id) : Keluarga::findOrFail($id);
 
-        return view('data.keluarga.show', compact('page_title', 'page_description', 'penduduk', 'keluarga'));
+        $view = $this->isDatabaseGabungan() ? 'data.keluarga.gabungan.show' : 'data.keluarga.show';
+
+        return view($view, compact('page_title', 'page_description', 'penduduk', 'keluarga'));
     }
 }

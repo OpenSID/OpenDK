@@ -32,25 +32,25 @@
                 </x-table-columns>
                 <x-table-rows sortable>
                     @foreach ($widgets as $item)
-                    <x-table-row :id="$item->id">
-                        <x-table-cell>{{ $loop->iteration }}</x-table-cell>
-                        <x-table-cell>
-                            <x-button-edit-table :param="$item->id" :name="$item->judul" />
-                            <x-button-status-table :param="$item->id" :name="$item->judul" :icon="$item->enabled == 1 ? 'unlock': 'lock'" />
-                            <x-button-hapus-table :param="$item->id" :name="$item->judul" />
-                        </x-table-cell>
-                        <x-table-cell>{{ $item->judul }}</x-table-cell>
-                        <x-table-cell>
-                            @if ($item->jenis_widget == 1)
-                                Sistem
-                            @elseif($item->jenis_widget == 2)
-                                Statis
-                            @elseif($item->jenis_widget == 3)
-                                Dinamis
-                            @endif
-                        </x-table-cell>
-                        <x-table-cell>{{ Str::words($item->isi, 5) }}</x-table-cell>
-                    </x-table-row>
+                        <x-table-row :id="$item->id">
+                            <x-table-cell>{{ $loop->iteration }}</x-table-cell>
+                            <x-table-cell>
+                                <x-button-edit-table :param="$item->id" :name="$item->judul" />
+                                <x-button-status-table :param="$item->id" :name="$item->judul" :icon="$item->enabled == 1 ? 'unlock' : 'lock'" />
+                                <x-button-hapus-table :param="$item->id" :name="$item->judul" />
+                            </x-table-cell>
+                            <x-table-cell>{{ $item->judul }}</x-table-cell>
+                            <x-table-cell>
+                                @if ($item->jenis_widget == 1)
+                                    Sistem
+                                @elseif($item->jenis_widget == 2)
+                                    Statis
+                                @elseif($item->jenis_widget == 3)
+                                    Dinamis
+                                @endif
+                            </x-table-cell>
+                            <x-table-cell>{{ Str::words($item->isi, 5) }}</x-table-cell>
+                        </x-table-row>
                     @endforeach
                 </x-table-rows>
             </x-table>

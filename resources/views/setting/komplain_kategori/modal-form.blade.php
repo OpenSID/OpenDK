@@ -44,7 +44,7 @@
                         $('#data-komplain-kategori').DataTable().ajax.reload();
 
                         $('#flash-message').html(
-                        `<div id="notifikasi" class="alert alert-success alert-dismissible">
+                            `<div id="notifikasi" class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-check"></i> Sukses!</h4>
                             <p>${response.message}</p>
@@ -72,7 +72,7 @@
                     })
                     .fail(() => {
                         $('#flash-message').html(
-                        ` <div id="notifikasi" class="alert alert-danger alert-dismissible">
+                            ` <div id="notifikasi" class="alert alert-danger alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-check"></i> Gagal!!</h4>
                             <p>Gagal memuat data</p>

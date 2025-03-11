@@ -44,7 +44,7 @@
                         $('#data_tipe_potensi').DataTable().ajax.reload();
 
                         $('#flash-message').html(
-                        `
+                            `
                         <div id="notifikasi" class="alert alert-success alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-check"></i> Sukses!</h4>
@@ -75,7 +75,7 @@
                     .fail(() => {
 
                         $('#flash-message').html(
-                        `
+                            `
                         <div id="notifikasi" class="alert alert-danger alert-dismissible">
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                             <h4><i class="icon fa fa-check"></i> Gagal!!</h4>

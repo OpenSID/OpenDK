@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4b8f4965cdd1b1ea4533853d64dd0d24",
+    "content-hash": "9690217d715bb311b45bf4da388061e3",
     "packages": [
         {
             "name": "bensampo/laravel-enum",
@@ -4001,6 +4001,61 @@
                 "source": "https://github.com/mewebstudio/captcha/tree/3.3.0"
             },
             "time": "2023-03-14T08:30:02+00:00"
+        },
+        {
+            "name": "michaeldzjap/twofactor-auth",
+            "version": "v3.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/michaeldzjap/laravel-two-factor-authentication.git",
+                "reference": "27c100043da9da54cb11b3748b0ec98870afd733"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/michaeldzjap/laravel-two-factor-authentication/zipball/27c100043da9da54cb11b3748b0ec98870afd733",
+                "reference": "27c100043da9da54cb11b3748b0ec98870afd733",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^8.0 || ^9.0 || ^10.0 || ^11.0"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MichaelDzjap\\TwoFactorAuth\\TwoFactorAuthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MichaelDzjap\\TwoFactorAuth\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dzjaparidze",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A two-factor authentication package for Laravel tuned for use with MessageBird Verify",
+            "homepage": "https://github.com/michaeldzjap/twofactor-authentication",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "laravel",
+                "messagebird",
+                "two-factor"
+            ],
+            "support": {
+                "issues": "https://github.com/michaeldzjap/laravel-two-factor-authentication/issues",
+                "source": "https://github.com/michaeldzjap/laravel-two-factor-authentication/tree/v3.4.1"
+            },
+            "time": "2025-02-21T10:32:04+00:00"
         },
         {
             "name": "mobiledetect/mobiledetectlib",

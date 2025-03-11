@@ -77,7 +77,7 @@ class WidgetController extends Component
             'enabled' => $widget->enabled == 1 ? 2 : 1
         ]);
 
-        $this->emit('success', "Data: {$widget->judul} berhasil di {$status}");
+        session()->flash('success', "Data: {$widget->judul} berhasil di {$status}");
     }
 
     public function toggleSelectAll()
@@ -95,7 +95,7 @@ class WidgetController extends Component
             Widget::whereIn('id', $this->selectedItems)->delete();
             $this->selectedItems = [];
             $this->selectAll = false;
-            $this->emit('success', 'data berhasil di dihapus!');
+            session()->flash('success', 'Data berhasil dihapus!');
         }
     }
 
@@ -131,9 +131,9 @@ class WidgetController extends Component
 
             $this->widget->save();
 	    	$this->clear();
-    		$this->emit('success', 'data berhasil di simpan!');
+            session()->flash('success', 'Data berhasil simpan!');
     	} catch (\Exception $e) {
-    		$this->emit('error', $e->getMessage());
+            session()->flash('error', $e->getMessage());
     	}
     }
 
@@ -162,7 +162,7 @@ class WidgetController extends Component
         if (! in_array('tidy', get_loaded_extensions())) {
             $pesan = 'Ektensi Tidy tidak aktif';
 
-            $this->emit('error', $pesan);
+            session()->flash('error', $pesan);
         }
     }
 
@@ -181,7 +181,7 @@ class WidgetController extends Component
             $this->foto = $model->foto ? asset('storage/widget/'.$model->foto) : null;
     		
     	} catch (\Exception $e) {
-    		$this->emit('error', $e->getMessage());
+            session()->flash('error', $e->getMessage());
     	}
     }
 
@@ -203,10 +203,10 @@ class WidgetController extends Component
             $this->widget->isi = $this->widget->jenis_widget == 2 ? basename(bersihkan_xss($this->widget->isi)) : $this->bersihkan_html($this->widget->isi);
             $this->widget->save();
             $this->clear();
-            $this->emit('success', 'data berhasil di update!');
+            session()->flash('success', 'Data berhasil diperbarui!');
 
     	} catch (\Exception $e) {
-    		$this->emit('error', $e->getMessage());
+            session()->flash('error', $e->getMessage());
     	}
     }
 
@@ -216,27 +216,29 @@ class WidgetController extends Component
             Widget::where('id', $id)->update(['urut' => $index + 1]);
         }
 
-        $this->emit('success', 'Urutan berhasil diperbarui!');
+        session()->flash('success', 'Urutan berhasil diperbarui!');
     }
 
     public function destroy(Widget $widget)
     {
     	try {
     		$widget->delete();
-            $this->emit('success', 'data berhasil di hapus!');
+            session()->flash('success', 'Data berhasil dihapus!');
     	}catch(\Exception $e) {
-    		$this->emit('error', $e->getMessage());
+            session()->flash('error', $e->getMessage());
     	}
     }
 
     public function clear()
     {
+        $this->resetErrorBag();
     	$this->resetExcept('widget');
         $this->widget = new Widget();
     }
 
     public function resetForm()
     {
+        $this->resetErrorBag();
         $this->reset('widget', 'foto');
         $this->widget = new Widget();
     }

@@ -183,7 +183,12 @@ class AdminKomplainController extends Controller
         try {
             $komplain = Komplain::findOrFail($id);
             $komplain->fill($request->all());
-            $komplain->nama = Penduduk::where('nik', $komplain->nik)->first()->nama;
+
+            $penduduk = $this->isDatabaseGabungan() 
+            ? (new PendudukService)->cekPendudukNikTanggalLahir($komplain->nik)
+            : Penduduk::where('nik', $komplain->nik)->first();
+
+            $komplain->nama = $penduduk?->nama;
 
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {

@@ -72,10 +72,23 @@ class TipePotensiController extends Controller
     {
         try {
             TipePotensi::create($request->validated());
-            return response()->json(['success' => 'Kategori Potensi berhasil ditambahkan!']);
+
+            session()->flash('success', 'Kategori Potensi berhasil ditambahkan!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
+
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Kategori Potensi gagal ditambahkan!']);
+
+            session()->flash('error', 'Kategori Potensi gagal ditambahkan!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 
@@ -104,10 +117,22 @@ class TipePotensiController extends Controller
     {
         try {
             TipePotensi::findOrFail($id)->update($request->validated());
-            return response()->json(['success' => 'Kategori Potensi berhasil diupdate!']);
+
+            session()->flash('success', 'Kategori Potensi berhasil diupdate!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
+
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Kategori Potensi gagal diupdate!']);
+            session()->flash('error', 'Kategori Potensi gagal diupdate!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 

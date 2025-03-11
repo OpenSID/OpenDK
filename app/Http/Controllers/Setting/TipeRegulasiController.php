@@ -70,10 +70,20 @@ class TipeRegulasiController extends Controller
     {
         try {
             TipeRegulasi::create($request->validated());
-            return response()->json(['success' => 'Tipe Regulasi berhasil ditambahkan!']);
+            session()->flash('success', 'Tipe Regulasi berhasil ditambahkan!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Tipe Regulasi gagal ditambahkan!']);
+            session()->flash('error', 'Tipe Regulasi gagal ditambahkan!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 
@@ -102,10 +112,20 @@ class TipeRegulasiController extends Controller
     {
         try {
             TipeRegulasi::findOrFail($id)->update($request->validated());
-            return response()->json(['success' => 'Tipe Regulasi berhasil diupdate!']);
+            session()->flash('success', 'Tipe Regulasi berhasil diupdate!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Tipe Regulasi gagal diupdate!']);
+            session()->flash('error', 'Tipe Regulasi gagal diupdate!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 

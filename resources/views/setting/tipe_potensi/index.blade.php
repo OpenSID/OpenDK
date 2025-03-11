@@ -14,6 +14,8 @@
 
     <section class="content container-fluid">
 
+        <div id="flash-message"></div>
+
         @include('partials.flash_message')
 
         <div class="box box-primary">
@@ -21,7 +23,6 @@
                 @include('forms.btn-social', ['modal_url' => '#modal-form'])
             </div>
             <div class="box-body">
-                @include('flash::message')
                 <table class="table table-striped table-bordered" id="data_tipe_potensi">
                     <thead>
                         <tr>

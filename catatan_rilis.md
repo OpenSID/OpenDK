@@ -15,3 +15,5 @@ Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan p
 
 #### TEKNIS
 
+#### Perbaikan Bug
+1. [#916](https://github.com/OpenSID/OpenDK/issues/916) Perbaikan tidak dapat menyimpan peta wilayah.

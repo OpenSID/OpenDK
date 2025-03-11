@@ -13,9 +13,9 @@
     <section class="content container-fluid">
 
         {{-- <livewire:components.alert /> --}}
-        
+
         @if ($form)
-        @include('livewire.widget.form')
+            @include('livewire.widget.form')
         @else
             @include('partials.flash_message')
             @include('livewire.widget.table')

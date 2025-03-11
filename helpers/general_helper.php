@@ -33,10 +33,13 @@ use App\Models\Menu;
 use App\Models\Role;
 use App\Models\DataDesa;
 use App\Models\Navigation;
+use App\Models\Themes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use willvincent\Feeds\Facades\FeedsFacade;
+use Illuminate\Support\Facades\Schema;
+use voku\helper\AntiXSS;
 
 /**
  * Parsing url image dari rss feed description
@@ -437,6 +440,17 @@ if (! function_exists('checkWebsiteAccessibility')) {
     }
 }
 
+if (! function_exists('bersihkan_xss')) {
+    function bersihkan_xss($str)
+    {
+        $antiXSS = new AntiXSS();
+        $antiXSS->removeEvilHtmlTags(['iframe']);
+        $antiXSS->addEvilAttributes(['http-equiv', 'content']);
+
+        return $antiXSS->xss_clean($str);
+    }
+}
+
 if (! function_exists('parsedown')) {
     function parsedown($params = null)
     {
@@ -447,6 +461,22 @@ if (! function_exists('parsedown')) {
         }
 
         return $parsedown;
+    }
+}
+
+if (! function_exists('theme_new')) {
+    /**
+     * Ambil model tema
+     *
+     * @return Theme
+     */
+    function theme_new()
+    {
+        if (Schema::hasTable('das_themes')) {
+            return new Themes();
+        }
+
+        return null;
     }
 }
 

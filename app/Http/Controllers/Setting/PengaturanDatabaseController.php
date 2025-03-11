@@ -232,23 +232,4 @@ class PengaturanDatabaseController extends Controller
             return rmdir($path);
         }
     }
-
-    public function testing()
-    {
-        // dd(public_path());
-        // echo '<br>';
-        // dd(storage_path('app/Dashboard Kecamatan/2025-01-02-12-53-45.zip'));
-        // $file = "opendk_public.sql";
-        // var_dump(storage_path("app/".env('APP_NAME')."/$file"));
-
-        // Path awal yang mengandung karakter tidak valid
-        // $corruptedPath = 'db-dumpsmysql-opendk_public.sql';
-        // $corruptedPath = 'mysql-opendk_public.sql';
-        $corruptedPath = storage_path('app/Dashboard Kecamatan/db-dumpsmysql-opendk_public.sql');
-
-        $normalizedPath = preg_replace('/[^\w\/]+/', '-', $corruptedPath);
-
-        echo $normalizedPath; // Output: backup-temp/db-dumps-uf05cmysql-opendk_public.sql
-        // apppublictemplate_uploadlaporan_apbdes_22_12_2020_opendk.zip
-    }
 }

@@ -94,7 +94,7 @@ return [
             // Konfigurasi tambahan untuk database dump
             // https://github.com/spatie/laravel-backup/issues/172#issuecomment-381390641
             'dump' => [
-                // 'dump_binary_path' => '/usr/bin', // Sesuaikan dengan lokasi binary mysqldump di server
+                'dump_binary_path' => env('DB_MYSQLDUMP_PATH'), // Sesuaikan dengan lokasi binary mysqldump di server
                 // 'use_single_transaction' => true, // InnoDB
                 // 'timeout' => 60, // Waktu timeout dalam detik
                 'add_extra_option' => '--password=' . env('DB_PASSWORD', ''),

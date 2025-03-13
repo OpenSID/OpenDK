@@ -103,8 +103,10 @@
                         <h3 class="box-title">Grafik Penduduk Tiap Tahun</h3>
 
                         <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                    class="fa fa-minus"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                    class="fa fa-times"></i></button>
                         </div>
                     </div>
                     <div class="box-body">
@@ -114,7 +116,8 @@
                                     <strong></strong>
                                 </p>
 
-                                <div id="chart_pertumbuhan_penduduk" style="width: 100%; min-height: 500px; overflow: visible; text-align: left;"></div>
+                                <div id="chart_pertumbuhan_penduduk"
+                                    style="width: 100%; min-height: 500px; overflow: visible; text-align: left;"></div>
                             </div>
                         </div>
                     </div>
@@ -137,22 +140,28 @@
                         <div class="active tab-pane" id="usia">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_usia" style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
+                                    <div id="chart_usia"
+                                        style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="tab-pane" id="pendidikan">
-                            <div id="chart_pendidikan" style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
+                            <div id="chart_pendidikan"
+                                style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
                         </div>
                         <div class="tab-pane" id="gol-darah">
-                            <div id="chart_goldarah" style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
+                            <div id="chart_goldarah"
+                                style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
                         </div>
                         <div class="tab-pane" id="perkawinan">
-                            <div id="chart_kawin" style="width:100%; height: 200px; overflow: visible; text-align: left; padding: 10px;;"></div>
+                            <div id="chart_kawin"
+                                style="width:100%; height: 200px; overflow: visible; text-align: left; padding: 10px;;">
+                            </div>
                         </div>
                         <div class="tab-pane" id="agama">
-                            <div id="chart_agama" style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
+                            <div id="chart_agama"
+                                style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
                         </div>
                     </div>
                     <!-- /.nav-tabs-custom -->
@@ -170,7 +179,8 @@
                         <div class="progress">
                             <div id="ktp_persen" class="progress-bar" style="width: {!! $ktp_persen_terpenuhi !!}%"></div>
                         </div>
-                        <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                        <span id="ktp_terpenuhi" class="progress-description">{!! $ktp_persen_terpenuhi !!}% Jiwa Tidak
+                            Terpenuhi</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -185,7 +195,8 @@
                         <div class="progress">
                             <div id="akta_persen" class="progress-bar" style="width: {!! $akta_persen_terpenuhi !!}%"></div>
                         </div>
-                        <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                        <span id="akta_terpenuhi" class="progress-description">{!! $akta_persen_terpenuhi !!}% Jiwa Tidak
+                            Terpenuhi</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -201,7 +212,8 @@
                         <div class="progress">
                             <div id="nikah_persen" class="progress-bar" style="width: {!! $aktanikah_persen_terpenuhi !!}%"></div>
                         </div>
-                        <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Tidak Terpenuhi</span>
+                        <span id="nikah_terpenuhi" class="progress-description">{!! $aktanikah_persen_terpenuhi !!}% Jiwa Tidak
+                            Terpenuhi</span>
                     </div>
                     <!-- /.info-box-content -->
                 </div>
@@ -245,6 +257,17 @@
         });
 
         function change_das_kependudukan(did, year) {
+            $('#total_penduduk').html('Loading...');
+            $('#total_lakilaki').html('Loading...');
+            $('#total_perempuan').html('Loading...');
+            $('#total_disabilitas').html('Loading...');
+            $('#total_disabilitas').html('Loading...');
+            $('#data_ktp').html('Loading...');            
+            $('#ktp_terpenuhi').html('Loading...');
+            $('#data_akta').html('Loading...');            
+            $('#akta_terpenuhi').html('Loading...');
+            $('#data_nikah').html('Loading...');            
+            $('#nikah_terpenuhi').html('Loading...');
             // Load ajax data penduduk
             $.ajax('{!! route('statistik.show-kependudukan') !!}', {
                 data: {
@@ -268,7 +291,8 @@
                 $('#data_akta').html(data.akta_terpenuhi + ' dari ' + data.total_penduduk + ' Jiwa Terpenuhi');
                 $('#akta_persen').css('width', data.akta_persen_terpenuhi + '%');
                 $('#akta_terpenuhi').html(data.akta_persen_terpenuhi + '% Jiwa Terpenuhi');
-                $('#data_nikah').html(data.aktanikah_terpenuhi + ' dari ' + data.aktanikah_wajib + ' Status Kawin Terpenuhi');
+                $('#data_nikah').html(data.aktanikah_terpenuhi + ' dari ' + data.aktanikah_wajib +
+                    ' Status Kawin Terpenuhi');
                 $('#nikah_persen').css('width', data.aktanikah_persen_terpenuhi + '%');
                 $('#nikah_terpenuhi').html(data.aktanikah_persen_terpenuhi + '% Status Kawin Terpenuhi');
                 /* }*/
@@ -383,14 +407,18 @@
                 }
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_pertumbuhan_penduduk.legend || !chart_pertumbuhan_penduduk.legend.enabled || !chart_pertumbuhan_penduduk.legend.generateFromData) {
+                if (!chart_pertumbuhan_penduduk.legend || !chart_pertumbuhan_penduduk.legend.enabled || !
+                    chart_pertumbuhan_penduduk.legend.generateFromData) {
                     return;
                 }
                 var categoryField = chart_pertumbuhan_penduduk.categoryField;
-                var colorField = chart_pertumbuhan_penduduk.graphs[0].lineColorField || chart_pertumbuhan_penduduk.graphs[0].fillColorsField || chart_pertumbuhan_penduduk.graphs[0].colorField;
+                var colorField = chart_pertumbuhan_penduduk.graphs[0].lineColorField || chart_pertumbuhan_penduduk
+                    .graphs[0].fillColorsField || chart_pertumbuhan_penduduk.graphs[0].colorField;
                 var legendData = chart_pertumbuhan_penduduk.dataProvider.map(function(data, idx) {
                     var markerData = {
-                        "title": data[categoryField] + " : " + (data[chart_pertumbuhan_penduduk.graphs[0].valueField] + data[chart_pertumbuhan_penduduk.graphs[0].valueField]),
+                        "title": data[categoryField] + " : " + (data[chart_pertumbuhan_penduduk.graphs[
+                            0].valueField] + data[chart_pertumbuhan_penduduk.graphs[0]
+                            .valueField]),
                         "color": data[colorField],
                         "dataIdx": idx //store a copy of the index of where this appears in the dataProvider array for ease of removal/re-insertion
                     };
@@ -543,7 +571,8 @@
                     return;
                 }
                 var categoryField = chart_usia.categoryField;
-                var colorField = chart_usia.graphs[0].lineColorField || chart_usia.graphs[0].fillColorsField || chart_usia.graphs[0].colorField;
+                var colorField = chart_usia.graphs[0].lineColorField || chart_usia.graphs[0].fillColorsField ||
+                    chart_usia.graphs[0].colorField;
                 var legendData = chart_usia.dataProvider.map(function(data, idx) {
                     var markerData = {
                         "title": data[categoryField] + ": " + data[chart_usia.graphs[0].valueField],
@@ -782,11 +811,13 @@
                 }
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_goldarah.legend || !chart_goldarah.legend.enabled || !chart_goldarah.legend.generateFromData) {
+                if (!chart_goldarah.legend || !chart_goldarah.legend.enabled || !chart_goldarah.legend
+                    .generateFromData) {
                     return;
                 }
                 var categoryField = chart_goldarah.categoryField;
-                var colorField = chart_goldarah.graphs[0].lineColorField || chart_goldarah.graphs[0].fillColorsField || chart_goldarah.graphs[0].colorField;
+                var colorField = chart_goldarah.graphs[0].lineColorField || chart_goldarah.graphs[0]
+                    .fillColorsField || chart_goldarah.graphs[0].colorField;
                 var legendData = chart_goldarah.dataProvider.map(function(data, idx) {
                     var markerData = {
                         "title": data[categoryField] + ": " + data[chart_goldarah.graphs[0].valueField],
@@ -917,7 +948,8 @@
                     return;
                 }
                 var categoryField = chart_kawin.categoryField;
-                var colorField = chart_kawin.graphs[0].lineColorField || chart_kawin.graphs[0].fillColorsField || chart_kawin.graphs[0].colorField;
+                var colorField = chart_kawin.graphs[0].lineColorField || chart_kawin.graphs[0].fillColorsField ||
+                    chart_kawin.graphs[0].colorField;
                 var legendData = chart_kawin.dataProvider.map(function(data, idx) {
                     var markerData = {
                         "title": data[categoryField] + ": " + data[chart_kawin.graphs[0].valueField],
@@ -1048,7 +1080,8 @@
                     return;
                 }
                 var categoryField = chart_agama.categoryField;
-                var colorField = chart_agama.graphs[0].lineColorField || chart_agama.graphs[0].fillColorsField || chart_agama.graphs[0].colorField;
+                var colorField = chart_agama.graphs[0].lineColorField || chart_agama.graphs[0].fillColorsField ||
+                    chart_agama.graphs[0].colorField;
                 var legendData = chart_agama.dataProvider.map(function(data, idx) {
                     var markerData = {
                         "title": data[categoryField] + ": " + data[chart_agama.graphs[0].valueField],

@@ -696,3 +696,8 @@ function getBulan(int $bln)
     return $bulan[$bln];
 }
 
+function kembalikanSlug($str): ?string
+{
+    // Ganti '-' dengan spasi dan hilangkan titik '.'
+    return  str_replace(['-','.'], [' ',''], $str);
+}

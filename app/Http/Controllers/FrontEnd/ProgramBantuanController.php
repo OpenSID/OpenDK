@@ -35,10 +35,20 @@ use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
 use App\Models\Program;
+use App\Services\DesaService;
+use App\Services\StatistikChartBantuanKeluargaService;
+use App\Services\StatistikChartBantuanPendudukService;
 use Illuminate\Support\Facades\DB;
 
 class ProgramBantuanController extends FrontEndController
 {
+    private $desaService;
+
+    public function __construct()
+    {       
+        $this->desaService = new DesaService();
+        parent::__construct();
+    }
     /**
      * Menampilkan Data Program Bantuan
      **/
@@ -49,46 +59,22 @@ class ProgramBantuanController extends FrontEndController
         $page_title = 'Program Bantuan';
         $page_description = 'Data Program Bantuan';
         $year_list = years_list();
-        $list_desa = DataDesa::all();
+        $list_desa = $this->desaService->listDesa();        
 
         return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'year_list', 'list_desa'));
     }
 
     public function getChartBantuanPenduduk()
     {
-        return $this->get_data(1);
+        $did = request('did');
+        $year = request('y');
+        return (new StatistikChartBantuanPendudukService)->chart($did, $year);
     }
 
     public function getChartBantuanKeluarga()
     {
-        return $this->get_data(2);
-    }
-
-    // TODO : Gunakan relasi antar tabel.
-    private function get_data(int $sasaran = 1)
-    {
         $did = request('did');
         $year = request('y');
-        $data = [];
-        $program = Program::where('sasaran', $sasaran)->get();
-
-        foreach ($program as $prog) {
-            $query_result = DB::table('das_peserta_program')
-                ->join('das_penduduk', 'das_peserta_program.kartu_nik', '=', 'das_penduduk.nik')
-                ->where('das_peserta_program.sasaran', '=', $sasaran)
-                ->where('das_peserta_program.program_id', '=', $prog->id);
-
-            if ($year != 'Semua') {
-                $query_result->whereYear('das_peserta_program.created_at', '=', $year);
-            }
-
-            if ($did != 'Semua') {
-                $query_result->where('das_penduduk.desa_id', '=', $did);
-            }
-
-            $data[] = ['program' => $prog->nama, 'value' => $query_result->count()];
-        }
-
-        return $data;
-    }
+        return (new StatistikChartBantuanKeluargaService)->chart($did, $year);
+    }    
 }

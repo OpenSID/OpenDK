@@ -65,7 +65,7 @@
                     },
                     {
                         data: 'nama_desa',
-                        name: 'desa_id',                        
+                        name: 'desa_id',
                     },
                     {
                         data: 'cakupan_imunisasi',

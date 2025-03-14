@@ -73,7 +73,7 @@
                     },
                     {
                         data: 'nama_desa',
-                        name: 'desa_id',                        
+                        name: 'desa_id',
                     },
                     {
                         data: 'penyakit.nama',

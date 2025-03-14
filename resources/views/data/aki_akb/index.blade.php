@@ -66,7 +66,7 @@
                     },
                     {
                         data: 'nama_desa',
-                        name: 'desa_id',                        
+                        name: 'desa_id',
                     },
                     {
                         data: 'aki',
@@ -92,7 +92,7 @@
                 ]
             });
 
-            $('#list_desa').on('select2:select', function(e) {                
+            $('#list_desa').on('select2:select', function(e) {
                 data.columns(1).search(this.value).draw();
             });
         });

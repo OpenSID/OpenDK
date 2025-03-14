@@ -19,7 +19,7 @@
 
         <div class="box box-primary">
             <div class="box-body">
-                @include('layouts.fragments.list-desa-gabungan')
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="apbdes-table">
@@ -39,6 +39,7 @@
         </div>
     </section>
 @endsection
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')

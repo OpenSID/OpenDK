@@ -54,7 +54,7 @@
                 ajax: {
                     url: "{!! route('data.aki-akb.getdata') !!}",
                     data: function(d) {
-                        d.desa = $('#list_desa').val();
+                        d.desa_id = $('#list_desa').val();
                     }
                 },
                 columns: [{
@@ -65,8 +65,8 @@
                         orderable: false
                     },
                     {
-                        data: 'desa.nama',
-                        name: 'desa.nama'
+                        data: 'nama_desa',
+                        name: 'desa_id',                        
                     },
                     {
                         data: 'aki',
@@ -92,8 +92,8 @@
                 ]
             });
 
-            $('#list_desa').on('select2:select', function(e) {
-                data.ajax.reload();
+            $('#list_desa').on('select2:select', function(e) {                
+                data.columns(1).search(this.value).draw();
             });
         });
     </script>

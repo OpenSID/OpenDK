@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -33,7 +33,7 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
-use App\Models\DataDesa;
+use App\Services\DesaService;
 use Illuminate\Support\Facades\DB;
 
 class KesehatanController extends FrontEndController
@@ -48,7 +48,7 @@ class KesehatanController extends FrontEndController
         $page_title = 'Kesehatan';
         $page_description = 'Data Kesehatan';
         $year_list = years_list();
-        $list_desa = DataDesa::all();
+        $list_desa = (new DesaService())->listDesa();
 
         return view('pages.kesehatan.show_kesehatan', compact('page_title', 'page_description', 'year_list', 'list_desa'));
     }
@@ -128,7 +128,7 @@ class KesehatanController extends FrontEndController
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_akiakb_1', compact('data_tabel'))->render();
-        //$tabel_kesehatan = $data_tabel;
+            //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
@@ -219,7 +219,7 @@ class KesehatanController extends FrontEndController
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_imunisasi_1', compact('data_tabel'))->render();
-        //$tabel_kesehatan = $data_tabel;
+            //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
@@ -418,7 +418,7 @@ class KesehatanController extends FrontEndController
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_sanitasi_1', compact('data_tabel'))->render();
-        //$tabel_kesehatan = $data_tabel;
+            //$tabel_kesehatan = $data_tabel;
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {

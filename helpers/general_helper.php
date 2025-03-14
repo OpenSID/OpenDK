@@ -188,7 +188,7 @@ function years_list()
 {
     // Create Year List for 4 years ago
     $this_year = date('Y');
-    $year_list = [];
+    $year_list = ['Semua'];
 
     for ($i = 1; $i <= 3; $i++) {
         $year_list[] = (int) $this_year--;

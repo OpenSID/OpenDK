@@ -71,10 +71,23 @@ class KategoriKomplainController extends Controller
     {
         try {
             KategoriKomplain::create($request->validated());
-            return response()->json(['success' => 'Kategori Komplain berhasil ditambahkan!']);
+
+            session()->flash('success', 'Kategori Komplain berhasil ditambahkan!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
+
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Kategori Komplain gagal ditambahkan!'], 500);
+
+            session()->flash('error', 'Kategori Komplain gagal ditambahkan!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 
@@ -89,10 +102,20 @@ class KategoriKomplainController extends Controller
     {
         try {
             KategoriKomplain::findOrFail($id)->update($request->validated());
-            return response()->json(['success' => 'Kategori Komplain berhasil diupdate!']);
+            session()->flash('success', 'Kategori Komplain berhasil diupdate!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Kategori Komplain gagal diupdate!'], 500);
+            session()->flash('error', 'Kategori Komplain gagal diupdate!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 

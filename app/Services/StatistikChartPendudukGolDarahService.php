@@ -32,11 +32,10 @@
 namespace App\Services;
 
 use App\Enums\LabelStatistik;
-use App\Models\Penduduk;
 use Illuminate\Support\Facades\DB;
 
 class StatistikChartPendudukGolDarahService extends BaseApiService
-{    
+{
     private $colors = [1 => '#f97d7d', 2 => '#f86565', 3 => '#f74d4d', 4 => '#f63434', 13 => '#f51c1c'];
     public function chart($did, $year)
     {
@@ -46,16 +45,16 @@ class StatistikChartPendudukGolDarahService extends BaseApiService
                 $filters = [
                     'filter[id]' => 'golongan-darah',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => config('profil.kecamatan_id'),
+                    'filter[kecamatan]' => $this->kodeKecamatan,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
                 }
                 $response = $this->apiRequest('/api/v1/statistik/penduduk', $filters);
-                foreach ($response as $key => $item) {                    
+                foreach ($response as $key => $item) {
                     if (in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi])) {
                         continue;
-                    }                    
+                    }
                     $data[] = ['blod_type' => $item['attributes']['nama'], 'total' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#'.random_color()];
                 }
             } catch (\Exception $e) {
@@ -67,10 +66,10 @@ class StatistikChartPendudukGolDarahService extends BaseApiService
     }
 
     private function localChart($did, $year)
-    {        
+    {
         // Data Chart Penduduk By Golongan Darah
         $data = [];
-        $golonganDarah = DB::table('ref_golongan_darah')->orderBy('id')->get();        
+        $golonganDarah = DB::table('ref_golongan_darah')->orderBy('id')->get();
         foreach ($golonganDarah as $val) {
             $queryTotal = DB::table('das_penduduk')
                 //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')

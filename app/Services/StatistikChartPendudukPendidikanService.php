@@ -49,7 +49,7 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
                 }
-                $response = $this->apiRequest('/api/v1/statistik/penduduk', $filters);
+                $response = $this->apiRequest('/api/v1/statistik-web/penduduk', $filters);
                 $dataFilter = collect($response)->filter(function ($item) {
                     return !in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi]);
                 })->mapWithKeys(function ($item) {

@@ -15,30 +15,30 @@
     <section class="content container-fluid">
         @include('partials.flash_message')
 
-        @if($adaTipeRegulasi)
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('informasi.regulasi.create')])
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="regulasi-table">
-                        <thead>
-                            <tr>
-                                <th style="max-width: 150px;">Aksi</th>
-                                <th>Judul </th>
-                            </tr>
-                        </thead>
-                    </table>
+        @if ($adaTipeRegulasi)
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    @include('forms.btn-social', ['create_url' => route('informasi.regulasi.create')])
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered" id="regulasi-table">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 150px;">Aksi</th>
+                                    <th>Judul </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
         @else
-        <div class="callout callout-warning">
-            <h4>Informasi!</h4>
-            <p>Data tipe requlasi belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.tipe-regulasi.index') }}">tipe regulasi</a></b> terlebih dahulu.</p>
-        </div>
+            <div class="callout callout-warning">
+                <h4>Informasi!</h4>
+                <p>Data tipe requlasi belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.tipe-regulasi.index') }}">tipe regulasi</a></b> terlebih dahulu.</p>
+            </div>
         @endif
     </section>
 @endsection

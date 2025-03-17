@@ -45,7 +45,7 @@ class AnggaranDesaController extends FrontEndController
         $data['page_description'] = 'Data Anggaran Desa (APBDes)';
         $data['year_list'] = years_list();
         $data['list_desa'] = (new DesaService())->listDesa();
-
+        $data['hide_list_month'] = $this->isDatabaseGabungan() ? true : false;
         return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
     }
 

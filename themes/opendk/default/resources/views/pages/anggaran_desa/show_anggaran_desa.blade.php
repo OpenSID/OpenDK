@@ -23,7 +23,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-12">
+                    <div class="col-md-4 col-lg-4 col-sm-12 @if($hide_list_month) hidden @endif">
                         <div class="form-group">
                             <label for="bulan" class="col-sm-4 control-label">Bulan</label>
                             <div class="col-sm-8">

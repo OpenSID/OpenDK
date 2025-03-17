@@ -15,6 +15,7 @@
     <section class="content container-fluid">
         @include('partials.flash_message')
 
+        @if($adaTipeRegulasi)
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('informasi.regulasi.create')])
@@ -33,6 +34,12 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="callout callout-warning">
+            <h4>Informasi!</h4>
+            <p>Data tipe requlasi belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.tipe-regulasi.index') }}">tipe regulasi</a></b> terlebih dahulu.</p>
+        </div>
+        @endif
     </section>
 @endsection
 

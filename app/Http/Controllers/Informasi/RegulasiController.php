@@ -35,6 +35,8 @@ use App\Models\Regulasi;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
+use App\Http\Requests\RegulasiUpdateRequest;
+use App\Models\TipeRegulasi;
 use Yajra\DataTables\Facades\DataTables;
 
 class RegulasiController extends Controller
@@ -45,8 +47,9 @@ class RegulasiController extends Controller
     {
         $page_title = 'Regulasi';
         $page_description = 'Daftar Regulasi';
+        $adaTipeRegulasi = TipeRegulasi::count() ? true : false;
 
-        return view('informasi.regulasi.index', compact('page_title', 'page_description'));
+        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'adaTipeRegulasi'));
     }
 
     public function getDataRegulasi()
@@ -69,7 +72,7 @@ class RegulasiController extends Controller
     public function create()
     {
         $page_title = 'Regulasi';
-        $page_description = 'Tambah Regulasi';
+        $page_description = 'Tambah Regulasi';        
 
         return view('informasi.regulasi.create', compact('page_title', 'page_description'));
     }
@@ -110,7 +113,7 @@ class RegulasiController extends Controller
         return view('informasi.regulasi.edit', compact('page_title', 'page_description', 'regulasi'));
     }
 
-    public function update(RegulasiRequest $request, Regulasi $regulasi)
+    public function update(RegulasiUpdateRequest $request, Regulasi $regulasi)
     {
         try {
             $input = $request->input();

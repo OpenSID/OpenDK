@@ -11,6 +11,7 @@ class BaseApiService
     protected $useDatabaseGabungan;
     protected $header;
     protected $baseUrl;
+    protected $kodeKecamatan;
     public function __construct()
     {
         $this->settings = SettingAplikasi::whereIn('key', ['api_server_database_gabungan', 'api_key_database_gabungan', 'sinkronisasi_database_gabungan'])->pluck('value', 'key');        
@@ -21,6 +22,7 @@ class BaseApiService
             'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
         ];
         $this->baseUrl = $this->settings['api_server_database_gabungan'];
+        $this->kodeKecamatan = str_replace('.','',config('profil.kecamatan_id'));        
     }
 
     /**

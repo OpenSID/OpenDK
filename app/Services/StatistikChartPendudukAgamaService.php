@@ -46,7 +46,7 @@ class StatistikChartPendudukAgamaService extends BaseApiService
                 $filters = [
                     'filter[id]' => 'agama',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => config('profil.kecamatan_id'),
+                    'filter[kecamatan]' => $this->kodeKecamatan,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;

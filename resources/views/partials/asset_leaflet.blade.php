@@ -91,49 +91,38 @@
             });
         }
 
-
-        //menggunakan L.tileLayer -- Husnul Septia Khoirani
-        function getBaseLayers(peta, access_token) {
-
-            if(access_token ==''){
-                //pakai akun saya di mapbox -Husnul
-                access_token = "pk.eyJ1IjoiaHVzbnVsc2VwdGlhIiwiYSI6ImNtODE5NnpwYjBoNWkyanBpNzRoZzNyMnQifQ.kdePit4Vo48iHuUDKkaCeQ";
-                console.log("Access Token:", access_token);
-            }
-
-            var defaultLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        function getBaseLayers(peta, access_token, defaultLayerType) {
+            var baseLayers = {};
+            
+            // Layer OpenStreetMap
+            baseLayers["OpenStreetMap"] = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
-            }).addTo(peta);
+            });
 
-            var baseLayers = {
-                "OpenStreetMap": defaultLayer
-            };
+            baseLayers["OpenStreetMap H.O.T."] = L.tileLayer.provider("OpenStreetMap.HOT", {
+                attribution: '<a href="https://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+            });
 
             if (access_token) {
-                console.log("Menggunakan Mapbox dengan token:", access_token);
-
-                var mbGLstr = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=${access_token}`, {
-                    tileSize: 256, // Pastikan sesuai dengan skala default Mapbox
-                    zoomOffset: 0,
-                    attribution: '© Mapbox'
-                });
-
-                var mbGLsat = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=${access_token}`, {
+                // console.log("Menggunakan Mapbox dengan token:", access_token);
+                baseLayers["Mapbox Streets"] = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=${access_token}`, {
                     tileSize: 256,
                     zoomOffset: 0,
                     attribution: '© Mapbox'
                 });
 
-                var mbGLstrsat = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}@2x?access_token=${access_token}`, {
+                baseLayers["Mapbox Satellite"] = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=${access_token}`, {
                     tileSize: 256,
                     zoomOffset: 0,
                     attribution: '© Mapbox'
                 });
 
-                baseLayers["Mapbox Streets"] = mbGLstr;
-                baseLayers["Mapbox Satellite"] = mbGLsat;
-                baseLayers["Mapbox Satellite-Streets"] = mbGLstrsat;
-            } else {
+                baseLayers["Mapbox Satellite-Streets"] = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}@2x?access_token=${access_token}`, {
+                    tileSize: 256,
+                    zoomOffset: 0,
+                    attribution: '© Mapbox'
+                });
+            }else{
                 // console.warn("Access token tidak ditemukan!");
                 mbGLstr = L.tileLayer
                     .provider("OpenStreetMap.Mapnik", {
@@ -151,15 +140,11 @@
                     })
             }
 
-            var baseLayers = {
-                OpenStreetMap: defaultLayer,
-                "OpenStreetMap H.O.T.": L.tileLayer.provider("OpenStreetMap.HOT", {
-                    attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
-                }),
-                "Mapbox Streets": mbGLstr,
-                "Mapbox Satellite": mbGLsat,
-                "Mapbox Satellite-Street": mbGLstrsat,
-            };
+            // Menentukan default layer sesuai pilihan
+            var defaultLayer = baseLayers[defaultLayerType] || baseLayers["OpenStreetMap"];
+
+            // Tambahkan default layer ke peta
+            defaultLayer.addTo(peta);
 
             return baseLayers;
             }

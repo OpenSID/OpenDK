@@ -402,6 +402,12 @@
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
                             @endif
+
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/mapbox*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('setting.mapbox.index') }}"><i class="fa fa-circle-o"></i>Map Box</a>
+                                </li>
+                            @endif
                         </ul>
                     </li>
                 @endif

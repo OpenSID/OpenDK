@@ -53,6 +53,7 @@ use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
 use App\Http\Controllers\Setting\NavMenuController;
+use App\Http\Controllers\Setting\MapboxController;
 use App\Http\Controllers\UploadTemporaryImage;
 use App\Http\Controllers\UploadTemporaryImageController;
 use Maatwebsite\Excel\Row;
@@ -827,6 +828,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('show/{slide}', 'show')->name('setting.slide.show');
                 Route::put('update/{slide}', 'update')->name('setting.slide.update');
                 Route::delete('destroy/{slide}', 'destroy')->name('setting.slide.destroy');
+            });
+
+            // Map Box
+            Route::group(['prefix' => 'mapbox', 'controller' => MapboxController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.mapbox.index'); 
+                Route::get('getdata', 'getData')->name('setting.mapbox.getdata');
+                Route::get('create', 'create')->name('setting.mapbox.create');
+                Route::post('store', 'store')->name('setting.mapbox.store');
+                Route::get('edit/{mapbox}', 'edit')->name('setting.mapbox.edit');
+                Route::get('show/{mapbox}', 'show')->name('setting.mapbox.show');
+                Route::put('update/{mapbox}', 'update')->name('setting.mapbox.update');
+                Route::delete('destroy/{mapbox}', 'destroy')->name('setting.mapbox.destroy');
             });
 
             // COA

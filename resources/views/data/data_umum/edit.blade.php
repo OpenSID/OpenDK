@@ -47,6 +47,7 @@
                     <a id="reset">
                         <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
                             Reset Peta</button>
+                    
                     </a>
                 </div>
 
@@ -80,6 +81,8 @@
                 @include('partials.button_reset_submit')
             </div>
         </div>
+        <meta name="mapbox-token" content="{{ $sett_mapbox->token ?? '' }}">
+        <meta name="mapbox-default" content="{{ $sett_mapbox->default_map ?? '' }}">
 
         {!! Form::close() !!}
     </section>
@@ -185,8 +188,15 @@
         }
 
         var overlayLayers = {};
-
+        
         function tampil_peta() {
+            var mapboxToken = document.querySelector('meta[name="mapbox-token"]').getAttribute('content');
+            var mapboxDefault = document.querySelector('meta[name="mapbox-default"]').getAttribute('content');
+
+            if (!mapboxToken) {
+                console.error("Token Mapbox tidak ditemukan di meta tag!");
+            }
+            // console.log(mapboxToken);
             // Inisialisasi tampilan peta
             var posisi = [-1.0546279422758742, 116.71875000000001];
             var zoom = 13;
@@ -203,7 +213,7 @@
             // Geolocation IP Route/GPS
             geoLocation(peta_wilayah);
 
-            var baseLayers = getBaseLayers(peta_wilayah, '');
+            var baseLayers = getBaseLayers(peta_wilayah, mapboxToken, mapboxDefault);
             L.control.layers(baseLayers, overlayLayers, {
                 position: 'topleft',
                 collapsed: true

@@ -43,12 +43,15 @@
                         form[0].reset();
                         $('#data_tipe_potensi').DataTable().ajax.reload();
 
-                        Swal.fire({
-                            title: 'Berhasil!',
-                            text: response.message,
-                            icon: 'success',
-                            timer: 1500
-                        });
+                        $('#flash-message').html(
+                            `
+                        <div id="notifikasi" class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-check"></i> Sukses!</h4>
+                            <p>${response.message}</p>
+                        </div>
+                        `
+                        );
                     },
                     error: function(xhr) {
                         errorValidation(xhr);
@@ -70,13 +73,17 @@
                         $('#modal-form form').attr('action', routeUpdate);
                     })
                     .fail(() => {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Gagal memuat data.',
-                            icon: 'error',
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
+
+                        $('#flash-message').html(
+                            `
+                        <div id="notifikasi" class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h4><i class="icon fa fa-check"></i> Gagal!!</h4>
+                            <p>Gagal memuat data</p>
+                        </div>
+                        `
+                        );
+
                     });
             });
         });

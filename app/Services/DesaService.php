@@ -52,7 +52,7 @@ class DesaService extends BaseApiService
             // gunakan cache untuk mempercepat load data melalui api
             return Cache::remember('listDesa', 60 * 60 * 24, function () {
                 try {
-                    return $this->desa(['filter[kode_kec]' => config('profil.kecamatan_id')]);
+                    return $this->desa(['filter[kode_kec]' => $this->kodeKecamatan]);
                 } catch (\Exception $e) {                    
                     \Log::error('Failed get data in '.__FILE__.' function minYear()'. $e->getMessage());
                 }

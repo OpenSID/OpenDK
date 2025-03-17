@@ -35,7 +35,7 @@ use App\Enums\LabelStatistik;
 use App\Models\Penduduk;
 
 class StatistikChartPendudukPendidikanService extends BaseApiService
-{    
+{
     public function chart($did, $year)
     {
         if ($this->useDatabaseGabungan()) {
@@ -44,7 +44,7 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
                 $filters = [
                     'filter[id]' => 'pendidikan-dalam-kk',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => config('profil.kecamatan_id'),
+                    'filter[kecamatan]' => $this->kodeKecamatan,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
@@ -62,7 +62,7 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
                     'SLTP' => $dataFilter['SLTP/SEDERAJAT'] ?? 0,
                     'SLTA' => $dataFilter['SLTA / SEDERAJAT'] ?? 0,
                     'DIPLOMA' => ($dataFilter['DIPLOMA I / II'] ?? 0) + ($dataFilter['AKADEMI/ DIPLOMA III/S. MUDA'] ?? 0),
-                    'SARJANA' => ($dataFilter['DIPLOMA IV/ STRATA I'] ?? 0) + ($dataFilter['STRATA II']  ?? 0)+ ($dataFilter['STRATA III'] ?? 0),                    
+                    'SARJANA' => ($dataFilter['DIPLOMA IV/ STRATA I'] ?? 0) + ($dataFilter['STRATA II']  ?? 0) + ($dataFilter['STRATA III'] ?? 0),
                 ];
             } catch (\Exception $e) {
                 \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());

@@ -15,3 +15,4 @@ Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan p
 
 #### TEKNIS
 
+1. [#1144](https://github.com/OpenSID/OpenDK/issues/1144) Sesuaikan standar notifikasi sweet alert ke bawaan sistem.

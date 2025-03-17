@@ -124,7 +124,12 @@
                     y: year
                 }
             }).done(function(data) {
-                create_chart_bantuan_penduduk(data);
+                if(data.length){
+                    create_chart_bantuan_penduduk(data);
+                }else{
+                    $('#chart_bantuan_penduduk').html('<div class="text-center">Data Tidak Ditemukan</div>');
+                }
+                
             });
 
             $.ajax('{!! route('statistik.program-bantuan.chart-keluarga') !!}', {
@@ -136,7 +141,11 @@
                     y: year
                 }
             }).done(function(data) {
-                create_chart_bantuan_keluarga(data);
+                if(data.length){
+                    create_chart_bantuan_keluarga(data);
+                }else{
+                    $('#chart_bantuan_keluarga').html('<div class="text-center">Data Tidak Ditemukan</div>');
+                }                
             });
         }
 

@@ -46,7 +46,7 @@ class StatistikChartBantuanPendudukService extends BaseApiService
             try {
                 $filters = [                 
                     'filter[id]' => $this->kategori, 
-                    'kode_kecamatan'  => config('profil.kecamatan_id'),  
+                    'kode_kecamatan'  => $this->kodeKecamatan,  
                 ];
                 if ($did != 'Semua') {
                     $filters['kode_desa'] = $did;
@@ -54,8 +54,10 @@ class StatistikChartBantuanPendudukService extends BaseApiService
                 if($year != 'Semua') {
                     $filters['filter[tahun]'] = $year;
                 }
-                $response = $this->apiRequest('/api/v1/statistik-web/bantuan', $filters);                
-                $data = collect($response)->filter(function ($item) {
+                $response = $this->apiRequest('/api/v1/statistik-web/bantuan', $filters);   
+                          
+                $data = collect($response)
+                ->filter(function ($item) {
                     return !in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi]);
                 })->groupBy('attributes.nama')->map(function ($item, $key) {
                     return ['program' => $key, 'value' => $item->sum('attributes.jumlah')];

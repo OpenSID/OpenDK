@@ -24,7 +24,7 @@
                             <label for="list_year" class="col-sm-4 control-label">Tahun</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
-                                    <option value="Semua">Semua Desa</option>
+                                    <option value="Semua">Semua</option>
                                     @foreach ($year_list as $year)
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endforeach

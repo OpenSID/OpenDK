@@ -32,28 +32,46 @@
 namespace App\Services;
 
 use App\Models\DataDesa;
+use Illuminate\Support\Facades\Cache;
 
 class DesaService extends BaseApiService
 {
     public function dataDesa(string $slug)
-    {        
-        if($this->useDatabaseGabungan()) {
-            $slug = kembalikanSlug($slug);            
-            $dataDesa = $this->desa(['filter[nama_desa]' => $slug, 'page[size]' => 1]);                        
+    {
+        if ($this->useDatabaseGabungan()) {
+            $slug = kembalikanSlug($slug);
+            $dataDesa = $this->desa(['filter[nama_desa]' => $slug, 'page[size]' => 1])?->first();
             return $dataDesa;
         }
         return DataDesa::nama($slug)->firstOrFail();
+    }
+
+    public function listDesa()
+    {
+        if ($this->useDatabaseGabungan()) {
+            // gunakan cache untuk mempercepat load data melalui api
+            return Cache::remember('listDesa', 60 * 60 * 2, function () {
+                try {
+                    return $this->desa(['filter[kode_kec]' => $this->kodeKecamatan]);
+                } catch (\Exception $e) {                    
+                    \Log::error('Failed get data in '.__FILE__.' function minYear()'. $e->getMessage());
+                }
+                return collect();
+            });
+        }
+
+        return DataDesa::all();
     }
 
     /**
      * Get Unique Desa
      */
     public function desa(array $filters = [])
-    {        
+    {
         // Panggil API dan ambil data
         $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);
 
-        return collect($data)->map(function ($item) {            
+        return collect($data)->map(function ($item) {
             return (object)[
                 'desa_id' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
                 'kode_desa' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
@@ -61,8 +79,8 @@ class DesaService extends BaseApiService
                 'sebutan_desa' => $item['attributes']['sebutan_desa'] ?? null, // Ambil sebutan desa
                 'website' => $item['attributes']['website'] ?? null, // Ambil website
                 'luas_wilayah' => $item['attributes']['luas_wilayah'] ?? null, // Ambil luas wilayah
-                'path' => $item['attributes']['path'] ?? null, // Ambil path                
+                'path' => $item['attributes']['path'] ?? null, // Ambil path
             ];
-        })?->first();
+        });
     }
 }

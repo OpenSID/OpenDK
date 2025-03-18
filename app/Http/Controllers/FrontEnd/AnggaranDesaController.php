@@ -56,7 +56,13 @@ class AnggaranDesaController extends FrontEndController
         $year = request('y');
 
         $dataAnggaran = (new StatistikChartAnggaranDesaService())->chart($mid, $did, $year);
-        $dataAnggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
+        if($this->isDatabaseGabungan()){
+            $dataDetail = collect($dataAnggaran['data-detail'])->keyBy('id');            
+            unset($dataAnggaran['data-detail']);
+            $dataAnggaran['detail'] = view('pages.anggaran_desa.gabungan.detail_anggaran', compact('did', 'mid', 'year', 'dataDetail'))->render();
+        }else {
+            $dataAnggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
+        }        
         return $dataAnggaran;
     }
 }

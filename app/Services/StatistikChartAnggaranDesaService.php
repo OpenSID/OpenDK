@@ -31,32 +31,72 @@
 
 namespace App\Services;
 
-use App\Enums\LabelStatistik;
 use App\Models\CoaType;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class StatistikChartAnggaranDesaService extends BaseApiService
 {
+    private $dataTree;
     public function chart($mid, $did, $year)
     {
         if ($this->useDatabaseGabungan()) {
             $data = [];
+            $data['data-detail'] = [
+                4 => [
+                    'id' => 4,
+                    'attributes' => [
+                        'template_uuid' => 4,
+                        'uraian' => 'Pendapatan',
+                        'anggaran' => 0,
+                        'parent_uuid' => null,                        
+                    ],
+                    'children' => [],                    
+                ],
+                5 => [
+                    'id' => 5,
+                    'attributes' => [
+                        'template_uuid' => 4,
+                        'uraian' => 'Belanja',
+                        'anggaran' => 0,
+                        'parent_uuid' => null,                        
+                    ],
+                    'children' => [],                    
+                ],
+                6 => [
+                    'id' => 6,
+                    'attributes' => [
+                        'template_uuid' => 6,
+                        'uraian' => 'Pembiayaan',
+                        'anggaran' => 0,
+                        'parent_uuid' => null,                        
+                    ],
+                    'children' => [],                    
+                ],
+            ];
             try {
                 $filters = [
-                    'filter[id]' => 'agama',
-                    'filter[tahun]' => $year,
-                    'filter[kecamatan]' => config('profil.kecamatan_id'),
+                    'filter[kode_kecamatan]' => $this->kodeKecamatan,
+                    'filter[template_uuid_length_lt]' => 6,
+                    'page[size]' => 100,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
                 }
-                $response = $this->apiRequest('/api/v1/statistik/penduduk', $filters);
-                foreach ($response as $key => $item) {
-                    if (in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi])) {
-                        continue;
-                    }
-                    $data[] = ['religion' => ucfirst(strtolower($item['attributes']['nama'])), 'total' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#'.random_color()];
+                if ($year != 'Semua') {
+                    $filters['filter[tahun]'] = $year;
                 }
+                $response = $this->apiRequest('/api/v1/keuangan/summary', $filters);
+                $data['grafik'] = collect($response)->filter(static fn ($q) => strlen(trim($q['attributes']['template_uuid'])) == 1)->map(function ($item) {
+                    return [
+                        'anggaran' => $item['attributes']['template_uuid'].'-'.$item['attributes']['uraian'],
+                        'jumlah' => intval($item['attributes']['anggaran']),
+                    ];
+                })->values();
+                if($response){
+                    $this->dataTree = collect($response);
+                    $data['data-detail'] = $this->buildTree();
+                }                                
             } catch (\Exception $e) {
                 \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
@@ -136,5 +176,18 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         }
 
         return $dataAnggaran;
+    }
+
+    protected function buildTree($parentId = null)
+    {
+        return $this->dataTree->filter(function ($item) use ($parentId) {
+            return $item['attributes']['parent_uuid'] === $parentId;
+        })->map(function ($item) {
+            return [
+                'id' => $item['attributes']['template_uuid'],
+                'attributes' => $item['attributes'],
+                'children' => $this->buildTree($item['attributes']['template_uuid']),
+            ];
+        })->values()->all();
     }
 }

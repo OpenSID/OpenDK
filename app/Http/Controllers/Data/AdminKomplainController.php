@@ -189,6 +189,7 @@ class AdminKomplainController extends Controller
             : Penduduk::where('nik', $komplain->nik)->first();
 
             $komplain->nama = $penduduk?->nama;
+            $komplain->detail_penduduk = $penduduk ? json_encode($penduduk->attributesToArray()) : null;
 
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {

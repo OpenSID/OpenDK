@@ -143,6 +143,9 @@ class SistemKomplainController extends FrontEndController
             $komplain->dilihat = 0;
             $komplain->nama = $penduduk['nama'] ?? null;
 
+            // memasukkan data dari api database gabungan ke detail_penduduk
+            $komplain->detail_penduduk = $penduduk ? json_encode($penduduk->attributesToArray()) : null;
+
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {
                 $lampiran1 = $request->file('lampiran1');
@@ -265,4 +268,5 @@ class SistemKomplainController extends FrontEndController
 
         return view('pages.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
+
 }

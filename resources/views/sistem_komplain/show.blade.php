@@ -89,7 +89,16 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="user-block">
-                                    <img class="img-circle img-bordered-md" src="{{ is_user($penduduk->foto, $penduduk->sex) }}" alt="user image">
+
+                                    {{-- di ambil dari detail_penduduk - api database gabungan --}}
+                                    @if(!empty($penduduk->detail_penduduk))
+                                    <img class="img-circle img-bordered-sm" src="{{ is_user(json_decode($penduduk->detail_penduduk)->foto, json_decode($penduduk->detail_penduduk)->sex) }}" alt="user image">
+                                    @else
+
+                                    {{-- diambil dari relasi penduduk --}}
+                                    <img class="img-circle img-bordered-sm" src="{{ is_user($penduduk?->penduduk?->foto, $penduduk?->penduduk?->sex) }}" alt="user image">
+                                @endif
+
                                     <span class="username">
                                         <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
                                     </span>

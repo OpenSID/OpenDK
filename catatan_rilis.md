@@ -17,3 +17,5 @@ Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan p
 
 1. [#1144](https://github.com/OpenSID/OpenDK/issues/1144) Sesuaikan standar notifikasi sweet alert ke bawaan sistem.
 2. [#1146](https://github.com/OpenSID/OpenDK/issues/1146) Sesuaikan data desa berdasarkan pengaturan API database gabungan.
+3. [#1153](https://github.com/OpenSID/OpenDK/issues/1153) Sesuaikan letak geografis dengan api database gabungan.
+4. [#1147](https://github.com/OpenSID/OpenDK/issues/1147) Sesuaikan data statistik kependudukan berdasarkan pengaturan.

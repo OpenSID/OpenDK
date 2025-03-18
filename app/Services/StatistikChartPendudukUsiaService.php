@@ -46,12 +46,12 @@ class StatistikChartPendudukUsiaService extends BaseApiService
                 $filters = [
                     'filter[id]' => 'rentang-umur',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => config('profil.kecamatan_id'),
+                    'filter[kecamatan]' => $this->kodeKecamatan,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
                 }
-                $response = $this->apiRequest('/api/v1/statistik/penduduk', $filters);
+                $response = $this->apiRequest('/api/v1/statistik-web/penduduk', $filters);
                 foreach ($response as $key => $item) {                    
                     if (in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi])) {
                         continue;

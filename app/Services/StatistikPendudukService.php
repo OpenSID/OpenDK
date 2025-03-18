@@ -35,13 +35,11 @@ use App\Enums\LabelStatistik;
 use App\Models\Penduduk;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
-use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class StatistikPendudukService extends BaseApiService
-{    
+{
     public function minYear()
     {
         // gunakan cache untuk mempercepat load data melalui api
@@ -100,14 +98,14 @@ class StatistikPendudukService extends BaseApiService
             "aktanikah_terpenuhi" => 0,
             "aktanikah_persen_terpenuhi" => 0,
         ];
-        if ($this->useDatabaseGabungan()) {            
-            try {                
+        if ($this->useDatabaseGabungan()) {
+            try {
                 $filters = [
                     'filter[id]' => 'jenis-kelamin',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => config('profil.kecamatan_id'),
+                    'filter[kecamatan]' => $this->kodeKecamatan,
                 ];
-                if($did != 'Semua') {
+                if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
                 }
                 $filtersCacat = $filtersKtp = $filtersAkta = $filtersNikah = $filtersAktaNikah = $filters;
@@ -125,51 +123,51 @@ class StatistikPendudukService extends BaseApiService
                     'nikah' => $client->getAsync('/api/v1/statistik-web/penduduk', ['query' => $filtersNikah]),
                     'akta_nikah' => $client->getAsync('/api/v1/statistik-web/penduduk', ['query' => $filtersAktaNikah]),
                 ]);
-                
-                $responses = Utils::settle($promises)->wait();                
+
+                $responses = Utils::settle($promises)->wait();
                 $data = json_decode($responses['penduduk']['value']->getBody()->getContents(), true)['data'];
                 $dataCacat = json_decode($responses['cacat']['value']->getBody()->getContents(), true)['data'];
                 $dataKtp = json_decode($responses['ktp']['value']->getBody()->getContents(), true)['data'];
                 $dataAkta = json_decode($responses['akta_kelahiran']['value']->getBody()->getContents(), true)['data'];
                 $dataNikah = json_decode($responses['nikah']['value']->getBody()->getContents(), true)['data'];
                 $dataAktaNikah = json_decode($responses['akta_nikah']['value']->getBody()->getContents(), true)['data'];
-                if($dataCacat) {
-                    $totalDisabilitas  = collect($dataCacat)->filter(function($q){                        
+                if ($dataCacat) {
+                    $totalDisabilitas  = collect($dataCacat)->filter(function ($q) {
                         return ! in_array($q['id'], [7, LabelStatistik::Jumlah, LabelStatistik::Total, LabelStatistik::BelumMengisi]);
                     })->sum('attributes.jumlah');
                     $summary['total_disabilitas'] = $totalDisabilitas;
                 }
-                if($data) {
+                if ($data) {
                     $mapData  = collect($data)->mapWithKeys(function ($item) {
                         return [$item['id'] => $item['attributes']];
-                    });                    
+                    });
                     $summary["total_penduduk"] = $mapData[LabelStatistik::Total]['jumlah'] ?? 0;
                     $summary["total_lakilaki"] = $mapData[LabelStatistik::LakiLaki]['jumlah'] ?? 0;
-                    $summary["total_perempuan"] = $mapData[LabelStatistik::Perempuan]['jumlah'] ?? 0;                    
-                    
+                    $summary["total_perempuan"] = $mapData[LabelStatistik::Perempuan]['jumlah'] ?? 0;
+
                 }
-                if($dataKtp){
-                    $ktpWajib  = collect($dataKtp)->filter(static fn($q) => $q['id'] == LabelStatistik::Total)->sum('attributes.jumlah');
-                    $ktpTerpenuhi = collect($dataKtp)->filter(static fn($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
+                if ($dataKtp) {
+                    $ktpWajib  = collect($dataKtp)->filter(static fn ($q) => $q['id'] == LabelStatistik::Total)->sum('attributes.jumlah');
+                    $ktpTerpenuhi = collect($dataKtp)->filter(static fn ($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
                     $summary['ktp_wajib'] = $ktpWajib;
                     $summary['ktp_terpenuhi'] = $ktpTerpenuhi;
                     $summary['ktp_persen_terpenuhi'] = $ktpWajib == 0 ? 0 : format_number_id(($ktpTerpenuhi / $ktpWajib) * 100);
                 }
-                if($dataAkta){
-                    $aktaTerpenuhi = collect($dataAkta)->filter(static fn($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
+                if ($dataAkta) {
+                    $aktaTerpenuhi = collect($dataAkta)->filter(static fn ($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
                     $summary['akta_terpenuhi'] = $aktaTerpenuhi;
                     $summary['akta_persen_terpenuhi'] = $summary["total_penduduk"] == 0 ? 0 : format_number_id(($aktaTerpenuhi / $summary["total_penduduk"]) * 100);
                 }
-                if($dataNikah){
-                    $aktanikahWajib = collect($dataNikah)->filter(static fn($q) => $q['id'] == '2')->sum('attributes.jumlah');
-                    $aktanikahTerpenuhi = collect($dataAktaNikah)->filter(static fn($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
+                if ($dataNikah) {
+                    $aktanikahWajib = collect($dataNikah)->filter(static fn ($q) => $q['id'] == '2')->sum('attributes.jumlah');
+                    $aktanikahTerpenuhi = collect($dataAktaNikah)->filter(static fn ($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
                     $summary['aktanikah_wajib'] = $aktanikahWajib;
                     $summary['aktanikah_terpenuhi'] = $aktanikahTerpenuhi;
                     $summary['aktanikah_persen_terpenuhi'] = $aktanikahWajib == 0 ? 0 : format_number_id(($aktanikahTerpenuhi / $aktanikahWajib) * 100);
                 }
-                
+
                 return $summary;
-            } catch (\Exception $e) {                
+            } catch (\Exception $e) {
                 \Log::error('Failed get data in '.__FILE__.' function dashboard()'. $e->getMessage());
             }
             return $summary;

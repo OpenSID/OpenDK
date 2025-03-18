@@ -91,13 +91,12 @@
                                 <div class="user-block">
 
                                     {{-- di ambil dari detail_penduduk - api database gabungan --}}
-                                    @if(!empty($penduduk->detail_penduduk))
-                                    <img class="img-circle img-bordered-sm" src="{{ is_user(json_decode($penduduk->detail_penduduk)->foto, json_decode($penduduk->detail_penduduk)->sex) }}" alt="user image">
+                                    @if (!empty($penduduk->detail_penduduk))
+                                        <img class="img-circle img-bordered-sm" src="{{ is_user(json_decode($penduduk->detail_penduduk)->foto, json_decode($penduduk->detail_penduduk)->sex) }}" alt="user image">
                                     @else
-
-                                    {{-- diambil dari relasi penduduk --}}
-                                    <img class="img-circle img-bordered-sm" src="{{ is_user($penduduk?->penduduk?->foto, $penduduk?->penduduk?->sex) }}" alt="user image">
-                                @endif
+                                        {{-- diambil dari relasi penduduk --}}
+                                        <img class="img-circle img-bordered-sm" src="{{ is_user($penduduk?->penduduk?->foto, $penduduk?->penduduk?->sex) }}" alt="user image">
+                                    @endif
 
                                     <span class="username">
                                         <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>

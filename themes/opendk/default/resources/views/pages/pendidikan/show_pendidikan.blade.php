@@ -41,8 +41,10 @@
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#jumlah_penduduk" data-toggle="tab">Tingkat Pendidikan</a></li>
+                        @if(!$gabungan)
                         <li><a href="#jumlah_putus_sekolah" data-toggle="tab">Jumlah Siswa Putus Sekolah</a></li>
                         <li><a href="#jumlah_fasilitas" data-toggle="tab">Jumlah Fasilitas PAUD</a></li>
+                        @endif
                         {{-- <li><a href="#jumlah_siswa_fasilitas" data-toggle="tab">Jumlah Siswa dan Fasilitas</a></li> --}}
                     </ul>
                     <div class="tab-content">
@@ -53,6 +55,7 @@
                                 </div>
                             </div>
                         </div>
+                        @if(!$gabungan)
                         <div class="tab-pane" id="jumlah_putus_sekolah">
                             <div id="chart_putus_sekolah" style="width:100%; overflow: visible; text-align: left; padding: 10px;;">
                             </div>
@@ -61,6 +64,7 @@
                             <div id="chart_fasilitas" style="width:100%;  overflow: visible; text-align: left; padding: 10px;;">
                             </div>
                         </div>
+                        @endif                        
                     </div>
                     <!-- /.nav-tabs-custom -->
                 </div>

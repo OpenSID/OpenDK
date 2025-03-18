@@ -44,14 +44,14 @@
 </div>
 <div class="form-group">
     <label for="rt" class="control-label col-md-4 col-sm-3 col-xs-12">RT </label>
-    
+
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="text" class="form-control col-md-1" value="{{ $keluarga->rt }}" disabled>
     </div>
 </div>
 <div class="form-group">
     <label for="tgl_cetak_kk" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Cetak KK </label>
-    
+
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="text" class="form-control" value="{{ format_datetime($keluarga->tgl_cetak_kk) }}" disabled>
     </div>
@@ -70,13 +70,13 @@
         </thead>
         <tbody>
             @foreach ($penduduk->anggota as $item)
-            <tr>
-                <td>{{ $item['nik'] }}</td>
-                <td>{{ $item['nama'] }}</td>
-                <td>{{ $item['sex'] == 1 ? 'Laki-laki' : 'Perempuan' }}</td>
-                <td>{{ $item['tempatlahir'] }}</td>
-                <td>{{ $item['tanggallahir'] }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $item['nik'] }}</td>
+                    <td>{{ $item['nama'] }}</td>
+                    <td>{{ $item['sex'] == 1 ? 'Laki-laki' : 'Perempuan' }}</td>
+                    <td>{{ $item['tempatlahir'] }}</td>
+                    <td>{{ $item['tanggallahir'] }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

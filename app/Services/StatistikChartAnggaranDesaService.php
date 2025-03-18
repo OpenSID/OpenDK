@@ -81,7 +81,7 @@ class StatistikChartAnggaranDesaService extends BaseApiService
                     'page[size]' => 100,
                 ];
                 if ($did != 'Semua') {
-                    $filters['filter[desa]'] = $did;
+                    $filters['filter[kode_desa]'] = $did;
                 }
                 if ($year != 'Semua') {
                     $filters['filter[tahun]'] = $year;

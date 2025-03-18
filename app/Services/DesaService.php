@@ -50,7 +50,7 @@ class DesaService extends BaseApiService
     {
         if ($this->useDatabaseGabungan()) {
             // gunakan cache untuk mempercepat load data melalui api
-            return Cache::remember('listDesa', 60 * 60 * 2, function () {
+            return Cache::remember('listDesa', 60 * 60 * 24, function () {
                 try {
                     return $this->desa(['filter[kode_kec]' => $this->kodeKecamatan]);
                 } catch (\Exception $e) {                    

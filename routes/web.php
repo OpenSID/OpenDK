@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,38 +24,35 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\BackEnd\ThemesController;
+use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FrontEnd\PageController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\Setting\COAController;
+use App\Http\Controllers\Setting\JenisPenyakitController;
+use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\NavigationController;
+use App\Http\Controllers\Setting\NavMenuController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TestEmailController;
+use App\Http\Controllers\User\UserController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cookie;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LogViewerController;
-use App\Http\Controllers\Role\RoleController;
-use App\Http\Controllers\Setting\NavigationController;
-use App\Http\Controllers\Setting\AplikasiController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\BackEnd\EventController;
-use App\Http\Controllers\Setting\SlideController;
-use App\Http\Controllers\BackEnd\ThemesController;
-use App\Http\Controllers\Counter\CounterController;
-use App\Http\Controllers\FrontEnd\PageController;
-use App\Http\Controllers\Setting\TipePotensiController;
-use App\Http\Controllers\Setting\TipeRegulasiController;
-use App\Http\Controllers\Setting\JenisPenyakitController;
-use App\Http\Controllers\Setting\KategoriKomplainController;
-use App\Http\Controllers\Setting\NavMenuController;
-use App\Http\Controllers\UploadTemporaryImage;
-use App\Http\Controllers\UploadTemporaryImageController;
-use Maatwebsite\Excel\Row;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -320,7 +317,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
                 });
 
-
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {
                     Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);
@@ -437,7 +433,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //     Route::get('/dokumen_template', ['as' => 'data.pendaftaran.kerjasama.dokumen_template', 'uses' => 'PendaftaranKerjasamaController@dokumen_template']);
                 //     Route::post('/register', ['as' => 'data.pendaftaran.kerjasama.register', 'uses' => 'PendaftaranKerjasamaController@register']);
                 // });
-
 
                 // Data Umum
                 Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
@@ -908,4 +903,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
     });
+
+    Route::get('testEmail', TestEmailController::class)->name('testEmail');
 });

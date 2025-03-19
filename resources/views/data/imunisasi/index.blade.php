@@ -64,8 +64,8 @@
                         orderable: false
                     },
                     {
-                        data: 'desa.nama',
-                        name: 'desa.nama'
+                        data: 'nama_desa',
+                        name: 'desa_id',
                     },
                     {
                         data: 'cakupan_imunisasi',
@@ -86,7 +86,7 @@
             });
 
             $('#list_desa').on('select2:select', function(e) {
-                data.ajax.reload();
+                data.columns(1).search(this.value).draw();
             });
         });
     </script>

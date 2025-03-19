@@ -46,6 +46,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use MichaelDzjap\TwoFactorAuth\Providers\EmailTwoFactorProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -81,6 +82,10 @@ class AppServiceProvider extends ServiceProvider
             $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
             $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
         }
+
+        resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {
+            return new \App\Providers\EmailTwoFactorProvider();
+        });        
     }
 
     protected function penduduk()

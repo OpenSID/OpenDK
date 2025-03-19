@@ -199,14 +199,17 @@ class PendudukController extends Controller
      *
      * @return Response
      */
-    public function exportExcel(Penduduk $penduduk) {
+    public function exportExcel(Request $request) {
+
+        $params = $request->all();
+
         try {
             if($this->isDatabaseGabungan()){
 
-                return Excel::download(new ExportPenduduk(true), 'data-penduduk.xlsx');
+                return Excel::download(new ExportPenduduk(true, $params), 'data-penduduk.xlsx');
             }else{
 
-                return Excel::download(new ExportPenduduk(false), 'data-penduduk.xlsx');
+                return Excel::download(new ExportPenduduk(false, $params), 'data-penduduk.xlsx');
             }
         } catch (\Exception $e) {
             report($e);

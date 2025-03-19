@@ -41,7 +41,7 @@ class PublikasiController extends FrontEndController
 {
     public function album()
     {
-        Counter::count('publikasi.galeri');
+        Counter::count('publik.publikasi.album');
 
         $albums     = Album::status()->with(['galeris'])->paginate(9);
         $page_title = 'Galeri';
@@ -51,7 +51,7 @@ class PublikasiController extends FrontEndController
 
     public function galeri($slug)
     {
-        Counter::count('publikasi.galeri');
+        Counter::count('publik.publikasi.album');
 
         $galeris = Galeri::status()->whereRelation('album', 'slug', $slug)->paginate(9);
         // $album = Album::with(['galeris'])->where('slug', $slug)->first();
@@ -64,7 +64,7 @@ class PublikasiController extends FrontEndController
 
     public function galeri_detail($slug)
     {
-        Counter::count('publikasi.galeri');
+        Counter::count('publik.publikasi.album');
 
         $galeri = Galeri::where('slug', $slug)->first();
 

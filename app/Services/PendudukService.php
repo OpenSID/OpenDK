@@ -64,15 +64,18 @@ class PendudukService
     /**
      * Export Data Penduduk
      */
-    public function exportPenduduk(array $filters = [])
+    public function exportPenduduk($size, $number, $search)
     {
         // Default parameter
         $defaultParams = [
             'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+            'page[size]' => $size,
+            'page[number]' => $number,
+            'filter[search]' => $search,
         ];
 
         // Gabungkan parameter default dengan filter dinamis
-        $params = array_merge($defaultParams, $filters);
+        $params = $defaultParams;
 
         // Panggil API dan ambil data
         $data = $this->apiRequest('/api/v1/opendk/sync-penduduk-opendk', $params);
@@ -83,11 +86,12 @@ class PendudukService
                 'ID' => $item['id'],
                 'nama' => $item['attributes']['nama'] ?? '',
                 'nik' => '`' . $item['attributes']['nik'],
-                'no_kk' => $item['attributes']['keluarga']['no_kk'] ?? '',
+                'no_kk' => '`' .$item['attributes']['keluarga']['no_kk'] ?? '',
                 'nama_desa' => $item['attributes']['config']['nama_desa'] ?? '',
                 'alamat' => $item['attributes']['alamat_sekarang'] ?? '',
                 'pendidikan' => $item['attributes']['pendidikan_k_k']['nama'] ?? '',
                 'tanggal_lahir' => $item['attributes']['tanggallahir'] ?? '',
+                'umur' => $item['attributes']['umur'] ?? '',
                 'pekerjaan' => $item['attributes']['pekerjaan']['nama'] ?? '',
                 'status_kawin' => $item['attributes']['status_kawin']['nama'] ?? '',
             ];

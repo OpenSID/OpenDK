@@ -43,7 +43,7 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-penyakit.create') }}">jenis penyakit</a></b> terlebih dahulu.</p>
+                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-penyakit.index') }}">jenis penyakit</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>
@@ -72,8 +72,8 @@
                         orderable: false
                     },
                     {
-                        data: 'desa.nama',
-                        name: 'desa.nama'
+                        data: 'nama_desa',
+                        name: 'desa_id',
                     },
                     {
                         data: 'penyakit.nama',
@@ -98,7 +98,7 @@
             });
 
             $('#list_desa').on('select2:select', function(e) {
-                data.ajax.reload();
+                data.columns(1).search(this.value).draw();
             });
         });
     </script>

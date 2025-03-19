@@ -81,8 +81,14 @@
                 @include('partials.button_reset_submit')
             </div>
         </div>
-        <meta name="mapbox-token" content="{{ $sett_mapbox->token ?? '' }}">
-        <meta name="mapbox-default" content="{{ $sett_mapbox->default_map ?? '' }}">
+        @foreach ($sett_mapbox as $sett)
+        @if ($sett->key == "map_box")
+            <meta name="mapbox-token" content="{{ $sett->value ?? '' }}">
+        @endif
+        @if ($sett->key == "jenis_peta")
+            <meta name="mapbox-default" content="{{ $sett->value ?? '' }}">
+        @endif
+        @endforeach
 
         {!! Form::close() !!}
     </section>

@@ -37,6 +37,7 @@ use App\Models\DataUmum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Models\Mapbox;
+use App\Models\SettingAplikasi;
 
 class DataUmumController extends Controller
 {
@@ -48,8 +49,8 @@ class DataUmumController extends Controller
     public function index()
     {
         $data_umum = DataUmum::first();
-        $sett_mapbox = Mapbox::first();
-
+        $sett_mapbox = SettingAplikasi::whereIn('key', ['jenis_peta', 'map_box'])->get();
+    
         $luas_wilayah = $data_umum['luas_wilayah_value'];
         $page_title = 'Data Umum';
         $page_description = 'Ubah Data Umum';

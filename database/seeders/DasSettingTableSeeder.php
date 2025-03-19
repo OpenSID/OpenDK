@@ -136,6 +136,24 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
+            10 => [
+                'id' => 11,
+                'key' => 'jenis_peta',
+                'value' => 'Mapbox Satellite-Streets',
+                'type' => 'boolean_peta',
+                'description' => 'Jenis Peta yang akan diterapkan secara bawaan sistem',
+                'kategori' => 'web',
+                'option' => '{}',
+            ],
+            11 => [
+                'id' => 12,
+                'key' => 'map_box',
+                'value' => 'pk.eyJ1IjoiaHVzbnVsc2VwdGlhIiwiYSI6ImNtODE5NnpwYjBoNWkyanBpNzRoZzNyMnQifQ.kdePit4Vo48iHuUDKkaCeQ',
+                'type' => 'input',
+                'description' => 'Map Box Api Key untuk peta',
+                'kategori' => 'web',
+                'option' => '{}',
+            ],
         ]);
     }
 }

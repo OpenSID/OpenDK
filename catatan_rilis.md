@@ -14,6 +14,7 @@ Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan p
 5. [#1133](https://github.com/OpenSID/OpenDK/issues/1133) Perbaikan pada halaman penduduk perlu di cek pada API database gabungan.
 6. [#1136](https://github.com/OpenSID/OpenDK/issues/1136) Perbaikan pada akses halaman keluarga.
 7. [#1161](https://github.com/OpenSID/OpenDK/issues/1161) Perbaikan error tambah prosedur baru.
+8. [#1162](https://github.com/OpenSID/OpenDK/issues/1162) Perbaikan error tambah regulasi baru.
 
 #### TEKNIS
 

@@ -13,7 +13,16 @@
                     @foreach ($komplains as $item)
                         <div class="post">
                             <div class="user-block">
-                                <img class="img-circle img-bordered-sm" src="{{ is_user($item->penduduk->foto, $item->penduduk->sex) }}" alt="user image">
+
+                                {{-- di ambil dari detail_penduduk - api database gabungan --}}
+                                @if(!empty($item->detail_penduduk))
+                                <img class="img-circle img-bordered-sm" src="{{ is_user(json_decode($item->detail_penduduk)->foto, json_decode($item->detail_penduduk)->sex) }}" alt="user image">
+                                @else
+
+                                {{-- diambil dari relasi penduduk --}}
+                                <img class="img-circle img-bordered-sm" src="{{ is_user($item?->penduduk?->foto, $item?->penduduk?->sex) }}" alt="user image">
+                                @endif
+
                                 <span class="username">
                                     <a href="{{ route('sistem-komplain.komplain', $item->slug) }}">{{ $item->judul }}</a>
                                     <a href="#" class="pull-right btn-box-tool"><span class="label label-default">{{ $item->kategori_komplain->nama }}</span></a>

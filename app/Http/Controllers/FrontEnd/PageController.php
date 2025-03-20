@@ -42,6 +42,7 @@ use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
 use App\Http\Controllers\FrontEndController;
 use App\Models\Kategori;
+use App\Services\DesaService;
 use Jenssegers\Agent\Agent;
 
 class PageController extends FrontEndController
@@ -168,9 +169,7 @@ class PageController extends FrontEndController
 
     public function DesaShow($slug)
     {
-        // Counter::count('desa.show');
-
-        $desa = DataDesa::nama($slug)->firstOrFail();
+        $desa = (new DesaService)->dataDesa($slug);        
         $page_title = 'Desa ' . $desa->nama;
         $page_description = 'Data Desa';
 

@@ -23,7 +23,7 @@
             <hr>
 
             <x-table :items="$widgets">
-                <x-table-columns>
+                <x-table-columns sortable>
                     <x-table-column style="width: 5px;">No</x-table-column>
                     <x-table-column>Aksi</x-table-column>
                     <x-table-column>Judul</x-table-column>
@@ -32,7 +32,7 @@
                 </x-table-columns>
                 <x-table-rows sortable>
                     @foreach ($widgets as $item)
-                        <x-table-row :id="$item->id">
+                        <x-table-row :id="$item->id" sortable>
                             <x-table-cell>{{ $loop->iteration }}</x-table-cell>
                             <x-table-cell>
                                 <x-button-edit-table :param="$item->id" :name="$item->judul" />

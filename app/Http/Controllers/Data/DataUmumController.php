@@ -49,12 +49,11 @@ class DataUmumController extends Controller
     public function index()
     {
         $data_umum = DataUmum::first();
-        $sett_mapbox = SettingAplikasi::whereIn('key', ['jenis_peta', 'map_box'])->get();
     
         $luas_wilayah = $data_umum['luas_wilayah_value'];
         $page_title = 'Data Umum';
         $page_description = 'Ubah Data Umum';
-        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah','sett_mapbox'));
+        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah'));
     }
 
     /**

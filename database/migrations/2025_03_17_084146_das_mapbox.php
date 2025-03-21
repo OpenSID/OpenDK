@@ -13,11 +13,25 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('das_mapbox', function (Blueprint $table) {
-            $table->id();
-            $table->string('token', 150);
-            $table->string('default_map', 50);
-        });
+      
+         // Tambahkan setting untuk jenis_peta
+         SettingAplikasi::insert([            
+            'key' => 'jenis_peta',
+            'value' => '',
+            'type' => 'boolean_peta',
+            'description' => 'Jenis Peta yang akan diterapkan secara bawaan sistem',
+            'kategori' => 'web',
+            'option' => '{"readonly":true}',
+        ]);   
+         // Tambahkan setting untuk sinkronisasi opensid
+         SettingAplikasi::insert([            
+            'key' => 'map_box',
+            'value' => '',
+            'type' => 'input',
+            'description' => 'Map Box Api Key untuk peta',
+            'kategori' => 'web',
+            'option' => '{"readonly":true}',
+        ]);   
     }
 
     /**
@@ -27,6 +41,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('das_mapbox');
+        SettingAplikasi::whereIn('key', ['jenis_peta','map_box'])->delete();
+
     }
 };

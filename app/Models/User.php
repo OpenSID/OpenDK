@@ -41,6 +41,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use MichaelDzjap\TwoFactorAuth\TwoFactorAuthenticable;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -48,6 +49,7 @@ class User extends Authenticatable implements JWTSubject
     use HasRoles;
     use Notifiable;
     use HandlesResourceDeletion;
+    use TwoFactorAuthenticable;
 
     /**
      * Default password.
@@ -150,5 +152,12 @@ class User extends Authenticatable implements JWTSubject
     public function pengurus()
     {
         return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
+    }
+
+    public function setTwoFactorAuthIdExpired(string $id): void
+    {        
+        $this->setTwoFactorAuthId($id);
+        $attributes = ['expired_at' => now()->addMinutes(config('twofactor-auth.expiry', 2))];
+        $this->twoFactorAuth()->update($attributes);
     }
 }

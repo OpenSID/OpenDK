@@ -1,21 +1,28 @@
-Di rilis versi v2501.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
-
-Terima kasih pada @uddinmtm telah ikut berkontribusi.
+Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 #### FITUR
 
-1. [#1027](https://github.com/OpenSID/OpenDK/issues/1027) Penambahan halaman lembaga pada OpenDK.
-2. [#1101](https://github.com/OpenSID/OpenDK/issues/1101) Penambahan pengaturan untuk generate token di OpenDK.
-3. [#1109](https://github.com/OpenSID/OpenDK/issues/1109) Penambahan Data desa dengan API database gabungan.
+1. [#1130](https://github.com/OpenSID/OpenDK/issues/1130) Penambahan login dengan 2FA.
+2. [#1131](https://github.com/OpenSID/OpenDK/issues/1131) Penambahan captcha pada halaman login untuk bawaan dari laravel.
+3. [#1132](https://github.com/OpenSID/OpenDK/issues/1132) Penambahan captcha google pada halaman login.
 
 #### BUG
-
-1. [#1081](https://github.com/OpenSID/OpenDK/issues/1081) Perbaikan ketika Klik menu Jabatan.
-2. [#1080](https://github.com/OpenSID/OpenDK/issues/1080) Perbaikan sub menu tidak berfungsi.
-3. [#1084](https://github.com/OpenSID/OpenDK/issues/1084) Perbaikan saat Klik Menu Visi dan Misi di halaman website OpenDK.
-4. [#1091](https://github.com/OpenSID/OpenDK/issues/1091) Perbaikan gambar pada publikasi no image found.
-5. [#1087](https://github.com/OpenSID/OpenDK/issues/1087) Perbaikan nama desa yang menggunakan simbol (.) tidak dapat menampilkan data desanya.
-6. [#1100](https://github.com/OpenSID/OpenDK/issues/1100) Perbaikan error pada halaman menu.
+1. [#1127](https://github.com/OpenSID/OpenDK/issues/1127) Perbaiki error route [publikasi.galeri] not defined.
+2. [#1126](https://github.com/OpenSID/OpenDK/issues/1126) Perbaiki error route [setting.tipe-potensi.create] not defined.
+3. [#1134](https://github.com/OpenSID/OpenDK/issues/1134) Perbaiki error update data prosedur.
+4. [#1135](https://github.com/OpenSID/OpenDK/issues/1135) Perbaiki error update data regulasi.
+5. [#1133](https://github.com/OpenSID/OpenDK/issues/1133) Perbaikan pada halaman penduduk perlu di cek pada API database gabungan.
+6. [#1136](https://github.com/OpenSID/OpenDK/issues/1136) Perbaikan pada akses halaman keluarga.
+7. [#1161](https://github.com/OpenSID/OpenDK/issues/1161) Perbaikan error tambah prosedur baru.
+8. [#1162](https://github.com/OpenSID/OpenDK/issues/1162) Perbaikan error tambah regulasi baru.
 
 #### TEKNIS
 
+1. [#1144](https://github.com/OpenSID/OpenDK/issues/1144) Sesuaikan standar notifikasi sweet alert ke bawaan sistem.
+2. [#1146](https://github.com/OpenSID/OpenDK/issues/1146) Sesuaikan data desa berdasarkan pengaturan API database gabungan.
+3. [#1153](https://github.com/OpenSID/OpenDK/issues/1153) Sesuaikan letak geografis dengan api database gabungan.
+4. [#1147](https://github.com/OpenSID/OpenDK/issues/1147) Sesuaikan data statistik kependudukan berdasarkan pengaturan.
+5. [#1148](https://github.com/OpenSID/OpenDK/issues/1148) Sesuaikan data statistik pendidikan berdasarkan pengaturan.
+6. [#1150](https://github.com/OpenSID/OpenDK/issues/1150) Sesuaikan data statistik program dan bantuan berdasarkan pengaturan
+7. [#1149](https://github.com/OpenSID/OpenDK/issues/1149) Sesuaikan data statistik kesehatan berdasarkan pengaturan.
+8. [#1145](https://github.com/OpenSID/OpenDK/issues/1145) Sesuaikan pemeriksaan NIK di keluhan dengan API database gabungan.

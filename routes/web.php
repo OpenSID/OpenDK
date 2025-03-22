@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,39 +24,40 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 use App\Http\Controllers\Api\TokenController;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Cookie;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LogViewerController;
-use App\Http\Controllers\Role\RoleController;
-use App\Http\Controllers\Setting\NavigationController;
-use App\Http\Controllers\Setting\AplikasiController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\BackEnd\EventController;
-use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontEnd\PageController;
-use App\Http\Controllers\Setting\TipePotensiController;
-use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\Setting\COAController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\NavigationController;
 use App\Http\Controllers\Setting\NavMenuController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TestEmailController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\BackEnd\EventController;
 use App\Http\Controllers\Setting\PengaturanDatabaseController;
 use App\Http\Controllers\UploadTemporaryImage;
 use App\Http\Controllers\UploadTemporaryImageController;
 use Maatwebsite\Excel\Row;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -321,7 +322,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
                 });
 
-
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {
                     Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);
@@ -439,7 +439,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //     Route::post('/register', ['as' => 'data.pendaftaran.kerjasama.register', 'uses' => 'PendaftaranKerjasamaController@register']);
                 // });
 
-
                 // Data Umum
                 Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
@@ -477,6 +476,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
                     Route::get('export-excel', ['as' => 'data.penduduk.export-excel', 'uses' => 'PendudukController@exportExcel']);
+                    Route::get('detail', ['as' => 'data.penduduk.detail', 'uses' => 'PendudukController@detail']);
                 });
 
                 // Keluarga
@@ -514,6 +514,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('download{id}', ['as' => 'data.laporan-penduduk.download', 'uses' => 'LaporanPendudukController@download']);
                     Route::get('import', ['as' => 'data.laporan-penduduk.import', 'uses' => 'LaporanPendudukController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-penduduk.do_import', 'uses' => 'LaporanPendudukController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.laporan-penduduk.export-excel', 'uses' => 'LaporanPendudukController@exportExcel']);
+                    Route::get('export-excel-by-id/{data}', ['as' => 'data.laporan-penduduk.export-excel.by-id', 'uses' => 'LaporanPendudukController@exportExcelById']);
                 });
 
                 // AKI & AKB
@@ -595,7 +597,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'program-bantuan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.program-bantuan.index', 'uses' => 'ProgramBantuanController@index']);
                     Route::get('getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
-                    Route::get('show/{id}/{id_desa}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
+                    Route::get('show/{id}/{id_desa}/{nama?}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
                 });
@@ -922,4 +924,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
     });
+
+    Route::get('testEmail', TestEmailController::class)->name('testEmail');
 });

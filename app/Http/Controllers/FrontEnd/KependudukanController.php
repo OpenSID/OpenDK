@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -33,9 +33,16 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
-use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\Profil;
+use App\Services\DesaService;
+use App\Services\StatistikChartPendudukAgamaService;
+use App\Services\StatistikChartPendudukGolDarahService;
+use App\Services\StatistikChartPendudukPendidikanService;
+use App\Services\StatistikChartPendudukPerkawinanService;
+use App\Services\StatistikChartPendudukService;
+use App\Services\StatistikChartPendudukUsiaService;
+use App\Services\StatistikPendudukService;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -44,11 +51,15 @@ class KependudukanController extends FrontEndController
     protected $profil;
 
     protected $penduduk;
+    private $statistikPendudukService;
+    private $desaService;
 
     public function __construct(Profil $profil, Penduduk $penduduk)
     {
         $this->profil = $profil;
         $this->penduduk = $penduduk;
+        $this->statistikPendudukService = new StatistikPendudukService();
+        $this->desaService = new DesaService();
         parent::__construct();
     }
 
@@ -61,8 +72,8 @@ class KependudukanController extends FrontEndController
 
         $data['page_title'] = 'Kependudukan';
         $data['page_description'] = 'Statistik Kependudukan';
-        $data['year_list'] = $this->years_list();
-        $data['list_desa'] = DataDesa::all();
+        $data['year_list'] = $this->yearsList();
+        $data['list_desa'] = $this->desaService->listDesa();
 
         $data = array_merge($data, $this->createDashboardKependudukan('Semua', date('Y')));
 
@@ -70,10 +81,9 @@ class KependudukanController extends FrontEndController
     }
 
     /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
-    protected function years_list($max_tahun = null)
+    protected function yearsList($max_tahun = null)
     {
-        $min_tahun = collect(Penduduk::select(DB::raw('YEAR(created_at) as tahun'))->get());
-        $min_tahun = $min_tahun->min('tahun') ?? date('Y');
+        $min_tahun = $this->statistikPendudukService->minYear() ?? date('Y');
 
         $daftar_tahun = [];
         for ($y = $min_tahun; $y <= ($max_tahun ?? date('Y')); $y++) {
@@ -87,7 +97,7 @@ class KependudukanController extends FrontEndController
     {
         $data['page_title'] = 'Kependudukan';
         $data['page_description'] = 'Statistik Kependudukan';
-        $data['year_list'] = $this->years_list();
+        $data['year_list'] = $this->yearsList();
 
         if (request('did') && request('y')) {
             $data = array_merge($data, $this->createDashboardKependudukan(request('did'), request('y')));
@@ -98,96 +108,7 @@ class KependudukanController extends FrontEndController
 
     protected function createDashboardKependudukan($did, $year)
     {
-        $data = [];
-
-        // Get Total Penduduk Aktif
-        $query_total_penduduk_aktif = $this->penduduk->getPendudukAktif($did, $year);
-
-        $total_penduduk = (clone $query_total_penduduk_aktif)->count();
-        $data['total_penduduk'] = $total_penduduk;
-
-        // Get Total Laki-Laki
-        $total_laki_laki = (clone $query_total_penduduk_aktif)
-            ->where('sex', 1)
-            ->count();
-
-        $data['total_lakilaki'] = $total_laki_laki;
-
-        // Get Total Perempuan
-        $total_perempuan = (clone $query_total_penduduk_aktif)
-            ->where('sex', 2)
-            ->count();
-
-        $data['total_perempuan'] = $total_perempuan;
-
-        // Get Total Disabilitas
-        $total_disabilitas = (clone $query_total_penduduk_aktif)
-            ->where('cacat_id', '<>', 7)
-            ->count();
-
-        $data['total_disabilitas'] = $total_disabilitas;
-
-        if ($total_penduduk == 0) {
-            $data['ktp_wajib'] = 0;
-            $data['ktp_terpenuhi'] = 0;
-            $data['ktp_persen_terpenuhi'] = 0;
-
-            $data['akta_terpenuhi'] = 0;
-            $data['akta_persen_terpenuhi'] = 0;
-
-            $data['aktanikah_wajib'] = 0;
-            $data['aktanikah_terpenuhi'] = 0;
-            $data['aktanikah_persen_terpenuhi'] = 0;
-        } else {
-            // Get Data KTP Penduduk Terpenuhi
-            $ktp_wajib = (clone $query_total_penduduk_aktif)
-                ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 >= ? ', 17)
-                ->orWhere('status_kawin', '<>', 1) // Status Selain Belum Kawin
-                ->count();
-
-            $ktp_terpenuhi = (clone $query_total_penduduk_aktif)
-                ->where('status_rekam', '>=', 3) // Selain Belum Wajib & Belum Rekam E-KTP
-                ->count();
-
-            $ktp_persen_terpenuhi = ($ktp_terpenuhi / $ktp_wajib) * 100;
-
-            $data['ktp_wajib'] = $ktp_wajib;
-            $data['ktp_terpenuhi'] = $ktp_terpenuhi;
-            $data['ktp_persen_terpenuhi'] = format_number_id($ktp_persen_terpenuhi);
-
-            // Get Data Akta Penduduk Terpenuhi
-            $akta_terpenuhi = (clone $query_total_penduduk_aktif)
-                ->where('akta_lahir', '<>', null)
-                ->where('akta_lahir', '<>', ' ')
-                ->where('akta_lahir', '<>', '-')
-                ->count();
-
-            $akta_persen_terpenuhi = ($akta_terpenuhi / $total_penduduk) * 100;
-            $data['akta_terpenuhi'] = $akta_terpenuhi;
-            $data['akta_persen_terpenuhi'] = format_number_id($akta_persen_terpenuhi);
-
-            // Get Data Akta Nikah Penduduk Terpenuhi
-            $query_aktanikah_wajib = (clone $query_total_penduduk_aktif)
-                ->where('status_kawin', 2);
-
-            $aktanikah_wajib = (clone $query_aktanikah_wajib)->count();
-            $aktanikah_terpenuhi = $query_aktanikah_wajib
-                ->where('akta_perkawinan', '<>', null)
-                ->where('akta_perkawinan', '<>', ' ')
-                ->where('akta_perkawinan', '<>', '-')
-                ->count();
-
-            $data['aktanikah_wajib'] = 0;
-            $data['aktanikah_terpenuhi'] = 0;
-            $data['aktanikah_persen_terpenuhi'] = format_number_id(0);
-            if ($aktanikah_wajib != 0) {
-                $aktanikah_persen_terpenuhi = ($aktanikah_terpenuhi / $aktanikah_wajib) * 100;
-                $data['aktanikah_wajib'] = $aktanikah_wajib;
-                $data['aktanikah_terpenuhi'] = $aktanikah_terpenuhi;
-                $data['aktanikah_persen_terpenuhi'] = format_number_id($aktanikah_persen_terpenuhi);
-            }
-        }
-
+        $data = $this->statistikPendudukService->dashboard($did, $year);
         return $data;
     }
 
@@ -195,16 +116,8 @@ class KependudukanController extends FrontEndController
     {
         $did = request('did');
         $year = request('y');
-
-        // Data Grafik Pertumbuhan
-        $data = [];
-        foreach (array_sort($this->years_list($year)) as $yearls) {
-            $query = $this->penduduk->getPendudukAktif($did, $yearls);
-            $query_result_laki = (clone $query)->where('sex', 1)->count();
-            $query_result_perempuan = (clone $query)->where('sex', 2)->count();
-
-            $data[] = ['year' => $yearls, 'value_lk' => $query_result_laki, 'value_pr' => $query_result_perempuan];
-        }
+        $listYears = array_sort($this->yearsList($year));
+        $data = (new StatistikChartPendudukService())->chart($did, $listYears);
 
         return $data;
     }
@@ -213,19 +126,7 @@ class KependudukanController extends FrontEndController
     {
         $did = request('did');
         $year = request('y');
-
-        // Data Grafik Kategori Usia
-        $categories = DB::table('ref_umur')->orderBy('ref_umur.dari')->where('status', '=', 1)->get();
-        $colors = [7 => '#09a8ff', 6 => '#09bcff', 5 => '#09d1ff', 4 => '#09e5ff', 3 => '#09faff', 2 => '#09fff0', 1 => '#09ffdc'];
-        $data = [];
-        foreach ($categories as $umur) {
-            $query_total = $this->penduduk->getPendudukAktif($did, $year)
-                ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 >= ? ', $umur->dari)
-                ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(tanggal_lahir)), \'%Y\')+0 <= ?', $umur->sampai);
-
-            $total = $query_total->count();
-            $data[] = ['umur' => ucfirst(strtolower($umur->nama)).' ('.$umur->dari.' - '.$umur->sampai.' tahun)', 'value' => $total, 'color' => $colors[$umur->id]];
-        }
+        $data = (new StatistikChartPendudukUsiaService())->chart($did, $year);
 
         return $data;
     }
@@ -234,76 +135,17 @@ class KependudukanController extends FrontEndController
     {
         $did = request('did');
         $year = request('y');
+        $data = (new StatistikChartPendudukPendidikanService())->chart($did, $year);
 
-        // Grafik Data Pendidikan
-        $data_pendidikan = [];
-        $query_pendidikan = $this->penduduk->getPendudukAktif($did, $year)
-            ->leftJoin('ref_pendidikan_kk', 'pendidikan_kk_id', '=', 'ref_pendidikan_kk.id');
-        // SD
-        $total_sd = (clone $query_pendidikan)
-                ->where('pendidikan_kk_id', 3)
-                ->count();
-
-        // SMP
-        $total_sltp = (clone $query_pendidikan)
-            ->where('pendidikan_kk_id', 4)
-            ->count();
-
-        //SMA
-        $total_slta = (clone $query_pendidikan)
-                ->where('pendidikan_kk_id', 5)
-                ->count();
-
-        // DIPLOMA
-        $total_diploma = (clone $query_pendidikan)
-                ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
-                ->count();
-
-        // SARJANA
-        $total_sarjana = (clone $query_pendidikan)
-                ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
-                ->count();
-
-        $data_pendidikan[] = [
-            'year' => $year,
-            'SD' => $total_sd,
-            'SLTP' => $total_sltp,
-            'SLTA' => $total_slta,
-            'DIPLOMA' => $total_diploma,
-            'SARJANA' => $total_sarjana,
-        ];
-
-        return $data_pendidikan;
+        return $data;
     }
 
     public function getChartPendudukGolDarah()
     {
         $did = request('did');
         $year = request('y');
-
-        // Data Chart Penduduk By Golongan Darah
-        $data = [];
-        $golongan_darah = DB::table('ref_golongan_darah')->orderBy('id')->get();
-        $colors = [1 => '#f97d7d', 2 => '#f86565', 3 => '#f74d4d', 4 => '#f63434', 13 => '#f51c1c'];
-        foreach ($golongan_darah as $val) {
-            $query_total = DB::table('das_penduduk')
-                //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
-                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
-                //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
-            if ($val->id != 13) {
-                $query_total->where('das_penduduk.golongan_darah_id', '=', $val->id);
-            } else {
-                $query_total->whereRaw('das_penduduk.golongan_darah_id = 13 or das_penduduk.golongan_darah_id is null');
-            }
-
-            if ($did != 'Semua') {
-                $query_total->where('das_penduduk.desa_id', '=', $did);
-            }
-            $total = $query_total->count();
-            $data[] = ['blod_type' => $val->nama, 'total' => $total, 'color' => $colors[$val->id]];
-        }
-
+        $data = (new StatistikChartPendudukGolDarahService())->chart($did, $year);
+        
         return $data;
     }
 
@@ -311,17 +153,7 @@ class KependudukanController extends FrontEndController
     {
         $did = request('did');
         $year = request('y');
-
-        // Data Chart Penduduk By Status Perkawinan
-        $data = [];
-        $status_kawin = DB::table('ref_kawin')->orderBy('id')->get();
-        $colors = [1 => '#d365f8', 2 => '#c534f6', 3 => '#b40aed', 4 => '#8f08bc'];
-        foreach ($status_kawin as $val) {
-            $total = $this->penduduk->getPendudukAktif($did, $year)
-                ->where('status_kawin', $val->id)
-                ->count();
-            $data[] = ['status' => ucfirst(strtolower($val->nama)), 'total' => $total, 'color' => $colors[$val->id]];
-        }
+        $data = (new StatistikChartPendudukPerkawinanService())->chart($did, $year);
 
         return $data;
     }
@@ -330,19 +162,8 @@ class KependudukanController extends FrontEndController
     {
         $did = request('did');
         $year = request('y');
-
-        // Data Chart Penduduk By Aama
-        $data = [];
-        $agama = DB::table('ref_agama')->orderBy('id')->get();
-        $colors = [1 => '#dcaf1e', 2 => '#dc9f1e', 3 => '#dc8f1e', 4 => '#dc7f1e', 5 => '#dc6f1e', 6 => '#dc5f1e', 7 => '#dc4f1e'];
-        foreach ($agama as $val) {
-            $total = $this->penduduk->getPendudukAktif($did, $year)
-                ->where('agama_id', $val->id)
-                ->count();
-
-            $data[] = ['religion' => ucfirst(strtolower($val->nama)), 'total' => $total, 'color' => $colors[$val->id]];
-        }
-
+        $data = (new StatistikChartPendudukAgamaService())->chart($did, $year);
+        
         return $data;
     }
 

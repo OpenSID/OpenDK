@@ -44,8 +44,8 @@ class AnggaranDesaController extends Controller
     {
         $page_title = 'APBDes';
         $page_description = 'Data APBDes';
-
-        return view('data.anggaran_desa.index', compact('page_title', 'page_description'));
+        $view = $this->isDatabaseGabungan() ? 'data.anggaran_desa.gabungan.index' : 'data.anggaran_desa.index';
+        return view($view, compact('page_title', 'page_description'));
     }
 
     public function getDataAnggaran()

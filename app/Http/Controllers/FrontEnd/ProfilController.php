@@ -37,6 +37,8 @@ use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Pengurus;
 use App\Models\Profil;
+use App\Services\GeografisService;
+use App\Services\PendudukService;
 use Illuminate\Support\Facades\DB;
 
 class ProfilController extends FrontEndController
@@ -75,14 +77,16 @@ class ProfilController extends FrontEndController
         Counter::count('profil.letak-geografis');
 
         $profil = Profil::with(['dataDesa'])->first();
-        $wilayah_desa = DataDesa::whereNotNull('path')->get();
-        $data_umum = DataUmum::first();
+        $wilayah_desa = $this->isDatabaseGabungan() ? (new GeografisService)->wilayah_desa() : DataDesa::whereNotNull('path')->get();
+        $data_umum = $this->isDatabaseGabungan() ? (new GeografisService)->profile() : DataUmum::first();
         $page_title = 'Letak Geografis';
         if (isset($profil)) {
             $page_description = $this->browser_title;
         }
 
-        return view('pages.profil.letakgeografis', compact('page_title', 'page_description', 'profil', 'wilayah_desa', 'data_umum'));
+        $view = $this->isDatabaseGabungan() ? 'pages.profil.gabungan.letakgeografis' : 'pages.profil.letakgeografis';
+
+        return view($view, compact('page_title', 'page_description', 'profil', 'wilayah_desa', 'data_umum'));
     }
 
     public function StrukturPemerintahan()

@@ -5,6 +5,7 @@ Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan p
 1. [#1130](https://github.com/OpenSID/OpenDK/issues/1130) Penambahan login dengan 2FA.
 2. [#1131](https://github.com/OpenSID/OpenDK/issues/1131) Penambahan captcha pada halaman login untuk bawaan dari laravel.
 3. [#1132](https://github.com/OpenSID/OpenDK/issues/1132) Penambahan captcha google pada halaman login.
+4. [#417](https://github.com/OpenSID/OpenDK/issues/417) Penambahan fitur backup/restore database dan folder storage.
 
 #### BUG
 1. [#1127](https://github.com/OpenSID/OpenDK/issues/1127) Perbaiki error route [publikasi.galeri] not defined.

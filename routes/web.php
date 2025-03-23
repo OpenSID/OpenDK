@@ -48,6 +48,11 @@ use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\BackEnd\EventController;
+use App\Http\Controllers\Setting\PengaturanDatabaseController;
+use App\Http\Controllers\UploadTemporaryImage;
+use App\Http\Controllers\UploadTemporaryImageController;
+use Maatwebsite\Excel\Row;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
@@ -874,6 +879,22 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'nav-menu', 'controller' => NavMenuController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.navmenu.index');
                 Route::post('store', 'store')->name('setting.navmenu.store');
+            });
+
+            // Pengaturan Database (Backup)
+            Route::group(['prefix' => 'backup-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.pengaturan-database.backup');
+                Route::get('/getdata', 'getDataBackup')->name('setting.pengaturan-database.getdata');
+                Route::post('/backup-running', 'createBackup')->name('setting.pengaturan-database.runbackup');
+                Route::get('/backup-download/{file}', 'downloadBackup')->name('setting.pengaturan-database.download');
+                Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');
+                Route::get('/testing', [PengaturanDatabaseController::class,'testing']);
+            });
+
+            // Pengaturan Database (Restore)
+            Route::group(['prefix' => 'restore-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');
+                Route::post('/restore-running', 'restoreBackup')->name('setting.pengaturan-database.runrestore');
             });
         });
 

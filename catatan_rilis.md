@@ -27,3 +27,4 @@ Di rilis versi v2503.0.1 di versi ini terdapat modul komentar pada artikel dan p
 6. [#1150](https://github.com/OpenSID/OpenDK/issues/1150) Sesuaikan data statistik program dan bantuan berdasarkan pengaturan
 7. [#1149](https://github.com/OpenSID/OpenDK/issues/1149) Sesuaikan data statistik kesehatan berdasarkan pengaturan.
 8. [#1145](https://github.com/OpenSID/OpenDK/issues/1145) Sesuaikan pemeriksaan NIK di keluhan dengan API database gabungan.
+9. [#1152](https://github.com/OpenSID/OpenDK/issues/1152) Sesuaikan data statistik anggaran desa berdasarkan pengaturan.

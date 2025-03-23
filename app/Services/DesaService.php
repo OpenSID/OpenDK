@@ -54,7 +54,7 @@ class DesaService extends BaseApiService
                 try {
                     return $this->desa(['filter[kode_kec]' => $this->kodeKecamatan]);
                 } catch (\Exception $e) {                    
-                    \Log::error('Failed get data in '.__FILE__.' function minYear()'. $e->getMessage());
+                    \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__.' '. $e->getMessage());
                 }
                 return collect();
             });

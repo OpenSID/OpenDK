@@ -13,7 +13,6 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">

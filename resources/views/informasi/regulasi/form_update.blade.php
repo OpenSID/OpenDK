@@ -41,7 +41,7 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-    {!! JsValidator::formRequest('App\Http\Requests\RegulasiRequest', '#form-regulasi') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\RegulasiUpdateRequest', '#form-regulasi') !!}
 
     <script>
         $(function() {

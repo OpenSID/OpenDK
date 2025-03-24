@@ -15,7 +15,7 @@ return new class extends Migration
     public function up()
     {
       
-         // Tambahkan setting untuk jenis_peta
+         // Tambahkan setting untuk jenis_petas
          SettingAplikasi::insert([            
             'key' => 'jenis_peta',
             'value' => '',

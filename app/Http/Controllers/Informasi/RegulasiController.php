@@ -35,6 +35,8 @@ use App\Models\Regulasi;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
+use App\Http\Requests\RegulasiUpdateRequest;
+use App\Models\TipeRegulasi;
 use Yajra\DataTables\Facades\DataTables;
 
 class RegulasiController extends Controller
@@ -45,8 +47,9 @@ class RegulasiController extends Controller
     {
         $page_title = 'Regulasi';
         $page_description = 'Daftar Regulasi';
+        $adaTipeRegulasi = TipeRegulasi::count() ? true : false;
 
-        return view('informasi.regulasi.index', compact('page_title', 'page_description'));
+        return view('informasi.regulasi.index', compact('page_title', 'page_description', 'adaTipeRegulasi'));
     }
 
     public function getDataRegulasi()
@@ -69,7 +72,7 @@ class RegulasiController extends Controller
     public function create()
     {
         $page_title = 'Regulasi';
-        $page_description = 'Tambah Regulasi';
+        $page_description = 'Tambah Regulasi';        
 
         return view('informasi.regulasi.create', compact('page_title', 'page_description'));
     }
@@ -83,13 +86,15 @@ class RegulasiController extends Controller
 
             $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
             Regulasi::create($input);
+
+            return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
+
         } catch (\Exception $e) {
             report($e);
 
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
-        return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
     }
 
     public function show(Regulasi $regulasi)
@@ -108,35 +113,43 @@ class RegulasiController extends Controller
         return view('informasi.regulasi.edit', compact('page_title', 'page_description', 'regulasi'));
     }
 
-    public function update(RegulasiRequest $request, Regulasi $regulasi)
+    public function update(RegulasiUpdateRequest $request, Regulasi $regulasi)
     {
         try {
             $input = $request->input();
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
 
-            $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
+            
+            if ($request->hasFile('file_regulasi')) {
+                $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
+            }
+
             $regulasi->update($input);
+
+            return redirect()->route('informasi.regulasi.show', $regulasi->id)->with('success', 'Regulasi berhasil disimpan!');
+
         } catch (\Exception $e) {
             report($e);
 
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
 
-        return redirect()->route('informasi.regulasi.show', $regulasi->id)->with('success', 'Regulasi berhasil disimpan!');
     }
 
     public function destroy(Regulasi $regulasi)
     {
         try {
             $regulasi->delete();
+
+            return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
+
         } catch (\Exception $e) {
             report($e);
 
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
 
-        return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
     }
 
     public function download(Regulasi $regulasi)

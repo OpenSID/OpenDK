@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -32,10 +32,8 @@
 namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\FrontEndController;
-use App\Models\CoaType;
-use App\Models\DataDesa;
-use Illuminate\Support\Facades\DB;
-
+use App\Services\DesaService;
+use App\Services\StatistikChartAnggaranDesaService;
 class AnggaranDesaController extends FrontEndController
 {
     /**
@@ -46,8 +44,8 @@ class AnggaranDesaController extends FrontEndController
         $data['page_title'] = 'Anggaran Desa (APBDes)';
         $data['page_description'] = 'Data Anggaran Desa (APBDes)';
         $data['year_list'] = years_list();
-        $data['list_desa'] = DataDesa::all();
-
+        $data['list_desa'] = (new DesaService())->listDesa();
+        $data['hide_list_month'] = $this->isDatabaseGabungan() ? true : false;
         return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
     }
 
@@ -57,75 +55,14 @@ class AnggaranDesaController extends FrontEndController
         $did = request('did');
         $year = request('y');
 
-        // Grafik Data Pendidikan
-        $data_anggaran = [];
-        $type = CoaType::all();
-
-        if ($mid == 'Semua' && $year == 'Semua') {
-            $tmp = [];
-            foreach ($type as $val) {
-                $query_anggaran = DB::table('das_anggaran_desa')->select('*')
-                    ->where('no_akun', 'LIKE', $val->id.'%');
-                if ($did != 'Semua') {
-                    $query_anggaran->where('desa_id', $did);
-                }
-                $tmp[] = [
-                    'anggaran' => $val->id.' - '.$val->type_name,
-                    'jumlah' => $query_anggaran->sum('jumlah'),
-                ];
-            }
-
-            $data_anggaran['grafik'] = $tmp;
-        } elseif ($mid != 'Semua' && $year == 'Semua') {
-            $tmp = [];
-            foreach ($type as $val) {
-                $query_anggaran = DB::table('das_anggaran_desa')->select('*')
-                    ->where('no_akun', 'LIKE', $val->id.'%')
-                    ->where('bulan', $mid);
-                if ($did != 'Semua') {
-                    $query_anggaran->where('desa_id', $did);
-                }
-                $tmp[] = [
-                    'anggaran' => $val->id.' - '.$val->type_name,
-                    'jumlah' => $query_anggaran->sum('jumlah'),
-                ];
-            }
-
-            $data_anggaran['grafik'] = $tmp;
-        } elseif ($mid == 'Semua' && $year != 'Semua') {
-            $tmp = [];
-            foreach ($type as $val) {
-                $query_anggaran = DB::table('das_anggaran_desa')->select('*')
-                    ->where('no_akun', 'LIKE', $val->id.'%')
-                    ->where('tahun', $year);
-                if ($did != 'Semua') {
-                    $query_anggaran->where('desa_id', $did);
-                }
-                $tmp[] = [
-                    'anggaran' => $val->id.' - '.$val->type_name,
-                    'jumlah' => $query_anggaran->sum('jumlah'),
-                ];
-            }
-            $data_anggaran['grafik'] = $tmp;
-        } elseif ($mid != 'Semua' && $year != 'Semua') {
-            $tmp = [];
-            foreach ($type as $val) {
-                $query_anggaran = DB::table('das_anggaran_desa')->select('*')
-                    ->where('no_akun', 'LIKE', $val->id.'%')
-                    ->where('bulan', $mid)
-                    ->where('tahun', $year);
-                if ($did != 'Semua') {
-                    $query_anggaran->where('desa_id', $did);
-                }
-                $tmp[] = [
-                    'anggaran' => $val->id.' - '.$val->type_name,
-                    'jumlah' => $query_anggaran->sum('jumlah'),
-                ];
-            }
-            $data_anggaran['grafik'] = $tmp;
-        }
-        $data_anggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
-
-        return $data_anggaran;
+        $dataAnggaran = (new StatistikChartAnggaranDesaService())->chart($mid, $did, $year);
+        if($this->isDatabaseGabungan()){
+            $dataDetail = collect($dataAnggaran['data-detail'])->keyBy('id');            
+            unset($dataAnggaran['data-detail']);
+            $dataAnggaran['detail'] = view('pages.anggaran_desa.gabungan.detail_anggaran', compact('did', 'mid', 'year', 'dataDetail'))->render();
+        }else {
+            $dataAnggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
+        }        
+        return $dataAnggaran;
     }
 }

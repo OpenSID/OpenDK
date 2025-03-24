@@ -117,7 +117,10 @@ class ProsedurController extends Controller
             $input = $request->all();
             $this->handleFileUpload($request, $input, 'file_prosedur', 'regulasi');
 
-            $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
+            if ($request->hasFile('file_prosedur')) {
+                $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
+            }
+            
             $prosedur->update($input);
         } catch (\Exception $e) {
             report($e);

@@ -286,6 +286,7 @@ return [
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 
     /*

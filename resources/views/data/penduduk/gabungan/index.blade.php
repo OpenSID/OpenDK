@@ -19,7 +19,10 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')])
+                {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
+                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
+                    <i class="fa fa-download"></i>{{ $export_text ?? 'Ekspor' }}
+                </button>
             </div>
 
             <div class="box-body">
@@ -95,6 +98,7 @@
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
                                 ?.name,
                         };
+
                     },
                     dataSrc: function(json) {
                         json.recordsTotal = json.meta.pagination.total
@@ -110,21 +114,21 @@
                                 'nama': d.nama,
                                 'nik': d.nik,
                                 'no_kk_sebelumnya': d.no_kk_sebelumnya,
-                                'hubungan_dalam_keluarga': d.penduduk_hubungan.nama ?? null,
-                                'jenis_kelamin': d.jenis_kelamin.nama ?? null,
+                                'hubungan_dalam_keluarga': d.penduduk_hubungan?.nama ?? null,
+                                'jenis_kelamin': d.jenis_kelamin?.nama ?? null,
                                 'agama': d.agama.nama,
-                                'status_penduduk': d.penduduk_status.nama ?? null,
+                                'status_penduduk': d.penduduk_status?.nama ?? null,
                                 'akta_lahir': d.akta_lahir,
                                 'tempat_lahir': d.tempatlahir,
                                 'tanggal_lahir': d.tanggallahir,
                                 'tanggal_lahir': d.tanggallahir,
                                 'wajib_ktp': d.wajibKTP,
-                                'status_rekam': d.status_rekam_ktp.nama ?? null,
+                                'status_rekam': d.status_rekam_ktp?.nama ?? null,
                                 'elktp': d.elKTP,
-                                'pendidikan_dalam_kk': d.pendidikan_k_k.nama ?? null,
-                                'pendidikan_sedang_ditempuh': d.pendidikan.nama ?? null,
-                                'pekerjaan': d.pekerjaan.nama ?? null,
-                                'warga_negara': d.warga_negara.nama ?? null,
+                                'pendidikan_dalam_kk': d.pendidikan_k_k?.nama ?? null,
+                                'pendidikan_sedang_ditempuh': d.pendidikan?.nama ?? null,
+                                'pekerjaan': d.pekerjaan?.nama ?? null,
+                                'warga_negara': d.warga_negara?.nama ?? null,
                                 'nomor_passport': d.dokumen_pasport,
                                 'tanggal_akhir_passport': d.tanggal_akhir_paspor,
                                 'nomor_kitas': d.dokumen_kitas,
@@ -135,15 +139,15 @@
                                 'nomor_telepon': d.telepon,
                                 'alamat_sebelumnya': d.alamat_sebelumnya,
                                 'alamat_sekarang': d.alamat_sekarang,
-                                'status_kawin': d.status_kawin.nama ?? null,
+                                'status_kawin': d.status_kawin?.nama ?? null,
                                 'no_akta_nikah': d.akta_perkawinan,
                                 'tanggal_nikah': d.tanggalperkawinan,
                                 'akta_perceraian': d.akta_perceraian,
                                 'tanggal_perceraian': d.tanggalperceraian,
-                                'golongan_darah': d.golongan_darah.nama ?? null,
-                                'cacat': d.cacat.nama ?? null,
-                                'sakit_menahun': d.sakit_menahun.nama ?? null,
-                                'cara_kb': d.kb.nama ?? null,
+                                'golongan_darah': d.golongan_darah?.nama ?? null,
+                                'cacat': d.cacat?.nama ?? null,
+                                'sakit_menahun': d.sakit_menahun?.nama ?? null,
+                                'cara_kb': d.kb?.nama ?? null,
                                 'status_kehamilan': d.statusHamil
                             }
 
@@ -161,8 +165,6 @@
                         data: 'attributes.foto',
                         name: 'foto',
                         class: 'text-center',
-                        searchable: false,
-                        orderable: false,
                         render: function(data, type, row) {
 
                             const url = getImageUrl(data, row.attributes.sex);
@@ -258,6 +260,18 @@
                     `{{ asset('img/pengguna/wuser.png') }}` :
                     `{{ asset('img/pengguna/kuser.png') }}`;
             }
+
+            $('#export-btn').on('click', function() {
+                var dataTable = $('#datadesa-table').DataTable();
+                var params = dataTable.ajax.params(); // Ambil parameter DataTables
+
+                // Buat URL ekspor dengan query string
+                var exportUrl = `{{ route('data.penduduk.export-excel') }}?` + $.param(params);
+
+                // Redirect ke URL ekspor
+                window.location.href = exportUrl;
+            });
+
 
 
 

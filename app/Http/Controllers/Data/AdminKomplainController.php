@@ -38,6 +38,7 @@ use App\Models\JawabKomplain;
 use App\Models\KategoriKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
+use App\Services\PendudukService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -145,7 +146,7 @@ class AdminKomplainController extends Controller
         $komplain = Komplain::findOrFail($id);
         $page_title = 'Detail Keluhan';
         $page_description = 'Detail Keluhan : '.$komplain->judul;
-        $penduduk = Penduduk::where('nik', $komplain->nik)->first();
+        $penduduk = $this->isDatabaseGabungan() ? (new PendudukService)->cekPendudukNikTanggalLahir($komplain->nik) : Penduduk::where('nik', $komplain->nik)->first();
 
         return view('sistem_komplain.show', compact('page_title', 'page_description', 'komplain', 'penduduk'));
     }
@@ -182,7 +183,13 @@ class AdminKomplainController extends Controller
         try {
             $komplain = Komplain::findOrFail($id);
             $komplain->fill($request->all());
-            $komplain->nama = Penduduk::where('nik', $komplain->nik)->first()->nama;
+
+            $penduduk = $this->isDatabaseGabungan() 
+            ? (new PendudukService)->cekPendudukNikTanggalLahir($komplain->nik)
+            : Penduduk::where('nik', $komplain->nik)->first();
+
+            $komplain->nama = $penduduk?->nama;
+            $komplain->detail_penduduk = $penduduk ? json_encode($penduduk->attributesToArray()) : null;
 
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {

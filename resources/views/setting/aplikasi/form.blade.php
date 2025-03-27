@@ -24,6 +24,8 @@
             {!! Form::number('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
         @elseif ($aplikasi->type == 'boolean')
             {!! Form::select('value', ['1' => 'Aktif', '0' => 'Tidak Aktif'], null, ['class' => 'form-control']) !!}
+        @elseif ($aplikasi->type == 'boolean_peta')
+            {!! Form::select('value', ['OpenStreetMap' => 'OpenStreetMap', 'OpenStreetMap H.O.T.' => 'OpenStreetMap H.O.T.', 'Mapbox Streets' => 'Mapbox Streets', 'Mapbox Satellite' =>'Mapbox Satellite', 'Mapbox Satellite-Streets' => 'Mapbox Satellite-Streets']) !!}
         @else
             {!! Form::text('value', null, ['class' => 'form-control', 'required' => true, 'id' => 'value']) !!}
         @endif

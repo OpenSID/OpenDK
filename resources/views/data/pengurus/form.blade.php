@@ -3,7 +3,8 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="foto" id="foto" class="form-control" accept="jpg, jpeg, png">
         <br>
-        <img src="{{ is_img($pengurus->foto ?? null) }}" id="showfoto" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="{{ is_img($pengurus->foto ?? null) }}" id="showfoto"
+            style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 <div class="form-group">
@@ -24,10 +25,15 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor Induk Kependudukan <span class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor Induk Kependudukan <span
+            class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('nik', null, ['placeholder' => 'Nomor Induk Kependudukan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Form::text('nik', null, [
+            'placeholder' => 'Nomor Induk Kependudukan',
+            'class' => 'form-control',
+            'required' => true,
+        ]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -41,14 +47,22 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('tempat_lahir', null, ['placeholder' => 'Tempat Lahir', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Form::text('tempat_lahir', null, [
+            'placeholder' => 'Tempat Lahir',
+            'class' => 'form-control',
+            'required' => true,
+        ]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lahir <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('tanggal_lahir', null, ['placeholder' => 'Tanggal Lahir', 'class' => 'form-control datetime', 'required' => true]) !!}
+        {!! Form::text('tanggal_lahir', null, [
+            'placeholder' => 'Tanggal Lahir',
+            'class' => 'form-control datetime',
+            'required' => true,
+        ]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -90,7 +104,10 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal SK Pengangkatan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('tanggal_sk', null, ['placeholder' => 'Tanggal SK Pengangkatan', 'class' => 'form-control datetime']) !!}
+        {!! Form::text('tanggal_sk', null, [
+            'placeholder' => 'Tanggal SK Pengangkatan',
+            'class' => 'form-control datetime',
+        ]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -104,14 +121,21 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal SK Pemberhentian</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('tanggal_henti', null, ['placeholder' => 'Tanggal SK Pemberhentian', 'class' => 'form-control datetime']) !!}
+        {!! Form::text('tanggal_henti', null, [
+            'placeholder' => 'Tanggal SK Pemberhentian',
+            'class' => 'form-control datetime',
+        ]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Masa Jabatan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('masa_jabatan', null, ['placeholder' => 'Masa Jabatan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Form::text('masa_jabatan', null, [
+            'placeholder' => 'Masa Jabatan',
+            'class' => 'form-control',
+            'required' => true,
+        ]) !!}
     </div>
 </div>
 <div class="form-group">
@@ -121,8 +145,70 @@
         {!! Form::select('jabatan_id', $jabatan, null, ['class' => 'form-control']) !!}
     </div>
 </div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Atasan</label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::select('jabatan_id', $atasan, null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Tingkat</label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('nik', null, [
+            'placeholder' => 'Angka menunjukkan tingkat di bagan organisasi. Contoh: 2',
+            'class' => 'form-control',
+            'required' => false,
+        ]) !!}
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Offset</label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::text('nik', null, [
+            'placeholder' => 'Angka menunjukkan persentase geser (-n) atau kanan (+n). Contoh: 75%',
+            'class' => 'form-control',
+            'required' => false,
+        ]) !!}
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Layout</label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Form::select('sex', ['' => 'Tidak Ada Layout', 'gantung' => 'Gantung'], null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Warna</label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="input-group my-colorpicker2">
+            {!! Form::text('bagan_warna', null, ['class' => 'form-control']) !!}
+            <div class="input-group-addon">
+                <i></i>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="ln_solid"></div>
 @include('partials.asset_jqueryvalidation')
+
+@include('partials.asset_colorpicker')
+@push('scripts')
+    <script>
+        //color picker with addon
+        $('.my-colorpicker2').colorpicker()
+    </script>
+@endpush
 
 @include('partials.asset_datetimepicker')
 @push('scripts')

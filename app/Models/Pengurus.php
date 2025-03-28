@@ -165,4 +165,19 @@ class Pengurus extends Model
 
         return $kecuali;
     }
+
+    public function scopeListAtasan($query, $id = null)
+    {
+        if ($id) {
+            $query->where('id', '<>', $id);
+        }
+
+        return $query->select([
+            'das_pengurus.id AS id_pengurus',
+            'ref_jabatan.id AS jabatan_id',
+            'ref_jabatan.nama AS jabatan',
+            'das_pengurus.nama AS nama_pengurus',
+            'das_pengurus.nik'
+        ])->join('ref_jabatan', 'das_pengurus.jabatan_id', '=', 'ref_jabatan.id');
+    }
 }

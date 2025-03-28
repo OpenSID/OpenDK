@@ -81,7 +81,7 @@ class PengurusController extends Controller
                     return '<img src="'.is_user($row->foto, $row->sex, true).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->editColumn('identitas', function ($row) {
-                    return $row->namaGelar.',<br> NIP: '.$row->nip.',<br> NIK: '.$row->nik;
+                    return $row->namaGelar.',<br> NIP: '.$row->nip.',<br> NIK: '.$row->nik . '<br>' . route('data.pengurus.destroy', $row->id);
                 })
                 ->editColumn('ttl', function ($row) {
                     return $row->tempat_lahir.','.format_date($row->tanggal_lahir);
@@ -125,8 +125,13 @@ class PengurusController extends Controller
         $pengurus = new Pengurus();
         $kecuali = $pengurus->cekPengurus();
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
+        $atasan = Pengurus::ListAtasan()
+        ->get()
+        ->mapWithKeys(function ($item) {
+            return [$item->id_pengurus => "{$item->nama_pengurus} - {$item->jabatan}"];
+        });
 
-        return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan'));
+        return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan', 'atasan'));
     }
 
     /**
@@ -193,10 +198,11 @@ class PengurusController extends Controller
         return redirect()->route('data.pengurus.index')->with('success', 'Pengurus berhasil diubah!');
     }
 
-    public function destroy(Pengurus $pengurus)
+    public function destroy(Pengurus $penguru)
     {
+        // dd($penguru);
         try {
-            $pengurus->delete();
+            $penguru->delete();
         } catch (\Exception $e) {
             report($e);
 

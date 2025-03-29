@@ -150,48 +150,49 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Atasan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('jabatan_id', $atasan, null, ['class' => 'form-control']) !!}
+        {!! Form::select('atasan', $atasan, null, ['class' => 'form-control']) !!}
     </div>
 </div>
 
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Tingkat</label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_tingkat">Bagan - Tingkat</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('nik', null, [
+        {!! Form::number('bagan_tingkat', null, [
             'placeholder' => 'Angka menunjukkan tingkat di bagan organisasi. Contoh: 2',
             'class' => 'form-control',
             'required' => false,
+            'autocomplete' => 'off'
         ]) !!}
     </div>
 </div>
 
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Offset</label>
+{{-- <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_offset">Bagan - Offset</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('nik', null, [
+        {!! Form::text('bagan_offset', null, [
             'placeholder' => 'Angka menunjukkan persentase geser (-n) atau kanan (+n). Contoh: 75%',
             'class' => 'form-control',
             'required' => false,
         ]) !!}
     </div>
-</div>
+</div> --}}
 
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Layout</label>
+{{-- <div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_layout">Bagan - Tampilan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('sex', ['' => 'Tidak Ada Layout', 'gantung' => 'Gantung'], null, ['class' => 'form-control']) !!}
+        {!! Form::select('bagan_layout', ['default' => 'Default', 'hanging' => 'Hanging'], null, ['class' => 'form-control']) !!}
     </div>
-</div>
+</div> --}}
 
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Bagan - Warna</label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_warna">Bagan - Warna</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="input-group my-colorpicker2">
-            {!! Form::text('bagan_warna', null, ['class' => 'form-control']) !!}
+            {!! Form::text('bagan_warna', null, ['class' => 'form-control', 'placeholder' => '#ffffff']) !!}
             <div class="input-group-addon">
                 <i></i>
             </div>

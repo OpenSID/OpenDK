@@ -65,7 +65,7 @@ class PengurusController extends Controller
             return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('data.pengurus.edit', $row->id);
                         $data['delete_url'] = route('data.pengurus.destroy', $row->id);
                         if ($row->status == Status::Aktif) {
@@ -78,13 +78,13 @@ class PengurusController extends Controller
                     return view('forms.aksi', $data);
                 })
                 ->editColumn('foto', function ($row) {
-                    return '<img src="'.is_user($row->foto, $row->sex, true).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="' . is_user($row->foto, $row->sex, true) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->editColumn('identitas', function ($row) {
-                    return $row->namaGelar.',<br> NIP: '.$row->nip.',<br> NIK: '.$row->nik . '<br>' . route('data.pengurus.destroy', $row->id);
+                    return $row->namaGelar . ',<br> NIP: ' . $row->nip . ',<br> NIK: ' . $row->nik;
                 })
                 ->editColumn('ttl', function ($row) {
-                    return $row->tempat_lahir.','.format_date($row->tanggal_lahir);
+                    return $row->tempat_lahir . ',' . format_date($row->tanggal_lahir);
                 })
                 ->editColumn('sex', function ($row) {
                     $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
@@ -126,10 +126,10 @@ class PengurusController extends Controller
         $kecuali = $pengurus->cekPengurus();
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
         $atasan = Pengurus::ListAtasan()
-        ->get()
-        ->mapWithKeys(function ($item) {
-            return [$item->id_pengurus => "{$item->nama_pengurus} - {$item->jabatan}"];
-        });
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->id_pengurus => "{$item->nama_pengurus} - {$item->jabatan}"];
+            });
 
         return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan', 'atasan'));
     }
@@ -164,15 +164,21 @@ class PengurusController extends Controller
     {
         $pengurus = Pengurus::findOrFail($id);
         $page_title = 'Pengurus';
-        $page_description = 'Ubah Pengurus : '.$pengurus->nama;
+        $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
         $pendidikan = PendidikanKK::pluck('nama', 'id');
         $agama = Agama::pluck('nama', 'id');
         $kecuali = $pengurus->cekPengurus();
 
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
-                    ->pluck('nama', 'id');
+            ->pluck('nama', 'id');
 
-        return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus', 'pendidikan', 'agama', 'jabatan'));
+        $atasan = Pengurus::ListAtasan()
+            ->get()
+            ->mapWithKeys(function ($item) {
+                return [$item->id_pengurus => "{$item->nama_pengurus} - {$item->jabatan}"];
+            });
+
+        return view('data.pengurus.edit', compact('page_title', 'page_description', 'pengurus', 'pendidikan', 'agama', 'jabatan', 'atasan'));
     }
 
     /**
@@ -241,5 +247,46 @@ class PengurusController extends Controller
         }
 
         return redirect()->route('data.pengurus.index')->with('success', 'Status Pengurus berhasil diubah!');
+    }
+
+    public function bagan()
+    {
+        $page_title = 'Pengurus';
+        $page_description = 'Bagan Pengurus';
+
+        return view('data.pengurus.bagan', compact('page_title', 'page_description'));
+    }
+
+    public function ajaxBagan()
+    {
+        $struktur = Pengurus::with('jabatan')
+            ->where('status', 1)              
+            ->get();
+
+        $data = [];
+        $nodes = [];
+
+        foreach ($struktur as $item) {
+            // Jika memiliki atasan, buat relasi
+            if ($item->atasan) {
+                $data[] = [
+                    (string) $item->atasan, (string) $item->id
+                ];
+            }
+
+            $nodes[] = [
+                'id'    => (string) $item->id,
+                'title' => $item->jabatan->nama ?? 'Unknown',
+                'name'  => trim(($item->gelar_depan ?? '') . ' ' . $item->nama . ' ' . ($item->gelar_belakang ?? '')),
+                'image' => $item->foto ? asset($item->foto) : '',
+                'color' => $item->bagan_warna ?? '#007ad0',
+                'column' => $item->bagan_tingkat ?? 0 // Pastikan ada nilai default
+            ];
+        }
+
+        return response()->json([
+            'data'  => $data,
+            'nodes' => $nodes,
+        ]);
     }
 }

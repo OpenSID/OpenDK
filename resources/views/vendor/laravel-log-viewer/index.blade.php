@@ -34,6 +34,9 @@
                     <div id="info_sistem" class="tab-pane fade in">
                         @include('vendor.laravel-log-viewer.info-sistem')
                     </div>
+                    <div id="email_smtp" class="tab-pane fade in">
+                        @include('vendor.laravel-log-viewer.email-smtp')
+                    </div>
                 @endrole
             </div>
         </div>

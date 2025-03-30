@@ -162,8 +162,11 @@
             'placeholder' => 'Angka menunjukkan tingkat di bagan organisasi. Contoh: 2',
             'class' => 'form-control',
             'required' => false,
-            'autocomplete' => 'off'
+            'autocomplete' => 'off',
+            'min' => 0,
+            'id' => 'bagan_tingkat'
         ]) !!}
+        <small class="text-muted">Gunakan angka 0 untuk tingkatan tertinggi.</small>
     </div>
 </div>
 
@@ -207,7 +210,17 @@
 @push('scripts')
     <script>
         //color picker with addon
-        $('.my-colorpicker2').colorpicker()
+        $('.my-colorpicker2').colorpicker();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputTingkat = document.getElementById("bagan_tingkat");
+
+            inputTingkat.addEventListener("input", function() {
+                if (this.value < 0) {
+                    this.value = 0; // Paksa angka negatif menjadi 0
+                }
+            });
+        });
     </script>
 @endpush
 

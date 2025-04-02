@@ -169,7 +169,7 @@ class Pengurus extends Model
     public function scopeListAtasan($query, $id = null)
     {
         if ($id) {
-            $query->where('id', '<>', $id);
+            $query->where('das_pengurus.id', '<>', $id);
         }
 
         return $query->select([

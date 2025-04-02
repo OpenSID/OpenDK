@@ -172,7 +172,7 @@ class PengurusController extends Controller
         $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
             ->pluck('nama', 'id');
 
-        $atasan = Pengurus::ListAtasan()
+        $atasan = Pengurus::ListAtasan($id)
             ->get()
             ->mapWithKeys(function ($item) {
                 return [$item->id_pengurus => "{$item->nama_pengurus} - {$item->jabatan}"];

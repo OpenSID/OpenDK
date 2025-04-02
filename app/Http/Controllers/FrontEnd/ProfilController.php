@@ -40,6 +40,7 @@ use App\Models\Profil;
 use App\Services\GeografisService;
 use App\Services\PendudukService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 
 class ProfilController extends FrontEndController
 {
@@ -154,5 +155,67 @@ class ProfilController extends FrontEndController
         }
 
         return view('pages.profil.sambutan', compact('page_title', 'page_description', 'profil'));
+    }
+
+    public function StrukturOrganisasi(Request $request)
+    {
+        Counter::count('profil.struktur-organisasi');
+
+        $profil = $this->profil;
+        $pengurus = Pengurus::status()->get()->sortBy('jabatan.jenis');
+        $page_title = 'Struktur Organisasi';
+        if (isset($profil)) {
+            $page_description = $this->browser_title;
+        }
+
+        return view('pages.profil.struktur-organisasi', compact('page_title', 'page_description', 'profil', 'pengurus',));
+    }
+
+    public function ajaxBaganPublic()
+    {
+        // $struktur = Pengurus::with('jabatan')
+        //     ->where('status', 1)              
+        //     ->get();
+
+        $struktur = Pengurus::select([
+            'id',
+            'nama',
+            'gelar_depan',
+            'gelar_belakang',
+            'foto',
+            'atasan',
+            'bagan_warna',
+            'bagan_tingkat',
+            'jabatan_id'
+        ])
+        ->with(['jabatan:id,nama']) // Hanya ambil id dan nama jabatan
+        ->where('status', 1)              
+        ->get();
+
+        $data = [];
+        $nodes = [];
+
+        foreach ($struktur as $item) {
+            // Jika memiliki atasan, buat relasi
+            if ($item->atasan) {
+                $data[] = [
+                    (string) $item->atasan, (string) $item->id
+                ];
+            }
+
+            $nodes[] = [
+                'id'    => (string) $item->id,
+                'title' => $item->jabatan->nama ?? 'Unknown',
+                'name'  => trim(($item->gelar_depan ?? '') . ' ' . $item->nama . ' ' . ($item->gelar_belakang ?? '')),
+                'image' => $item->foto ? asset($item->foto) : '',
+                'color' => $item->bagan_warna ?? '#007ad0',
+                'column' => $item->bagan_tingkat ?? 0
+            ];
+        }
+
+        return response()->json([
+            'data'  => $data,
+            'nodes' => $nodes,
+        ]);
     }
 }

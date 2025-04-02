@@ -146,11 +146,13 @@
     </div>
 </div>
 
+
+@if(!empty($atasan) && count($atasan) > 0)
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Atasan</label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="atasan">Atasan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('atasan', $atasan, null, ['class' => 'form-control']) !!}
+        {!! Form::select('atasan', $atasan, null, ['class' => 'form-control', 'placeholder' => 'Pilih Atasan']) !!}
     </div>
 </div>
 
@@ -195,13 +197,15 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="input-group my-colorpicker2">
-            {!! Form::text('bagan_warna', null, ['class' => 'form-control', 'placeholder' => '#ffffff']) !!}
+            {!! Form::text('bagan_warna', null, ['class' => 'form-control', 'placeholder' => '#007ad0']) !!}
             <div class="input-group-addon">
                 <i></i>
             </div>
         </div>
     </div>
 </div>
+
+@endif
 
 <div class="ln_solid"></div>
 @include('partials.asset_jqueryvalidation')

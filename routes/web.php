@@ -120,6 +120,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
                 Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
+                Route::get('struktur-organisasi', 'ProfilController@StrukturOrganisasi')->name('profil.struktur-organisasi');
+                Route::get('struktur-organisasi-ajax', 'ProfilController@ajaxBaganPublic')->name('profil.struktur-organisasi-ajax');
             });
 
             Route::group(['prefix' => 'event'], function () {

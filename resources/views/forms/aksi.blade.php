@@ -99,7 +99,7 @@
     @endif
     @if (isset($arsip_url))
         <a href="{{ $arsip_url }}" class="disabled" title="Arsip" data-button="edit" id="editModal">
-            <button type="button" class="btn btn-warning btn-sm open_form" style="width: 40px;" data-id="{{ $arsip_url }}" title="Arsip"><i class="fa fa-edit" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-warning btn-sm open_form" style="width: 40px;" data-id="{{ $arsip_url }}" title="Arsip"><i class="fa fa-window-maximize" aria-hidden="true"></i></button>
         </a>
     @endif
 </div>

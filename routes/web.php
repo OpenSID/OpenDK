@@ -475,6 +475,15 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
+                //arsip
+                Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.arsip');
+                Route::get('pengurus/create/arsip/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'create_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.create.arsip');
+                Route::post('pengurus/store/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'store_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.store.arsip');
+                Route::get('pengurus/penduduk/arsip/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'penduduk_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.arsip');
+                Route::get('pengurus/penduduk/document', [\App\Http\Controllers\Data\ArsipController::class, 'document'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.document');
+                Route::delete('pengurus/penduduk/delete/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'delete_document'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.delete.document');
+                Route::get('pengurus/penduduk/edit/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'edit_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.document');
+            
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);

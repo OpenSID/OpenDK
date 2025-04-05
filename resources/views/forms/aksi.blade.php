@@ -97,4 +97,9 @@
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;"><i class="fa fa-key" aria-hidden="true"></i></button>
         </a>
     @endif
+    @if (isset($arsip_url))
+        <a href="{{ $arsip_url }}" class="disabled" title="Arsip" data-button="edit" id="editModal">
+            <button type="button" class="btn btn-warning btn-sm open_form" style="width: 40px;" data-id="{{ $arsip_url }}" title="Arsip"><i class="fa fa-edit" aria-hidden="true"></i></button>
+        </a>
+    @endif
 </div>

@@ -59,8 +59,12 @@ class DokumenRequest extends FormRequest
         }
 
         return [
-            'nama_dokumen' => 'required|string|max:255',
-            'file_dokumen' => $file_dokumen,
+            'nama_dokumen'      => 'required|string|max:255',
+            'file_dokumen'      => $file_dokumen,
+            'jenis_dokumen_id'  => 'required|integer',
+            'retention_days'    => 'required|integer|min:0',
+            'description'       => 'required|string',
+            'status'            => 'required|integer',
         ];
     }
 }

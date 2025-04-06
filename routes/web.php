@@ -45,6 +45,7 @@ use App\Http\Controllers\Setting\NavMenuController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
@@ -197,6 +198,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
                     Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
+                    Route::get('/jenis-dokumen/{slug}', 'DownloadController@indexJenisDokumen')->name('unduhan.form-dokumen.jenis-dokumen');
+                    Route::get('getData/jenis-dokumen/{slug}', 'DownloadController@getDataByJenisDokumen')->name('unduhan.form-dokumen.getdatabyjenisdokumen');
                 });
             });
 
@@ -895,6 +898,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'restore-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');
                 Route::post('/restore-running', 'restoreBackup')->name('setting.pengaturan-database.runrestore');
+            });
+
+            // Jenis Dokumen
+            Route::group(['prefix' => 'jenis-dokumen', 'controller' => JenisDokumenController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.jenis-dokumen.index');
+                Route::get('getdata', 'getData')->name('setting.jenis-dokumen.getdata');
+                Route::post('store', 'store')->name('setting.jenis-dokumen.store');
+                Route::get('edit/{id}', 'edit')->name('setting.jenis-dokumen.edit');
+                Route::put('update/{id}', 'update')->name('setting.jenis-dokumen.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-dokumen.destroy');
             });
         });
 

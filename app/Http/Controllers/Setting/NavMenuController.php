@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Artikel;
 use App\Models\Kategori;
 use App\Models\NavMenu;
+use App\Models\JenisDokumen;
 use Illuminate\Http\Request;
 
 class NavMenuController extends Controller
@@ -58,6 +59,7 @@ class NavMenuController extends Controller
         $sourceItem = [
             'Halaman' => Artikel::cursor()->pluck('judul', 'link')->toArray(),
             'Kategori' => Kategori::cursor()->pluck('nama', 'link')->toArray(),
+            'Dokumen' => JenisDokumen::cursor()->pluck('nama', 'link')->toArray(),
         ];
 
         return view('setting.nav_menu.index', compact('page_title', 'page_description', 'nav_menus', 'sourceItem'));

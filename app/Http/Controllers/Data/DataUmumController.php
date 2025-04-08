@@ -36,6 +36,8 @@ use App\Http\Requests\DataUmumRequest;
 use App\Models\DataUmum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\Mapbox;
+use App\Models\SettingAplikasi;
 
 class DataUmumController extends Controller
 {
@@ -47,10 +49,10 @@ class DataUmumController extends Controller
     public function index()
     {
         $data_umum = DataUmum::first();
+    
         $luas_wilayah = $data_umum['luas_wilayah_value'];
         $page_title = 'Data Umum';
         $page_description = 'Ubah Data Umum';
-
         return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah'));
     }
 

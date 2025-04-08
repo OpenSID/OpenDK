@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -60,12 +61,15 @@ class ImunisasiController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(Imunisasi::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url'] = route('data.imunisasi.edit', $row->id);
                 $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
+            })->addColumn('nama_desa', function ($row) use ($listDesa){
+                return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })
             ->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];

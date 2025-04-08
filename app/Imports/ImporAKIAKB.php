@@ -33,6 +33,7 @@ namespace App\Imports;
 
 use App\Models\AkiAkb;
 use App\Models\DataDesa;
+use App\Services\DesaService;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
@@ -69,7 +70,7 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
      */
     public function collection(Collection $collection)
     {
-        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+        $kode_desa = Arr::flatten((new DesaService)->listDesa()->pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
 
         foreach ($collection as $index => $value) {

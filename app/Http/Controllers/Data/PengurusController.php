@@ -43,7 +43,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
-use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class PengurusController extends Controller
 {
@@ -68,6 +68,7 @@ class PengurusController extends Controller
                     if (! auth()->guest()) {
                         $data['edit_url'] = route('data.pengurus.edit', $row->id);
                         $data['delete_url'] = route('data.pengurus.destroy', $row->id);
+                        $data['arsip_url'] = route('data.pengurus.arsip', $row->id);
                         if ($row->status == Status::Aktif) {
                             $data['suspend_url'] = route('data.pengurus.lock', [$row->id, Status::TidakAktif]);
                         } else {

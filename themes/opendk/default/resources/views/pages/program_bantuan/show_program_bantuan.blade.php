@@ -24,6 +24,7 @@
                             <label for="list_year" class="col-sm-4 control-label">Tahun</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
+                                    <option value="Semua">Semua</option>
                                     @foreach ($year_list as $year)
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endforeach
@@ -115,21 +116,36 @@
 
         function change_das_bantuan(did, year) {
             $.ajax('{!! route('statistik.program-bantuan.chart-penduduk') !!}', {
+                beforeSend: function() {
+                    $('#chart_bantuan_penduduk').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+                },
                 data: {
                     did: did,
                     y: year
                 }
             }).done(function(data) {
-                create_chart_bantuan_penduduk(data);
+                if(data.length){
+                    create_chart_bantuan_penduduk(data);
+                }else{
+                    $('#chart_bantuan_penduduk').html('<div class="text-center">Data Tidak Ditemukan</div>');
+                }
+                
             });
 
             $.ajax('{!! route('statistik.program-bantuan.chart-keluarga') !!}', {
+                beforeSend: function() {
+                    $('#chart_bantuan_keluarga').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+                },
                 data: {
                     did: did,
                     y: year
                 }
             }).done(function(data) {
-                create_chart_bantuan_keluarga(data);
+                if(data.length){
+                    create_chart_bantuan_keluarga(data);
+                }else{
+                    $('#chart_bantuan_keluarga').html('<div class="text-center">Data Tidak Ditemukan</div>');
+                }                
             });
         }
 
@@ -172,7 +188,7 @@
             });
         }
 
-        function create_chart_bantuan_keluarga(data) {
+        function create_chart_bantuan_keluarga(data) {            
             var chart_bantuan_keluarga = AmCharts.makeChart("chart_bantuan_keluarga", {
                 "hideCredits": true,
                 "type": "pie",

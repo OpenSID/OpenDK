@@ -39,7 +39,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v2503.0.0',
+    'version' => 'v2504.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -286,6 +286,7 @@ return [
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+        MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 
     /*

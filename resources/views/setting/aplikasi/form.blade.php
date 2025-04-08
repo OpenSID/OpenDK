@@ -48,3 +48,4 @@
 </div>
 
 <div class="ln_solid"></div>
+@includeWhen($aplikasi->key == 'login_2fa', 'setting.aplikasi.test_email')

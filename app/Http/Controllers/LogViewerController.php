@@ -31,11 +31,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmailSmtpRequest;
+use App\Models\EmailSmtp;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
+
+use function PHPUnit\Framework\isNull;
 
 /**
  * Class LogViewerController
@@ -118,10 +122,14 @@ class LogViewerController extends Controller
         );
 
         $page_title = 'Info Sistem';
+        
+        //mengambil data smtp terakhir berdasaerkan waktu penambahan data dan status
+        $email_smtp = EmailSmtp::latest('created_at')->where('status', '=', 1)->first();
 
         return app('view')->make($this->view_log, $data)
         ->with('requirements', $requirements)
         ->with('page_title', $page_title)
+        ->with('email_smtp', $email_smtp)
         ->with('phpSupportInfo', $phpSupportInfo);
     }
 
@@ -228,5 +236,21 @@ class LogViewerController extends Controller
         sleep(2);
 
         return back()->with('tab', 'ekstensi')->with('success', 'Berhasil menjalankan migrasi');
+    }
+    /*
+    fungsi untuk menambahkan akun email smtp,
+    fungsi akan terus bertambah dan data yang diambil ialah data yang terakhir
+    */
+    public function storeEmailSmtp(EmailSmtpRequest $request)
+    {
+        try {
+            EmailSmtp::create($request->all());
+        } catch (\Exception $e) {
+            //throw $th;
+            report($e);
+            return back()->withInput()->with('tab', 'email_smtp')->with('error', 'SMTP gagal diubah!');
+        }
+
+        return back()->with('tab', 'email_smtp')->with('success', 'Berhasil memperbaruhi SMTP');
     }
 }

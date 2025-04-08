@@ -21,6 +21,7 @@
                 <li class="log_ekstensi"><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
                 @role('super-admin')
                     <li><a data-toggle="tab" href="#info_sistem">Info Sistem</a></li>
+                    <li><a data-toggle="tab" href="#email_smtp">Email SMTP</a></li>
                 @endrole
             </ul>
             <div class="tab-content">
@@ -35,7 +36,7 @@
                         @include('vendor.laravel-log-viewer.info-sistem')
                     </div>
                     <div id="email_smtp" class="tab-pane fade in">
-                        @include('vendor.laravel-log-viewer.email-smtp')
+                        @include('vendor.laravel-log-viewer.smtp.index')
                     </div>
                 @endrole
             </div>

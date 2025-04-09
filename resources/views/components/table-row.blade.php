@@ -5,7 +5,7 @@
         <th>
             <i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>
         </th>
-        @endif
+    @endif
     <td style="width: 5px;">
         <input type="checkbox" wire:model="selectedItems" value="{{ $attributes->has('id') ? $attributes->get('id') : '' }}" />
     </td>

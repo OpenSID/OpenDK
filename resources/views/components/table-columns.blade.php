@@ -3,7 +3,7 @@
 <thead>
     <tr>
         @if ($sortable)
-        <th>#</th>
+            <th>#</th>
         @endif
         <th>
             <input type="checkbox" wire:model="selectAll" wire:click="toggleSelectAll">

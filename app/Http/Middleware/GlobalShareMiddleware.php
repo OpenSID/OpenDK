@@ -13,6 +13,7 @@ use App\Models\Profil;
 use App\Models\Program;
 use App\Models\SettingAplikasi;
 use App\Models\TipePotensi;
+use App\Models\Widget;
 use App\Services\DesaService;
 use Closure;
 use Exception;
@@ -112,10 +113,26 @@ class GlobalShareMiddleware
                 'navpotensi' => $navpotensi,
                 'camat' => $this->nama_camat,
                 'pengurus' => $pengurus->sortBy('jabatan.jenis'),
+                'widgetAktif' => $this->widgetAktif(),
             ]);
         }
 
         return $next($request);
+    }
+
+    private function widgetAktif()
+    {
+        return Widget::status()
+            ->orderBy('urut')
+            ->get()
+            ->map(static function ($item) {
+                $item->judul = $item->judul;
+                $item->isi   = $item->jenis_widget == 3
+                    ? bersihkan_xss($item->isi)
+                    : str_replace('.blade.php', '', $item->isi);
+
+                return $item;
+            });
     }
 
     protected function kirimTrack()

@@ -31,12 +31,12 @@ class Widget extends Model
             : $query->where('judul', 'LIKE', "%{$search}%");
     }
 
-    // public function scopeStatus($query, $status)
-    // {
-    //     return $query->when(!empty($status), function($query) use($status){
-    //         $query->where('enabled', $status);
-    //     });
-    // }
+    public function scopeStatusAdmin($query, $status)
+    {
+        return $query->when(!empty($status), function($query) use($status){
+            $query->where('enabled', $status);
+        });
+    }
 
     public function scopeGetWidget($query, $id)
     {
@@ -145,6 +145,19 @@ class Widget extends Model
         foreach ($all as $w) {
             $w->update(['urut' => $urut++]);
         }
+    }
+
+    public function getIsiAttribute($value): string
+    {
+        if ($this->jenis_widget == 2 && strpos($value, '/widgets/') !== false) {
+            $value = str_replace('/widgets/', '/resources/views/widgets/', $value);
+        }
+
+        if (strpos($value, '.php') !== false && strpos($value, 'blade') === false) {
+            $value = preg_replace('/(?<!blade)\.php$/', '.blade.php', $value);
+        }
+
+        return str_replace('/resources/views/resources/views/', '/resources/views/', $value);
     }
 
 }

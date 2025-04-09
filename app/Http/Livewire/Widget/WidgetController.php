@@ -38,13 +38,27 @@ class WidgetController extends Component
     public function mount(Widget $widget)
     {
         $this->widget = $widget;
+
+        // Ambil data widget yang sudah tersimpan
+        $existingWidgets = Widget::pluck('isi')->map(function ($isi) {
+            return str_replace('.blade.php', '', basename($isi));
+        })->toArray();
+
+        // Ambil semua file widget dari folder tema
+        $list_widget = Widget::listWidgetBaru();
+
+        // Filter yang belum ada
+        $this->list_widget = array_filter($list_widget, function ($path) use ($existingWidgets) {
+            $fileName = str_replace('.blade.php', '', basename($path));
+            return !in_array($fileName, $existingWidgets);
+        });
     }
 
     public function render()
     {
         $widgets = Widget::search($this->search)
                     ->orderBy('urut', 'asc')
-                    ->status($this->status)
+                    ->statusAdmin($this->status)
                     ->paginate($this->perPage);
                     
         return view('livewire.widget.index', [
@@ -105,7 +119,6 @@ class WidgetController extends Component
         $this->page_description = "Tambah Widget";
         $this->form = true;
         $this->editMode = false;
-        $this->list_widget = Widget::listWidgetBaru();
     }
 
     public function kembali()
@@ -176,8 +189,6 @@ class WidgetController extends Component
             $this->editMode = true;
             $this->widget = $model;
 
-            $this->list_widget = Widget::listWidgetBaru();
-            
             $this->foto = $model->foto ? asset('storage/widget/'.$model->foto) : null;
     		
     	} catch (\Exception $e) {

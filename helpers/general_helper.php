@@ -232,12 +232,21 @@ function diff_for_humans($date)
 
 function format_datetime($date)
 {
-    return  Carbon::parse($date)->translatedFormat('d F Y H:i:s');
+    if (empty($date) || $date == '-' || $date == '0000-00-00' || $date == '0000-00-00 00:00:00') {
+        return '-'; // Atau bisa dikembalikan string lain seperti "Tanggal tidak tersedia"
+    }
+
+    return Carbon::parse($date)->translatedFormat('d F Y H:i:s');
 }
+
 
 function format_date($date)
 {
-    return  Carbon::parse($date)->translatedFormat('d F Y');
+    if (empty($date) || $date == '-' || $date == '0000-00-00' || $date == '0000-00-00 00:00:00') {
+        return '-'; // Atau bisa dikembalikan string lain seperti "Tanggal tidak tersedia"
+    }
+
+    return Carbon::parse($date)->translatedFormat('d F Y');
 }
 
 function kuartal_bulan()
@@ -726,3 +735,8 @@ function getBulan(int $bln)
     return $bulan[$bln];
 }
 
+function kembalikanSlug($str): ?string
+{
+    // Ganti '-' dengan spasi dan hilangkan titik '.'
+    return  str_replace(['-','.'], [' ',''], $str);
+}

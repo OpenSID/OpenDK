@@ -14,6 +14,7 @@ use App\Models\Program;
 use App\Models\SettingAplikasi;
 use App\Models\TipePotensi;
 use App\Models\Widget;
+use App\Services\DesaService;
 use Closure;
 use Exception;
 use Illuminate\Support\Facades\View;
@@ -98,7 +99,7 @@ class GlobalShareMiddleware
             // TODO : Gunakan untuk semua pengaturan jika sudah tersedia
             $this->browser_title = SettingAplikasi::where('key', 'judul_aplikasi')->first()->value ?? ucwords($this->sebutan_wilayah . ' ' . $this->profil->nama_kecamatan);
 
-            $navdesa = DataDesa::all();
+            $navdesa = (new DesaService)->listDesa();
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
 

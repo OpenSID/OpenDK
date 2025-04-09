@@ -405,6 +405,12 @@
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
                             @endif
+
+                            {{-- menu backup database --}}
+                            <li {{ Request::is(['setting/backup-database', 'setting/restore-database']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.pengaturan-database.backup') }}"><i class="fa fa-circle-o"></i>Pengaturan Database</a>
+                            </li>
+
                         </ul>
                     </li>
                 @endif

@@ -24,7 +24,7 @@ class WidgetController extends Component
     public $page = 1;
     public $perPage = 10;
     public $search;
-    public $status;
+    public $status = 1;
     public $form = false;
     public $editMode = false;
     

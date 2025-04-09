@@ -31,12 +31,12 @@ class Widget extends Model
             : $query->where('judul', 'LIKE', "%{$search}%");
     }
 
-    public function scopeStatus($query, $status)
-    {
-        return $query->when(!empty($status), function($query) use($status){
-            $query->where('enabled', $status);
-        });
-    }
+    // public function scopeStatus($query, $status)
+    // {
+    //     return $query->when(!empty($status), function($query) use($status){
+    //         $query->where('enabled', $status);
+    //     });
+    // }
 
     public function scopeGetWidget($query, $id)
     {
@@ -98,6 +98,53 @@ class Widget extends Model
         return static::where('jenis_widget', 2)
             ->pluck('isi')
             ->toArray();
+    }
+
+    public function scopeJenis($query, $value)
+    {
+        if (empty($value)) {
+            return $query->whereNotNull('jenis_widget');
+        }
+
+        if (is_array($value)) {
+            return $query->whereIn('jenis_widget', $value);
+        }
+
+        return $query->where('jenis_widget', $value);
+    }
+
+    public function scopeStatus($query, $value = 1)
+    {
+        return $query->where('enabled', $value);
+    }
+
+    public function scopeNomorUrut($query, $id, $direction)
+    {
+        $data = $this->findOrFail($id);
+
+        $currentNo = $data->urut;
+        $targetNo  = ($direction == 2) ? $currentNo - 1 : $currentNo + 1;
+
+        $query->where('urut', $targetNo)->update(['urut' => $currentNo]);
+
+        $data->update(['urut' => $targetNo]);
+
+        return $query;
+    }
+
+    public function scopeUrutMax($query): int|float
+    {
+        return $query->orderByDesc('urut')->first()->urut + 1;
+    }
+
+    public static function updateUrutan(): void
+    {
+        $all  = Widget::orderBy('urut')->get();
+        $urut = 1;
+
+        foreach ($all as $w) {
+            $w->update(['urut' => $urut++]);
+        }
     }
 
 }

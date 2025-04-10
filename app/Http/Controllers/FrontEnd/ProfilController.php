@@ -37,8 +37,7 @@ use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Pengurus;
 use App\Models\Profil;
-use App\Services\GeografisService;
-use App\Services\PendudukService;
+use App\Services\DesaService;
 use Illuminate\Support\Facades\DB;
 
 class ProfilController extends FrontEndController
@@ -77,8 +76,8 @@ class ProfilController extends FrontEndController
         Counter::count('profil.letak-geografis');
 
         $profil = Profil::with(['dataDesa'])->first();
-        $wilayah_desa = $this->isDatabaseGabungan() ? (new GeografisService)->wilayah_desa() : DataDesa::whereNotNull('path')->get();
-        $data_umum = $this->isDatabaseGabungan() ? (new GeografisService)->profile() : DataUmum::first();
+        $wilayah_desa = (new DesaService())->listPathDesa();
+        $data_umum = DataUmum::first();
         $page_title = 'Letak Geografis';
         if (isset($profil)) {
             $page_description = $this->browser_title;

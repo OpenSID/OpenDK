@@ -44,10 +44,11 @@ use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\BaganTrait;
 
 class PengurusController extends Controller
 {
-    use HandlesFileUpload;
+    use HandlesFileUpload, BaganTrait;
 
     /**
      * Display a listing of the resource.
@@ -259,34 +260,6 @@ class PengurusController extends Controller
 
     public function ajaxBagan()
     {
-        $struktur = Pengurus::with('jabatan')
-            ->where('status', 1)              
-            ->get();
-
-        $data = [];
-        $nodes = [];
-
-        foreach ($struktur as $item) {
-            // Jika memiliki atasan, buat relasi
-            if ($item->atasan) {
-                $data[] = [
-                    (string) $item->atasan, (string) $item->id
-                ];
-            }
-
-            $nodes[] = [
-                'id'    => (string) $item->id,
-                'title' => $item->jabatan->nama ?? 'Unknown',
-                'name'  => trim(($item->gelar_depan ?? '') . ' ' . $item->nama . ' ' . ($item->gelar_belakang ?? '')),
-                'image' => $item->foto ? asset($item->foto) : '',
-                'color' => $item->bagan_warna ?? '#007ad0',
-                'column' => $item->bagan_tingkat ?? 0 // Pastikan ada nilai default
-            ];
-        }
-
-        return response()->json([
-            'data'  => $data,
-            'nodes' => $nodes,
-        ]);
+        return response()->json($this->getDataStrukturOrganisasi());
     }
 }

@@ -22,4 +22,10 @@ class EmailSmtp extends Model
     ];
 
     public $timestamps = true;
+
+    //mengambil data smtp terakhir berdasaerkan waktu penambahan data dan status
+    public static function getLatestEmailSmtp()
+    {
+        return EmailSmtp::latest('created_at')->where('status', '=', 1)->first();
+    }
 }

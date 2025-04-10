@@ -9,8 +9,8 @@
                 @include('vendor.laravel-log-viewer.smtp.form')
             </div>
             <div class="box-footer">
-                <button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i> Simpan</button>
-                <button class="btn btn-danger btn-sm pull-right"><i class="fa fa-envelope-o"></i> Tes Email</button>
+                <button type="submit" id="store-smtp" class="btn btn-primary btn-sm pull-right" id><i class="fa fa-save"></i> Simpan</button>
+                <a class="btn btn-danger btn-sm pull-right" id="test-smtp"><i class="fa fa-envelope-o"></i> Tes Email</a>
             </div>
             {!! Form::close() !!}
         </div>
@@ -18,6 +18,42 @@
 </div>
 @push('scripts')
 <script type="text/javascript">
-    
+    $(document).ready(function() {
+        $('#store-smtp').click(function() {
+            return confirm('Yakin Untuk Mengganti SMTP?');
+        });
+        $('#test-smtp').click(function() {
+            //get testing email data
+            var email = $("#testing_mail").val();
+            if (email) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ URL('setting/info-sistem/send-test-email-smtp') }}/" + email,
+                    beforeSend: function() {
+                        Swal.showLoading()
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: 'Berhasil mengirim email testing',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'Gagal mengirim email testing',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                    }
+                });
+            }
+        });
+    });
 </script>
 @endpush

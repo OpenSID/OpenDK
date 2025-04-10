@@ -32,9 +32,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EmailSmtpRequest;
+use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,8 +125,8 @@ class LogViewerController extends Controller
 
         $page_title = 'Info Sistem';
         
-        //mengambil data smtp terakhir berdasaerkan waktu penambahan data dan status
-        $email_smtp = EmailSmtp::latest('created_at')->where('status', '=', 1)->first();
+        //mengambil data smtp terakhir
+        $email_smtp = EmailSmtp::getLatestEmailSmtp();
 
         return app('view')->make($this->view_log, $data)
         ->with('requirements', $requirements)
@@ -246,11 +248,28 @@ class LogViewerController extends Controller
         try {
             EmailSmtp::create($request->all());
         } catch (\Exception $e) {
-            //throw $th;
             report($e);
             return back()->withInput()->with('tab', 'email_smtp')->with('error', 'SMTP gagal diubah!');
         }
 
         return back()->with('tab', 'email_smtp')->with('success', 'Berhasil memperbaruhi SMTP');
+    }
+
+    //function for testing email smtp
+    public function sendTestEmailSmtp($email)
+    {
+        try {
+            Mail::to($email)->send(new SmtpTestEmail());
+        } catch (\Exception $e) {
+            report($e);
+
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        return response()->json([
+            'success' => true,
+        ], Response::HTTP_OK);
     }
 }

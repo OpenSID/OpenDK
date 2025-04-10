@@ -40,7 +40,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Email Tujuan (Tes Email)</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('testing_mail', null, ['placeholder' => 'Email Tujuan (Tes Email)', 'class' => 'form-control']) !!}
+        {!! Form::text('testing_mail', null, ['placeholder' => 'Email Tujuan (Tes Email)', 'class' => 'form-control', 'id' => 'testing_mail']) !!}
     </div>
 </div>
 

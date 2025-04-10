@@ -76,6 +76,11 @@ class PengurusRequest extends FormRequest
             'no_henti' => 'nullable|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
             'tanggal_henti' => 'nullable|date',
             'masa_jabatan' => 'required|regex:/^[a-zA-Z0-9 \.\-\/]+$/|max:50',
+            'atasan' => 'nullable',
+            'bagan_tingkat' => 'nullable|integer|min:0',
+            'bagan_offset' => 'nullable',
+            'bagan_layout' => 'nullable',
+            'bagan_warna' => 'nullable',
         ];
     }
 }

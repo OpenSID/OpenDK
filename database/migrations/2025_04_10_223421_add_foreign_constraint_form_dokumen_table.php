@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('jenis_dokumen_id')
                   ->references('id')
                   ->on('das_jenis_dokumen')
-                  ->onDelete('set null'); // Atau cascade, restrict, sesuai kebutuhan
+                  ->onDelete('set null');
         });
     }
 

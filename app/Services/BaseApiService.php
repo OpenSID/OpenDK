@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class BaseApiService
 {
@@ -30,11 +31,17 @@ class BaseApiService
      */
     protected function apiRequest(string $endpoint, array $params = [])
     {        
-        // Buat permintaan API dengan Header dan Parameter
-        $response = Http::withHeaders($this->header)->get($this->baseUrl . $endpoint, $params);
-
-        // Return JSON hasil
-        return $response->json('data') ?? [];
+        try {
+            // Buat permintaan API dengan Header dan Parameter
+            $response = Http::withHeaders($this->header)->get($this->baseUrl . $endpoint, $params);
+            session()->forget('error_api');
+            // Return JSON hasil            
+            return $response->json('data') ?? [];
+        } catch (\Exception $e) {
+            session()->flash('error_api', 'Gagal mendapatkan data'. $e->getMessage());
+            \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__.' '. $e->getMessage());
+        }
+        return [];
     }    
 
     protected function useDatabaseGabungan()

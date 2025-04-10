@@ -93,7 +93,7 @@
 
         function getBaseLayers(peta, access_token, defaultLayerType) {
             var baseLayers = {};
-            
+
             // Layer OpenStreetMap
             baseLayers["OpenStreetMap"] = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap contributors'
@@ -122,7 +122,7 @@
                     zoomOffset: 0,
                     attribution: '© Mapbox'
                 });
-            }else{
+            } else {
                 // console.warn("Access token tidak ditemukan!");
                 mbGLstr = L.tileLayer
                     .provider("OpenStreetMap.Mapnik", {
@@ -148,7 +148,7 @@
 
             return baseLayers;
         }
-        
+
         // function getBaseLayers(peta, access_token) {
         //     //Menampilkan BaseLayers Peta
         //     var defaultLayer = L.tileLayer

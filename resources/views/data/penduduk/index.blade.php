@@ -27,19 +27,7 @@
             </div>
 
             <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Desa</label>
-                            <select class="form-control" id="list_desa">
-                                <option value="Semua">Semua Desa</option>
-                                @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="penduduk-table">

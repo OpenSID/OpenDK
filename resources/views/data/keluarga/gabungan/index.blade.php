@@ -19,19 +19,7 @@
         <div class="box box-primary">
 
             <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Desa</label>
-                            <select class="form-control" id="list_desa">
-                                <option value="Semua">Semua Desa</option>
-                                @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->nama_desa }}">{{ $desa->nama_desa }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="datadesa-table">
@@ -81,13 +69,15 @@
 
                         var selectedDesa = $('#list_desa').val();
                         var searchValue = row.search.value;
-                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : '';
+                        var filterSearch = (searchValue || selectedDesa) ? (searchValue ||
+                            selectedDesa) : '';
 
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch,
-                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
+                                    ?.column]
                                 ?.name,
                         };
                     },

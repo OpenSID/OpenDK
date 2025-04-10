@@ -122,15 +122,13 @@ class DownloadController extends FrontEndController
     public function getDataDokumen()
     {
         $query = FormDokumen::query();
-        $querywhere('is_published', true)
+        $query->where('is_published', true)
             ->where(function ($q) {
                 $q->whereNull('expired_at')
                 ->orWhere('expired_at', '>', now());
             });
 
-        $documents = $query->get();
-
-        return DataTables::of($documents)
+        return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = asset($row->file_dokumen);
                 $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);
@@ -151,18 +149,17 @@ class DownloadController extends FrontEndController
 
     public function getDataByJenisDokumen($slug)
     {
-        $documents = FormDokumen::with('jenisDokumen')
-        ->whereHas('jenisDokumen', function ($query) use ($slug) {
+        $query = FormDokumen::with('jenisDokumen');
+        $query->whereHas('jenisDokumen', function ($query) use ($slug) {
             $query->where('slug', $slug)
                 ->where('is_published', true)
                 ->where(function ($q) {
                     $q->whereNull('expired_at')
                     ->orWhere('expired_at', '>', now());
                 });
-        })
-        ->get();
+        });
 
-        return DataTables::of($documents)
+        return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = asset($row->file_dokumen);
                 $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);

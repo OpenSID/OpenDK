@@ -61,4 +61,43 @@
 
 @push('scripts')
     {!! JsValidator::formRequest('App\Http\Requests\DokumenRequest', '#form-dokumen') !!}
+    <script>
+        $(document).ready(function () {
+            const $status = $('select[name="status"]');
+            const $jumlahWaktu = $('select[name="jumlah_waktu"]');
+            const $tipeWaktu = $('select[name="tipe_waktu"]');
+            const $retentionDays = $('#retention_days');
+    
+            const tipeToHari = {
+                '1': 1,
+                '2': 30,
+                '3': 365
+            };
+
+            function updateRetentionDays() {
+                const status = $status.val();
+                const jumlah = parseInt($jumlahWaktu.val()) || 0;
+                const tipe = $tipeWaktu.val();
+    
+                if (status == '2') {
+                    $jumlahWaktu.val('0').prop('disabled', true);
+                    $tipeWaktu.val('1').prop('disabled', true);
+                    $retentionDays.val(0);
+                } else {
+                    $jumlahWaktu.prop('disabled', false);
+                    $tipeWaktu.prop('disabled', false);
+                    if (tipe && jumlah >= 0) {
+                        const total = jumlah * tipeToHari[tipe];
+                        $retentionDays.val(total);
+                    }
+                }
+            }
+    
+            $status.on('change', updateRetentionDays);
+            $jumlahWaktu.on('change', updateRetentionDays);
+            $tipeWaktu.on('change', updateRetentionDays);
+
+            updateRetentionDays();
+        });
+    </script>
 @endpush

@@ -37,6 +37,7 @@ use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JenisDokumenRequest;
+use App\Models\FormDokumen;
 
 class JenisDokumenController extends Controller
 {
@@ -144,7 +145,17 @@ class JenisDokumenController extends Controller
     public function destroy($id)
     {
         try {
-            JenisDokumen::findOrFail($id)->delete();
+            $jenisDokumen = JenisDokumen::findOrFail($id);
+
+            $isUsed = FormDokumen::query()
+                ->where('jenis_dokumen_id', $id)
+                ->exists();
+
+            if($isUsed) {
+                return back()->with('error', 'Jenis Dokumen tidak bisa dihapus karena sedang digunakan pada Form Dokumen.');
+            };
+
+            $jenisDokumen->delete();
         } catch (\Exception $e) {
             report($e);
 

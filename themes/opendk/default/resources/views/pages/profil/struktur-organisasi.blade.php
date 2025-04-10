@@ -45,10 +45,6 @@
             fetch('{{ route('profil.struktur-organisasi-ajax') }}')
                 .then(response => response.json())
                 .then(result => {
-                    console.log("Data dari server:", result); // Debugging
-                    console.log("Hasil data:", result.data)
-                    console.log("Hasil nddes:", result.nodes)
-
                     /// Setelah data diterima, tampilkan konten & sembunyikan loader
                     loader.style.display = 'none';
                     contentBox.style.display = 'block';

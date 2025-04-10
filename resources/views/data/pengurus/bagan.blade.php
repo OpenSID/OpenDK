@@ -45,39 +45,6 @@
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function() {
 
-            // const result = {
-            //     data: [
-            //         ['1', '10'], // Atasan (Camat) ke Sekretaris
-            //         // ['1', '3'], // Atasan (Camat) ke Bendahara
-            //         // ['2', '4'], // Sekretaris ke Anggota 1
-            //         // ['2', '5'], // Sekretaris ke Anggota 2
-            //     ],
-            //     nodes: [
-            //         { id: '1', title: 'Camat', name: 'Mulyanto', image: 'https://via.placeholder.com/100', column: 0 },
-            //         { id: '2', title: 'Sekretaris', name: 'Nana', image: 'https://via.placeholder.com/100', column: 1 },
-            //         { id: '3', title: 'Bendahara', name: 'Siti', image: 'https://via.placeholder.com/100', column: 1 },
-            //         { id: '4', title: 'Anggota', name: 'Didi', image: 'https://via.placeholder.com/100', column: 2 },
-            //         { id: '5', title: 'Anggota', name: 'Rina', image: 'https://via.placeholder.com/100', column: 2 },
-            //     ]
-            // };
-
-            // {
-            //     "id": "1",
-            //     "title": "Camat",
-            //     "name": "Mulyanto",
-            //     "image": "http://opendk-public.test/storage/default.png",
-            //     "color": "#007ad0",
-            //     "column": 0
-            // },
-            // {
-            //     "id": "10",
-            //     "title": "Sekretaris",
-            //     "name": "Nana",
-            //     "image": "http://opendk-public.test/storage/pengurus/pCJlHwhiaNPwBth9CkvI8RDGqXXyb27KZAYtjPze.jpg",
-            //     "color": "#d83737",
-            //     "column": 1
-            // }
-
             const loader = document.getElementById('loader');
             const contentBox = document.getElementById('contentBox');
 
@@ -88,10 +55,6 @@
             fetch('{{ route('data.pengurus.ajaxbagan') }}')
                 .then(response => response.json())
                 .then(result => {
-                    console.log("Data dari server:", result); // Debugging
-                    console.log("Hasil data:", result.data)
-                    console.log("Hasil nddes:", result.nodes)
-
                     /// Setelah data diterima, tampilkan konten & sembunyikan loader
                     loader.style.display = 'none';
                     contentBox.style.display = 'block';
@@ -158,7 +121,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
-                    loader.style.display = 'none'; // Sembunyikan loader jika ada error
+                    loader.style.display = 'none';
                 });
 
 

@@ -172,26 +172,6 @@
     </div>
 </div>
 
-{{-- <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_offset">Bagan - Offset</label>
-
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('bagan_offset', null, [
-            'placeholder' => 'Angka menunjukkan persentase geser (-n) atau kanan (+n). Contoh: 75%',
-            'class' => 'form-control',
-            'required' => false,
-        ]) !!}
-    </div>
-</div> --}}
-
-{{-- <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_layout">Bagan - Tampilan</label>
-
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('bagan_layout', ['default' => 'Default', 'hanging' => 'Hanging'], null, ['class' => 'form-control']) !!}
-    </div>
-</div> --}}
-
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_warna">Bagan - Warna</label>
 

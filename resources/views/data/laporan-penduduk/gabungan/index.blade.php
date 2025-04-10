@@ -77,8 +77,7 @@
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": filterSearch == 'Semua' ? searchValue :
-                            filterSearch, // Gunakan filterSearch di sini
+                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch, // Gunakan filterSearch di sini
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]
                                 ?.name,

@@ -39,7 +39,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v2503.0.0',
+    'version' => 'v2504.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -289,6 +289,8 @@ return [
 
         //Dynamic smtp
         App\Providers\SmtpServiceProvider::class,
+      
+        MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 
     /*

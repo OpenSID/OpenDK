@@ -38,6 +38,8 @@ use App\Models\JawabKomplain;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\FrontEndController;
+use App\Rules\ValidasiNikRule;
+use App\Services\PendudukService;
 
 class SistemKomplainController extends FrontEndController
 {
@@ -112,20 +114,18 @@ class SistemKomplainController extends FrontEndController
     {
         try {
             $validator = Validator::make($request->all(), [
-                'nik' => 'required|numeric|nik_exists:'.$request->input('tanggal_lahir'),
+                'nik' => ['required', 'numeric', new ValidasiNikRule($request->input('tanggal_lahir'))],
                 'judul' => 'required|string|max:255',
                 'kategori' => 'required',
                 'laporan' => 'required|string',
                 'captcha' => 'required|captcha',
-                'tanggal_lahir' => 'password_exists:'.$request->input('nik'),
+                'tanggal_lahir' => 'required|date',
                 'lampiran1' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
                 'lampiran2' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
                 'lampiran3' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
                 'lampiran4' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
             ], [
                 'captcha.captcha' => 'Invalid captcha code.',
-                'nik_exists' => 'NIK tidak ditemukan atau NIK dan Tanggal Lahir tidak sesuai.',
-                'password_exists' => 'NIK dan Tanggal Lahir tidak sesuai.',
             ]);
 
             if ($validator->fails()) {
@@ -133,11 +133,18 @@ class SistemKomplainController extends FrontEndController
             }
             $komplain = new Komplain($request->all());
 
+            $penduduk = $this->isDatabaseGabungan() 
+            ? (new PendudukService)->cekPendudukNikTanggalLahir($request->input('nik'), $request->input('tanggal_lahir'))
+            : Penduduk::where('nik', $komplain->nik)->first();
+
             $komplain->komplain_id = $this->generateID();
             $komplain->slug = str_slug($komplain->judul).'-'.$komplain->komplain_id;
             $komplain->status = 'REVIEW';
             $komplain->dilihat = 0;
-            $komplain->nama = Penduduk::where('nik', $komplain->nik)->first()->nama;
+            $komplain->nama = $penduduk['nama'] ?? null;
+
+            // memasukkan data dari api database gabungan ke detail_penduduk
+            $komplain->detail_penduduk = $penduduk ? json_encode($penduduk->attributesToArray()) : null;
 
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {
@@ -261,4 +268,5 @@ class SistemKomplainController extends FrontEndController
 
         return view('pages.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
+
 }

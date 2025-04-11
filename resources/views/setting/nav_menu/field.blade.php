@@ -28,6 +28,9 @@
         <label class="form-check-inline">
             {!! Form::radio('source', 'Modul', null, ['class' => 'form-check-input', 'id' => 'sourceModul']) !!} Modul
         </label>
+        <label class="form-check-inline">
+            {!! Form::radio('source', 'Dokumen', null, ['class' => 'form-check-input', 'id' => 'sourceDokumen']) !!} Dokumen
+        </label>
     </div>
 </div>
 
@@ -54,6 +57,7 @@
             // Event listener untuk radio button change
             document.querySelectorAll('input[name=source]').forEach(function(radio) {
                 radio.addEventListener('change', function() {
+                    console.log(this.value)
                     let _val = this.value;
 
                     // Reset semua input dan select
@@ -65,6 +69,7 @@
                     switch (_val) {
                         case 'Kategori':
                         case 'Halaman':
+                        case 'Dokumen':
                             let select = document.querySelector('select[name=sourcelist]');
                             select.style.display = 'block'; // Tampilkan select sourcelist
 

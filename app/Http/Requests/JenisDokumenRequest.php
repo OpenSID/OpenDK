@@ -29,40 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Http\Requests;
 
-use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
 
-class FormDokumen extends Model
+class JenisDokumenRequest extends FormRequest
 {
-    use HandlesResourceDeletion;
-
-    protected $table = 'das_form_dokumen';
-
-    protected $fillable = [
-        'nama_dokumen',
-        'description',
-        'file_dokumen',
-        'jenis_dokumen_id',
-        'jenis_dokumen',
-        'is_published',
-        'published_at',
-        'retention_days',
-        'expired_at'
-    ];
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
-     * Daftar field-file yang harus dihapus.
+     * Get the validation rules that apply to the request.
      *
-     * @var array
+     * @return array
      */
-    protected $resources = [
-        'file_dokumen',
-    ];
-
-    public function jenisDokumen()
+    public function rules()
     {
-        return $this->belongsTo(JenisDokumen::class, 'jenis_dokumen_id');
+        return [
+            'nama' => 'required|string|max:100',
+        ];
     }
 }

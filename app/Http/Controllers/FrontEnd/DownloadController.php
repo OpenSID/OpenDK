@@ -39,6 +39,7 @@ use App\Models\FormDokumen;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class DownloadController extends FrontEndController
 {
@@ -120,7 +121,45 @@ class DownloadController extends FrontEndController
 
     public function getDataDokumen()
     {
-        return DataTables::of(FormDokumen::query())
+        $query = FormDokumen::query();
+        $query->where('is_published', true)
+            ->where(function ($q) {
+                $q->whereNull('expired_at')
+                ->orWhere('expired_at', '>', now());
+            });
+
+        return DataTables::of($query)
+            ->addColumn('aksi', function ($row) {
+                $data['show_url'] = asset($row->file_dokumen);
+                $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);
+
+                return view('forms.aksi', $data);
+            })->make();
+    }
+
+    public function indexJenisDokumen($slug)
+    {
+        Counter::count('unduhan.form-dokumen');
+
+        $page_title = 'Dokumen';
+        $page_description = 'Daftar Formulir Dokumen';
+
+        return view('pages.unduhan.jenis-dokumen', compact('page_title', 'page_description', 'slug'));
+    }
+
+    public function getDataByJenisDokumen($slug)
+    {
+        $query = FormDokumen::with('jenisDokumen');
+        $query->whereHas('jenisDokumen', function ($query) use ($slug) {
+            $query->where('slug', $slug)
+                ->where('is_published', true)
+                ->where(function ($q) {
+                    $q->whereNull('expired_at')
+                    ->orWhere('expired_at', '>', now());
+                });
+        });
+
+        return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = asset($row->file_dokumen);
                 $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);

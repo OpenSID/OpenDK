@@ -101,8 +101,10 @@ class FormDokumenController extends Controller
     {
         $page_title = 'Dokumen';
         $page_description = 'Tambah Dokumen';
+        $status_options = StatusFormDokumen::options();
+        $tipe_waktu_options = TipeWaktuFormDokumen::options();
 
-        return view('informasi.form_dokumen.create', compact('page_title', 'page_description'));
+        return view('informasi.form_dokumen.create', compact('page_title', 'page_description', 'status_options', 'tipe_waktu_options'));
     }
 
     public function store(DokumenRequest $request)
@@ -153,6 +155,9 @@ class FormDokumenController extends Controller
         $tipe_waktu = TipeWaktuFormDokumen::Hari;
         $status = StatusFormDokumen::Terbit;
 
+        $status_options = StatusFormDokumen::options();
+        $tipe_waktu_options = TipeWaktuFormDokumen::options();
+
         if ($dokumen->retention_days > 0) {
             if ($dokumen->retention_days >= KonversiHariFormDokumen::Tahun ) {
                 $jumlah_waktu = $dokumen->retention_days / 365;
@@ -172,7 +177,7 @@ class FormDokumenController extends Controller
             $status = StatusFormDokumen::Draft;
         }
 
-        return view('informasi.form_dokumen.edit', compact('page_title', 'page_description', 'dokumen', 'jumlah_waktu', 'tipe_waktu', 'status'));
+        return view('informasi.form_dokumen.edit', compact('page_title', 'page_description', 'dokumen', 'jumlah_waktu', 'tipe_waktu', 'status', 'status_options', 'tipe_waktu_options'));
     }
 
     public function update(DokumenRequest $request, FormDokumen $dokumen)

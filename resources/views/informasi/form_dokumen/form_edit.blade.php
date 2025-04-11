@@ -22,7 +22,7 @@
                 ]) !!}
             </div>
             <div class="col-md-6 pr-md-1">
-                {!! Form::select('tipe_waktu', ['1' => 'Hari', '2' => 'Bulan', '3' => 'Tahun'], $tipe_waktu, [
+                {!! Form::select('tipe_waktu', $tipe_waktu_options, $tipe_waktu, [
                     'class' => 'form-control',
                     'placeholder' => '- Pilih -',
                 ]) !!}
@@ -49,7 +49,7 @@
 <div class="form-group">
     <label for="jenis_dokumen_id" class="control-label col-md-3 col-sm-3 col-xs-12">Status Terbit<span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('status', ['1' => 'Ya', '2' => 'Tidak',], $status, [
+        {!! Form::select('status', $status_options, $status, [
             'class' => 'form-control',
             'placeholder' => '- Pilih -',
         ]) !!}
@@ -62,6 +62,13 @@
 @push('scripts')
     {!! JsValidator::formRequest('App\Http\Requests\DokumenRequest', '#form-dokumen') !!}
     <script>
+        const STATUS_DRAFT = {{ \App\Enums\StatusFormDokumen::Draft }};
+        const STATUS_TERBIT = {{ \App\Enums\StatusFormDokumen::Terbit }};
+        const TIPE_HARI = {{ \App\Enums\KonversiHariFormDokumen::Hari }};
+        const TIPE_BULAN = {{ \App\Enums\KonversiHariFormDokumen::Bulan }};
+        const TIPE_TAHUN = {{ \App\Enums\KonversiHariFormDokumen::Tahun }};
+    </script>
+    <script>
         $(document).ready(function () {
             const $status = $('select[name="status"]');
             const $jumlahWaktu = $('select[name="jumlah_waktu"]');
@@ -69,9 +76,9 @@
             const $retentionDays = $('#retention_days');
     
             const tipeToHari = {
-                '1': 1,
-                '2': 30,
-                '3': 365
+                '1': TIPE_HARI,
+                '2': TIPE_BULAN,
+                '3': TIPE_TAHUN
             };
 
             function updateRetentionDays() {
@@ -79,7 +86,7 @@
                 const jumlah = parseInt($jumlahWaktu.val()) || 0;
                 const tipe = $tipeWaktu.val();
     
-                if (status == '2') {
+                if (parseInt(status) === STATUS_DRAFT) {
                     $jumlahWaktu.val('0').prop('disabled', true);
                     $tipeWaktu.val('1').prop('disabled', true);
                     $retentionDays.val(0);

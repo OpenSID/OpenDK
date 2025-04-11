@@ -32,7 +32,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
+use App\Enums\StatusFormDokumen;
 class DokumenRequest extends FormRequest
 {
     /**
@@ -64,7 +65,11 @@ class DokumenRequest extends FormRequest
             'jenis_dokumen_id'  => 'required|integer',
             'retention_days'    => 'required|integer|min:0',
             'description'       => 'required|string',
-            'status'            => 'required|integer',
+            'status'            => [
+                'required',
+                'integer',
+                Rule::in([StatusFormDokumen::Terbit, StatusFormDokumen::Draft]),
+            ],
         ];
     }
 }

@@ -41,4 +41,12 @@ final class StatusFormDokumen extends Enum
     public const Terbit = 1;
 
     public const Draft = 2;
+
+    public static function options(): array
+    {
+        return [
+            self::Terbit => 'Ya',
+            self::Draft => 'Tidak',
+        ];
+    }
 }

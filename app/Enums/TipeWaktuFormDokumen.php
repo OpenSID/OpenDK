@@ -43,4 +43,13 @@ final class TipeWaktuFormDokumen extends Enum
     public const Bulan = 2;
 
     public const Tahun = 3;
+
+    public static function options(): array
+    {
+        return [
+            self::Hari => 'Hari',
+            self::Bulan => 'Bulan',
+            self::Tahun => 'Tahun',
+        ];
+    }
 }

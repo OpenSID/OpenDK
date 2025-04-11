@@ -286,6 +286,10 @@ return [
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
+        //Dynamic smtp
+        App\Providers\SmtpServiceProvider::class,
+      
         MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 

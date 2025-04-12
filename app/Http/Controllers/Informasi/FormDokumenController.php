@@ -160,8 +160,14 @@ class FormDokumenController extends Controller
 
         if ($dokumen->retention_days > 0) {
             if ($dokumen->retention_days >= KonversiHariFormDokumen::Tahun ) {
-                $jumlah_waktu = $dokumen->retention_days / 365;
-                $tipe_waktu = TipeWaktuFormDokumen::Tahun;
+                $sisa_hari = $dokumen->retention_days % KonversiHariFormDokumen::Tahun;
+                if($sisa_hari == 0){
+                    $jumlah_waktu = $dokumen->retention_days / KonversiHariFormDokumen::Tahun;
+                    $tipe_waktu = TipeWaktuFormDokumen::Tahun;
+                }else{
+                    $jumlah_waktu = floor($dokumen->retention_days / KonversiHariFormDokumen::Bulan);
+                    $tipe_waktu = TipeWaktuFormDokumen::Bulan;
+                }
             } elseif ($dokumen->retention_days > (KonversiHariFormDokumen::Bulan + 1)) {
                 $jumlah_waktu = $dokumen->retention_days / KonversiHariFormDokumen::Bulan;
                 $tipe_waktu = TipeWaktuFormDokumen::Bulan;
@@ -170,7 +176,6 @@ class FormDokumenController extends Controller
                 $tipe_waktu = TipeWaktuFormDokumen::Hari;
             }
         }
-
         if($dokumen->is_published){
             $status = StatusFormDokumen::Terbit;
         }else{

@@ -9,28 +9,28 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Host Server</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('host', $email_smtp->host, ['placeholder' => 'Host Server', 'class' => 'form-control']) !!}
+        {!! Form::text('host', $email_smtp->host, ['placeholder' => 'Host Server', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Port</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('port', $email_smtp->port, ['placeholder' => 'Port', 'class' => 'form-control']) !!}
+        {!! Form::text('port', $email_smtp->port, ['placeholder' => 'Port', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Username</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('username', $email_smtp->username, ['placeholder' => 'Username', 'class' => 'form-control']) !!}
+        {!! Form::text('username', $email_smtp->username, ['placeholder' => 'Username', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Password</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('password', $email_smtp->password, ['placeholder' => 'Password', 'class' => 'form-control password']) !!}
+        {!! Form::text('password', $email_smtp->password, ['placeholder' => 'Password', 'class' => 'form-control password', 'required' => true]) !!}
     </div>
     <div class="col-md-1 col-sm-1 col-xs-12">
         <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>

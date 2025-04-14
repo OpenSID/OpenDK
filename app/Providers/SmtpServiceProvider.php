@@ -34,6 +34,7 @@ namespace App\Providers;
 
 use App\Models\EmailSmtp;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class SmtpServiceProvider extends ServiceProvider
@@ -57,20 +58,23 @@ class SmtpServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //mengambil data smtp terakhir
-        $email_smtp = EmailSmtp::getLatestEmailSmtp();
-        if ($email_smtp) {
-            $config = array(
-                'transport' => $email_smtp->provider,
-                'host' => $email_smtp->host,
-                'port' => $email_smtp->port,
-                'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-                'username' => $email_smtp->username,
-                'password' => $email_smtp->password,
-                'timeout' => null,
-                'local_domain' => env('MAIL_EHLO_DOMAIN'),
-            );
-            Config::set('mail.mailers.smtp', $config);
+        //validasi table email smtp, apabila tidak ada
+        if (Schema::hasTable('ref_smtp')) {
+            //mengambil data smtp terakhir
+            $email_smtp = EmailSmtp::getLatestEmailSmtp();
+            if ($email_smtp) {
+                $config = array(
+                    'transport' => $email_smtp->provider,
+                    'host' => $email_smtp->host,
+                    'port' => $email_smtp->port,
+                    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+                    'username' => $email_smtp->username,
+                    'password' => $email_smtp->password,
+                    'timeout' => null,
+                    'local_domain' => env('MAIL_EHLO_DOMAIN'),
+                );
+                Config::set('mail.mailers.smtp', $config);
+            }
         }
     }
 }

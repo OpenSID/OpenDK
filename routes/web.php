@@ -45,6 +45,7 @@ use App\Http\Controllers\Setting\NavMenuController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
@@ -120,6 +121,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
                 Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
+                Route::get('struktur-organisasi', 'ProfilController@StrukturOrganisasi')->name('profil.struktur-organisasi');
+                Route::get('struktur-organisasi-ajax', 'ProfilController@ajaxBaganPublic')->name('profil.struktur-organisasi-ajax');
             });
 
             Route::group(['prefix' => 'event'], function () {
@@ -197,6 +200,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
                     Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
+                    Route::get('/jenis-dokumen/{slug}', 'DownloadController@indexJenisDokumen')->name('unduhan.form-dokumen.jenis-dokumen');
+                    Route::get('getData/jenis-dokumen/{slug}', 'DownloadController@getDataByJenisDokumen')->name('unduhan.form-dokumen.getdatabyjenisdokumen');
                 });
             });
 
@@ -467,6 +472,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
@@ -895,6 +902,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'restore-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');
                 Route::post('/restore-running', 'restoreBackup')->name('setting.pengaturan-database.runrestore');
+            });
+
+            // Jenis Dokumen
+            Route::group(['prefix' => 'jenis-dokumen', 'controller' => JenisDokumenController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.jenis-dokumen.index');
+                Route::get('getdata', 'getData')->name('setting.jenis-dokumen.getdata');
+                Route::post('store', 'store')->name('setting.jenis-dokumen.store');
+                Route::get('edit/{id}', 'edit')->name('setting.jenis-dokumen.edit');
+                Route::put('update/{id}', 'update')->name('setting.jenis-dokumen.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-dokumen.destroy');
             });
         });
 

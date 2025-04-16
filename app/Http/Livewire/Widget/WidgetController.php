@@ -24,7 +24,7 @@ class WidgetController extends Component
     public $page = 1;
     public $perPage = 10;
     public $search;
-    public $status = 1;
+    public $status;
     public $form = false;
     public $editMode = false;
     
@@ -38,19 +38,24 @@ class WidgetController extends Component
     public function mount(Widget $widget)
     {
         $this->widget = $widget;
+        $this->updateListWidget();
+    }
 
-        // Ambil data widget yang sudah tersimpan
+    public function updateListWidget()
+    {
         $existingWidgets = Widget::pluck('isi')->map(function ($isi) {
             return str_replace('.blade.php', '', basename($isi));
         })->toArray();
 
-        // Ambil semua file widget dari folder tema
+        $currentWidgetName = $this->editMode && $this->widget && $this->widget->isi
+            ? str_replace('.blade.php', '', basename($this->widget->isi))
+            : null;
+
         $list_widget = Widget::listWidgetBaru();
 
-        // Filter yang belum ada
-        $this->list_widget = array_filter($list_widget, function ($path) use ($existingWidgets) {
+        $this->list_widget = array_filter($list_widget, function ($path) use ($existingWidgets, $currentWidgetName) {
             $fileName = str_replace('.blade.php', '', basename($path));
-            return !in_array($fileName, $existingWidgets);
+            return !in_array($fileName, $existingWidgets) || $fileName === $currentWidgetName;
         });
     }
 
@@ -119,6 +124,7 @@ class WidgetController extends Component
         $this->page_description = "Tambah Widget";
         $this->form = true;
         $this->editMode = false;
+        $this->updateListWidget();
     }
 
     public function kembali()
@@ -188,6 +194,7 @@ class WidgetController extends Component
             $this->form = true;
             $this->editMode = true;
             $this->widget = $model;
+            $this->updateListWidget();
 
             $this->foto = $model->foto ? asset('storage/widget/'.$model->foto) : null;
     		
@@ -243,7 +250,7 @@ class WidgetController extends Component
     public function clear()
     {
         $this->resetErrorBag();
-    	$this->resetExcept('widget');
+    	$this->resetExcept('widget', 'list_widget');
         $this->widget = new Widget();
     }
 

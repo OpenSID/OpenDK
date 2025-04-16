@@ -12,3 +12,4 @@ Di rilis versi v2504.0.1 di versi ini terdapat modul komentar pada artikel dan p
 #### TEKNIS
 
 1. [#1183](https://github.com/OpenSID/OpenDK/issues/1183) Penyesuaian pemeriksaan OpenDK dengan API database gabungan data penduduk.
+2. [#1182](https://github.com/OpenSID/OpenDK/issues/1182) Penyesuaian pemeriksaan OpenDK dengan API database gabungan pada halaman publik.

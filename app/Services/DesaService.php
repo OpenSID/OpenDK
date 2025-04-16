@@ -89,4 +89,14 @@ class DesaService extends BaseApiService
             ];
         });
     }
+
+    public function listPathDesa()
+    {
+        if ($this->useDatabaseGabungan()) {            
+            
+            return $this->listDesa();
+        }
+
+        return DataDesa::whereNotNull('path')->get();
+    }
 }

@@ -57,7 +57,11 @@ class NavMenuController extends Controller
         $nav_menus = json_encode($menus);
 
         $sourceItem = [
-            'Halaman' => Artikel::cursor()->pluck('judul', 'link')->toArray(),
+            // 'Halaman' => Artikel::cursor()->pluck('judul', 'link')->toArray(),
+            'Halaman' => array_merge(
+                ['profil/struktur-organisasi' => 'Struktur Organisasi'], // Tambahkan opsi statis di sini
+                Artikel::cursor()->pluck('judul', 'link')->toArray()
+            ),
             'Kategori' => Kategori::cursor()->pluck('nama', 'link')->toArray(),
             'Dokumen' => JenisDokumen::cursor()->pluck('nama', 'link')->toArray(),
         ];

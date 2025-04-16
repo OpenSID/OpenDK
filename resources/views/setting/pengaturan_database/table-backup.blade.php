@@ -1,11 +1,9 @@
 @extends('setting.pengaturan_database.index')
 @section('content_pengaturan_database')
-
     {{-- <p class="lead">Backup yang dihasilkan akan tersimpan di storage aplikasi. </p>   --}}
 
     {{-- button backup --}}
-    <button onclick="runBackup()" id="btnBackup" type="button" class="btn btn-success btn-sm btn-social"
-        style="margin-bottom: 1rem">
+    <button onclick="runBackup()" id="btnBackup" type="button" class="btn btn-success btn-sm btn-social" style="margin-bottom: 1rem">
         <i class="fa fa-plus"></i>Buat Cadangan Baru Database
     </button>
 
@@ -108,7 +106,7 @@
                         complete: function() {
                             restoreMessage.html(
                                 '<p class="text-success">Berhasil membuat salinan database.</p>'
-                                );
+                            );
                             btnBackup.addClass("btn-social");
                             btnBackup.attr("disabled", false);
                             btnBackup.html('<i class="fa fa-plus"></i>Buat Cadangan Baru Database');

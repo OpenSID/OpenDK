@@ -17,7 +17,7 @@
         @include('partials.flash_message')
 
         <div class="nav-tabs-custom">
-            
+
             <ul class="nav nav-tabs">
                 <li class="{{ Request::is('setting/backup-database') ? 'active' : '' }}">
                     <a href="{{ route('setting.pengaturan-database.backup') }}">Backup Database</a>

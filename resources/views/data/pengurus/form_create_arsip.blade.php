@@ -26,7 +26,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Document <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::file('path_document', null, ['class' => 'form-control', 'required' => false]) !!}
+        <input type="file" name="path_document" class="form-control" required="false" accept=".pdf,.doc,.docx,.xls,.xlsx">
         <small class="text-danger">
             Batas maksimal pengunggahan file: 80MB. Hanya mendukung format: .pdf, .doc, .docx, .xls, .xlsx
         </small>

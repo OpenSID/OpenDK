@@ -72,7 +72,7 @@ class JenisDocumentController extends Controller
             }
 
             $page_title = 'Jenis Document';
-            $page_description = 'Daftar Jenis Data';
+            $page_description = 'Daftar Jenis Document';
             $jenisDocument = JenisDocument::all();
             if ($jenisDocument) {
                 return view('data.jenis_document.index', compact('page_title', 'page_description'));
@@ -97,7 +97,7 @@ class JenisDocumentController extends Controller
     public function create()
     {
         $page_title = 'Jenis Document';
-        $page_description = 'Daftar Jenis Data';
+        $page_description = 'Tambah Jenis Document';
         return view('data.jenis_document.create', compact('page_title', 'page_description'));
     }
 
@@ -111,7 +111,7 @@ class JenisDocumentController extends Controller
     {
         try {
             $page_title = 'Jenis Document';
-            $page_description = 'Daftar Jenis Data';
+            $page_description = 'Daftar Jenis Document';
             $jenisDocument = JenisDocument::updateOrCreate(['id' => $request->post('id')], $request->all());
             if ($jenisDocument) {
                 return view('data.jenis_document.index', compact('page_title', 'page_description'))->with('success', 'Berhasil simpan jenis document');
@@ -149,7 +149,7 @@ class JenisDocumentController extends Controller
     {
         try {
             $page_title = 'Jenis Document';
-            $page_description = 'Daftar Jenis Data';
+            $page_description = 'Edit Jenis Document';
             $jenis_document = JenisDocument::find($id);
             if ($jenis_document) {
                 return view('data.jenis_document.create', compact('page_title', 'page_description', 'jenis_document'))->with('success', 'Berhasil show jenis document');

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('title')
-    Rekam Surat
+    {{ $page_title ?? 'Page Title' }}
 @endsection
 
 @section('content')
@@ -40,7 +40,7 @@
                             @include('data.pengurus.form_arsip')
     
                             <div class="box-footer">
-                                @include('data.pengurus.table_document')
+                                @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
                             </div>
                         </div>
                         {!! Form::close() !!}

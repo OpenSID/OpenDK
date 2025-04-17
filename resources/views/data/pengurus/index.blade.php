@@ -23,6 +23,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
+                @include('forms.btn-social', ['create_jenis_document' => route('data.jenis-document.index')])
 
                 {{-- button bagan --}}
                 <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">

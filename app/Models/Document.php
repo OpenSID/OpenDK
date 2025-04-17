@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HandlesResourceDeletion;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,24 +10,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model
 {
-    use HasFactory;
+    use HasFactory, HandlesResourceDeletion;
 
     protected $fillable = [
         'das_penduduk_id',
         'judul_document',
         'path_document',
-        'user_id',
+        'pengurus_id',
         'kode_surat',
         'no_urut',
         'jenis_surat',
         'keterangan',
-        'ditandatangani',
-        'tanggal'
+        'ditandatangani'
     ];
 
-    public function user()
+    protected $resources = ['path_document'];
+
+    public function penduduk()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Penduduk::class, 'das_penduduk_id', 'id');
+    }
+
+    public function pengurus()
+    {
+        return $this->belongsTo(Pengurus::class, 'pengurus_id', 'id');
+    }
+
+    public function jenis_document()
+    {
+        return $this->belongsTo(JenisDocument::class, 'jenis_surat', 'id');
     }
 
     public function tanggal(): Attribute

@@ -32,9 +32,8 @@
                         @include('layouts.fragments.error_message')
     
                         <div class="box-body">
-    
                             @include('flash::message')
-                            @include('data.pengurus.form_edit_arsip')
+                            @include('data.pengurus.form_edit_arsip', ['pengurus_id' => $pengurus_id])
                             <div class="box-footer">
                                 @include('partials.button_reset_submit')
                             </div>

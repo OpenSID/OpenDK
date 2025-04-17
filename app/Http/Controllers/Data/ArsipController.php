@@ -31,280 +31,224 @@
 
 namespace App\Http\Controllers\Data;
 
-// use App\Enums\Status;
-// use App\Models\Agama;
-// use App\Models\Jabatan;
-// use App\Models\Pengurus;
-// use App\Enums\JenisJabatan;
-// use App\Models\PendidikanKK;
 use Illuminate\Http\Request;
-// use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-// use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
-// use App\Http\Requests\PengurusRequest;
+use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
+use App\Models\JenisDocument;
 use App\Models\Penduduk;
+use App\Traits\HandlesFileUpload;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ArsipController extends Controller
 {
-    // use HandlesFileUpload;
+    use HandlesFileUpload;
 
-    public function arsip()
-    {
-        $page_title = 'Rekam Surat Perseorangan';
-        $page_description = 'Daftar Data Arsip';
-        $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
-        ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
-        ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
-        ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
-        ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
-        ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
-        ->get([
-            'das_penduduk.id',
-            'das_penduduk.nik',
-            'das_penduduk.nama',
-            'ref_warganegara.nama as warga_negara',
-            'ref_agama.nama as agama',
-            'tempat_lahir',
-            'tanggal_lahir',
-            'das_penduduk.alamat',
-            'das_penduduk.dusun',
-            'das_penduduk.rt',
-            'das_penduduk.rw',
-            'das_penduduk.desa_id',
-            'warga_negara_id',
-            'ref_pendidikan_kk.nama as pendidikan'
-        ]);
-        return view('data.pengurus.arsip', compact('page_title', 'page_description'), [
-            'penduduk' => $penduduk,
-        ]);
+    public function arsip(Request $request)
+    {   
+        try {
+            $pengurus_id = $request->get('pengurus_id');
+
+            if ($request->ajax()) {
+                $document = Document::with('penduduk:id,nama', 'pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_document:id,nama')->where('pengurus_id', $pengurus_id)->get();
+                
+                return DataTables::of($document)
+                    ->addIndexColumn()
+                    ->addColumn('aksi', function ($row) use ($pengurus_id){
+                        if (! auth()->guest()) {
+                            $data['edit_url'] = route('data.pengurus.edit.document', ['penduduk_id' => $row->id, 'pengurus_id' => $pengurus_id]);
+                            $data['delete_url'] = route('data.pengurus.delete.document', $row->id);
+                        }
+    
+                        return view('forms.aksi', $data);
+                    })
+                    ->filter(function ($query) use ($request) {
+                        if ($request->has('search') && $request->search['value'] != '') {
+                            $search = $request->search['value'];
+                            $query->where('jenis_surat', 'like', "%{$search}%")
+                                  ->orWhere('keterangan', 'like', "%{$search}%")
+                                  ->orWhereHas('user', function ($q) use ($search) {
+                                      $q->where('name', 'like', "%{$search}%");
+                                  });
+                        }
+                    })
+                    ->rawColumns(['path_document', 'aksi'])
+                    ->make(true);
+            }
+
+            $page_title = 'Rekam Surat Perseorangan';
+            $page_description = 'Daftar Data Arsip';
+            $penduduk = Penduduk::all();
+            return view('data.pengurus.arsip', compact('page_title', 'page_description', 'pengurus_id'), [
+                'penduduk' => $penduduk,
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+            Log::channel('daily')->error('arsip di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal memuat halaman arsip!');
+        }
     }
 
-    public function penduduk_arsip($id)
-    {
-        $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
-        ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
-        ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
-        ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
-        ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
-        ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
-        ->where('das_penduduk.id', $id)
-        ->first([
-            'das_penduduk.id',
-            'das_penduduk.nik',
-            'das_penduduk.nama',
-            'ref_warganegara.nama as warga_negara',
-            'ref_agama.nama as agama',
-            'tempat_lahir',
-            'tanggal_lahir',
-            'das_penduduk.alamat',
-            'das_penduduk.dusun',
-            'das_penduduk.rt',
-            'das_penduduk.rw',
-            'das_penduduk.desa_id',
-            'warga_negara_id',
-            'ref_pendidikan_kk.nama as pendidikan'
-        ]);
-        return response()->json($penduduk);
-    }
-
-    public function create_arsip($id)
-    {
-        $page_title = 'Daftar Dokumen';
-        $page_description = 'Tambah Data';
-        // return $id;
-        $data_penduduk = Penduduk::find($id);
-        // $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
-        // ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
-        // ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
-        // ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
-        // ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
-        // ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
-        // ->leftJoin('documents', 'documents.das_penduduk_id', '=', 'das_penduduk.id')
-        // ->where('documents.id', $id)    
-        // ->first([
-        //     'das_penduduk.id as das_penduduk_id',
-        //     'das_penduduk.nik',
-        //     'das_penduduk.nama',
-        //     'ref_warganegara.nama as warga_negara',
-        //     'ref_agama.nama as agama',
-        //     'tempat_lahir',
-        //     'tanggal_lahir',
-        //     'das_penduduk.alamat',
-        //     'das_penduduk.dusun',
-        //     'das_penduduk.rt',
-        //     'das_penduduk.rw',
-        //     'das_penduduk.desa_id',
-        //     'warga_negara_id',
-        //     'ref_pendidikan_kk.nama as pendidikan',
-        //     'documents.id as document_id'
-        // ]);
-        $document = Document::where('das_penduduk_id', $id)->first();
-        return view('data.pengurus.create_arsip', compact('page_title', 'page_description', 'document', 'data_penduduk'));
-    }
-
-    public function edit_arsip($id)
-    {
-        $page_title = 'Daftar Dokumen';
-        $page_description = 'Edit Data';
-        // return $id;
-        $data_penduduk = Penduduk::find($id);
-        $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
-        ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
-        ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
-        ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
-        ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
-        ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
-        ->join('documents', 'documents.das_penduduk_id', '=', 'das_penduduk.id')
-        ->where('documents.id', $id)    
-        ->first([
-            // 'das_penduduk.id as das_penduduk_id',
-            'das_penduduk.nik',
-            'das_penduduk.nama',
-            'ref_warganegara.nama as warga_negara',
-            'ref_agama.nama as agama',
-            'tempat_lahir',
-            'tanggal_lahir',
-            'das_penduduk.alamat',
-            'das_penduduk.dusun',
-            'das_penduduk.rt',
-            'das_penduduk.rw',
-            'das_penduduk.desa_id',
-            'warga_negara_id',
-            'ref_pendidikan_kk.nama as pendidikan',
-            'documents.*'
-        ]);
-        $document = Document::where('das_penduduk_id', $id)->first();
-        return view('data.pengurus.edit_arsip', compact('page_title', 'page_description', 'penduduk', 'document', 'data_penduduk'));
-    }
-
-    public function store_arsip(Request $request)
+    public function pendudukArsip($id)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'jenis_document' => 'required|integer',
-                'jenis_document' => 'required|string|max:255',
-                'das_penduduk_id' => 'required|string|max:255',
-                'keterangan' => 'required|string|max:100000',
-                'document' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:80240',
+            $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
+            ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
+            ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
+            ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
+            ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
+            ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
+            ->where('das_penduduk.id', $id)
+            ->first([
+                'das_penduduk.id',
+                'das_penduduk.nik',
+                'das_penduduk.nama',
+                'ref_warganegara.nama as warga_negara',
+                'ref_agama.nama as agama',
+                'tempat_lahir',
+                'tanggal_lahir',
+                'das_penduduk.alamat',
+                'das_penduduk.dusun',
+                'das_penduduk.rt',
+                'das_penduduk.rw',
+                'das_penduduk.desa_id',
+                'warga_negara_id',
+                'ref_pendidikan_kk.nama as pendidikan'
             ]);
+            return response()->json($penduduk);
+        } catch (\Exception $e) {
+            report($e);
+            Log::channel('daily')->error('penduduk_arsip di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal mendapatkan penduduk arsip!');
+        }
+        
+    }
 
-            if ($validator->fails()) {
-                return back()->withErrors($validator)->withInput();
-            }
-            
-            // $input = $request->all();
-            // $this->handleFileUpload($request, $input, 'document', 'pengurus/document', true);
-            $data_document = Document::orderBy('id', 'DESC')->first();
-            $no_urut = $data_document->no_urut ?? 0; 
+    public function create_arsip($penduduk_id, $pengurus_id)
+    {
+        try {
+            $page_title = 'Daftar Dokumen';
+            $page_description = 'Tambah Data';
+            $data_penduduk = Penduduk::find($penduduk_id);;
+            $document = Document::where('das_penduduk_id', $penduduk_id)->first();
+            $jenis_document = JenisDocument::all();
+            return view('data.pengurus.create_arsip', compact('page_title', 'page_description', 'document', 'data_penduduk', 'pengurus_id', 'jenis_document'));
+        } catch (\Exception $e) {
+            report($e);
+            Log::channel('daily')->error('create_arsip di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal create arsip!');
+        }
+    }
 
-            
+    public function editArsip($penduduk_id, $pengurus_id)
+    {
+        try {
+            $page_title = 'Daftar Dokumen';
+            $page_description = 'Edit Data';
+            $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
+            ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
+            ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
+            ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
+            ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
+            ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
+            ->join('documents', 'documents.das_penduduk_id', '=', 'das_penduduk.id')
+            ->where('documents.id', $penduduk_id)    
+            ->first([
+                'das_penduduk.nik',
+                'das_penduduk.nama',
+                'ref_warganegara.nama as warga_negara',
+                'ref_agama.nama as agama',
+                'tempat_lahir',
+                'tanggal_lahir',
+                'das_penduduk.alamat',
+                'das_penduduk.dusun',
+                'das_penduduk.rt',
+                'das_penduduk.rw',
+                'das_penduduk.desa_id',
+                'warga_negara_id',
+                'ref_pendidikan_kk.nama as pendidikan',
+                'documents.*'
+            ]);
+            $jenis_document = JenisDocument::all();
+            return view('data.pengurus.edit_arsip', compact('page_title', 'page_description', 'penduduk', 'pengurus_id', 'jenis_document'));
+        } catch (\Exception $e) {
+            report($e);
+            Log::channel('daily')->error('edit_arsip di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal edit arsip!');
+        }
+    }
 
-            if ($request->hasFile('document')) {
-                $file = $request->file('document');
-                $fileName = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('documents', $fileName, 'public');
+    public function storeArsip(DocumentRequest $request)
+    {
+        try {
+            $input = $request->input();
+            if ($request->hasFile('path_document')) {
+                $this->handleFileUpload($request, $input, 'path_document', "arsip/documents");
             }else{
-                if ($request->post('document_id')) {
-                    $data_documents = Document::find($request->post('document_id'));
-                    if ($data_documents) {
-                        $path_document = $data_documents->path_document;
-                        $path = $path_document;
-                    }
-                }
+                $document = Document::find($request->post('document_id'));
+                $path_document = $document->path_document;
+                $input['path_document'] = $path_document;
             }
             
-            $data = [
-                'das_penduduk_id' => $request->post('das_penduduk_id'),
-                'judul_document' => $request->post('judul_document'),
-                'path_document' => $path,
-                'user_id' => Auth::user()->id,
-                'kode_surat' => "SK-" . $no_urut + 1,
-                'no_urut' => $no_urut + 1,
-                'jenis_surat' => $request->post('jenis_document'),
-                'keterangan' => $request->post('keterangan'),
-                'ditandatangani' => Auth::user()->name,
-                'tanggal' => now(),
-            ];
-
-            $insert = Document::updateOrCreate([
-                'id' => $request->post('document_id')
-            ], $data);
+            if (Document::where('pengurus_id', Auth::user()->id)->orderBy('id', 'DESC')->exists()) {
+                $data_document = Document::where('pengurus_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+                $no_urut = $data_document->no_urut ?? 0; 
+            }else{
+                $no_urut = 0;
+            }
+            $input['kode_surat'] = "SK-" . ($no_urut + 1); 
+            $input['ditandatangani'] =  Auth::user()->name; 
+            $input['no_urut'] =  $no_urut + 1; 
+            $insert = Document::updateOrcreate(['id' => $request->post('document_id')], $input);
             if ($insert) {
-                return redirect()->route('data.pengurus.arsip')->with('success', 'Berhasil Simpan Document');
+                return redirect()->route('data.pengurus.arsip', ['pengurus_id' => $request->post('pengurus_id')])->with('success', 'Berhasil Simpan Document');
             }else{
                 return back()->with('success', 'Gagal Simpan Document');
             }
         } catch (\Exception $e) {
             report($e);
-            Log::channel('daily')->error('Error di PengurusController: ' . $e->getMessage(), [
+            Log::channel('daily')->error('store_arsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);            
-            return back()->withInput()->with('error', 'Documet gagal ditambah!');
+            return back()->withInput()->with('error', 'gagal tambah arsip!');
         }
     }
 
-    public function document(Request $request)
-    {
-        $document = Document::with('user:id,name,email');
-        if ($request->ajax()) {
-
-            return DataTables::of($document)
-                ->addIndexColumn()
-                ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
-                        $data['edit_url'] = route('data.pengurus.edit.document', $row->id);
-                        $data['delete_url'] = route('data.pengurus.delete.document', $row->id);
-                    }
-
-                    return view('forms.aksi', $data);
-                })
-                ->filter(function ($query) use ($request) {
-                    if ($request->has('search') && $request->search['value'] != '') {
-                        $search = $request->search['value'];
-                        $query->where('jenis_surat', 'like', "%{$search}%")
-                              ->orWhere('keterangan', 'like', "%{$search}%")
-                              ->orWhereHas('user', function ($q) use ($search) {
-                                  $q->where('name', 'like', "%{$search}%");
-                              });
-                    }
-                })
-                ->rawColumns(['path_document', 'aksi']) // ⬅️ tambahkan ini!
-                ->make(true);
-        }
-        return response()->json($document);
-    }
-
-    public function delete_document($id)
+    public function deleteDocument($id)
     {
         try {
             $document = Document::find($id);
-            $path_document = $document->path_document ?? null;
-            
-            if ($path_document && Storage::disk('public')->exists($path_document)) {
-                Storage::disk('public')->delete($path_document);
-            }
-            
-            $document->delete();
-            if ($document->delete()) {
-                return back()->with('success', 'Document Berhasil Dihapus');
-            }else{
-                return back()->with('success', 'Document Gagal Dihapus');
+            if ($document) {
+                if ($document->delete()) { 
+                    return back()->with('success', 'Document Berhasil Dihapus');
+                } else {
+                    return back()->with('error', 'Document Gagal Dihapus');
+                }
+            } else {
+                return back()->with('error', 'Document tidak ditemukan');
             }
         } catch (Exception $e) {
             report($e);
-            Log::channel('daily')->error('error deleteDocument di PengurusController: ' . $e->getMessage(), [
+            Log::channel('daily')->error('deleteDocument di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
             ]);            
             return back()->withInput()->with('error', 'Gagal Delete Documet!');
         }

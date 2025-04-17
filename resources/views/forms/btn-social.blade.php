@@ -44,3 +44,19 @@
         <i class="fa fa-plus"></i>{{ $modal_text ?? 'Tambah' }}
     </button>
 @endif
+
+@if (isset($create_jenis_document))
+    <a href="{{ $create_jenis_document }}">
+        <button type="button" class="btn btn-warning btn-sm btn-social" title="{{ $create_text ?? 'Tambah Jenis Document' }}">
+            <i class="fa fa-plus"></i>{{ $create_text ?? 'Tambah Jenis Document' }}
+        </button>
+    </a>
+@endif
+
+@if (isset($add_jenis_document))
+    <a href="{{ $add_jenis_document }}">
+        <button type="button" class="btn btn-warning btn-sm btn-social" title="{{ $create_text ?? 'Tambah Jenis Document' }}">
+            <i class="fa fa-plus"></i>{{ $create_text ?? 'Tambah Jenis Document' }}
+        </button>
+    </a>
+@endif

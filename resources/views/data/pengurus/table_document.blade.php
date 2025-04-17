@@ -11,8 +11,7 @@
                 <th>Jenis Surat</th>
                 <th>Nama Penduduk</th>
                 <th>Keterangan</th>
-                <th>Di Tanda Tangan</th>
-                <th>Tanggal</th>
+                <th>Tanda Tangan</th>
             </tr>
         </thead>
     </table>
@@ -27,7 +26,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{!! route('data.pengurus.document') !!}",
+                url: "{{ route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id]) }}",
                 data: function(d) {
                     console.log(d);
                 }
@@ -39,15 +38,13 @@
                 { data: 'judul_document', name: 'judul_document' },
                 { data: 'path_document', name: 'path_document', orderable: false, searchable: false },
                 { data: 'no_urut', name: 'no_urut' },
-                { data: 'jenis_surat', name: 'jenis_surat' },
-                { data: 'user.name', name: 'user.name' },
+                { data: 'jenis_document.nama', name: 'jenis_document.nama' },
+                { data: 'penduduk.nama', name: 'penduduk.nama' },
                 { data: 'keterangan', name: 'keterangan' },
-                { data: 'ditandatangani', name: 'ditandatangani' },
-                { data: 'tanggal', name: 'tanggal' },
+                { data: 'pengurus.nama', name: 'pengurus.nama' },
             ],
             columnDefs: [
                 {
-                    // Ganti index 4 sesuai urutan kolom "Path"
                     targets: 4,
                     render: function(data, type, row, meta) {
                         if (data && data.includes('documents/')) {

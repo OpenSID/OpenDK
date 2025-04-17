@@ -23,6 +23,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
+                @include('forms.btn-social', ['create_jenis_document' => route('data.jenis-document.index')])
             </div>
             <div class="box-body">
                 <div class="row">

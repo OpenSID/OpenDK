@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('das_penduduk_id')->constrained('das_penduduk')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('pengurus_id')->constrained('users')->onDelete('cascade');
             $table->string('judul_document');
             $table->text('path_document');
             $table->string('kode_surat');
@@ -24,8 +24,6 @@ return new class extends Migration
             $table->string('jenis_surat');
             $table->text('keterangan');
             $table->string('ditandatangani');
-            $table->dateTime('tanggal');
-
             $table->timestamps();
         });
     }

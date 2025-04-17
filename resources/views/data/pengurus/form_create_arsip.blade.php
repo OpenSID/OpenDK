@@ -2,13 +2,16 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Document</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <select required id="jenis_document" name="jenis_document" class="form-control">
+        <select required id="jenis_surat" name="jenis_surat" class="form-control">
             <option value="">Pilih Jenis Document</option>
-            <option value="jenis_document_1" {{ isset($penduduk) && $penduduk->jenis_surat == 'jenis_document_1' ? 'selected' : '' }}>
-                Jenis Document 1
-            </option>            
+            @foreach ($jenis_document as $item)
+                <option value="{{ $item->id }}">
+                    {{ $item->nama }}
+                </option>
+            @endforeach
         </select>
     </div>
+    
 </div>
 
 <div class="form-group">
@@ -23,7 +26,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Document <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::file('document', null, ['class' => 'form-control', 'required' => false]) !!}
+        {!! Form::file('path_document', null, ['class' => 'form-control', 'required' => false]) !!}
         <small class="text-danger">
             Batas maksimal pengunggahan file: 80MB. Hanya mendukung format: .pdf, .doc, .docx, .xls, .xlsx
         </small>
@@ -39,6 +42,7 @@
 </div>
 {!! Form::hidden('das_penduduk_id', $data_penduduk->id?? '', ['placeholder' => 'das_penduduk_id', 'class' => 'form-control', 'required' => true, 'readonly' => true]) !!}
 {!! Form::hidden('document_id', $penduduk->document_id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
+{!! Form::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
 
 @push('scripts')
 <script>

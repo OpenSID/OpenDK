@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('title')
-    Data Pengurus
+    {{ $page_title ?? 'Page Title' }}
 @endsection
 
 @section('content')
@@ -16,54 +16,38 @@
         </ol>
     </section>
 
-    <section class="content container-fluid">
+    <div class="box-header with-border">
+        <a href="{{ route('data.pengurus.arsip') }}" class="btn btn-info btn-sm" judul="Kembali Ke Arsip"><i class="fa fa-arrow-left"></i>&ensp;Kembali Ke Arsip</a>
+        <a id="btn-tambah" href="javascript:void(0)" class="btn btn-success btn-sm disabled" style="pointer-events: none; opacity: 0.6;" judul="Tambah Data">
+            <i class="fa fa-plus"></i>&ensp;Tambah
+        </a>
+    </div>
+
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
-                @include('forms.btn-social', ['create_jenis_document' => route('data.jenis-document.index')])
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select class="form-control" id="status">
-                                <option value="1">Aktif</option>
-                                <option value="0">Tidak Aktif</option>
-                            </select>
+        <section class="content container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box box-primary">
+    
+                        {!! Form::open(['route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                        @include('layouts.fragments.error_message')
+    
+                        <div class="box-body">
+    
+                            @include('flash::message')
+                            @include('data.pengurus.form_arsip')
+    
+                            <div class="box-footer">
+                                @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
+                            </div>
                         </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
-                <hr>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="pengurus-table">
-                        <thead>
-                            <tr>
-                                <th style="min-width: 130px;">Aksi</th>
-                                <th>Foto</th>
-                                <th style="min-width: 150px;">Nama, NIP, NIK</th>
-                                <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Agama</th>
-                                <th>Pangkat/Golongan</th>
-                                <th>Jabatan</th>
-                                <th>Status</th>
-                                <th>Pendidikan Terakhir</th>
-                                <th>No SK Pengangkatan</th>
-                                <th>Tanggal SK Pengangkatan</th>
-                                <th>No SK Pemberhentian</th>
-                                <th>Tanggal SK Pemberhentian</th>
-                                <th>Masa/Periode Jabatan</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
             </div>
-        </div>
-    </section>
+        </section>
 @endsection
 
 @include('partials.asset_datatables')
@@ -80,7 +64,8 @@
                         d.status = $('#status').val();
                     }
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center',

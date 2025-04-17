@@ -27,9 +27,6 @@
             serverSide: true,
             ajax: {
                 url: "{{ route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id]) }}",
-                data: function(d) {
-                    console.log(d);
-                }
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },

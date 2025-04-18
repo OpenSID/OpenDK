@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Artisan;
 
 class WidgetController extends Component
 {
@@ -39,6 +40,8 @@ class WidgetController extends Component
     {
         $this->widget = $widget;
         $this->updateListWidget();
+
+        Artisan::call('widgets:sync');
     }
 
     public function updateListWidget()

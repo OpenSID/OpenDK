@@ -773,6 +773,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
 
+            // Widget
+            Route::get('/widget', \App\Http\Livewire\Widget\WidgetController::class)->name('setting.widget');
+
             // Role Management
             Route::group(['prefix' => 'role', 'controller' => RoleController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.role.index');

@@ -81,7 +81,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::group(['middleware' => 'maintenance'], function () {
+    // Route::group(['middleware' => 'maintenance'], function () {
+    Route::group(['middleware' => ['maintenance', 'track.visitors']], function () {
         /**
          * Group Routing for Halaman Website
          */

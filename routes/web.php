@@ -922,6 +922,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::group(['prefix' => 'counter'], function () {
             Route::get('/', [CounterController::class, 'index'])->name('counter.index');
             Route::get('cetak', [CounterController::class, 'cetak'])->name('counter.cetak');
+            Route::get('export-excel', [CounterController::class, 'exportExcel'])->name('counter.export.excel');
         });
     });
 

@@ -17,7 +17,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['print' => route('counter.cetak'), 'print_text' => 'Cetak', 'print_new_tab' => true])
-                @include('forms.btn-social', ['export_url' => route('data.pengurus.create'), 'export_text' => 'Unduh'])
+                @include('forms.btn-social', ['export_url' => route('counter.export.excel'), 'export_text' => 'Unduh'])
             </div>
             <div class="box-body no-padding">
                 <!-- Statistik -->

@@ -37,6 +37,7 @@ use App\Models\CounterPage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Profil;
 
 class CounterController extends Controller
 {
@@ -106,6 +107,20 @@ class CounterController extends Controller
             'yearlyVisitors',
             'top_pages_visited'
         ));
+    }
+
+    public function exportExcel()
+    {
+        $yearlyVisitors = Visitor::groupedStats(VisitorFilterEnum::ALL);
+        $top_pages_visited = Visitor::getTopPagesVisited();
+
+        $profile = Profil::first();
+        $profileArray = [
+            'nama_kabupaten' => $profile->nama_kabupaten,
+            'nama_kecamatan' => $profile->nama_kecamatan,
+        ];
+
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\CounterVisitorExport($yearlyVisitors, $top_pages_visited, $profileArray), 'Cetak Statistik Pengunjung.xlsx');
     }
 
     protected function geTopPage()

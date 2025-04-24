@@ -1,9 +1,9 @@
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Document</label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <select required id="jenis_surat" name="jenis_surat" class="form-control">
-            <option value="">Pilih Jenis Document</option>
+            <option value="">Pilih Jenis Dokumen</option>
             @foreach ($jenis_document as $item)
                 <option value="{{ $item->id }}" {{ isset($penduduk) && $penduduk->jenis_surat == $item->id ? 'selected' : '' }}>
                     {{ $item->nama }}
@@ -15,7 +15,7 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Document <span class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('judul_document', $penduduk->judul_document ?? null, ['placeholder' => 'Judul Document', 'class' => 'form-control', 'required' => true]) !!}
@@ -23,10 +23,10 @@
 </div>
 
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Document <span class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::file('document', null, ['class' => 'form-control', 'required' => false]) !!}
+        <input type="file" name="path_document" class="form-control" accept=".pdf,.doc,.docx,.xls,.xlsx">
         <small class="text-danger">
             Batas maksimal pengunggahan file: 80MB. Hanya mendukung format: .pdf, .doc, .docx, .xls, .xlsx
         </small>

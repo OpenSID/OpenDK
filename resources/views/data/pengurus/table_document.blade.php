@@ -40,17 +40,6 @@
                 { data: 'keterangan', name: 'keterangan' },
                 { data: 'pengurus.nama', name: 'pengurus.nama' },
             ],
-            columnDefs: [
-                {
-                    targets: 4,
-                    render: function(data, type, row, meta) {
-                        if (data && data.includes('documents/')) {
-                            return `<a href="/storage/${data}" target="_blank" class="btn btn-sm btn-primary">Download</a>`;
-                        }
-                        return `<span class="text-muted">Tidak ada file</span>`;
-                    }
-                }
-            ],
             aaSorting: [],
         });
 

@@ -22,16 +22,16 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['add_jenis_document' => route('data.jenis-document.create')])
+                @include('forms.btn-social', ['back_url' => url()->previous()])
+                @include('forms.btn-social', ['create_url' => route('data.jenis-document.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="jenis-document-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 150px;">No</th>
-                                <th style="min-width: 150px;">Nama</th>
                                 <th style="min-width: 130px;">Aksi</th>
+                                <th style="min-width: 150px;">Nama</th>
                             </tr>
                         </thead>
                     </table>
@@ -57,21 +57,15 @@
                 },
                 columns: [
                     {
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center',
                         searchable: false,
                         orderable: false
                     },
                     {
                         data: 'nama',
                         name: 'nama',
-                        class: 'text-center',
-                        searchable: false,
-                        orderable: false
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi',
                         class: 'text-center',
                         searchable: false,
                         orderable: false

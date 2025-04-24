@@ -16,6 +16,7 @@ class Document extends Model
         'das_penduduk_id',
         'judul_document',
         'path_document',
+        'nama_document',
         'pengurus_id',
         'kode_surat',
         'no_urut',

@@ -151,7 +151,7 @@
                         <li><a href="{{ route('login') }}">LogIn<span class="sr-only">(current)</span></a></li>
                     @else
                         <li><a href="{{ route('dashboard') }}">Admin</a></li>
-                        <li><a id="loggout" href="{{ route('logout') }}">LogOut<span class="sr-only">(current)</span></a></li>
+                        <li><a id="loggout" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">LogOut<span class="sr-only">(current)</span></a></li>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             {{ csrf_field() }}
                         </form>

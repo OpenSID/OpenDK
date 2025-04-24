@@ -18,7 +18,7 @@
         <input type="file" name="gambar" id="gambar" accept="jpg,jpeg,png" class="form-control" {{ $sinergi ? '' : 'required' }}>
         <br>
 
-        <img src="@if (isset($sinergi->gambar)) {{ asset($sinergi->gambar) }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="@if (isset($sinergi->gambar)) {{ asset($sinergi->gambar) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
 
     </div>
 </div>

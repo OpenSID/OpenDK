@@ -44,3 +44,11 @@
         <i class="fa fa-plus"></i>{{ $modal_text ?? 'Tambah' }}
     </button>
 @endif
+
+@if (isset($print))
+    <a href="{{ $print }}">
+        <button type="button" class="btn bg-purple btn-sm btn-social" title="{{ $print_text ?? 'Cetak' }}">
+            <i class="fa fa-print"></i>{{ $print_text ?? 'Cetak' }}
+        </button>
+    </a>
+@endif

@@ -95,6 +95,19 @@ class CounterController extends Controller
         }
     }
 
+    public function cetak()
+    {
+        $yearlyVisitors = Visitor::groupedStats(VisitorFilterEnum::ALL);
+
+        // Halaman populer
+        $top_pages_visited = Visitor::getTopPagesVisited();
+
+        return view('counter.cetak', compact(
+            'yearlyVisitors',
+            'top_pages_visited'
+        ));
+    }
+
     protected function geTopPage()
     {
         $sql = DB::table('das_counter_page_visitor')

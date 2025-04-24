@@ -23,7 +23,10 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
-                @include('forms.btn-social', ['create_jenis_document' => route('data.jenis-document.index')])
+                @include('forms.btn-social', [
+                    'goto_table' => route('data.jenis-document.index'),
+                    'create_text' => 'Jenis Dokumen'
+                ])
 
                 {{-- button bagan --}}
                 <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">
@@ -49,7 +52,7 @@
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 130px;">Aksi</th>
+                                <th style="min-width: 170px;">Aksi</th>
                                 <th>Foto</th>
                                 <th style="min-width: 150px;">Nama, NIP, NIK</th>
                                 <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pengurus_id')->constrained('users')->onDelete('cascade');
             $table->string('judul_document');
             $table->text('path_document');
+            $table->text('nama_document');
             $table->string('kode_surat');
             $table->string('no_urut');
             $table->string('jenis_surat');

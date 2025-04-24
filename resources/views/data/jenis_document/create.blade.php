@@ -18,13 +18,16 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
+                    <div class="box-header with-border">
+                        @include('forms.btn-social', ['back_url' => url()->previous()])
+                    </div>
+
                     {!! Form::open(['route' => 'data.jenis-document.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
 
                         @include('flash::message')
-                        @php $pengurus->foto = null; @endphp
                         @include('data.jenis_document.form')
 
                     </div>
@@ -37,38 +40,3 @@
         </div>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        $(function() {
-
-            var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
-
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
-                        isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
-
-                    if (isSuccess) { //yes
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-
-                            $('#showfoto').attr('src', e.target.result);
-                            $('#showfoto').removeClass('hide');
-                        }
-
-                        reader.readAsDataURL(input.files[0]);
-                    } else { //no
-                        //warning
-                        $("#foto").val('');
-                        alert('File tersebut tidak diperbolehkan.');
-                    }
-                }
-            }
-
-            $("#foto").change(function() {
-                readURL(this);
-            });
-        });
-    </script>
-@endpush

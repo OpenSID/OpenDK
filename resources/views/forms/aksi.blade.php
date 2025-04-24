@@ -1,4 +1,10 @@
 <div class="btn-group" id="exampleToolbar" role="group">
+    @if (isset($arsip_url))
+        <a href="{{ $arsip_url }}" class="disabled" title="Arsip" data-button="edit" id="editModal">
+            <button type="button" class="btn btn-info btn-sm open_form" style="width: 40px;" data-id="{{ $arsip_url }}" title="Arsip"><i class="glyphicon glyphicon-th-list" aria-hidden="true"></i></button>
+        </a>
+    @endif
+
     @if (isset($turun))
         <a href="{!! empty($turun) ? 'javascript:void(0)' : $turun !!}" class="{!! empty($turun) ? 'disabled' : '' !!}" title="Pindah Posisi ke Bawah" data-button="turun">
             <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
@@ -95,11 +101,6 @@
     @if (isset($passphrase))
         <a href="{!! empty($passphrase) ? 'javascript:void(0)' : $passphrase !!}" class="{!! empty($passphrase) ? 'disabled' : '' !!}" title="Passphrase" data-button="passphrase">
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;"><i class="fa fa-key" aria-hidden="true"></i></button>
-        </a>
-    @endif
-    @if (isset($arsip_url))
-        <a href="{{ $arsip_url }}" class="disabled" title="Arsip" data-button="edit" id="editModal">
-            <button type="button" class="btn btn-warning btn-sm open_form" style="width: 40px;" data-id="{{ $arsip_url }}" title="Arsip"><i class="fa fa-window-maximize" aria-hidden="true"></i></button>
         </a>
     @endif
 </div>

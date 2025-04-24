@@ -38,6 +38,7 @@ use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
 use App\Models\JenisDocument;
 use App\Models\Penduduk;
+use App\Models\Pengurus;
 use App\Traits\HandlesFileUpload;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,13 @@ class ArsipController extends Controller
     
                         return view('forms.aksi', $data);
                     })
+                    ->editColumn('path_document', function ($row) {
+                        if ($row->path_document && file_exists(public_path($row->path_document))) {
+                            $url = route('data.pengurus.edit.download.arsip', $row->id);
+                            return '<a href="' . $url . '" class="btn btn-sm btn-primary">Download</a>';
+                        }
+                        return '<span class="text-muted">Tidak ada file</span>';
+                    })
                     ->filter(function ($query) use ($request) {
                         if ($request->has('search') && $request->search['value'] != '') {
                             $search = $request->search['value'];
@@ -78,13 +86,10 @@ class ArsipController extends Controller
                     ->rawColumns(['path_document', 'aksi'])
                     ->make(true);
             }
-
-            $page_title = 'Rekam Surat Perseorangan';
-            $page_description = 'Daftar Data Arsip';
-            $penduduk = Penduduk::all();
-            return view('data.pengurus.arsip', compact('page_title', 'page_description', 'pengurus_id'), [
-                'penduduk' => $penduduk,
-            ]);
+            $count_arsip = Document::where('pengurus_id', $pengurus_id)->count();
+            $page_title = 'Arsip';
+            $page_description = '';
+            return view('data.pengurus.arsip', compact('page_title', 'page_description', 'pengurus_id', 'count_arsip'));
         } catch (\Exception $e) {
             report($e);
             Log::channel('daily')->error('arsip di ArsipController: ' . $e->getMessage(), [
@@ -198,22 +203,34 @@ class ArsipController extends Controller
         try {
             $input = $request->input();
             if ($request->hasFile('path_document')) {
-                $this->handleFileUpload($request, $input, 'path_document', "arsip/documents");
+                if ($request->hasFile('path_document')) {
+                    $file = $request->file('path_document');
+                    $mimeType = mime_content_type($file->getRealPath());
+                    $originalName = $file->getClientOriginalName();
+                    if (in_array($mimeType, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-ole-storage'])) {
+                        $this->handleFileUpload($request, $input, 'path_document', "arsip/documents");
+                    } else {
+                        return redirect()->back()->withErrors(['path_document' => 'Isian path document harus dokumen berjenis : pdf, doc, docx, xls, xlsx.']);
+                    }
+                }
             }else{
                 $document = Document::find($request->post('document_id'));
                 $path_document = $document->path_document;
                 $input['path_document'] = $path_document;
+                $originalName = $document->nama_document;
             }
             
-            if (Document::where('pengurus_id', Auth::user()->id)->orderBy('id', 'DESC')->exists()) {
-                $data_document = Document::where('pengurus_id', Auth::user()->id)->orderBy('id', 'DESC')->first();
+            if (Document::where('pengurus_id', $request->post('pengurus_id'))->orderBy('id', 'DESC')->exists()) {
+                $data_document = Document::where('pengurus_id', $request->post('pengurus_id'))->orderBy('id', 'DESC')->first();
                 $no_urut = $data_document->no_urut ?? 0; 
             }else{
                 $no_urut = 0;
             }
+            
             $input['kode_surat'] = "SK-" . ($no_urut + 1); 
             $input['ditandatangani'] =  Auth::user()->name; 
-            $input['no_urut'] =  $no_urut + 1; 
+            $input['no_urut'] = $request->post('document_id') ? $no_urut : $no_urut + 1;
+            $input['nama_document'] = $originalName;
             $insert = Document::updateOrcreate(['id' => $request->post('document_id')], $input);
             if ($insert) {
                 return redirect()->route('data.pengurus.arsip', ['pengurus_id' => $request->post('pengurus_id')])->with('success', 'Berhasil Simpan Document');
@@ -250,7 +267,80 @@ class ArsipController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);            
-            return back()->withInput()->with('error', 'Gagal Delete Documet!');
+            return back()->withInput()->with('error', 'Gagal Delete Dokumen!');
+        }
+    }
+
+    public function downloadArsipZip($pengurus_id)
+    {
+        try{
+            $pengurus = Pengurus::where('id', $pengurus_id)->first('nama');
+            $zipFileName = $pengurus->nama . '-dokumen-arsip.zip';
+            $zipPath = storage_path($zipFileName);
+        
+            $zip = new \ZipArchive;
+        
+            if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+
+                $files = Document::where('pengurus_id', $pengurus_id)->get();
+        
+                foreach ($files as $file) {
+                    if (file_exists($file->path_document)) {
+                        $zip->addFile($file->path_document, basename($file->nama_document));
+                    }
+                }
+        
+                $zip->close();
+        
+                return response()->download($zipPath)->deleteFileAfterSend(true);
+            } else {
+                return response()->json(['error' => 'Gagal membuat file ZIP'], 500);
+            }
+        } catch (Exception $e) {
+            report($e);
+            Log::channel('daily')->error('downloadArsipZip di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal Download Arsip');
+        }
+    }
+
+    public function downloadArsip($document_id)
+    {
+        try{
+            $dokumen = Document::findOrFail($document_id);
+            $filePath = $dokumen->path_document;
+            if (!file_exists($filePath)) {
+                return response()->json(['error' => 'Gagal membuat file ZIP' . $filePath], 500);
+            }
+            return response()->download($filePath, basename($dokumen->nama_document));
+        } catch (Exception $e) {
+            report($e);
+            Log::channel('daily')->error('downloadArsip di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal Download Arsip');
+        }
+    }
+
+    public function pendudukSelect2(Request $request)
+    {
+        try {
+            $search = $request->get('search');
+            $penduduk = Penduduk::where('nama', 'like', "%{$search}%")
+                        ->limit(5)
+                        ->get(['id', 'nama', 'nik']);
+        
+            return response()->json($penduduk);
+        } catch (Exception $e) {
+            report($e);
+            Log::channel('daily')->error('pendudukSelect2 di ArsipController: ' . $e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);            
+            return back()->withInput()->with('error', 'Gagal Download Arsip');
         }
     }
 }

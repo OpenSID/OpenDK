@@ -27,7 +27,6 @@ class DocumentRequest extends FormRequest
             'document_id' => 'nullable|integer',
             'jenis_surat' => 'required|string|max:255',
             'judul_document' => 'required|string|max:255',
-            'path_document' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx|max:80240',
             'das_penduduk_id' => 'required|string|max:255',
             'keterangan' => 'required|string|max:100000',
         ];

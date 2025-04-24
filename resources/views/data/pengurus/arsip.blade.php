@@ -16,38 +16,45 @@
         </ol>
     </section>
 
-    <div class="box-header with-border">
-        <a href="{{ route('data.pengurus.arsip') }}" class="btn btn-info btn-sm" judul="Kembali Ke Arsip"><i class="fa fa-arrow-left"></i>&ensp;Kembali Ke Arsip</a>
-        <a id="btn-tambah" href="javascript:void(0)" class="btn btn-success btn-sm disabled" style="pointer-events: none; opacity: 0.6;" judul="Tambah Data">
-            <i class="fa fa-plus"></i>&ensp;Tambah
-        </a>
+    <div class="box-header with-border clearfix">
+        <div class="pull-left">
+            @include('forms.btn-social', ['back_url' => url()->previous()])
+            <a id="btn-tambah" href="javascript:void(0)" class="btn btn-success btn-sm disabled" style="pointer-events: none; opacity: 0.6;" title="Tambah Data">
+                <i class="fa fa-plus"></i>&ensp;Tambah
+            </a>
+        </div>
+    
+        @if ($count_arsip > 0)
+            <div class="pull-right">
+                @include('forms.btn-social', ['download_zip' => route('data.pengurus.edit.download.arsip.zip', ['pengurus_id' => $pengurus_id])])
+            </div>
+        @endif
     </div>
 
+    @include('partials.flash_message')
 
-        @include('partials.flash_message')
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
 
-        <section class="content container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-primary">
-    
-                        {!! Form::open(['route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
-                        @include('layouts.fragments.error_message')
-    
-                        <div class="box-body">
-    
-                            @include('flash::message')
-                            @include('data.pengurus.form_arsip')
-    
-                            <div class="box-footer">
-                                @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
-                            </div>
+                    {!! Form::open(['route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                    @include('layouts.fragments.error_message')
+
+                    <div class="box-body">
+
+                        @include('flash::message')
+                        @include('data.pengurus.form_arsip')
+
+                        <div class="box-footer">
+                            @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
                         </div>
-                        {!! Form::close() !!}
                     </div>
+                    {!! Form::close() !!}
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 @endsection
 
 @include('partials.asset_datatables')

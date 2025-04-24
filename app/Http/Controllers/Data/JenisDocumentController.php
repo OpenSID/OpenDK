@@ -49,14 +49,14 @@ class JenisDocumentController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $query = JenisDocument::query(); // ✅ gunakan query builder
+                $query = JenisDocument::query();
     
                 return DataTables::of($query)
                     ->addIndexColumn()
                     ->addColumn('aksi', function ($row) {
                         $data = [];
                         if (! auth()->guest()) {
-                            $data['edit_url'] = route('data.jenis-document.edit', $row->id); // ✅ fix param
+                            $data['edit_url'] = route('data.jenis-document.edit', $row->id);
                             $data['delete_url'] = route('data.jenis-document.destroy', $row->id);
                         }
                         return view('forms.aksi', $data);
@@ -67,17 +67,17 @@ class JenisDocumentController extends Controller
                             $query->where('nama', 'like', "%{$search}%");
                         }
                     })
-                    ->rawColumns(['aksi']) // ✅ pastikan kolom sesuai
+                    ->rawColumns(['aksi'])
                     ->make(true);
             }
 
-            $page_title = 'Jenis Document';
-            $page_description = 'Daftar Jenis Document';
+            $page_title = 'Jenis Dokumen';
+            $page_description = 'Daftar Jenis Dokumen';
             $jenisDocument = JenisDocument::all();
             if ($jenisDocument) {
                 return view('data.jenis_document.index', compact('page_title', 'page_description'));
             }else{
-                return back()->with('success', 'Gagal simpan jenis document');
+                return back()->with('success', 'Gagal simpan jenis dokumen');
             }
         } catch (\Exception $e) {
             report($e);
@@ -85,7 +85,7 @@ class JenisDocumentController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);            
-            return back()->withInput()->with('error', 'Gagal memuat halaman jenis document!');
+            return back()->withInput()->with('error', 'Gagal memuat halaman jenis dokument!');
         }
     }
 
@@ -96,8 +96,8 @@ class JenisDocumentController extends Controller
      */
     public function create()
     {
-        $page_title = 'Jenis Document';
-        $page_description = 'Tambah Jenis Document';
+        $page_title = 'Jenis Dokumen';
+        $page_description = 'Tambah Jenis Dokumen';
         return view('data.jenis_document.create', compact('page_title', 'page_description'));
     }
 
@@ -110,13 +110,13 @@ class JenisDocumentController extends Controller
     public function store(JenisDocumentRequest $request)
     {
         try {
-            $page_title = 'Jenis Document';
-            $page_description = 'Daftar Jenis Document';
+            $page_title = 'Jenis Dokumen';
+            $page_description = 'Daftar Jenis Dokumen';
             $jenisDocument = JenisDocument::updateOrCreate(['id' => $request->post('id')], $request->all());
             if ($jenisDocument) {
-                return view('data.jenis_document.index', compact('page_title', 'page_description'))->with('success', 'Berhasil simpan jenis document');
+                return view('data.jenis_document.index', compact('page_title', 'page_description'))->with('success', 'Berhasil simpan jenis dokumen');
             }else{
-                return back()->with('success', 'Gagal simpan jenis document');
+                return back()->with('success', 'Gagal simpan jenis dokumen');
             }
         } catch (\Exception $e) {
             report($e);
@@ -124,7 +124,7 @@ class JenisDocumentController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);            
-            return back()->withInput()->with('error', 'Gagal menyimpan jenis document!');
+            return back()->withInput()->with('error', 'Gagal menyimpan jenis dokumen!');
         }
     }
 
@@ -148,13 +148,13 @@ class JenisDocumentController extends Controller
     public function edit($id)
     {
         try {
-            $page_title = 'Jenis Document';
-            $page_description = 'Edit Jenis Document';
+            $page_title = 'Jenis Dokumen';
+            $page_description = 'Edit Jenis Dokumen';
             $jenis_document = JenisDocument::find($id);
             if ($jenis_document) {
-                return view('data.jenis_document.create', compact('page_title', 'page_description', 'jenis_document'))->with('success', 'Berhasil show jenis document');
+                return view('data.jenis_document.create', compact('page_title', 'page_description', 'jenis_document'))->with('success', 'Berhasil show jenis dokumen');
             }else{
-                return redirect()->back()->with('success', 'Gagal show jenis document');
+                return redirect()->back()->with('success', 'Gagal show jenis dokumen');
             }
         } catch (\Exception $e) {
             report($e);
@@ -162,7 +162,7 @@ class JenisDocumentController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);            
-            return back()->withInput()->with('error', 'Gagal show jenis document!');
+            return back()->withInput()->with('error', 'Gagal show jenis dokumen!');
         }
     }
 
@@ -189,9 +189,9 @@ class JenisDocumentController extends Controller
         try {
             $jenisDocument = JenisDocument::find($id)->delete();
             if ($jenisDocument) {
-                return redirect()->back()->with('success', 'Berhasil hapus jenis document');
+                return redirect()->back()->with('success', 'Berhasil hapus jenis dokumen');
             }else{
-                return back()->with('success', 'Gagal hapus jenis document');
+                return back()->with('success', 'Gagal hapus jenis dokumen');
             }
         } catch (\Exception $e) {
             report($e);
@@ -199,7 +199,7 @@ class JenisDocumentController extends Controller
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
             ]);            
-            return back()->withInput()->with('error', 'Gagal hapus jenis document!');
+            return back()->withInput()->with('error', 'Gagal hapus jenis dokumen!');
         }
     }
 }

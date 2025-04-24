@@ -17,7 +17,7 @@
     </section>
 
     <div class="box-header with-border">
-        <a href="{{ route('data.pengurus.arsip') }}" class="btn btn-info btn-sm" judul="Kembali Ke Arsip"><i class="fa fa-arrow-left"></i>&ensp;Kembali Ke Arsip</a>
+        <a href="{{ url()->previous() }}" class="btn btn-info btn-sm" judul="Kembali Ke Halaman Sebelumnya"><i class="fa fa-arrow-left"></i>&ensp;Kembali</a>
     </div>
 
 

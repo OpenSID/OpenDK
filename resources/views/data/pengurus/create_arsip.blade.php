@@ -17,33 +17,32 @@
     </section>
 
     <div class="box-header with-border">
-        <a href="{{ route('data.pengurus.arsip') }}" class="btn btn-info btn-sm" judul="Kembali Ke Arsip"><i class="fa fa-arrow-left"></i>&ensp;Kembali Ke Arsip</a>
+        @include('forms.btn-social', ['back_url' => url()->previous()])
     </div>
 
+    @include('partials.flash_message')
 
-        @include('partials.flash_message')
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
 
-        <section class="content container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="box box-primary">
-    
-                        {!! Form::open(['route' => 'data.pengurus.store.arsip', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
-                        @include('layouts.fragments.error_message')
-    
-                        <div class="box-body">
-    
-                            @include('flash::message')
-                            @include('data.pengurus.form_create_arsip')
-                            <div class="box-footer">
-                                @include('partials.button_reset_submit')
-                            </div>
+                    {!! Form::open(['route' => 'data.pengurus.store.arsip', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                    @include('layouts.fragments.error_message')
+
+                    <div class="box-body">
+
+                        @include('flash::message')
+                        @include('data.pengurus.form_create_arsip')
+                        <div class="box-footer">
+                            @include('partials.button_reset_submit')
                         </div>
-                        {!! Form::close() !!}
                     </div>
+                    {!! Form::close() !!}
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 @endsection
 
 @include('partials.asset_datatables')

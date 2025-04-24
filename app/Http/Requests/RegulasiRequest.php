@@ -56,7 +56,7 @@ class RegulasiRequest extends FormRequest
             'tipe_regulasi' => 'required',
             'judul' => 'required|string|max:200',
             'deskripsi' => 'required|string',
-            'file_regulasi' => 'file|mimes:jpg,jpeg,png,gif,pdf|max:2048|valid_file',
+            'file_regulasi' => 'required|file|mimes:jpg,jpeg,png,gif,pdf|max:2048|valid_file',
         ];
     }
 }

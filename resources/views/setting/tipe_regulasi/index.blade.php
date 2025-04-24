@@ -14,6 +14,7 @@
 
     <section class="content container-fluid">
 
+        <div id="flash-message"></div>
         @include('partials.flash_message')
 
         <div class="box box-primary">

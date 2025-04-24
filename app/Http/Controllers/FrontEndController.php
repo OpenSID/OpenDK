@@ -36,15 +36,20 @@ use App\Models\Slide;
 use App\Models\Navigation;
 use App\Models\MediaSosial;
 use App\Models\NavMenu;
+use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
 use Illuminate\Support\Facades\View;
 
 class FrontEndController extends Controller
 {
+    protected $settings;
+
     public function __construct()
     {
         parent::__construct();
         theme_active();
+
+        $this->settings = SettingAplikasi::pluck('value', 'key');
 
         View::share([
             'events' => Event::getOpenEvents(),
@@ -54,5 +59,10 @@ class FrontEndController extends Controller
             'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
             'slides' => Slide::orderBy('created_at', 'DESC')->get(),
         ]);
+    }
+
+    protected function isDatabaseGabungan()
+    {
+        return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';
     }
 }

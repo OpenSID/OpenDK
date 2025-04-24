@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,38 +24,41 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 use App\Http\Controllers\Api\TokenController;
-use App\Models\DataDesa;
-use App\Models\Penduduk;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Cookie;
-use App\Http\Controllers\SitemapController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\LogViewerController;
-use App\Http\Controllers\Role\RoleController;
-use App\Http\Controllers\Setting\NavigationController;
-use App\Http\Controllers\Setting\AplikasiController;
-use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\Setting\COAController;
-use App\Http\Controllers\BackEnd\EventController;
-use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontEnd\PageController;
-use App\Http\Controllers\Setting\TipePotensiController;
-use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\LogViewerController;
+use App\Http\Controllers\Role\RoleController;
+use App\Http\Controllers\Setting\AplikasiController;
+use App\Http\Controllers\Setting\COAController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\NavigationController;
 use App\Http\Controllers\Setting\NavMenuController;
+use App\Http\Controllers\Setting\SlideController;
+use App\Http\Controllers\Setting\TipePotensiController;
+use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisDokumenController;
+use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TestEmailController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\BackEnd\EventController;
+use App\Http\Controllers\Setting\PengaturanDatabaseController;
 use App\Http\Controllers\UploadTemporaryImage;
 use App\Http\Controllers\UploadTemporaryImageController;
 use Maatwebsite\Excel\Row;
+use App\Models\DataDesa;
+use App\Models\Penduduk;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,6 +121,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
                 Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
+                Route::get('struktur-organisasi', 'ProfilController@StrukturOrganisasi')->name('profil.struktur-organisasi');
+                Route::get('struktur-organisasi-ajax', 'ProfilController@ajaxBaganPublic')->name('profil.struktur-organisasi-ajax');
             });
 
             Route::group(['prefix' => 'event'], function () {
@@ -195,6 +200,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
                     Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
+                    Route::get('/jenis-dokumen/{slug}', 'DownloadController@indexJenisDokumen')->name('unduhan.form-dokumen.jenis-dokumen');
+                    Route::get('getData/jenis-dokumen/{slug}', 'DownloadController@getDataByJenisDokumen')->name('unduhan.form-dokumen.getdatabyjenisdokumen');
                 });
             });
 
@@ -320,7 +327,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
                 });
 
-
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {
                     Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);
@@ -438,7 +444,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //     Route::post('/register', ['as' => 'data.pendaftaran.kerjasama.register', 'uses' => 'PendaftaranKerjasamaController@register']);
                 // });
 
-
                 // Data Umum
                 Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
@@ -467,6 +472,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
                 //Arsip
                 Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.arsip');
@@ -896,6 +903,32 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.navmenu.index');
                 Route::post('store', 'store')->name('setting.navmenu.store');
             });
+
+            // Pengaturan Database (Backup)
+            Route::group(['prefix' => 'backup-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.pengaturan-database.backup');
+                Route::get('/getdata', 'getDataBackup')->name('setting.pengaturan-database.getdata');
+                Route::post('/backup-running', 'createBackup')->name('setting.pengaturan-database.runbackup');
+                Route::get('/backup-download/{file}', 'downloadBackup')->name('setting.pengaturan-database.download');
+                Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');
+                Route::get('/testing', [PengaturanDatabaseController::class,'testing']);
+            });
+
+            // Pengaturan Database (Restore)
+            Route::group(['prefix' => 'restore-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');
+                Route::post('/restore-running', 'restoreBackup')->name('setting.pengaturan-database.runrestore');
+            });
+
+            // Jenis Dokumen
+            Route::group(['prefix' => 'jenis-dokumen', 'controller' => JenisDokumenController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.jenis-dokumen.index');
+                Route::get('getdata', 'getData')->name('setting.jenis-dokumen.getdata');
+                Route::post('store', 'store')->name('setting.jenis-dokumen.store');
+                Route::get('edit/{id}', 'edit')->name('setting.jenis-dokumen.edit');
+                Route::put('update/{id}', 'update')->name('setting.jenis-dokumen.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-dokumen.destroy');
+            });
         });
 
         /**
@@ -924,4 +957,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
     });
+
+    Route::get('testEmail', TestEmailController::class)->name('testEmail');
 });

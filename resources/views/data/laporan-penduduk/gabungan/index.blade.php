@@ -23,19 +23,7 @@
             </div>
 
             <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Desa</label>
-                            <select class="form-control" id="list_desa">
-                                <option value="Semua">Semua Desa</option>
-                                @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->nama_desa }}">{{ $desa->nama_desa }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover" id="datadesa-table">
@@ -83,13 +71,15 @@
                         var searchValue = row.search.value; // Ambil nilai search dari DataTables
 
                         // Jika searchValue dan selectedDesa kosong, ambil semua data
-                        var filterSearch = (searchValue || selectedDesa) ? (searchValue || selectedDesa) : '';
+                        var filterSearch = (searchValue || selectedDesa) ? (searchValue ||
+                            selectedDesa) : '';
 
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch, // Gunakan filterSearch di sini
-                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
+                                    ?.column]
                                 ?.name,
                         };
                     },
@@ -101,8 +91,25 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.path === undefined ? `{{ route('data.laporan-penduduk.export-excel.by-id', ['data' => '__DATA__']) }}`.replace('__DATA__', encodeURIComponent(JSON.stringify(data))) : `asset('storage/laporan_penduduk')/${data.nama_file}`
+
+                            let d = data.attributes
+                            let obj = {
+                                'id': data.id,
+                                'nama_desa': d.config.nama_desa,
+                                'judul': d.judul,
+                                'bulan': d.bulan,
+                                'tahun': d.tahun,
+                                'tanggal_lapor': d.tanggal_lapor,
+                            }
+
+                            let jsonData = encodeURIComponent(JSON.stringify(obj));
+
+                            const _url = data.attributes.path === undefined ?
+                                `{{ route('data.laporan-penduduk.export-excel.by-id', ['data' => '__DATA__']) }}`
+                                .replace('__DATA__', jsonData) :
+                                `asset('storage/laporan_penduduk')/${data.nama_file}`
                             const _disabled = data.attributes.path === undefined ? 'disabled' : ''
+
                             return `<a href="${_url}" title="Unduh" data-button="download" target="_blank">
                                 <button type="button" class="btn btn-info btn-sm">download</button>
                             </a>`;
@@ -113,7 +120,8 @@
                     {
                         data: 'attributes.config.nama_desa',
                         render: function(data) {
-                            return data ? data : '<span class="text-muted">Tidak Ada Nama Desa</span>';
+                            return data ? data :
+                                '<span class="text-muted">Tidak Ada Nama Desa</span>';
                         }
                     },
                     {
@@ -139,7 +147,8 @@
                     {
                         data: 'attributes.tanggal_lapor',
                         render: function(data) {
-                            return data ? data : '<span class="text-muted">Tidak Ada Tanggal Lapor</span>';
+                            return data ? data :
+                                '<span class="text-muted">Tidak Ada Tanggal Lapor</span>';
                         }
                     },
 

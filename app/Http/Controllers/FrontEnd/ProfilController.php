@@ -37,10 +37,15 @@ use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Pengurus;
 use App\Models\Profil;
+use App\Services\DesaService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
+use App\Traits\BaganTrait;
 
 class ProfilController extends FrontEndController
 {
+    use BaganTrait;
+
     public function tipologi()
     {
         Counter::count('profil.tipologi');
@@ -75,14 +80,16 @@ class ProfilController extends FrontEndController
         Counter::count('profil.letak-geografis');
 
         $profil = Profil::with(['dataDesa'])->first();
-        $wilayah_desa = DataDesa::whereNotNull('path')->get();
+        $wilayah_desa = (new DesaService())->listPathDesa();
         $data_umum = DataUmum::first();
         $page_title = 'Letak Geografis';
         if (isset($profil)) {
             $page_description = $this->browser_title;
         }
 
-        return view('pages.profil.letakgeografis', compact('page_title', 'page_description', 'profil', 'wilayah_desa', 'data_umum'));
+        $view = $this->isDatabaseGabungan() ? 'pages.profil.gabungan.letakgeografis' : 'pages.profil.letakgeografis';
+
+        return view($view, compact('page_title', 'page_description', 'profil', 'wilayah_desa', 'data_umum'));
     }
 
     public function StrukturPemerintahan()
@@ -150,5 +157,24 @@ class ProfilController extends FrontEndController
         }
 
         return view('pages.profil.sambutan', compact('page_title', 'page_description', 'profil'));
+    }
+
+    public function StrukturOrganisasi(Request $request)
+    {
+        Counter::count('profil.struktur-organisasi');
+
+        $profil = $this->profil;
+        $pengurus = Pengurus::status()->get()->sortBy('jabatan.jenis');
+        $page_title = 'Struktur Organisasi';
+        if (isset($profil)) {
+            $page_description = $this->browser_title;
+        }
+
+        return view('pages.profil.struktur-organisasi', compact('page_title', 'page_description', 'profil', 'pengurus',));
+    }
+
+    public function ajaxBaganPublic()
+    {
+        return response()->json($this->getDataStrukturOrganisasi());
     }
 }

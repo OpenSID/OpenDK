@@ -70,10 +70,20 @@ class JenisPenyakitController extends Controller
     {
         try {
             JenisPenyakit::create($request->validated());
-            return response()->json(['success' => 'Jenis Penyakit berhasil ditambahkan!']);
+            session()->flash('success', 'Jenis Penyakit berhasil ditambahkan!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Jenis Penyakit gagal ditambahkan!'], 500);
+            session()->flash('error', 'Jenis Penyakit gagal ditambahkan!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 
@@ -88,10 +98,20 @@ class JenisPenyakitController extends Controller
     {
         try {
             JenisPenyakit::findOrFail($id)->update($request->validated());
-            return response()->json(['success' => 'Jenis Penyakit berhasil diupdate!']);
+            session()->flash('success', 'Jenis Penyakit berhasil diupdate!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
         } catch (\Exception $e) {
             report($e);
-            return response()->json(['error' => 'Jenis Penyakit gagal diupdate!'], 500);
+            session()->flash('error', 'Jenis Penyakit gagal diupdate!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
         }
     }
 

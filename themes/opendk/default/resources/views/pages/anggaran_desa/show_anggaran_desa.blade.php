@@ -23,7 +23,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-12">
+                    <div class="col-md-4 col-lg-4 col-sm-12 @if($hide_list_month) hidden @endif">
                         <div class="form-group">
                             <label for="bulan" class="col-sm-4 control-label">Bulan</label>
                             <div class="col-sm-8">
@@ -121,14 +121,21 @@
         function das_chart_anggaran(mid, did, year) {
 
             $.ajax('{!! route('statistik.chart-anggaran-desa') !!}', {
+                beforeSend: function() {
+                    $('#chartdiv').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+                },
                 data: {
                     mid: mid,
                     did: did,
                     y: year
                 }
             }).done(function(data) {
-                create_chart_anggaran(data.grafik);
-                alert
+                if(data.grafik.length == 0){
+                    $('#chartdiv').html('<div class="text-center"><h4>Data Tidak Ditemukan</h4></div>');
+                    return;
+                }else {
+                    create_chart_anggaran(data.grafik);                
+                }                
                 $('#detail_anggaran').html(data.detail);
             });
 

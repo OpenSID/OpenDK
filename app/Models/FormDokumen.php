@@ -42,7 +42,14 @@ class FormDokumen extends Model
 
     protected $fillable = [
         'nama_dokumen',
+        'description',
         'file_dokumen',
+        'jenis_dokumen_id',
+        'jenis_dokumen',
+        'is_published',
+        'published_at',
+        'retention_days',
+        'expired_at'
     ];
 
     /**
@@ -53,4 +60,9 @@ class FormDokumen extends Model
     protected $resources = [
         'file_dokumen',
     ];
+
+    public function jenisDokumen()
+    {
+        return $this->belongsTo(JenisDokumen::class, 'jenis_dokumen_id');
+    }
 }

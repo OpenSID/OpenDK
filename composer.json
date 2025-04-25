@@ -37,6 +37,7 @@
         "stevebauman/purify": "^4.0",
         "tymon/jwt-auth": "^1.0",
         "unisharp/laravel-filemanager": "^2.6",
+        "voku/anti-xss": "^4.1",
         "willvincent/feeds": "^2.2",
         "yajra/laravel-datatables-oracle": "~9."
     },

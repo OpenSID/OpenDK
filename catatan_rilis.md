@@ -9,6 +9,8 @@ Di rilis versi v2504.0.1 di versi ini terdapat modul komentar pada artikel dan p
 
 #### BUG
 
+1. [#1191](https://github.com/OpenSID/OpenDK/issues/1191) Perbaikan tombol logout di homepage.
+
 
 #### TEKNIS
 

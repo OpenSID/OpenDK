@@ -41,7 +41,28 @@ class Themes extends Model
     protected $guarded = [];
 
     // append slug attribute
-    protected $appends = ['slug'];
+    protected $appends = [
+        'slug',
+        'full_path',
+        'view_path',
+        'asset_path',
+    ];
+
+    public function getFullPathAttribute()
+    {
+        return $this->path;
+    }
+
+    public function getViewPathAttribute(): string
+    {
+        return $this->getFullPathAttribute() . 'resources/views';
+    }
+
+    public function getAssetPathAttribute(): string
+    {
+        return $this->getFullPathAttribute() . '/assets';
+    }
+
 
     public function getSlugAttribute()
     {

@@ -23,14 +23,14 @@
         <br>
 
         @if (isset($regulasi->file_regulasi) && $regulasi->mime_type != 'pdf')
-            <img class="" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+            <img class="" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
         @endif
 
         @if (isset($regulasi->file_regulasi) && $regulasi->mime_type == 'pdf')
             <object data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
         @endif
 
-        <img class="hide" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img class="hide" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
 
         <object data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
     </div>

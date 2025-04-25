@@ -380,6 +380,11 @@
                                 </li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/jenis-dokumen*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('setting.jenis-dokumen.index') }}"><i class="fa fa-circle-o"></i>Jenis Dokumen</a>
+                                </li>
+                            @endif
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/slide*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('setting.slide.index') }}"><i class="fa fa-circle-o"></i>Slide</a>
                                 </li>

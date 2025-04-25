@@ -29,40 +29,18 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Enums;
 
-use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
+use BenSampo\Enum\Enum;
 
-class FormDokumen extends Model
+/**
+ * konversi hari form dokumen
+ */
+final class KonversiHariFormDokumen extends Enum
 {
-    use HandlesResourceDeletion;
+    public const Hari = 1;
 
-    protected $table = 'das_form_dokumen';
+    public const Bulan = 30;
 
-    protected $fillable = [
-        'nama_dokumen',
-        'description',
-        'file_dokumen',
-        'jenis_dokumen_id',
-        'jenis_dokumen',
-        'is_published',
-        'published_at',
-        'retention_days',
-        'expired_at'
-    ];
-
-    /**
-     * Daftar field-file yang harus dihapus.
-     *
-     * @var array
-     */
-    protected $resources = [
-        'file_dokumen',
-    ];
-
-    public function jenisDokumen()
-    {
-        return $this->belongsTo(JenisDokumen::class, 'jenis_dokumen_id');
-    }
+    public const Tahun = 365;
 }

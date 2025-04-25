@@ -19,3 +19,4 @@ Terima kasih pada @Madeersani telah ikut berkontribus
 1. [#1183](https://github.com/OpenSID/OpenDK/issues/1183) Penyesuaian pemeriksaan OpenDK dengan API database gabungan data penduduk.
 2. [#1182](https://github.com/OpenSID/OpenDK/issues/1182) Penyesuaian pemeriksaan OpenDK dengan API database gabungan pada halaman publik.
 3. [#1193](https://github.com/OpenSID/OpenDK/issues/1193) Penyesuaian typo pada penulisan pengaturan surat.
+4. [#1195](https://github.com/OpenSID/OpenDK/issues/1195) Penyesuaian broken image di halaman Tambah media sosial.

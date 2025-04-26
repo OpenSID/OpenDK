@@ -31,16 +31,17 @@
 
 namespace App\Helpers;
 
-use App\Models\CounterPage;
-use App\Models\CounterVisitor;
-use Carbon\Carbon;
-use function config;
 use function env;
+use Carbon\Carbon;
 use function hash;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\DB;
-use Jaybizzle\CrawlerDetect\CrawlerDetect;
+use function config;
+use App\Models\CounterPage;
 use function number_format;
+use App\Models\CounterVisitor;
+use App\Enums\VisitorFilterEnum;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cookie;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class Counter
 {
@@ -281,5 +282,32 @@ class Counter
         $page_record = self::createPageIfNotPresent($page);
 
         return number_format($page_record->visitors->count());
+    }
+
+    /**
+     * Return visitor count for a specific time range.
+     *
+     * @param string $range Time range: 'today', 'yesterday', 'week', 'month', 'year', or 'all'
+     * @return string Unique visitor count for the specified range
+     */
+    public static function visitors($range = 'all')
+    {
+        // Mapping range ke VisitorFilterEnum
+        $filterMap = [
+            'today' => VisitorFilterEnum::TODAY,
+            'yesterday' => VisitorFilterEnum::YESTERDAY,
+            'week' => VisitorFilterEnum::THIS_WEEK,
+            'month' => VisitorFilterEnum::THIS_MONTH,
+            'year' => VisitorFilterEnum::THIS_YEAR,
+            'all' => VisitorFilterEnum::ALL,
+        ];
+
+        // Ambil filter berdasarkan range
+        $filter = $filterMap[$range] ?? VisitorFilterEnum::ALL;
+
+        // Hitung statistik menggunakan metode stats() dari model Visitor
+        $stats = \App\Models\Visitor::stats($filter);
+
+        return number_format($stats->page_views);
     }
 }

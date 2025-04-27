@@ -46,11 +46,12 @@ class TrackVisitors
 
         // Data tracking
         $ipAddress = $request->ip();
+        $hashedIpAddress = hash('sha256', $ipAddress); // Hash IP address
         $url = $request->fullUrl();
         $today = now()->toDateString();
         $userAgent = $request->userAgent();
 
-        $visitor = Visitor::where('ip_address', $ipAddress)
+        $visitor = Visitor::where('ip_address', $hashedIpAddress)
             ->where('url', $url)
             ->whereDate('visited_at', $today)
             ->first();
@@ -60,7 +61,7 @@ class TrackVisitors
             $visitor->update(['visited_at' => now()]);
         } else {
             Visitor::create([
-                'ip_address' => $ipAddress,
+                'ip_address' => $hashedIpAddress,
                 'url' => $url,
                 'user_agent' => $userAgent,
                 'visited_at' => now(),

@@ -207,7 +207,7 @@ class ArsipController extends Controller
                     $file = $request->file('path_document');
                     $mimeType = mime_content_type($file->getRealPath());
                     $originalName = $file->getClientOriginalName();
-                    if (in_array($mimeType, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-ole-storage'])) {
+                    if (in_array($mimeType, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-ole-storage', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheetapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])) {
                         $this->handleFileUpload($request, $input, 'path_document', "arsip/documents");
                     } else {
                         return redirect()->back()->withErrors(['path_document' => 'Isian path document harus dokumen berjenis : pdf, doc, docx, xls, xlsx.']);

@@ -1,4 +1,4 @@
-Di rilis versi v2504.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2505.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terima kasih pada @Madeersani telah ikut berkontribus
 

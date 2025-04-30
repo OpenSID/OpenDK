@@ -2,14 +2,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <select required id="jenis_surat" name="jenis_surat" class="form-control">
-            <option value="">Pilih Jenis Dokumen</option>
-            @foreach ($jenis_document as $item)
-                <option value="{{ $item->id }}">
-                    {{ $item->nama }}
-                </option>
-            @endforeach
-        </select>
+        {!! Form::select('jenis_surat', \App\Models\JenisDokumen::pluck('nama', 'id'), null, ['placeholder' => 'Pilih Jenis Dokumen', 'class' => 'form-control', 'id' => 'jenis_dokumen_id', 'required' => true]) !!}
     </div>
     
 </div>

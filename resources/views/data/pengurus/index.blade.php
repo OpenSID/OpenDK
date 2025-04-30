@@ -23,10 +23,13 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
-                @include('forms.btn-social', [
-                    'goto_table' => route('data.jenis-document.index'),
-                    'create_text' => 'Jenis Dokumen'
-                ])
+                
+                {{-- button bagan --}}
+                <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">
+                    <button type="button" class="btn btn-success btn-sm btn-social" title="Bagan Organisasi">
+                        <i class="fa fa-pie-chart"></i>Bagan Organisasi
+                    </button>
+                </a>
             </div>
             <div class="box-body">
                 <div class="row">

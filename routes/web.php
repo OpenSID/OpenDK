@@ -485,11 +485,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('download-arsip-zip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsipZip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip.zip');
                 Route::get('download-arsip/{document_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip');
                 Route::get('penduduk-select2', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukSelect2'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.select2');
-
-                // Jenis Document
-                Route::group(['prefix' => 'jenis-document', 'middleware' => ['role:super-admin|admin-desa']], function () {
-                    Route::resource('/jenis-document', 'JenisDocumentController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['update', 'show']);
-                });
             
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {

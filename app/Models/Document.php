@@ -37,9 +37,9 @@ class Document extends Model
         return $this->belongsTo(Pengurus::class, 'pengurus_id', 'id');
     }
 
-    public function jenis_document()
+    public function jenis_documen()
     {
-        return $this->belongsTo(JenisDocument::class, 'jenis_surat', 'id');
+        return $this->belongsTo(JenisDokumen::class, 'jenis_surat', 'id');
     }
 
     public function tanggal(): Attribute

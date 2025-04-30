@@ -43,6 +43,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
+use App\Traits\BaganTrait;
 use Exception;
 
 class PengurusController extends Controller

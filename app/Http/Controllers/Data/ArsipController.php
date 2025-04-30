@@ -36,7 +36,7 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
-use App\Models\JenisDocument;
+use App\Models\JenisDokumen;
 use App\Models\Penduduk;
 use App\Models\Pengurus;
 use App\Traits\HandlesFileUpload;
@@ -54,7 +54,7 @@ class ArsipController extends Controller
             $pengurus_id = $request->get('pengurus_id');
 
             if ($request->ajax()) {
-                $document = Document::with('penduduk:id,nama', 'pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_document:id,nama')->where('pengurus_id', $pengurus_id)->get();
+                $document = Document::with('penduduk:id,nama', 'pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_documen:id,nama')->where('pengurus_id', $pengurus_id)->get();
                 
                 return DataTables::of($document)
                     ->addIndexColumn()
@@ -145,7 +145,7 @@ class ArsipController extends Controller
             $page_description = 'Tambah Data';
             $data_penduduk = Penduduk::find($penduduk_id);;
             $document = Document::where('das_penduduk_id', $penduduk_id)->first();
-            $jenis_document = JenisDocument::all();
+            $jenis_document = JenisDokumen::all();
             return view('data.pengurus.create_arsip', compact('page_title', 'page_description', 'document', 'data_penduduk', 'pengurus_id', 'jenis_document'));
         } catch (\Exception $e) {
             report($e);
@@ -186,7 +186,7 @@ class ArsipController extends Controller
                 'ref_pendidikan_kk.nama as pendidikan',
                 'documents.*'
             ]);
-            $jenis_document = JenisDocument::all();
+            $jenis_document = JenisDokumen::all();
             return view('data.pengurus.edit_arsip', compact('page_title', 'page_description', 'penduduk', 'pengurus_id', 'jenis_document'));
         } catch (\Exception $e) {
             report($e);
@@ -207,7 +207,7 @@ class ArsipController extends Controller
                     $file = $request->file('path_document');
                     $mimeType = mime_content_type($file->getRealPath());
                     $originalName = $file->getClientOriginalName();
-                    if (in_array($mimeType, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-ole-storage'])) {
+                    if (in_array($mimeType, ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-ole-storage', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheetapplication/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])) {
                         $this->handleFileUpload($request, $input, 'path_document', "arsip/documents");
                     } else {
                         return redirect()->back()->withErrors(['path_document' => 'Isian path document harus dokumen berjenis : pdf, doc, docx, xls, xlsx.']);

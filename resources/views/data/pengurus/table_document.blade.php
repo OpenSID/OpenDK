@@ -35,7 +35,7 @@
                 { data: 'judul_document', name: 'judul_document' },
                 { data: 'path_document', name: 'path_document', orderable: false, searchable: false },
                 { data: 'no_urut', name: 'no_urut' },
-                { data: 'jenis_document.nama', name: 'jenis_document.nama' },
+                { data: 'jenis_documen.nama', name: 'jenis_documen.nama' },
                 { data: 'penduduk.nama', name: 'penduduk.nama' },
                 { data: 'keterangan', name: 'keterangan' },
                 { data: 'pengurus.nama', name: 'pengurus.nama' },

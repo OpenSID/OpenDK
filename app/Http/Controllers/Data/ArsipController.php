@@ -54,7 +54,7 @@ class ArsipController extends Controller
             $pengurus_id = $request->get('pengurus_id');
 
             if ($request->ajax()) {
-                $document = Document::with('penduduk:id,nama', 'pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_documen:id,nama')->where('pengurus_id', $pengurus_id)->get();
+                $document = Document::with('penduduk:id,nama', 'pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_documen:id,nama')->where('pengurus_id', $pengurus_id);
                 
                 return DataTables::of($document)
                     ->addIndexColumn()
@@ -220,7 +220,7 @@ class ArsipController extends Controller
                 $originalName = $document->nama_document;
             }
             
-            if (Document::where('pengurus_id', $request->post('pengurus_id'))->orderBy('id', 'DESC')->exists()) {
+            if (Document::where('pengurus_id', $request->post('pengurus_id'))->exists()) {
                 $data_document = Document::where('pengurus_id', $request->post('pengurus_id'))->orderBy('id', 'DESC')->first();
                 $no_urut = $data_document->no_urut ?? 0; 
             }else{

@@ -83,8 +83,8 @@ class SuratController extends Controller
         $camat = $this->akun_camat;
         $sekretaris = $this->akun_sekretaris;
         $profil = Profil::first();
-        $page_title = 'Pegaturan Surat';
-        $page_description = 'Daftar Pegaturan Surat';
+        $page_title = 'Pengaturan Surat';
+        $page_description = 'Daftar Pengaturan Surat';
 
         return view('surat.pengaturan', compact('page_title', 'page_description', 'formAction', 'camat', 'sekretaris'));
     }

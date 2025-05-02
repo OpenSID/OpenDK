@@ -353,6 +353,9 @@
                             <li {{ Request::is(['setting.navmenu*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.navmenu.index') }}"><i class="fa fa-circle-o"></i>Menu</a>
                             </li>
+                            <li {{ Request::is(['setting.widget*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.widget') }}"><i class="fa fa-circle-o"></i>Widget</a>
+                            </li>
                             {{-- <li {{ Request::is(['setting/navigation*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.navigation.index') }}"><i class="fa fa-circle-o"></i>Navigasi</a>
                             </li> --}}
@@ -374,6 +377,11 @@
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/jenis-penyakit*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('setting.jenis-penyakit.index') }}"><i class="fa fa-circle-o"></i>Jenis Penyakit</a>
+                                </li>
+                            @endif
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/jenis-dokumen*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('setting.jenis-dokumen.index') }}"><i class="fa fa-circle-o"></i>Jenis Dokumen</a>
                                 </li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))

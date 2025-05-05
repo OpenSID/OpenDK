@@ -60,7 +60,7 @@
         </a>
     @endif
     @if (isset($suspend_url))
-        <a href="javascript:void(0)" class="{!! empty($suspend_url) ? 'disabled' : '' !!}" title="Suspend" data-href="{!! empty($suspend_url) ? 'javascript:void(0)' : $suspend_url !!}" data-button="delete" id="suspendModal">
+        <a href="javascript:void(0)" class="{!! empty($suspend_url) ? 'disabled' : '' !!}" title="Tangguhkan" data-href="{!! empty($suspend_url) ? 'javascript:void(0)' : $suspend_url !!}" data-button="delete" id="suspendModal">
             <button type="button" class="btn btn-icon btn-danger btn-sm" style="width: 40px; background-color: #FFA500; border-color: #FFA500;"><i class="fa fa-power-off" aria-hidden="true"></i>
             </button>
         </a>

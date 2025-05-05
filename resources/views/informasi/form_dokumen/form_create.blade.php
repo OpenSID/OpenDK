@@ -65,12 +65,12 @@
         const TIPE_TAHUN = {{ \App\Enums\KonversiHariFormDokumen::Tahun }};
     </script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const $status = $('select[name="status"]');
             const $jumlahWaktu = $('select[name="jumlah_waktu"]');
             const $tipeWaktu = $('select[name="tipe_waktu"]');
             const $retentionDays = $('#retention_days');
-    
+
             const tipeToHari = {
                 '1': TIPE_HARI,
                 '2': TIPE_BULAN,
@@ -81,7 +81,7 @@
                 const status = $status.val();
                 const jumlah = parseInt($jumlahWaktu.val()) || 0;
                 const tipe = $tipeWaktu.val();
-    
+
                 if (parseInt(status) === STATUS_DRAFT) {
                     $jumlahWaktu.val('0').prop('disabled', true);
                     $tipeWaktu.val('1').prop('disabled', true);
@@ -95,7 +95,7 @@
                     }
                 }
             }
-    
+
             $status.on('change', updateRetentionDays);
             $jumlahWaktu.on('change', updateRetentionDays);
             $tipeWaktu.on('change', updateRetentionDays);

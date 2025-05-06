@@ -187,6 +187,8 @@
         var overlayLayers = {};
 
         function tampil_peta() {
+            var mapboxToken = document.querySelector('meta[name="mapbox-token"]').getAttribute('content');
+            var mapboxDefault = document.querySelector('meta[name="mapbox-default"]').getAttribute('content');
             // Inisialisasi tampilan peta
             var posisi = [-1.0546279422758742, 116.71875000000001];
             var zoom = 13;
@@ -203,7 +205,7 @@
             // Geolocation IP Route/GPS
             geoLocation(peta_wilayah);
 
-            var baseLayers = getBaseLayers(peta_wilayah, '');
+            var baseLayers = getBaseLayers(peta_wilayah, mapboxToken, mapboxDefault);
             L.control.layers(baseLayers, overlayLayers, {
                 position: 'topleft',
                 collapsed: true

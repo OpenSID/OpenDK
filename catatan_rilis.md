@@ -8,6 +8,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 #### BUG
 
 1. [#1188](https://github.com/OpenSID/OpenDK/issues/1188) Perbaikan error saat login.
+2. [#1197](https://github.com/OpenSID/OpenDK/issues/1197) Perbaikan datatables ajax error pada halaman daftar event di modul informasi.
 
 #### TEKNIS
 

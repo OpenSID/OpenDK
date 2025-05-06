@@ -6,7 +6,7 @@
                 <h4 class="modal-title">Konfirmasi</h4>
             </div>
             <div class="modal-body">
-                <p>Anda yakin ingin Nonaktifkan data ini?</p>
+                <p>Anda yakin ingin menonaktifkan data ini?</p>
             </div>
             <div class="modal-footer">
                 {!! Form::open(['id' => 'unlock', 'method' => 'PUT']) !!}

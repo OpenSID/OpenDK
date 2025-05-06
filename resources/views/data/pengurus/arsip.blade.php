@@ -19,9 +19,7 @@
     <div class="box-header with-border clearfix">
         <div class="pull-left">
             @include('forms.btn-social', ['back_url' => url()->previous()])
-            <a id="btn-tambah" href="javascript:void(0)" class="btn btn-success btn-sm disabled" style="pointer-events: none; opacity: 0.6;" title="Tambah Data">
-                <i class="fa fa-plus"></i>&ensp;Tambah
-            </a>
+            @include('forms.btn-social', ['create_url' => route('data.pengurus.create.arsip', $pengurus_id)])
         </div>
     
         @if ($count_arsip > 0)
@@ -44,7 +42,6 @@
                     <div class="box-body">
 
                         @include('flash::message')
-                        @include('data.pengurus.form_arsip')
 
                         <div class="box-footer">
                             @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])

@@ -13,7 +13,6 @@ class Document extends Model
     use HasFactory, HandlesResourceDeletion;
 
     protected $fillable = [
-        'das_penduduk_id',
         'judul_document',
         'path_document',
         'nama_document',
@@ -26,11 +25,6 @@ class Document extends Model
     ];
 
     protected $resources = ['path_document'];
-
-    public function penduduk()
-    {
-        return $this->belongsTo(Penduduk::class, 'das_penduduk_id', 'id');
-    }
 
     public function pengurus()
     {

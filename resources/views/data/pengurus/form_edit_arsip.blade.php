@@ -5,7 +5,7 @@
         {!! Form::select(
             'jenis_surat',
             ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisDokumen::pluck('nama', 'id')->toArray(),
-            isset($penduduk) ? $penduduk->jenis_surat : null,
+            isset($document) ? $document->jenis_surat : null,
             [
                 'class' => 'form-control',
                 'id' => 'jenis_surat',
@@ -20,7 +20,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('judul_document', $penduduk->judul_document ?? null, ['placeholder' => 'Judul Document', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Form::text('judul_document', $document->judul_document ?? null, ['placeholder' => 'Judul Document', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 
@@ -39,11 +39,11 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('keterangan', $penduduk->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Form::text('keterangan', $document->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' => 'form-control', 'required' => true]) !!}
     </div>
 </div>
-{!! Form::hidden('das_penduduk_id', $penduduk->das_penduduk_id ?? '', ['placeholder' => 'das_penduduk_id', 'class' => 'form-control', 'required' => true, 'readonly' => true]) !!}
-{!! Form::hidden('document_id', $penduduk->id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
+{!! Form::hidden('das_penduduk_id', $document->das_penduduk_id ?? '', ['placeholder' => 'das_penduduk_id', 'class' => 'form-control', 'required' => true, 'readonly' => true]) !!}
+{!! Form::hidden('document_id', $document->id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
 {!! Form::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
 
 @push('scripts')

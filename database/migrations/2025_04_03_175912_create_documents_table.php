@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('das_penduduk_id')->constrained('das_penduduk')->onDelete('cascade');
             $table->unsignedBigInteger('pengurus_id')->constrained('users')->onDelete('cascade');
             $table->string('judul_document');
             $table->text('path_document');

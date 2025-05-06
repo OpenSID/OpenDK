@@ -54,13 +54,13 @@ class ArsipController extends Controller
             $pengurus_id = $request->get('pengurus_id');
 
             if ($request->ajax()) {
-                $document = Document::with('penduduk:id,nama', 'pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_documen:id,nama')->where('pengurus_id', $pengurus_id);
+                $document = Document::with('pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_documen:id,nama')->where('pengurus_id', $pengurus_id);
                 
                 return DataTables::of($document)
                     ->addIndexColumn()
                     ->addColumn('aksi', function ($row) use ($pengurus_id){
                         if (! auth()->guest()) {
-                            $data['edit_url'] = route('data.pengurus.edit.document', ['penduduk_id' => $row->id, 'pengurus_id' => $pengurus_id]);
+                            $data['edit_url'] = route('data.pengurus.edit.document', ['document_id' => $row->id, 'pengurus_id' => $pengurus_id]);
                             $data['delete_url'] = route('data.pengurus.delete.document', $row->id);
                         }
     
@@ -138,15 +138,14 @@ class ArsipController extends Controller
         
     }
 
-    public function create_arsip($penduduk_id, $pengurus_id)
+    public function create_arsip($pengurus_id)
     {
         try {
             $page_title = 'Daftar Dokumen';
             $page_description = 'Tambah Data';
-            $data_penduduk = Penduduk::find($penduduk_id);;
-            $document = Document::where('das_penduduk_id', $penduduk_id)->first();
+            $document = Document::where('pengurus_id', $pengurus_id)->first();
             $jenis_document = JenisDokumen::all();
-            return view('data.pengurus.create_arsip', compact('page_title', 'page_description', 'document', 'data_penduduk', 'pengurus_id', 'jenis_document'));
+            return view('data.pengurus.create_arsip', compact('page_title', 'page_description', 'document', 'pengurus_id', 'jenis_document'));
         } catch (\Exception $e) {
             report($e);
             Log::channel('daily')->error('create_arsip di ArsipController: ' . $e->getMessage(), [
@@ -157,37 +156,13 @@ class ArsipController extends Controller
         }
     }
 
-    public function editArsip($penduduk_id, $pengurus_id)
+    public function editArsip($document_id, $pengurus_id)
     {
         try {
             $page_title = 'Daftar Dokumen';
             $page_description = 'Edit Data';
-            $penduduk = Penduduk::with(['desa:id,profil_id,desa_id,nama,sebutan_desa'])
-            ->join('ref_warganegara', 'ref_warganegara.id', '=', 'das_penduduk.warga_negara_id')
-            ->join('das_data_desa', 'das_data_desa.desa_id', '=', 'das_penduduk.desa_id')
-            ->join('ref_agama', 'ref_agama.id', '=', 'das_penduduk.agama_id')
-            ->join('das_keluarga', 'das_keluarga.no_kk', '=', 'das_penduduk.no_kk')
-            ->join('ref_pendidikan_kk', 'ref_pendidikan_kk.id', '=', 'das_penduduk.pendidikan_id')
-            ->join('documents', 'documents.das_penduduk_id', '=', 'das_penduduk.id')
-            ->where('documents.id', $penduduk_id)    
-            ->first([
-                'das_penduduk.nik',
-                'das_penduduk.nama',
-                'ref_warganegara.nama as warga_negara',
-                'ref_agama.nama as agama',
-                'tempat_lahir',
-                'tanggal_lahir',
-                'das_penduduk.alamat',
-                'das_penduduk.dusun',
-                'das_penduduk.rt',
-                'das_penduduk.rw',
-                'das_penduduk.desa_id',
-                'warga_negara_id',
-                'ref_pendidikan_kk.nama as pendidikan',
-                'documents.*'
-            ]);
-            $jenis_document = JenisDokumen::all();
-            return view('data.pengurus.edit_arsip', compact('page_title', 'page_description', 'penduduk', 'pengurus_id', 'jenis_document'));
+            $document = Document::where('id', $document_id)->first();
+            return view('data.pengurus.edit_arsip', compact('page_title', 'page_description', 'document', 'pengurus_id'));
         } catch (\Exception $e) {
             report($e);
             Log::channel('daily')->error('edit_arsip di ArsipController: ' . $e->getMessage(), [

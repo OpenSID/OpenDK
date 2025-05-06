@@ -30,10 +30,9 @@
     
                         {!! Form::open(['route' => 'data.pengurus.store.arsip', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
                         @include('layouts.fragments.error_message')
-    
                         <div class="box-body">
                             @include('flash::message')
-                            @include('data.pengurus.form_edit_arsip', ['pengurus_id' => $pengurus_id])
+                            @include('data.pengurus.form_edit_arsip', ['pengurus_id' => $pengurus_id, 'document' => $document])
                             <div class="box-footer">
                                 @include('partials.button_reset_submit')
                             </div>

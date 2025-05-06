@@ -52,11 +52,17 @@ class MediaSosialRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'nama' => 'required|string|max:100',
             'url' => 'required|url',
-            'logo' => 'file|mimes:jpg,jpeg,png|max:2048|valid_file',
             'status' => 'required',
         ];
+    
+        if ($this->isMethod('post')) {
+            $rules['logo'] = 'required|file|mimes:jpg,jpeg,png|max:2048|valid_file';
+        } else {
+            $rules['logo'] = 'nullable|file|mimes:jpg,jpeg,png|max:2048|valid_file';
+        }
+        return $rules;
     }
 }

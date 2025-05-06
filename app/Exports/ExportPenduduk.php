@@ -25,9 +25,12 @@ class ExportPenduduk implements FromCollection, WithHeadings
 
     public function __construct($gabungan, $params)
     {
-        $this->pageSize = $params['page']['size'];
-        $this->pageNumber = $params['page']['number'];
-        $this->filterSearch = $params['filter']['search'];
+        $page = $params['page'] ?? ['size' => 0, 'number' => 1];
+        $filter = $params['filter'] ?? ['search' => ''];
+
+        $this->pageSize = $page['size'];
+        $this->pageNumber = $page['number'];
+        $this->filterSearch = $filter['search'];
 
         $this->gabungan = $gabungan;
         $this->pendudukService = new PendudukService();

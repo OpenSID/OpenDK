@@ -128,7 +128,7 @@ class LoginController extends Controller
     }     
     protected function authenticated(Request $request, $user)
     {
-        if ($this->settings['login_2fa']) {
+        if (($this->settings['login_2fa'] ?? false)) {
             return $this->startTwoFactorAuthProcess($request, $user);
         }
 

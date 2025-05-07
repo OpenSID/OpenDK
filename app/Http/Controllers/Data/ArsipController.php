@@ -54,7 +54,7 @@ class ArsipController extends Controller
             $pengurus_id = $request->get('pengurus_id');
 
             if ($request->ajax()) {
-                $document = Document::with('pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_documen:id,nama')->where('pengurus_id', $pengurus_id);
+                $document = Document::with('pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_surat:id,nama')->where('pengurus_id', $pengurus_id);
                 
                 return DataTables::of($document)
                     ->addIndexColumn()
@@ -62,16 +62,10 @@ class ArsipController extends Controller
                         if (! auth()->guest()) {
                             $data['edit_url'] = route('data.pengurus.edit.document', ['document_id' => $row->id, 'pengurus_id' => $pengurus_id]);
                             $data['delete_url'] = route('data.pengurus.delete.document', $row->id);
+                            $data['download_zip'] = route('data.pengurus.edit.download.arsip', $row->id);
                         }
     
                         return view('forms.aksi', $data);
-                    })
-                    ->editColumn('path_document', function ($row) {
-                        if ($row->path_document && file_exists(public_path($row->path_document))) {
-                            $url = route('data.pengurus.edit.download.arsip', $row->id);
-                            return '<a href="' . $url . '" class="btn btn-sm btn-primary">Download</a>';
-                        }
-                        return '<span class="text-muted">Tidak ada file</span>';
                     })
                     ->filter(function ($query) use ($request) {
                         if ($request->has('search') && $request->search['value'] != '') {

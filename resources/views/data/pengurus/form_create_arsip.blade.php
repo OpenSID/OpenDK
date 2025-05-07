@@ -2,7 +2,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('jenis_surat', \App\Models\JenisDokumen::pluck('nama', 'id'), null, ['placeholder' => 'Pilih Jenis Dokumen', 'class' => 'form-control', 'id' => 'jenis_dokumen_id', 'required' => true]) !!}
+        {!! Form::select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id'), null, ['placeholder' => 'Pilih Jenis Dokumen', 'class' => 'form-control', 'id' => 'jenis_dokumen_id', 'required' => true]) !!}
     </div>
     
 </div>

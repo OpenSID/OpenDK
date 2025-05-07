@@ -4,7 +4,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::select(
             'jenis_surat',
-            ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisDokumen::pluck('nama', 'id')->toArray(),
+            ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck('nama', 'id')->toArray(),
             isset($document) ? $document->jenis_surat : null,
             [
                 'class' => 'form-control',

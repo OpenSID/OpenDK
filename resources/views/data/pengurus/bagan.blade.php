@@ -25,7 +25,6 @@
                 <img src="https://i.gifer.com/ZZ5H.gif" alt="Loading..." width="30">
             </div>
 
-
             {{-- visual --}}
             <div class="col-md-12" id="contentBox" style="display: none;">
                 <div class="box box-primary">

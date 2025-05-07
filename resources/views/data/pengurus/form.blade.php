@@ -3,8 +3,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="foto" id="foto" class="form-control" accept="jpg, jpeg, png">
         <br>
-        <img src="{{ is_img($pengurus->foto ?? null) }}" id="showfoto"
-            style="max-width:400px;max-height:250px;float:left;" />
+        <img src="{{ is_img($pengurus->foto ?? null) }}" id="showfoto" style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 <div class="form-group">
@@ -25,8 +24,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor Induk Kependudukan <span
-            class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor Induk Kependudukan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::text('nik', null, [
@@ -146,45 +144,43 @@
     </div>
 </div>
 
+@if (!empty($atasan) && count($atasan) > 0)
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="atasan">Atasan</label>
 
-@if(!empty($atasan) && count($atasan) > 0)
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="atasan">Atasan</label>
-
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('atasan', $atasan, null, ['class' => 'form-control', 'placeholder' => 'Pilih Atasan']) !!}
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {!! Form::select('atasan', $atasan, null, ['class' => 'form-control', 'placeholder' => 'Pilih Atasan']) !!}
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_tingkat">Bagan - Tingkat</label>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_tingkat">Bagan - Tingkat</label>
 
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::number('bagan_tingkat', null, [
-            'placeholder' => 'Angka menunjukkan tingkat di bagan organisasi. Contoh: 2',
-            'class' => 'form-control',
-            'required' => false,
-            'autocomplete' => 'off',
-            'min' => 0,
-            'id' => 'bagan_tingkat'
-        ]) !!}
-        <small class="text-muted">Gunakan angka 0 untuk tingkatan tertinggi.</small>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            {!! Form::number('bagan_tingkat', null, [
+                'placeholder' => 'Angka menunjukkan tingkat di bagan organisasi. Contoh: 2',
+                'class' => 'form-control',
+                'required' => false,
+                'autocomplete' => 'off',
+                'min' => 0,
+                'id' => 'bagan_tingkat',
+            ]) !!}
+            <small class="text-muted">Gunakan angka 0 untuk tingkatan tertinggi.</small>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_warna">Bagan - Warna</label>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_warna">Bagan - Warna</label>
 
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <div class="input-group my-colorpicker2">
-            {!! Form::text('bagan_warna', null, ['class' => 'form-control', 'placeholder' => '#007ad0']) !!}
-            <div class="input-group-addon">
-                <i></i>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="input-group my-colorpicker2">
+                {!! Form::text('bagan_warna', null, ['class' => 'form-control', 'placeholder' => '#007ad0']) !!}
+                <div class="input-group-addon">
+                    <i></i>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 @endif
 
 <div class="ln_solid"></div>

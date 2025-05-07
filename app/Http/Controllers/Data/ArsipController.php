@@ -70,11 +70,7 @@ class ArsipController extends Controller
                     ->filter(function ($query) use ($request) {
                         if ($request->has('search') && $request->search['value'] != '') {
                             $search = $request->search['value'];
-                            $query->where('jenis_surat', 'like', "%{$search}%")
-                                  ->orWhere('keterangan', 'like', "%{$search}%")
-                                  ->orWhereHas('user', function ($q) use ($search) {
-                                      $q->where('name', 'like', "%{$search}%");
-                                  });
+                            $query->where('judul_document', 'like', "%{$search}%");
                         }
                     })
                     ->rawColumns(['path_document', 'aksi'])
@@ -83,7 +79,10 @@ class ArsipController extends Controller
             $count_arsip = Document::where('pengurus_id', $pengurus_id)->count();
             $page_title = 'Arsip';
             $page_description = '';
-            return view('data.pengurus.arsip', compact('page_title', 'page_description', 'pengurus_id', 'count_arsip'));
+            $pengurus = Pengurus::join('das_penduduk', 'das_penduduk.nik', '=', 'das_pengurus.nik')
+            ->where('das_pengurus.id', $pengurus_id)
+            ->first(['das_pengurus.nama', 'das_pengurus.nik', 'das_pengurus.gelar_depan', 'das_pengurus.gelar_belakang', 'das_penduduk.alamat']);
+            return view('data.pengurus.arsip', compact('page_title', 'page_description', 'pengurus_id', 'count_arsip', 'pengurus'));
         } catch (\Exception $e) {
             report($e);
             Log::channel('daily')->error('arsip di ArsipController: ' . $e->getMessage(), [

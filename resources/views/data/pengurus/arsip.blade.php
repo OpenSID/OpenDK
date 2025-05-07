@@ -42,6 +42,25 @@
                     <div class="box-body">
 
                         @include('flash::message')
+                        
+                        <div style="width: 25%">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Pengurus</th>
+                                        <td>{{ $pengurus ? $pengurus->nama : 'Tidak Ada' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>NIK</th>
+                                        <td>{{ $pengurus ? $pengurus->nik : 'Tidak Ada' }}</td>
+                                    </tr>
+                                     <tr>
+                                        <th>Alamat</th>
+                                        <td>{{ $pengurus ? $pengurus->alamat : 'Tidak Ada' }}</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
 
                         <div class="box-footer">
                             @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])

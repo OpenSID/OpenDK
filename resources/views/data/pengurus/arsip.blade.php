@@ -43,15 +43,17 @@
 
                         @include('flash::message')
                         
-                        <div style="width: 25%">
+                        <div>
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Nama Pengurus</th>
+                                        <th width="200px">Nama Pengurus</th>
+                                        <th width="10px">:</th>
                                         <td>{{ $pengurus ? $pengurus->nama : 'Tidak Ada' }}</td>
                                     </tr>
                                     <tr>
                                         <th>NIK</th>
+                                        <th>:</th>
                                         <td>{{ $pengurus ? $pengurus->nik : 'Tidak Ada' }}</td>
                                     </tr>
                                 </thead>

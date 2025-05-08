@@ -10,7 +10,7 @@
         <input type="file" name="file_prosedur" id="file_prosedur" class="form-control" accept="jpg, jpeg, png, bmp, pdf" required>
         <br>
 
-        <img class="hide" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.it/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img class="hide" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
 
         <object data="" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
 

@@ -43,8 +43,8 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
-use Illuminate\Support\Facades\Storage;
 use App\Traits\BaganTrait;
+use Exception;
 
 class PengurusController extends Controller
 {
@@ -66,7 +66,8 @@ class PengurusController extends Controller
             return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (!auth()->guest()) {
+                    if (! auth()->guest()) {
+                        $data['arsip_url'] = route('data.pengurus.arsip', ['pengurus_id' => $row->id]);
                         $data['edit_url'] = route('data.pengurus.edit', $row->id);
                         $data['delete_url'] = route('data.pengurus.destroy', $row->id);
                         if ($row->status == Status::Aktif) {

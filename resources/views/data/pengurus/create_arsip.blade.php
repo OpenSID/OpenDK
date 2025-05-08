@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('title')
-    Data Pengurus
+    Data Dokumen
 @endsection
 
 @section('content')
@@ -15,9 +15,8 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <div class="box-header with-border">
-        @include('forms.btn-social', ['back_url' => url()->previous()])
+        @include('forms.btn-social', ['back_url' => route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id])])
     </div>
 
     @include('partials.flash_message')

@@ -63,6 +63,7 @@ class ArsipController extends Controller
                             $data['edit_url'] = route('data.pengurus.edit.document', ['document_id' => $row->id, 'pengurus_id' => $pengurus_id]);
                             $data['delete_url'] = route('data.pengurus.delete.document', $row->id);
                             $data['download_zip'] = route('data.pengurus.edit.download.arsip', $row->id);
+                            $data['nama_file'] = $row->judul_document;
                         }
     
                         return view('forms.aksi', $data);
@@ -79,9 +80,8 @@ class ArsipController extends Controller
             $count_arsip = Document::where('pengurus_id', $pengurus_id)->count();
             $page_title = 'Arsip';
             $page_description = '';
-            $pengurus = Pengurus::join('das_penduduk', 'das_penduduk.nik', '=', 'das_pengurus.nik')
-            ->where('das_pengurus.id', $pengurus_id)
-            ->first(['das_pengurus.nama', 'das_pengurus.nik', 'das_pengurus.gelar_depan', 'das_pengurus.gelar_belakang', 'das_penduduk.alamat']);
+            $pengurus = Pengurus::where('das_pengurus.id', $pengurus_id)
+            ->first(['das_pengurus.nama', 'das_pengurus.nik', 'das_pengurus.gelar_depan', 'das_pengurus.gelar_belakang']);
             return view('data.pengurus.arsip', compact('page_title', 'page_description', 'pengurus_id', 'count_arsip', 'pengurus'));
         } catch (\Exception $e) {
             report($e);

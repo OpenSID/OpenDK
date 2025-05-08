@@ -18,7 +18,7 @@
 
     <div class="box-header with-border clearfix">
         <div class="pull-left">
-            @include('forms.btn-social', ['back_url' => url()->previous()])
+            @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
             @include('forms.btn-social', ['create_url' => route('data.pengurus.create.arsip', $pengurus_id)])
         </div>
     
@@ -53,10 +53,6 @@
                                     <tr>
                                         <th>NIK</th>
                                         <td>{{ $pengurus ? $pengurus->nik : 'Tidak Ada' }}</td>
-                                    </tr>
-                                     <tr>
-                                        <th>Alamat</th>
-                                        <td>{{ $pengurus ? $pengurus->alamat : 'Tidak Ada' }}</td>
                                     </tr>
                                 </thead>
                             </table>

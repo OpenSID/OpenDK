@@ -4,6 +4,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
 
+1. [#13](https://github.com/OpenSID/OpenDK/issues/13) Penambahan fitur data kepagawaian kecamatan.
 
 #### BUG
 

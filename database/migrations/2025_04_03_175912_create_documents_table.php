@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('path_document');
             $table->text('nama_document');
             $table->string('kode_surat');
-            $table->string('no_urut');
-            $table->string('jenis_surat');
+            $table->integer('no_urut');
+            $table->unsignedBigInteger('jenis_surat')->constrained('das_jenis_surat')->onDelete('cascade');
             $table->text('keterangan');
             $table->string('ditandatangani');
             $table->timestamps();

@@ -16,7 +16,7 @@
         </a>
     @endif
     @if (isset($detail_url))
-        <a href="{!! empty($detail_url) ? 'javascript:void(0)' : $detail_url !!}" class="{!! empty($detail_url) ? 'disabled' : '' !!}" title="Detail" data-button="detail">
+        <a href="{!! empty($detail_url) ? 'javascript:void(0)' : $detail_url !!}" class="{!! empty($detail_url) ? 'disabled' : '' !!}" title="Selengkapnya" data-button="detail">
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-list fa-fw"></i></button>
         </a>
     @endif
@@ -51,7 +51,7 @@
         </a>
     @endif
     @if (isset($reply_url))
-        <a href="{!! empty($reply_url) ? 'javascript:void(0)' : $reply_url !!}" class="{!! empty($reply_url) ? 'disabled' : '' !!}" title="Reply" data-button="reply">
+        <a href="{!! empty($reply_url) ? 'javascript:void(0)' : $reply_url !!}" class="{!! empty($reply_url) ? 'disabled' : '' !!}" title="Membalas" data-button="Membalas">
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;"><i class="fa fa-reply" aria-hidden="true"></i></button>
         </a>
     @endif
@@ -66,13 +66,13 @@
         </a>
     @endif
     @if (isset($suspend_url))
-        <a href="javascript:void(0)" class="{!! empty($suspend_url) ? 'disabled' : '' !!}" title="Suspend" data-href="{!! empty($suspend_url) ? 'javascript:void(0)' : $suspend_url !!}" data-button="delete" id="suspendModal">
+        <a href="javascript:void(0)" class="{!! empty($suspend_url) ? 'disabled' : '' !!}" title="Tangguhkan" data-href="{!! empty($suspend_url) ? 'javascript:void(0)' : $suspend_url !!}" data-button="delete" id="suspendModal">
             <button type="button" class="btn btn-icon btn-danger btn-sm" style="width: 40px; background-color: #FFA500; border-color: #FFA500;"><i class="fa fa-power-off" aria-hidden="true"></i>
             </button>
         </a>
     @endif
     @if (isset($suspend_span))
-        <a href="javascript:void(0)" class="{!! empty($suspend_span) ? 'disabled' : '' !!}" title="Suspend" data-href="{!! empty($suspend_span) ? 'javascript:void(0)' : $suspend_span !!}" data-button="delete" id="suspendModal">
+        <a href="javascript:void(0)" class="{!! empty($suspend_span) ? 'disabled' : '' !!}" title="Tangguhkan" data-href="{!! empty($suspend_span) ? 'javascript:void(0)' : $suspend_span !!}" data-button="delete" id="suspendModal">
             <span style="color: green;">Active</span>
         </a>
     @endif
@@ -94,7 +94,7 @@
         </a>
     @endif
     @if (isset($show_web))
-        <a href="{!! empty($edit_url) ? 'javascript:void(0)' : $show_web !!}" class="{!! empty($show_web) ? 'disabled' : '' !!}" title="Detail" data-button="detail" target="_blank">
+        <a href="{!! empty($edit_url) ? 'javascript:void(0)' : $show_web !!}" class="{!! empty($show_web) ? 'disabled' : '' !!}" title="Selengkapnya" data-button="detail" target="_blank">
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye" aria-hidden="true"></i></button>
         </a>
     @endif
@@ -106,7 +106,7 @@
     @if (isset($download_zip))
         <a href="{!! empty($download_zip) ? 'javascript:void(0)' : $download_zip !!}" 
         class="{!! empty($download_zip) ? 'disabled' : '' !!}" 
-        title="Download: {{ $nama_file ?? 'Arsip' }}" 
+        title="Unduh: {{ $nama_file ?? 'Arsip' }}" 
         data-button="download-zip">
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;">
                 <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>

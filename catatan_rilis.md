@@ -17,3 +17,4 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 #### TEKNIS
 
 1. [#1205](https://github.com/OpenSID/OpenDK/issues/1205) Perbaikan penulisan pada pesan konfirmasi ubah status album.
+2. [#1210](https://github.com/OpenSID/OpenDK/issues/1210) Penyesuaian penulisan tooltip pada data pengurus.

@@ -103,6 +103,7 @@ class Kernel extends HttpKernel
         'xss_sanitization' => \App\Http\Middleware\XssSanitization::class,
         'complete_profile' => \App\Http\Middleware\CompleteProfile::class,
         'token.registered' => \App\Http\Middleware\TokenRegistered::class,
+        'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
     ];
 
     /**

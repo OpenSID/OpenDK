@@ -29,31 +29,33 @@
                             <div class="row">
                                 {{-- Filter Bulan --}}
                                 <div class="col-md-4 pl-md-1">
-                                    {!! Form::select('bulan', [
-                                        '01' => 'Januari',
-                                        '02' => 'Februari',
-                                        '03' => 'Maret',
-                                        '04' => 'April',
-                                        '05' => 'Mei',
-                                        '06' => 'Juni',
-                                        '07' => 'Juli',
-                                        '08' => 'Agustus',
-                                        '09' => 'September',
-                                        '10' => 'Oktober',
-                                        '11' => 'November',
-                                        '12' => 'Desember',
-                                    ], null, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '- Pilih Bulan -',
-                                    ]) !!}
+                                    {!! Form::select(
+                                        'bulan',
+                                        [
+                                            '01' => 'Januari',
+                                            '02' => 'Februari',
+                                            '03' => 'Maret',
+                                            '04' => 'April',
+                                            '05' => 'Mei',
+                                            '06' => 'Juni',
+                                            '07' => 'Juli',
+                                            '08' => 'Agustus',
+                                            '09' => 'September',
+                                            '10' => 'Oktober',
+                                            '11' => 'November',
+                                            '12' => 'Desember',
+                                        ],
+                                        null,
+                                        [
+                                            'class' => 'form-control',
+                                            'placeholder' => '- Pilih Bulan -',
+                                        ],
+                                    ) !!}
                                 </div>
-                    
+
                                 {{-- Filter Tahun --}}
                                 <div class="col-md-4 pr-md-1">
-                                    {!! Form::select('tahun', array_combine(
-                                        range(date('Y'), date('Y') - 10),
-                                        range(date('Y'), date('Y') - 10)
-                                    ), null, [
+                                    {!! Form::select('tahun', array_combine(range(date('Y'), date('Y') - 10), range(date('Y'), date('Y') - 10)), null, [
                                         'class' => 'form-control',
                                         'placeholder' => '- Pilih Tahun -',
                                     ]) !!}
@@ -113,9 +115,9 @@
                         data: 'jenis_dokumen',
                         name: 'jenis_dokumen',
                         render: function(data, type, row) {
-                            if(row.jenis_dokumen != '-'){
+                            if (row.jenis_dokumen != '-') {
                                 return `<span class="label label-warning">${row.jenis_dokumen}</span>`
-                            }else{
+                            } else {
                                 return row.jenis_dokumen
                             }
                         }

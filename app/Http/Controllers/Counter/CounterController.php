@@ -31,9 +31,13 @@
 
 namespace App\Http\Controllers\Counter;
 
-use App\Http\Controllers\Controller;
+use App\Enums\VisitorFilterEnum;
+use App\Models\Visitor;
 use App\Models\CounterPage;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Profil;
 
 class CounterController extends Controller
 {
@@ -41,9 +45,82 @@ class CounterController extends Controller
     {
         $page_title = 'Statistik Pengunjung';
         $page_description = 'Jumlah Statistik Pengunjung Website';
-        $top_pages = $this->geTopPage();
 
-        return view('counter.index', compact('page_title', 'page_description', 'top_pages'));
+        // hitung statistik
+        $visitors = [
+            'todayVisitors'     => Visitor::stats(VisitorFilterEnum::TODAY),
+            'yesterdayVisitors' => Visitor::stats(VisitorFilterEnum::YESTERDAY),
+            'weeklyVisitors'    => Visitor::stats(VisitorFilterEnum::THIS_WEEK),
+            'monthlyVisitors'   => Visitor::stats(VisitorFilterEnum::THIS_MONTH),
+            'yearlyVisitors'    => Visitor::stats(VisitorFilterEnum::THIS_YEAR),
+            'totalVisitors'     => Visitor::stats(VisitorFilterEnum::ALL),
+        ];
+
+        // request url query parameter 'filter'
+        $filter = request()->get('filter', VisitorFilterEnum::TODAY);
+        $dailyStats = Visitor::groupedStats($filter);
+
+        $chartData = [
+            'labels' => $this->formatLabels($dailyStats, $filter),
+            'page_views' => $dailyStats->pluck('page_views')->map(fn ($pv) => (int)$pv)->toArray(),
+            'unique_visitors' => $dailyStats->pluck('unique_visitors')->toArray(),
+        ];
+
+        // Halaman populer
+        $top_pages_visited = Visitor::getTopPagesVisited();
+
+        return view('counter.index', compact(
+            'page_title',
+            'page_description',
+            'visitors',
+            'chartData',
+            'dailyStats',
+            'top_pages_visited'
+        ));
+    }
+
+    private function formatLabels($dailyStats, $filter)
+    {
+        if ($filter === VisitorFilterEnum::THIS_YEAR) {
+            return $dailyStats->pluck('date')->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y');
+            })->toArray();
+        } elseif ($filter === VisitorFilterEnum::ALL) {
+            return $dailyStats->pluck('date')->map(function ($date) {
+                return Carbon::createFromFormat('Y', $date)->translatedFormat('Y');
+            })->toArray();
+        } else {
+            return $dailyStats->pluck('date')->map(function ($date) {
+                return Carbon::createFromFormat('Y-m-d', $date)->translatedFormat('d F Y');
+            })->toArray();
+        }
+    }
+
+    public function cetak()
+    {
+        $yearlyVisitors = Visitor::groupedStats(VisitorFilterEnum::ALL);
+
+        // Halaman populer
+        $top_pages_visited = Visitor::getTopPagesVisited();
+
+        return view('counter.cetak', compact(
+            'yearlyVisitors',
+            'top_pages_visited'
+        ));
+    }
+
+    public function exportExcel()
+    {
+        $yearlyVisitors = Visitor::groupedStats(VisitorFilterEnum::ALL);
+        $top_pages_visited = Visitor::getTopPagesVisited();
+
+        $profile = Profil::first();
+        $profileArray = [
+            'nama_kabupaten' => $profile->nama_kabupaten,
+            'nama_kecamatan' => $profile->nama_kecamatan,
+        ];
+
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\CounterVisitorExport($yearlyVisitors, $top_pages_visited, $profileArray), 'Cetak Statistik Pengunjung.xlsx');
     }
 
     protected function geTopPage()

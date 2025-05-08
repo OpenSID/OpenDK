@@ -61,6 +61,8 @@ class EventController extends BackEndController
                 return Carbon::parse($row->end)->format('d-m-Y H:i');
             })
             ->addColumn('aksi', function ($row) {
+                $data = [];
+
                 if ($row->status == 'OPEN') {
                     $data['show_url'] = route('event.detail', $row->slug);
 

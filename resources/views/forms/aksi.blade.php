@@ -82,7 +82,7 @@
         </a>
     @endif
     @if (isset($anonim))
-        <a href="javascript:void(0)" class="{!! empty($anonim) ? 'disabled' : '' !!}" title="Ubah Status" data-href="{!! empty($anonim) ? 'javascript:void(0)' : $anonim !!}" data-button="delete" id="anonimModal">
+        <a href="javascript:void(0)" class="{!! empty($anonim) ? 'disabled' : '' !!}" title="Identitas Pelapor" data-href="{!! empty($anonim) ? 'javascript:void(0)' : $anonim !!}" data-button="delete" id="anonimModal">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #252725; border-color: #252725;"><i class="fa fa-user" aria-hidden="true"></i>
             </button>
         </a>

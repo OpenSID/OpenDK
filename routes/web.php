@@ -103,6 +103,10 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/kategori/{slug}', 'PageController@kategoriBerita')->name('berita.kategori');
             });
 
+            // Route untuk survei
+            Route::get('/survei', [PageController::class, 'survei'])->name('survei.index');
+            Route::post('/survei', [PageController::class, 'surveiSubmit'])->name('survei.submit');
+
             Route::group(['prefix' => 'publikasi'], function () {
                 Route::get('galeri', 'PublikasiController@album')->name('publik.publikasi.album');
                 Route::get('galeri/{slug}', 'PublikasiController@galeri')->name('publik.publikasi.galeri');

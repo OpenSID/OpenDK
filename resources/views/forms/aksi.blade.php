@@ -104,10 +104,7 @@
         </a>
     @endif
     @if (isset($download_zip))
-        <a href="{!! empty($download_zip) ? 'javascript:void(0)' : $download_zip !!}" 
-        class="{!! empty($download_zip) ? 'disabled' : '' !!}" 
-        title="Unduh: {{ $nama_file ?? 'Arsip' }}" 
-        data-button="download-zip">
+        <a href="{!! empty($download_zip) ? 'javascript:void(0)' : $download_zip !!}" class="{!! empty($download_zip) ? 'disabled' : '' !!}" title="Unduh: {{ $nama_file ?? 'Arsip' }}" data-button="download-zip">
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;">
                 <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
             </button>

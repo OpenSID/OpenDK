@@ -21,7 +21,7 @@
             @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
             @include('forms.btn-social', ['create_url' => route('data.pengurus.create.arsip', $pengurus_id)])
         </div>
-    
+
         @if ($count_arsip > 0)
             <div class="pull-right">
                 @include('forms.btn-social', ['download_zip' => route('data.pengurus.edit.download.arsip.zip', ['pengurus_id' => $pengurus_id])])
@@ -42,7 +42,7 @@
                     <div class="box-body">
 
                         @include('flash::message')
-                        
+
                         <div>
                             <table class="table table-striped table-bordered">
                                 <thead>
@@ -85,8 +85,7 @@
                         d.status = $('#status').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center',

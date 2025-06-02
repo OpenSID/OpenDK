@@ -52,7 +52,7 @@
                                 [
                                     'bg' => 'bg-gray color-palette',
                                     'label' => 'Tahun Ini',
-                                    'value' =>  $visitors['yearlyVisitors']->page_views ?? 0,
+                                    'value' => $visitors['yearlyVisitors']->page_views ?? 0,
                                     'filter' => \App\Enums\VisitorFilterEnum::THIS_YEAR,
                                 ],
                                 [
@@ -64,21 +64,21 @@
                             ];
                         @endphp
                         @foreach ($visitorArr as $stat)
-                        <div class="col-sm-4 col-xs-6 col-md-2">
-                            <div class="small-box {{ $stat['bg'] }}">
-                                <div class="inner">
-                                    <h3>{{ $stat['value'] }}</h3>
-                                    <p>{{ $stat['label'] }}</p>
+                            <div class="col-sm-4 col-xs-6 col-md-2">
+                                <div class="small-box {{ $stat['bg'] }}">
+                                    <div class="inner">
+                                        <h3>{{ $stat['value'] }}</h3>
+                                        <p>{{ $stat['label'] }}</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                    <a href="{{ route('counter.index', ['filter' => $stat['filter']]) }}" class="small-box-footer">
+                                        Selengkapnya <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
                                 </div>
-                                <div class="icon">
-                                    <i class="ion ion-stats-bars"></i>
-                                </div>
-                                <a href="{{ route('counter.index', ['filter' => $stat['filter']]) }}" class="small-box-footer">
-                                    Selengkapnya <i class="fa fa-arrow-circle-right"></i>
-                                </a>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
                     </div>
                 </div>
 
@@ -145,8 +145,7 @@
                                 <tbody>
                                     @foreach ($top_pages_visited as $index => $page)
                                         <tr>
-                                            <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i
-                                                        class="fa fa-fw fa-link"></i></a> </td>
+                                            <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i class="fa fa-fw fa-link"></i></a> </td>
                                             <td>{{ $page->total_views }}</td>
                                             <td>{{ $page->unique_visitors }}</td>
                                             <td>

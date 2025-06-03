@@ -6,6 +6,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### BUG
 
-1. [#1231](https://github.com/OpenSID/OpenDK/pull/1231) Perbaikan sub judul pada halaman "Media Sosial" hanya "Daftar".
+1. [#1230](https://github.com/OpenSID/OpenDK/issues/1230) Perbaikan sub judul pada halaman "Media Sosial" hanya "Daftar".
+2. [#1228](https://github.com/OpenSID/OpenDK/issues/1228) Perbaikan typo "mengimplentasikan" menjadi "mengimplementasikan" di halaman Permohonan Surat.
 
 #### TEKNIS

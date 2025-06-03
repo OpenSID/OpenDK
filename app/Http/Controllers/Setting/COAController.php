@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,7 +42,7 @@ class COAController extends Controller
 {
     public function index()
     {
-        $page_title       = 'COA';
+        $page_title = 'COA';
         $page_description = 'Daftar COA';
 
         return view('setting.coa.index', compact('page_title', 'page_description'));
@@ -50,7 +50,7 @@ class COAController extends Controller
 
     public function create()
     {
-        $page_title       = "COA";
+        $page_title = 'COA';
         $page_description = 'Tambah COA';
 
         return view('setting.coa.create', compact('page_title', 'page_description'));
@@ -59,24 +59,25 @@ class COAController extends Controller
     public function store(Request $request)
     {
         request()->validate([
-            'type_id'    => 'required',
-            'sub_id'     => 'required',
+            'type_id' => 'required',
+            'sub_id' => 'required',
             'sub_sub_id' => 'required',
-            'coa_name'   => 'required',
-            'id'         => 'required',
+            'coa_name' => 'required',
+            'id' => 'required',
         ]);
 
         try {
             $data = [
-                'type_id'    => $request->input('type_id'),
-                'sub_id'     => $request->input('sub_id'),
+                'type_id' => $request->input('type_id'),
+                'sub_id' => $request->input('sub_id'),
                 'sub_sub_id' => $request->input('sub_sub_id'),
-                'coa_name'   => $request->input('coa_name'),
-                'id'         => $request->input('id'),
+                'coa_name' => $request->input('coa_name'),
+                'id' => $request->input('id'),
             ];
             DB::table('ref_coa')->insert($data);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }
 

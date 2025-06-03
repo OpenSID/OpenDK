@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -45,22 +45,26 @@ class DemoPotensiSeeder extends Seeder
     public function run()
     {
         $kategori = [
-            ['nama_kategori' => 'Kategori 1', 'slug' => 'kategori-1'],
-            ['nama_kategori' => 'Kategori 2', 'slug' => 'kategori-2'],
+            ['nama_kategori' => 'Kategori 1'],
+            ['nama_kategori' => 'Kategori 2'],
         ];
 
-        TipePotensi::insert($kategori);
+        foreach ($kategori as $k) {
+            TipePotensi::create($k);
+        }
+
+        $kategori_id = TipePotensi::first()->id;
 
         $potensi = [
             [
-                'kategori_id' => 1,
+                'kategori_id' => $kategori_id,
                 'nama_potensi' => 'Potensi 1',
                 'deskripsi' => 'Deskripsi potensi 1',
                 'lokasi' => 'Lokasi potensi 1',
                 'file_gambar' => '/img/no-image.png',
             ],
             [
-                'kategori_id' => 1,
+                'kategori_id' => $kategori_id,
                 'nama_potensi' => 'Potensi 2',
                 'deskripsi' => 'Deskripsi potensi 2',
                 'lokasi' => 'Lokasi potensi 2',
@@ -68,6 +72,8 @@ class DemoPotensiSeeder extends Seeder
             ],
         ];
 
-        Potensi::insert($potensi);
+        foreach ($potensi as $p) {
+            Potensi::create($p);
+        }
     }
 }

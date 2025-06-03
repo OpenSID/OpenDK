@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,28 +24,32 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Spatie\Permission\Traits\HasRoles;
+use App\Traits\HandlesResourceDeletion;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use MichaelDzjap\TwoFactorAuth\TwoFactorAuthenticable;
 
 class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
     use HasRoles;
     use Notifiable;
+    use HandlesResourceDeletion;
+    use TwoFactorAuthenticable;
 
     /**
      * Default password.
@@ -69,6 +73,15 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'last_login',
         'pengurus_id',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'image',
     ];
 
     /**
@@ -102,29 +115,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getFotoAttribute()
     {
-        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
-    }
-
-    /**
-     * Uploads an image.
-     *
-     * @param      <type>  $image  The image
-     * @return     <type>  ( description_of_the_return_value )
-     */
-    public function uploadImage($image)
-    {
-        $extension = $image->getClientOriginalExtension();
-        $path      = storage_path('app/public/user/');
-
-        if (!file_exists($path)) {
-            File::makeDirectory($path, 0777, true);
-        }
-
-        $name = $this->id . '.' . $extension;
-        $img  = Image::make($image->getRealPath());
-        $img->save($path . $name);
-
-        return $this->update(['image' => $name]);
+        return $this->attributes['image'] ? Storage::url('user/'.$this->attributes['image']) : null;
     }
 
     public function scopeSuspend($query, $email)
@@ -134,7 +125,6 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * Hash password
-     * @param $input
      */
     public function setPasswordAttribute($input)
     {
@@ -162,5 +152,12 @@ class User extends Authenticatable implements JWTSubject
     public function pengurus()
     {
         return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
+    }
+
+    public function setTwoFactorAuthIdExpired(string $id): void
+    {        
+        $this->setTwoFactorAuthId($id);
+        $attributes = ['expired_at' => now()->addMinutes(config('twofactor-auth.expiry', 2))];
+        $this->twoFactorAuth()->update($attributes);
     }
 }

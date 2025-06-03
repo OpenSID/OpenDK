@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -47,7 +47,7 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $page_title       = 'FAQ';
+        $page_title = 'FAQ';
         $page_description = 'Daftar FAQ';
 
         return view('informasi.faq.index', compact('page_title', 'page_description'));
@@ -61,8 +61,8 @@ class FaqController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('faq');
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('informasi.faq.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.faq.edit', $row->id);
                         $data['delete_url'] = route('informasi.faq.destroy', $row->id);
                     }
 
@@ -87,7 +87,7 @@ class FaqController extends Controller
      */
     public function create()
     {
-        $page_title       = 'FAQ';
+        $page_title = 'FAQ';
         $page_description = 'Tambah FAQ';
 
         return view('informasi.faq.create', compact('page_title', 'page_description'));
@@ -102,13 +102,14 @@ class FaqController extends Controller
     {
         request()->validate([
             'question' => 'required',
-            'answer'   => 'required',
+            'answer' => 'required',
         ]);
 
         try {
             Faq::create($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'FAQ gagal ditambah!');
         }
 
@@ -118,13 +119,13 @@ class FaqController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $faq              = Faq::findOrFail($id);
-        $page_title       = 'FAQ';
+        $faq = Faq::findOrFail($id);
+        $page_title = 'FAQ';
         $page_description = 'Ubah FAQ';
 
         return view('informasi.faq.edit', compact('page_title', 'page_description', 'faq'));
@@ -133,16 +134,16 @@ class FaqController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
-
     public function update(FaqRequest $request, $id)
     {
         try {
             Faq::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'FAQ gagal diubah!');
         }
 
@@ -152,7 +153,7 @@ class FaqController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -161,6 +162,7 @@ class FaqController extends Controller
             Faq::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.faq.index')->with('error', 'FAQ gagal dihapus!');
         }
 

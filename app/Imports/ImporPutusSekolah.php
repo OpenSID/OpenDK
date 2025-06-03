@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,7 +42,7 @@ class ImporPutusSekolah implements ToModel, WithHeadingRow, WithChunkReading, Sh
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -64,17 +64,17 @@ class ImporPutusSekolah implements ToModel, WithHeadingRow, WithChunkReading, Sh
     public function model(array $row)
     {
         return new PutusSekolah([
-            'desa_id'        => $this->request['desa_id'],
-            'siswa_paud'     => $row['siswa_paud_ra'],
+            'desa_id' => $this->request['desa_id'],
+            'siswa_paud' => $row['siswa_paud_ra'],
             'anak_usia_paud' => $row['anak_usia_paud_ra'],
-            'siswa_sd'       => $row['siswa_sd_mi'],
-            'anak_usia_sd'   => $row['anak_usia_sd_mi'],
-            'siswa_smp'      => $row['siswa_smp_mts'],
-            'anak_usia_smp'  => $row['anak_usia_smp_mts'],
-            'siswa_sma'      => $row['siswa_sma_ma'],
-            'anak_usia_sma'  => $row['anak_usia_sma_ma'],
-            'semester'       => $this->request['semester'],
-            'tahun'          => $this->request['tahun'],
+            'siswa_sd' => $row['siswa_sd_mi'],
+            'anak_usia_sd' => $row['anak_usia_sd_mi'],
+            'siswa_smp' => $row['siswa_smp_mts'],
+            'anak_usia_smp' => $row['anak_usia_smp_mts'],
+            'siswa_sma' => $row['siswa_sma_ma'],
+            'anak_usia_sma' => $row['anak_usia_sma_ma'],
+            'semester' => $this->request['semester'],
+            'tahun' => $this->request['tahun'],
         ]);
     }
 }

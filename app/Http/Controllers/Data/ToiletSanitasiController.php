@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -34,9 +34,9 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporToiletSanitasi;
 use App\Models\ToiletSanitasi;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
 use Yajra\DataTables\Facades\DataTables;
 
 class ToiletSanitasiController extends Controller
@@ -48,7 +48,7 @@ class ToiletSanitasiController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Toilet & Sanitasi';
+        $page_title = 'Toilet & Sanitasi';
         $page_description = 'Daftar Toilet & Sanitasi';
 
         return view('data.toilet_sanitasi.index', compact('page_title', 'page_description'));
@@ -61,14 +61,16 @@ class ToiletSanitasiController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(ToiletSanitasi::with(['desa']))
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.toilet-sanitasi.edit', $row->id);
+                $data['edit_url'] = route('data.toilet-sanitasi.edit', $row->id);
                 $data['delete_url'] = route('data.toilet-sanitasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
-            })
-            ->editColumn('bulan', function ($row) {
+            })->addColumn('nama_desa', function ($row) use ($listDesa){
+                return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
+            })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })
             ->rawColumns(['aksi'])->make();
@@ -81,10 +83,10 @@ class ToiletSanitasiController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Toilet & Sanitasi';
+        $page_title = 'Toilet & Sanitasi';
         $page_description = 'Import Toilet & Sanitasi';
-        $years_list       = years_list();
-        $months_list      = months_list();
+        $years_list = years_list();
+        $months_list = months_list();
 
         return view('data.toilet_sanitasi.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
@@ -97,7 +99,7 @@ class ToiletSanitasiController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required|unique:das_toilet_sanitasi',
             'tahun' => 'required|unique:das_toilet_sanitasi',
         ]);
@@ -107,6 +109,7 @@ class ToiletSanitasiController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 
@@ -116,14 +119,14 @@ class ToiletSanitasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $toilet           = ToiletSanitasi::with(['desa'])->findOrFail($id);
-        $page_title       = 'Toilet & Sanitasi';
-        $page_description = 'Ubah Toilet & Sanitasi : ' . $toilet->desa->nama;
+        $toilet = ToiletSanitasi::with(['desa'])->findOrFail($id);
+        $page_title = 'Toilet & Sanitasi';
+        $page_description = 'Ubah Toilet & Sanitasi : '.$toilet->desa->nama;
 
         return view('data.toilet_sanitasi.edit', compact('page_title', 'page_description', 'toilet'));
     }
@@ -131,13 +134,13 @@ class ToiletSanitasiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
         request()->validate([
-            'toilet'   => 'required',
+            'toilet' => 'required',
             'sanitasi' => 'required',
         ]);
 
@@ -145,6 +148,7 @@ class ToiletSanitasiController extends Controller
             ToiletSanitasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -154,7 +158,7 @@ class ToiletSanitasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -163,6 +167,7 @@ class ToiletSanitasiController extends Controller
             ToiletSanitasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }
 

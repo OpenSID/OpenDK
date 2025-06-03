@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -32,12 +32,9 @@
 namespace App\Http\Middleware;
 
 use function array_diff_key;
-
 use Closure;
 use Form;
-
 use Illuminate\Http\Request;
-
 use function session;
 use function sprintf;
 
@@ -46,7 +43,7 @@ class CustomForms
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -58,7 +55,7 @@ class CustomForms
         // with configured default options...
         Form::macro('modelHorizontal', function ($model, $options = []) {
             $options = array_diff_key([
-                'class'        => 'form-horizontal',
+                'class' => 'form-horizontal',
                 'autocomplete' => 'off',
             ], $options) + $options;
 
@@ -70,8 +67,6 @@ class CustomForms
             if ($errors && $errors->has($field)) {
                 return ' has-error';
             }
-
-            return;
         });
 
         // Generate error message if the given field has errors...
@@ -79,8 +74,6 @@ class CustomForms
             if ($errors && $errors->has($field)) {
                 return sprintf('<p class="help-block text-danger">%s</p>', $errors->first($field));
             }
-
-            return;
         });
 
         return $next($request);

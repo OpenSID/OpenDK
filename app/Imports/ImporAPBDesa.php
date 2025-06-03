@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -48,7 +48,6 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
 {
     use Importable;
 
-    /** @var $request */
     protected $request;
 
     public function __construct(array $request)
@@ -72,27 +71,27 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
 
-        foreach ($collection as $value) {
-            if (!in_array($this->request['desa'], $kode_desa)) {
+        foreach ($collection as $index => $value) {
+            if (! in_array($this->request['desa'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [
-                'desa_id'   => $this->request['desa'],
-                'bulan'     => $this->request['bulan'],
-                'tahun'     => $this->request['tahun'],
-                'no_akun'   => $value['no_akun'],
+                'desa_id' => $this->request['desa'],
+                'bulan' => $this->request['bulan'],
+                'tahun' => $this->request['tahun'],
+                'no_akun' => $value['no_akun'],
                 'nama_akun' => $value['nama_akun'],
-                'jumlah'    => $value['jumlah'],
+                'jumlah' => $value['jumlah'],
             ];
 
             AnggaranDesa::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'bulan'        => $insert['bulan'],
-                'tahun'        => $insert['tahun'],
-                'no_akun'      => $value['no_akun'],
+                'desa_id' => $insert['desa_id'],
+                'bulan' => $insert['bulan'],
+                'tahun' => $insert['tahun'],
+                'no_akun' => $value['no_akun'],
             ], $insert);
         }
         DB::commit();

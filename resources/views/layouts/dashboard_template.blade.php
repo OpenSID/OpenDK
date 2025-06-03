@@ -9,6 +9,9 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="mapbox-token" content="{{ App\Models\SettingAplikasi::where('key', 'map_box')->first()?->value ?? '' }}">
+    <meta name="mapbox-default" content="{{ App\Models\SettingAplikasi::where('key', 'jenis_peta')->first()?->value ?? '' }}">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ is_logo($profil->file_logo) }}" />
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
@@ -95,6 +98,7 @@ desired effect
     <script src="{{ asset('/bower_components/admin-lte/dist/js/adminlte.min.js') }}"></script>
     <!-- iCheck -->
     <script src="{{ asset('/bower_components/admin-lte/plugins/iCheck/icheck.min.js') }}"></script>
+    <script src="{{ asset('/js/admin.js') }}"></script>
     @stack('scripts')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.

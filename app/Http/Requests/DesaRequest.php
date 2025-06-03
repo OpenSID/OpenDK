@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -54,15 +54,15 @@ class DesaRequest extends FormRequest
     public function rules()
     {
         if ($this->id) {
-            $id = "," . $this->id;
+            $id = ','.$this->id;
         } else {
-            $id = "";
+            $id = '';
         }
 
         return [
-            'desa_id'      => ['required', 'regex:/^[0-9.]+$/', 'min:13', 'max:13', 'unique:das_data_desa,desa_id' . $id, new ValidDesa()],
-            'nama'         => 'required|string',
-            'website'      => 'nullable|url',
+            'desa_id' => ['required', 'regex:/^[0-9.]+$/', 'min:13', 'max:13', 'unique:das_data_desa,desa_id'.$id, new ValidDesa()],
+            'nama' => 'required|string',
+            'website' => 'nullable|url',
             'luas_wilayah' => 'required|numeric',
         ];
     }

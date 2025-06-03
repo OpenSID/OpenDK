@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -33,6 +33,7 @@ namespace App\Imports;
 
 use App\Models\DataDesa;
 use App\Models\Imunisasi;
+use App\Services\DesaService;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
@@ -48,7 +49,7 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -68,28 +69,30 @@ class ImporImunisasi implements ToCollection, WithHeadingRow, WithChunkReading, 
      * {@inheritdoc}
      */
     public function collection(Collection $collection)
-    {
-        $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
+    {        
+        $kode_desa = Arr::flatten((new DesaService)->listDesa()->pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
 
-        foreach ($collection as $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+        foreach ($collection as $index => $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [
-                'desa_id'           => $value['desa_id'],
-                'bulan'             => $this->request['bulan'],
-                'tahun'             => $this->request['tahun'],
+                'desa_id' => $value['desa_id'],
+                'bulan' => $this->request['bulan'],
+                'tahun' => $this->request['tahun'],
                 'cakupan_imunisasi' => $value['cakupan_imunisasi'],
+                'created_at' => now(),
+                'updated_at' => now(),
             ];
 
             Imunisasi::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
-                'bulan'        => $insert['bulan'],
-                'tahun'        => $insert['tahun'],
+                'desa_id' => $insert['desa_id'],
+                'bulan' => $insert['bulan'],
+                'tahun' => $insert['tahun'],
             ], $insert);
         }
         DB::commit();

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,7 +42,7 @@ class TingkatPendidikanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Tingkat Pendidikan';
+        $page_title = 'Tingkat Pendidikan';
         $page_description = 'Daftar Tingkat Pendidikan';
 
         return view('data.tingkat_pendidikan.index', compact('page_title', 'page_description'));
@@ -55,13 +55,24 @@ class TingkatPendidikanController extends Controller
      */
     public function getData()
     {
-        return DataTables::of(TingkatPendidikan::with(['desa'])->get())
-            ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
+        if (request()->ajax()) {
+            $desa = request()->input('desa');
 
-                return view('forms.aksi', $data);
-            })
-            ->rawColumns(['aksi'])->make();
+            return DataTables::of(
+                TingkatPendidikan::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                        return $query->where('desa_id', $desa);
+                    })
+                    ->with('desa')
+                    ->get()
+                )
+                ->addColumn('aksi', function ($row) {
+                    $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
+
+                    return view('forms.aksi', $data);
+                })
+                ->rawColumns(['aksi'])
+                ->make();
+        }
     }
 
     /**
@@ -71,10 +82,10 @@ class TingkatPendidikanController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Tingkat Pendidikan';
+        $page_title = 'Tingkat Pendidikan';
         $page_description = 'Import Tingkat Pendidikan';
-        $years_list       = years_list();
-        $months_list      = months_list();
+        $years_list = years_list();
+        $months_list = months_list();
 
         return view('data.tingkat_pendidikan.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
@@ -91,6 +102,7 @@ class TingkatPendidikanController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Data gagal diimpor');
         }
 
@@ -100,7 +112,7 @@ class TingkatPendidikanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -109,6 +121,7 @@ class TingkatPendidikanController extends Controller
             TingkatPendidikan::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }
 

@@ -22,14 +22,15 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.jabatan.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                {{-- @include('forms.btn-social', ['import_url' => route('data.jabatan.import')]) --}}
+                @include('forms.btn-social', ['import_url' => route('data.jabatan.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="jabatan-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="width: 5%;">Aksi</th>
                                 <th>Nama</th>
                                 <th>Tupoksi</th>
                             </tr>
@@ -65,7 +66,8 @@
                         data: 'tupoksi',
                         name: 'tupoksi'
                     },
-                ]
+                ],
+                aaSorting: [],
             });
         });
     </script>

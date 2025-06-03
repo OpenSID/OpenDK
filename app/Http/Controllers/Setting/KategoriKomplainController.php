@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,23 +24,24 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Setting;
 
-use App\Http\Controllers\Controller;
-use App\Models\KategoriKomplain;
 use Illuminate\Http\Request;
+use App\Models\KategoriKomplain;
 use Yajra\DataTables\DataTables;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\KategoriKomplainRequest;
 
 class KategoriKomplainController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Kategori Komplain';
+        $page_title = 'Kategori Komplain';
         $page_description = 'Daftar Kategori Komplain';
 
         return view('setting.komplain_kategori.index', compact('page_title', 'page_description'));
@@ -51,7 +52,7 @@ class KategoriKomplainController extends Controller
     {
         return DataTables::of(KategoriKomplain::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('setting.komplain-kategori.edit', $row->id);
+                $data['modal_form'] = $row->id;
                 $data['delete_url'] = route('setting.komplain-kategori.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -59,58 +60,63 @@ class KategoriKomplainController extends Controller
             ->make();
     }
 
-    // Create Action
-    public function create()
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param KategoriKomplainRequest $request
+     * 
+     * @return Response
+     */
+    public function store(KategoriKomplainRequest $request)
     {
-        $page_title       = 'Kategori Komplain';
-        $page_description = 'Tambah Kategori Komplain';
-
-        return view('setting.komplain_kategori.create', compact('page_title', 'page_description'));
-    }
-
-    // Store Data
-    public function store(Request $request)
-    {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
-            $kategori       = new KategoriKomplain($request->all());
-            $kategori->save();
+            KategoriKomplain::create($request->validated());
+
+            session()->flash('success', 'Kategori Komplain berhasil ditambahkan!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
+
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Kategori Komplain gagal dikirim!');
-        }
 
-        return redirect()->route('setting.komplain-kategori.index')->with('success', 'Kategori Komplain berhasil dikirim!');
+            session()->flash('error', 'Kategori Komplain gagal ditambahkan!');
+
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
+        }
     }
 
     public function edit($id)
     {
-        $kategori         = KategoriKomplain::findOrFail($id);
-        $page_title       = 'Kategori Komplain';
-        $page_description = 'Ubah Kategori Komplain : ' . $kategori->nama;
+        $tipe = KategoriKomplain::findOrFail($id);
 
-        return view('setting.komplain_kategori.edit', compact('page_title', 'page_description', 'kategori'));
+        return response()->json($tipe);
     }
 
-    public function update(Request $request, $id)
+    public function update(KategoriKomplainRequest $request, $id)
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
         try {
-            $kategori = KategoriKomplain::findOrFail($id);
-            $kategori->fill($request->all());
-            $kategori->save();
+            KategoriKomplain::findOrFail($id)->update($request->validated());
+            session()->flash('success', 'Kategori Komplain berhasil diupdate!');
+
+            return response()->json([
+                'success' => true,
+                'message' => session('success')
+            ]);
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Kategori Komplain gagal diupdate!');
-        }
+            session()->flash('error', 'Kategori Komplain gagal diupdate!');
 
-        return redirect()->route('setting.komplain-kategori.index')->with('success', 'Kategori Komplain berhasil diupdate!');
+            return response()->json([
+                'success' => false,
+                'message' => session('error')
+            ]);
+        }
     }
 
     public function destroy($id)
@@ -119,6 +125,7 @@ class KategoriKomplainController extends Controller
             KategoriKomplain::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Kategori Komplain gagal dihapus!');
         }
 

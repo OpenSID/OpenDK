@@ -2,7 +2,7 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-circle-left"></i> Kembali</button></a>
+                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
@@ -41,6 +41,25 @@
                     @endif
                 </div>
 
+                <!-- kategori artikel -->
+                <div class="form-group">
+                    <label class="control-label" for="gambar">Kategori</label>
+
+                    {!! Form::select('id_kategori', $kategori, null, ['class' => 'form-control']) !!}
+                    @if ($errors->has('id_kategori'))
+                        <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
+                    @endif
+                </div>
+                <!--
+                <div class="form-group">
+                    {!! Form::label('kategori_id', 'Kategori') !!}
+                    {!! Form::select('kategori_id', $kategori, null, ['class' => 'form-control', 'placeholder' => 'Pilih Kategori']) !!}
+
+                    @if ($errors->has('kategori_id'))
+<span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>
+@endif
+                </div>
+                -->
                 <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 
@@ -52,8 +71,7 @@
             </div>
 
             <div class="box-footer">
-                <button type="reset" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Batal</button>
-                <button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i> Simpan</button>
+                @include('partials.button_reset_submit')
             </div>
         </div>
     </div>

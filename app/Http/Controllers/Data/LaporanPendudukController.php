@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,21 +24,23 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\LaporanPendudukByIdExport;
+use App\Exports\LaporanPendudukExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanPenduduk;
-use App\Models\DataDesa;
 use App\Models\LaporanPenduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
 
@@ -51,17 +53,16 @@ class LaporanPendudukController extends Controller
      */
     public function index(LaporanPenduduk $penduduk)
     {
-        $page_title       = 'Laporan Penduduk';
+        $page_title = 'Laporan Penduduk';
         $page_description = 'Daftar Laporan Penduduk';
-        $list_desa        = DataDesa::get();
+        $view = $this->isDatabaseGabungan() ? 'data.laporan-penduduk.gabungan.index' : 'data.laporan-penduduk.index';
 
-        return view('data.laporan-penduduk.index', compact('page_title', 'page_description', 'list_desa'));
+        return view($view, compact('page_title', 'page_description'));
     }
 
     /**
      * Return datatable Data Laporan Penduduk.
      *
-     * @param Request $request
      * @return DataTables
      */
     public function getData(Request $request)
@@ -88,7 +89,7 @@ class LaporanPendudukController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.laporan-penduduk.destroy', $row->id);
-                $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
+                $data['download_url'] = asset('storage/laporan_penduduk/'.$row->nama_file);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -105,11 +106,12 @@ class LaporanPendudukController extends Controller
             $penduduk = LaporanPenduduk::findOrFail($id);
 
             // Hapus file penduduk
-            Storage::disk('public')->delete('laporan_penduduk/' . $penduduk->nama_file);
+            Storage::disk('public')->delete('laporan_penduduk/'.$penduduk->nama_file);
 
             $penduduk->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.laporan-penduduk.index')->with('error', 'Data gagal dihapus!');
         }
 
@@ -123,7 +125,7 @@ class LaporanPendudukController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Laporan Penduduk';
+        $page_title = 'Laporan Penduduk';
         $page_description = 'Import Laporan Penduduk';
 
         return view('data.laporan-penduduk.import', compact('page_title', 'page_description'));
@@ -159,12 +161,39 @@ class LaporanPendudukController extends Controller
 
             // Proses impor excell
             (new ImporLaporanPenduduk())
-                ->queue($extract . basename($fileExtracted[0]));
+                ->queue($extract.basename($fileExtracted[0]));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 
         return redirect()->route('data.laporan-penduduk.index')->with('success', 'Import data sukses');
+    }
+
+    public function exportExcel()
+    {
+        try {
+            if ($this->isDatabaseGabungan()) {
+                return Excel::download(new LaporanPendudukExport(true), 'laporan-penduduk.xlsx');
+            } else {
+                return Excel::download(new LaporanPendudukExport(false), 'laporan-penduduk.xlsx');
+            }
+        } catch (\Exception $e) {
+            report($e);
+        }
+    }
+
+    public function exportExcelById($data)
+    {
+        try {
+            if ($this->isDatabaseGabungan()) {
+                return Excel::download(new LaporanPendudukByIdExport(true, $data), 'laporan-penduduk.xlsx');
+            } else {
+                return Excel::download(new LaporanPendudukByIdExport(false, $data), 'laporan-penduduk.xlsx');
+            }
+        } catch (\Exception $e) {
+            report($e);
+        }
     }
 }

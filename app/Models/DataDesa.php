@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -44,7 +44,7 @@ class DataDesa extends Model
         'sebutan_desa',
         'website',
         'luas_wilayah',
-        'path'
+        'path',
     ];
 
     /**
@@ -60,9 +60,10 @@ class DataDesa extends Model
 
         $desa = [
             'desa_id' => $this->desa_id,
-            'nama'    => ucwords($this->sebutan_desa . ' ' . $this->nama),
-            'website' => $this->website . 'index.php/feed'
+            'nama' => ucwords($this->sebutan_desa.' '.$this->nama),
+            'website' => $this->website.'index.php/feed',
         ];
+
         return $desa;
     }
 
@@ -96,13 +97,17 @@ class DataDesa extends Model
 
     public function scopeNama($query, $value)
     {
-        return $query->where('nama', str_replace('-', ' ', $value));
+        // Ganti '-' dengan spasi dan hilangkan titik '.'
+        $formattedValue = str_replace('-', ' ', $value);
+    
+        return $query->whereRaw("REPLACE(nama, '.', '') LIKE ?", ['%' . $formattedValue . '%']);
     }
+    
 
     /**
      * Scope query untuk website desa.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWebsiteUrl($query)

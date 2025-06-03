@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -54,19 +54,20 @@ class UserRequest extends FormRequest
     public function rules()
     {
         if ($this->isMethod('put')) {
-            $id = "," . $this->segment(4);
+            $id = ','.$this->segment(4);
             $password = '';
         } else {
-            $id = "";
+            $id = '';
             $password = ['required', 'min:8', 'max:32', new Password()];
         }
+
         return [
-            'name'        => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email'       => 'required|email|unique:users,email' . $id,
-            'phone'       => 'nullable|numeric|digits_between:10,13',
-            'password'    => $password,
-            'address'     => 'required',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'name' => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
+            'email' => 'required|email|unique:users,email'.$id,
+            'phone' => 'nullable|numeric|digits_between:10,13',
+            'password' => $password,
+            'address' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
             'pengurus_id' => 'nullable|integer',
         ];
     }

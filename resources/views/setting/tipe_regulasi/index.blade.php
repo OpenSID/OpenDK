@@ -14,19 +14,16 @@
 
     <section class="content container-fluid">
 
+        <div id="flash-message"></div>
         @include('partials.flash_message')
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('setting.tipe-regulasi.create') }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Tipe</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['modal_url' => '#modal-form'])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="data-komplain-kategori">
+                    <table class="table table-striped table-bordered" id="data-tipe-regulasi">
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
@@ -37,6 +34,7 @@
                 </div>
             </div>
         </div>
+        @include('setting.tipe_regulasi.modal-form')
     </section>
 @endsection
 
@@ -45,7 +43,7 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            var data = $('#data-komplain-kategori').DataTable({
+            var data = $('#data-tipe-regulasi').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{!! route('setting.tipe-regulasi.getdata') !!}",

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,41 +24,43 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Database\Seeders\Demo\DemoFaqSeeder;
+use Database\Seeders\Demo\DemoEventSeeder;
+use Database\Seeders\Demo\DemoPesanSeeder;
 use Database\Seeders\Demo\DemoAKIAKBSeeder;
-use Database\Seeders\Demo\DemoAnggaranRealisasiSeeder;
+use Database\Seeders\Demo\DemoSliderSeeder;
 use Database\Seeders\Demo\DemoAPBDesaSeeder;
 use Database\Seeders\Demo\DemoArtikelSeeder;
+use Database\Seeders\Demo\DemoDokumenSeeder;
+use Database\Seeders\Demo\DemoPotensiSeeder;
+use Database\Seeders\Demo\DemoProsedurSeeder;
+use Database\Seeders\Demo\DemoRegulasiSeeder;
+use Database\Seeders\Demo\DemoImunisasiSeeder;
+use Database\Seeders\Demo\DemoMediaSosialSeeder;
+use Database\Seeders\Demo\DemoPesanDetailSeeder;
+use Database\Seeders\Demo\DemoPutusSekolahSeeder;
+use Database\Seeders\Demo\DemoFasilitasPaudSeeder;
+use Database\Seeders\Demo\DemoDasProfilTableSeeder;
+use Database\Seeders\Demo\DemoProgramBantuanSeeder;
+use Database\Seeders\Demo\DemoSinergiProgramSeeder;
+use Database\Seeders\Demo\DemoToiletSanitasiSeeder;
+use Database\Seeders\Demo\DemoEpidemiPenyakitSeeder;
 use Database\Seeders\Demo\DemoDasDataDesaTableSeeder;
 use Database\Seeders\Demo\DemoDasDataUmumTableSeeder;
 use Database\Seeders\Demo\DemoDasPengurusTableSeeder;
-use Database\Seeders\Demo\DemoDasProfilTableSeeder;
-use Database\Seeders\Demo\DemoDokumenSeeder;
-use Database\Seeders\Demo\DemoEpidemiPenyakitSeeder;
-use Database\Seeders\Demo\DemoEventSeeder;
-use Database\Seeders\Demo\DemoFaqSeeder;
-use Database\Seeders\Demo\DemoFasilitasPaudSeeder;
-use Database\Seeders\Demo\DemoImunisasiSeeder;
-use Database\Seeders\Demo\DemoMediaSosialSeeder;
 use Database\Seeders\Demo\DemoPendudukKeluargaSeeder;
-use Database\Seeders\Demo\DemoPesanDetailSeeder;
-use Database\Seeders\Demo\DemoPesanSeeder;
-use Database\Seeders\Demo\DemoPotensiSeeder;
-use Database\Seeders\Demo\DemoProgramBantuanSeeder;
-use Database\Seeders\Demo\DemoProsedurSeeder;
-use Database\Seeders\Demo\DemoPutusSekolahSeeder;
-use Database\Seeders\Demo\DemoRegulasiSeeder;
-use Database\Seeders\Demo\DemoSinergiProgramSeeder;
-use Database\Seeders\Demo\DemoSliderSeeder;
+use Database\Seeders\Demo\DemoAnggaranRealisasiSeeder;
 use Database\Seeders\Demo\DemoTingkatPendidikanSeeder;
-use Database\Seeders\Demo\DemoToiletSanitasiSeeder;
-use Illuminate\Database\Seeder;
+use Database\Seeders\Demo\DemoDasNavigationTableSeeder;
 
 class DemoDatabaseSeeder extends Seeder
 {
@@ -69,6 +71,8 @@ class DemoDatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         $this->call(DatabaseSeeder::class);
 
         $this->call(DemoDasProfilTableSeeder::class);
@@ -99,5 +103,8 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoMediaSosialSeeder::class);
         $this->call(DemoSinergiProgramSeeder::class);
         $this->call(DemoSliderSeeder::class);
+        $this->call(DemoDasNavigationTableSeeder::class);
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,44 +24,56 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Models\Artikel;
+use App\Models\ArtikelKategori;
+use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
-use App\Models\Artikel;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Yajra\DataTables\DataTables;
 
 class ArtikelController extends Controller
 {
+    use HandlesFileUpload;
+
     public function index()
     {
-        $page_title       = 'Artikel';
+        $page_title = 'Artikel';
         $page_description = 'Daftar Artikel';
 
-        return view('informasi.artikel.index', compact('page_title', 'page_description'));
+        $kategori = \App\Models\ArtikelKategori::get();
+
+        return view('informasi.artikel.index', compact('page_title', 'page_description','kategori'));
     }
 
     public function getDataArtikel(Request $request)
     {
         if ($request->ajax()) {
-            return DataTables::of(Artikel::all())
+            // Mengambil data artikel beserta kategori
+            $data = Artikel::with('kategori')->get();
+            return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('informasi.artikel.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.artikel.edit', $row->id);
                         $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }
 
                     return view('forms.aksi', $data);
+                })
+                ->addColumn('kategori', function ($row) {
+                    // Cek apakah artikel memiliki kategori
+                    return $row->kategori ? $row->kategori->nama_kategori : '-';
                 })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
@@ -80,26 +92,24 @@ class ArtikelController extends Controller
 
     public function create()
     {
-        $page_title       = 'Artikel';
+        $page_title = 'Artikel';
         $page_description = 'Tambah Artikel';
 
-        return view('informasi.artikel.create', compact('page_title', 'page_description'));
+        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori'); // Mengambil nama kategori dan ID
+
+        return view('informasi.artikel.create', compact('page_title', 'page_description', 'kategori'));
     }
 
     public function store(ArtikelRequest $request)
     {
         try {
             $input = $request->all();
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $path = Storage::putFile('public/artikel', $file);
-
-                $input['gambar'] = substr($path, 15) ;
-            }
+            $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             Artikel::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
 
@@ -108,29 +118,24 @@ class ArtikelController extends Controller
 
     public function edit(Artikel $artikel)
     {
-        $page_title       = 'Artikel';
+        $page_title = 'Artikel';
         $page_description = 'Ubah Artikel';
 
-        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description'));
+        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori'); // Mengambil nama kategori dan ID
+
+        return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description', 'kategori'));
     }
 
     public function update(ArtikelRequest $request, Artikel $artikel)
     {
         try {
             $input = $request->all();
-
-            if ($request->hasFile('gambar')) {
-                $file = $request->file('gambar');
-                $path = Storage::putFile('public/artikel', $file);
-
-                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
-
-                $input['gambar'] = substr($path, 15) ;
-            }
+            $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             $artikel->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Artikel gagal dihapus!');
         }
 
@@ -140,11 +145,10 @@ class ArtikelController extends Controller
     public function destroy(Artikel $artikel)
     {
         try {
-            if ($artikel->delete()) {
-                Storage::delete('public/artikel/' . $artikel->getRawOriginal('gambar'));
-            }
+            $artikel->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }
 

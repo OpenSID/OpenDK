@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -33,42 +33,42 @@ return [
 
     'characters' => '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ',
 
-    'default'   => [
-        'length'    => 5,
-        'width'     => 120,
-        'height'    => 36,
-        'quality'   => 90,
+    'default' => [
+        'length' => 5,
+        'width' => 120,
+        'height' => 36,
+        'quality' => 90,
     ],
 
-    'flat'   => [
-        'length'    => 6,
-        'width'     => 160,
-        'height'    => 46,
-        'quality'   => 90,
-        'lines'     => 6,
-        'bgImage'   => false,
-        'bgColor'   => '#ecf2f4',
+    'flat' => [
+        'length' => 6,
+        'width' => 160,
+        'height' => 46,
+        'quality' => 90,
+        'lines' => 6,
+        'bgImage' => false,
+        'bgColor' => '#ecf2f4',
         'fontColors' => ['#2c3e50', '#c0392b', '#16a085', '#c0392b', '#8e44ad', '#303f9f', '#f57c00', '#795548'],
-        'contrast'  => -5,
+        'contrast' => -5,
     ],
 
-    'mini'   => [
-        'length'    => 4,
-        'width'     => 100,
-        'height'    => 34,
+    'mini' => [
+        'length' => 4,
+        'width' => 100,
+        'height' => 34,
     ],
 
-    'inverse'   => [
-        'length'    => 5,
-        'width'     => 120,
-        'height'    => 36,
-        'quality'   => 90,
+    'inverse' => [
+        'length' => 5,
+        'width' => 120,
+        'height' => 36,
+        'quality' => 90,
         'sensitive' => true,
-        'angle'     => 12,
-        'sharpen'   => 10,
-        'blur'      => 2,
-        'invert'    => true,
-        'contrast'  => -5,
-    ]
+        'angle' => 12,
+        'sharpen' => 10,
+        'blur' => 2,
+        'invert' => true,
+        'contrast' => -5,
+    ],
 
 ];

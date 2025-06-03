@@ -22,29 +22,12 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="float-right">
-                    <div class="btn-group">
-                        <a href="{{ route('data.penduduk.import') }}">
-                            <button type="button" class="btn btn-warning btn-sm" title="Unggah Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                        </a>
-                    </div>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.penduduk.import')])
+                @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')])
             </div>
 
             <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Desa</label>
-                            <select class="form-control" id="list_desa">
-                                <option value="Semua">Semua Desa</option>
-                                @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="penduduk-table">

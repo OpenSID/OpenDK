@@ -18,13 +18,11 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('data.toilet-sanitasi.import') }}">
-                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.toilet-sanitasi.import')])
             </div>
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="toilet-table">
                         <thead>
@@ -43,14 +41,22 @@
         </div>
     </section>
 @endsection
+
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
+
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
             var data = $('#toilet-table').DataTable({
                 processing: false,
                 serverSide: false,
-                ajax: "{!! route('data.toilet-sanitasi.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.toilet-sanitasi.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -59,8 +65,8 @@
                         orderable: false
                     },
                     {
-                        data: 'desa.nama',
-                        name: 'desa.nama'
+                        data: 'nama_desa',
+                        name: 'desa_id',
                     },
                     {
                         data: 'toilet',
@@ -82,6 +88,10 @@
                 order: [
                     [1, 'asc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.columns(1).search(this.value).draw();
             });
         });
     </script>

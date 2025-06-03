@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,25 +24,36 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Api\TokenController;
+use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Informasi\EventController;
+use App\Http\Controllers\FrontEnd\PageController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\Setting\COAController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
+use App\Http\Controllers\Setting\NavigationController;
+use App\Http\Controllers\Setting\NavMenuController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\SitemapController;
+use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\BackEnd\EventController;
+use App\Http\Controllers\Setting\PengaturanDatabaseController;
+use App\Http\Controllers\UploadTemporaryImage;
+use App\Http\Controllers\UploadTemporaryImageController;
+use Maatwebsite\Excel\Row;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
@@ -70,26 +81,49 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::group(['middleware' => 'maintenance'], function () {
-
+    // Route::group(['middleware' => 'maintenance'], function () {
+    Route::group(['middleware' => ['maintenance', 'track.visitors']], function () {
         /**
          * Group Routing for Halaman Website
          */
-        Route::namespace('\App\Http\Controllers\Page')->group(function () {
+        Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
             Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
+            /* route kategori */
+            // Redirect dari /kategori ke halaman home secara permanent
+            Route::redirect('kategori', '/', 301);
+            // kategori artikel aka berita dengan slug
+            Route::get('kategori/{slug}', 'PageController@kategori')->name('berita-kategori');
+
             Route::group(['prefix' => 'berita'], function () {
                 Route::permanentRedirect('/', '/');
                 Route::get('{slug}', 'PageController@detailBerita')->name('berita.detail');
+                Route::get('/kategori/{slug}', 'PageController@kategoriBerita')->name('berita.kategori');
             });
+
+            Route::group(['prefix' => 'publikasi'], function () {
+                Route::get('galeri', 'PublikasiController@album')->name('publik.publikasi.album');
+                Route::get('galeri/{slug}', 'PublikasiController@galeri')->name('publik.publikasi.galeri');
+                Route::get('galeri/detail/{slug}', 'PublikasiController@galeri_detail')->name('publik.publikasi.galeri.detail');
+            });
+
+            // Rute untuk kirim dan balas komentar artikel
+            Route::post('comments/store', [PageController::class, 'kirimKomentar'])->name('comments.store');
+            Route::get('comments/modal', [PageController::class, 'modalKirimBalasan'])->name('comments.modal');
+            Route::post('comments/reply', [PageController::class, 'kirimBalasan'])->name('comments.modal.store');
 
             Route::group(['prefix' => 'profil'], function () {
                 Route::get('letak-geografis', 'ProfilController@LetakGeografis')->name('profil.letak-geografis');
                 Route::get('struktur-pemerintahan', 'ProfilController@StrukturPemerintahan')->name('profil.struktur-pemerintahan');
                 Route::get('visi-dan-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
+                Route::get('visi-misi', 'ProfilController@VisiMisi')->name('profil.visi-misi');
+                Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
+                Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
+                Route::get('struktur-organisasi', 'ProfilController@StrukturOrganisasi')->name('profil.struktur-organisasi');
+                Route::get('struktur-organisasi-ajax', 'ProfilController@ajaxBaganPublic')->name('profil.struktur-organisasi-ajax');
             });
 
             Route::group(['prefix' => 'event'], function () {
@@ -166,14 +200,14 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::permanentRedirect('/', '/');
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
+                    Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
+                    Route::get('/jenis-dokumen/{slug}', 'DownloadController@indexJenisDokumen')->name('unduhan.form-dokumen.jenis-dokumen');
+                    Route::get('getData/jenis-dokumen/{slug}', 'DownloadController@getDataByJenisDokumen')->name('unduhan.form-dokumen.getdatabyjenisdokumen');
                 });
             });
 
             Route::get('faq', 'WebFaqController@index')->name('faq');
-        });
-        Route::get('agenda-kegiatan/{slug}', [EventController::class, 'show'])->name('event.show');
 
-        Route::namespace('\App\Http\Controllers\SistemKomplain')->group(function () {
             Route::group(['prefix' => 'sistem-komplain'], function () {
                 Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
                 Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
@@ -206,6 +240,24 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Informasi
          */
+        Route::namespace('\App\Http\Controllers\BackEnd')->group(function () {
+            Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                // Event
+                Route::group(['prefix' => 'event'], function () {
+                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
+                    Route::get('getdata', ['as' => 'informasi.event.getdata', 'uses' => 'EventController@datatables']);
+                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
+                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
+                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
+                    Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
+                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
+                    Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
+                });
+            });
+        });
+        /**
+         * Group Routing for Informasi
+         */
         Route::namespace('\App\Http\Controllers\Informasi')->group(function () {
             Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
                 // Prosedur
@@ -225,6 +277,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'regulasi'], function () {
                     Route::get('/', ['as' => 'informasi.regulasi.index', 'uses' => 'RegulasiController@index']);
                     Route::get('show/{regulasi}', ['as' => 'informasi.regulasi.show', 'uses' => 'RegulasiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.regulasi.getdata', 'uses' => 'RegulasiController@getDataRegulasi']);
                     Route::get('create', ['as' => 'informasi.regulasi.create', 'uses' => 'RegulasiController@create']);
                     Route::post('store', ['as' => 'informasi.regulasi.store', 'uses' => 'RegulasiController@store']);
                     Route::get('edit/{regulasi}', ['as' => 'informasi.regulasi.edit', 'uses' => 'RegulasiController@edit']);
@@ -245,17 +298,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'informasi.faq.destroy', 'uses' => 'FaqController@destroy']);
                 });
 
-                // Events
-                Route::group(['prefix' => 'event', 'excluded_middleware' => 'xss_sanitization'], function () {
-                    Route::get('/', ['as' => 'informasi.event.index', 'uses' => 'EventController@index']);
-                    Route::get('show/{event}', ['as' => 'informasi.event.show', 'uses' => 'EventController@show']);
-                    Route::get('create', ['as' => 'informasi.event.create', 'uses' => 'EventController@create']);
-                    Route::post('store', ['as' => 'informasi.event.store', 'uses' => 'EventController@store']);
-                    Route::get('edit/{event}', ['as' => 'informasi.event.edit', 'uses' => 'EventController@edit']);
-                    Route::post('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
-                    Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
-                });
-
                 // Artikel
                 Route::group(['prefix' => 'artikel', 'excluded_middleware' => 'xss_sanitization'], function () {
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
@@ -265,6 +307,25 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::post('update/{artikel}', ['as' => 'informasi.artikel.update', 'uses' => 'ArtikelController@update']);
                     Route::delete('destroy/{artikel}', ['as' => 'informasi.artikel.destroy', 'uses' => 'ArtikelController@destroy']);
                     Route::get('getdata', ['as' => 'informasi.artikel.getdata', 'uses' => 'ArtikelController@getDataArtikel']);
+                });
+
+                // Route Artikel Kategori
+                Route::group(['prefix' => 'kategori'], function () {
+                    Route::get('/', 'ArtikelKategoriController@index')->name('informasi.artikel-kategori.index');
+                    Route::get('getdata', 'ArtikelKategoriController@getDataKategori')->name('informasi.artikel-kategori.getdata');
+                    Route::get('create', 'ArtikelKategoriController@create')->name('informasi.artikel-kategori.create');
+                    Route::post('store', 'ArtikelKategoriController@store')->name('informasi.artikel-kategori.store');
+                    Route::get('edit/{id}', 'ArtikelKategoriController@edit')->name('informasi.artikel-kategori.edit');
+                    Route::put('update/{id}', 'ArtikelKategoriController@update')->name('informasi.artikel-kategori.update');
+                    Route::delete('destroy/{id}', 'ArtikelKategoriController@destroy')->name('informasi.artikel-kategori.destroy');
+                });
+
+                // Komentar Artikel
+                Route::group(['prefix' => 'komentar-artikel', 'excluded_middleware' => 'xss_sanitization'], function () {
+                    Route::get('/', ['as' => 'informasi.komentar-artikel.index', 'uses' => 'KomentarArtikelController@index']);
+                    Route::get('getdata', ['as' => 'informasi.komentar-artikel.getdata', 'uses' => 'KomentarArtikelController@getDataKomentar']);
+                    Route::post('update-status', ['as' => 'informasi.komentar-artikel.updateStatus', 'uses' => 'KomentarArtikelController@updateStatus']);
+                    Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
                 });
 
                 // Form Dokumen
@@ -284,6 +345,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'potensi'], function () {
                     Route::get('/', ['as' => 'informasi.potensi.index', 'uses' => 'PotensiController@index']);
                     Route::get('show/{potensi}', ['as' => 'informasi.potensi.show', 'uses' => 'PotensiController@show']);
+                    Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
                     Route::get('create', ['as' => 'informasi.potensi.create', 'uses' => 'PotensiController@create']);
                     Route::post('store', ['as' => 'informasi.potensi.store', 'uses' => 'PotensiController@store']);
                     Route::get('edit/{potensi}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);
@@ -297,27 +359,67 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'media-sosial'], function () {
                     Route::get('/', ['as' => 'informasi.media-sosial.index', 'uses' => 'MediaSosialController@index']);
                     Route::get('getdata', ['as' => 'informasi.media-sosial.getdata', 'uses' => 'MediaSosialController@getDataMediaSosial']);
-                    Route::get('show/{id}', ['as' => 'informasi.media-sosial.show', 'uses' => 'MediaSosialController@show']);
+                    Route::get('show/{medsos}', ['as' => 'informasi.media-sosial.show', 'uses' => 'MediaSosialController@show']);
                     Route::get('create', ['as' => 'informasi.media-sosial.create', 'uses' => 'MediaSosialController@create']);
                     Route::post('store', ['as' => 'informasi.media-sosial.store', 'uses' => 'MediaSosialController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.media-sosial.edit', 'uses' => 'MediaSosialController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
+                    Route::get('edit/{medsos}', ['as' => 'informasi.media-sosial.edit', 'uses' => 'MediaSosialController@edit']);
+                    Route::put('update/{medsos}', ['as' => 'informasi.media-sosial.update', 'uses' => 'MediaSosialController@update']);
+                    Route::delete('destroy/{medsos}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
                 });
 
                 // Sinergi Program
                 Route::group(['prefix' => 'sinergi-program'], function () {
                     Route::get('/', ['as' => 'informasi.sinergi-program.index', 'uses' => 'SinergiProgramController@index']);
                     Route::get('getdata', ['as' => 'informasi.sinergi-program.getdata', 'uses' => 'SinergiProgramController@getDataSinergiProgram']);
-                    Route::get('show/{id}', ['as' => 'informasi.sinergi-program.show', 'uses' => 'SinergiProgramController@show']);
+                    Route::get('show/{sinergi}', ['as' => 'informasi.sinergi-program.show', 'uses' => 'SinergiProgramController@show']);
                     Route::get('create', ['as' => 'informasi.sinergi-program.create', 'uses' => 'SinergiProgramController@create']);
                     Route::post('store', ['as' => 'informasi.sinergi-program.store', 'uses' => 'SinergiProgramController@store']);
-                    Route::get('edit/{id}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
-                    Route::put('update/{id}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);
-                    Route::get('urut/{id}/{arah}', ['as' => 'informasi.sinergi-program.urut', 'uses' => 'SinergiProgramController@urut']);
+                    Route::get('edit/{sinergi}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
+                    Route::put('update/{sinergi}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
+                    Route::delete('destroy/{sinergi}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);
+                    Route::get('urut/{sinergi}/{arah}', ['as' => 'informasi.sinergi-program.urut', 'uses' => 'SinergiProgramController@urut']);
                 });
             });
+        });
+
+        /**
+         * Group Routing for Publikasi
+         */
+        Route::namespace('\App\Http\Controllers\Publikasi')->group(function () {
+            Route::group(['prefix' => 'admin/publikasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                // Album
+                Route::group(['prefix' => 'album'], function () {
+                    Route::get('/', ['as' => 'publikasi.album.index', 'uses' => 'AlbumController@index']);
+                    Route::get('create', ['as' => 'publikasi.album.create', 'uses' => 'AlbumController@create']);
+                    Route::get('getdata', ['as' => 'publikasi.album.getdata', 'uses' => 'AlbumController@getDataAlbum']);
+                    Route::post('store', ['as' => 'publikasi.album.store', 'uses' => 'AlbumController@store']);
+                    Route::put('status/{album}', ['as' => 'publikasi.album.status', 'uses' => 'AlbumController@status']);
+                    Route::put('show/{album}', ['as' => 'publikasi.album.show', 'uses' => 'AlbumController@show']);
+                    Route::get('edit/{album}', ['as' => 'publikasi.album.edit', 'uses' => 'AlbumController@edit']);
+                    Route::put('update/{album}', ['as' => 'publikasi.album.update', 'uses' => 'AlbumController@update']);
+                    Route::delete('destroy/{album}', ['as' => 'publikasi.album.destroy', 'uses' => 'AlbumController@destroy']);
+                });
+
+                // Galeri
+                Route::group(['prefix' => 'galeri'], function () {
+                    Route::get('create', ['as' => 'publikasi.galeri.create', 'uses' => 'GaleriController@create']);
+                    Route::post('store', ['as' => 'publikasi.galeri.store', 'uses' => 'GaleriController@store']);
+                    Route::get('/{album}', ['as' => 'publikasi.galeri.index', 'uses' => 'GaleriController@index']);
+                    Route::get(
+                        'getdata/{album}',
+                        ['as' => 'publikasi.galeri.getdata', 'uses' => 'GaleriController@getDatagaleri']
+                    );
+                    Route::put('status/{galeri}', ['as' => 'publikasi.galeri.status', 'uses' => 'GaleriController@status']);
+                    Route::get('edit/{galeri}', ['as' => 'publikasi.galeri.edit', 'uses' => 'GaleriController@edit']);
+                    Route::put('update/{galeri}', ['as' => 'publikasi.galeri.update', 'uses' => 'GaleriController@update']);
+                    Route::delete('destroy/{galeri}', ['as' => 'publikasi.galeri.destroy', 'uses' => 'GaleriController@destroy']);
+                });
+            });
+        });
+
+        Route::group(['prefix' => 'kerjasama'], function () {
+            Route::get('/pendaftaran-kerjasama', \App\Http\Livewire\Kerjasama\PendaftaranKerjasama::class)->name('kerjasama.pendaftaran.kerjasama');
+            Route::get('/template', [\App\Http\Controllers\Kerjasama\PendaftaranKerjasamaController::class, 'dokumen_template'])->name('kerjasama.pendaftaran.kerjasama.template');
         });
 
         /**
@@ -331,6 +433,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{id}', ['as' => 'data.profil.update', 'uses' => 'ProfilController@update']);
                     Route::get('success/{id}', ['as' => 'data.profil.success', 'uses' => 'ProfilController@success']);
                 });
+
+                // pendaftaran kerjasama
+                // Route::group(['prefix' => 'pendaftaran-kerjasama', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+
+                //     Route::get('/', ['as' => 'data.pendaftaran.kerjasama', 'uses' => 'PendaftaranKerjasamaController@index']);
+
+                //     Route::get('/terdaftar', ['as' => 'data.pendaftaran.kerjasama.terdaftar', 'uses' => 'PendaftaranKerjasamaController@terdaftar']);
+                //     Route::get('/form', ['as' => 'data.pendaftaran.kerjasama.form', 'uses' => 'PendaftaranKerjasamaController@form']);
+                //     Route::get('/dokumen_template', ['as' => 'data.pendaftaran.kerjasama.dokumen_template', 'uses' => 'PendaftaranKerjasamaController@dokumen_template']);
+                //     Route::post('/register', ['as' => 'data.pendaftaran.kerjasama.register', 'uses' => 'PendaftaranKerjasamaController@register']);
+                // });
 
                 // Data Umum
                 Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
@@ -360,7 +473,20 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
+                //Arsip
+                Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.arsip');
+                Route::get('pengurus/create/arsip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'create_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.create.arsip');
+                Route::post('pengurus/store/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'storeArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.store.arsip');
+                Route::get('pengurus/penduduk/arsip/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.arsip');
+                Route::delete('pengurus/penduduk/delete/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'deleteDocument'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.delete.document');
+                Route::get('pengurus/penduduk/edit/{document_id}/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'editArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.document');
+                Route::get('download-arsip-zip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsipZip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip.zip');
+                Route::get('download-arsip/{document_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip');
+                Route::get('penduduk-select2', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukSelect2'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.select2');
+            
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);
@@ -368,6 +494,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{id}', ['as' => 'data.penduduk.show', 'uses' => 'PendudukController@show']);
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
+                    Route::get('export-excel', ['as' => 'data.penduduk.export-excel', 'uses' => 'PendudukController@exportExcel']);
+                    Route::get('detail', ['as' => 'data.penduduk.detail', 'uses' => 'PendudukController@detail']);
                 });
 
                 // Keluarga
@@ -405,6 +533,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('download{id}', ['as' => 'data.laporan-penduduk.download', 'uses' => 'LaporanPendudukController@download']);
                     Route::get('import', ['as' => 'data.laporan-penduduk.import', 'uses' => 'LaporanPendudukController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-penduduk.do_import', 'uses' => 'LaporanPendudukController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.laporan-penduduk.export-excel', 'uses' => 'LaporanPendudukController@exportExcel']);
+                    Route::get('export-excel-by-id/{data}', ['as' => 'data.laporan-penduduk.export-excel.by-id', 'uses' => 'LaporanPendudukController@exportExcelById']);
                 });
 
                 // AKI & AKB
@@ -486,7 +616,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'program-bantuan', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.program-bantuan.index', 'uses' => 'ProgramBantuanController@index']);
                     Route::get('getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
-                    Route::get('show/{id}/{id_desa}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
+                    Route::get('show/{id}/{id_desa}/{nama?}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
                 });
@@ -529,6 +659,44 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('rincian/{id}/{desa_id}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
                     Route::get('getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
                 });
+
+                // Lembaga Kategori
+                Route::group(['prefix' => 'kategori-lembaga', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.kategori-lembaga.index', 'uses' => 'KategoriLembagaController@index']);
+                    Route::get('getdata', ['as' => 'data.kategori-lembaga.getdata', 'uses' => 'KategoriLembagaController@getData']);
+                    Route::get('create', ['as' => 'data.kategori-lembaga.create', 'uses' => 'KategoriLembagaController@create']);
+                    Route::post('store', ['as' => 'data.kategori-lembaga.store', 'uses' => 'KategoriLembagaController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.kategori-lembaga.edit', 'uses' => 'KategoriLembagaController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.kategori-lembaga.update', 'uses' => 'KategoriLembagaController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.kategori-lembaga.destroy', 'uses' => 'KategoriLembagaController@destroy']);
+                });
+
+                // Lembaga
+                Route::group(['prefix' => 'lembaga', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                    Route::get('/', ['as' => 'data.lembaga.index', 'uses' => 'LembagaController@index']);
+                    Route::get('getdata', ['as' => 'data.lembaga.getdata', 'uses' => 'LembagaController@getData']);
+                    Route::get('create', ['as' => 'data.lembaga.create', 'uses' => 'LembagaController@create']);
+                    Route::post('store', ['as' => 'data.lembaga.store', 'uses' => 'LembagaController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.lembaga.edit', 'uses' => 'LembagaController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.lembaga.update', 'uses' => 'LembagaController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.lembaga.destroy', 'uses' => 'LembagaController@destroy']);
+
+                    // Lembaga Sub Lembaga Anggota
+                    Route::group(['prefix' => '{slug}/anggota', 'middleware' => ['role:super-admin|administrator-website|admin-desa']], function () {
+                        Route::get('/', ['as' => 'data.lembaga_anggota.index', 'uses' => 'LembagaAnggotaController@index']);
+                        Route::get('getdata', ['as' => 'data.lembaga_anggota.getdata', 'uses' => 'LembagaAnggotaController@getData']);
+                        Route::get('create', ['as' => 'data.lembaga_anggota.create', 'uses' => 'LembagaAnggotaController@create']);
+                        Route::post('store', ['as' => 'data.lembaga_anggota.store', 'uses' => 'LembagaAnggotaController@store']);
+                        Route::get('edit/{id}', ['as' => 'data.lembaga_anggota.edit', 'uses' => 'LembagaAnggotaController@edit']);
+                        Route::put('update/{id}', ['as' => 'data.lembaga_anggota.update', 'uses' => 'LembagaAnggotaController@update']);
+                        Route::delete('destroy/{id}', ['as' => 'data.lembaga_anggota.destroy', 'uses' => 'LembagaAnggotaController@destroy']);
+                    });
+
+                    // Redirect dari /data/lembaga/{slug} ke /data/lembaga/{slug}/anggota
+                    Route::get('{slug}', function ($slug) {
+                        return redirect()->route('data.lembaga_anggota.index', ['slug' => $slug]);
+                    });
+                });
             });
 
             // Admin SIKEMA
@@ -539,6 +707,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::put('update/{id}', ['as' => 'admin-komplain.update', 'uses' => 'AdminKomplainController@update']);
                 Route::delete('destroy/{id}', ['as' => 'admin-komplain.destroy', 'uses' => 'AdminKomplainController@destroy']);
                 Route::put('setuju/{id}', ['as' => 'admin-komplain.setuju', 'uses' => 'AdminKomplainController@disetujui']);
+                Route::put('anonim/{id}', ['as' => 'admin-komplain.anonim', 'uses' => 'AdminKomplainController@anonim']);
                 Route::get('statistik', ['as' => 'admin-komplain.statistik', 'uses' => 'AdminKomplainController@statistik']);
                 Route::get('show/{id}', ['as' => 'admin-komplain.show', 'uses' => 'AdminKomplainController@show']);
                 Route::delete('deletekomentar/{id}', ['as' => 'admin-komplain.deletekomentar', 'uses' => 'AdminKomplainController@deletekomentar']);
@@ -601,7 +770,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'setting'], function () {
             // User Management
-            Route::group(['prefix' => 'user', 'controller' => UserController::class,'middleware' => ['role:super-admin|administrator-website']], function () {
+            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
@@ -615,6 +784,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
+
+            // Widget
+            Route::get('/widget', \App\Http\Livewire\Widget\WidgetController::class)->name('setting.widget');
 
             // Role Management
             Route::group(['prefix' => 'role', 'controller' => RoleController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
@@ -631,7 +803,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'komplain-kategori', 'controller' => KategoriKomplainController::class, 'middleware' => ['role:super-admin|admin-komplain|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.komplain-kategori.index');
                 Route::get('getdata', 'getData')->name('setting.komplain-kategori.getdata');
-                Route::get('create', 'create')->name('setting.komplain-kategori.create');
                 Route::post('store', 'store')->name('setting.komplain-kategori.store');
                 Route::get('edit/{id}', 'edit')->name('setting.komplain-kategori.edit');
                 Route::put('update/{id}', 'update')->name('setting.komplain-kategori.update');
@@ -642,7 +813,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'tipe-regulasi', 'controller' => TipeRegulasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.tipe-regulasi.index');
                 Route::get('getdata', 'getData')->name('setting.tipe-regulasi.getdata');
-                Route::get('create', 'create')->name('setting.tipe-regulasi.create');
                 Route::post('store', 'store')->name('setting.tipe-regulasi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-regulasi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-regulasi.update');
@@ -653,7 +823,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'jenis-penyakit', 'controller' => JenisPenyakitController::class, 'middleware' => ['role:super-admin|admin-puskesmas|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.jenis-penyakit.index');
                 Route::get('getdata', 'getData')->name('setting.jenis-penyakit.getdata');
-                Route::get('create', 'create')->name('setting.jenis-penyakit.create');
                 Route::post('store', 'store')->name('setting.jenis-penyakit.store');
                 Route::get('edit/{id}', 'edit')->name('setting.jenis-penyakit.edit');
                 Route::put('update/{id}', 'update')->name('setting.jenis-penyakit.update');
@@ -664,7 +833,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'tipe-potensi', 'controller' => TipePotensiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.tipe-potensi.index');
                 Route::get('getdata', 'getData')->name('setting.tipe-potensi.getdata');
-                Route::get('create', 'create')->name('setting.tipe-potensi.create');
                 Route::post('store', 'store')->name('setting.tipe-potensi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-potensi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-potensi.update');
@@ -693,10 +861,21 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('generate_id/{type_id}/{sub_id}/{sub_sub_id}', 'generate_id')->name('setting.coa.generate_id');
             });
 
+            // Themes
+            Route::group(['prefix' => 'themes', 'controller' => ThemesController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.themes.index');
+                Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
+                Route::get('rescan', 'rescan')->name('setting.themes.rescan');
+                // post to-upload
+                Route::post('upload', 'upload')->name('setting.themes.upload');
+                Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
+            });
+
             Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.aplikasi.index');
                 Route::get('/edit/{aplikasi}', 'edit')->name('setting.aplikasi.edit');
                 Route::put('/update/{aplikasi}', 'update')->name('setting.aplikasi.update');
+                Route::get('token', [TokenController::class, 'index'])->name('setting.aplikasi.token');
             });
 
             Route::group(['prefix' => 'info-sistem', 'controller' => LogViewerController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
@@ -705,6 +884,50 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
             });
+
+            // Navigasi
+            Route::group(['prefix' => 'navigation', 'controller' => NavigationController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('getdata/{parent_id}', 'getData')->name('setting.navigation.getdata');
+                Route::get('create/{parent_id}', 'create')->name('setting.navigation.create');
+                Route::post('store', 'store')->name('setting.navigation.store');
+                Route::get('edit/{id}', 'edit')->name('setting.navigation.edit');
+                Route::put('update/{id}', 'update')->name('setting.navigation.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.navigation.destroy');
+                Route::get('order/{id}/{direction}', 'order')->name('setting.navigation.order');
+                Route::get('/{parent_id?}', 'index')->name('setting.navigation.index');
+            });
+
+            // Nav Menu
+            Route::group(['prefix' => 'nav-menu', 'controller' => NavMenuController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.navmenu.index');
+                Route::post('store', 'store')->name('setting.navmenu.store');
+            });
+
+            // Pengaturan Database (Backup)
+            Route::group(['prefix' => 'backup-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.pengaturan-database.backup');
+                Route::get('/getdata', 'getDataBackup')->name('setting.pengaturan-database.getdata');
+                Route::post('/backup-running', 'createBackup')->name('setting.pengaturan-database.runbackup');
+                Route::get('/backup-download/{file}', 'downloadBackup')->name('setting.pengaturan-database.download');
+                Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');
+                Route::get('/testing', [PengaturanDatabaseController::class,'testing']);
+            });
+
+            // Pengaturan Database (Restore)
+            Route::group(['prefix' => 'restore-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');
+                Route::post('/restore-running', 'restoreBackup')->name('setting.pengaturan-database.runrestore');
+            });
+
+            // Jenis Dokumen
+            Route::group(['prefix' => 'jenis-dokumen', 'controller' => JenisDokumenController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.jenis-dokumen.index');
+                Route::get('getdata', 'getData')->name('setting.jenis-dokumen.getdata');
+                Route::post('store', 'store')->name('setting.jenis-dokumen.store');
+                Route::get('edit/{id}', 'edit')->name('setting.jenis-dokumen.edit');
+                Route::put('update/{id}', 'update')->name('setting.jenis-dokumen.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-dokumen.destroy');
+            });
         });
 
         /**
@@ -712,6 +935,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'counter'], function () {
             Route::get('/', [CounterController::class, 'index'])->name('counter.index');
+            Route::get('cetak', [CounterController::class, 'cetak'])->name('counter.cetak');
+            Route::get('export-excel', [CounterController::class, 'exportExcel'])->name('counter.export.excel');
         });
     });
 
@@ -734,17 +959,5 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         return DataDesa::paginate(10)->name('api.desa');
     });
 
-    Route::get('/api/list-penduduk', function () {
-        return Penduduk::selectRaw('nik as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(nik) LIKE \'%' . strtolower(request('q')) . '%\'')
-            ->paginate(10);
-    });
-
-    // TODO : Peserta KK gunakan das_keluarga
-    Route::get('/api/list-kk', function () {
-        return Penduduk::selectRaw('no_kk as id, nama as text, nik, nama, alamat, rt, rw, tempat_lahir, tanggal_lahir')
-            ->whereRaw('lower(nama) LIKE \'%' . strtolower(request('q')) . '%\' or lower(no_kk) LIKE \'%' . strtolower(request('q')) . '%\'')
-            ->where('kk_level', 1)
-            ->paginate(10);
-    });
+    Route::get('testEmail', TestEmailController::class)->name('testEmail');
 });

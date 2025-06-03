@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,21 +24,24 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MediaSosialRequest;
 use App\Models\MediaSosial;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\MediaSosialRequest;
 
 class MediaSosialController extends Controller
 {
+    use HandlesFileUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -57,8 +60,8 @@ class MediaSosialController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (!auth()->guest()) {
-                        $data['edit_url']   = route('informasi.media-sosial.edit', $row->id);
+                    if (! auth()->guest()) {
+                        $data['edit_url'] = route('informasi.media-sosial.edit', $row->id);
                         $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
                     }
 
@@ -84,8 +87,8 @@ class MediaSosialController extends Controller
      */
     public function create()
     {
-        $medsos           = null;
-        $page_title       = 'Media Sosial';
+        $medsos = null;
+        $page_title = 'Media Sosial';
         $page_description = 'Tambah Media Sosial';
 
         return view('informasi.media_sosial.create', compact('page_title', 'page_description', 'medsos'));
@@ -100,35 +103,22 @@ class MediaSosialController extends Controller
     {
         try {
             $input = $request->validated();
-            if ($request->hasFile('logo')) {
-                $file     = $request->file('logo');
-                $original_name = strtolower(trim($file->getClientOriginalName()));
-                $file_name = time() . rand(100, 999) . '_' . $original_name;
-                $path     = "storage/medsos/";
-                $file->move($path, $file_name);
-                $input['logo'] = $path . $file_name;
-            }
+            $this->handleFileUpload($request, $input, 'logo', 'medsos');
 
             MediaSosial::create($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Media Sosial gagal disimpan!');
         }
 
         return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil disimpan!');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function edit($id)
+    public function edit(MediaSosial $medsos)
     {
-        $medsos           = MediaSosial::findOrFail($id);
-        $page_title       = 'Media Sosial';
-        $page_description = 'Ubah Media Sosial : ' . $medsos->nama;
+        $page_title = 'Media Sosial';
+        $page_description = 'Ubah Media Sosial : '.$medsos->nama;
 
         return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'medsos'));
     }
@@ -136,51 +126,34 @@ class MediaSosialController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
-
     public function update(MediaSosialRequest $request, $id)
     {
         $medsos = MediaSosial::findOrFail($id);
 
         try {
             $input = $request->validated();
-
-            if ($request->hasFile('logo')) {
-                $file           = $request->file('logo');
-                $original_name  = strtolower(trim($file->getClientOriginalName()));
-                $file_name      = time() . rand(100, 999) . '_' . $original_name;
-                $path           = "storage/medsos/";
-                $file->move($path, $file_name);
-                unlink(base_path('public/' . $medsos->logo));
-                $input['logo'] = $path . $file_name;
-            }
+            $this->handleFileUpload($request, $input, 'logo', 'medsos');
 
             $medsos->update($input);
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Media Sosial gagal diubah!');
         }
 
         return redirect()->route('informasi.media-sosial.index')->with('success', 'Media Sosial berhasil diubah!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return Response
-     */
-    public function destroy($id)
+    public function destroy(MediaSosial $medsos)
     {
         try {
-            $medsos = MediaSosial::findOrFail($id);
-            if ($medsos->delete()) {
-                unlink(base_path('public/' . $medsos->logo));
-            }
+            $medsos->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('informasi.media-sosial.index')->with('error', 'Media Sosial gagal dihapus!');
         }
 

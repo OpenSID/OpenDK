@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -62,30 +62,30 @@ class ImporLaporanPenduduk implements ToCollection, WithHeadingRow, WithChunkRea
 
         try {
             foreach ($collection as $value) {
-                $file_name = $value['desa_id'] . '_laporan_penduduk_' . $value['bulan'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
+                $file_name = $value['desa_id'].'_laporan_penduduk_'.$value['bulan'].'_'.$value['tahun'].'.'.explode('.', $value['nama_file'])[1];
 
                 $insert = [
-                    'judul'                => $value['judul'],
-                    'bulan'                => $value['bulan'],
-                    'tahun'                => $value['tahun'],
-                    'nama_file'            => $file_name,
-                    'desa_id'              => $value['desa_id'],
-                    'id_laporan_penduduk'  => $value['id'],
-                    'imported_at'          => now(),
+                    'judul' => $value['judul'],
+                    'bulan' => $value['bulan'],
+                    'tahun' => $value['tahun'],
+                    'nama_file' => $file_name,
+                    'desa_id' => $value['desa_id'],
+                    'id_laporan_penduduk' => $value['id'],
+                    'imported_at' => now(),
                 ];
 
                 LaporanPenduduk::updateOrInsert([
-                    'desa_id'              => $insert['desa_id'],
-                    'id_laporan_penduduk'  => $insert['id_laporan_penduduk']
+                    'desa_id' => $insert['desa_id'],
+                    'id_laporan_penduduk' => $insert['id_laporan_penduduk'],
                 ], $insert);
 
                 // Hapus file yang lama
-                if (Storage::exists('public/laporan_penduduk/' . $file_name)) {
-                    Storage::delete('public/laporan_penduduk/' . $file_name);
+                if (Storage::exists('public/laporan_penduduk/'.$file_name)) {
+                    Storage::delete('public/laporan_penduduk/'.$file_name);
                 }
 
                 // Pindahkan file yang dibutuhkan saja
-                Storage::move('temp/laporan_penduduk/' . $value['nama_file'], 'public/laporan_penduduk/' . $file_name);
+                Storage::move('temp/laporan_penduduk/'.$value['nama_file'], 'public/laporan_penduduk/'.$file_name);
             }
 
             DB::commit();

@@ -14,18 +14,15 @@
 
     <section class="content container-fluid">
 
+        <div id="flash-message"></div>
+
         @include('partials.flash_message')
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('setting.tipe-potensi.create') }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i> Tambah Kategori</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['modal_url' => '#modal-form'])
             </div>
             <div class="box-body">
-                @include('flash::message')
                 <table class="table table-striped table-bordered" id="data_tipe_potensi">
                     <thead>
                         <tr>
@@ -36,6 +33,7 @@
                 </table>
             </div>
         </div>
+        @include('setting.tipe_potensi.modal-form')
     </section>
 @endsection
 

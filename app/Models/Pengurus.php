@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,23 +24,41 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Models;
 
-use App\Enums\JenisJabatan;
 use App\Enums\Status;
+use App\Enums\JenisJabatan;
+use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pengurus extends Model
 {
+    use HasFactory;
+    use HandlesResourceDeletion;
+
     protected $table = 'das_pengurus';
 
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'foto',
+    ];
 
     protected $with = [
         'jabatan',
@@ -49,12 +67,12 @@ class Pengurus extends Model
     ];
 
     protected $appends = [
-        'namaGelar'
+        'namaGelar',
     ];
 
     public function getFotoAttribute()
     {
-        return $this->attributes['foto'] ? Storage::url('pengurus/' . $this->attributes['foto']) : null;
+        return $this->attributes['foto'] ? Storage::url('pengurus/'.$this->attributes['foto']) : null;
     }
 
     /**
@@ -64,10 +82,10 @@ class Pengurus extends Model
      */
     public function getNamaGelarAttribute()
     {
-        $nama = $this->attributes['gelar_depan'] . ' ' . $this->attributes['nama'];
+        $nama = $this->attributes['gelar_depan'].' '.$this->attributes['nama'];
 
         if ($this->attributes['gelar_belakang']) {
-            $nama = $nama . ', ' . $this->attributes['gelar_belakang'];
+            $nama = $nama.', '.$this->attributes['gelar_belakang'];
         }
 
         return $nama;
@@ -146,5 +164,20 @@ class Pengurus extends Model
         }
 
         return $kecuali;
+    }
+
+    public function scopeListAtasan($query, $id = null)
+    {
+        if ($id) {
+            $query->where('das_pengurus.id', '<>', $id);
+        }
+
+        return $query->select([
+            'das_pengurus.id AS id_pengurus',
+            'ref_jabatan.id AS jabatan_id',
+            'ref_jabatan.nama AS jabatan',
+            'das_pengurus.nama AS nama_pengurus',
+            'das_pengurus.nik'
+        ])->join('ref_jabatan', 'das_pengurus.jabatan_id', '=', 'ref_jabatan.id');
     }
 }

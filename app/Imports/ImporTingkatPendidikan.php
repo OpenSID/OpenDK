@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -45,7 +45,7 @@ class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkR
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -71,28 +71,28 @@ class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkR
         try {
             $import = LogImport::create([
                 'nama_tabel' => 'das_tingkat_pendidikan',
-                'desa_id'    => $this->request['desa_id'],
-                'bulan'      => now()->month,
-                'tahun'      => $this->request['tahun'],
+                'desa_id' => $this->request['desa_id'],
+                'bulan' => now()->month,
+                'tahun' => $this->request['tahun'],
             ]);
 
             foreach ($collection as $value) {
                 $insert = [
-                    'desa_id'                 => $this->request['desa_id'],
-                    'semester'                => $this->request['semester'],
-                    'tahun'                   => $this->request['tahun'],
-                    'tidak_tamat_sekolah'     => $value['tidak_tamat_sekolah'],
-                    'tamat_sd'                => $value['tamat_sd_sederajat'],
-                    'tamat_smp'               => $value['tamat_smp_sederajat'],
-                    'tamat_sma'               => $value['tamat_sma_sederajat'],
+                    'desa_id' => $this->request['desa_id'],
+                    'semester' => $this->request['semester'],
+                    'tahun' => $this->request['tahun'],
+                    'tidak_tamat_sekolah' => $value['tidak_tamat_sekolah'],
+                    'tamat_sd' => $value['tamat_sd_sederajat'],
+                    'tamat_smp' => $value['tamat_smp_sederajat'],
+                    'tamat_sma' => $value['tamat_sma_sederajat'],
                     'tamat_diploma_sederajat' => $value['tamat_diploma_sederajat'],
-                    'import_id'               => $import->id,
+                    'import_id' => $import->id,
                 ];
 
                 TingkatPendidikan::updateOrInsert([
-                    'desa_id'      => $insert['desa_id'],
-                    'semester'     => $insert['semester'],
-                    'tahun'        => $insert['tahun'],
+                    'desa_id' => $insert['desa_id'],
+                    'semester' => $insert['semester'],
+                    'tahun' => $insert['tahun'],
                 ], $insert);
             }
 

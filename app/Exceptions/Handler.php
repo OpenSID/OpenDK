@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -75,30 +75,30 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
-                $profil = Profil::first();
-                $scope->setUser(
-                    [
-                        'nama_provinsi' => $profil->nama_provinsi,
-                        'nama_kabupaten' => $profil->nama_kabupaten,
-                        'nama_kecamatan' => $profil->nama_kecamatan
-                    ]
-                );
-                if (Auth::check()) {
-                    $scope->setUser([
-                        'email' => auth()->user()->email,
-                        'name' => auth()->user()->name,
-                        'role' => Auth::user()->getRoleNames()
-                    ]);
-                }
-                $scope->setTags([
-                    'kecamatan' =>  $profil->nama_kecamatan,
-                    'versi' => config('app.version')
-                ]);
-            });
+        // $this->reportable(function (Throwable $e) {
+        //     \Sentry\configureScope(function (\Sentry\State\Scope $scope): void {
+        //         $profil = Profil::first();
+        //         $scope->setUser(
+        //             [
+        //                 'nama_provinsi' => $profil->nama_provinsi,
+        //                 'nama_kabupaten' => $profil->nama_kabupaten,
+        //                 'nama_kecamatan' => $profil->nama_kecamatan,
+        //             ]
+        //         );
+        //         if (Auth::check()) {
+        //             $scope->setUser([
+        //                 'email' => auth()->user()->email,
+        //                 'name' => auth()->user()->name,
+        //                 'role' => Auth::user()->getRoleNames(),
+        //             ]);
+        //         }
+        //         $scope->setTags([
+        //             'kecamatan' => $profil->nama_kecamatan,
+        //             'versi' => config('app.version'),
+        //         ]);
+        //     });
 
-            Integration::captureUnhandledException($e);
-        });
+        //     Integration::captureUnhandledException($e);
+        // });
     }
 }

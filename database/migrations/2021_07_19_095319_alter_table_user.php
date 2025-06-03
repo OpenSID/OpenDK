@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -46,7 +46,7 @@ class AlterTableUser extends Migration
         // Gabung kolom first_name dan last_name
         DB::table('users')
             ->update([
-                "first_name" => DB::raw("CONCAT(`first_name`, ' ', `last_name`)"),
+                'first_name' => DB::raw("CONCAT(`first_name`, ' ', `last_name`)"),
             ]);
         // Pakai DB::statement karena ada kolom enum di tabel users
         DB::statement('ALTER TABLE users CHANGE `first_name` `name` VARCHAR(191) default null');

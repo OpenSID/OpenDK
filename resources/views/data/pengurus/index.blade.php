@@ -22,7 +22,14 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.pengurus.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
+
+                {{-- button bagan --}}
+                <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">
+                    <button type="button" class="btn btn-success btn-sm btn-social" title="Bagan Organisasi">
+                        <i class="fa fa-pie-chart"></i>Bagan Organisasi
+                    </button>
+                </a>
             </div>
             <div class="box-body">
                 <div class="row">
@@ -41,7 +48,7 @@
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 110px;">Aksi</th>
+                                <th style="min-width: 170px;">Aksi</th>
                                 <th>Foto</th>
                                 <th style="min-width: 150px;">Nama, NIP, NIK</th>
                                 <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
@@ -149,7 +156,8 @@
                         data: 'masa_jabatan',
                         name: 'masa_jabatan'
                     },
-                ]
+                ],
+                aaSorting: [],
             });
 
             $('#status').on('change', function(e) {

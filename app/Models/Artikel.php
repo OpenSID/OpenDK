@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,34 +24,49 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Models;
 
-use Cviebrock\EloquentSluggable\Sluggable;
+use App\Traits\HandlesResourceDeletion;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Artikel extends Model
 {
     use Sluggable;
+    use HasFactory;
+    use HandlesResourceDeletion;
 
     protected $table = 'das_artikel';
 
     protected $fillable = [
+        'id_kategori',
         'judul',
         'gambar',
+        'kategori_id',
         'isi',
-        'status'
+        'status',
+    ];
+
+    /**
+     * Daftar field-file yang harus dihapus.
+     *
+     * @var array
+     */
+    protected $resources = [
+        'gambar',
     ];
 
     /**
      * Return the sluggable configuration array for this model.
-     *
-     * @return array
      */
     public function sluggable(): array
     {
@@ -75,5 +90,22 @@ class Artikel extends Model
     public function scopeStatus($query, $value = 1)
     {
         return $query->where('status', $value);
+    }
+
+    // Relasi ke ArtikelKategori (Many-to-One)
+    public function kategori()
+    {
+        return $this->belongsTo(ArtikelKategori::class, 'id_kategori');
+
+    }
+    // Relasi dengan model Comment
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'das_artikel_id')->orderBy('created_at', 'desc');
+    }
+
+    public function getLinkAttribute(): string
+    {
+        return  Str::replaceFirst(url('/'), '', route('berita.detail', ['slug' => $this->slug]));
     }
 }

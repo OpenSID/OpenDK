@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -65,64 +65,64 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
     {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
 
-        foreach ($collection as $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+        foreach ($collection as $index => $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
 
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                 Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
-                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
             $insert = [
-                'nik'                   => $value['nomor_nik'],
-                'nama'                  => $value['nama'],
-                'no_kk'                 => $value['nomor_kk'],
-                'sex'                   => $value['jenis_kelamin'],
-                'tempat_lahir'          => $value['tempat_lahir'],
-                'tanggal_lahir'         => $value['tanggal_lahir'],
-                'agama_id'              => $value['agama'],
-                'pendidikan_kk_id'      => $value['pendidikan_dlm_kk'],
-                'pendidikan_sedang_id'  => $value['pendidikan_sdg_ditempuh'],
-                'pekerjaan_id'          => $value['pekerjaan'],
-                'status_kawin'          => $value['kawin'],
-                'kk_level'              => $value['hubungan_keluarga'],
-                'warga_negara_id'       => $value['kewarganegaraan'],
-                'nama_ibu'              => $value['nama_ibu'],
-                'nama_ayah'             => $value['nama_ayah'],
-                'golongan_darah_id'     => $value['gol_darah'],
-                'akta_lahir'            => $value['akta_lahir'],
-                'dokumen_pasport'       => $value['nomor_dokumen_pasport'],
+                'nik' => $value['nomor_nik'],
+                'nama' => $value['nama'],
+                'no_kk' => $value['nomor_kk'],
+                'sex' => $value['jenis_kelamin'],
+                'tempat_lahir' => $value['tempat_lahir'],
+                'tanggal_lahir' => $value['tanggal_lahir'],
+                'agama_id' => $value['agama'],
+                'pendidikan_kk_id' => $value['pendidikan_dlm_kk'],
+                'pendidikan_sedang_id' => $value['pendidikan_sdg_ditempuh'],
+                'pekerjaan_id' => $value['pekerjaan'],
+                'status_kawin' => $value['kawin'],
+                'kk_level' => $value['hubungan_keluarga'],
+                'warga_negara_id' => $value['kewarganegaraan'],
+                'nama_ibu' => $value['nama_ibu'],
+                'nama_ayah' => $value['nama_ayah'],
+                'golongan_darah_id' => $value['gol_darah'],
+                'akta_lahir' => $value['akta_lahir'],
+                'dokumen_pasport' => $value['nomor_dokumen_pasport'],
                 'tanggal_akhir_pasport' => $value['tanggal_akhir_pasport'],
-                'dokumen_kitas'         => $value['nomor_dokumen_kitas'],
-                'ayah_nik'              => $value['nik_ayah'],
-                'ibu_nik'               => $value['nik_ibu'],
-                'akta_perkawinan'       => $value['nomor_akta_perkawinan'],
-                'tanggal_perkawinan'    => $value['tanggal_perkawinan'],
-                'akta_perceraian'       => $value['nomor_akta_perceraian'],
-                'tanggal_perceraian'    => $value['tanggal_perceraian'],
-                'cacat_id'              => $value['cacat'],
-                'cara_kb_id'            => $value['cara_kb'],
-                'hamil'                 => $value['hamil'],
+                'dokumen_kitas' => $value['nomor_dokumen_kitas'],
+                'ayah_nik' => $value['nik_ayah'],
+                'ibu_nik' => $value['nik_ibu'],
+                'akta_perkawinan' => $value['nomor_akta_perkawinan'],
+                'tanggal_perkawinan' => $value['tanggal_perkawinan'],
+                'akta_perceraian' => $value['nomor_akta_perceraian'],
+                'tanggal_perceraian' => $value['tanggal_perceraian'],
+                'cacat_id' => $value['cacat'],
+                'cara_kb_id' => $value['cara_kb'],
+                'hamil' => $value['hamil'],
 
                 // Tambahan
-                'foto'            => $value['foto'],
+                'foto' => $value['foto'],
                 'alamat_sekarang' => $value['alamat_sekarang'],
-                'alamat'          => $value['alamat'],
-                'dusun'           => $value['dusun'],
-                'rw'              => $value['rw'],
-                'rt'              => $value['rt'],
-                'desa_id'         => $value['desa_id'],
-                'id_pend_desa'    => $value['id'],
-                'status_dasar'    => $value['status_dasar'],
-                'status_rekam'    => $value['status_rekam'],
-                'created_at'      => $value['created_at'],
-                'updated_at'      => $value['updated_at'],
-                'imported_at'     => now(),
+                'alamat' => $value['alamat'],
+                'dusun' => $value['dusun'],
+                'rw' => $value['rw'],
+                'rt' => $value['rt'],
+                'desa_id' => $value['desa_id'],
+                'id_pend_desa' => $value['id'],
+                'status_dasar' => $value['status_dasar'],
+                'status_rekam' => $value['status_rekam'],
+                'created_at' => $value['created_at'],
+                'updated_at' => $value['updated_at'],
+                'imported_at' => now(),
             ];
 
             Penduduk::updateOrInsert([
-                'desa_id'      => $insert['desa_id'],
+                'desa_id' => $insert['desa_id'],
                 'id_pend_desa' => $insert['id_pend_desa'],
             ], $insert);
         }

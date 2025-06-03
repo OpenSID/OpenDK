@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -45,46 +45,45 @@ class DasProfilTableSeeder extends Seeder
     {
         $socialmedia = [
             0 => [
-                "icon" => "fa fa-facebook",
-                "link" => null
+                'icon' => 'fa fa-facebook',
+                'link' => null,
             ],
             1 => [
-                "icon" => "fa fa-twitter",
-                "link" => null
+                'icon' => 'fa fa-twitter',
+                'link' => null,
             ],
             2 => [
-                "icon" => "fa fa-instagram",
-                "link" => null
+                'icon' => 'fa fa-instagram',
+                'link' => null,
             ],
             3 => [
-                "icon" => "fa fa-youtube",
-                "link" => null
+                'icon' => 'fa fa-youtube',
+                'link' => null,
             ],
         ];
 
         DB::table('das_profil')->truncate();
 
         DB::table('das_profil')->insert([
-            'id'                              => 1,
-            'provinsi_id'                     => null,
-            'nama_provinsi'                   => null,
-            'kabupaten_id'                    => null,
-            'nama_kabupaten'                  => null,
-            'kecamatan_id'                    => null,
-            'nama_kecamatan'                  => null,
-            'alamat'                          => null,
-            'kode_pos'                        => null,
-            'telepon'                         => null,
-            'email'                           => null,
-            'tahun_pembentukan'               => null,
-            'dasar_pembentukan'               => null,
-            'file_struktur_organisasi'        => null,
-            'file_logo'                       => null,
-            'visi'                            => null,
-            'misi'                            => null,
-            'socialmedia'                     => json_encode($socialmedia),
-            'created_at'                      => now(),
-            'updated_at'                      => now(),
+            'id' => 1,
+            'provinsi_id' => null,
+            'nama_provinsi' => null,
+            'kabupaten_id' => null,
+            'nama_kabupaten' => null,
+            'kecamatan_id' => null,
+            'nama_kecamatan' => null,
+            'alamat' => null,
+            'kode_pos' => null,
+            'telepon' => null,
+            'email' => null,
+            'tahun_pembentukan' => null,
+            'dasar_pembentukan' => null,
+            'file_struktur_organisasi' => null,
+            'file_logo' => null,
+            'visi' => null,
+            'misi' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }

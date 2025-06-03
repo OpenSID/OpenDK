@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -65,41 +65,41 @@ class ImporLaporanApbdes implements ToCollection, WithHeadingRow, WithChunkReadi
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
         DB::beginTransaction(); //multai transaction
 
-        foreach ($collection as $value) {
-            if (!in_array($value['desa_id'], $kode_desa)) {
+        foreach ($collection as $index => $value) {
+            if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
 
                 DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                 Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
-                throw  new Exception('kode Desa tidak terdaftar . kode desa yang bermasalah : '. $value['desa_id']);
+                throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 
-            $file_name = $value['desa_id'] . '_' . $value['id'] . '_' . $value['nama_file'];
+            $file_name = $value['desa_id'].'_'.$value['id'].'_'.$value['nama_file'];
 
             $insert = [
-                'judul'                => $value['judul'],
-                'tahun'                => $value['tahun'],
-                'semester'             => $value['semester'],
-                'nama_file'            => $file_name,
-                'desa_id'              => $value['desa_id'],
-                'id_apbdes'            => $value['id'],
-                'created_at'           => $value['created_at'],
-                'updated_at'           => $value['updated_at'],
-                'imported_at'          => now(),
+                'judul' => $value['judul'],
+                'tahun' => $value['tahun'],
+                'semester' => $value['semester'],
+                'nama_file' => $file_name,
+                'desa_id' => $value['desa_id'],
+                'id_apbdes' => $value['id'],
+                'created_at' => $value['created_at'],
+                'updated_at' => $value['updated_at'],
+                'imported_at' => now(),
             ];
 
             LaporanApbdes::updateOrInsert([
-                'desa_id'              => $insert['desa_id'],
-                'id_apbdes'            => $insert['id_apbdes']
+                'desa_id' => $insert['desa_id'],
+                'id_apbdes' => $insert['id_apbdes'],
             ], $insert);
 
             // Hapus file yang lama
-            if (Storage::exists('public/apbdes/' . $file_name)) {
-                Storage::delete('public/apbdes/' . $file_name);
+            if (Storage::exists('public/apbdes/'.$file_name)) {
+                Storage::delete('public/apbdes/'.$file_name);
             }
 
             // Pindahkan file yang dibutuhkan
-            Storage::move('temp/apbdes/' . $value['nama_file'], 'public/apbdes/' . $file_name);
+            Storage::move('temp/apbdes/'.$value['nama_file'], 'public/apbdes/'.$file_name);
         }
 
         DB::commit(); // commit data dan simpan ke dalam database

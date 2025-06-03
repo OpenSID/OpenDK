@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -47,19 +47,19 @@ class DemoPesanDetailSeeder extends Seeder
     public function run()
     {
         $defaultCounter = 150;
-        if (env("truncate", 0) === "1") {
+        if (env('truncate', 0) === '1') {
             Schema::disableForeignKeyConstraints();
-            $this->command->info("truncating...");
+            $this->command->info('truncating...');
             DB::table('das_pesan_detail')->truncate();
             Schema::enableForeignKeyConstraints();
         }
 
-        $faker = Factory::create("id-ID");
+        $faker = Factory::create('id-ID');
         $pesan = Pesan::skip(0)->take(20);
         $pesan_id = $pesan->pluck('id');
 
         for ($i = 1; $i <= $defaultCounter; $i++) {
-            DB::table("das_pesan_detail")->insert([
+            DB::table('das_pesan_detail')->insert([
                 'pesan_id' => $faker->randomElement($pesan_id),
                 'text' => $faker->text,
                 'pengirim' => 'desa',

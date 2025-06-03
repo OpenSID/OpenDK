@@ -18,13 +18,11 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('data.tingkat-pendidikan.import') }}">
-                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.tingkat-pendidikan.import')])
             </div>
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="tingkat-pendidikan">
                         <thead>
@@ -47,14 +45,22 @@
         </div>
     </section>
 @endsection
+
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
+
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
             var data = $('#tingkat-pendidikan').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.tingkat-pendidikan.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.tingkat-pendidikan.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -99,6 +105,10 @@
                 order: [
                     [1, 'asc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
             });
         });
     </script>

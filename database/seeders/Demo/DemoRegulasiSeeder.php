@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,14 +24,16 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace Database\Seeders\Demo;
 
+use App\Models\Profil;
 use App\Models\Regulasi;
+use App\Models\TipeRegulasi;
 use Illuminate\Database\Seeder;
 
 class DemoRegulasiSeeder extends Seeder
@@ -43,18 +45,21 @@ class DemoRegulasiSeeder extends Seeder
      */
     public function run()
     {
+        $profil_id = Profil::first()->id;
+        $tipe_regulasi = TipeRegulasi::first()->id;
+
         $data = [
             [
-                'profil_id' => 1,
-                'tipe_regulasi' => 2,
+                'profil_id' => $profil_id,
+                'tipe_regulasi' => $tipe_regulasi,
                 'judul' => 'Regulasi 1',
                 'deskripsi' => 'Deskripsi regulasi 1',
                 'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
                 'mime_type' => 'pdf',
             ],
             [
-                'profil_id' => 1,
-                'tipe_regulasi' => 2,
+                'profil_id' => $profil_id,
+                'tipe_regulasi' => $tipe_regulasi,
                 'judul' => 'Regulasi 2',
                 'deskripsi' => 'Deskripsi regulasi 2',
                 'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
@@ -62,6 +67,8 @@ class DemoRegulasiSeeder extends Seeder
             ],
         ];
 
-        Regulasi::insert($data);
+        foreach ($data as $regulasi) {
+            Regulasi::create($regulasi);
+        }
     }
 }

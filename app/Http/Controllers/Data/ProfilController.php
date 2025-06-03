@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -46,18 +46,19 @@ class ProfilController extends Controller
      */
     public function index()
     {
-        $profil           = $this->profil;
-        $page_title       = 'Profil';
+        $profil = $this->profil;
+        $page_title = 'Profil';
         $page_description = 'Data Profil';
-        $status_pantau    = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
+        $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
+        $adaDesa       = DataUmum::where('profil_id', $profil->id)->exists() && $profil->provinsi_id != null;
 
-        return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau'));
+        return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau', 'adaDesa'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(ProfilRequest $request, $id)
@@ -68,28 +69,29 @@ class ProfilController extends Controller
 
             $dataumum = DataUmum::where('profil_id', $id)->first();
 
-            if ($request->file('file_struktur_organisasi') == "") {
+            if ($request->file('file_struktur_organisasi') == '') {
                 $profil->file_struktur_organisasi = $profil->file_struktur_organisasi;
             } else {
-                $file     = $request->file('file_struktur_organisasi');
+                $file = $request->file('file_struktur_organisasi');
                 $fileName = $file->getClientOriginalName();
-                $request->file('file_struktur_organisasi')->move("storage/profil/struktur_organisasi/", $fileName);
-                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/' . $fileName;
+                $request->file('file_struktur_organisasi')->move('storage/profil/struktur_organisasi/', $fileName);
+                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/'.$fileName;
             }
 
-            if ($request->file('file_logo') == "") {
+            if ($request->file('file_logo') == '') {
                 $profil->file_logo = $profil->file_logo;
             } else {
-                $fileLogo     = $request->file('file_logo');
+                $fileLogo = $request->file('file_logo');
                 $fileLogoName = $fileLogo->getClientOriginalName();
-                $request->file('file_logo')->move("storage/profil/file_logo/", $fileLogoName);
-                $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
+                $request->file('file_logo')->move('storage/profil/file_logo/', $fileLogoName);
+                $profil->file_logo = 'storage/profil/file_logo/'.$fileLogoName;
             }
 
             $profil->update();
             $dataumum->update();
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
 
@@ -99,12 +101,12 @@ class ProfilController extends Controller
     /**
      * Redirect to edit Data Umum if success
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function success($id)
     {
-        $page_title       = 'Profil';
+        $page_title = 'Profil';
         $page_description = 'Konfirmasi?';
 
         return view('data.profil.save_success', compact('id', 'page_title', 'page_description'));

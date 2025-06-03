@@ -57,6 +57,14 @@
                                     <a href="{{ route('informasi.artikel.index') }}"><i class="fa fa-circle-o"></i>Artikel</a>
                                 </li>
                             @endrole
+                            @role('super-admin|admin-kecamatan|administrator-website|kontributor-artikel')
+                                <li {{ Request::is(['informasi/kategori*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.artikel-kategori.index') }}"><i class="fa fa-circle-o"></i>Artikel Kategori</a>
+                                </li>
+                                <li {{ Request::is(['informasi/komentar-artikel*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.komentar-artikel.index') }}"><i class="fa fa-circle-o"></i>Komentar Artikel</a>
+                                </li>
+                            @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
                                 <li {{ Request::is(['informasi/faq*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('informasi.faq.index') }}"><i class="fa fa-circle-o"></i>FAQ</a>
@@ -80,6 +88,41 @@
                         </ul>
                     </li>
                 @endif
+
+                @if ($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website', 'kontributor-artikel']))
+                    <li class="treeview {{ Request::is(['admin/publikasi/*']) ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-picture-o"></i> <span>Publikasi</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                                <li {{ Request::is(['admin/publikasi/album*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('publikasi.album.index') }}"><i class="fa fa-circle-o"></i>Album</a>
+                                </li>
+                            @endrole
+                        </ul>
+                    </li>
+                @endif
+
+                @if ($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website']))
+                    <li class="treeview {{ Request::is(['kerjasama/*']) ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-handshake-o"></i> <span>Kerjasama</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @role('super-admin|admin-kecamatan|administrator-website')
+                                <li {{ Request::is(['kerjasama/pendaftaran-kerjasama*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('kerjasama.pendaftaran.kerjasama') }}"><i class="fa fa-circle-o"></i>Pendaftaran Kerjasama</a>
+                                </li>
+                            @endrole
+                        </ul>
+                    </li>
+                @endif
+
                 @if (!$user->hasrole(['admin-komplain', 'kontributor-artikel']))
                     <li class="treeview {{ Request::is(['data/*']) ? 'active' : '' }}">
                         <a href="#"><i class="fa fa-database"></i> <span>Data</span><span class="pull-right-container">
@@ -230,6 +273,26 @@
                                     <a href="{{ route('data.pembangunan.index') }}"><i class="fa fa-circle-o"></i>Pembangunan</a>
                                 </li>
                             @endif
+
+                            <!-- Kelola Lembaga -->
+                            @if ($user->hasrole(['super-admin', 'admin-desa', 'admin-kecamatan', 'administrator-website']))
+                                <li class="treeview {{ Request::is(['data/kategori-lembaga*', 'data/lembaga*']) ? 'active' : '' }}">
+                                    <a href="#"><i class="fa fa-circle-o"></i>Lembaga
+                                        <span class="pull-right-container">
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li {{ Request::is(['data/lembaga*']) ? 'class=active' : '' }}>
+                                            <a href="{{ route('data.lembaga.index') }}"><i class="fa fa-circle-o"></i>Lembaga</a>
+                                        </li>
+                                        <li {{ Request::is(['data/kategori-lembaga*']) ? 'class=active' : '' }}>
+                                            <a href="{{ route('data.kategori-lembaga.index') }}"><i class="fa fa-circle-o"></i>Kategori Lembaga</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            @endif
+
                         </ul>
                     </li>
                 @endif
@@ -287,6 +350,15 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
+                            <li {{ Request::is(['setting.navmenu*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.navmenu.index') }}"><i class="fa fa-circle-o"></i>Menu</a>
+                            </li>
+                            <li {{ Request::is(['setting.widget*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.widget') }}"><i class="fa fa-circle-o"></i>Widget</a>
+                            </li>
+                            {{-- <li {{ Request::is(['setting/navigation*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.navigation.index') }}"><i class="fa fa-circle-o"></i>Navigasi</a>
+                            </li> --}}
                             <li {{ Request::is(['setting/tipe-potensi*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.tipe-potensi.index') }}"><i class="fa fa-circle-o"></i>Kategori Potensi</a>
                             </li>
@@ -308,6 +380,11 @@
                                 </li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/jenis-dokumen*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('setting.jenis-dokumen.index') }}"><i class="fa fa-circle-o"></i>Jenis Dokumen</a>
+                                </li>
+                            @endif
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/slide*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('setting.slide.index') }}"><i class="fa fa-circle-o"></i>Slide</a>
                                 </li>
@@ -322,6 +399,9 @@
                                     href="{{ route('setting.hasrole.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a></li>
                         @endif --}}
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/themes*']) ? 'class=active' : '' }}><a href="{{ route('setting.themes.index') }}"><i class="fa fa-circle-o"></i>Themes</a></li>
+                            @endif
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
@@ -330,6 +410,12 @@
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
                             @endif
+
+                            {{-- menu backup database --}}
+                            <li {{ Request::is(['setting/backup-database', 'setting/restore-database']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.pengaturan-database.backup') }}"><i class="fa fa-circle-o"></i>Pengaturan Database</a>
+                            </li>
+
                         </ul>
                     </li>
                 @endif
@@ -338,7 +424,8 @@
             <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
                 <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                     <span class="pull-right-container">
-                        <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
+                        {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
+                        <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>
                     </span>
                 </a>
             </li>

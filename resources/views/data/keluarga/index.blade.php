@@ -22,6 +22,8 @@
 
         <div class="box box-primary">
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="keluarga-table">
                         <thead>
@@ -45,15 +47,23 @@
     </section>
 @endsection
 
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#list_desa').select2();
+
             var data = $('#keluarga-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.keluarga.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.keluarga.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -105,6 +115,10 @@
                 order: [
                     [2, 'asc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
             });
         });
     </script>

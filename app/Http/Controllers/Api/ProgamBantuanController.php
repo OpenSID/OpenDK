@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -59,23 +59,24 @@ class ProgamBantuanController extends Controller
             $zip->close();
 
             (new SinkronBantuan())
-                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.$csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
+
             return response()->json([
-                "status" => "danger",
-                "message" => $e->getMessage(),
+                'status' => 'danger',
+                'message' => $e->getMessage(),
             ]);
         }
 
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan' . $csvName);
+        Storage::disk('public')->delete('bantuan'.$csvName);
 
         return response()->json([
-            "message" => "Data Bantuan Sedang di Sinkronkan",
-            "status" => "success"
+            'message' => 'Data Bantuan Sedang di Sinkronkan',
+            'status' => 'success',
         ]);
     }
 
@@ -95,21 +96,23 @@ class ProgamBantuanController extends Controller
             $zip->close();
             // Proses impor excell
             (new SinkronPesertaBantuan())
-                ->queue($extract . $csvName = Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.$csvName = Str::replaceLast('zip', 'csv', $name));
         } catch (\Exception $e) {
             report($e);
+
             return response()->json([
-                "status" => "danger",
-                "message" => $e->getMessage(),
+                'status' => 'danger',
+                'message' => $e->getMessage(),
             ]);
         }
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan/' . $csvName);
+        Storage::disk('public')->delete('bantuan/'.$csvName);
+
         return response()->json([
-            "status" => "success",
-            "message" => "Data Bantuan Sedang di Sinkronkan",
+            'status' => 'success',
+            'message' => 'Data Bantuan Sedang di Sinkronkan',
         ]);
     }
 }

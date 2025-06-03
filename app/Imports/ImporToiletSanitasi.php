@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,7 +42,7 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow, WithChunkReading, 
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -64,11 +64,11 @@ class ImporToiletSanitasi implements ToModel, WithHeadingRow, WithChunkReading, 
     public function model(array $row)
     {
         return new ToiletSanitasi([
-            'desa_id'      => $row['desa_id'],
-            'bulan'        => $this->request['bulan'],
-            'tahun'        => $this->request['tahun'],
-            'toilet'       => $row['toilet'],
-            'sanitasi'     => $row['sanitasi'],
+            'desa_id' => $row['desa_id'],
+            'bulan' => $this->request['bulan'],
+            'tahun' => $this->request['tahun'],
+            'toilet' => $row['toilet'],
+            'sanitasi' => $row['sanitasi'],
         ]);
     }
 }

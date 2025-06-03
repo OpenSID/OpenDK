@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -40,7 +40,7 @@ return [
     | most cases.
     |
     */
-    'cache.location'           => storage_path('framework/cache'),
+    'cache.location' => storage_path('framework/cache'),
 
     /*
     |--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ return [
     | Life of cache, in seconds
     |
     */
-    'cache.life'               => 600,
+    'cache.life' => 600,
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
     | Whether to disable the cache.
     |
     */
-    'cache.disabled'           => false,
+    'cache.disabled' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -70,7 +70,7 @@ return [
     |
     |
     */
-    'ssl_check.disabled'       => true,
+    'ssl_check.disabled' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -90,7 +90,7 @@ return [
     |
     |
     */
-    'strip_html_tags.tags'     => [
+    'strip_html_tags.tags' => [
         'base', 'blink', 'body', 'doctype', 'embed', 'font', 'form', 'frame', 'frameset', 'html', 'iframe', 'input',
         'marquee', 'meta', 'noscript', 'object', 'param', 'script', 'style',
     ],
@@ -113,7 +113,7 @@ return [
     |
     |
     */
-    'strip_attribute.tags'    => [
+    'strip_attribute.tags' => [
         'bgsound', 'class', 'expr', 'id', 'style', 'onclick', 'onerror', 'onfinish', 'onmouseover', 'onmouseout',
         'onfocus', 'onblur', 'lowsrc', 'dynsrc',
     ],
@@ -127,7 +127,7 @@ return [
     | Set to null to disable
     |
     */
-    'curl.options'             => null,
+    'curl.options' => null,
 
     'curl.timeout' => null,
 

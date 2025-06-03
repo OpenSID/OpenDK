@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -56,14 +56,14 @@ class PesanRequest extends FormRequest
         $rules = [];
 
         if (Request::has('pesan_id')) {
-            $rules['pesan']     = 'required';
-            $rules['pesan_id']  = 'required|exists:das_pesan,id';
-            $rules['pengirim']  = 'sometimes|required';
-            $rules['nama_pengirim']  = 'sometimes|required';
+            $rules['pesan'] = 'required';
+            $rules['pesan_id'] = 'required|exists:das_pesan,id';
+            $rules['pengirim'] = 'sometimes|required';
+            $rules['nama_pengirim'] = 'sometimes|required';
         } else {
-            $rules['pesan']     = 'required';
-            $rules['judul']     = 'required';
-            $rules['kode_desa']     = 'required|string|min:13|max:13';
+            $rules['pesan'] = 'required';
+            $rules['judul'] = 'required';
+            $rules['kode_desa'] = 'required|string|min:13|max:13';
         }
 
         return $rules;

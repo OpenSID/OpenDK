@@ -16,34 +16,40 @@
 
         @include('partials.flash_message')
 
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('data.epidemi-penyakit.import') }}">
-                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                    </a>
+        @if ($jenisPenyakit->count() > 0)
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    @include('forms.btn-social', ['import_url' => route('data.epidemi-penyakit.import')])
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        @include('layouts.fragments.list-desa')
+                        <hr>
+                        <table class="table table-bordered table-hover dataTable" id="aki-table">
+                            <thead>
+                                <tr>
+                                    <th style="max-width: 100px;">Aksi</th>
+                                    <th>Desa</th>
+                                    <th>Jenis Penyakit</th>
+                                    <th>Jumlah Penderita</th>
+                                    <th>Bulan</th>
+                                    <th>Tahun</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover dataTable" id="aki-table">
-                        <thead>
-                            <tr>
-                                <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
-                                <th>Jenis Penyakit</th>
-                                <th>Jumlah Penderita</th>
-                                <th>Bulan</th>
-                                <th>Tahun</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+        @else
+            <div class="callout callout-warning">
+                <h4>Informasi!</h4>
+                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-penyakit.index') }}">jenis penyakit</a></b> terlebih dahulu.</p>
             </div>
-        </div>
+        @endif
     </section>
 @endsection
 
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
@@ -52,7 +58,12 @@
             var data = $('#aki-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.epidemi-penyakit.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.epidemi-penyakit.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -61,8 +72,8 @@
                         orderable: false
                     },
                     {
-                        data: 'desa.nama',
-                        name: 'desa.nama'
+                        data: 'nama_desa',
+                        name: 'desa_id',
                     },
                     {
                         data: 'penyakit.nama',
@@ -84,6 +95,10 @@
                 order: [
                     [1, 'asc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.columns(1).search(this.value).draw();
             });
         });
     </script>

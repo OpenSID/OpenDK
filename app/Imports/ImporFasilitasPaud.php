@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,7 +42,7 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
 {
     use Importable;
 
-    /** @var array $request */
+    /** @var array */
     protected $request;
 
     public function __construct(array $request)
@@ -64,12 +64,12 @@ class ImporFasilitasPaud implements ToModel, WithHeadingRow, WithChunkReading, S
     public function model(array $row)
     {
         return new FasilitasPAUD([
-            'desa_id'           => $this->request['desa_id'],
-            'jumlah_paud'       => $row['jumlah_paud_ra'],
-            'jumlah_guru_paud'  => $row['jumlah_guru_paud_ra'],
+            'desa_id' => $this->request['desa_id'],
+            'jumlah_paud' => $row['jumlah_paud_ra'],
+            'jumlah_guru_paud' => $row['jumlah_guru_paud_ra'],
             'jumlah_siswa_paud' => $row['jumlah_siswa_paud_ra'],
-            'semester'          => $this->request['semester'],
-            'tahun'             => $this->request['tahun'],
+            'semester' => $this->request['semester'],
+            'tahun' => $this->request['tahun'],
         ]);
     }
 }

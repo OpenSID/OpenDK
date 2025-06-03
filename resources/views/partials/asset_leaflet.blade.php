@@ -91,33 +91,39 @@
             });
         }
 
-        function getBaseLayers(peta, access_token) {
-            //Menampilkan BaseLayers Peta
-            var defaultLayer = L.tileLayer
-                .provider("OpenStreetMap.Mapnik", {
-                    attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
-                }).addTo(peta);
+        function getBaseLayers(peta, access_token, defaultLayerType) {
+            var baseLayers = {};
 
+            // Layer OpenStreetMap
+            baseLayers["OpenStreetMap"] = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            });
+
+            baseLayers["OpenStreetMap H.O.T."] = L.tileLayer.provider("OpenStreetMap.HOT", {
+                attribution: '<a href="https://openstreetmap.org/copyright">© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+            });
 
             if (access_token) {
-                mbGLstr = L.mapboxGL({
-                    accessToken: access_token,
-                    style: "mapbox://styles/mapbox/streets-v11",
-                    attribution: '<a href="https://www.mapbox.com/about/maps">Â© Mapbox</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+                // console.log("Menggunakan Mapbox dengan token:", access_token);
+                baseLayers["Mapbox Streets"] = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/{z}/{x}/{y}?access_token=${access_token}`, {
+                    tileSize: 256,
+                    zoomOffset: 0,
+                    attribution: '© Mapbox'
                 });
 
-                mbGLsat = L.mapboxGL({
-                    accessToken: access_token,
-                    style: "mapbox://styles/mapbox/satellite-v9",
-                    attribution: '<a href="https://www.mapbox.com/about/maps">Â© Mapbox</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+                baseLayers["Mapbox Satellite"] = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-v9/tiles/{z}/{x}/{y}?access_token=${access_token}`, {
+                    tileSize: 256,
+                    zoomOffset: 0,
+                    attribution: '© Mapbox'
                 });
 
-                mbGLstrsat = L.mapboxGL({
-                    accessToken: access_token,
-                    style: "mapbox://styles/mapbox/satellite-streets-v11",
-                    attribution: '<a href="https://www.mapbox.com/about/maps">Â© Mapbox</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+                baseLayers["Mapbox Satellite-Streets"] = L.tileLayer(`https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v12/tiles/{z}/{x}/{y}@2x?access_token=${access_token}`, {
+                    tileSize: 256,
+                    zoomOffset: 0,
+                    attribution: '© Mapbox'
                 });
             } else {
+                // console.warn("Access token tidak ditemukan!");
                 mbGLstr = L.tileLayer
                     .provider("OpenStreetMap.Mapnik", {
                         attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
@@ -132,20 +138,72 @@
                     .provider("OpenStreetMap.Mapnik", {
                         attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
                     })
-
             }
 
-            var baseLayers = {
-                OpenStreetMap: defaultLayer,
-                "OpenStreetMap H.O.T.": L.tileLayer.provider("OpenStreetMap.HOT", {
-                    attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
-                }),
-                "Mapbox Streets": mbGLstr,
-                "Mapbox Satellite": mbGLsat,
-                "Mapbox Satellite-Street": mbGLstrsat,
-            };
+            // Menentukan default layer sesuai pilihan
+            var defaultLayer = baseLayers[defaultLayerType] || baseLayers["OpenStreetMap"];
+
+            // Tambahkan default layer ke peta
+            defaultLayer.addTo(peta);
+
             return baseLayers;
         }
+
+        // function getBaseLayers(peta, access_token) {
+        //     //Menampilkan BaseLayers Peta
+        //     var defaultLayer = L.tileLayer
+        //         .provider("OpenStreetMap.Mapnik", {
+        //             attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //         }).addTo(peta);
+
+
+        //     if (access_token) {
+        //         mbGLstr = L.mapboxGL({
+        //             accessToken: access_token,
+        //             style: "mapbox://styles/mapbox/streets-v11",
+        //             attribution: '<a href="https://www.mapbox.com/about/maps">Â© Mapbox</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //         });
+
+        //         mbGLsat = L.mapboxGL({
+        //             accessToken: access_token,
+        //             style: "mapbox://styles/mapbox/satellite-v9",
+        //             attribution: '<a href="https://www.mapbox.com/about/maps">Â© Mapbox</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //         });
+
+        //         mbGLstrsat = L.mapboxGL({
+        //             accessToken: access_token,
+        //             style: "mapbox://styles/mapbox/satellite-streets-v11",
+        //             attribution: '<a href="https://www.mapbox.com/about/maps">Â© Mapbox</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //         });
+        //     } else {
+        //         mbGLstr = L.tileLayer
+        //             .provider("OpenStreetMap.Mapnik", {
+        //                 attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //             })
+
+        //         mbGLsat = L.tileLayer
+        //             .provider("OpenStreetMap.Mapnik", {
+        //                 attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //             })
+
+        //         mbGLstrsat = L.tileLayer
+        //             .provider("OpenStreetMap.Mapnik", {
+        //                 attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //             })
+
+        //     }
+
+        //     var baseLayers = {
+        //         OpenStreetMap: defaultLayer,
+        //         "OpenStreetMap H.O.T.": L.tileLayer.provider("OpenStreetMap.HOT", {
+        //             attribution: '<a href="https://openstreetmap.org/copyright">Â© OpenStreetMap</a> | <a href="https://github.com/OpenSID/OpenSID">OpenSID</a>',
+        //         }),
+        //         "Mapbox Streets": mbGLstr,
+        //         "Mapbox Satellite": mbGLsat,
+        //         "Mapbox Satellite-Street": mbGLstrsat,
+        //     };
+        //     return baseLayers;
+        // }
 
         function getLatLong(x, y) {
             var hasil;
@@ -547,6 +605,65 @@
             });
 
             return wilayah_property;
+        }
+
+        function showCurrentPoint(posisi1, layerpeta, mode = true) {
+            var lokasi_kantor = L.marker(posisi1, {
+                draggable: mode
+            }).addTo(layerpeta);
+            lokasi_kantor.on("dragend", function(e) {
+                $("#lat").val(e.target._latlng.lat);
+                $("#lng").val(e.target._latlng.lng);
+                $("#map_tipe").val("HYBRID");
+                $("#zoom").val(layerpeta.getZoom());
+            });
+
+            layerpeta.on("zoomstart zoomend", function(e) {
+                $("#zoom").val(layerpeta.getZoom());
+            });
+
+            var geojson = lokasi_kantor.toGeoJSON();
+            var shape_for_db = JSON.stringify(geojson);
+            var gpxData = togpx(JSON.parse(shape_for_db));
+
+            $("#exportGPX").on("click", function(event) {
+                data = "data:text/xml;charset=utf-8," + encodeURIComponent(gpxData);
+                $(this).attr({
+                    href: data,
+                    target: "_blank",
+                });
+            });
+
+            var lc = L.control
+                .locate({
+                    drawCircle: false,
+                    icon: "fa fa-map-marker",
+                    strings: {
+                        title: "Lokasi Saya",
+                        locateOptions: {
+                            enableHighAccuracy: true
+                        },
+                        popup: "Anda berada disekitar {distance} {unit} dari titik ini",
+                    },
+                })
+                .addTo(layerpeta);
+
+            layerpeta.on("locationfound", function(e) {
+                $("#lat").val(e.latlng.lat);
+                $("#lng").val(e.latlng.lng);
+                lokasi_kantor.setLatLng(e.latlng);
+                layerpeta.setView(e.latlng);
+            });
+
+            layerpeta
+                .on("startfollowing", function() {
+                    layerpeta.on("dragstart", lc._stopFollowing, lc);
+                })
+                .on("stopfollowing", function() {
+                    layerpeta.off("dragstart", lc._stopFollowing, lc);
+                });
+
+            return showCurrentPoint;
         }
     </script>
 @endpush

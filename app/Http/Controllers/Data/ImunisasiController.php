@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Data;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
@@ -47,7 +48,7 @@ class ImunisasiController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Imunisasi';
+        $page_title = 'Imunisasi';
         $page_description = 'Daftar Imunisasi';
 
         return view('data.imunisasi.index', compact('page_title', 'page_description'));
@@ -60,12 +61,15 @@ class ImunisasiController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(Imunisasi::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.imunisasi.edit', $row->id);
+                $data['edit_url'] = route('data.imunisasi.edit', $row->id);
                 $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
+            })->addColumn('nama_desa', function ($row) use ($listDesa){
+                return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })
             ->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
@@ -80,10 +84,10 @@ class ImunisasiController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Imunisasi';
+        $page_title = 'Imunisasi';
         $page_description = 'Impor Imunisasi';
-        $years_list       = years_list();
-        $months_list      = months_list();
+        $years_list = years_list();
+        $months_list = months_list();
 
         return view('data.imunisasi.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
@@ -96,7 +100,7 @@ class ImunisasiController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required',
             'tahun' => 'required',
         ]);
@@ -106,7 +110,8 @@ class ImunisasiController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
+
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Import data sukses.');
@@ -115,14 +120,14 @@ class ImunisasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $imunisasi        = Imunisasi::findOrFail($id);
-        $page_title       = 'Imunisasi';
-        $page_description = 'Ubah Imunisasi : Cakupan Imunisasi' . $imunisasi->cakupan_imunisasi;
+        $imunisasi = Imunisasi::findOrFail($id);
+        $page_title = 'Imunisasi';
+        $page_description = 'Ubah Imunisasi : Cakupan Imunisasi'.$imunisasi->cakupan_imunisasi;
 
         return view('data.imunisasi.edit', compact('page_title', 'page_description', 'imunisasi'));
     }
@@ -130,7 +135,7 @@ class ImunisasiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(Request $request, $id)
@@ -143,7 +148,8 @@ class ImunisasiController extends Controller
             Imunisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
-            return back()->withInput()->with('error', 'Data gagal diubah! '. $e->getMessage());
+
+            return back()->withInput()->with('error', 'Data gagal diubah! '.$e->getMessage());
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Data berhasil diubah!');
@@ -152,7 +158,7 @@ class ImunisasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -161,6 +167,7 @@ class ImunisasiController extends Controller
             Imunisasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.imunisasi.index')->with('error', 'Data gagal dihapus!');
         }
 

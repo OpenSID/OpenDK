@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -48,10 +49,11 @@ class EpidemiPenyakitController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Epidemi Penyakit';
+        $page_title = 'Epidemi Penyakit';
         $page_description = 'Daftar Epidemi Penyakit';
+        $jenisPenyakit = JenisPenyakit::pluck('nama', 'id');
 
-        return view('data.epidemi_penyakit.index', compact('page_title', 'page_description'));
+        return view('data.epidemi_penyakit.index', compact('page_title', 'page_description', 'jenisPenyakit'));
     }
 
     /**
@@ -61,14 +63,16 @@ class EpidemiPenyakitController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(EpidemiPenyakit::with(['penyakit', 'desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.epidemi-penyakit.edit', $row->id);
+                $data['edit_url'] = route('data.epidemi-penyakit.edit', $row->id);
                 $data['delete_url'] = route('data.epidemi-penyakit.destroy', $row->id);
 
                 return view('forms.aksi', $data);
-            })
-            ->editColumn('bulan', function ($row) {
+            })->addColumn('nama_desa', function ($row) use ($listDesa){
+                return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
+            })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
             })
             ->rawColumns(['aksi'])->make();
@@ -81,11 +85,11 @@ class EpidemiPenyakitController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Epidemi Penyakit';
+        $page_title = 'Epidemi Penyakit';
         $page_description = 'Import Epidemi Penyakit';
-        $years_list       = years_list();
-        $months_list      = months_list();
-        $jenis_penyakit   = JenisPenyakit::pluck('nama', 'id');
+        $years_list = years_list();
+        $months_list = months_list();
+        $jenis_penyakit = JenisPenyakit::pluck('nama', 'id');
 
         return view('data.epidemi_penyakit.import', compact('page_title', 'page_description', 'years_list', 'months_list', 'jenis_penyakit'));
     }
@@ -98,7 +102,7 @@ class EpidemiPenyakitController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required',
             'tahun' => 'required',
         ]);
@@ -108,7 +112,8 @@ class EpidemiPenyakitController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. '. $e->getMessage());
+
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
 
         return redirect()->route('data.epidemi-penyakit.index')->with('success', 'Import data sukses.');
@@ -117,15 +122,15 @@ class EpidemiPenyakitController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $epidemi          = EpidemiPenyakit::findOrFail($id);
-        $page_title       = 'Epidemi Penyakit';
-        $page_description = 'Ubah Epidemi Penyakit : ' . $epidemi->penyakit->nama;
-        $jenis_penyakit   = JenisPenyakit::pluck('nama', 'id');
+        $epidemi = EpidemiPenyakit::findOrFail($id);
+        $page_title = 'Epidemi Penyakit';
+        $page_description = 'Ubah Epidemi Penyakit : '.$epidemi->penyakit->nama;
+        $jenis_penyakit = JenisPenyakit::pluck('nama', 'id');
 
         return view('data.epidemi_penyakit.edit', compact('page_title', 'page_description', 'epidemi', 'jenis_penyakit'));
     }
@@ -133,22 +138,23 @@ class EpidemiPenyakitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
         request()->validate([
             'jumlah_penderita' => 'required',
-            'penyakit_id'      => 'required',
-            'bulan'            => 'required',
-            'tahun'            => 'required',
+            'penyakit_id' => 'required',
+            'bulan' => 'required',
+            'tahun' => 'required',
         ]);
 
         try {
             EpidemiPenyakit::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -158,7 +164,7 @@ class EpidemiPenyakitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -167,6 +173,7 @@ class EpidemiPenyakitController extends Controller
             EpidemiPenyakit::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.epidemi-penyakit.index')->with('error', 'Data gagal dihapus!');
         }
 

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -38,10 +38,9 @@ class InformasiController extends Controller
     /**
      * Menampilkan Daftar Prosedur
      **/
-
     public function showProsedur()
     {
-        $data['page_title']       = 'Daftar Prosedur ';
+        $data['page_title'] = 'Daftar Prosedur ';
         $data['page_description'] = 'Daftar Prosedur ';
 
         return view('Informasi.prosedur')->with($data);
@@ -50,10 +49,9 @@ class InformasiController extends Controller
     /**
      * Menampilkan Data Potensi
      **/
-
     public function showPotensi()
     {
-        $data['page_title']       = 'Potensi Kecamatan';
+        $data['page_title'] = 'Potensi Kecamatan';
         $data['page_description'] = 'Menampilkan Data Potensi Kecamatan';
 
         return view('informasi.potensi')->with($data);
@@ -62,10 +60,9 @@ class InformasiController extends Controller
     /**
      * Menampilkan Data Event
      **/
-
     public function showEvent()
     {
-        $data['page_title']       = 'Event';
+        $data['page_title'] = 'Event';
         $data['page_description'] = 'Menampilkan Event Terdekat';
 
         return view('Informasi.event')->with($data);
@@ -74,7 +71,6 @@ class InformasiController extends Controller
     /**
      * Menampilkan Data FAQ
      **/
-
     public function showFAQ()
     {
         $data['page_title'] = 'FAQ';
@@ -86,7 +82,6 @@ class InformasiController extends Controller
     /**
      * Menampilkan Kontak Kecamatan
      **/
-
     public function showKontak()
     {
         $data['page_title'] = 'Kontak Kecamatan ';
@@ -98,7 +93,6 @@ class InformasiController extends Controller
     /**
      * Menampilkan Kalender Kecamatan
      **/
-
     public function showKalender()
     {
         $data['page_title'] = 'Kalender Kecamatan ';

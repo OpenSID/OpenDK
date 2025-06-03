@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -56,9 +56,6 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
         return 1000;
     }
 
-    /**
-    * @param Collection $collection
-    */
     public function collection(Collection $collection)
     {
         DB::beginTransaction(); //multai transaction
@@ -66,7 +63,7 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
         foreach ($collection as $value) {
             if ($value['sasaran'] == 1) {
                 // cek nik penduduk
-                if (!Penduduk::where('nik', $value['kartu_nik'])->exists()) {
+                if (! Penduduk::where('nik', $value['kartu_nik'])->exists()) {
                     Log::debug("Sinkronisasi Peserta Bantuan Gagal. Nomor NIK {$value['kartu_nik']} tidak terdaftar.");
                     DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                     Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
@@ -74,7 +71,7 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
                 }
             } else {
                 // cek kk penduduk
-                if (!Penduduk::where('nik', $value['kartu_nik'])->whereHas('keluarga')->exists()) {
+                if (! Penduduk::where('nik', $value['kartu_nik'])->whereHas('keluarga')->exists()) {
                     Log::debug("Sinkronisasi Peserta Bantuan Gagal. Nomor KK dari NIK {$value['kartu_nik']} tidak terdaftar.");
                     DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
                     Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
@@ -83,24 +80,24 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
             }
 
             $insert = [
-                'desa_id'               => $value['desa_id'],
-                'id'                    => $value['id'],
-                'peserta'               => $value['peserta'],
-                'program_id'            => $value['program_id'],
-                'no_id_kartu'           => $value['no_id_kartu'],
-                'kartu_nik'             => $value['kartu_nik'],
-                'kartu_nama'            => $value['kartu_nama'],
-                'sasaran'               => $value['sasaran'],
-                'kartu_tempat_lahir'    => $value['kartu_tempat_lahir'],
-                'kartu_tanggal_lahir'   => $value['kartu_tanggal_lahir'],
-                'kartu_alamat'          => $value['kartu_alamat'],
-                'kartu_peserta'         => $value['kartu_peserta'],
+                'desa_id' => $value['desa_id'],
+                'id' => $value['id'],
+                'peserta' => $value['peserta'],
+                'program_id' => $value['program_id'],
+                'no_id_kartu' => $value['no_id_kartu'],
+                'kartu_nik' => $value['kartu_nik'],
+                'kartu_nama' => $value['kartu_nama'],
+                'sasaran' => $value['sasaran'],
+                'kartu_tempat_lahir' => $value['kartu_tempat_lahir'],
+                'kartu_tanggal_lahir' => $value['kartu_tanggal_lahir'],
+                'kartu_alamat' => $value['kartu_alamat'],
+                'kartu_peserta' => $value['kartu_peserta'],
             ];
 
             PesertaProgram::updateOrCreate([
-                'desa_id'       => $insert['desa_id'],
-                'program_id'    => $insert['program_id'],
-                'kartu_nik'     => $insert['kartu_nik'],
+                'desa_id' => $insert['desa_id'],
+                'program_id' => $insert['program_id'],
+                'kartu_nik' => $insert['kartu_nik'],
             ], $insert);
         }
 

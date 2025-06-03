@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -46,12 +46,12 @@ class RoleSpatieSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement("SET foreign_key_checks=0");
+        DB::statement('SET foreign_key_checks=0');
         DB::table('roles')->truncate();
         DB::table('permissions')->truncate();
         DB::table('role_has_permissions')->truncate();
         DB::table('model_has_roles')->truncate();
-        DB::statement("SET foreign_key_checks=1");
+        DB::statement('SET foreign_key_checks=1');
 
         // DB::table('roles')->truncate();
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
@@ -62,7 +62,7 @@ class RoleSpatieSeeder extends Seeder
         Permission::create(['name' => 'edit', 'guard_name' => 'web']);
         Permission::create(['name' => 'delete', 'guard_name' => 'web']);
 
-        $role_admin =   Role::create(['name' => 'super-admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        $role_admin = Role::create(['name' => 'super-admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
         // cek user admin
         $user = User::where('email', 'admin@mail.com')->first();
 

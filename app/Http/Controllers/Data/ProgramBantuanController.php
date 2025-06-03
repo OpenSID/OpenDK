@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -45,45 +45,55 @@ class ProgramBantuanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Program Bantuan';
+        $page_title = 'Program Bantuan';
         $page_description = 'Daftar Program Bantuan';
-        $list_desa        = DataDesa::all();
-
-        return view('data.program_bantuan.index', compact('page_title', 'page_description', 'list_desa'));
+        $list_desa = DataDesa::all();
+        
+        $view = ($this->isDatabaseGabungan()) ? 'data.program_bantuan.gabungan.index' : 'data.program_bantuan.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     public function getaProgramBantuan(Request $request)
     {
-        return DataTables::of(Program::when(!empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
+        return DataTables::of(Program::when(! empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
                 $data['detail_url'] = route('data.program-bantuan.show', [$row->id, $row->desa_id]);
 
                 return view('forms.aksi', $data);
             })
             ->addColumn('masa_berlaku', function ($row) {
-                return format_date($row->start_date) . ' - ' . format_date($row->end_date);
+                return format_date($row->start_date).' - '.format_date($row->end_date);
             })
             ->editColumn('sasaran', function ($row) {
                 $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
+
                 return $sasaran[$row->sasaran];
             })
             ->rawColumns(['aksi'])->make();
     }
 
-    public function show($id, $desa_id)
+    public function show($id, $desa_id, $nama = '')
     {
-        $program          = Program::with('desa')->findOrFail($id);
-        $page_title       = 'Detail Program';
-        $page_description = 'Program Bantuan ' . $program->nama;
-        $sasaran          = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
-        $peserta          = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
+        $id = $id;
+        $desa_id = $desa_id;
+        $page_title = 'Detail Program';
+        $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
+        $page_description = 'Program Bantuan - '.$nama;
+        
+        if($this->isDatabaseGabungan()){
+            $view = 'data.program_bantuan.gabungan.show';
+            return view($view, compact('page_title', 'sasaran', 'id', 'desa_id', 'page_description'));
+        }
 
+        $program = Program::with('desa')->findOrFail($id);
+        $page_description = 'Program Bantuan '.$program->nama;
+        $peserta = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
         return view('data.program_bantuan.show', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
     }
 
     public function import()
     {
-        $page_title       = 'Impor';
+        $page_title = 'Impor';
         $page_description = 'Impor Data Program Bantuan';
 
         return view('data.program_bantuan.import', compact('page_title', 'page_description'));
@@ -113,12 +123,13 @@ class ProgramBantuanController extends Controller
             glob($extract.'*.csv');
 
             (new SinkronBantuan())
-                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract.Str::replaceLast('zip', 'csv', $name));
             (new SinkronPesertaBantuan())
-                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+                ->queue($extract.Str::replaceLast('zip', 'csv', 'peserta_'.$name));
         } catch (\Exception $e) {
             report($e);
-            return back()->with('error', 'Import data gagal. '. $e->getMessage());
+
+            return back()->with('error', 'Import data gagal. '.$e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Import data sukses.');

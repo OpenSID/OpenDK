@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,8 +42,8 @@ class AnggaranRealisasiController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Anggran & Realisasi';
-        $page_description = 'Data Anggran & Realisasi';
+        $page_title = 'Anggaran & Realisasi';
+        $page_description = 'Data Anggaran & Realisasi';
 
         return view('data.anggaran_realisasi.index', compact('page_title', 'page_description'));
     }
@@ -57,7 +57,7 @@ class AnggaranRealisasiController extends Controller
     {
         return DataTables::of(AnggaranRealisasi::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url']   = route('data.anggaran-realisasi.edit', $row->id);
+                $data['edit_url'] = route('data.anggaran-realisasi.edit', $row->id);
                 $data['delete_url'] = route('data.anggaran-realisasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
@@ -74,10 +74,10 @@ class AnggaranRealisasiController extends Controller
      */
     public function import()
     {
-        $page_title       = 'Anggaran & Realisasi';
-        $page_description = 'Import Anggaran & Realisasi' ;
-        $years_list       = years_list();
-        $months_list      = months_list();
+        $page_title = 'Anggaran & Realisasi';
+        $page_description = 'Import Anggaran & Realisasi';
+        $years_list = years_list();
+        $months_list = months_list();
 
         return view('data.anggaran_realisasi.import', compact('page_title', 'page_description', 'years_list', 'months_list'));
     }
@@ -90,7 +90,7 @@ class AnggaranRealisasiController extends Controller
     public function do_import(Request $request)
     {
         $this->validate($request, [
-            'file'  => 'required|file|mimes:xls,xlsx,csv|max:5120',
+            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
             'bulan' => 'required|unique:das_anggaran_realisasi',
             'tahun' => 'required|unique:das_anggaran_realisasi',
         ]);
@@ -100,6 +100,7 @@ class AnggaranRealisasiController extends Controller
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
             report($e);
+
             return back()->with('error', 'Import data gagal.');
         }
 
@@ -109,14 +110,14 @@ class AnggaranRealisasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
     {
-        $anggaran         = AnggaranRealisasi::findOrFail($id);
-        $page_title       = 'Anggaran & Realisasi';
-        $page_description = 'Ubah Anggaran & Realisasi : ' . $anggaran->id;
+        $anggaran = AnggaranRealisasi::findOrFail($id);
+        $page_title = 'Anggaran & Realisasi';
+        $page_description = 'Ubah Anggaran & Realisasi : '.$anggaran->id;
 
         return view('data.anggaran_realisasi.edit', compact('page_title', 'page_description', 'anggaran'));
     }
@@ -124,19 +125,19 @@ class AnggaranRealisasiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function update(Request $request, $id)
     {
         request()->validate([
-            'bulan'                  => 'required',
-            'tahun'                  => 'required',
-            'total_anggaran'         => 'required|numeric',
-            'total_belanja'          => 'required|numeric',
-            'belanja_pegawai'        => 'required|numeric',
-            'belanja_barang_jasa'    => 'required|numeric',
-            'belanja_modal'          => 'required|numeric',
+            'bulan' => 'required',
+            'tahun' => 'required',
+            'total_anggaran' => 'required|numeric',
+            'total_belanja' => 'required|numeric',
+            'belanja_pegawai' => 'required|numeric',
+            'belanja_barang_jasa' => 'required|numeric',
+            'belanja_modal' => 'required|numeric',
             'belanja_tidak_langsung' => 'required|numeric',
         ]);
 
@@ -144,6 +145,7 @@ class AnggaranRealisasiController extends Controller
             AnggaranRealisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
 
@@ -153,7 +155,7 @@ class AnggaranRealisasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
@@ -162,6 +164,7 @@ class AnggaranRealisasiController extends Controller
             AnggaranRealisasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
             report($e);
+
             return redirect()->route('data.anggaran-realisasi.index')->with('error', 'Data gagal dihapus!');
         }
 

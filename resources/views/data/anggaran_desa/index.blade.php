@@ -18,13 +18,11 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <div class="control-group">
-                    <a href="{{ route('data.anggaran-desa.import') }}">
-                        <button type="button" class="btn btn-warning btn-sm" title="Import Data"><i class="fa fa-upload"></i>&ensp;Impor</button>
-                    </a>
-                </div>
+                @include('forms.btn-social', ['import_url' => route('data.anggaran-desa.import')])
             </div>
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="anggaran-table">
                         <thead>
@@ -53,7 +51,12 @@
             var data = $('#anggaran-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.anggaran-desa.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.anggaran-desa.getdata') !!}",
+                    data: function(d) {
+                        d.desa = $('#list_desa').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -91,8 +94,11 @@
                     [1, 'asc']
                 ]
             });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
+            });
         });
     </script>
     @include('forms.datatable-vertical')
-    @include('forms.delete-modal')
 @endpush

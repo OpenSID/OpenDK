@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -46,14 +46,16 @@ class LaporanApbdesQueueJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $timeout = 0;
+
     /** @var array request data */
     protected $request;
 
     /**
      * Create a new job instance.
      *
-     * @param array $request
+     * @param  array  $request
      * @return void
      */
     public function __construct($request)
@@ -86,26 +88,26 @@ class LaporanApbdesQueueJob implements ShouldQueue
 
             if (isset($this->request['laporan_apbdes'])) {
                 foreach ($this->request['laporan_apbdes'] as $value) {
-                    $file_name = $desa_id . '_laporan_apbdes_' . $value['semester'] . '_' . $value['tahun'] . '.' .  explode('.', $value['nama_file'])[1];
+                    $file_name = $desa_id.'_laporan_apbdes_'.$value['semester'].'_'.$value['tahun'].'.'.explode('.', $value['nama_file'])[1];
 
                     $insert = [
-                        'judul'                => $value['judul'],
-                        'tahun'                => $value['tahun'],
-                        'semester'             => $value['semester'],
-                        'nama_file'            => $file_name,
-                        'desa_id'              => $desa_id,
-                        'id_apbdes'            => $value['id'],
-                        'imported_at'          => now(),
+                        'judul' => $value['judul'],
+                        'tahun' => $value['tahun'],
+                        'semester' => $value['semester'],
+                        'nama_file' => $file_name,
+                        'desa_id' => $desa_id,
+                        'id_apbdes' => $value['id'],
+                        'imported_at' => now(),
                     ];
 
                     LaporanApbdes::updateOrInsert([
-                        'desa_id'              => $insert['desa_id'],
-                        'id_apbdes'            => $insert['id_apbdes'],
+                        'desa_id' => $insert['desa_id'],
+                        'id_apbdes' => $insert['id_apbdes'],
                     ], $insert);
 
                     // Encode File
                     $file = base64_decode($value['file']);
-                    Storage::disk('public')->put('apbdes/' . $file_name, $file);
+                    Storage::disk('public')->put('apbdes/'.$file_name, $file);
                 }
             }
 

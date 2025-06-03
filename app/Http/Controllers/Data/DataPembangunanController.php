@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -42,11 +42,12 @@ class DataPembangunanController extends Controller
 {
     public function index()
     {
-        $page_title       = 'Pembangunan';
+        $page_title = 'Pembangunan';
         $page_description = 'Data Pembangunan';
-        $list_desa        = DataDesa::get();
+        $list_desa = DataDesa::get();
 
-        return view('data.pembangunan.index', compact('page_title', 'page_description', 'list_desa'));
+        $view = ($this->isDatabaseGabungan()) ? 'data.pembangunan.gabungan.index' : 'data.pembangunan.index';
+        return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     public function getPembangunan(Request $request)
@@ -62,7 +63,8 @@ class DataPembangunanController extends Controller
 
             return DataTables::of($pembangunan)
                 ->addColumn('aksi', function ($row) {
-                    $data['detail_url']   = route('data.pembangunan.rincian', ['id' => $row->id,'desa_id' => $row->desa_id]);
+                    $data['detail_url'] = route('data.pembangunan.rincian', ['id' => $row->id, 'desa_id' => $row->desa_id]);
+
                     return view('forms.aksi', $data);
                 })->make();
         }
@@ -70,17 +72,20 @@ class DataPembangunanController extends Controller
 
     public function rincian($id, $desa_id)
     {
-        $page_title       = 'Pembangunan';
+        $id = $id;
+        $desa_id = $desa_id;
+        $page_title = 'Pembangunan';
         $page_description = 'Rincian Pembangunan';
-        $pembangunan =  Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first();
-
-        return view('data.pembangunan.rincian', compact('page_title', 'page_description', 'pembangunan'));
+        $pembangunan = Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first() ?? '';
+        $view = ($this->isDatabaseGabungan()) ? 'data.pembangunan.gabungan.rincian' : 'data.pembangunan.rincian ';
+        return view($view, compact('page_title', 'page_description', 'pembangunan', 'id', 'desa_id'));
     }
 
     public function getrinciandata($id, $desa_id)
     {
         if (request()->ajax()) {
             $pembangunanDokumentasi = PembangunanDokumentasi::where('desa_id', $desa_id)->where('id_pembangunan', $id)->get();
+
             return DataTables::of($pembangunanDokumentasi)
             ->addIndexColumn()
             ->editColumn('created_at', function ($row) {

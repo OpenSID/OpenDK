@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -56,19 +56,14 @@ class Profil extends Model
         'file_struktur_organisasi',
         'file_logo',
         'sambutan',
-        'socialmedia',
         'visi',
         'misi',
-    ];
-
-    protected $cast = [
-        'socialmedia' => 'array'
     ];
 
     public static function getProfilTanpaDataUmum()
     {
         $data_umums = DataUmum::get();
-        $ids        = [];
+        $ids = [];
         foreach ($data_umums as $val) {
             $ids[] = $val->kecamatan_id;
         }

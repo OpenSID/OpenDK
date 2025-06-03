@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -32,9 +32,7 @@
 return [
 
     /**
-     *
      * Shared translations.
-     *
      */
     'title' => 'Dashboard Dashboard Installer',
     'next' => 'Selanjutnya',
@@ -45,32 +43,26 @@ return [
     ],
 
     /**
-     *
      * Home page translations.
-     *
      */
     'welcome' => [
         'templateTitle' => 'Selamat Datang',
-        'title'   => 'Dashboard Kecamatan Installer',
+        'title' => 'Dashboard Kecamatan Installer',
         'message' => 'Instalasi Mudah dan Persiapan Aplikasi',
-        'next'    => 'Cek Kebutuhan',
+        'next' => 'Cek Kebutuhan',
     ],
 
     /**
-     *
      * Requirements page translations.
-     *
      */
     'requirements' => [
         'templateTitle' => 'Langkah 1 | Kebutuhan Server',
         'title' => 'Kebutuhan Server',
-        'next'    => 'Cek Hak Akses',
+        'next' => 'Cek Hak Akses',
     ],
 
     /**
-     *
      * Permissions page translations.
-     *
      */
     'permissions' => [
         'templateTitle' => 'Langkah 2 | Hak Akses',
@@ -79,9 +71,7 @@ return [
     ],
 
     /**
-     *
      * Environment page translations.
-     *
      */
     'environment' => [
         'menu' => [
@@ -97,7 +87,7 @@ return [
             'tabs' => [
                 'environment' => 'Lingkungan',
                 'database' => 'Basis Data',
-                'application' => 'Aplikasi'
+                'application' => 'Aplikasi',
             ],
             'form' => [
                 'name_required' => 'Lingkungan aplikasi harus ditetapkan',
@@ -199,18 +189,14 @@ return [
     'install' => 'Pasang',
 
     /**
-     *
      * Installed Log translations.
-     *
      */
     'installed' => [
         'success_log_message' => 'Dashboard Kecamatan berhasil DIPASANG pada ',
     ],
 
     /**
-     *
      * Final page translations.
-     *
      */
     'final' => [
         'title' => 'Instalasi Selesai',
@@ -224,43 +210,33 @@ return [
     ],
 
     /**
-     *
      * Update specific translations
-     *
      */
     'updater' => [
         /**
-         *
          * Shared translations.
-         *
          */
         'title' => 'Dashboard Kecamatan Updater',
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'welcome' => [
-            'title'   => 'Selamat Datang di App Updater',
+            'title' => 'Selamat Datang di App Updater',
             'message' => 'Selamat Datang di update wizard.',
         ],
 
         /**
-         *
          * Welcome page translations for update feature.
-         *
          */
         'overview' => [
-            'title'   => 'Tinjauan',
+            'title' => 'Tinjauan',
             'message' => 'Ada 1 pembaruan.|Ada :number pembaruan.',
-            'install_updates' => "Pasang Pembaruan"
+            'install_updates' => 'Pasang Pembaruan',
         ],
 
         /**
-         *
          * Final page translations.
-         *
          */
         'final' => [
             'title' => 'Selesai',

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -35,14 +35,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pesan extends Model
 {
-    protected $table     = 'das_pesan';
-    protected $fillable = ['judul','das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at'];
-    public const PESAN_MASUK = "Pesan Masuk";
-    public const PESAN_KELUAR = "Pesan Keluar";
+    protected $table = 'das_pesan';
+
+    protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at'];
+
+    public const PESAN_MASUK = 'Pesan Masuk';
+
+    public const PESAN_KELUAR = 'Pesan Keluar';
+
     public const BELUM_DIBACA = 0;
+
     public const SUDAH_DIBACA = 1;
+
     public const MASUK_ARSIP = 1;
+
     public const NON_ARSIP = 0;
+
     public const PER_PAGE = 10;
 
     public function detailPesan()
@@ -52,7 +60,7 @@ class Pesan extends Model
 
     public function dataDesa()
     {
-        return $this->hasOne(DataDesa::class, "id", "das_data_desa_id");
+        return $this->hasOne(DataDesa::class, 'id', 'das_data_desa_id');
     }
 
     public function getCustomDateAttribute()

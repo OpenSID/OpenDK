@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -54,13 +54,13 @@ class LaporanApbdesRequest extends FormRequest
     public function rules()
     {
         return [
-            "desa_id" => ['required', 'string', new CekDesa()],
-            "laporan_apbdes.*.id" => "required|integer",
-            "laporan_apbdes.*.judul" => "required|string",
-            "laporan_apbdes.*.tahun" => "required|integer",
-            "laporan_apbdes.*.semester" => "required|integer",
-            "laporan_apbdes.*.nama_file" => "required|string",
-            "laporan_apbdes.*.file" => "required|string",
+            'desa_id' => ['required', 'string', new CekDesa()],
+            'laporan_apbdes.*.id' => 'required|integer',
+            'laporan_apbdes.*.judul' => 'required|string',
+            'laporan_apbdes.*.tahun' => 'required|integer',
+            'laporan_apbdes.*.semester' => 'required|integer',
+            'laporan_apbdes.*.nama_file' => 'required|string',
+            'laporan_apbdes.*.file' => 'required|string',
         ];
     }
 }

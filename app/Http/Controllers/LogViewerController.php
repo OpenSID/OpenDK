@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -39,7 +39,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class LogViewerController
- * @package Rap2hpoutre\LaravelLogViewer
  */
 class LogViewerController extends Controller
 {
@@ -47,10 +46,15 @@ class LogViewerController extends Controller
      * @var \Illuminate\Http\Request
      */
     protected $request;
+
     private $log_viewer;
+
     protected $view_log = 'laravel-log-viewer::index';
+
     protected $profil;
+
     protected $requirements;
+
     /**
      * LogViewerController constructor.
      */
@@ -61,11 +65,12 @@ class LogViewerController extends Controller
         $this->profil = $profil;
         $this->requirements = $checker;
     }
+
     /**
      * @return array|mixed
+     *
      * @throws \Exception
      */
-
     public function index()
     {
         $folderFiles = [];
@@ -100,7 +105,7 @@ class LogViewerController extends Controller
 
         if (is_array($data['logs']) && count($data['logs']) > 0) {
             $firstLog = reset($data['logs']);
-            if (!$firstLog['context'] && !$firstLog['level']) {
+            if (! $firstLog['context'] && ! $firstLog['level']) {
                 $data['standardFormat'] = false;
             }
         }
@@ -122,6 +127,7 @@ class LogViewerController extends Controller
 
     /**
      * @return bool|mixed
+     *
      * @throws \Exception
      */
     private function earlyReturn()
@@ -134,9 +140,11 @@ class LogViewerController extends Controller
             return $this->download($this->pathFromInput('dl'));
         } elseif ($this->request->has('clean')) {
             app('files')->put($this->pathFromInput('clean'), '');
+
             return $this->redirect(url()->previous());
         } elseif ($this->request->has('del')) {
             app('files')->delete($this->pathFromInput('del'));
+
             return $this->redirect($this->request->url());
         } elseif ($this->request->has('delall')) {
             $files = ($this->log_viewer->getFolderName())
@@ -145,14 +153,17 @@ class LogViewerController extends Controller
             foreach ($files as $file) {
                 app('files')->delete($this->log_viewer->pathToLogFile($file));
             }
+
             return $this->redirect($this->request->url());
         }
+
         return false;
     }
 
     /**
-     * @param string $input_string
+     * @param  string  $input_string
      * @return string
+     *
      * @throws \Exception
      */
     private function pathFromInput($input_string)
@@ -161,7 +172,6 @@ class LogViewerController extends Controller
     }
 
     /**
-     * @param $to
      * @return mixed
      */
     private function redirect($to)
@@ -174,7 +184,7 @@ class LogViewerController extends Controller
     }
 
     /**
-     * @param string $data
+     * @param  string  $data
      * @return mixed
      */
     private function download($data)
@@ -203,7 +213,7 @@ class LogViewerController extends Controller
             report($e);
 
             return response()->json([
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,25 +24,28 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2023 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\UserRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Models\Pengurus;
 use App\Models\User;
+use App\Models\Pengurus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
+use App\Traits\HandlesFileUpload;
+use App\Http\Requests\UserRequest;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
+    use HandlesFileUpload;
+
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +53,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $page_title       = 'Pengguna';
+        $page_title = 'Pengguna';
         $page_description = 'Daftar Data';
 
         return view('user.index', compact('page_title', 'page_description'));
@@ -63,10 +66,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        $page_title       = 'Pengguna';
+        $page_title = 'Pengguna';
         $page_description = 'Tambah Data';
-        $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
-        $pengurus         = Pengurus::status()->doesntHave('user')->get();
+        $item = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        $pengurus = Pengurus::status()->doesntHave('user')->get();
 
         return view('user.create', compact('page_title', 'page_description', 'item', 'pengurus'));
     }
@@ -74,25 +77,24 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function store(UserRequest $request)
     {
         try {
-            $status = !empty($request->status) ? 1 : 1;
+            $status = ! empty($request->status) ? 1 : 1;
             $request->merge(['status' => $status]);
-            $user = User::create($request->validated());
-            if ($request->hasFile('image')) {
-                $user->uploadImage($request->image);
-            }
-
+            $input = $request->validated();
+            $this->handleFileUpload($request, $input, 'image', 'user', false);
+            $user = User::create($input);
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 
             return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', $e->getMessage());
         }
     }
@@ -106,6 +108,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
+
         return view('user.show', compact('user'));
     }
 
@@ -117,11 +120,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $page_title       = 'Pengguna';
+        $page_title = 'Pengguna';
         $page_description = 'Ubah Data';
-        $user             = User::findOrFail($id);
-        $item             = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
-        $pengurus         = Pengurus::status()->doesntHave('user')->orWhere('id', $user->pengurus_id)->get();
+        $user = User::findOrFail($id);
+        $item = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        $pengurus = Pengurus::status()->doesntHave('user')->orWhere('id', $user->pengurus_id)->get();
 
         return view('user.edit', compact('page_title', 'page_description', 'user', 'item', 'pengurus'));
     }
@@ -129,21 +132,18 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
     public function update(UserRequest $request, $id)
     {
         try {
+            $input = $request->validated();
             $user = User::findOrFail($id);
-
-            $user->update($request->validated());
-            if ($request->hasFile('image')) {
-                $user->uploadImage($request->image);
-            }
-
-            if (!empty($request->role)) {
+            $this->handleFileUpload($request, $input, 'image', 'user', false);
+            $user->update($input);
+            if (! empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }
@@ -151,6 +151,7 @@ class UserController extends Controller
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('error', $e->getMessage());
         }
     }
@@ -158,7 +159,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
@@ -173,10 +174,12 @@ class UserController extends Controller
             ]);
 
             flash()->success(trans('message.user.update-success'));
+
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
             report($e);
             flash()->error(trans('message.user.update-error'));
+
             return back()->withInput();
         }
     }
@@ -190,15 +193,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
-            $user         = User::findOrFail($id);
+            $user = User::findOrFail($id);
             $user->status = 0;
             $user->save();
 
             flash()->success(trans('general.suspend-success'));
+
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
             report($e);
             flash()->success(trans('general.suspend-error'));
+
             return redirect()->route('setting.user.index');
         }
     }
@@ -212,15 +217,17 @@ class UserController extends Controller
     public function active($id)
     {
         try {
-            $user         = User::findOrFail($id);
+            $user = User::findOrFail($id);
             $user->status = 1;
             $user->save();
 
             flash()->success(trans('general.active-success'));
+
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
             report($e);
             flash()->success(trans('general.active-error'));
+
             return redirect()->route('setting.user.index');
         }
     }

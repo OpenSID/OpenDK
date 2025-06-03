@@ -84,4 +84,18 @@ class AlbumControllerTest extends TestCase
         $response->assertRedirect(route('publikasi.album.index'));
         $response->assertSessionHas('success', 'Album sukses dihapus!');
     }   
+
+    /** @test */
+    public function test_toggle_album_status()
+    {
+        $album = Album::factory()->create(['status' => 0]);
+
+        $response = $this->put(route('publikasi.album.status', $album->id));
+
+        $album->refresh();
+        
+        $this->assertTrue($album->status, 'Album status should be toggled to 1');
+
+        $response->assertRedirect(route('publikasi.album.index'));        
+    }
 }

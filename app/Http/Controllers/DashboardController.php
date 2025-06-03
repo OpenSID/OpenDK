@@ -50,6 +50,49 @@ class DashboardController extends Controller
             'program_bantuan' => Program::count(),
         ];
 
-        return view('dashboard.index', compact('page_title', 'data'));
+        // Halaman populer
+        $top_pages_visited = \App\Models\Visitor::getTopPagesVisited();
+
+        // User agent
+        $userAgents = \App\Models\Visitor::query()->pluck('user_agent');
+
+        // Parsing user_agent
+        $browserCounts = [];
+        $deviceCounts = [];
+        $platformCounts = [];
+
+        foreach ($userAgents as $userAgent) {
+            $agent = new \Jenssegers\Agent\Agent();
+            $agent->setUserAgent($userAgent);
+
+            $browser = $agent->browser() ?: 'Unknown';
+            $device = $agent->device() ?: 'Unknown';
+            $platform = $agent->platform() ?: 'Unknown';
+
+            $browserCounts[$browser] = ($browserCounts[$browser] ?? 0) + 1;
+            $deviceCounts[$device] = ($deviceCounts[$device] ?? 0) + 1;
+            $platformCounts[$platform] = ($platformCounts[$platform] ?? 0) + 1;
+        }
+
+        // Konversi ke format yang sesuai untuk Highcharts
+        $browserData = $this->convertToHighchartFormat($browserCounts);
+        $deviceData = $this->convertToHighchartFormat($deviceCounts);
+        $platformData = $this->convertToHighchartFormat($platformCounts);
+
+
+        return view('dashboard.index', compact('page_title', 'data', 'top_pages_visited', 'browserData', 'deviceData', 'platformData'));
+    }
+
+    /**
+     * Ubah array associative count ke format Highcharts
+     *
+     * @param array $counts
+     * @return array
+     */
+    private function convertToHighchartFormat(array $counts): array
+    {
+        return array_map(function ($count, $name) {
+            return ['name' => $name, 'y' => $count];
+        }, $counts, array_keys($counts));
     }
 }

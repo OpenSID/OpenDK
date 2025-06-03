@@ -63,3 +63,7 @@
 .skin-blue .sidebar-menu .treeview.active > a .fa {
     color: #00c0ef;
 }
+
+body.sidebar-collapse .sidebar-kabupaten {
+    display: none;
+}

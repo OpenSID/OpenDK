@@ -36,6 +36,7 @@ use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use App\Models\Galeri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
@@ -149,7 +150,7 @@ class AlbumController extends Controller
 
     public function update(AlbumRequest $request, Album $album)
     {
-        try {
+        try {            
             $input = $request->all();
 
             if ($request->hasFile('gambar')) {
@@ -157,7 +158,7 @@ class AlbumController extends Controller
                 $input['gambar'] = basename($file);
             }
 
-            $album->update($input);
+            $album->update($input);                        
         } catch (\Exception $e) {
             report($e);
 

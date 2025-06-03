@@ -60,6 +60,7 @@ class NavMenuController extends Controller
             // 'Halaman' => Artikel::cursor()->pluck('judul', 'link')->toArray(),
             'Halaman' => array_merge(
                 ['profil/struktur-organisasi' => 'Struktur Organisasi'], // Tambahkan opsi statis di sini
+                ['survei' => 'Survei Indeks Kepuasan Masyarakat'], // Tambahkan opsi survei ikm
                 Artikel::cursor()->pluck('judul', 'link')->toArray()
             ),
             'Kategori' => Kategori::cursor()->pluck('nama', 'link')->toArray(),

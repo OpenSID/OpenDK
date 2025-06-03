@@ -14,3 +14,5 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 6. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan teks tooltip ikon user menjadi "Identitas Pelapor" sesuai fungsinya.
 
 #### TEKNIS
+
+1. [#1220](https://github.com/OpenSID/OpenDK/issues/1220) Penyesuaian warna teks di footer agar lebih mudah dibaca.

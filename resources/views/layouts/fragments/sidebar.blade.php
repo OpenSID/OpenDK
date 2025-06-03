@@ -7,7 +7,7 @@
         <center>
             <!-- <div class="user-panel"> -->
             <img class="user-image" src="{{ is_logo($profil->file_logo) }}" alt="OpenDK" width="42px" style="margin: 5px;">
-            <p style="font-size: 12px; color:white">
+            <p class="sidebar-kabupaten" style="font-size: 12px; color:white">
                 {{ strtoupper('Pemerintah Kab. ' . $profil->nama_kabupaten) }}<br>
                 {{ strtoupper('Kecamatan ' . $profil->nama_kecamatan) }}<br>
             </p>
@@ -424,7 +424,8 @@
             <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
                 <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                     <span class="pull-right-container">
-                        <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
+                        {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
+                        <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>
                     </span>
                 </a>
             </li>

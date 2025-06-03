@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('title')
-    Data Pengurus
+    {{ $page_title ?? 'Page Title' }}
 @endsection
 
 @section('content')
@@ -16,56 +16,55 @@
         </ol>
     </section>
 
-    <section class="content container-fluid">
+    <div class="box-header with-border clearfix">
+        <div class="pull-left">
+            @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
+            @include('forms.btn-social', ['create_url' => route('data.pengurus.create.arsip', $pengurus_id)])
+        </div>
 
-        @include('partials.flash_message')
-
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
-
-                {{-- button bagan --}}
-                <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">
-                    <button type="button" class="btn btn-success btn-sm btn-social" title="Bagan Organisasi">
-                        <i class="fa fa-pie-chart"></i>Bagan Organisasi
-                    </button>
-                </a>
+        @if ($count_arsip > 0)
+            <div class="pull-right">
+                @include('forms.btn-social', ['download_zip' => route('data.pengurus.edit.download.arsip.zip', ['pengurus_id' => $pengurus_id])])
             </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label>Status</label>
-                            <select class="form-control" id="status">
-                                <option value="1">Aktif</option>
-                                <option value="0">Tidak Aktif</option>
-                            </select>
+        @endif
+    </div>
+
+    @include('partials.flash_message')
+
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+
+                    {!! Form::open(['route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                    @include('layouts.fragments.error_message')
+
+                    <div class="box-body">
+
+                        @include('flash::message')
+
+                        <div>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="200px">Nama Pengurus</th>
+                                        <th width="10px">:</th>
+                                        <td>{{ $pengurus ? $pengurus->nama : 'Tidak Ada' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>NIK</th>
+                                        <th>:</th>
+                                        <td>{{ $pengurus ? $pengurus->nik : 'Tidak Ada' }}</td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div class="box-footer">
+                            @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
                         </div>
                     </div>
-                </div>
-                <hr>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="pengurus-table">
-                        <thead>
-                            <tr>
-                                <th style="min-width: 170px;">Aksi</th>
-                                <th>Foto</th>
-                                <th style="min-width: 150px;">Nama, NIP, NIK</th>
-                                <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Agama</th>
-                                <th>Pangkat/Golongan</th>
-                                <th>Jabatan</th>
-                                <th>Status</th>
-                                <th>Pendidikan Terakhir</th>
-                                <th>No SK Pengangkatan</th>
-                                <th>Tanggal SK Pengangkatan</th>
-                                <th>No SK Pemberhentian</th>
-                                <th>Tanggal SK Pemberhentian</th>
-                                <th>Masa/Periode Jabatan</th>
-                            </tr>
-                        </thead>
-                    </table>
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

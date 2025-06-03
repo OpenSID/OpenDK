@@ -58,7 +58,7 @@ class PengaturanDatabaseController extends Controller
                 $deleteUrl = route('setting.pengaturan-database.delete', ['file' => basename($row['location'])]);
 
                 return '
-                <a href="' . $downloadUrl . '" class="btn btn-primary btn-sm" title="Download">
+                <a href="' . $downloadUrl . '" class="btn btn-primary btn-sm" title="Unduh">
                     <i class="fa fa-download"></i>
                 </a>
                 <a href="javascript:void(0)" onclick="deleteBackup(\'' . $deleteUrl . '\')" class="btn btn-danger btn-sm" title="Hapus">

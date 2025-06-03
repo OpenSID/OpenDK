@@ -41,11 +41,13 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MichaelDzjap\TwoFactorAuth\TwoFactorAuthenticable;
 
 class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
+    use HasFactory;
     use HasRoles;
     use Notifiable;
     use HandlesResourceDeletion;

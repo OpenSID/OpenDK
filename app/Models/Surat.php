@@ -32,10 +32,13 @@
 namespace App\Models;
 
 use App\Enums\StatusSurat;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Surat extends Model
 {
+    use HasFactory;
+    
     protected $table = 'das_log_surat';
 
     protected $fillable = [

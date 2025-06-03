@@ -2,18 +2,13 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select(
-            'jenis_surat',
-            ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck('nama', 'id')->toArray(),
-            isset($document) ? $document->jenis_surat : null,
-            [
-                'class' => 'form-control',
-                'id' => 'jenis_surat',
-                'required' => true
-            ]
-        ) !!}
+        {!! Form::select('jenis_surat', ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck('nama', 'id')->toArray(), isset($document) ? $document->jenis_surat : null, [
+            'class' => 'form-control',
+            'id' => 'jenis_surat',
+            'required' => true,
+        ]) !!}
     </div>
-    
+
 </div>
 
 <div class="form-group">
@@ -47,38 +42,37 @@
 {!! Form::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $("#pengurus_id").on('change', function() {
-            let pengurusId = $(this).val(); // Ambil nilai yang dipilih
-            if (pengurusId) {
-                let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        let tempat_lahir = response.tempat_lahir
-                        let tanggal_lahir = response.tanggal_lahir
-                        let alamat = response.alamat
-                        let warga_negara = response.warga_negara
-                        let agama = response.agama
-                        let pendidikan = response.pendidikan
-                        let tempat_tanggal_lahir = tempat_lahir + " / " + tanggal_lahir
-                        let warga_negara_agama = warga_negara + " / " + agama
-                        $("input[name='tempat_tanggal_lahir']").val(tempat_tanggal_lahir);
-                        $("input[name='alamat']").val(alamat);
-                        $("input[name='pendidikan']").val(pendidikan);
-                        $("input[name='warga_negara_agama']").val(warga_negara_agama);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert("Terjadi kesalahan saat mengambil data.");
-                    }
-                });
-            }
+    <script>
+        $(document).ready(function() {
+            $("#pengurus_id").on('change', function() {
+                let pengurusId = $(this).val(); // Ambil nilai yang dipilih
+                if (pengurusId) {
+                    let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            let tempat_lahir = response.tempat_lahir
+                            let tanggal_lahir = response.tanggal_lahir
+                            let alamat = response.alamat
+                            let warga_negara = response.warga_negara
+                            let agama = response.agama
+                            let pendidikan = response.pendidikan
+                            let tempat_tanggal_lahir = tempat_lahir + " / " + tanggal_lahir
+                            let warga_negara_agama = warga_negara + " / " + agama
+                            $("input[name='tempat_tanggal_lahir']").val(tempat_tanggal_lahir);
+                            $("input[name='alamat']").val(alamat);
+                            $("input[name='pendidikan']").val(pendidikan);
+                            $("input[name='warga_negara_agama']").val(warga_negara_agama);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                            alert("Terjadi kesalahan saat mengambil data.");
+                        }
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush
-

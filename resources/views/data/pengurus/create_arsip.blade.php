@@ -58,8 +58,7 @@
                         d.status = $('#status').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center',

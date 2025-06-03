@@ -8,5 +8,6 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 1. [#1230](https://github.com/OpenSID/OpenDK/issues/1230) Perbaikan sub judul pada halaman "Media Sosial" hanya "Daftar".
 2. [#1228](https://github.com/OpenSID/OpenDK/issues/1228) Perbaikan typo "mengimplentasikan" menjadi "mengimplementasikan" di halaman Permohonan Surat.
+3. [#1226](https://github.com/OpenSID/OpenDK/issues/1226) Perbaikan teks nama instansi pada sidebar overlap.
 
 #### TEKNIS

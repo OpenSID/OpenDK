@@ -4,7 +4,7 @@
     <section class="content-header">
         <h1>
             Media Sosial
-            <small>Daftar</small>
+            <small>Daftar Media Sosial</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>

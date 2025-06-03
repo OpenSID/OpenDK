@@ -34,9 +34,7 @@ namespace App\Http\Controllers\Publikasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
-use App\Models\Galeri;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
 class AlbumController extends Controller
@@ -87,7 +85,7 @@ class AlbumController extends Controller
 
     public function create()
     {
-        $page_title       = 'Album';
+        $page_title = 'Album';
         $page_description = 'Tambah Album';
 
         return view('publikasi.album.create', compact('page_title', 'page_description'));
@@ -106,7 +104,7 @@ class AlbumController extends Controller
         try {
             $input = $request->all();
             if ($request->hasFile('gambar')) {
-                $file            = $request->file('gambar')->store('public/publikasi/album');
+                $file = $request->file('gambar')->store('public/publikasi/album');
                 $input['gambar'] = basename($file);
             }
 
@@ -122,10 +120,9 @@ class AlbumController extends Controller
 
     public function status(Album $album)
     {
-
         try {
             $album->update([
-                'status' => $album->status == 1 ? 0 : 1
+                'status' => $album->status == 1 ? 0 : 1,
             ]);
 
             flash()->success(trans('general.active-success'));
@@ -153,7 +150,7 @@ class AlbumController extends Controller
             $input = $request->all();
 
             if ($request->hasFile('gambar')) {
-                $file            = $request->file('gambar')->store('public/publikasi/album');
+                $file = $request->file('gambar')->store('public/publikasi/album');
                 $input['gambar'] = basename($file);
             }
 

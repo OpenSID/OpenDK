@@ -42,7 +42,13 @@
             loader.style.display = 'block';
             contentBox.style.display = 'none';
 
-            fetch('{{ route('profil.struktur-organisasi-ajax') }}')
+            fetch('{{ route('profil.struktur-organisasi-ajax') }}',{
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'Fetch',
+                    'Accept': 'application/json'
+                }
+            })
                 .then(response => response.json())
                 .then(result => {
                     /// Setelah data diterima, tampilkan konten & sembunyikan loader

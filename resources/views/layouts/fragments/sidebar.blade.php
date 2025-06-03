@@ -424,7 +424,8 @@
             <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
                 <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                     <span class="pull-right-container">
-                        <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
+                        {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
+                        <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>
                     </span>
                 </a>
             </li>

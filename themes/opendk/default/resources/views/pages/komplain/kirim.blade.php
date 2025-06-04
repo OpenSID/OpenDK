@@ -1,5 +1,25 @@
 @extends('layouts.app')
 
+@push('styles')
+    <style>
+       .bootstrap-datetimepicker-widget {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow-x: auto;
+            font-size: 14px;
+            z-index: 9999 !important;
+        }
+
+        @media (max-width: 768px) {
+            .bootstrap-datetimepicker-widget {
+                transform: scale(0.95);
+                transform-origin: top left;
+            }
+        }
+ 
+    </style>
+@endpush
+
 @section('content')
     <!-- Main content -->
     <!-- /.col -->

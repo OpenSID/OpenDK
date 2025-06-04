@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LembagaAnggota extends Model
 {
+    use HasFactory;
     protected $table = 'das_lembaga_anggota';
 
     protected $guarded = ['id'];

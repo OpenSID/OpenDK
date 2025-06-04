@@ -3,7 +3,7 @@
 @section('content')
 
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -14,14 +14,19 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
         <div class="row">
             <div class="col-md-12">
 
-                {!! Form::open(['route' => 'data.laporan-apbdes.do_import', 'method' => 'post', 'id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::open([
+                    'route' => 'data.laporan-apbdes.do_import',
+                    'method' => 'post',
+                    'id' => 'form-import',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
 
                 <div class="box-body">
 
@@ -39,7 +44,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Laporan APBDes <span class="required">*</span></label>
+                                <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Laporan APBDes
+                                    <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-6 col-xs-12">
                                     <input type="file" id="data_file" name="file" class="form-control" required accept=".zip, application/zip" />
@@ -49,7 +55,8 @@
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Unggah Data:</p>
-                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/laporan_apbdes_22_12_2020_opendk.zip') }}">Unduh</a></p>
+                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/laporan_apbdes_22_12_2020_opendk.zip') }}">Unduh</a>
+                                </p>
                             </div>
                         </div>
                     </div>

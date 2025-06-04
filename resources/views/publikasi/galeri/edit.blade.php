@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,10 +12,14 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
-        {!! Form::model($galeri, ['route' => ['publikasi.galeri.update', $galeri->id], 'method' => 'put', 'id' => 'form-galeri', 'files' => true]) !!}
+        {!! Form::model($galeri, [
+            'route' => ['publikasi.galeri.update', $galeri->id],
+            'method' => 'put',
+            'id' => 'form-galeri',
+            'files' => true,
+        ]) !!}
 
         @include('flash::message')
         @include('publikasi.galeri._form')

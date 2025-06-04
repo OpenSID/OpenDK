@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -20,7 +19,13 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- kirim komplain form -->
-                {!! Form::model($komplain, ['route' => ['admin-komplain.update', $komplain->id], 'method' => 'put', 'id' => 'form-komplain', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::model($komplain, [
+                    'route' => ['admin-komplain.update', $komplain->id],
+                    'method' => 'put',
+                    'id' => 'form-komplain',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
                 <div class="box box-primary">
                     <div class="box-body">
                         @if (count($errors) > 0)
@@ -55,7 +60,12 @@
                                     <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!! Form::text('nama', null, ['placeholder' => 'Nama', 'class' => 'form-control', 'required', 'readonly' => true]) !!}
+                                        {!! Form::text('nama', null, [
+                                            'placeholder' => 'Nama',
+                                            'class' => 'form-control',
+                                            'required',
+                                            'readonly' => true,
+                                        ]) !!}
                                         @if ($errors->has('nama'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('nama') }}</strong>
@@ -68,7 +78,11 @@
                                     <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null, ['class' => 'form-control', 'id' => 'kategori', 'required']) !!}
+                                        {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null, [
+                                            'class' => 'form-control',
+                                            'id' => 'kategori',
+                                            'required',
+                                        ]) !!}
                                         @if ($errors->has('kategori'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('kategori') }}</strong>
@@ -157,7 +171,9 @@
                                     <label class="control-label col-md-2 col-sm-3 col-xs-12">Status</label>
 
                                     <div class="col-md-2 col-sm-2 col-xs-12">
-                                        {!! Form::select('status', ['BELUM' => 'Belum', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, ['class' => 'form-control']) !!}
+                                        {!! Form::select('status', ['BELUM' => 'Belum', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, [
+                                            'class' => 'form-control',
+                                        ]) !!}
                                         @if ($errors->has('status'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('status') }}</strong>

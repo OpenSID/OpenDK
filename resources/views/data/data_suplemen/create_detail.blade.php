@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -13,13 +13,17 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => ['data.data-suplemen.storedetail'], 'method' => 'post', 'id' => 'form-faq', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::open([
+                        'route' => ['data.data-suplemen.storedetail'],
+                        'method' => 'post',
+                        'id' => 'form-faq',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
 
                     <div class="box-body">
                         <div class="table-responsive">
@@ -74,7 +78,8 @@
                 var suplemen = $("input[name='suplemen_id']").val();
                 if (desa) {
                     $.ajax({
-                        url: '/data/data-suplemen/getpenduduk/' + encodeURI(desa) + '/' + encodeURI(suplemen),
+                        url: '/data/data-suplemen/getpenduduk/' + encodeURI(desa) + '/' + encodeURI(
+                            suplemen),
                         type: "GET",
                         dataType: "json",
                         success: function(data) {

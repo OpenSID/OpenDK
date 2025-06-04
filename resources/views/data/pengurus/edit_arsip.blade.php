@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -15,7 +15,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <div class="box-header with-border">
         <a href="{{ url()->previous() }}" class="btn btn-info btn-sm" judul="Kembali Ke Halaman Sebelumnya"><i class="fa fa-arrow-left"></i>&ensp;Kembali</a>
     </div>
@@ -27,11 +26,20 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => 'data.pengurus.store.arsip', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::open([
+                        'route' => 'data.pengurus.store.arsip',
+                        'method' => 'post',
+                        'files' => true,
+                        'id' => 'form-pengurus',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
                     @include('layouts.fragments.error_message')
                     <div class="box-body">
                         @include('flash::message')
-                        @include('data.pengurus.form_edit_arsip', ['pengurus_id' => $pengurus_id, 'document' => $document])
+                        @include('data.pengurus.form_edit_arsip', [
+                            'pengurus_id' => $pengurus_id,
+                            'document' => $document,
+                        ])
                         <div class="box-footer">
                             @include('partials.button_reset_submit')
                         </div>

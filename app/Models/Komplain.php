@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Komplain extends Model
 {
+    use HasFactory;
     protected $table = 'das_komplain';
 
     protected $fillable = [
@@ -67,5 +69,19 @@ class Komplain extends Model
     public function penduduk()
     {
         return $this->hasOne(Penduduk::class, 'nik', 'nik');
+    }
+
+    public static function generateID()
+    {
+        $id = mt_rand(100000, 999999);
+        $pid = '';
+
+        if (! Komplain::where('komplain_id', '=', $id)->exists()) {
+            $pid = $id;
+        } else {
+            self::generateID();
+        }
+
+        return $pid;
     }
 }

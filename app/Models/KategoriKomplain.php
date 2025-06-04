@@ -32,11 +32,12 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class KategoriKomplain extends Model
 {
-    use Sluggable;
+    use Sluggable, HasFactory;
 
     protected $table = 'das_kategori_komplain';
 

@@ -29,34 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Tests;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CompleteProfile;
+use App\Http\Middleware\GlobalShareMiddleware;
+use App\Models\SettingAplikasi;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 
-class JawabKomplain extends Model
+class CrudTestCase extends TestCase
 {
-    use HasFactory;
-    protected $table = 'das_jawab_komplain';
+    use CreatesApplication;
 
-    protected $fillable = [
-        'komplain_id',
-        'penjawab',
-        'jawaban',
-    ];
-
-    public function komplains()
+    /**
+     * Set up the test environment.
+     */
+    protected function setUp(): void
     {
-        return $this->belongsTo(Komplain::class, 'komplain_id', 'komplain_id');
+        parent::setUp();
+        $this->withViewErrors([]);
+        $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
+        // disabled database gabungan for testing
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0']
+        );    
     }
 
-    public function komplain()
-    {
-        return $this->hasOne(Komplain::class, 'komplain_id', 'komplain_id');
-    }
-
-    public function penjawab_komplain()
-    {
-        return $this->hasOne(Penduduk::class, 'nik', 'penjawab');
-    }
+    // Additional methods for CRUD tests can be added here
 }

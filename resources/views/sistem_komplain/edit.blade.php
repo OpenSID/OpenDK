@@ -45,8 +45,7 @@
                             <div class="col-md-12">
                                 {{ csrf_field() }}
                                 <div class="form-group{{ $errors->has('nik') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required', 'readonly' => true]) !!}
@@ -58,8 +57,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('nama') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         {!! Form::text('nama', null, [
@@ -77,8 +75,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('kategori') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
                                         {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null, [
@@ -95,8 +92,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('judul') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         {!! Form::text('judul', null, ['placeholder' => 'Judul', 'class' => 'form-control', 'required']) !!}
@@ -109,8 +105,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('laporan') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         {!! Form::textArea('laporan', null, ['placeholder' => 'Laporan', 'class' => 'form-control', 'required']) !!}
@@ -128,52 +123,44 @@
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran1" name="lampiran1"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran1" name="lampiran1" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran1"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview1"
-                                                    style="background-image: url(@if (!$komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview1" style="background-image: url(@if (!$komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran2" name="lampiran2"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran2" name="lampiran2" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran2"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview2"
-                                                    style="background-image: url(@if (!$komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview2" style="background-image: url(@if (!$komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran3" name="lampiran3"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran3" name="lampiran3" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran3"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview3"
-                                                    style="background-image: url(@if (!$komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview3" style="background-image: url(@if (!$komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran4" name="lampiran4"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran4" name="lampiran4" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran4"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview4"
-                                                    style="background-image: url(@if (!$komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview4" style="background-image: url(@if (!$komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>

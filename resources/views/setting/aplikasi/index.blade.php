@@ -36,10 +36,8 @@
                                     </td>
                                     <td>{{ $setting->description }}</td>
                                     <td>
-                                        <a href="{{ route('setting.aplikasi.edit', $setting->id) }}" title="Ubah"
-                                            data-button="edit">
-                                            <button type="button" class="btn btn-primary btn-xs" style="width: 40px;"><i
-                                                    class="fa fa-edit" aria-hidden="true"></i></button>
+                                        <a href="{{ route('setting.aplikasi.edit', $setting->id) }}" title="Ubah" data-button="edit">
+                                            <button type="button" class="btn btn-primary btn-xs" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
                                         </a>
                                     </td>
                                 </tr>

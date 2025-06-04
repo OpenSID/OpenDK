@@ -71,16 +71,14 @@
                                     Imunisasi</label>
 
                                 <div class="col-md-8">
-                                    <input type="file" id="data_file" name="file" class="form-control" required
-                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a
-                                        href="{{ asset('storage/template_upload/Format_Upload_Cakupan_Imunisasi.xlsx') }}">Download</a>
+                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Cakupan_Imunisasi.xlsx') }}">Download</a>
                                 </p>
                             </div>
                         </div>

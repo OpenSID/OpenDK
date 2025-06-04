@@ -21,13 +21,10 @@
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i>&nbsp;
                                 Kembali</button>
                         </a>
-                        <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah"
-                            data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
+                        <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
 
-                        <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.potensi.destroy', $potensi->id) !!}"
-                            data-button="delete" id="deleteModal">
-                            <button type="button" class="btn btn-icon btn-danger btn-sm"><i class="fa fa-trash"
-                                    aria-hidden="true"></i>&nbsp; Hapus</button>
+                        <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.potensi.destroy', $potensi->id) !!}" data-button="delete" id="deleteModal">
+                            <button type="button" class="btn btn-icon btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i>&nbsp; Hapus</button>
                         </a>
                     </div>
                     <!-- /.box-header -->

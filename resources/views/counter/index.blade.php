@@ -80,8 +80,7 @@
                                     <div class="icon">
                                         <i class="ion ion-stats-bars"></i>
                                     </div>
-                                    <a href="{{ route('counter.index', ['filter' => $stat['filter']]) }}"
-                                        class="small-box-footer">
+                                    <a href="{{ route('counter.index', ['filter' => $stat['filter']]) }}" class="small-box-footer">
                                         Selengkapnya <i class="fa fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
@@ -153,8 +152,7 @@
                                 <tbody>
                                     @foreach ($top_pages_visited as $index => $page)
                                         <tr>
-                                            <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i
-                                                        class="fa fa-fw fa-link"></i></a> </td>
+                                            <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i class="fa fa-fw fa-link"></i></a> </td>
                                             <td>{{ $page->total_views }}</td>
                                             <td>{{ $page->unique_visitors }}</td>
                                             <td>

@@ -35,9 +35,7 @@
                                 @endif
 
                                 @if (isset($regulasi->file_regulasi) && $regulasi->mime_type == 'pdf')
-                                    <object
-                                        data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif"
-                                        type="application/pdf" class="showpdf" id="showpdf"> </object>
+                                    <object data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
                                 @endif
                             </div>
                         </div>

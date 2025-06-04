@@ -16,8 +16,7 @@
         <div class="row">
 
             {{-- loader --}}
-            <div id="loader"
-                style="
+            <div id="loader" style="
                 display: none;
                 text-align: center;
                 margin-top: 20px;

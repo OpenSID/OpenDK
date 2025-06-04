@@ -33,8 +33,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <object data='{{ asset("storage/surat/{$surat->file}") }}' style="width: 100%;min-height: 400px;"
-                    type="application/pdf"></object>
+                <object data='{{ asset("storage/surat/{$surat->file}") }}' style="width: 100%;min-height: 400px;" type="application/pdf"></object>
             </div>
             <div class="box-footer">
                 <div class="form-group">

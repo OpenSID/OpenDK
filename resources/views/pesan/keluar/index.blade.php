@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -26,12 +26,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     {!! Form::open(['route' => 'pesan.keluar', 'method' => 'get', 'id' => 'form-search-desa']) !!}
-                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, ['placeholder' => 'pilih desa', 'class' => 'form-control', 'id' => 'list_desa', 'required']) !!}
+                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
+                                        'placeholder' => 'pilih desa',
+                                        'class' => 'form-control',
+                                        'id' => 'list_desa',
+                                        'required',
+                                    ]) !!}
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
-                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"
+                                        placeholder="Cari Pesan">
+                                    <span style="padding-right: 25px"
+                                        class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
 
                             </div>
@@ -42,11 +49,18 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                    class="fa fa-square-o"></i>
                             </button>
 
-                            {!! Form::open(['route' => 'pesan.arsip.multiple', 'class' => 'form-group inline', 'method' => 'post', 'id' => 'form-multiple-arsip-pesan']) !!}
-                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
+                            {!! Form::open([
+                                'route' => 'pesan.arsip.multiple',
+                                'class' => 'form-group inline',
+                                'method' => 'post',
+                                'id' => 'form-multiple-arsip-pesan',
+                            ]) !!}
+                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
+                                    class="fa fa-archive"></i> Arsipkan</button>
                             {!! Form::text('array_id', null, ['hidden' => true, 'id' => 'array_multiple_id_arsip']) !!}
                             {!! Form::close() !!}
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
@@ -57,9 +71,12 @@
                                     @foreach ($list_pesan as $pesan)
                                         <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
                                             <td style="width: 5%">
-                                                <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
+                                                <input data-id="{{ $pesan->id }}" type="checkbox"
+                                                    style="position: absolute; opacity: 0;">
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
+                                            <td style="width: 10%" class="mailbox-name"><a
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>
                                                     <b>
@@ -73,7 +90,8 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td style="width: 20%" class="mailbox-date text-right">{{ $pesan->custom_date }}</td>
+                                            <td style="width: 20%" class="mailbox-date text-right">
+                                                {{ $pesan->custom_date }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -203,9 +221,11 @@
 
                 $("#arsip-action").click(function(e) {
                     e.preventDefault()
-                    let data = $.map($('.mailbox-messages input[type="checkbox"]:checked').toArray(), function(el, index) {
-                        return $(el).data('id');
-                    })
+                    let data = $.map($('.mailbox-messages input[type="checkbox"]:checked')
+                    .toArray(),
+                        function(el, index) {
+                            return $(el).data('id');
+                        })
                     if (data.length <= 0) return;
                     let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
                     if (!response) return;

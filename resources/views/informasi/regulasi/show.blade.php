@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,14 +12,14 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <a href="{{ route('informasi.regulasi.index') }}">
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>&nbsp; Kembali</button>
+                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>&nbsp;
+                                Kembali</button>
                         </a>
                     </div>
                     <!-- /.box-header -->
@@ -35,7 +35,9 @@
                                 @endif
 
                                 @if (isset($regulasi->file_regulasi) && $regulasi->mime_type == 'pdf')
-                                    <object data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
+                                    <object
+                                        data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif"
+                                        type="application/pdf" class="showpdf" id="showpdf"> </object>
                                 @endif
                             </div>
                         </div>

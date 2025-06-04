@@ -1,5 +1,5 @@
 <div>
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -9,7 +9,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         @if ($form)
             @include('livewire.widget.form')

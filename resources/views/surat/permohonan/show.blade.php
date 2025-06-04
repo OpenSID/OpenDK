@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -16,7 +16,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -26,14 +25,16 @@
                 <div class="float-right">
                     <div class="btn-group">
                         <a href="{{ route('surat.permohonan') }}">
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali ke Permohonan Surat
+                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali
+                                ke Permohonan Surat
                             </button>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="box-body">
-                <object data='{{ asset("storage/surat/{$surat->file}") }}' style="width: 100%;min-height: 400px;" type="application/pdf"></object>
+                <object data='{{ asset("storage/surat/{$surat->file}") }}' style="width: 100%;min-height: 400px;"
+                    type="application/pdf"></object>
             </div>
             <div class="box-footer">
                 <div class="form-group">

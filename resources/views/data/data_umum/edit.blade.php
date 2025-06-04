@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,20 +11,27 @@
             <li class="active">Data Umum</a></li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
 
-        {!! Form::model($data_umum, ['route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left']) !!}
+        {!! Form::model($data_umum, [
+            'route' => ['data.data-umum.update', $data_umum->id],
+            'method' => 'put',
+            'id' => 'form-event',
+            'class' => 'form-horizontal form-label-left',
+        ]) !!}
 
         <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
-                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a></li>
-                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>
+                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah"
+                        id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
+                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta
+                        Wilayah</a></li>
+                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor"
+                        data-toggle="tab">Lokasi Kantor</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="wilayah">
@@ -64,13 +71,15 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="lat">Latitude</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control input-sm lat" name="lat" id="lat" value="{{ $data_umum->lat }}">
+                            <input type="text" class="form-control input-sm lat" name="lat" id="lat"
+                                value="{{ $data_umum->lat }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="lat">Longitude</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control input-sm lng" name="lng" id="lng" value="{{ $data_umum->lng }}">
+                            <input type="text" class="form-control input-sm lng" name="lng" id="lng"
+                                value="{{ $data_umum->lng }}">
                         </div>
                     </div>
                 </div>

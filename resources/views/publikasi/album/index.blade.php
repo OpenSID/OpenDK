@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,14 +11,14 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('publikasi.album.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                <a href="{{ route('publikasi.album.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i
+                        class="fa fa-plus"></i>&ensp;Tambah</a>
             </div>
             <div class="box-body">
                 <div class="table-responsive">

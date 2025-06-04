@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,14 +12,19 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
         <div class="row">
             <div class="col-md-12">
 
-                {!! Form::open(['route' => 'data.epidemi-penyakit.do_import', 'method' => 'post', 'id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::open([
+                    'route' => 'data.epidemi-penyakit.do_import',
+                    'method' => 'post',
+                    'id' => 'form-import',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
 
                 <div class="box-body">
 
@@ -61,7 +66,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="penyakit_id" class="control-label col-md-4 col-sm-3 col-xs-12">Jenis Penyakit</label>
+                                <label for="penyakit_id" class="control-label col-md-4 col-sm-3 col-xs-12">Jenis
+                                    Penyakit</label>
 
                                 <div class="col-md-8">
                                     <select class="form-control" id="penyakit_id" name="penyakit_id">
@@ -73,17 +79,21 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Epidemi Penyakit</label>
+                                <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Epidemi
+                                    Penyakit</label>
 
                                 <div class="col-md-8">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Epidemi_Penyakit.xlsx') }}">Download</a></p>
+                                <p>Silahkan download template upload data di sini: <a
+                                        href="{{ asset('storage/template_upload/Format_Upload_Epidemi_Penyakit.xlsx') }}">Download</a>
+                                </p>
                             </div>
                         </div>
                     </div>

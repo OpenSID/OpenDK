@@ -1,6 +1,6 @@
 @extends('layouts.dashboard_template')
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -16,8 +16,15 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['print' => route('counter.cetak'), 'print_text' => 'Cetak', 'print_new_tab' => true])
-                @include('forms.btn-social', ['export_url' => route('counter.export.excel'), 'export_text' => 'Unduh'])
+                @include('forms.btn-social', [
+                    'print' => route('counter.cetak'),
+                    'print_text' => 'Cetak',
+                    'print_new_tab' => true,
+                ])
+                @include('forms.btn-social', [
+                    'export_url' => route('counter.export.excel'),
+                    'export_text' => 'Unduh',
+                ])
             </div>
             <div class="box-body no-padding">
                 <!-- Statistik -->
@@ -73,7 +80,8 @@
                                     <div class="icon">
                                         <i class="ion ion-stats-bars"></i>
                                     </div>
-                                    <a href="{{ route('counter.index', ['filter' => $stat['filter']]) }}" class="small-box-footer">
+                                    <a href="{{ route('counter.index', ['filter' => $stat['filter']]) }}"
+                                        class="small-box-footer">
                                         Selengkapnya <i class="fa fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
@@ -145,7 +153,8 @@
                                 <tbody>
                                     @foreach ($top_pages_visited as $index => $page)
                                         <tr>
-                                            <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i class="fa fa-fw fa-link"></i></a> </td>
+                                            <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i
+                                                        class="fa fa-fw fa-link"></i></a> </td>
                                             <td>{{ $page->total_views }}</td>
                                             <td>{{ $page->unique_visitors }}</td>
                                             <td>

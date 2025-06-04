@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_description ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -20,7 +19,13 @@
 
                     <div class="box-body">
                         <!-- form start -->
-                        {!! Form::open(['route' => 'informasi.prosedur.store', 'method' => 'post', 'files' => true, 'id' => 'form-prosedur', 'class' => 'form-horizontal form-label-left']) !!}
+                        {!! Form::open([
+                            'route' => 'informasi.prosedur.store',
+                            'method' => 'post',
+                            'files' => true,
+                            'id' => 'form-prosedur',
+                            'class' => 'form-horizontal form-label-left',
+                        ]) !!}
 
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
@@ -55,7 +60,8 @@
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
+                    var extension = input.files[0].name.split('.').pop()
+                    .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes

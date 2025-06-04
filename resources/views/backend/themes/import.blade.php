@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,31 +12,40 @@
             <li class="active">{{ $page_description ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
         <div class="row">
             <div class="col-md-12">
 
-                {!! Form::open(['route' => 'setting.themes.do-upload', 'method' => 'post', 'id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::open([
+                    'route' => 'setting.themes.do-upload',
+                    'method' => 'post',
+                    'id' => 'form-import',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
 
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-7">
 
                             <div class="form-group">
-                                <label class="control-label col-md-5 col-sm-3 col-xs-12" for="data_file">Data Anggaran & Realisasi</label>
+                                <label class="control-label col-md-5 col-sm-3 col-xs-12" for="data_file">Data Anggaran &
+                                    Realisasi</label>
 
                                 <div class="col-md-7">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Anggaran_Realisasi.xlsx') }}">Download</a></p>
+                                <p>Silahkan download template upload data di sini: <a
+                                        href="{{ asset('storage/template_upload/Format_Upload_Anggaran_Realisasi.xlsx') }}">Download</a>
+                                </p>
                             </div>
                         </div>
                     </div>

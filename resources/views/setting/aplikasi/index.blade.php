@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -32,11 +31,15 @@
                             @forelse($settings as $setting)
                                 <tr>
                                     <td>{{ ucwords(str_replace('_', ' ', $setting->key)) }}</td>
-                                    <td style="width:40%; word-break:break-all;">{{ $setting->type == 'boolean' ? ($setting->value == 1 ? 'Aktif' : 'Tidak Aktif') : $setting->value }}</td>
+                                    <td style="width:40%; word-break:break-all;">
+                                        {{ $setting->type == 'boolean' ? ($setting->value == 1 ? 'Aktif' : 'Tidak Aktif') : $setting->value }}
+                                    </td>
                                     <td>{{ $setting->description }}</td>
                                     <td>
-                                        <a href="{{ route('setting.aplikasi.edit', $setting->id) }}" title="Ubah" data-button="edit">
-                                            <button type="button" class="btn btn-primary btn-xs" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                        <a href="{{ route('setting.aplikasi.edit', $setting->id) }}" title="Ubah"
+                                            data-button="edit">
+                                            <button type="button" class="btn btn-primary btn-xs" style="width: 40px;"><i
+                                                    class="fa fa-edit" aria-hidden="true"></i></button>
                                         </a>
                                     </td>
                                 </tr>

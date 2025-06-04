@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{!! $page_title !!}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -55,15 +54,24 @@
 
                                 {{-- Filter Tahun --}}
                                 <div class="col-md-4 pr-md-1">
-                                    {!! Form::select('tahun', array_combine(range(date('Y'), date('Y') - 10), range(date('Y'), date('Y') - 10)), null, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '- Pilih Tahun -',
-                                    ]) !!}
+                                    {!! Form::select(
+                                        'tahun',
+                                        array_combine(range(date('Y'), date('Y') - 10), range(date('Y'), date('Y') - 10)),
+                                        null,
+                                        [
+                                            'class' => 'form-control',
+                                            'placeholder' => '- Pilih Tahun -',
+                                        ],
+                                    ) !!}
                                 </div>
 
                                 {{-- Filter Jenis Dokumen --}}
                                 <div class="col-md-4 pr-md-1">
-                                    {!! Form::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id'), null, ['placeholder' => '-Pilih Jenis Dokumen-', 'class' => 'form-control', 'id' => 'jenis_dokumen_id']) !!}
+                                    {!! Form::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id'), null, [
+                                        'placeholder' => '-Pilih Jenis Dokumen-',
+                                        'class' => 'form-control',
+                                        'id' => 'jenis_dokumen_id',
+                                    ]) !!}
                                 </div>
                             </div>
                         </div>
@@ -89,7 +97,8 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data jenis dokumen belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
+                <p>Data jenis dokumen belum tersedia. Silahkan tambah data <b><a
+                            href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>
@@ -145,7 +154,8 @@
                             const isPublished = row.is_published;
                             const expiredAt = row.expired_at;
                             const today = new Date();
-                            today.setHours(0, 0, 0, 0); // Hilangkan waktu agar perbandingan lebih akurat
+                            today.setHours(0, 0, 0,
+                            0); // Hilangkan waktu agar perbandingan lebih akurat
                             let status = '';
                             let badgeClass = '';
 
@@ -186,21 +196,24 @@
                 console.log(bulan)
 
                 // Lakukan request dengan filter status yang dipilih
-                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun + '&jenis_dokumen_id=' + jenisDokumenId).load();
+                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun +
+                    '&jenis_dokumen_id=' + jenisDokumenId).load();
             });
 
             $('select[name="tahun"]').on('change', function() {
                 tahun = $(this).val(); // Ambil value yang dipilih
 
                 // Lakukan request dengan filter status yang dipilih
-                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun + '&jenis_dokumen_id=' + jenisDokumenId).load();
+                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun +
+                    '&jenis_dokumen_id=' + jenisDokumenId).load();
             });
 
             $('select[name="jenis_dokumen_id"]').on('change', function() {
                 jenisDokumenId = $(this).val(); // Ambil value yang dipilih
 
                 // Lakukan request dengan filter status yang dipilih
-                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun + '&jenis_dokumen_id=' + jenisDokumenId).load();
+                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun +
+                    '&jenis_dokumen_id=' + jenisDokumenId).load();
             });
 
         });

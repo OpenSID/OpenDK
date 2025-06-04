@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -25,12 +25,19 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     {!! Form::open(['route' => 'pesan.index', 'method' => 'get', 'id' => 'form-search-desa']) !!}
-                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, ['placeholder' => 'pilih desa', 'class' => 'form-control', 'id' => 'list_desa', 'required']) !!}
+                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
+                                        'placeholder' => 'pilih desa',
+                                        'class' => 'form-control',
+                                        'id' => 'list_desa',
+                                        'required',
+                                    ]) !!}
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
-                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"
+                                        placeholder="Cari Pesan">
+                                    <span style="padding-right: 25px"
+                                        class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
 
                             </div>
@@ -48,11 +55,16 @@
                                     @foreach ($list_pesan as $pesan)
                                         <tr>
                                             <td style="width: 5%">
-                                                <div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;">
-                                                    <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                                <div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false"
+                                                    style="position: relative;"><input type="checkbox"
+                                                        style="position: absolute; opacity: 0;">
+                                                    <ins class="iCheck-helper"
+                                                        style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
                                                 </div>
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a></td>
+                                            <td style="width: 10%" class="mailbox-name"><a
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>
                                                     <b>
@@ -66,7 +78,8 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td style="width: 20%" class="mailbox-date text-right">{{ $pesan->custom_date }}</td>
+                                            <td style="width: 20%" class="mailbox-date text-right">{{ $pesan->custom_date }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

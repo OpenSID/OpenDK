@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -19,8 +18,10 @@
         <div class="box box-info">
             <div class="box-header with-border text-center">
                 {{-- tampilkan modal upload --}}
-                <a href="javascript:void(0)" class="btn btn-social bg-blue btn-sm" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Unggah</a>
-                <a href="{{ route('setting.themes.rescan') }}" class="btn btn-social bg-orange btn-sm"><i class="fa fa-recycle"></i> Pindai</a>
+                <a href="javascript:void(0)" class="btn btn-social bg-blue btn-sm" data-toggle="modal"
+                    data-target="#modal-upload"><i class="fa fa-upload"></i> Unggah</a>
+                <a href="{{ route('setting.themes.rescan') }}" class="btn btn-social bg-orange btn-sm"><i
+                        class="fa fa-recycle"></i> Pindai</a>
                 {{-- <a href="{{ site_url() }}" class="btn btn-social btn-info btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" target="_blank"><i class="fa fa-eye"></i> Lihat</a> --}}
             </div>
         </div>
@@ -37,14 +38,16 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="modal-upload-label">Unggah Tema</h4>
                     </div>
                     <form id="upload-form" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="file" class="control-label">File<code>.zip</code></label>
-                                <input type="file" name="file" id="file" class="form-control" accept=".zip" required>
+                                <input type="file" name="file" id="file" class="form-control" accept=".zip"
+                                    required>
                             </div>
                         </div>
                         <div class="modal-footer">

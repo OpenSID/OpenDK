@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -20,7 +19,8 @@
 
             <div class="box-header with-border">
                 {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
-                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
+                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social"
+                    title="{{ $export_text ?? 'Ekspor' }}">
                     <i class="fa fa-download"></i>{{ $export_text ?? 'Ekspor' }}
                 </button>
             </div>

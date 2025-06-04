@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -15,7 +15,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -35,7 +34,8 @@
                         <h3 class="box-title">Berdasarkan Kategori</h3>
                     </div>
                     <div class="box-body">
-                        <div id="chart_kategori" style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
+                        <div id="chart_kategori"
+                            style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
                         </div>
                     </div>
                 </div>

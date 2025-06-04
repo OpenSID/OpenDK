@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,14 +12,19 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
 
                     <!-- form start -->
-                    {!! Form::model($event, ['route' => ['informasi.event.update', $event->id], 'method' => 'PUT', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                    {!! Form::model($event, [
+                        'route' => ['informasi.event.update', $event->id],
+                        'method' => 'PUT',
+                        'id' => 'form-event',
+                        'class' => 'form-horizontal form-label-left',
+                        'files' => true,
+                    ]) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

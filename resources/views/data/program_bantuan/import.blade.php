@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,14 +12,19 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
         <div class="row">
             <div class="col-md-12">
 
-                {!! Form::open(['route' => 'data.program-bantuan.do_import', 'method' => 'post', 'id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::open([
+                    'route' => 'data.program-bantuan.do_import',
+                    'method' => 'post',
+                    'id' => 'form-import',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
 
                 <div class="box-body">
 
@@ -41,14 +46,16 @@
                                     Bantuan <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".zip, application/zip" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required
+                                        accept=".zip, application/zip" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Unggah Data:</p>
-                                <p>Silahkan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/program_bantuan_31_05_2022_opendk.zip') }}">Unduh</a>
+                                <p>Silahkan unduh template unggah data di sini: <a
+                                        href="{{ asset('storage/template_upload/program_bantuan_31_05_2022_opendk.zip') }}">Unduh</a>
                                 </p>
                             </div>
                         </div>

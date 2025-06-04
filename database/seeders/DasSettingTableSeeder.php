@@ -43,10 +43,8 @@ class DasSettingTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('das_setting')->truncate();
-
-        DB::table('das_setting')->insert([
-            0 => [
+        $settings = [
+            [
                 'id' => 1,
                 'key' => 'judul_aplikasi',
                 'value' => 'Kecamatan',
@@ -55,7 +53,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'sistem',
                 'option' => '{}',
             ],
-            1 => [
+            [
                 'id' => 2,
                 'key' => 'artikel_kecamatan_perhalaman',
                 'value' => '10',
@@ -64,7 +62,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'web',
                 'option' => '{}',
             ],
-            2 => [
+            [
                 'id' => 3,
                 'key' => 'artikel_desa_perhalaman',
                 'value' => '10',
@@ -73,7 +71,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'web',
                 'option' => '{}',
             ],
-            3 => [
+            [
                 'id' => 4,
                 'key' => 'jumlah_artikel_desa',
                 'value' => '150',
@@ -82,7 +80,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'web',
                 'option' => '{}',
             ],
-            4 => [
+            [
                 'id' => 5,
                 'key' => 'tte',
                 'value' => '0',
@@ -91,7 +89,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            5 => [
+            [
                 'id' => 6,
                 'key' => 'tte_api',
                 'value' => '',
@@ -100,7 +98,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            6 => [
+            [
                 'id' => 7,
                 'key' => 'tte_username',
                 'value' => '',
@@ -109,7 +107,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            7 => [
+            [
                 'id' => 8,
                 'key' => 'tte_password',
                 'value' => '',
@@ -118,7 +116,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            8 => [
+            [
                 'id' => 9,
                 'key' => 'pemeriksaan_camat',
                 'value' => '0',
@@ -127,7 +125,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            9 => [
+            [
                 'id' => 10,
                 'key' => 'pemeriksaan_sekretaris',
                 'value' => '0',
@@ -136,6 +134,13 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-        ]);
+        ];
+
+        foreach ($settings as $setting) {
+            DB::table('das_setting')->updateOrInsert(
+                ['key' => $setting['key']],
+                $setting
+            );
+        }
     }
 }

@@ -16,8 +16,7 @@
         </ol>
     </section>
     <div class="box-header with-border">
-        <a href="{{ url()->previous() }}" class="btn btn-info btn-sm" judul="Kembali Ke Halaman Sebelumnya"><i
-                class="fa fa-arrow-left"></i>&ensp;Kembali</a>
+        <a href="{{ url()->previous() }}" class="btn btn-info btn-sm" judul="Kembali Ke Halaman Sebelumnya"><i class="fa fa-arrow-left"></i>&ensp;Kembali</a>
     </div>
 
     @include('partials.flash_message')

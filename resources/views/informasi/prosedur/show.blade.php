@@ -32,9 +32,7 @@
                                 @endif
 
                                 @if (isset($prosedur->file_prosedur) && $prosedur->mime_type == 'pdf')
-                                    <object
-                                        data="@if (isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur . '#toolbar=1') }} @endif"
-                                        type="application/pdf" class="showpdf" id="showpdf"> </object>
+                                    <object data="@if (isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
                                 @endif
                             </div>
                         </div>

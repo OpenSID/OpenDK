@@ -54,15 +54,10 @@
 
                                 {{-- Filter Tahun --}}
                                 <div class="col-md-4 pr-md-1">
-                                    {!! Form::select(
-                                        'tahun',
-                                        array_combine(range(date('Y'), date('Y') - 10), range(date('Y'), date('Y') - 10)),
-                                        null,
-                                        [
-                                            'class' => 'form-control',
-                                            'placeholder' => '- Pilih Tahun -',
-                                        ],
-                                    ) !!}
+                                    {!! Form::select('tahun', array_combine(range(date('Y'), date('Y') - 10), range(date('Y'), date('Y') - 10)), null, [
+                                        'class' => 'form-control',
+                                        'placeholder' => '- Pilih Tahun -',
+                                    ]) !!}
                                 </div>
 
                                 {{-- Filter Jenis Dokumen --}}
@@ -97,8 +92,7 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data jenis dokumen belum tersedia. Silahkan tambah data <b><a
-                            href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
+                <p>Data jenis dokumen belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>
@@ -155,7 +149,7 @@
                             const expiredAt = row.expired_at;
                             const today = new Date();
                             today.setHours(0, 0, 0,
-                            0); // Hilangkan waktu agar perbandingan lebih akurat
+                                0); // Hilangkan waktu agar perbandingan lebih akurat
                             let status = '';
                             let badgeClass = '';
 

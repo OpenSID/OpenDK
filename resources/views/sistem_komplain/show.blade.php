@@ -50,41 +50,29 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h5 class="bg-primary" style="padding: 2px;">LAMPIRAN:</h5>
-                                            @if (
-                                                $komplain->lampiran1 == '' &&
-                                                    $komplain->lampiran2 == '' &&
-                                                    $komplain->lampiran3 == '' &&
-                                                    $komplain->lampiran4 == '')
+                                            @if ($komplain->lampiran1 == '' && $komplain->lampiran2 == '' && $komplain->lampiran3 == '' && $komplain->lampiran4 == '')
                                                 <p>
                                                     Tidak ada lampiran.
                                                 </p>
                                             @else
                                                 @if (!$komplain->lampiran1 == '')
                                                     <a data-fancybox="gallery" href="{{ asset($komplain->lampiran1) }}">
-                                                        <img src="{{ asset($komplain->lampiran1) }}"
-                                                            alt="{{ $komplain->komplain_id }}-Lampiran1"
-                                                            class="img-thumbnail" style="width:80px; height:100px;">
+                                                        <img src="{{ asset($komplain->lampiran1) }}" alt="{{ $komplain->komplain_id }}-Lampiran1" class="img-thumbnail" style="width:80px; height:100px;">
                                                     </a>
                                                 @endif
                                                 @if (!$komplain->lampiran2 == '')
                                                     <a data-fancybox="gallery" href="{{ asset($komplain->lampiran2) }}">
-                                                        <img src="{{ asset($komplain->lampiran2) }}"
-                                                            alt="{{ $komplain->komplain_id }}-Lampiran2"
-                                                            class="img-thumbnail" style="width:80px; height:100px">
+                                                        <img src="{{ asset($komplain->lampiran2) }}" alt="{{ $komplain->komplain_id }}-Lampiran2" class="img-thumbnail" style="width:80px; height:100px">
                                                     </a>
                                                 @endif
                                                 @if (!$komplain->lampiran3 == '')
                                                     <a data-fancybox="gallery" href="{{ asset($komplain->lampiran3) }}">
-                                                        <img src="{{ asset($komplain->lampiran3) }}"
-                                                            alt="{{ $komplain->komplain_id }}-Lampiran3"
-                                                            class="img-thumbnail" style="width:80px; height:100px">
+                                                        <img src="{{ asset($komplain->lampiran3) }}" alt="{{ $komplain->komplain_id }}-Lampiran3" class="img-thumbnail" style="width:80px; height:100px">
                                                     </a>
                                                 @endif
                                                 @if (!$komplain->lampiran4 == '')
                                                     <a data-fancybox="gallery" href="{{ asset($komplain->lampiran4) }}">
-                                                        <img src="{{ asset($komplain->lampiran4) }}"
-                                                            alt="{{ $komplain->komplain_id }}-Lampiran4"
-                                                            class="img-thumbnail" style="width:80px; height:100px">
+                                                        <img src="{{ asset($komplain->lampiran4) }}" alt="{{ $komplain->komplain_id }}-Lampiran4" class="img-thumbnail" style="width:80px; height:100px">
                                                     </a>
                                                 @endif
                                             @endif
@@ -106,14 +94,10 @@
 
                                     {{-- di ambil dari detail_penduduk - api database gabungan --}}
                                     @if (!empty($penduduk->detail_penduduk))
-                                        <img class="img-circle img-bordered-sm"
-                                            src="{{ is_user(json_decode($penduduk->detail_penduduk)->foto, json_decode($penduduk->detail_penduduk)->sex) }}"
-                                            alt="user image">
+                                        <img class="img-circle img-bordered-sm" src="{{ is_user(json_decode($penduduk->detail_penduduk)->foto, json_decode($penduduk->detail_penduduk)->sex) }}" alt="user image">
                                     @else
                                         {{-- diambil dari relasi penduduk --}}
-                                        <img class="img-circle img-bordered-sm"
-                                            src="{{ is_user($penduduk?->penduduk?->foto, $penduduk?->penduduk?->sex) }}"
-                                            alt="user image">
+                                        <img class="img-circle img-bordered-sm" src="{{ is_user($penduduk?->penduduk?->foto, $penduduk?->penduduk?->sex) }}" alt="user image">
                                     @endif
 
                                     <span class="username">
@@ -144,9 +128,7 @@
                                         @php $user = auth()->user(); @endphp
                                         @if (isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
                                             @if ($komplain->status != 'SELESAI')
-                                                <a id="btn-reply-admin"
-                                                    data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}"
-                                                    class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
+                                                <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                             @endif
                                         @endif
                                     </div>
@@ -171,8 +153,7 @@
     </section>
     <!-- Modal HTML -->
 
-    <div id="modalReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel"
-        aria-hidden="true">
+    <div id="modalReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -200,8 +181,7 @@
         </div>
     </div>
 
-    <div id="modalUbahReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel"
-        aria-hidden="true">
+    <div id="modalUbahReplyAdmin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalAdminLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">

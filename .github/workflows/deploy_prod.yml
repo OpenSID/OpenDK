@@ -1,0 +1,34 @@
+name: Deploy Pantau to Production
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_PORT }}
+          script: |
+            cd ${{ secrets.PROD_DEPLOY_PATH }}
+            # Restore to the state of the remote branch
+            git fetch origin ${{ secrets.BRANCH || 'main' }}
+            git reset --hard origin/${{ secrets.BRANCH || 'main' }}
+            # Pull the latest changes from the remote branch
+            git pull origin ${{ secrets.BRANCH || 'main' }}
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan migrate --force
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache

@@ -20,7 +20,8 @@
 
             <div class="box-header with-border">
                 {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
-                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
+                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social"
+                    title="{{ $export_text ?? 'Ekspor' }}">
                     <i class="fa fa-download"></i>{{ $export_text ?? 'Ekspor' }}
                 </button>
             </div>
@@ -77,13 +78,12 @@
 
                         var selectedDesa = $('#list_desa').val();
                         var searchValue = row.search.value;
-                        var filterSearch = (searchValue || selectedDesa) ? (searchValue ||
-                            selectedDesa) : '';
 
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch,
+                            "filter[search]": searchValue,
+                            "filter[kode_desa]": selectedDesa == 'Semua' ? '' : selectedDesa,
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]
                                 ?.name,

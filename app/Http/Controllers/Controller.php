@@ -209,4 +209,25 @@ class Controller extends BaseController
     {        
         return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';
     }
+
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    public function setSettings(array $settings)
+    {
+        $this->settings = collect($settings);
+    }
+
+    
+    public function setAkunSekretaris($pengurus)
+    {
+        $this->akun_sekretaris = $pengurus;
+    }
+
+    public function setAkunCamat($pengurus)
+    {
+        $this->akun_camat = $pengurus;
+    }
 }

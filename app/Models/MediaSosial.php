@@ -32,11 +32,12 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MediaSosial extends Model
 {
-    use HandlesResourceDeletion;
+    use HandlesResourceDeletion, HasFactory;
 
     protected $table = 'das_media_sosial';
 

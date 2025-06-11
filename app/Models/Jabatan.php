@@ -38,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
 class Jabatan extends Model
 {
     use HasFactory;
+    
     protected $table = 'ref_jabatan';
 
     protected $fillable = [

@@ -11,5 +11,9 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 3. [#1226](https://github.com/OpenSID/OpenDK/issues/1226) Perbaikan teks nama instansi pada sidebar overlap.
 4. [#1224](https://github.com/OpenSID/OpenDK/issues/1224) Perbaikan penulisan 'Export' pada pesan error ketika ekspor data penduduk.
 5. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaikan collision antara subjudul dan breadcrumb.
+6. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan teks tooltip ikon user menjadi "Identitas Pelapor" sesuai fungsinya.
+7. [#1218](https://github.com/OpenSID/OpenDK/issues/1218) Perbaikan Typo "Masukan Kode Verifikasi" ke "Masukkan Kode Verifikasi".
 
 #### TEKNIS
+
+1. [#1220](https://github.com/OpenSID/OpenDK/issues/1220) Penyesuaian warna teks di footer agar lebih mudah dibaca.

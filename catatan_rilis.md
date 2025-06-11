@@ -13,6 +13,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 5. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaikan collision antara subjudul dan breadcrumb.
 6. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan teks tooltip ikon user menjadi "Identitas Pelapor" sesuai fungsinya.
 7. [#1218](https://github.com/OpenSID/OpenDK/issues/1218) Perbaikan Typo "Masukan Kode Verifikasi" ke "Masukkan Kode Verifikasi".
+8. [#1215](https://github.com/OpenSID/OpenDK/issues/1215) Perbaikan gambar thumbnail tidak tampil pada Form ubah album.
 
 #### TEKNIS
 

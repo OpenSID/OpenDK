@@ -85,7 +85,14 @@ class AppServiceProvider extends ServiceProvider
 
         resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {
             return new \App\Providers\EmailTwoFactorProvider();
-        });        
+        });       
+        
+        // bypass validasi captcha saat unit testing
+        if (app()->environment('testing') || app()->environment('local')) {
+            Validator::extend('captcha', function () {
+                return true; // selalu lolos di environment testing
+            });
+        }
     }
 
     protected function penduduk()

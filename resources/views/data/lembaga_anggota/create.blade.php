@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             {{-- <small>{{ $page_description ?? '' }}</small> --}}
@@ -9,17 +9,22 @@
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li><a href="{{ route('data.lembaga.index') }}"> Daftar Lembaga</a></li>
-            <li><a href="{{ route('data.lembaga_anggota.index', $lembaga->slug) }}"> Daftar Anggota Lembaga {{ $lembaga->nama }} </a></li>
+            <li><a href="{{ route('data.lembaga_anggota.index', $lembaga->slug) }}"> Daftar Anggota Lembaga
+                    {{ $lembaga->nama }} </a></li>
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => ['data.lembaga_anggota.store', $lembaga->slug], 'method' => 'post', 'id' => 'form-lembaga-anggota', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::open([
+                        'route' => ['data.lembaga_anggota.store', $lembaga->slug],
+                        'method' => 'post',
+                        'id' => 'form-lembaga-anggota',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

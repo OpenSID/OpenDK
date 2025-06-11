@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_description ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -30,7 +29,12 @@
                 @endif
 
                 <!-- form start -->
-                {!! Form::model($fasilitas, ['route' => ['data.fasilitas-paud.update', $fasilitas->id], 'method' => 'put', 'id' => 'form-siswa', 'class' => 'form-horizontal form-label-left']) !!}
+                {!! Form::model($fasilitas, [
+                    'route' => ['data.fasilitas-paud.update', $fasilitas->id],
+                    'method' => 'put',
+                    'id' => 'form-siswa',
+                    'class' => 'form-horizontal form-label-left',
+                ]) !!}
 
                 <div class="box-body">
 

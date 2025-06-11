@@ -1,6 +1,6 @@
 @extends('layouts.dashboard_template')
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -16,8 +16,15 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['print' => route('counter.cetak'), 'print_text' => 'Cetak', 'print_new_tab' => true])
-                @include('forms.btn-social', ['export_url' => route('counter.export.excel'), 'export_text' => 'Unduh'])
+                @include('forms.btn-social', [
+                    'print' => route('counter.cetak'),
+                    'print_text' => 'Cetak',
+                    'print_new_tab' => true,
+                ])
+                @include('forms.btn-social', [
+                    'export_url' => route('counter.export.excel'),
+                    'export_text' => 'Unduh',
+                ])
             </div>
             <div class="box-body no-padding">
                 <!-- Statistik -->

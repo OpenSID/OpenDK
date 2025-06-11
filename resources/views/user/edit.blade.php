@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -13,7 +13,6 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content">
         <div class="box box-primary">
             <div class="box-body">
@@ -27,7 +26,14 @@
                         </ul>
                     </div>
                 @endif
-                {!! Form::model($user, ['route' => ['setting.user.update', $user->id], 'method' => 'put', 'autocomplete' => 'off', 'id' => 'form-user', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::model($user, [
+                    'route' => ['setting.user.update', $user->id],
+                    'method' => 'put',
+                    'autocomplete' => 'off',
+                    'id' => 'form-user',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
                 @include('flash::message')
                 @include('user.form')
                 {!! Form::close() !!}

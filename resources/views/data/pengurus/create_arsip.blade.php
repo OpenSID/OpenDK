@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -16,7 +16,9 @@
         </ol>
     </section>
     <div class="box-header with-border">
-        @include('forms.btn-social', ['back_url' => route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id])])
+        @include('forms.btn-social', [
+            'back_url' => route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id]),
+        ])
     </div>
 
     @include('partials.flash_message')
@@ -26,7 +28,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => 'data.pengurus.store.arsip', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::open([
+                        'route' => 'data.pengurus.store.arsip',
+                        'method' => 'post',
+                        'files' => true,
+                        'id' => 'form-pengurus',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,13 +12,18 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => 'informasi.regulasi.store', 'method' => 'post', 'id' => 'form-regulasi', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                    {!! Form::open([
+                        'route' => 'informasi.regulasi.store',
+                        'method' => 'post',
+                        'id' => 'form-regulasi',
+                        'class' => 'form-horizontal form-label-left',
+                        'files' => true,
+                    ]) !!}
                     <div class="box-body">
 
                         @if (count($errors) > 0)

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">Profil</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -38,7 +37,13 @@
             @endif
 
             <!-- form start -->
-            {!! Form::model($profil, ['route' => ['data.profil.update', $profil->id], 'method' => 'put', 'id' => 'form-profil', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+            {!! Form::model($profil, [
+                'route' => ['data.profil.update', $profil->id],
+                'method' => 'put',
+                'id' => 'form-profil',
+                'class' => 'form-horizontal form-label-left',
+                'files' => true,
+            ]) !!}
 
             <div class="box-body">
 

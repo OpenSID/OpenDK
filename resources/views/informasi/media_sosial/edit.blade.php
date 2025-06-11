@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -31,7 +30,13 @@
                     @endif
 
                     <!-- form start -->
-                    {!! Form::model($medsos, ['route' => ['informasi.media-sosial.update', $medsos->id], 'method' => 'put', 'id' => 'form-media-sosial', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                    {!! Form::model($medsos, [
+                        'route' => ['informasi.media-sosial.update', $medsos->id],
+                        'method' => 'put',
+                        'id' => 'form-media-sosial',
+                        'class' => 'form-horizontal form-label-left',
+                        'files' => true,
+                    ]) !!}
 
                     <div class="box-body">
 
@@ -59,7 +64,8 @@
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
+                    var extension = input.files[0].name.split('.').pop()
+                        .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes

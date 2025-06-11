@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -14,8 +14,10 @@
     <section class="content">
         <div class="alert alert-warning alert-dismissible">
             <h4><i class="icon fa fa-warning"></i> Info Penting!</h4>
-            Fitur Sinkronisasi Surat TTE ke kecamatan saat ini masih berupa demo menunggu proses penyempurnaan dan terdapat kecamatan yang sudah mengimplementasikan TTE.
-            Kami juga menghimbau kepada seluruh pengguna memberikan masukan terkait penyempurnaan fitur ini baik dari sisi OpenSID maupun OpenDK.
+            Fitur Sinkronisasi Surat TTE ke kecamatan saat ini masih berupa demo menunggu proses penyempurnaan dan terdapat
+            kecamatan yang sudah mengimplementasikan TTE.
+            Kami juga menghimbau kepada seluruh pengguna memberikan masukan terkait penyempurnaan fitur ini baik dari sisi
+            OpenSID maupun OpenDK.
             Masukan dapat disampaikan di grup telegram, forum opendesa maupun issue di github.
         </div>
         @include('partials.flash_message')
@@ -31,12 +33,16 @@
                         <div class="box-body">
                             @if (!$camat)
                                 <div class="callout callout-danger">
-                                    <p>Pengaturan modul TTE dan pemeriksaan {{ $settings['sebutan_camat'] }} hanya bisa aktif jika akun <strong>{{ $settings['sebutan_camat'] }}</strong> sudah dibuat dan aktif.</p>
+                                    <p>Pengaturan modul TTE dan pemeriksaan {{ $settings['sebutan_camat'] }} hanya bisa
+                                        aktif jika akun <strong>{{ $settings['sebutan_camat'] }}</strong> sudah dibuat dan
+                                        aktif.</p>
                                 </div>
                             @endif
                             @if (!$sekretaris)
                                 <div class="callout callout-danger">
-                                    <p>Pemeriksaan {{ $settings['sebutan_sekretaris'] }} hanya bisa aktif jika akun <strong>{{ $settings['sebutan_sekretaris'] }}</strong> sudah dibuat dan aktif.</p>
+                                    <p>Pemeriksaan {{ $settings['sebutan_sekretaris'] }} hanya bisa aktif jika akun
+                                        <strong>{{ $settings['sebutan_sekretaris'] }}</strong> sudah dibuat dan aktif.
+                                    </p>
                                 </div>
                             @endif
                             @if ($settings['tte_api'] == 'demo')
@@ -130,7 +136,8 @@
                             </div>
                             <br />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="pemeriksaan_camat">Pemeriksaan {{ $settings['sebutan_camat'] }}</label>
+                                <label class="col-sm-3 control-label" for="pemeriksaan_camat">Pemeriksaan
+                                    {{ $settings['sebutan_camat'] }}</label>
                                 <div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
                                     <label id="n1" class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_camat'] ? 'active' : '' }}" {{ $camat ? '' : 'disabled' }}>
                                         <input
@@ -160,7 +167,8 @@
                             </div>
                             <br />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="pemeriksaan_sekretaris">Pemeriksaan {{ $settings['sebutan_sekretaris'] }}</label>
+                                <label class="col-sm-3 control-label" for="pemeriksaan_sekretaris">Pemeriksaan
+                                    {{ $settings['sebutan_sekretaris'] }}</label>
                                 <div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
                                     <label id="n1" class="tipe btn btn-primary btn-sm col-xs-12 col-sm-6 col-lg-2 form-check-label {{ $settings['pemeriksaan_sekretaris'] ? 'active' : '' }}" {{ $sekretaris ? '' : 'disabled' }}>
                                         <input

@@ -175,7 +175,7 @@ class SistemKomplainController extends FrontEndController
                 $lampiran4 = $request->file('lampiran4');
                 $fileName4 = $lampiran4->getClientOriginalName();
                 $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $request->file('lampiran3')->move($path, $fileName4);
+                $request->file('lampiran4')->move($path, $fileName4);
                 $komplain->lampiran4 = $path.$fileName4;
             }
 

@@ -7,6 +7,7 @@
             flex-grow: 0;
             margin-bottom: 0;
         }
+
         @media (max-width: 767px) {
             .content-header h1 {
                 max-width: 100%;
@@ -15,6 +16,7 @@
                 margin-bottom: 0;
             }
         }
+
         .nowrap {
             white-space: nowrap;
         }

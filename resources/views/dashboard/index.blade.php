@@ -13,7 +13,7 @@
             <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-aqua">
                     <div class="inner">
-                        <h3>{{ $data['desa'] }}</h3>
+                        <h3>{{ number_format($data['desa'] ?? 0, 0, ',', '.') }}</h3>
                         <p>Desa</p>
                     </div>
                     <div class="icon">
@@ -28,7 +28,7 @@
             <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-green">
                     <div class="inner">
-                        <h3>{{ $data['penduduk'] }}</h3>
+                        <h3>{{ number_format($data['penduduk'] ?? 0, 0, ',', '.') }}</h3>
                         <p>Penduduk</p>
                     </div>
                     <div class="icon">
@@ -43,7 +43,7 @@
             <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-yellow">
                     <div class="inner">
-                        <h3>{{ $data['keluarga'] }}</h3>
+                        <h3>{{ number_format($data['keluarga'] ?? 0, 0, ',', '.') }}</h3>
                         <p>Keluarga</p>
                     </div>
                     <div class="icon">
@@ -58,7 +58,7 @@
             <div class="col-lg-3 col-xs-6">
                 <div class="small-box bg-red">
                     <div class="inner">
-                        <h3>{{ $data['program_bantuan'] }}</h3>
+                        <h3>{{ number_format($data['program_bantuan'] ?? 0, 0, ',', '.') }}</h3>
                         <p>Program Bantuan</p>
                     </div>
                     <div class="icon">

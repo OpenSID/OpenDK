@@ -44,6 +44,25 @@ class BaseApiService
         return [];
     }    
 
+    /**
+     * General API Call Method
+     */
+    protected function apiRequestLengkap(string $endpoint, array $params = [])
+    {
+        // Base URL
+        $baseUrl = $this->settings['api_server_database_gabungan'];
+
+        // Buat permintaan API dengan Header dan Parameter
+        $response = Http::withHeaders([
+            'Accept' => 'application/ld+json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
+        ])->get($baseUrl . $endpoint, $params);
+
+        // Return JSON hasil
+        return $response->json();
+    }
+
     protected function useDatabaseGabungan()
     {
         return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';

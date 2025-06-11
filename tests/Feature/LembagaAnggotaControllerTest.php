@@ -17,8 +17,8 @@ class LembagaAnggotaControllerTest extends CrudTestCase
     public function it_can_create_lembaga_anggota()
     {
         $lembaga = Lembaga::factory()->create();
-        $penduduk = Penduduk::inRandomOrder()->first();
-
+        $penduduk = $this->getPenduduk(); // Assuming this method returns a Penduduk instance or collection
+        
         $response = $this->post(route('data.lembaga_anggota.store', $lembaga->slug), [
             'penduduk_id' => $penduduk->id,
             'no_anggota' => '001',
@@ -44,7 +44,7 @@ class LembagaAnggotaControllerTest extends CrudTestCase
     public function it_can_update_lembaga_anggota()
     {
         $lembaga = Lembaga::factory()->create();
-        $penduduk = Penduduk::inRandomOrder()->first();
+        $penduduk = $this->getPenduduk();
         $anggota = LembagaAnggota::factory()->create([
             'lembaga_id' => $lembaga->id,
             'penduduk_id' => $penduduk->id,            
@@ -68,7 +68,7 @@ class LembagaAnggotaControllerTest extends CrudTestCase
     public function it_can_delete_lembaga_anggota()
     {
         $lembaga = Lembaga::factory()->create();
-        $penduduk = Penduduk::inRandomOrder()->first();
+        $penduduk = $this->getPenduduk();
         $anggota = LembagaAnggota::factory()->create([
             'lembaga_id' => $lembaga->id,
             'penduduk_id' => $penduduk->id,
@@ -80,5 +80,16 @@ class LembagaAnggotaControllerTest extends CrudTestCase
         $this->assertDatabaseMissing('das_lembaga_anggota', [
             'id' => $anggota->id,
         ]);
+    }
+
+    private function getPenduduk()
+    {
+        $penduduk = Penduduk::inRandomOrder()->first();
+        if(!$penduduk){
+            Penduduk::factory()->create();
+            $penduduk = Penduduk::inRandomOrder()->first();
+        }
+
+        return $penduduk;
     }
 }

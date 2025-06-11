@@ -34,6 +34,7 @@ namespace Tests;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
+use App\Models\SettingAplikasi;
 use Spatie\Permission\Middlewares\PermissionMiddleware;
 use Spatie\Permission\Middlewares\RoleMiddleware;
 
@@ -49,6 +50,11 @@ class CrudTestCase extends TestCase
         parent::setUp();
         $this->withViewErrors([]);
         $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
+        // disabled database gabungan for testing
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0']
+        );    
     }
 
     // Additional methods for CRUD tests can be added here

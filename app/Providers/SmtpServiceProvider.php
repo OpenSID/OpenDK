@@ -29,12 +29,12 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-
 namespace App\Providers;
 
 use App\Models\EmailSmtp;
+use Exception;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class SmtpServiceProvider extends ServiceProvider
@@ -53,17 +53,17 @@ class SmtpServiceProvider extends ServiceProvider
      * Bootstrap services.
      * Provider ini bertujuan untuk memastikan apakah email menggunakan SMTP bawaan server berfungsi
      * jika tidak maka bisa di setting ke SMTP pihak ke 3 atau melalui SMTP google.
-     * @return void
      *
+     * @return void
      */
     public function boot()
     {
         //validasi table email smtp, apabila tidak ada
-        if (Schema::hasTable('ref_smtp')) {
+        try {
             //mengambil data smtp terakhir
             $email_smtp = EmailSmtp::getLatestEmailSmtp();
             if ($email_smtp) {
-                $config = array(
+                $config = [
                     'transport' => $email_smtp->provider,
                     'host' => $email_smtp->host,
                     'port' => $email_smtp->port,
@@ -72,9 +72,11 @@ class SmtpServiceProvider extends ServiceProvider
                     'password' => $email_smtp->password,
                     'timeout' => null,
                     'local_domain' => env('MAIL_EHLO_DOMAIN'),
-                );
+                ];
                 Config::set('mail.mailers.smtp', $config);
             }
+        } catch (Exception $e) {
+            Log::error('Error in SmtpServiceProvider: '.$e->getMessage());
         }
     }
 }

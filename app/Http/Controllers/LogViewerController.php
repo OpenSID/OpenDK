@@ -126,7 +126,7 @@ class LogViewerController extends Controller
         $page_title = 'Info Sistem';
         
         //mengambil data smtp terakhir
-        $email_smtp = EmailSmtp::getLatestEmailSmtp();
+        $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp();
 
         return app('view')->make($this->view_log, $data)
         ->with('requirements', $requirements)

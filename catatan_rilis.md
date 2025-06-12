@@ -3,7 +3,7 @@ Di rilis versi v2506.0.0 di versi ini terdapat modul komentar pada artikel dan p
 Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
-
+1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Tambahkan pengaturan Email Server pada pengaturan Info Sistem.
 #### BUG
 
 1. [#1230](https://github.com/OpenSID/OpenDK/issues/1230) Perbaikan sub judul pada halaman "Media Sosial" hanya "Daftar".

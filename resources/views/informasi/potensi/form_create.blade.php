@@ -27,7 +27,7 @@
     <div class="col-md-5 col-sm-5 col-xs-12">
         <input type="file" name="file_gambar" id="file_gambar" class="form-control" required accept="image/*">
         <br>
-        <img src="http://placehold.it/1000x600" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="http://placehold.co/1000x600" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 

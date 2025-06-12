@@ -163,12 +163,14 @@
                 let sourceHalaman = $('#sourceHalaman');
                 let sourceKategori = $('#sourceKategori');
                 let sourceModul = $('#sourceModul');
+                let sourceDokumen = $('#sourceDokumen');
 
                 let source = '';
                 if (sourceLink.is(':checked')) source = sourceLink.val();
                 else if (sourceHalaman.is(':checked')) source = sourceHalaman.val();
                 else if (sourceKategori.is(':checked')) source = sourceKategori.val();
                 else if (sourceModul.is(':checked')) source = sourceModul.val();
+                else if (sourceDokumen.is(':checked')) source = sourceDokumen.val();
 
                 editor.add(source);
             });

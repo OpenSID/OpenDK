@@ -31,14 +31,12 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Models\DataDesa;
+use App\Http\Controllers\Controller;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
+use App\Services\KeluargaService;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use App\Services\KeluargaService;
-use App\Services\PendudukService;
 
 class KeluargaController extends Controller
 {
@@ -51,10 +49,9 @@ class KeluargaController extends Controller
     {
         $page_title = 'Keluarga';
         $page_description = 'Daftar Keluarga';
-        $list_desa = $this->isDatabaseGabungan() ? (new PendudukService)->desa() : DataDesa::get();
-
         $view = $this->isDatabaseGabungan() ? 'data.keluarga.gabungan.index' : 'data.keluarga.index';
-        return view($view, compact('page_title', 'page_description', 'list_desa'));
+
+        return view($view, compact('page_title', 'page_description'));
     }
 
     /**

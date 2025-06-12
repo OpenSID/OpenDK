@@ -31,8 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
-use Maatwebsite\Excel\Facades\Excel;
-
+use App\Exports\ExportPenduduk;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
@@ -40,14 +39,12 @@ use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
-use App\Exports\ExportPenduduk;
-use App\Models\SettingAplikasi;
-use App\Services\PendudukService;
 
 class PendudukController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -57,10 +54,10 @@ class PendudukController extends Controller
     {
         $page_title = 'Penduduk';
         $page_description = 'Data Penduduk';
-        $list_desa = $this->isDatabaseGabungan() ? (new PendudukService)->desa() : DataDesa::get();
 
         $view = $this->isDatabaseGabungan() ? 'data.penduduk.gabungan.index' : 'data.penduduk.index';
-        return view($view, compact('page_title', 'page_description', 'list_desa'));
+        
+        return view($view, compact('page_title', 'page_description'));
     }
 
     /**
@@ -199,22 +196,20 @@ class PendudukController extends Controller
      *
      * @return Response
      */
-    public function exportExcel(Request $request) {
-
+    public function exportExcel(Request $request)
+    {
         $params = $request->all();
 
         try {
-            if($this->isDatabaseGabungan()){
-
+            if ($this->isDatabaseGabungan()) {
                 return Excel::download(new ExportPenduduk(true, $params), 'data-penduduk.xlsx');
-            }else{
-
+            } else {
                 return Excel::download(new ExportPenduduk(false, $params), 'data-penduduk.xlsx');
             }
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Export data gagal. '.$e->getMessage());
+            return back()->with('error', 'Ekspor data gagal. '.$e->getMessage());
         }
     }
 }

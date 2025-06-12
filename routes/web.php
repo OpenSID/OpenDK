@@ -45,6 +45,7 @@ use App\Http\Controllers\Setting\NavMenuController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
+use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
@@ -80,7 +81,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::group(['middleware' => 'maintenance'], function () {
+    // Route::group(['middleware' => 'maintenance'], function () {
+    Route::group(['middleware' => ['maintenance', 'track.visitors']], function () {
         /**
          * Group Routing for Halaman Website
          */
@@ -120,6 +122,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('tipologi', 'ProfilController@tipologi')->name('profil.tipologi');
                 Route::get('sejarah', 'ProfilController@sejarah')->name('profil.sejarah');
                 Route::get('sambutan', 'ProfilController@Sambutan')->name('profil.sambutan');
+                Route::get('struktur-organisasi', 'ProfilController@StrukturOrganisasi')->name('profil.struktur-organisasi');
+                Route::get('struktur-organisasi-ajax', 'ProfilController@ajaxBaganPublic')->name('profil.struktur-organisasi-ajax');
             });
 
             Route::group(['prefix' => 'event'], function () {
@@ -197,6 +201,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', 'DownloadController@indexFormDokumen')->name('unduhan.form-dokumen');
                     Route::get('getdata', 'DownloadController@getDataDokumen')->name('unduhan.form-dokumen.getdata');
                     Route::get('unduh/{file}', 'DownloadController@downloadDokumen')->name('unduhan.form-dokumen.download');
+                    Route::get('/jenis-dokumen/{slug}', 'DownloadController@indexJenisDokumen')->name('unduhan.form-dokumen.jenis-dokumen');
+                    Route::get('getData/jenis-dokumen/{slug}', 'DownloadController@getDataByJenisDokumen')->name('unduhan.form-dokumen.getdatabyjenisdokumen');
                 });
             });
 
@@ -467,7 +473,20 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 //Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
+                //Arsip
+                Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.arsip');
+                Route::get('pengurus/create/arsip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'create_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.create.arsip');
+                Route::post('pengurus/store/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'storeArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.store.arsip');
+                Route::get('pengurus/penduduk/arsip/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.arsip');
+                Route::delete('pengurus/penduduk/delete/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'deleteDocument'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.delete.document');
+                Route::get('pengurus/penduduk/edit/{document_id}/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'editArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.document');
+                Route::get('download-arsip-zip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsipZip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip.zip');
+                Route::get('download-arsip/{document_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip');
+                Route::get('penduduk-select2', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukSelect2'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.select2');
+            
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);
@@ -766,6 +785,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
 
+            // Widget
+            Route::get('/widget', \App\Http\Livewire\Widget\WidgetController::class)->name('setting.widget');
+
             // Role Management
             Route::group(['prefix' => 'role', 'controller' => RoleController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'index')->name('setting.role.index');
@@ -898,6 +920,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');
                 Route::post('/restore-running', 'restoreBackup')->name('setting.pengaturan-database.runrestore');
             });
+
+            // Jenis Dokumen
+            Route::group(['prefix' => 'jenis-dokumen', 'controller' => JenisDokumenController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
+                Route::get('/', 'index')->name('setting.jenis-dokumen.index');
+                Route::get('getdata', 'getData')->name('setting.jenis-dokumen.getdata');
+                Route::post('store', 'store')->name('setting.jenis-dokumen.store');
+                Route::get('edit/{id}', 'edit')->name('setting.jenis-dokumen.edit');
+                Route::put('update/{id}', 'update')->name('setting.jenis-dokumen.update');
+                Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-dokumen.destroy');
+            });
         });
 
         /**
@@ -905,6 +937,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::group(['prefix' => 'counter'], function () {
             Route::get('/', [CounterController::class, 'index'])->name('counter.index');
+            Route::get('cetak', [CounterController::class, 'cetak'])->name('counter.cetak');
+            Route::get('export-excel', [CounterController::class, 'exportExcel'])->name('counter.export.excel');
         });
     });
 

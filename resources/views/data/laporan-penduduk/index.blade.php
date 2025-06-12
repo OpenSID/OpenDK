@@ -20,24 +20,14 @@
             <div class="col-sm-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        @include('forms.btn-social', ['import_url' => route('data.laporan-penduduk.import')])
+                        @include('forms.btn-social', [
+                            'import_url' => route('data.laporan-penduduk.import'),
+                        ])
                     </div>
 
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label>Desa</label>
-                                    <select class="form-control" id="list_desa">
-                                        <option value="Semua">Semua Desa</option>
-                                        @foreach ($list_desa as $desa)
-                                            <option value="{{ $desa->nama_desa }}">{{ $desa->nama }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                        @include('layouts.fragments.list-desa')
                         <hr>
                         <div class="row">
                             <div class="col-md-12">

@@ -7,7 +7,7 @@
         <center>
             <!-- <div class="user-panel"> -->
             <img class="user-image" src="{{ is_logo($profil->file_logo) }}" alt="OpenDK" width="42px" style="margin: 5px;">
-            <p style="font-size: 12px; color:white">
+            <p class="sidebar-kabupaten" style="font-size: 12px; color:white">
                 {{ strtoupper('Pemerintah Kab. ' . $profil->nama_kabupaten) }}<br>
                 {{ strtoupper('Kecamatan ' . $profil->nama_kecamatan) }}<br>
             </p>
@@ -353,6 +353,9 @@
                             <li {{ Request::is(['setting.navmenu*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.navmenu.index') }}"><i class="fa fa-circle-o"></i>Menu</a>
                             </li>
+                            <li {{ Request::is(['setting.widget*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('setting.widget') }}"><i class="fa fa-circle-o"></i>Widget</a>
+                            </li>
                             {{-- <li {{ Request::is(['setting/navigation*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('setting.navigation.index') }}"><i class="fa fa-circle-o"></i>Navigasi</a>
                             </li> --}}
@@ -374,6 +377,11 @@
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/jenis-penyakit*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('setting.jenis-penyakit.index') }}"><i class="fa fa-circle-o"></i>Jenis Penyakit</a>
+                                </li>
+                            @endif
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/jenis-dokumen*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('setting.jenis-dokumen.index') }}"><i class="fa fa-circle-o"></i>Jenis Dokumen</a>
                                 </li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
@@ -416,7 +424,8 @@
             <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
                 <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                     <span class="pull-right-container">
-                        <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small>
+                        {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
+                        <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>
                     </span>
                 </a>
             </li>

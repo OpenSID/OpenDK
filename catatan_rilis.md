@@ -16,6 +16,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 8. [#1215](https://github.com/OpenSID/OpenDK/issues/1215) Perbaikan gambar thumbnail tidak tampil pada Form ubah album.
 9. [#1217](https://github.com/OpenSID/OpenDK/issues/1217) Perbaikan konfirmasi ubah status pengaturan menu.
 10. [#1248](https://github.com/OpenSID/OpenDK/issues/1248) Perbaikan filter pada OpenDK data penduduk.
+11. [#1214](https://github.com/OpenSID/OpenDK/issues/1214) Perbaikan error installasi final.
 
 #### TEKNIS
 

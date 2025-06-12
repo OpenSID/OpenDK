@@ -33,9 +33,11 @@ namespace App\Providers;
 
 use App\Models\Album;
 use App\Models\Galeri;
+use App\Models\MediaSosial;
 use App\Models\Widget;
 use App\Observers\AlbumObserver;
 use App\Observers\GaleriObserver;
+use App\Observers\MediaSosialObserver;
 use App\Observers\WidgetObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -65,6 +67,7 @@ class EventServiceProvider extends ServiceProvider
         Album::observe(AlbumObserver::class);
         Galeri::observe(GaleriObserver::class);
         Widget::observe(WidgetObserver::class);
+        MediaSosial::observe(MediaSosialObserver::class);
     }
 
     /**

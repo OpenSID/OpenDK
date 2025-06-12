@@ -29,41 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Database\Factories;
+namespace Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CompleteProfile;
+use App\Http\Middleware\GlobalShareMiddleware;
+use App\Models\SettingAplikasi;
+use Spatie\Permission\Middlewares\PermissionMiddleware;
+use Spatie\Permission\Middlewares\RoleMiddleware;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
- */
-class UserFactory extends Factory
+class CrudTestCase extends TestCase
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
-    {
-        return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            // 'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
-        ];
-    }
+    use CreatesApplication;
 
     /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return static
+     * Set up the test environment.
      */
-    public function unverified()
+    protected function setUp(): void
     {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
+        parent::setUp();
+        $this->withViewErrors([]);
+        $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
+        // disabled database gabungan for testing
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0']
+        );    
     }
+
+    // Additional methods for CRUD tests can be added here
 }

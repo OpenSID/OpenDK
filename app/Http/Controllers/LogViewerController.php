@@ -41,8 +41,6 @@ use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
 
-use function PHPUnit\Framework\isNull;
-
 /**
  * Class LogViewerController
  */
@@ -93,6 +91,7 @@ class LogViewerController extends Controller
         }
 
         $data = [
+            'tab' => session('tab', 'log_viewer'),
             'logs' => $this->log_viewer->all(),
             'folders' => $this->log_viewer->getFolders(),
             'current_folder' => $this->log_viewer->getFolderName(),
@@ -124,7 +123,7 @@ class LogViewerController extends Controller
         );
 
         $page_title = 'Info Sistem';
-        
+
         //mengambil data smtp terakhir
         $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp();
 
@@ -239,6 +238,7 @@ class LogViewerController extends Controller
 
         return back()->with('tab', 'ekstensi')->with('success', 'Berhasil menjalankan migrasi');
     }
+
     /*
     fungsi untuk menambahkan akun email smtp,
     fungsi akan terus bertambah dan data yang diambil ialah data yang terakhir
@@ -249,6 +249,7 @@ class LogViewerController extends Controller
             EmailSmtp::create($request->all());
         } catch (\Exception $e) {
             report($e);
+
             return back()->withInput()->with('tab', 'email_smtp')->with('error', 'SMTP gagal diubah!');
         }
 

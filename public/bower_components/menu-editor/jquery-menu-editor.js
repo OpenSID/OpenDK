@@ -7,7 +7,7 @@ function MenuEditor(e, s) {
             labelUnlock: '<i class="fa fa-unlock clickable"></i>',
             textConfirmDelete: "Item ini akan dihapus, apakah anda yakin ?",
             textConfirmShow: "Item ini akan aktifkan, apakah anda yakin ?",
-            textConfirmUnshow: "Item ini akan non-aktifkan, apakah anda yakin ?",
+            textConfirmUnshow: "Item ini akan nonaktifkan, apakah anda yakin ?",
             iconPicker: {
                 cols: 4,
                 rows: 4,
@@ -181,7 +181,7 @@ function MenuEditor(e, s) {
             }(n = $(this).closest("li"))
     })),t.on("click", ".btnShow", (function (s) {
         s.preventDefault();
-        if (confirm(l.textConfirmShow)) {
+        if (confirm(l.textConfirmUnshow)) {
             var n = $(this).closest("li");
             var data = n.data();  
             if (data.is_show) {

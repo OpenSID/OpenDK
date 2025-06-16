@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,10 +12,14 @@
             <li class="active">{{ $page_description }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
-        {!! Form::model($artikel, ['route' => ['informasi.artikel.update', $artikel->id], 'method' => 'post', 'id' => 'form-artikel', 'files' => true]) !!}
+        {!! Form::model($artikel, [
+            'route' => ['informasi.artikel.update', $artikel->id],
+            'method' => 'post',
+            'id' => 'form-artikel',
+            'files' => true,
+        ]) !!}
 
         @include('flash::message')
         @include('informasi.artikel._form')

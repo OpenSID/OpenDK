@@ -32,10 +32,13 @@
 namespace App\Models;
 
 use App\Enums\JenisJabatan;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Jabatan extends Model
 {
+    use HasFactory;
+    
     protected $table = 'ref_jabatan';
 
     protected $fillable = [

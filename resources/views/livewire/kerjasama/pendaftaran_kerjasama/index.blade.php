@@ -22,7 +22,7 @@
     </style>
 @endpush
 <div>
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -32,7 +32,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content" id="maincontent">
 
         <x-check_connection>
@@ -104,13 +103,15 @@
                         </div>
                         <div class="box-body">
                             <div class="callout callout-info">
-                                <h5>1. Cek folder kotak masuk / inbox, jika ada, maka silahkan klik pesan tersebut lalu klik
+                                <h5>1. Cek folder kotak masuk / inbox, jika ada, maka silahkan klik pesan tersebut lalu
+                                    klik
                                     tombol
                                     verifikasi email. </h5>
                                 <h5>2. Cek folder spam, jika ada, maka:<br>
                                     - Klik pesan lalu hapus label spam pada pesan tersebut.<br>
                                     - Setelah label spam dihapus, pesan akan masuk ke folder inbox.<br>
-                                    - Selanjutnya cek folder inbox, dan silahkan klik pesan dan klik tombol verifikasi.<br>
+                                    - Selanjutnya cek folder inbox, dan silahkan klik pesan dan klik tombol
+                                    verifikasi.<br>
                                 </h5>
                                 <h5>3. Jika Anda tidak menerima pesan pada folder inbox dan folder spam, silahkan kirim
                                     ulang
@@ -192,7 +193,8 @@
                     <div class="box box-info">
                         <div class="box-header with-border clearfix">
                             <h3 class="box-title pull-left">Form Pendaftaran Kerjasama</h3>
-                            <a target="_blank" href="{{ route('kerjasama.pendaftaran.kerjasama.template') }}" type="button" class="btn btn-success pull-right"><i class="fa fa-download"></i> Unduh Dokumen
+                            <a target="_blank" href="{{ route('kerjasama.pendaftaran.kerjasama.template') }}" type="button" class="btn btn-success pull-right"><i class="fa fa-download"></i> Unduh
+                                Dokumen
                                 Kerjasama</a>
                         </div>
                         <form class="form-horizontal" enctype="multipart/form-data">

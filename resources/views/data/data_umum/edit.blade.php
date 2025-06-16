@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,19 +11,24 @@
             <li class="active">Data Umum</a></li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
 
-        {!! Form::model($data_umum, ['route' => ['data.data-umum.update', $data_umum->id], 'method' => 'put', 'id' => 'form-event', 'class' => 'form-horizontal form-label-left']) !!}
+        {!! Form::model($data_umum, [
+            'route' => ['data.data-umum.update', $data_umum->id],
+            'method' => 'put',
+            'id' => 'form-event',
+            'class' => 'form-horizontal form-label-left',
+        ]) !!}
 
         <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
-                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta Wilayah</a></li>
+                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta
+                        Wilayah</a></li>
                 <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>
             </ul>
             <div class="tab-content">

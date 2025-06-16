@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -55,7 +54,8 @@
                                                         <td><strong>{{ 4 }}</strong></td>
                                                         <td><strong>{{ $sub_coa->id }}</strong></td>
                                                         <td colspan="2"><strong>{{ $sub_sub_coa->id }}</strong></td>
-                                                        <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong></td>
+                                                        <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong>
+                                                        </td>
                                                     </tr>
                                                     {{-- @foreach (\App\Models\Coa::where('sub_sub_id', $sub_sub_coa->id)->get() as $coa)
                                                     <tr>
@@ -108,7 +108,8 @@
                                                         <td><strong>{{ 5 }}</strong></td>
                                                         <td><strong>{{ $sub_coa->id }}</strong></td>
                                                         <td colspan="2"><strong>{{ $sub_sub_coa->id }}</strong></td>
-                                                        <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong></td>
+                                                        <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong>
+                                                        </td>
                                                     </tr>
                                                     {{-- @foreach (\App\Models\Coa::where('sub_sub_id', $sub_sub_coa->id)->get() as $coa)
                                                     <tr>
@@ -161,7 +162,8 @@
                                                         <td><strong>{{ 6 }}</strong></td>
                                                         <td><strong>{{ $sub_coa->id }}</strong></td>
                                                         <td colspan="2"><strong>{{ $sub_sub_coa->id }}</strong></td>
-                                                        <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong></td>
+                                                        <td><strong>&emsp;&emsp;&emsp;&emsp;{{ $sub_sub_coa->sub_sub_name }}</strong>
+                                                        </td>
                                                     </tr>
                                                     {{-- @foreach (\App\Models\Coa::where('sub_sub_id', $sub_sub_coa->id)->get() as $coa)
                                                     <tr>

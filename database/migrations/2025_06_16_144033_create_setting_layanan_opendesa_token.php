@@ -14,7 +14,7 @@ return new class extends Migration
     {
         $exists = SettingAplikasi::where('key', 'layanan_opendesa_token')->exists();
         if (! $exists) {
-            SettingAplikasi::create([
+            SettingAplikasi::insert([
                 'key' => 'layanan_opendesa_token',
                 'value' => 0,
                 'type' => 'input',

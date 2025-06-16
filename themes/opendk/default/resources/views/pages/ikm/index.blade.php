@@ -13,31 +13,18 @@
                     <form action="{{ route('survei.submit') }}" method="POST">
                         @csrf
                         <div class="form-group">
-                            <label>Menurut Anda bagaimana informasi yang tercantum dalam website ini?</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" required>
-                                    Sangat Baik
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                    Baik
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
-                                    Cukup
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="optionsRadios" id="optionsRadios4" value="option4">
-                                    Kurang
-                                </label>
-                            </div>
+                            <label>{{ $settings['survei_ikm'] ?? 'Menurut Anda bagaimana informasi yang tercantum dalam website ini?' }}</label>
+
+                            @foreach (\App\Enums\SurveiEnum::getValues() as $index => $value)
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadios{{ $index + 1 }}"
+                                            value="{{ $value }}" required>
+                                        {{ \App\Enums\SurveiEnum::getDescription($value) }}
+                                    </label>
+                                </div>
+                            @endforeach
+                            
                             @error('optionsRadios')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -62,7 +49,7 @@
                     <h4 class="text-center">Hasil Survei Kepuasan</h4>
                     @if (!empty($results))
                         <div class="form-group">
-                            <label>Menurut Anda bagaimana informasi yang tercantum dalam website ini?</label>
+                            <label>{{ $settings['survei_ikm'] ?? 'Menurut Anda bagaimana informasi yang tercantum dalam website ini?' }}</label>
                             <ul>
                                 <li>Sangat Baik ({{ $results['Sangat Baik'] ?? 0 }})</li>
                                 <li>Baik ({{ $results['Baik'] ?? 0 }})</li>

@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Enums\SurveiEnum;
 use App\Models\Event;
 use App\Models\Artikel;
 use App\Facades\Counter;
@@ -41,6 +42,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
 use App\Http\Controllers\FrontEndController;
+use App\Http\Requests\SurveiRequest;
 use App\Models\Kategori;
 use App\Models\Survei;
 use App\Services\DesaService;
@@ -373,30 +375,19 @@ class PageController extends FrontEndController
         return view('pages.ikm.index', compact('page_title', 'results'));
     }
     
-    public function surveiSubmit(Request $request)
+    public function surveiSubmit(SurveiRequest $request)
     {
-        // Validasi input
-        $request->validate([
-            'optionsRadios' => 'required|in:option1,option2,option3,option4',
-            'consent' => 'required|accepted',
-        ]);
-
         // Cek ulang session untuk keamanan
         if (Session::has('survey_submitted')) {
             return redirect()->back()->with('message', 'Anda sudah mengisi survei.');
         }
 
         // Simpan data survei
-        $responseMap = [
-            'option1' => 'Sangat Baik',
-            'option2' => 'Baik',
-            'option3' => 'Cukup',
-            'option4' => 'Kurang',
-        ];
+        $response = SurveiEnum::getDescription($request->optionsRadios);
 
-        \App\Models\Survei::create([
+        Survei::create([
             'session_id' => Session::getId(), // Opsional
-            'response' => $responseMap[$request->optionsRadios],
+            'response' => $response,
             'consent' => true,
         ]);
 

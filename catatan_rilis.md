@@ -4,8 +4,9 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
 
-1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Tambahkan pengaturan Email Server pada pengaturan Info Sistem.
+1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Penambahan pengaturan Email Server pada pengaturan Info Sistem.
 2. [#1243](https://github.com/OpenSID/OpenDK/issues/1243) Penerapan CI/CD Setup Pipeline Otomatis untuk Aplikasi OpenDK.
+3. [#1247](https://github.com/OpenSID/OpenDK/issues/1247) Penambahan nominal dasbor OpenDK dengan config OpenDK ke API Satu Data.
 
 #### BUG
 

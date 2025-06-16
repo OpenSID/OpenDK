@@ -51,10 +51,9 @@
                         <div class="form-group">
                             <label>{{ $settings['survei_ikm'] ?? 'Menurut Anda bagaimana informasi yang tercantum dalam website ini?' }}</label>
                             <ul>
-                                <li>Sangat Baik ({{ $results['Sangat Baik'] ?? 0 }})</li>
-                                <li>Baik ({{ $results['Baik'] ?? 0 }})</li>
-                                <li>Cukup ({{ $results['Cukup'] ?? 0 }})</li>
-                                <li>Kurang ({{ $results['Kurang'] ?? 0 }})</li>
+                                @foreach (\App\Enums\SurveiEnum::getValues() as $value)
+                                    <li>{{ \App\Enums\SurveiEnum::getDescription($value) }} ({{ $results[\App\Enums\SurveiEnum::getDescription($value)] ?? 0 }})</li>
+                                @endforeach
                             </ul>
                         </div>
                     @else

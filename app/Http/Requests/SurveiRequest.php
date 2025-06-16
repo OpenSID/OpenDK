@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\SurveiEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SurveiRequest extends FormRequest
@@ -24,7 +25,7 @@ class SurveiRequest extends FormRequest
     public function rules()
     {
         return [
-            'optionsRadios' => 'required|in:option1,option2,option3,option4',
+            'optionsRadios' => ['required', 'in:' . implode(',', SurveiEnum::getValues())],
             'consent' => 'required|accepted',
         ];
     }

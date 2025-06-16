@@ -24,6 +24,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 12. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaiki style breadcrumb.
 13. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan tooltip pada ikon "checklist" dan ikon "user" sama di halaman keluhan unit test keluhan.
 14. [#1246](https://github.com/OpenSID/OpenDK/issues/1246) Perbaikan Sesuaikan ID yang di lakukan hardcode.
+15. [#1216](https://github.com/OpenSID/OpenDK/issues/1216) Perbaikan datapicker tanggal lahir.
 
 #### TEKNIS
 

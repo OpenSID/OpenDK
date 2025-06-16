@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -22,7 +21,8 @@
                         <div class="float-right">
                             <div class="btn-group">
                                 <a href="{{ route('admin-komplain.index') }}">
-                                    <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali
+                                    <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>
+                                        Kembali
                                     </button>
                                 </a>
                             </div>
@@ -38,7 +38,9 @@
                                         <div class="col-md-12">
                                             <h5 class="bg-primary" style="padding: 2px;">LAPORAN:</h5>
 
-                                            <p>Yth: {{ config('profil.sebutan_kepala_wilayah') . ' ' . config('profil.nama_kecamatan') }}</p>
+                                            <p>Yth:
+                                                {{ config('profil.sebutan_kepala_wilayah') . ' ' . config('profil.nama_kecamatan') }}
+                                            </p>
                                             <br>
                                             <p>
                                                 {{ $komplain->laporan }}
@@ -99,7 +101,8 @@
                                     @endif
 
                                     <span class="username">
-                                        <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID #{{ $komplain->komplain_id }}</a>
+                                        <a href="{{ route('sistem-komplain.komplain', $komplain->slug) }}">TRACKING ID
+                                            #{{ $komplain->komplain_id }}</a>
                                     </span>
                                     <span class="description">PELAPOR : {{ $komplain->nama }}</span>
                                 </div>
@@ -137,7 +140,8 @@
                         <div class="float-right">
                             <div class="btn-group">
                                 <a href="{{ route('admin-komplain.index') }}">
-                                    <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Kembali
+                                    <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>
+                                        Kembali
                                     </button>
                                 </a>
                             </div>

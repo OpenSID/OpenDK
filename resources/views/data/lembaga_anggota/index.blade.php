@@ -1,27 +1,13 @@
 @extends('layouts.dashboard_template')
 @push('css')
     <style>
-        .content-header h1 {
-            max-width: 60%;
-            flex-shrink: 1;
-            flex-grow: 0;
-            margin-bottom: 0;
-        }
-        @media (max-width: 767px) {
-            .content-header h1 {
-                max-width: 100%;
-                flex-shrink: 1;
-                flex-grow: 0;
-                margin-bottom: 0;
-            }
-        }
         .nowrap {
             white-space: nowrap;
         }
     </style>
 @endpush
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -39,7 +25,9 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.lembaga_anggota.create', $lembaga->slug)])
+                @include('forms.btn-social', [
+                    'create_url' => route('data.lembaga_anggota.create', $lembaga->slug),
+                ])
             </div>
             <div class="box-body">
 

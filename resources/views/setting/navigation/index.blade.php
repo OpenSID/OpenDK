@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,16 +11,19 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('setting.navigation.create', $parent_id)])
+                @include('forms.btn-social', [
+                    'create_url' => route('setting.navigation.create', $parent_id),
+                ])
                 @if (!empty($parent_id))
-                    @include('forms.btn-social', ['back_url' => route('setting.navigation.index', $prev_parent)])
+                    @include('forms.btn-social', [
+                        'back_url' => route('setting.navigation.index', $prev_parent),
+                    ])
                 @endif
             </div>
             <div class="box-body">
@@ -71,7 +74,8 @@
                         name: 'status',
                         orderable: false,
                         render: function(data) {
-                            return (data) ? `<span class="badge badge-success">Aktif</span>` : `<span class="badge badge-danger">Nonaktif</span>`;
+                            return (data) ? `<span class="badge badge-success">Aktif</span>` :
+                                `<span class="badge badge-danger">Nonaktif</span>`;
                         }
                     }
                 ]

@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -61,7 +60,8 @@
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
                             "fields[config]": "id,kode_desa,nama_desa,website,path",
-                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
+                                    ?.column]
                                 ?.name,
                         };
                     },
@@ -74,7 +74,8 @@
                 },
                 columns: [{
                         data: function(data) {
-                            const _url = data.attributes.path === null ? `javascript:void(0)` : `{{ url('data/data-desa/peta') }}/${data.id}`
+                            const _url = data.attributes.path === null ? `javascript:void(0)` :
+                                `{{ url('data/data-desa/peta') }}/${data.id}`
                             const _disabled = data.attributes.path === null ? 'disabled' : ''
                             return `<a href="${_url}" class="${_disabled}" title="Peta" data-button="peta" target="_blank">
                                 <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-map" aria-hidden="true"></i></button>

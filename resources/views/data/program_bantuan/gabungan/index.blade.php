@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -110,7 +109,8 @@
                             "filter[kode_desa]": desaId || '',
                             "filter[search]": row.search.value,
                             "fields[program]": "*",
-                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]?.name,
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
+                                ?.column]?.name,
                         };
                     },
                     dataSrc: function(json) {

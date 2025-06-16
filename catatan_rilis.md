@@ -1,20 +1,24 @@
-Di rilis versi v2505.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2506.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
-
-1. [#13](https://github.com/OpenSID/OpenDK/issues/13) Penambahan fitur data kepagawaian kecamatan.
-2. [#1177](https://github.com/OpenSID/OpenDK/issues/1177) Penambahan sesuaikan halaman pengujung ke tampilan dan fungsi seperti OpenSID.
-
+1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Tambahkan pengaturan Email Server pada pengaturan Info Sistem.
 #### BUG
 
-1. [#1188](https://github.com/OpenSID/OpenDK/issues/1188) Perbaikan error saat login.
-2. [#1197](https://github.com/OpenSID/OpenDK/issues/1197) Perbaikan datatables ajax error pada halaman daftar event di modul informasi.
-3. [#1203](https://github.com/OpenSID/OpenDK/issues/1203) Perbaikan data tidak tersimpan pada media sosial.
-4. [#1208](https://github.com/OpenSID/OpenDK/issues/1208) Perbaikan ekspor data penduduk.
+1. [#1230](https://github.com/OpenSID/OpenDK/issues/1230) Perbaikan sub judul pada halaman "Media Sosial" hanya "Daftar".
+2. [#1228](https://github.com/OpenSID/OpenDK/issues/1228) Perbaikan typo "mengimplentasikan" menjadi "mengimplementasikan" di halaman Permohonan Surat.
+3. [#1226](https://github.com/OpenSID/OpenDK/issues/1226) Perbaikan teks nama instansi pada sidebar overlap.
+4. [#1224](https://github.com/OpenSID/OpenDK/issues/1224) Perbaikan penulisan 'Export' pada pesan error ketika ekspor data penduduk.
+5. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaikan collision antara subjudul dan breadcrumb.
+6. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan teks tooltip ikon user menjadi "Identitas Pelapor" sesuai fungsinya.
+7. [#1218](https://github.com/OpenSID/OpenDK/issues/1218) Perbaikan Typo "Masukan Kode Verifikasi" ke "Masukkan Kode Verifikasi".
+8. [#1215](https://github.com/OpenSID/OpenDK/issues/1215) Perbaikan gambar thumbnail tidak tampil pada Form ubah album.
+9. [#1217](https://github.com/OpenSID/OpenDK/issues/1217) Perbaikan konfirmasi ubah status pengaturan menu.
+10. [#1248](https://github.com/OpenSID/OpenDK/issues/1248) Perbaikan filter pada OpenDK data penduduk.
+11. [#1214](https://github.com/OpenSID/OpenDK/issues/1214) Perbaikan error installasi final.
+12. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaiki style breadcrumb.
 
 #### TEKNIS
 
-1. [#1205](https://github.com/OpenSID/OpenDK/issues/1205) Perbaikan penulisan pada pesan konfirmasi ubah status album.
-2. [#1210](https://github.com/OpenSID/OpenDK/issues/1210) Penyesuaian penulisan tooltip pada data pengurus.
+1. [#1220](https://github.com/OpenSID/OpenDK/issues/1220) Penyesuaian warna teks di footer agar lebih mudah dibaca.

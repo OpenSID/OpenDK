@@ -886,6 +886,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.info-sistem');
                 Route::get('/linkstorage', 'linkStorage')->name('setting.info-sistem.linkstorage');
                 Route::get('/queuelisten', 'queueListen')->name('setting.info-sistem.queuelisten');
+                Route::post('/store-email-smtp', 'storeEmailSmtp')->name('setting.info-sistem.store-email-smtp');
+                Route::post('/send-test-email-smtp/{email}', 'sendTestEmailSmtp')->name('setting.info-sistem.send-test-email-smtp');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
             });
 

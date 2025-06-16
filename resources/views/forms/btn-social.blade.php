@@ -49,7 +49,7 @@
     <a href="{{ $print }}" target="{{ $print_new_tab ?? true ? '_blank' : '_self' }}">
         <button type="button" class="btn bg-purple btn-sm btn-social" title="{{ $print_text ?? 'Cetak' }}">
             <i class="fa fa-print"></i>{{ $print_text ?? 'Cetak' }}
-            </button>
+        </button>
     </a>
 @endif
 

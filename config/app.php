@@ -39,7 +39,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v2505.0.0',
+    'version' => 'v2506.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -286,6 +286,10 @@ return [
 
         //Log Viewer
         Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
+        //Dynamic smtp
+        App\Providers\SmtpServiceProvider::class,
+      
         MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 

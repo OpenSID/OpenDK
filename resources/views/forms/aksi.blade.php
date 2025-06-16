@@ -88,7 +88,7 @@
         </a>
     @endif
     @if (isset($anonim))
-        <a href="javascript:void(0)" class="{!! empty($anonim) ? 'disabled' : '' !!}" title="Ubah Status" data-href="{!! empty($anonim) ? 'javascript:void(0)' : $anonim !!}" data-button="delete" id="anonimModal">
+        <a href="javascript:void(0)" class="{!! empty($anonim) ? 'disabled' : '' !!}" title="Identitas Pelapor" data-href="{!! empty($anonim) ? 'javascript:void(0)' : $anonim !!}" data-button="delete" id="anonimModal">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #252725; border-color: #252725;"><i class="fa fa-user" aria-hidden="true"></i>
             </button>
         </a>
@@ -104,10 +104,7 @@
         </a>
     @endif
     @if (isset($download_zip))
-        <a href="{!! empty($download_zip) ? 'javascript:void(0)' : $download_zip !!}" 
-        class="{!! empty($download_zip) ? 'disabled' : '' !!}" 
-        title="Unduh: {{ $nama_file ?? 'Arsip' }}" 
-        data-button="download-zip">
+        <a href="{!! empty($download_zip) ? 'javascript:void(0)' : $download_zip !!}" class="{!! empty($download_zip) ? 'disabled' : '' !!}" title="Unduh: {{ $nama_file ?? 'Arsip' }}" data-button="download-zip">
             <button type="button" class="btn btn-primary btn-sm" style="width: 40px;">
                 <i class="glyphicon glyphicon-download-alt" aria-hidden="true"></i>
             </button>

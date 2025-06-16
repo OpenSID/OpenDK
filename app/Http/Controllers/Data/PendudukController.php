@@ -209,7 +209,7 @@ class PendudukController extends Controller
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Export data gagal. '.$e->getMessage());
+            return back()->with('error', 'Ekspor data gagal. '.$e->getMessage());
         }
     }
 }

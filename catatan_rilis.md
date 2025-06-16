@@ -3,7 +3,11 @@ Di rilis versi v2506.0.0 di versi ini terdapat modul komentar pada artikel dan p
 Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
-1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Tambahkan pengaturan Email Server pada pengaturan Info Sistem.
+
+1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Penambahan pengaturan Email Server pada pengaturan Info Sistem.
+2. [#1243](https://github.com/OpenSID/OpenDK/issues/1243) Penerapan CI/CD Setup Pipeline Otomatis untuk Aplikasi OpenDK.
+3. [#1247](https://github.com/OpenSID/OpenDK/issues/1247) Penambahan nominal dasbor OpenDK dengan config OpenDK ke API Satu Data.
+
 #### BUG
 
 1. [#1230](https://github.com/OpenSID/OpenDK/issues/1230) Perbaikan sub judul pada halaman "Media Sosial" hanya "Daftar".
@@ -18,6 +22,9 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 10. [#1248](https://github.com/OpenSID/OpenDK/issues/1248) Perbaikan filter pada OpenDK data penduduk.
 11. [#1214](https://github.com/OpenSID/OpenDK/issues/1214) Perbaikan error installasi final.
 12. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaiki style breadcrumb.
+13. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan tooltip pada ikon "checklist" dan ikon "user" sama di halaman keluhan unit test keluhan.
+14. [#1246](https://github.com/OpenSID/OpenDK/issues/1246) Perbaikan Sesuaikan ID yang di lakukan hardcode.
+15. [#1216](https://github.com/OpenSID/OpenDK/issues/1216) Perbaikan datapicker tanggal lahir.
 
 #### TEKNIS
 

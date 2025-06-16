@@ -100,4 +100,23 @@ class DesaService extends BaseApiService
 
         return DataDesa::whereNotNull('path')->get();
     }
+
+    /**
+     * Get Unique Desa
+     */
+    public function jumlahDesa(array $filters = [])
+    {
+        // Default parameter
+        $defaultParams = [
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+        ];
+
+        // Gabungkan parameter default dengan filter dinamis
+        $params = array_merge($defaultParams, $filters);
+
+        // Panggil API dan ambil data
+        $data = $this->apiRequestLengkap('/api/v1/desa', $params);
+
+        return $data['meta']['pagination']['total'];
+    }
 }

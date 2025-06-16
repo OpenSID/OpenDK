@@ -35,20 +35,37 @@ use App\Models\DataDesa;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
 use App\Models\Program;
+use App\Services\BantuanService;
+use App\Services\DesaService;
+use App\Services\KeluargaService;
+use App\Services\PendudukService;
 
 class DashboardController extends Controller
 {
     public function __invoke()
     {
         $page_title = 'Dashboard';
-        $data = [
-            'desa' => DataDesa::count(),
-            'penduduk' => Penduduk::hidup()->count(),
-            'keluarga' => Keluarga::whereHas('kepala_kk', static function ($query) {
-                $query->where('kk_level', '1')->where('status_dasar', '1');
-            })->count(),
-            'program_bantuan' => Program::count(),
-        ];
+
+        if($this->isDatabaseGabungan())
+        {
+            $data = [
+                'desa' => (new DesaService())->jumlahDesa(),
+                'penduduk' => (new PendudukService)->jumlahPenduduk(),
+                'keluarga' =>  (new KeluargaService)->jumlahKeluarga([
+                    'filter[status]' => 1
+                ]),
+                'program_bantuan' => (new BantuanService)->jumlahBantuan(),
+            ];
+        }else{
+            $data = [
+                'desa' => DataDesa::count(),
+                'penduduk' => Penduduk::hidup()->count(),
+                'keluarga' => Keluarga::whereHas('kepala_kk', static function ($query) {
+                    $query->where('kk_level', '1')->where('status_dasar', '1');
+                })->count(),
+                'program_bantuan' => Program::count(),
+            ];
+        }
 
         // Halaman populer
         $top_pages_visited = \App\Models\Visitor::getTopPagesVisited();

@@ -44,7 +44,7 @@ class MaintenanceMode
      */
     public function handle($request, Closure $next)
     {
-        $maintenance = SettingAplikasi::find(11);
+        $maintenance = SettingAplikasi::where('key', 'mode_maintenance')->first();
         if ($maintenance) {
             if ($maintenance->value == 1) {
                 abort(503);

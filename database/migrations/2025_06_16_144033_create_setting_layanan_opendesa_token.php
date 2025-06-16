@@ -23,6 +23,29 @@ return new class extends Migration
                 'option' => '{}',
             ]);
         }
+
+        $exists = SettingAplikasi::where('key', 'jenis_peta')->exists();
+        if (! $exists) {
+            SettingAplikasi::insert([
+                'key' => 'jenis_peta',
+                'value' => '',
+                'type' => 'boolean_peta',
+                'description' => 'Jenis Peta yang akan diterapkan secara bawaan sistem',
+                'kategori' => 'web',
+                'option' => '{"readonly":true}',
+            ]);
+        }
+        $exists = SettingAplikasi::where('key', 'map_box')->exists();
+        if (! $exists) {
+            SettingAplikasi::insert([
+                'key' => 'map_box',
+                'value' => '',
+                'type' => 'input',
+                'description' => 'Map Box Api Key untuk peta',
+                'kategori' => 'web',
+                'option' => '{"readonly":true}',
+            ]);
+        }
     }
 
     /**

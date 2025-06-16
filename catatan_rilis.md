@@ -17,6 +17,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 9. [#1217](https://github.com/OpenSID/OpenDK/issues/1217) Perbaikan konfirmasi ubah status pengaturan menu.
 10. [#1248](https://github.com/OpenSID/OpenDK/issues/1248) Perbaikan filter pada OpenDK data penduduk.
 11. [#1214](https://github.com/OpenSID/OpenDK/issues/1214) Perbaikan error installasi final.
+12. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaiki style breadcrumb.
 
 #### TEKNIS
 

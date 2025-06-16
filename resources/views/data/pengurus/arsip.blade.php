@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -15,16 +15,21 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <div class="box-header with-border clearfix">
         <div class="pull-left">
             @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
-            @include('forms.btn-social', ['create_url' => route('data.pengurus.create.arsip', $pengurus_id)])
+            @include('forms.btn-social', [
+                'create_url' => route('data.pengurus.create.arsip', $pengurus_id),
+            ])
         </div>
 
         @if ($count_arsip > 0)
             <div class="pull-right">
-                @include('forms.btn-social', ['download_zip' => route('data.pengurus.edit.download.arsip.zip', ['pengurus_id' => $pengurus_id])])
+                @include('forms.btn-social', [
+                    'download_zip' => route('data.pengurus.edit.download.arsip.zip', [
+                        'pengurus_id' => $pengurus_id,
+                    ]),
+                ])
             </div>
         @endif
     </div>
@@ -36,7 +41,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => 'data.pengurus.store', 'method' => 'post', 'files' => true, 'id' => 'form-pengurus', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::open([
+                        'route' => 'data.pengurus.store',
+                        'method' => 'post',
+                        'files' => true,
+                        'id' => 'form-pengurus',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

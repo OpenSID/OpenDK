@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_description ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -31,7 +30,13 @@
                     @endif
 
                     <!-- form start -->
-                    {!! Form::model($dokumen, ['route' => ['informasi.form-dokumen.update', $dokumen->id], 'method' => 'put', 'id' => 'form-dokumen', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                    {!! Form::model($dokumen, [
+                        'route' => ['informasi.form-dokumen.update', $dokumen->id],
+                        'method' => 'put',
+                        'id' => 'form-dokumen',
+                        'class' => 'form-horizontal form-label-left',
+                        'files' => true,
+                    ]) !!}
 
                     <div class="box-body">
 

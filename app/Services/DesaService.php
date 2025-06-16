@@ -32,7 +32,6 @@
 namespace App\Services;
 
 use App\Models\DataDesa;
-use BeyondCode\QueryDetector\Outputs\Log;
 use Illuminate\Support\Facades\Cache;
 
 class DesaService extends BaseApiService
@@ -42,8 +41,10 @@ class DesaService extends BaseApiService
         if ($this->useDatabaseGabungan()) {
             $slug = kembalikanSlug($slug);
             $dataDesa = $this->desa(['filter[nama_desa]' => $slug, 'page[size]' => 1])?->first();
+
             return $dataDesa;
         }
+
         return DataDesa::nama($slug)->firstOrFail();
     }
 
@@ -51,21 +52,21 @@ class DesaService extends BaseApiService
     {
         if ($this->useDatabaseGabungan()) {
             // gunakan cache untuk mempercepat load data melalui api
-            $dataDesa = Cache::get('listDesa');                        
+            $dataDesa = Cache::get('listDesa');
             // jika kosong, maka request ulang ke API
-            if(!$dataDesa || $dataDesa->isEmpty()) {
+            if (! $dataDesa || $dataDesa->isEmpty()) {
                 $dataDesa = $this->desa(['filter[kode_kec]' => $this->kodeKecamatan]);
             }
-            if($dataDesa->isNotEmpty()) {
+            if ($dataDesa->isNotEmpty()) {
                 // simpan ke cache selama 24 jam
                 Cache::put('listDesa', $dataDesa, 60 * 60 * 24);
             }
-            
+
             return $dataDesa;
         }
 
         return DataDesa::all();
-    }    
+    }
 
     /**
      * Get Unique Desa
@@ -74,11 +75,12 @@ class DesaService extends BaseApiService
     {
         // Panggil API dan ambil data
         $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);
-        if(!$data) {
+        if (! $data) {
             return collect([]);
         }
+
         return collect($data)->map(function ($item) {
-            return (object)[
+            return (object) [
                 'desa_id' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
                 'kode_desa' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
                 'nama' => $item['attributes']['nama_desa'] ?? null, // Ambil nama desa
@@ -92,11 +94,29 @@ class DesaService extends BaseApiService
 
     public function listPathDesa()
     {
-        if ($this->useDatabaseGabungan()) {            
-            
+        if ($this->useDatabaseGabungan()) {
             return $this->listDesa();
         }
 
         return DataDesa::whereNotNull('path')->get();
+    }
+
+    /**
+     * Get Unique Desa
+     */
+    public function jumlahDesa(array $filters = [])
+    {
+        // Default parameter
+        $defaultParams = [
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+        ];
+
+        // Gabungkan parameter default dengan filter dinamis
+        $params = array_merge($defaultParams, $filters);
+
+        // Panggil API dan ambil data
+        $data = $this->apiRequestLengkap('/api/v1/desa', $params);
+
+        return $data['meta']['pagination']['total'];
     }
 }

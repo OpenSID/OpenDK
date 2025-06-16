@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,14 +12,19 @@
             <li class="active">{{ $page_description ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
         <div class="row">
             <div class="col-md-12">
 
-                {!! Form::open(['route' => 'data.aki-akb.do_import', 'method' => 'post', 'id' => 'form-import', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Form::open([
+                    'route' => 'data.aki-akb.do_import',
+                    'method' => 'post',
+                    'id' => 'form-import',
+                    'class' => 'form-horizontal form-label-left',
+                    'files' => true,
+                ]) !!}
 
                 <div class="box-body">
 
@@ -62,7 +67,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data AKI & AKB</label>
+                                <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data AKI &
+                                    AKB</label>
 
                                 <div class="col-md-8">
                                     <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
@@ -72,7 +78,8 @@
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_AKI_&_AKB.xlsx') }}">Download</a></p>
+                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_AKI_&_AKB.xlsx') }}">Download</a>
+                                </p>
                             </div>
                         </div>
                     </div>

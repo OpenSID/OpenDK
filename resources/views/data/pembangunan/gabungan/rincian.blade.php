@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="box box-primary">
             <div class="box-body">
@@ -87,7 +86,8 @@
                     }
                 },
                 error: function() {
-                    $('#nama-kegiatan, #sumber-dana, #lokasi-pembangunan, #keterangan').text("Error loading data");
+                    $('#nama-kegiatan, #sumber-dana, #lokasi-pembangunan, #keterangan').text(
+                        "Error loading data");
                 }
             });
 

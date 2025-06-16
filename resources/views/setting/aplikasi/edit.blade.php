@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_description ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -20,7 +19,12 @@
         <section class="content">
             <div class="row">
                 <div class="box box-primary">
-                    {!! Form::model($aplikasi, ['route' => ['setting.aplikasi.update', $aplikasi->id], 'method' => 'put', 'id' => 'form-setting-aplikasi', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::model($aplikasi, [
+                        'route' => ['setting.aplikasi.update', $aplikasi->id],
+                        'method' => 'put',
+                        'id' => 'form-setting-aplikasi',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
 
                     <div class="box-body">
 

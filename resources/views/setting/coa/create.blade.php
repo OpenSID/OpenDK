@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -12,14 +12,18 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="row">
             <div class="col-md-12">
                 @include('partials.flash_message')
                 <div class="box box-primary">
 
-                    {!! Form::open(['route' => 'setting.coa.store', 'method' => 'post', 'id' => 'form-coa', 'class' => 'form-horizontal form-label-left']) !!}
+                    {!! Form::open([
+                        'route' => 'setting.coa.store',
+                        'method' => 'post',
+                        'id' => 'form-coa',
+                        'class' => 'form-horizontal form-label-left',
+                    ]) !!}
 
                     <div class="box-body">
 

@@ -36,6 +36,44 @@ class PendudukService
     }
 
     /**
+     * General API Call Method
+     */
+    protected function apiRequestLengkap(string $endpoint, array $params = [])
+    {
+        // Base URL
+        $baseUrl = $this->settings['api_server_database_gabungan'];
+
+        // Buat permintaan API dengan Header dan Parameter
+        $response = Http::withHeaders([
+            'Accept' => 'application/ld+json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
+        ])->get($baseUrl . $endpoint, $params);
+
+        // Return JSON hasil
+        return $response->json();
+    }
+
+    /**
+     * Get Unique Desa
+     */
+    public function jumlahPenduduk(array $filters = [])
+    {
+        // Default parameter
+        $defaultParams = [
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+        ];
+
+        // Gabungkan parameter default dengan filter dinamis
+        $params = array_merge($defaultParams, $filters);
+
+        // Panggil API dan ambil data
+        $data = $this->apiRequestLengkap('/api/v1/opendk/sync-penduduk-opendk', $params);
+
+        return $data['meta']['pagination']['total'];
+    }
+
+    /**
      * Get Unique Desa
      */
     public function desa(array $filters = [])

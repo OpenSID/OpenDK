@@ -18,6 +18,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 10. [#1248](https://github.com/OpenSID/OpenDK/issues/1248) Perbaikan filter pada OpenDK data penduduk.
 11. [#1214](https://github.com/OpenSID/OpenDK/issues/1214) Perbaikan error installasi final.
 12. [#1212](https://github.com/OpenSID/OpenDK/issues/1212) Perbaiki style breadcrumb.
+13. [#1222](https://github.com/OpenSID/OpenDK/issues/1222) Perbaikan tooltip pada ikon "checklist" dan ikon "user" sama di halaman keluhan unit test keluhan.
 
 #### TEKNIS
 

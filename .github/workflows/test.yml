@@ -43,6 +43,9 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
 
+    - name: Set Installed State
+      run: touch storage/installed
+
     - name: Extract database testing
       run: |
         tar -xzf database/database_test.sql.tar.gz -C database

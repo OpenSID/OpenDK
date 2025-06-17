@@ -1,0 +1,146 @@
+{
+    "data": [
+        {
+            "type": "daftar desa",
+            "id": "1",
+            "attributes": {
+                "nama_desa": "Adonara",
+                "kode_desa": "5306172007",
+                "kode_pos": 66822,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "Desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "2",
+            "attributes": {
+                "nama_desa": "Kolilanang",
+                "kode_desa": "5306172003",
+                "kode_pos": 61627,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "3",
+            "attributes": {
+                "nama_desa": "Kolimasang",
+                "kode_desa": "5306172002",
+                "kode_pos": 92063,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "4",
+            "attributes": {
+                "nama_desa": "Kolipetung",
+                "kode_desa": "5306172008",
+                "kode_pos": 11382,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "5",
+            "attributes": {
+                "nama_desa": "Lamahoda",
+                "kode_desa": "5306172006",
+                "kode_pos": 90918,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "6",
+            "attributes": {
+                "nama_desa": "Nisa Nulan",
+                "kode_desa": "5306172005",
+                "kode_pos": 22490,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "7",
+            "attributes": {
+                "nama_desa": "Sagu",
+                "kode_desa": "5306172001",
+                "kode_pos": 94095,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        },
+        {
+            "type": "daftar desa",
+            "id": "8",
+            "attributes": {
+                "nama_desa": "Tikatukan",
+                "kode_desa": "5306172004",
+                "kode_pos": 37944,
+                "nama_kecamatan": "Adonara",
+                "kode_kecamatan": "530617",
+                "website": null,
+                "lat": null,
+                "lng": null,
+                "path": null,
+                "sebutan_desa": "desa"
+            }
+        }
+    ],
+    "meta": {
+        "pagination": {
+            "total": 8,
+            "count": 8,
+            "per_page": 30,
+            "current_page": 1,
+            "total_pages": 1
+        }
+    },
+    "links": {
+        "self": "http://127.0.0.1:8000/api/v1/desa?filter%5Bkode_kecamatan%5D=530617&page%5Bnumber%5D=1",
+        "first": "http://127.0.0.1:8000/api/v1/desa?filter%5Bkode_kecamatan%5D=530617&page%5Bnumber%5D=1",
+        "last": "http://127.0.0.1:8000/api/v1/desa?filter%5Bkode_kecamatan%5D=530617&page%5Bnumber%5D=1"
+    }
+}

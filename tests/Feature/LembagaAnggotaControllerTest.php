@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Http\Controllers\Data;
 
+use App\Models\KategoriLembaga;
 use App\Models\Lembaga;
 use App\Models\LembagaAnggota;
 use App\Models\Penduduk;
@@ -15,10 +16,13 @@ class LembagaAnggotaControllerTest extends CrudTestCase
 
     /** @test */
     public function it_can_create_lembaga_anggota()
-    {
-        $lembaga = Lembaga::factory()->create();
+    {        
         $penduduk = $this->getPenduduk(); // Assuming this method returns a Penduduk instance or collection
-        
+        $kategori = $this->getKategori(); // Assuming this method returns a KategoriLembaga instance or collection
+        $lembaga = Lembaga::factory()->create([
+            'lembaga_kategori_id' => $kategori->id, // Assuming this is a valid category ID
+            'penduduk_id' => $penduduk->id, // Assuming this is a valid Penduduk ID            
+        ]);   
         $response = $this->post(route('data.lembaga_anggota.store', $lembaga->slug), [
             'penduduk_id' => $penduduk->id,
             'no_anggota' => '001',
@@ -43,8 +47,12 @@ class LembagaAnggotaControllerTest extends CrudTestCase
     /** @test */
     public function it_can_update_lembaga_anggota()
     {
-        $lembaga = Lembaga::factory()->create();
-        $penduduk = $this->getPenduduk();
+        $penduduk = $this->getPenduduk(); // Assuming this method returns a Penduduk instance or collection
+        $kategori = $this->getKategori(); // Assuming this method returns a KategoriLembaga instance or collection
+        $lembaga = Lembaga::factory()->create([
+            'lembaga_kategori_id' => $kategori->id, // Assuming this is a valid category ID
+            'penduduk_id' => $penduduk->id, // Assuming this is a valid Penduduk ID            
+        ]);
         $anggota = LembagaAnggota::factory()->create([
             'lembaga_id' => $lembaga->id,
             'penduduk_id' => $penduduk->id,            
@@ -67,8 +75,12 @@ class LembagaAnggotaControllerTest extends CrudTestCase
     /** @test */
     public function it_can_delete_lembaga_anggota()
     {
-        $lembaga = Lembaga::factory()->create();
-        $penduduk = $this->getPenduduk();
+        $penduduk = $this->getPenduduk(); // Assuming this method returns a Penduduk instance or collection
+        $kategori = $this->getKategori(); // Assuming this method returns a KategoriLembaga instance or collection
+        $lembaga = Lembaga::factory()->create([
+            'lembaga_kategori_id' => $kategori->id, // Assuming this is a valid category ID
+            'penduduk_id' => $penduduk->id, // Assuming this is a valid Penduduk ID            
+        ]);
         $anggota = LembagaAnggota::factory()->create([
             'lembaga_id' => $lembaga->id,
             'penduduk_id' => $penduduk->id,
@@ -91,5 +103,16 @@ class LembagaAnggotaControllerTest extends CrudTestCase
         }
 
         return $penduduk;
+    }
+
+    private function getKategori()
+    {
+        $kategori = KategoriLembaga::inRandomOrder()->first();
+        if(!$kategori){
+            KategoriLembaga::factory()->create();
+            $kategori = KategoriLembaga::inRandomOrder()->first();
+        }
+
+        return $kategori;
     }
 }

@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Enums\SurveiEnum;
 use App\Models\Event;
 use App\Models\Artikel;
 use App\Facades\Counter;
@@ -41,7 +42,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
 use App\Http\Controllers\FrontEndController;
+use App\Http\Requests\SurveiRequest;
 use App\Models\Kategori;
+use App\Models\Survei;
 use App\Services\DesaService;
 use Jenssegers\Agent\Agent;
 
@@ -350,5 +353,47 @@ class PageController extends FrontEndController
             'artikel' => $berita_kategori,
             'kategori' => $kategori,
         ]);
+    }
+
+    // fitur survey indeks kepuasan pengguna terhadap penyajian informasi yang tersedia di website
+    public function survei()
+    {
+        $page_title = 'Index Kepuasan Masyarakat';
+
+        // Ambil hasil survei untuk ditampilkan
+        $results = \App\Models\Survei::selectRaw('response, count(*) as count')
+            ->groupBy('response')
+            ->pluck('count', 'response')
+            ->toArray();
+
+        // Cek apakah pengguna sudah mengisi survei
+        if (Session::has('survey_submitted')) {
+            return view('pages.ikm.index', compact('page_title', 'results'))
+                ->with('message', 'Anda sudah mengisi survei.');
+        }
+
+        return view('pages.ikm.index', compact('page_title', 'results'));
+    }
+    
+    public function surveiSubmit(SurveiRequest $request)
+    {
+        // Cek ulang session untuk keamanan
+        if (Session::has('survey_submitted')) {
+            return redirect()->back()->with('message', 'Anda sudah mengisi survei.');
+        }
+
+        // Simpan data survei
+        $response = SurveiEnum::getDescription($request->optionsRadios);
+
+        Survei::create([
+            'session_id' => Session::getId(), // Opsional
+            'response' => $response,
+            'consent' => true,
+        ]);
+
+        // Tandai session bahwa survei sudah diisi
+        Session::put('survey_submitted', true);
+
+        return redirect()->back()->with('success', 'Terima kasih atas tanggapan Anda!');
     }
 }

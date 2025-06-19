@@ -5,34 +5,8 @@ namespace App\Services;
 use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Http;
 
-class KeluargaService
-{
-    protected $settings;
-
-    public function __construct()
-    {
-        $this->settings = SettingAplikasi::pluck('value', 'key');
-    }
-
-    /**
-     * General API Call Method
-     */
-    protected function apiRequest(string $endpoint, array $params = [])
-    {
-        // Base URL
-        $baseUrl = $this->settings['api_server_database_gabungan'];
-
-        // Buat permintaan API dengan Header dan Parameter
-        $response = Http::withHeaders([
-            'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
-        ])->get($baseUrl . $endpoint, $params);
-
-        // Return JSON hasil
-        return $response->json('data') ?? [];
-    }
-
+class KeluargaService extends BaseApiService
+{    
     public function keluarga(int $id)
     {
         // Default parameter
@@ -64,26 +38,7 @@ class KeluargaService
         });
 
         return $result[0];
-    }
-
-    /**
-     * General API Call Method
-     */
-    protected function apiRequestLengkap(string $endpoint, array $params = [])
-    {
-        // Base URL
-        $baseUrl = $this->settings['api_server_database_gabungan'];
-
-        // Buat permintaan API dengan Header dan Parameter
-        $response = Http::withHeaders([
-            'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
-        ])->get($baseUrl . $endpoint, $params);
-
-        // Return JSON hasil
-        return $response->json();
-    }
+    }    
 
     /**
      * Get Unique Desa
@@ -100,7 +55,10 @@ class KeluargaService
 
         // Panggil API dan ambil data
         $data = $this->apiRequestLengkap('/api/v1/keluarga', $params);
-
+        if (!isset($data['meta']['pagination']['total'])) {
+            return 0; // Jika tidak ada total, kembalikan 0
+        }
+        // Jika total tersedia, kembalikan nilainya
         return $data['meta']['pagination']['total'];
     }
 

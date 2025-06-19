@@ -116,7 +116,9 @@ class DesaService extends BaseApiService
 
         // Panggil API dan ambil data
         $data = $this->apiRequestLengkap('/api/v1/desa', $params);
-
+        if (! $data || ! isset($data['meta']['pagination']['total'])) {
+            return 0; // Jika tidak ada data atau total tidak tersedia, kembalikan 0
+        }
         return $data['meta']['pagination']['total'];
     }
 }

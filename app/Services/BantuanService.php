@@ -19,7 +19,10 @@ class BantuanService extends BaseApiService
 
         // Panggil API dan ambil data
         $data = $this->apiRequestLengkap('/api/v1/bantuan', $params);
-
+        if (!isset($data['meta']['pagination']['total'])) {
+            return 0; // Jika tidak ada total, kembalikan 0
+        }
+        // Jika total tersedia, kembalikan nilainya
         return $data['meta']['pagination']['total'];
     }
     

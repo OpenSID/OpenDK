@@ -7,6 +7,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 1. [#1176](https://github.com/OpenSID/OpenDK/issues/1176) Penambahan pengaturan Email Server pada pengaturan Info Sistem.
 2. [#1243](https://github.com/OpenSID/OpenDK/issues/1243) Penerapan CI/CD Setup Pipeline Otomatis untuk Aplikasi OpenDK.
 3. [#1247](https://github.com/OpenSID/OpenDK/issues/1247) Penambahan nominal dasbor OpenDK dengan config OpenDK ke API Satu Data.
+4. [#1174](https://github.com/OpenSID/OpenDK/issues/1174) Penambahan Fitur IKM (Index Kepuasan Masyarakat) pada OpenDK.
 
 #### BUG
 

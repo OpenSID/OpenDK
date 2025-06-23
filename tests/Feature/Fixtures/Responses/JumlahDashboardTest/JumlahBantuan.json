@@ -1,0 +1,17 @@
+{
+    "data": [],
+    "meta": {
+        "pagination": {
+            "total": 0,
+            "count": 0,
+            "per_page": 30,
+            "current_page": 1,
+            "total_pages": 1
+        }
+    },
+    "links": {
+        "self": "http://127.0.0.1:8000/api/v1/bantuan?filter%5Bkode_kecamatan%5D=530617&page%5Bnumber%5D=1",
+        "first": "http://127.0.0.1:8000/api/v1/bantuan?filter%5Bkode_kecamatan%5D=530617&page%5Bnumber%5D=1",
+        "last": "http://127.0.0.1:8000/api/v1/bantuan?filter%5Bkode_kecamatan%5D=530617&page%5Bnumber%5D=1"
+    }
+}

@@ -63,7 +63,7 @@
 @endpush
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -73,7 +73,6 @@
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         @include('partials.flash_message')
 
@@ -86,7 +85,11 @@
                         @include('setting.nav_menu.field')
                     </div>
                     <div class="box-footer">
-                        {!! Form::button('<i class="fa fa-save"></i> Simpan', ['type' => 'button', 'class' => 'btn btn-primary btn-sm', 'id' => 'btnUpdate']) !!}
+                        {!! Form::button('<i class="fa fa-save"></i> Simpan', [
+                            'type' => 'button',
+                            'class' => 'btn btn-primary btn-sm',
+                            'id' => 'btnUpdate',
+                        ]) !!}
                         {!! Form::button('<i class="fa fa-plus-square"></i> Tambah', [
                             'type' => 'button',
                             'class' => 'btn btn-success btn-sm',

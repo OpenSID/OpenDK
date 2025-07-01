@@ -85,34 +85,44 @@ class AppServiceProvider extends ServiceProvider
 
         resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {
             return new \App\Providers\EmailTwoFactorProvider();
-        });        
+        });       
+        
+        // bypass validasi captcha saat unit testing
+        if (app()->environment('testing') || app()->environment('local')) {
+            Validator::extend('captcha', function () {
+                return true; // selalu lolos di environment testing
+            });
+        }
     }
 
     protected function penduduk()
     {
-        Penduduk::saved(function ($model) {
-            $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
+        // kecamatan_id harus dihapus pada migrasi database/migrations/2021_10_12_081718_alter_table_das_data_umum.php
+        // jumlah_penduduk dll dihapus pada migrasi database/migrations/2021_01_02_055931_dropcolomn_data_umum_table.php           
+        // Penduduk::saved(function ($model) {
+        //     
+        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();            
+        //      
+        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
+        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
+        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
+        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
+        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
 
-            $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-            $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-            $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-            $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-            $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
+        //     $dataUmum->save();
+        // });
 
-            $dataUmum->save();
-        });
+        // Penduduk::deleted(function ($model) {
+        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
 
-        Penduduk::deleted(function ($model) {
-            $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
+        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
+        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
+        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
+        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
+        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
 
-            $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-            $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-            $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-            $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-            $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-            $dataUmum->save();
-        });
+        //     $dataUmum->save();
+        // });
 
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
             $query = DB::table('das_penduduk')->where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();

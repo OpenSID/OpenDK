@@ -7,32 +7,28 @@ use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class PendudukService
-{
-    protected $settings;
-
-    public function __construct()
-    {
-        $this->settings = SettingAplikasi::pluck('value', 'key');
-    }
-
+class PendudukService extends BaseApiService
+{    
     /**
-     * General API Call Method
+     * Get Unique Desa
      */
-    protected function apiRequest(string $endpoint, array $params = [])
+    public function jumlahPenduduk(array $filters = [])
     {
-        // Base URL
-        $baseUrl = $this->settings['api_server_database_gabungan'];
+        // Default parameter
+        $defaultParams = [
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+        ];
 
-        // Buat permintaan API dengan Header dan Parameter
-        $response = Http::withHeaders([
-            'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
-        ])->get($baseUrl . $endpoint, $params);
+        // Gabungkan parameter default dengan filter dinamis
+        $params = array_merge($defaultParams, $filters);
 
-        // Return JSON hasil
-        return $response->json('data') ?? [];
+        // Panggil API dan ambil data
+        $data = $this->apiRequestLengkap('/api/v1/opendk/sync-penduduk-opendk', $params);
+        if (!isset($data['meta']['pagination']['total'])) {
+            return 0; // Jika tidak ada total, kembalikan 0
+        }
+        // Jika total tersedia, kembalikan nilainya
+        return $data['meta']['pagination']['total'];
     }
 
     /**

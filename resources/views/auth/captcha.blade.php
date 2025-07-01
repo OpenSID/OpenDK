@@ -4,7 +4,7 @@
             <span>{!! captcha_img('mini') !!}</span>
             <button type="button" class="btn btn-success btn-refresh"><i class="fa fa-refresh"></i></button>
         </div>
-        <input id="captcha" type="text" class="form-control" required placeholder="Masukan Kode Verifikasi" name="captcha">
+        <input id="captcha" type="text" class="form-control" required placeholder="Masukkan Kode Verifikasi" name="captcha">
         @if ($errors->has('captcha'))
             <span class="help-block">
                 <strong>{{ $errors->first('captcha') }}</strong>

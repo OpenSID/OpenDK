@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Lembaga extends Model
 {
+    use HasFactory;
+
     protected $table = 'das_lembaga';
 
     protected $guarded = ['id'];
@@ -38,7 +41,7 @@ class Lembaga extends Model
 
         // Cek apakah slug sudah ada di database, jika ya, tambahkan angka di belakangnya
         while (self::where('slug', $slug)->exists()) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 

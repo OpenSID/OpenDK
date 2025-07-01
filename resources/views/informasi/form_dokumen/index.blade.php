@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1>
             {{ $page_title ?? 'Page Title' }}
             <small>{{ $page_description ?? '' }}</small>
@@ -11,7 +11,6 @@
             <li class="active">{!! $page_title !!}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
 
         @include('partials.flash_message')
@@ -63,7 +62,11 @@
 
                                 {{-- Filter Jenis Dokumen --}}
                                 <div class="col-md-4 pr-md-1">
-                                    {!! Form::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id'), null, ['placeholder' => '-Pilih Jenis Dokumen-', 'class' => 'form-control', 'id' => 'jenis_dokumen_id']) !!}
+                                    {!! Form::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id'), null, [
+                                        'placeholder' => '-Pilih Jenis Dokumen-',
+                                        'class' => 'form-control',
+                                        'id' => 'jenis_dokumen_id',
+                                    ]) !!}
                                 </div>
                             </div>
                         </div>
@@ -145,7 +148,8 @@
                             const isPublished = row.is_published;
                             const expiredAt = row.expired_at;
                             const today = new Date();
-                            today.setHours(0, 0, 0, 0); // Hilangkan waktu agar perbandingan lebih akurat
+                            today.setHours(0, 0, 0,
+                                0); // Hilangkan waktu agar perbandingan lebih akurat
                             let status = '';
                             let badgeClass = '';
 
@@ -186,21 +190,24 @@
                 console.log(bulan)
 
                 // Lakukan request dengan filter status yang dipilih
-                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun + '&jenis_dokumen_id=' + jenisDokumenId).load();
+                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun +
+                    '&jenis_dokumen_id=' + jenisDokumenId).load();
             });
 
             $('select[name="tahun"]').on('change', function() {
                 tahun = $(this).val(); // Ambil value yang dipilih
 
                 // Lakukan request dengan filter status yang dipilih
-                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun + '&jenis_dokumen_id=' + jenisDokumenId).load();
+                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun +
+                    '&jenis_dokumen_id=' + jenisDokumenId).load();
             });
 
             $('select[name="jenis_dokumen_id"]').on('change', function() {
                 jenisDokumenId = $(this).val(); // Ambil value yang dipilih
 
                 // Lakukan request dengan filter status yang dipilih
-                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun + '&jenis_dokumen_id=' + jenisDokumenId).load();
+                table.ajax.url('{!! route('informasi.form-dokumen.getdata') !!}?bulan=' + bulan + '&tahun=' + tahun +
+                    '&jenis_dokumen_id=' + jenisDokumenId).load();
             });
 
         });

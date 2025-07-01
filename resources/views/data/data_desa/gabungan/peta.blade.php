@@ -1,7 +1,7 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header">
+    <section class="content-header block-breadcrumb">
         <h1 id="header-title">
             Desa
             <small>{{ $page_description ?? '' }}</small>
@@ -12,7 +12,6 @@
             <li class="active">{{ $page_title ?? '' }}</li>
         </ol>
     </section>
-
     <section class="content container-fluid">
         <div class="box box-primary">
             <div class="box-body">
@@ -80,10 +79,11 @@
 
             $.when(path_kec()).done(function(res_kec) {
                 if (res_kec && res_kec.data != null) {
-                    var mark_kec = set_marker(res_kec.data, 'Peta Wilayah Kecamatan', 'Wilayah Kecamatan ' + res_kec.data.profil.nama_kecamatan, {
-                        'line': '#de2d26',
-                        'fill': '#fff'
-                    });
+                    var mark_kec = set_marker(res_kec.data, 'Peta Wilayah Kecamatan', 'Wilayah Kecamatan ' +
+                        res_kec.data.profil.nama_kecamatan, {
+                            'line': '#de2d26',
+                            'fill': '#fff'
+                        });
                     if (mark_kec != null) {
                         overlayLayers['Peta Wilayah Kecamatan'] = wilayah_property(mark_kec, false);
                     }
@@ -98,7 +98,8 @@
                     .then(data => {
                         tampil_peta(JSON.parse(data.data[0].attributes.path))
                         $('#header-title small').html(data.data[0].attributes.nama_desa)
-                        $('#header-title').next('.breadcrumb').find('li:last').html(data.data[0].attributes.nama_desa)
+                        $('#header-title').next('.breadcrumb').find('li:last').html(data.data[0]
+                            .attributes.nama_desa)
                     })
             });
         });

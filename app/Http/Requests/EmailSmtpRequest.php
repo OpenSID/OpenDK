@@ -29,21 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
+namespace App\Http\Requests;
 
-use Tests\TestCase;
+use Illuminate\Foundation\Http\FormRequest;
 
-class ExampleTest extends TestCase
+class EmailSmtpRequest extends FormRequest
 {
     /**
-     * A basic test example.
+     * Determine if the user is authorized to make this request.
      *
-     * @return void
+     * @return bool
      */
-    public function test_example()
+    public function authorize()
     {
-        $response = $this->get('/');
+        return true;
+    }
 
-        $response->assertStatus(200);
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'provider' => 'required',
+            'host' => 'required',
+            'port' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+        ];
     }
 }

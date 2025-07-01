@@ -94,21 +94,7 @@ class SistemKomplainController extends FrontEndController
 
             return back()->with('warning', 'Komplain tidak ditemukan!');
         }
-    }
-
-    protected function generateID()
-    {
-        $id = mt_rand(100000, 999999);
-        $pid = '';
-
-        if (! Komplain::where('komplain_id', '=', $id)->exists()) {
-            $pid = $id;
-        } else {
-            $this->generateID();
-        }
-
-        return $pid;
-    }
+    }   
 
     public function store(Request $request)
     {
@@ -137,7 +123,7 @@ class SistemKomplainController extends FrontEndController
             ? (new PendudukService)->cekPendudukNikTanggalLahir($request->input('nik'), $request->input('tanggal_lahir'))
             : Penduduk::where('nik', $komplain->nik)->first();
 
-            $komplain->komplain_id = $this->generateID();
+            $komplain->komplain_id = Komplain::generateID();
             $komplain->slug = str_slug($komplain->judul).'-'.$komplain->komplain_id;
             $komplain->status = 'REVIEW';
             $komplain->dilihat = 0;
@@ -175,7 +161,7 @@ class SistemKomplainController extends FrontEndController
                 $lampiran4 = $request->file('lampiran4');
                 $fileName4 = $lampiran4->getClientOriginalName();
                 $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $request->file('lampiran3')->move($path, $fileName4);
+                $request->file('lampiran4')->move($path, $fileName4);
                 $komplain->lampiran4 = $path.$fileName4;
             }
 

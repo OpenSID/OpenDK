@@ -26,10 +26,12 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
+                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah"
+                        id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
                 <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta
                         Wilayah</a></li>
-                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>
+                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor"
+                        data-toggle="tab">Lokasi Kantor</a></li>
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane active" id="wilayah">
@@ -69,13 +71,15 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="lat">Latitude</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control input-sm lat" name="lat" id="lat" value="{{ $data_umum->lat }}">
+                            <input type="text" class="form-control input-sm lat" name="lat" id="lat"
+                                value="{{ $data_umum->lat }}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="lat">Longitude</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control input-sm lng" name="lng" id="lng" value="{{ $data_umum->lng }}">
+                            <input type="text" class="form-control input-sm lng" name="lng" id="lng"
+                                value="{{ $data_umum->lng }}">
                         </div>
                     </div>
                 </div>
@@ -107,6 +111,7 @@
         }
 
         $(function() {
+            $('input[type=number]').attr('min', 0)
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
                 if (e.target.hash == '#peta') {
                     $.when(path_desa()).done(function(res_desa) {

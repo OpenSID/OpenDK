@@ -21,8 +21,7 @@
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/plugins/iCheck/square/blue.css') }}">
     <!-- Google Font -->
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <style>
         html {
             height: auto;
@@ -36,8 +35,7 @@
         <div class="login-box-body">
             <div class="login-logo" style="padding-top: 10px;">
                 <a href="{{ route('beranda') }}">
-                    <img src="{{ is_logo($profil->file_logo) }}" style="max-width:80px;white-space:normal"
-                        alt="" width="70px">
+                    <img src="{{ is_logo($profil->file_logo) }}" style="max-width:80px;white-space:normal" alt="" width="70px">
                     @if ($settings['tte'])
                         <img src="{{ asset('img/bsre.png') }}" alt="" width="120px" height="auto">
                     @endif
@@ -53,8 +51,16 @@
                 @csrf
                 <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
                     <div class="input-group">
-                        <input id="email" type="email" class="form-control" name="email"
-                            value="{{ old('email') }}" required autofocus placeholder="Email">
+                        <input
+                            id="email"
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            value="{{ old('email') }}"
+                            required
+                            autofocus
+                            placeholder="Email"
+                        >
                         @if ($errors->has('email'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('email') }}</strong>
@@ -65,15 +71,13 @@
                 </div>
                 <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
                     <div class="input-group">
-                        <input id="password" type="password" class="form-control" name="password" required
-                            placeholder="Password">
+                        <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
                         @if ($errors->has('password'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('password') }}</strong>
                             </span>
                         @endif
-                        <span class="input-group-addon"><i
-                                class="span-password glyphicon glyphicon-eye-close"></i></span>
+                        <span class="input-group-addon"><i class="span-password glyphicon glyphicon-eye-close"></i></span>
                     </div>
                 </div>
 
@@ -83,8 +87,7 @@
                     <div class="col-xs-8">
                         <div class="checkbox icheck">
                             <label>
-                                <input class="iCheck" type="checkbox" name="remember"
-                                    {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                <input class="iCheck" type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                             </label>
                         </div>
                     </div>
@@ -98,8 +101,7 @@
 
             <hr />
             <div class="text-center">
-                <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a
-                        href="http://opendesa.id">OpenDesa</a>
+                <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a>
                     <br />
                     <b><a href="https://github.com/openSID/openDK" target="_blank">OpenDK</a></b>
                     {{ config('app.version') }}

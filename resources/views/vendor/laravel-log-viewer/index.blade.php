@@ -19,8 +19,7 @@
             <ul class="nav nav-tabs">
                 <li class="logs {{ $tab == 'log_viewer' ? 'active' : '' }}"><a data-toggle="tab" href="#log_viewer">Logs</a>
                 </li>
-                <li class="log_ekstensi {{ $tab == 'ekstensi' ? 'active' : '' }}"><a data-toggle="tab"
-                        href="#ekstensi">Kebutuhan Sistem</a></li>
+                <li class="log_ekstensi {{ $tab == 'ekstensi' ? 'active' : '' }}"><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
                 @role('super-admin')
                     <li class=" {{ $tab == 'info_sistem' ? 'active' : '' }}"><a data-toggle="tab" href="#info_sistem">Info
                             Sistem</a></li>

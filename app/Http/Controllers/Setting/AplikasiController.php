@@ -39,8 +39,8 @@ class AplikasiController extends Controller
 {
     public function index()
     {
-        $page_title = 'Pegaturan Aplikasi';
-        $page_description = 'Daftar Pegaturan Aplikasi';
+        $page_title = 'Pengaturan Aplikasi';
+        $page_description = 'Daftar Pengaturan Aplikasi';
         $settings = SettingAplikasi::where('kategori', '!=', 'surat')->get();
 
         return view('setting.aplikasi.index', compact('page_title', 'page_description', 'settings'));

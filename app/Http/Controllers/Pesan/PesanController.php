@@ -212,12 +212,12 @@ class PesanController extends Controller
                     'pesan_id' => $id,
                     'text' => Purify::clean($request->get('text')),
                     'pengirim' => 'kecamatan',
-                    'nama_pengirim' => 'kecamatan - '.auth()->user()->name,
+                    'nama_pengirim' => 'kecamatan - '.auth()->user()?->name ?? 'system',
                 ]);
             });
 
             return redirect()->route('pesan.keluar')->with('success', 'Pesan berhasil dikirim!');
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            
             return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: '.$e->getMessage());
         }
     }

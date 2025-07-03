@@ -107,6 +107,7 @@
         }
 
         $(function() {
+            $('input[type=number]').attr('min', 0)
             $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
                 if (e.target.hash == '#peta') {
                     $.when(path_desa()).done(function(res_desa) {

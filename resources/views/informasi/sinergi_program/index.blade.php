@@ -4,7 +4,7 @@
     <section class="content-header block-breadcrumb">
         <h1>
             Sinergi Program
-            <small>Daftar</small>
+            <small>Daftar Sinergi Program</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>

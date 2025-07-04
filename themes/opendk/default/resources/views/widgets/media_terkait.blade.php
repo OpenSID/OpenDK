@@ -1,9 +1,13 @@
+@php
+    $jumlahItem = count($media_terkait);
+@endphp
+
 <div class="box-header with-border text-center bg-blue">
     <h2 class="box-title text-bold">Media Terkait</h2>
 </div>
 
 <div class="marquee-wrapper">
-    <div class="marquee-content">
+    <div class="marquee-content {{ $jumlahItem > 1 ? 'animate' : '' }}">
         <ul class="marquee-track">
             @foreach ($media_terkait as $data)
                 <li>
@@ -13,14 +17,16 @@
                 </li>
             @endforeach
 
-            {{-- Duplikat untuk seamless loop --}}
-            @foreach ($media_terkait as $data)
-                <li>
-                    <a href="{{ $data->url }}" rel="noopener noreferrer" target="_blank">
-                        <img src="{{ Storage::url('media_terkait/' . $data->logo) }}" alt="Logo">
-                    </a>
-                </li>
-            @endforeach
+            @if ($jumlahItem > 1)
+                {{-- Duplikat untuk seamless loop --}}
+                @foreach ($media_terkait as $data)
+                    <li>
+                        <a href="{{ $data->url }}" rel="noopener noreferrer" target="_blank">
+                            <img src="{{ Storage::url('media_terkait/' . $data->logo) }}" alt="Logo">
+                        </a>
+                    </li>
+                @endforeach
+            @endif
         </ul>
     </div>
 </div>
@@ -37,6 +43,10 @@
 
 .marquee-content {
     display: flex;
+    /* animation applied only when .animate class is added */
+}
+
+.marquee-content.animate {
     animation: marquee-seamless 30s linear infinite;
 }
 

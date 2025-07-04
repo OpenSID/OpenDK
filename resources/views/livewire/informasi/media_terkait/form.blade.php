@@ -10,19 +10,19 @@
             <form class="form-horizontal" enctype="multipart/form-data">
                 <div class="box-body">
 
-                    <x-form-group name="mediaTerkait.nama">
-                        <x-label for="mediaTerkait.nama">Nama</x-label>
+                    <x-form-group name="instance.nama">
+                        <x-label for="instance.nama">Nama</x-label>
                         <div class="col-sm-8">
-                            <x-input type="text" placeholder="Nama Media Terkait" wire:model="mediaTerkait.nama" />
-                            <x-input-validation name="mediaTerkait.nama" />
+                            <x-input type="text" placeholder="Nama Media Terkait" wire:model="instance.nama" />
+                            <x-input-validation name="instance.nama" />
                         </div>
                     </x-form-group>
 
-                    <x-form-group name="mediaTerkait.url">
-                        <x-label for="mediaTerkait.url">Link</x-label>
+                    <x-form-group name="instance.url">
+                        <x-label for="instance.url">Link</x-label>
                         <div class="col-sm-8">
-                            <x-input type="text" placeholder="Link Media Terkait" wire:model="mediaTerkait.url" />
-                            <x-input-validation name="mediaTerkait.url" />
+                            <x-input type="text" placeholder="Link Media Terkait" wire:model="instance.url" />
+                            <x-input-validation name="instance.url" />
                         </div>
                     </x-form-group>
 
@@ -42,16 +42,16 @@
                         </div>
                     </x-form-group>
 
-                    <x-form-group name="mediaTerkait.status">
-                        <x-label for="mediaTerkait.status">Status</x-label>
+                    <x-form-group name="instance.status">
+                        <x-label for="instance.status">Status</x-label>
                         <div class="col-sm-8">
-                            <x-tom-select wire:model="mediaTerkait.status">
+                            <x-tom-select wire:model="instance.status">
                                 <option value="">-- Pilih Status --</option>
                                 <option value="1">Tampil</option>
                                 <option value="0">Tidak Tampil</option>
                             </x-tom-select>
 
-                            <x-input-validation name="mediaTerkait.status" />
+                            <x-input-validation name="instance.status" />
                         </div>
                     </x-form-group>
                 </div>

@@ -60,9 +60,7 @@
                         <i class="fa fa-times"></i> Reset
                     </x-button>
 
-                    <x-button color="info" wire:click.prevent="{{ $editMode ? 'update' : 'store' }}" loading="{{ $editMode ? 'Update' : 'Simpan' }}...">
-                        <i class="fa fa-save"></i> {{ $editMode ? 'Update' : 'Simpan' }}
-                    </x-button>
+                    <button type="button" class="btn btn-info btn-sm" wire:click.prevent="{{ $editMode ? 'update' : 'store' }}" @if (empty($logo)) disabled @endif><i class="fa fa-save"></i> {{ $editMode ? 'Update' : 'Simpan' }}</button>
 
                 </div>
             </form>

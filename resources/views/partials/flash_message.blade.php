@@ -18,9 +18,7 @@
         <h4><i class="icon fa fa-check"></i> Perhatian!</h4>
         <p>{{ $message }}</p>
     </div>
-@endif
-
-@if ($errors->any())
+@elseif($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)

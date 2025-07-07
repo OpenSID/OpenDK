@@ -31,11 +31,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class DataDesa extends Model
 {
+    use HasFactory;
     protected $table = 'das_data_desa';
 
     protected $fillable = [

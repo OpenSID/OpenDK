@@ -48,7 +48,7 @@ class PesanController extends Controller
         $data->put('desa_id', null);
         $data->put('search_query', '');
         $data->put('sudah_dibaca', '');
-        $data->put('page_description', 'Managemen Pesan');
+        $data->put('page_description', 'Manajemen Pesan');
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
             ->where('jenis', Pesan::PESAN_MASUK)
@@ -102,7 +102,7 @@ class PesanController extends Controller
         $data->put('desa_id', null);
         $data->put('search_query', '');
         $data->put('page_title', 'Pesan Keluar');
-        $data->put('page_description', 'Managemen Pesan');
+        $data->put('page_description', 'Manajemen Pesan');
         $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
@@ -134,7 +134,7 @@ class PesanController extends Controller
         $data->put('desa_id', null);
         $data->put('search_query', '');
         $data->put('page_title', 'Pesan Arsip');
-        $data->put('page_description', 'Managemen Pesan');
+        $data->put('page_description', 'Manajemen Pesan');
         $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
         $pesan = Pesan::with(['dataDesa', 'detailPesan'])
@@ -169,7 +169,7 @@ class PesanController extends Controller
 
         $data = collect([]);
         $data->put('page_title', 'Pesan');
-        $data->put('page_description', 'Managemen Pesan');
+        $data->put('page_description', 'Manajemen Pesan');
         $data->put('pesan', $pesan);
         $data = $data->merge($this->loadCounter());
 
@@ -180,7 +180,7 @@ class PesanController extends Controller
     {
         $data = collect([]);
         $data->put('page_title', 'Buat Pesan');
-        $data->put('page_description', 'Managemen Pesan');
+        $data->put('page_description', 'Manajemen Pesan');
         $list_desa = DataDesa::get();
         $data = $data->merge($this->loadCounter());
         $data->put('list_desa', $list_desa);
@@ -212,12 +212,12 @@ class PesanController extends Controller
                     'pesan_id' => $id,
                     'text' => Purify::clean($request->get('text')),
                     'pengirim' => 'kecamatan',
-                    'nama_pengirim' => 'kecamatan - '.auth()->user()->name,
+                    'nama_pengirim' => 'kecamatan - '.auth()->user()?->name ?? 'system',
                 ]);
             });
 
             return redirect()->route('pesan.keluar')->with('success', 'Pesan berhasil dikirim!');
-        } catch (\Exception $e) {
+        } catch (\Exception $e) {            
             return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: '.$e->getMessage());
         }
     }

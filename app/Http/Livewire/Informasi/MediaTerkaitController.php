@@ -40,7 +40,7 @@ class MediaTerkaitController extends BaseComponent
             'url' => 'required',
             'status' => 'nullable|in:0,1',
         ], [
-            'logo' => 'nullable|mimes:jpg,png,jpeg|max:1024',
+            'logo' => 'required|mimes:jpg,png,jpeg|max:1024',
         ]);
     }
 

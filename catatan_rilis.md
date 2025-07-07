@@ -4,6 +4,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
 
+1. [#1256](https://github.com/OpenSID/OpenDK/issues/1256) Penambahan Fitur "lihat password" tidak berfungsi di halaman login.
 
 #### BUG
 

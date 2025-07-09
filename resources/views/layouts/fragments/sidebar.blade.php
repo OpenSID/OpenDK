@@ -81,6 +81,11 @@
                                 </li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
+                                <li {{ Request::is(['informasi.media.terkait*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.media.terkait') }}"><i class="fa fa-circle-o"></i>Media Terkait</a>
+                                </li>
+                            @endrole
+                            @role('super-admin|admin-kecamatan|administrator-website')
                                 <li {{ Request::is(['informasi/sinergi-program*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('informasi.sinergi-program.index') }}"><i class="fa fa-circle-o"></i>Sinergi Program</a>
                                 </li>

@@ -5,6 +5,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 #### FITUR
 
 1. [#1256](https://github.com/OpenSID/OpenDK/issues/1256) Penambahan Fitur "lihat password" tidak berfungsi di halaman login.
+2. [#1175](https://github.com/OpenSID/OpenDK/issues/1175) Penambahan Menu Media terkait diluar dari OpenDK.
 
 #### BUG
 

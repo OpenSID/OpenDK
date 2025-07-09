@@ -26,5 +26,5 @@ public/error_log
 /.vscode
 
 # Themes
-/themes/*
+# /themes/*
 !/themes/opendk/default/

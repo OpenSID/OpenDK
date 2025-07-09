@@ -25,6 +25,7 @@ class SyncWidgets extends Command
             'event',
             'pengurus',
             'media_sosial',
+            'media_terkait',
             'visitor',
         ];
         $maxUrut = Widget::max('urut') ?? 0; // Kalau null, mulai dari 0

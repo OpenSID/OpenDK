@@ -35,6 +35,7 @@ use App\Models\Event;
 use App\Models\Slide;
 use App\Models\Navigation;
 use App\Models\MediaSosial;
+use App\Models\MediaTerkait;
 use App\Models\NavMenu;
 use App\Models\SettingAplikasi;
 use App\Models\SinergiProgram;
@@ -54,6 +55,7 @@ class FrontEndController extends Controller
         View::share([
             'events' => Event::getOpenEvents(),
             'medsos' => MediaSosial::where('status', 1)->get(),
+            'media_terkait' => MediaTerkait::where('status', 1)->get(),
             'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
             'navmenus' => NavMenu::with('children.children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
             'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),

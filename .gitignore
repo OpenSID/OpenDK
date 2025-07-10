@@ -28,3 +28,4 @@ public/error_log
 # Themes
 # /themes/*
 !/themes/opendk/default/
+/storage/komplain

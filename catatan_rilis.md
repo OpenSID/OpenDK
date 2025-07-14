@@ -15,6 +15,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 4. [#1259](https://github.com/OpenSID/OpenDK/issues/1259) Perbaikan subtitle pada halaman "Sinergi Program" hanya "Daftar". 
 5. [#1258](https://github.com/OpenSID/OpenDK/issues/1258) Perbaikan typo penulisan "Managemen Pesan".
 6. [#1257](https://github.com/OpenSID/OpenDK/issues/1257) Perbaikan penulisan kata "menghimbau" tidak sesuai KBBI.
+7. [#1272](https://github.com/OpenSID/OpenDK/issues/1272) perbaikan migrasi awal.
 
 #### TEKNIS
 

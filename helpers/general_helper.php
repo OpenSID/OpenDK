@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,22 +24,21 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Models\DataDesa;
 use App\Models\Menu;
 use App\Models\Role;
-use App\Models\DataDesa;
-use App\Models\Navigation;
 use App\Models\Themes;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use willvincent\Feeds\Facades\FeedsFacade;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use voku\helper\AntiXSS;
+use willvincent\Feeds\Facades\FeedsFacade;
 
 /**
  * Parsing url image dari rss feed description
@@ -85,28 +84,6 @@ function permission_val($id, $permission)
     $result = (isset($format['permissions'][$permission]) && $format['permissions'][$permission] != '' ? 1 : 0);
 
     return $result;
-}
-
-/**
- * Uploads an image.
- *
- * @param      <type>  $image  The image
- * @param  string  $file The file
- * @return     string  ( description_of_the_return_value )
- */
-function upload_image($image, $file)
-{
-    $extension = $image->getClientOriginalExtension();
-    $path = public_path('uploads/' . $file . '/');
-    if (! file_exists($path)) {
-        File::makeDirectory($path, 0777, true);
-    }
-
-    $name = time() . uniqid();
-    $img = Image::make($image->getRealPath());
-    $img->save($path . $name . '.' . $extension);
-
-    return $name . '.' . $extension;
 }
 
 /**
@@ -238,7 +215,6 @@ function format_datetime($date)
 
     return Carbon::parse($date)->translatedFormat('d F Y H:i:s');
 }
-
 
 function format_date($date)
 {
@@ -559,8 +535,6 @@ if (! function_exists('getFeeds')) {
     }
 }
 
-
-
 // Email hanya boleh berisi karakter alpha, numeric, titik, strip dan Tanda et,
 function email($str): ?string
 {
@@ -618,7 +592,6 @@ function hari($tgl): string
 
     return $hari[$dayofweek];
 }
-
 
 /*
  * =======================================
@@ -721,7 +694,6 @@ function comma($number): string
 
     return $results;
 }
-
 
 function bulan()
 {

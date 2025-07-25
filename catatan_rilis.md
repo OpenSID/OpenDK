@@ -19,3 +19,4 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### TEKNIS
 
+1. [#1274](https://github.com/OpenSID/OpenDK/issues/1274) Update plugin/library/package untuk mengatasi kerentanan aplikasi.

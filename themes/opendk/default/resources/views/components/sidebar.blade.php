@@ -16,6 +16,10 @@
                 if ($namaWidget == 'media_sosial' && (!isset($medsos) || count($medsos) == 0)) {
                     $bolehTampil = false;
                 }
+
+                if ($namaWidget == 'media_terkait' && (!isset($media_terkait) || count($media_terkait) == 0)) {
+                    $bolehTampil = false;
+                }
             @endphp
 
             @if ($bolehTampil)

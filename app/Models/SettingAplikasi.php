@@ -31,11 +31,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class SettingAplikasi extends Model
 {
+    use HasFactory;
     protected $table = 'das_setting';
     
     protected $fillable = [

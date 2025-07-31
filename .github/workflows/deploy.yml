@@ -37,4 +37,4 @@ jobs:
           EOF
 
       - name: Run Ansible Playbook
-        run: ansible-playbook -i inventory.yml playbook.yml
+        run: ansible-playbook -i ansible/inventory.yml ansible/playbook.yml

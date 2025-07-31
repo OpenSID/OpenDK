@@ -1,0 +1,7 @@
+---
+# defaults file for deploy
+dir_path_app: /var/www/OpenDK
+
+git_repo:
+  url: 'https://github.com/ujgsp/OpenDK.git'
+  branch: 'development'

@@ -1,0 +1,65 @@
+---
+- name: Pastikan direktori aplikasi ada
+  file:
+    path: '{{ dir_path_app }}'
+    state: directory
+    mode: '0755'
+
+- name: Fetch kode dari repository GitHub
+  command: git fetch origin {{ git_repo.branch }}
+  args:
+    chdir: '{{ dir_path_app }}'
+  register: fetch_result
+  changed_when: fetch_result.rc == 0
+
+- name: Reset kode ke branch terbaru
+  command: git reset --hard origin/{{ git_repo.branch }}
+  args:
+    chdir: '{{ dir_path_app }}'
+  register: reset_result
+  changed_when: reset_result.rc == 0
+
+- name: Pull kode terbaru
+  git:
+    repo: '{{ git_repo.url }}'
+    dest: '{{ dir_path_app }}'
+    version: '{{ git_repo.branch }}'
+    force: yes
+
+- name: Install dependensi Composer
+  composer:
+    command: install
+    working_dir: '{{ dir_path_app }}'
+    no_dev: true
+    optimize_autoloader: true
+    arguments: --no-interaction --prefer-dist
+
+- name: Replace APP_ENV in .env ke production
+  lineinfile:
+    dest: "{{ dir_path_app }}/.env"
+    regexp: '^APP_ENV='
+    line: "APP_ENV=production"
+    create: no
+
+- name: Ubah owner file ke www-data
+  file:
+    path: '{{ dir_path_app }}'
+    owner: www-data
+    group: www-data
+    recurse: yes
+
+- name: Jalankan migrasi database sebagai www-data
+  shell: sudo -u www-data php artisan migrate --force
+  args:
+    chdir: '{{ dir_path_app }}'
+
+
+- name: Bersihkan cache konfigurasi
+  shell: sudo -u www-data php artisan cache:clear-profil --all
+  args:
+    chdir: '{{ dir_path_app }}'
+
+- name: Restart Apache
+  service:
+    name: apache2
+    state: restarted

@@ -32,11 +32,12 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SinergiProgram extends Model
 {
-    use HandlesResourceDeletion;
+    use HandlesResourceDeletion, HasFactory;
 
     protected $table = 'das_sinergi_program';
 

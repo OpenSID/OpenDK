@@ -92,10 +92,44 @@ class Profil extends Model
 
         static::saved(function () {
             Cache::forget('profil');
+            Cache::forget('setting');
+            // Clear semua cache yang berhubungan dengan profil kecamatan
+            if (function_exists('cache')) {
+                try {
+                    Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
+                } catch (\Exception $e) {
+                    // Jika cache tags tidak didukung oleh driver, gunakan clear individual
+                    \Log::info('Cache tags not supported, using individual cache clear');
+                }
+            }
         });
 
         static::updated(function () {
             Cache::forget('profil');
+            Cache::forget('setting');
+            // Clear semua cache yang berhubungan dengan profil kecamatan
+            if (function_exists('cache')) {
+                try {
+                    Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
+                } catch (\Exception $e) {
+                    // Jika cache tags tidak didukung oleh driver, gunakan clear individual
+                    \Log::info('Cache tags not supported, using individual cache clear');
+                }
+            }
+        });
+
+        static::created(function () {
+            Cache::forget('profil');
+            Cache::forget('setting');
+            // Clear cache saat data profil baru dibuat (install pertama kali)
+            if (function_exists('cache')) {
+                try {
+                    Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
+                } catch (\Exception $e) {
+                    // Jika cache tags tidak didukung oleh driver, gunakan clear individual
+                    \Log::info('Cache tags not supported, using individual cache clear');
+                }
+            }
         });
     }
 }

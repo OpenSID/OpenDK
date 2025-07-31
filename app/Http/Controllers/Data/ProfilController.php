@@ -36,9 +36,29 @@ use App\Http\Requests\ProfilRequest;
 use App\Models\DataUmum;
 use App\Models\Profil;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 
 class ProfilController extends Controller
 {
+    /**
+     * Clear cache untuk data profil kecamatan
+     *
+     * @return void
+     */
+    private function clearProfilCache()
+    {
+        Cache::forget('profil');
+        Cache::forget('setting');
+
+        // Clear cache dengan tags jika didukung
+        try {
+            Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
+        } catch (\Exception $e) {
+            // Cache tags mungkin tidak didukung pada semua driver cache
+            \Log::info('Cache tags not supported by current cache driver');
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +70,7 @@ class ProfilController extends Controller
         $page_title = 'Profil';
         $page_description = 'Data Profil';
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
-        $adaDesa       = DataUmum::where('profil_id', $profil->id)->exists() && $profil->provinsi_id != null;
+        $adaDesa = DataUmum::where('profil_id', $profil->id)->exists() && $profil->provinsi_id != null;
 
         return view('data.profil.edit', compact('page_title', 'page_description', 'profil', 'status_pantau', 'adaDesa'));
     }
@@ -75,7 +95,7 @@ class ProfilController extends Controller
                 $file = $request->file('file_struktur_organisasi');
                 $fileName = $file->getClientOriginalName();
                 $request->file('file_struktur_organisasi')->move('storage/profil/struktur_organisasi/', $fileName);
-                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/'.$fileName;
+                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/' . $fileName;
             }
 
             if ($request->file('file_logo') == '') {
@@ -84,11 +104,14 @@ class ProfilController extends Controller
                 $fileLogo = $request->file('file_logo');
                 $fileLogoName = $fileLogo->getClientOriginalName();
                 $request->file('file_logo')->move('storage/profil/file_logo/', $fileLogoName);
-                $profil->file_logo = 'storage/profil/file_logo/'.$fileLogoName;
+                $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
             }
 
             $profil->update();
             $dataumum->update();
+
+            // Clear cache setelah update data kecamatan
+            $this->clearProfilCache();
         } catch (\Exception $e) {
             report($e);
 

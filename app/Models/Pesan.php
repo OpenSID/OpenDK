@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Pesan extends Model
 {
+    use HasFactory;
     protected $table = 'das_pesan';
 
     protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at'];

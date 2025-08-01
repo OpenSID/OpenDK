@@ -39,7 +39,9 @@
                     @if ($settings['tte'])
                         <img src="{{ asset('img/bsre.png') }}" alt="" width="120px" height="auto">
                     @endif
-                    <h3>PEMERINTAH KAB. {{ strtoupper($profil->nama_kabupaten) }}<br /><b>{{ strtoupper($sebutan_wilayah . ' ' . $profil->nama_kecamatan) }}</b></h3>
+                    <h3>PEMERINTAH KAB.
+                        {{ strtoupper($profil->nama_kabupaten) }}<br /><b>{{ strtoupper($sebutan_wilayah . ' ' . $profil->nama_kecamatan) }}</b>
+                    </h3>
                 </a>
             </div>
             <hr />
@@ -48,31 +50,35 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
-                    <input
-                        id="email"
-                        type="email"
-                        class="form-control"
-                        name="email"
-                        value="{{ old('email') }}"
-                        required
-                        autofocus
-                        placeholder="Email"
-                    >
-                    @if ($errors->has('email'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <div class="input-group">
+                        <input
+                            id="email"
+                            type="email"
+                            class="form-control"
+                            name="email"
+                            value="{{ old('email') }}"
+                            required
+                            autofocus
+                            placeholder="Email"
+                        >
+                        @if ($errors->has('email'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                    </div>
                 </div>
                 <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                    <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
-                    @if ($errors->has('password'))
-                        <span class="help-block">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @endif
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <div class="input-group">
+                        <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
+                        @if ($errors->has('password'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                        <span class="input-group-addon"><i class="span-password glyphicon glyphicon-eye-close"></i></span>
+                    </div>
                 </div>
 
                 @includeIf($captchaView)
@@ -97,7 +103,8 @@
             <div class="text-center">
                 <small>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a href="http://opendesa.id">OpenDesa</a>
                     <br />
-                    <b><a href="https://github.com/openSID/openDK" target="_blank">OpenDK</a></b> {{ config('app.version') }}
+                    <b><a href="https://github.com/openSID/openDK" target="_blank">OpenDK</a></b>
+                    {{ config('app.version') }}
                 </small>
             </div>
         </div>
@@ -123,6 +130,18 @@
                     $(this).remove();
                 });
             }, 5000);
+
+            $('.span-password').on('click', function() {
+                console.log('toggle password visibility');
+                var input = $('#password');
+                if (input.attr('type') === 'password') {
+                    input.attr('type', 'text');
+                    $(this).removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+                } else {
+                    input.attr('type', 'password');
+                    $(this).removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+                }
+            });
         });
     </script>
     @stack('scripts')

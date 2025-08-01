@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -39,7 +39,7 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'version' => 'v2507.0.0',
+    'version' => 'v2508.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -259,7 +259,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class,
+        // Intervention\Image\ImageServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         /*
          * Package Service Providers...
@@ -289,7 +289,7 @@ return [
 
         //Dynamic smtp
         App\Providers\SmtpServiceProvider::class,
-      
+
         MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 
@@ -311,8 +311,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Debugbar' => \Barryvdh\Debugbar\Facades\Debugbar::class,
-        'Image' => Intervention\Image\Facades\Image::class,
+        'Debugbar' => \Barryvdh\Debugbar\Facades\Debugbar::class
     ])->toArray(),
 
 ];

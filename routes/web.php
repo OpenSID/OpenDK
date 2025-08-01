@@ -371,6 +371,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{medsos}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
                 });
 
+                Route::get('/media-terkait', [\App\Http\Livewire\Informasi\MediaTerkaitController::class, '__invoke'])->name('informasi.media.terkait');
+
                 // Sinergi Program
                 Route::group(['prefix' => 'sinergi-program'], function () {
                     Route::get('/', ['as' => 'informasi.sinergi-program.index', 'uses' => 'SinergiProgramController@index']);

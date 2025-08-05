@@ -14,13 +14,13 @@ jobs:
       - name: Checkout Ansible Code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.CICD_SERVER_PRIVATE_KEY }}" > ~/.ssh/ansible-cicd
-          chmod 600 ~/.ssh/ansible-cicd
-          ssh-keyscan -p 1975 -H ${{ secrets.CICD_SERVER_IP }} >> ~/.ssh/known_hosts
-
-      - name: Trigger Ansible Playbook on CI/CD Server
-        run: |
-          ssh -i ~/.ssh/ansible-cicd -p 1975 ${{ secrets.CICD_SERVER_USER }}@${{ secrets.CICD_SERVER_IP }} "cd /opt/ansible && ansible-playbook -i inventories/production/inventory.yml playbooks/deploy-opendk.yml"
+      - name: Deploy via SSH using appleboy/ssh-action
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.CICD_SERVER_IP }}
+          username: ${{ secrets.CICD_SERVER_USER }}
+          key: ${{ secrets.CICD_SERVER_PRIVATE_KEY }}
+          port: ${{ secrets.CICD_SERVER_IP_PORT }}
+          script: |
+            cd /opt/ansible
+            ansible-playbook -i inventories/production/inventory.yml playbooks/deploy-opendk.yml

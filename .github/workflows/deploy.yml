@@ -1,0 +1,26 @@
+name: Deploy OpenDK with Ansible
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    name: Deploy to Production Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Ansible Code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.CICD_SERVER_PRIVATE_KEY }}" > ~/.ssh/ansible-cicd
+          chmod 600 ~/.ssh/ansible-cicd
+          ssh-keyscan -p 1975 -H ${{ secrets.CICD_SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Trigger Ansible Playbook on CI/CD Server
+        run: |
+          ssh -i ~/.ssh/ansible-cicd -p 1975 ${{ secrets.CICD_SERVER_USER }}@${{ secrets.CICD_SERVER_IP }} "cd /opt/ansible && ansible-playbook -i inventories/production/inventory.yml playbooks/deploy-opendk.yml"

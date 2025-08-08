@@ -1,13 +1,13 @@
-name: Deploy OpenDK with Ansible
+name: Deploy OpenDK Dev with Ansible
 
 on:
-  pull_request:
+  push:
     branches:
       - dev
 
 jobs:
   deploy:
-    name: Deploy to Production Server
+    name: Deploy OpenDK Dev to Production Server
     runs-on: ubuntu-latest
 
     steps:

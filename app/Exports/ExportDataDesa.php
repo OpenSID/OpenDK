@@ -32,6 +32,7 @@
 namespace App\Exports;
 
 use App\Models\DataDesa;
+use App\Services\DesaService;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -40,12 +41,26 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
+    protected bool $gabungan;
+    protected array $params;
+    protected DesaService $desaService;
+
+    public function __construct($gabungan, $params = [])
+    {
+        $this->gabungan = $gabungan;
+        $this->params = $params;
+        $this->desaService = new DesaService();
+    }
     /**
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        return DataDesa::all();
+        if ($this->gabungan) {
+            return $this->desaService->listDesa();
+        } else {
+            return DataDesa::all();
+        }
     }
 
     /**
@@ -71,16 +86,29 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
      */
     public function map($desa): array
     {
-        return [
-            $desa->id,
-            $desa->desa_id,
-            $desa->nama,
-            $desa->sebutan_desa ?? 'Desa',
-            $desa->website,
-            $desa->luas_wilayah ?? 0,
-            $desa->created_at ? $desa->created_at->format('d/m/Y H:i:s') : '',
-            $desa->updated_at ? $desa->updated_at->format('d/m/Y H:i:s') : '',
-        ];
+        if ($this->gabungan) {
+            return [
+                $desa->id ?? '',
+                $desa->desa_id ?? '',
+                $desa->nama ?? '',
+                $desa->sebutan_desa ?? 'Desa',
+                $desa->website ?? '',
+                $desa->luas_wilayah ?? 0,
+                '', // created_at tidak tersedia di API gabungan
+                '', // updated_at tidak tersedia di API gabungan
+            ];
+        } else {
+            return [
+                $desa->id,
+                $desa->desa_id,
+                $desa->nama,
+                $desa->sebutan_desa ?? 'Desa',
+                $desa->website,
+                $desa->luas_wilayah ?? 0,
+                $desa->created_at ? $desa->created_at->format('d/m/Y H:i:s') : '',
+                $desa->updated_at ? $desa->updated_at->format('d/m/Y H:i:s') : '',
+            ];
+        }
     }
 
     /**

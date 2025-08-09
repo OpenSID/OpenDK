@@ -281,10 +281,21 @@ class DataDesaController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
+        $params = $request->all();
         $fileName = 'data-desa-' . date('Y-m-d-H-i-s') . '.xlsx';
 
-        return Excel::download(new ExportDataDesa(), $fileName);
+        try {
+            if ($this->isDatabaseGabungan()) {
+                return Excel::download(new ExportDataDesa(true, $params), $fileName);
+            } else {
+                return Excel::download(new ExportDataDesa(false, $params), $fileName);
+            }
+        } catch (\Exception $e) {
+            report($e);
+
+            return back()->with('error', 'Ekspor data gagal. ' . $e->getMessage());
+        }
     }
 }

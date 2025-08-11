@@ -57,7 +57,7 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
     public function collection()
     {
         if ($this->gabungan) {
-            return $this->desaService->listDesa();
+            return $this->desaService->listDesa(true);
         } else {
             return DataDesa::all();
         }

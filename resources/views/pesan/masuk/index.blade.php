@@ -35,8 +35,10 @@
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
-                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"
+                                        placeholder="Cari Pesan">
+                                    <span style="padding-right: 25px"
+                                        class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
 
                             </div>
@@ -47,7 +49,8 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                    class="fa fa-square-o"></i>
                             </button>
                             {!! Form::open([
                                 'route' => 'pesan.arsip.multiple',
@@ -55,7 +58,8 @@
                                 'method' => 'post',
                                 'id' => 'form-multiple-arsip-pesan',
                             ]) !!}
-                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
+                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
+                                    class="fa fa-archive"></i> Arsipkan</button>
                             {!! Form::text('array_id', null, ['hidden' => true, 'id' => 'array_multiple_id_arsip']) !!}
                             {!! Form::close() !!}
 
@@ -66,7 +70,8 @@
                                 'id' => 'form-multiple-read-pesan',
                             ]) !!}
                             {!! Form::text('array_id', null, ['hidden' => true, 'id' => 'array_multiple_id']) !!}
-                            <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
+                            <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i
+                                    class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
                             {!! Form::close() !!}
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
                         </div>
@@ -76,9 +81,11 @@
                                     @foreach ($list_pesan as $pesan)
                                         <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
                                             <td style="width: 5%">
-                                                <input data-read="{{ $pesan->sudah_dibaca }}" data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
+                                                <input data-read="{{ $pesan->sudah_dibaca }}" data-id="{{ $pesan->id }}"
+                                                    type="checkbox" style="position: absolute; opacity: 0;">
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>
@@ -118,7 +125,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#list_desa').select2({
-                placeholder: "Pilih Desa",
+                placeholder: "Pilih { config('setting.sebutan_desa') }}",
                 allowClear: true
             });
 

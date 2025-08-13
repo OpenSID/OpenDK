@@ -9,9 +9,9 @@
                             <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa{{ config('setting.sebutan_desa') }}<ion>
-                                            @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                    <option value="Semua">Semua Desa {{ config('setting.sebutan_desa') }}</option>
+                                    @foreach ($list_desa as $desa)
+                                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>

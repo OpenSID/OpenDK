@@ -6,6 +6,6 @@
     </div>
     <!-- Default to the left -->
     <strong>Hak Cipta &copy; 2017 <a href="http://www.kompak.or.id">KOMPAK</a>, 2018-{{ date('Y') }} <a
-            href="http://opendesa.id">Open{{ config('setting.sebutan_desa') }}</a> <i class="fa fa-github"></i></strong>
+            href="http://opendesa.id">OpenDesa</a> <i class="fa fa-github"></i></strong>
     Hak cipta dilindungi.
 </footer>

@@ -1,6 +1,6 @@
 <div class="form-group">
-    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Kode / Nama {{ config('setting.sebutan_desa') }} <span
-            class="required">*</span></label>
+    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Kode / Nama
+        {{ config('setting.sebutan_desa') }} <span class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
         <input id="desa_id" name="desa_id" class="form-control" placeholder="00.00.00.0000" type="text"
             @if ($status_pantau) readonly @endif value="{{ $desa->desa_id }}" />
@@ -8,8 +8,8 @@
     <input id="nama" type="hidden" name="nama" value="{{ $desa->nama }}" />
     <div class="col-md-4 col-sm-4 col-xs-12">
         @if ($status_pantau)
-            <select class="form-control" id="list_desa" name="desa_id" data-placeholder="Pilih Desa"
-                style="width: 100%;">
+            <select class="form-control" id="list_desa" name="desa_id"
+                data-placeholder="Pilih { config('setting.sebutan_desa') }}" style="width: 100%;">
                 <option selected value="" disabled>Pilih {{ config('setting.sebutan_desa') }}</option>
                 @if ($desa->desa_id || $desa->nama)
                     <option selected value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
@@ -22,7 +22,8 @@
 </div>
 
 <div class="form-group">
-    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Sebutan {{ config('setting.sebutan_desa') }} </label>
+    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Sebutan {{ config('setting.sebutan_desa') }}
+    </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Form::input('sebutan_desa', 'sebutan_desa', $desa->sebutan_desa, [
             'class' => 'form-control',

@@ -48,14 +48,14 @@ class DesaService extends BaseApiService
         return DataDesa::nama($slug)->firstOrFail();
     }
 
-    public function listDesa()
+    public function listDesa($all = false)
     {
         if ($this->useDatabaseGabungan()) {
             // gunakan cache untuk mempercepat load data melalui api
             $dataDesa = Cache::get('listDesa');
             // jika kosong, maka request ulang ke API
             if (! $dataDesa || $dataDesa->isEmpty()) {
-                $dataDesa = $this->desa(['filter[kode_kec]' => $this->kodeKecamatan]);
+                $dataDesa = $this->desa(['filter[kode_kec]' => $this->kodeKecamatan, 'all' => $all]);
             }
             if ($dataDesa->isNotEmpty()) {
                 // simpan ke cache selama 24 jam

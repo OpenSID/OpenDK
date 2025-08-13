@@ -471,6 +471,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
                     Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
+                    Route::get('export-excel', ['as' => 'data.data-desa.export-excel', 'uses' => 'DataDesaController@exportExcel']);
                 });
 
                 // Jabatan
@@ -492,7 +493,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('download-arsip-zip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsipZip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip.zip');
                 Route::get('download-arsip/{document_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip');
                 Route::get('penduduk-select2', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukSelect2'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.select2');
-            
+
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);
@@ -918,7 +919,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::post('/backup-running', 'createBackup')->name('setting.pengaturan-database.runbackup');
                 Route::get('/backup-download/{file}', 'downloadBackup')->name('setting.pengaturan-database.download');
                 Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');
-                Route::get('/testing', [PengaturanDatabaseController::class,'testing']);
+                Route::get('/testing', [PengaturanDatabaseController::class, 'testing']);
             });
 
             // Pengaturan Database (Restore)

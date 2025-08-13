@@ -31,12 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportDataDesa;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DesaRequest;
 use App\Models\DataDesa;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class DataDesaController extends Controller
@@ -75,7 +77,7 @@ class DataDesaController extends Controller
                 return view('forms.aksi', $data);
             })
             ->editColumn('website', function ($row) {
-                return '<a href="'.htmlentities($row->website).'" target="_blank">'.htmlentities($row->website).'</a>';
+                return '<a href="' . htmlentities($row->website) . '" target="_blank">' . htmlentities($row->website) . '</a>';
             })
             ->rawColumns(['website', 'aksi'])->make();
     }
@@ -94,7 +96,7 @@ class DataDesaController extends Controller
      */
     public function create()
     {
-        if (! $this->profil->kecamatan_id) {
+        if (!$this->profil->kecamatan_id) {
             return redirect()->route('data.data-desa.index');
         }
 
@@ -135,13 +137,13 @@ class DataDesaController extends Controller
      */
     public function edit($id)
     {
-        if (! $this->profil->kecamatan_id) {
+        if (!$this->profil->kecamatan_id) {
             return redirect()->route('data.data-desa.index');
         }
 
         $desa = DataDesa::findOrFail($id);
         $page_title = 'Desa';
-        $page_description = 'Ubah Desa : '.$desa->nama;
+        $page_description = 'Ubah Desa : ' . $desa->nama;
         $profil = $this->profil;
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
 
@@ -182,16 +184,16 @@ class DataDesaController extends Controller
         $cek = DataDesa::where('id', $id)
             ->where(function ($query) {
                 $query->whereHas('imunisasi')
-                ->orWhereHas('akiakb')
-                ->orWhereHas('anggarandesa')
-                ->orWhereHas('epidemipenyakit')
-                ->orWhereHas('fasilitasPAUD')
-                ->orWhereHas('laporanapbdes')
-                ->orWhereHas('laporanpenduduk')
-                ->orWhereHas('putussekolah')
-                ->orWhereHas('tingkatpendidikan')
-                ->orWhereHas('toiletsanitasi')
-                ->orWhereHas('keluarga');
+                    ->orWhereHas('akiakb')
+                    ->orWhereHas('anggarandesa')
+                    ->orWhereHas('epidemipenyakit')
+                    ->orWhereHas('fasilitasPAUD')
+                    ->orWhereHas('laporanapbdes')
+                    ->orWhereHas('laporanpenduduk')
+                    ->orWhereHas('putussekolah')
+                    ->orWhereHas('tingkatpendidikan')
+                    ->orWhereHas('toiletsanitasi')
+                    ->orWhereHas('keluarga');
             })
             ->count();
         if ($cek > 0) {
@@ -251,12 +253,12 @@ class DataDesaController extends Controller
 
     public function peta($id)
     {
-        if($this->isDatabaseGabungan()) {
+        if ($this->isDatabaseGabungan()) {
             return view('data.data_desa.gabungan.peta', compact('id'));
         }
         $desa = DataDesa::findOrFail($id);
         $page_title = 'Desa';
-        $page_description = 'Peta Desa : '.$desa->nama;
+        $page_description = 'Peta Desa : ' . $desa->nama;
 
         return view('data.data_desa.peta', compact('page_title', 'page_description', 'desa'));
     }
@@ -271,6 +273,29 @@ class DataDesaController extends Controller
                 'message' => 'Proses sinkronisasi identitas desa sudah selesai',
                 'data' => $data,
             ]);
+        }
+    }
+
+    /**
+     * Export data desa ke Excel
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        $params = $request->all();
+        $fileName = 'data-desa-' . date('Y-m-d-H-i-s') . '.xlsx';
+
+        try {
+            if ($this->isDatabaseGabungan()) {
+                return Excel::download(new ExportDataDesa(true, $params), $fileName);
+            } else {
+                return Excel::download(new ExportDataDesa(false, $params), $fileName);
+            }
+        } catch (\Exception $e) {
+            report($e);
+
+            return back()->with('error', 'Ekspor data gagal. ' . $e->getMessage());
         }
     }
 }

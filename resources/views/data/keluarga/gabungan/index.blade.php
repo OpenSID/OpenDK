@@ -1,60 +1,60 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header block-breadcrumb">
-    <h1>
-        {{ $page_title ?? 'Page Title' }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{ $page_title }}</li>
-    </ol>
-</section>
-<section class="content container-fluid">
+    <section class="content-header block-breadcrumb">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">{{ $page_title }}</li>
+        </ol>
+    </section>
+    <section class="content container-fluid">
 
-    @include('partials.flash_message')
+        @include('partials.flash_message')
 
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <a href="#">
-                <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
-                    <i class="fa fa-download"></i>Export Excel
-                </button>
-            </a>
-        </div>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <a href="#">
+                    <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
+                        <i class="fa fa-download"></i>Export Excel
+                    </button>
+                </a>
+            </div>
 
-        <div class="box-body">
-            @include('layouts.fragments.list-desa')
-            <hr>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="datadesa-table">
-                    <thead>
-                        <tr>
-                            <th style="max-width: 150px;">Aksi</th>
-                            <th>Foto</th>
-                            <th>NO KK</th>
-                            <th>Nama Kepala</th>
-                            <th>Tanggal Daftar</th>
-                            <th>Tanggal Cetak KK</th>
-                            <th>Desa</th>
-                            <th>Alamat</th>
-                            <th>RW</th>
-                            <th>RT</th>
-                        </tr>
-                    </thead>
-                </table>
+            <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="datadesa-table">
+                        <thead>
+                            <tr>
+                                <th style="max-width: 150px;">Aksi</th>
+                                <th>Foto</th>
+                                <th>NO KK</th>
+                                <th>Nama Kepala</th>
+                                <th>Tanggal Daftar</th>
+                                <th>Tanggal Cetak KK</th>
+                                <th>Desa</th>
+                                <th>Alamat</th>
+                                <th>RW</th>
+                                <th>RT</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 @include('partials.asset_sweetalert')
 @include('partials.asset_select2')
 @include('partials.asset_datatables')
 @push('scripts')
-<script type="text/javascript">
-    $(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
             $('#list_desa').select2();
 
             var data = $('#datadesa-table').DataTable({
@@ -159,11 +159,11 @@
                 // e.preventDefault();
                 // var desa = $('#list_desa').val();
                 // var exportUrl = "{{ route('data.keluarga.export-excel') }}";
-                
+
                 // if (desa && desa !== 'Semua') {
                 //     exportUrl += '?desa=' + encodeURIComponent(desa);
                 // }
-                
+
                 // window.location.href = exportUrl;
                 downloadExcel();
 
@@ -329,6 +329,6 @@
 
 
         });
-</script>
-@include('forms.datatable-vertical')
+    </script>
+    @include('forms.datatable-vertical')
 @endpush

@@ -7,13 +7,13 @@
                 <form class="form-horizontal">
                     <div class="col-lg-6 col-sm-12">
                         <div class="form-group">
-                            <label for="list_desa" class="col-sm-4 control-label">Desa</label>
+                            <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa</option>
-                                    @foreach ($list_desa as $desa)
-                                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                    <option value="Semua">Semua Desa{{ config('setting.sebutan_desa') }}<ion>
+                                            @foreach ($list_desa as $desa)
+                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -262,11 +262,11 @@
             $('#total_perempuan').html('Loading...');
             $('#total_disabilitas').html('Loading...');
             $('#total_disabilitas').html('Loading...');
-            $('#data_ktp').html('Loading...');            
+            $('#data_ktp').html('Loading...');
             $('#ktp_terpenuhi').html('Loading...');
-            $('#data_akta').html('Loading...');            
+            $('#data_akta').html('Loading...');
             $('#akta_terpenuhi').html('Loading...');
-            $('#data_nikah').html('Loading...');            
+            $('#data_nikah').html('Loading...');
             $('#nikah_terpenuhi').html('Loading...');
             // Load ajax data penduduk
             $.ajax('{!! route('statistik.show-kependudukan') !!}', {

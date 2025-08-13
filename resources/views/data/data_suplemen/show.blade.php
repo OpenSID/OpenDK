@@ -18,7 +18,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm"
+                    judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -44,7 +45,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>No. KK</th>
                                 <th>NIK Penduduk</th>
                                 <th>Nama Penduduk</th>

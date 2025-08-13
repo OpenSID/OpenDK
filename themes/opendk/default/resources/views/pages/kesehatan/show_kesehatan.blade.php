@@ -6,12 +6,12 @@
                 <form class="form-horizontal">
                     <div class="col-md-4 col-lg-4 col-sm-12">
                         <div class="form-group">
-                            <label for="list_desa" class="col-sm-4 control-label">Desa</label>
+                            <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa</option>
-                                    @foreach ($list_desa as $desa)
-                                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                    <option value="Semua">Semua Desa{{ config('setting.sebutan_desa') }}<ion>
+                                            @foreach ($list_desa as $desa)
+                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -60,7 +60,8 @@
                         <div class="tab-pane" id="imunisasi">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_imunisasi" style="width: 100%; overflow: visible; text-align: left;"></div>
+                                    <div id="chart_imunisasi" style="width: 100%; overflow: visible; text-align: left;">
+                                    </div>
                                 </div>
                                 <div id="tabel_imunisasi" class="col-md-12">
 
@@ -70,7 +71,8 @@
                         <div class="tab-pane" id="epidemi">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_penyakit" style="width: 100%; overflow: visible; text-align: left;"></div>
+                                    <div id="chart_penyakit" style="width: 100%; overflow: visible; text-align: left;">
+                                    </div>
                                 </div>
                                 <div id="tabel_penyakit" class="col-md-12">
 
@@ -80,7 +82,8 @@
                         <div class="tab-pane" id="toilet_sanitasi">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_sanitasi" style="width: 100%; overflow: visible; text-align: left;"></div>
+                                    <div id="chart_sanitasi" style="width: 100%; overflow: visible; text-align: left;">
+                                    </div>
                                 </div>
                                 <div id="tabel_sanitasi" class="col-md-12">
 
@@ -312,12 +315,14 @@
 
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_aki_akb.legend || !chart_aki_akb.legend.enabled || !chart_aki_akb.legend.generateFromData) {
+                if (!chart_aki_akb.legend || !chart_aki_akb.legend.enabled || !chart_aki_akb.legend
+                    .generateFromData) {
                     return;
                 }
 
                 var categoryField = chart_aki_akb.categoryField;
-                var colorField = chart_aki_akb.graphs[0].lineColorField || chart_aki_akb.graphs[0].fillColorsField || chart_aki_akb.graphs[0].colorField || chart_aki_akb.graphs[0].fillColors;
+                var colorField = chart_aki_akb.graphs[0].lineColorField || chart_aki_akb.graphs[0]
+                    .fillColorsField || chart_aki_akb.graphs[0].colorField || chart_aki_akb.graphs[0].fillColors;
                 var legendData = chart_aki_akb.dataProvider.map(function(data, idx) {
                     var markerData = {
                         "title": data[categoryField] + ": " + data[chart_aki_akb.graphs[0].valueField],
@@ -466,15 +471,19 @@
 
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_imunisasi.legend || !chart_imunisasi.legend.enabled || !chart_imunisasi.legend.generateFromData) {
+                if (!chart_imunisasi.legend || !chart_imunisasi.legend.enabled || !chart_imunisasi.legend
+                    .generateFromData) {
                     return;
                 }
 
                 var categoryField = chart_imunisasi.categoryField;
-                var colorField = chart_imunisasi.graphs[0].lineColorField || chart_imunisasi.graphs[0].fillColorsField || chart_imunisasi.graphs[0].colorField || chart_imunisasi.graphs[0].fillColors;
+                var colorField = chart_imunisasi.graphs[0].lineColorField || chart_imunisasi.graphs[0]
+                    .fillColorsField || chart_imunisasi.graphs[0].colorField || chart_imunisasi.graphs[0]
+                    .fillColors;
                 var legendData = chart_imunisasi.dataProvider.map(function(data, idx) {
                     var markerData = {
-                        "title": data[categoryField] + ": " + data[chart_imunisasi.graphs[0].valueField],
+                        "title": data[categoryField] + ": " + data[chart_imunisasi.graphs[0]
+                            .valueField],
                         "color": data[colorField],
                         "dataIdx": idx //store a copy of the index of where this appears in the dataProvider array for ease of removal/re-insertion
                     };
@@ -670,15 +679,19 @@
 
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_penyakit2.legend || !chart_penyakit2.legend.enabled || !chart_penyakit2.legend.generateFromData) {
+                if (!chart_penyakit2.legend || !chart_penyakit2.legend.enabled || !chart_penyakit2.legend
+                    .generateFromData) {
                     return;
                 }
 
                 var categoryField = chart_penyakit2.categoryField;
-                var colorField = chart_penyakit2.graphs[0].lineColorField || chart_penyakit2.graphs[0].fillColorsField || chart_penyakit2.graphs[0].colorField || chart_penyakit2.graphs[0].fillColors;
+                var colorField = chart_penyakit2.graphs[0].lineColorField || chart_penyakit2.graphs[0]
+                    .fillColorsField || chart_penyakit2.graphs[0].colorField || chart_penyakit2.graphs[0]
+                    .fillColors;
                 var legendData = chart_penyakit2.dataProvider.map(function(data, idx) {
                     var markerData = {
-                        "title": data[categoryField] + ": " + data[chart_penyakit2.graphs[0].valueField],
+                        "title": data[categoryField] + ": " + data[chart_penyakit2.graphs[0]
+                            .valueField],
                         "color": data[colorField],
                         "dataIdx": idx //store a copy of the index of where this appears in the dataProvider array for ease of removal/re-insertion
                     };
@@ -845,12 +858,14 @@
 
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_sanitasi.legend || !chart_sanitasi.legend.enabled || !chart_sanitasi.legend.generateFromData) {
+                if (!chart_sanitasi.legend || !chart_sanitasi.legend.enabled || !chart_sanitasi.legend
+                    .generateFromData) {
                     return;
                 }
 
                 var categoryField = chart_sanitasi.categoryField;
-                var colorField = chart_sanitasi.graphs[0].lineColorField || chart_sanitasi.graphs[0].fillColorsField || chart_sanitasi.graphs[0].colorField || chart_sanitasi.graphs[0].fillColors;
+                var colorField = chart_sanitasi.graphs[0].lineColorField || chart_sanitasi.graphs[0]
+                    .fillColorsField || chart_sanitasi.graphs[0].colorField || chart_sanitasi.graphs[0].fillColors;
                 var legendData = chart_sanitasi.dataProvider.map(function(data, idx) {
                     var markerData = {
                         "title": data[categoryField] + ": " + data[chart_sanitasi.graphs[0].valueField],

@@ -22,7 +22,7 @@
                             <td>: {{ $program->nama }}</td>
                         </tr>
                         <tr>
-                            <th>Desa</th>
+                            <th>{{ config('setting.sebutan_desa') }}</th>
                             <td>: {{ $program->desa->nama }}</td>
                         </tr>
                         <tr>

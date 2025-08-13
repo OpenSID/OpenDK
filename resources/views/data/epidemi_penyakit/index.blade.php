@@ -28,7 +28,7 @@
                             <thead>
                                 <tr>
                                     <th style="max-width: 100px;">Aksi</th>
-                                    <th>Desa</th>
+                                    <th>{{ config('setting.sebutan_desa') }}</th>
                                     <th>Jenis Penyakit</th>
                                     <th>Jumlah Penderita</th>
                                     <th>Bulan</th>
@@ -42,7 +42,8 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-penyakit.index') }}">jenis penyakit</a></b> terlebih dahulu.</p>
+                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a
+                            href="{{ route('setting.jenis-penyakit.index') }}">jenis penyakit</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>

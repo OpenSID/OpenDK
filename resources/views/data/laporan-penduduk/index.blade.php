@@ -35,7 +35,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="max-width: 100px;">Aksi</th>
-                                                <th>Desa</th>
+                                                <th>{{ config('setting.sebutan_desa') }}</th>
                                                 <th>Nama</th>
                                                 <th>Bulan</th>
                                                 <th>Tahun</th>

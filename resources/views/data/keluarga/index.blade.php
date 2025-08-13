@@ -33,7 +33,7 @@
                                 <th>Nama Kepala</th>
                                 <th>Tanggal Daftar</th>
                                 <th>Tanggal Cetak KK</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Alamat</th>
                                 <th>RW</th>
                                 <th>RT</th>

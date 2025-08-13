@@ -34,7 +34,7 @@
                         <thead>
                             <tr>
                                 <th style="min-width: 80px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama Surat</th>
                                 <th>Nama Penduduk</th>
                                 <th>Ditandatangani oleh</th>

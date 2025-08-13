@@ -18,9 +18,9 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <label>Desa</label>
+                        <label>{{ config('setting.sebutan_desa') }}</label>
                         <select class="form-control" id="list_desa">
-                            <option value="">Semua Desa</option>
+                            <option value="">Semua {{ config('setting.sebutan_desa') }}</option>
                         </select>
                     </div>
                 </div>
@@ -61,7 +61,8 @@
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     success: function(response) {
-                        $('#list_desa').empty().append('<option value="">Semua Desa</option>');
+                        $('#list_desa').empty().append(
+                            '<option value="">Semua {{ config('setting.sebutan_desa') }}</option>');
                         response.data.forEach(desa => {
                             $('#list_desa').append(
                                 `<option value="${desa.attributes.kode_desa}">${desa.attributes.nama_desa}</option>`

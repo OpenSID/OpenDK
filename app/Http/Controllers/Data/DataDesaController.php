@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -58,8 +58,8 @@ class DataDesaController extends Controller
      */
     public function index()
     {
-        $page_title = 'Desa';
-        $page_description = 'Daftar Desa';
+        $page_title = config('setting.sebutan_desa');
+        $page_description = 'Daftar '.config('setting.sebutan_desa');
         $view = $this->isDatabaseGabungan() ? 'data.data_desa.gabungan.index' : 'data.data_desa.index';
         return view($view, compact('page_title', 'page_description'));
     }
@@ -100,7 +100,8 @@ class DataDesaController extends Controller
             return redirect()->route('data.data-desa.index');
         }
 
-        $page_title = 'Desa';
+        $page_title = config('setting.sebutan_desa');
+        ;
         $page_description = 'Tambah Desa';
         $profil = $this->profil;
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
@@ -142,7 +143,8 @@ class DataDesaController extends Controller
         }
 
         $desa = DataDesa::findOrFail($id);
-        $page_title = 'Desa';
+        $page_title = config('setting.sebutan_desa');
+        ;
         $page_description = 'Ubah Desa : ' . $desa->nama;
         $profil = $this->profil;
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
@@ -257,7 +259,8 @@ class DataDesaController extends Controller
             return view('data.data_desa.gabungan.peta', compact('id'));
         }
         $desa = DataDesa::findOrFail($id);
-        $page_title = 'Desa';
+        $page_title = config('setting.sebutan_desa');
+        ;
         $page_description = 'Peta Desa : ' . $desa->nama;
 
         return view('data.data_desa.peta', compact('page_title', 'page_description', 'desa'));

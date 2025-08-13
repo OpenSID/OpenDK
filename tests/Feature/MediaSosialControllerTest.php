@@ -69,7 +69,23 @@ class MediaSosialControllerTest extends TestCase
     public function test_create_an_media_sosial()
     {
         // URL gambar yang valid
+        // Membuat file gambar fake menggunakan UploadedFile::fake()
         $file = UploadedFile::fake()->image('logo.png', 320, 240);
+
+        $content = @file_get_contents($file);
+        if ($content === false) {
+            throw new \Exception("Gagal mengunduh gambar dari URL.");
+        }
+        $tempPath = storage_path('app/temp-image.png');
+        file_put_contents($tempPath, $content);
+
+        $file = new UploadedFile(
+            $tempPath,
+            'temp-image.png',
+            mime_content_type($tempPath),
+            null,
+            true // true artinya ini file "test", bukan hasil upload asli dari browser
+        );
 
         $data = [
             'logo'   => $file,

@@ -27,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Toilet</th>
                                 <th>Sanitasi</th>
                                 <th>Bulan</th>

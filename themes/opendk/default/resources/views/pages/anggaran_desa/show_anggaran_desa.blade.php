@@ -4,26 +4,29 @@
     <div class="col-md-8">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> Persentase Anggaran Desa
+                <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> Persentase Anggaran
+                    Desa
                 </h3>
             </div>
             <div class="box box-header">
                 <form class="form-horizontal">
                     <div class="col-md-4 col-lg-4 col-sm-12">
                         <div class="form-group">
-                            <label for="list_desa" class="col-sm-4 control-label">Desa</label>
+                            <label for="list_desa"
+                                class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                                 <select class="form-control" id="list_desa">
                                     <option value="Semua">Semua Desa</option>
                                     @foreach ($list_desa as $desa)
-                                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                        {{ config('setting.sebutan_desa') }}< <option value="{{ $desa->desa_id }}">
+                                            {{ $desa->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4 col-lg-4 col-sm-12 @if($hide_list_month) hidden @endif">
+                    <div class="col-md-4 col-lg-4 col-sm-12 @if ($hide_list_month) hidden @endif">
                         <div class="form-group">
                             <label for="bulan" class="col-sm-4 control-label">Bulan</label>
                             <div class="col-sm-8">
@@ -54,8 +57,8 @@
             <div class="box box-widget">
                 <div class="box-header">
                     {{-- <h3 class="box-title">Persentase Anggaran Desa</h3> --}}
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                    <div class="box-tools pull-right"><button type="button" class="btn btn-box-tool"
+                            data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
                         </button>
@@ -122,7 +125,8 @@
 
             $.ajax('{!! route('statistik.chart-anggaran-desa') !!}', {
                 beforeSend: function() {
-                    $('#chartdiv').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+                    $('#chartdiv').html(
+                        '<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
                 },
                 data: {
                     mid: mid,
@@ -130,12 +134,12 @@
                     y: year
                 }
             }).done(function(data) {
-                if(data.grafik.length == 0){
+                if (data.grafik.length == 0) {
                     $('#chartdiv').html('<div class="text-center"><h4>Data Tidak Ditemukan</h4></div>');
                     return;
-                }else {
-                    create_chart_anggaran(data.grafik);                
-                }                
+                } else {
+                    create_chart_anggaran(data.grafik);
+                }
                 $('#detail_anggaran').html(data.detail);
             });
 

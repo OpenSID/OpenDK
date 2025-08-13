@@ -7,10 +7,10 @@
                 <form class="form-horizontal">
                     <div class="col-lg-6 col-sm-12">
                         <div class="form-group">
-                            <label for="list_desa" class="col-sm-4 control-label">Desa</label>
+                            <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa</option>
+                                    <option value="Semua">Semua Desa {{ config('setting.sebutan_desa') }}</option>
                                     @foreach ($list_desa as $desa)
                                         <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                     @endforeach
@@ -41,9 +41,9 @@
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#jumlah_penduduk" data-toggle="tab">Tingkat Pendidikan</a></li>
-                        @if(!$gabungan)
-                        <li><a href="#jumlah_putus_sekolah" data-toggle="tab">Jumlah Siswa Putus Sekolah</a></li>
-                        <li><a href="#jumlah_fasilitas" data-toggle="tab">Jumlah Fasilitas PAUD</a></li>
+                        @if (!$gabungan)
+                            <li><a href="#jumlah_putus_sekolah" data-toggle="tab">Jumlah Siswa Putus Sekolah</a></li>
+                            <li><a href="#jumlah_fasilitas" data-toggle="tab">Jumlah Fasilitas PAUD</a></li>
                         @endif
                         {{-- <li><a href="#jumlah_siswa_fasilitas" data-toggle="tab">Jumlah Siswa dan Fasilitas</a></li> --}}
                     </ul>
@@ -51,20 +51,23 @@
                         <div class="active tab-pane" id="jumlah_penduduk">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_penduduk_pendidikan" style="width: 100%; overflow: auto; text-align: left;"></div>
+                                    <div id="chart_penduduk_pendidikan"
+                                        style="width: 100%; overflow: auto; text-align: left;"></div>
                                 </div>
                             </div>
                         </div>
-                        @if(!$gabungan)
-                        <div class="tab-pane" id="jumlah_putus_sekolah">
-                            <div id="chart_putus_sekolah" style="width:100%; overflow: visible; text-align: left; padding: 10px;;">
+                        @if (!$gabungan)
+                            <div class="tab-pane" id="jumlah_putus_sekolah">
+                                <div id="chart_putus_sekolah"
+                                    style="width:100%; overflow: visible; text-align: left; padding: 10px;;">
+                                </div>
                             </div>
-                        </div>
-                        <div class="tab-pane" id="jumlah_fasilitas">
-                            <div id="chart_fasilitas" style="width:100%;  overflow: visible; text-align: left; padding: 10px;;">
+                            <div class="tab-pane" id="jumlah_fasilitas">
+                                <div id="chart_fasilitas"
+                                    style="width:100%;  overflow: visible; text-align: left; padding: 10px;;">
+                                </div>
                             </div>
-                        </div>
-                        @endif                        
+                        @endif
                     </div>
                     <!-- /.nav-tabs-custom -->
                 </div>
@@ -219,15 +222,18 @@
 
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_penduduk_pendidikan.legend || !chart_penduduk_pendidikan.legend.enabled || !chart_penduduk_pendidikan.legend.generateFromData) {
+                if (!chart_penduduk_pendidikan.legend || !chart_penduduk_pendidikan.legend.enabled || !
+                    chart_penduduk_pendidikan.legend.generateFromData) {
                     return;
                 }
 
                 var categoryField = chart_penduduk_pendidikan.categoryField;
-                var colorField = chart_penduduk_pendidikan.graphs[0].lineColorField || chart_penduduk_pendidikan.graphs[0].fillColorsField || chart_penduduk_pendidikan.graphs[0].colorField;
+                var colorField = chart_penduduk_pendidikan.graphs[0].lineColorField || chart_penduduk_pendidikan
+                    .graphs[0].fillColorsField || chart_penduduk_pendidikan.graphs[0].colorField;
                 var legendData = chart_penduduk_pendidikan.dataProvider.map(function(data, idx) {
                     var markerData = {
-                        "title": data[categoryField] + ": " + data[chart_penduduk_pendidikan.graphs[0].valueField],
+                        "title": data[categoryField] + ": " + data[chart_penduduk_pendidikan.graphs[0]
+                            .valueField],
                         "color": data[colorField],
                         "dataIdx": idx //store a copy of the index of where this appears in the dataProvider array for ease of removal/re-insertion
                     };
@@ -423,15 +429,18 @@
 
                 //check if legend is enabled and custom generateFromData property
                 //is set before running
-                if (!chart_putus_sekolah.legend || !chart_putus_sekolah.legend.enabled || !chart_putus_sekolah.legend.generateFromData) {
+                if (!chart_putus_sekolah.legend || !chart_putus_sekolah.legend.enabled || !chart_putus_sekolah
+                    .legend.generateFromData) {
                     return;
                 }
 
                 var categoryField = chart_putus_sekolah.categoryField;
-                var colorField = chart_putus_sekolah.graphs[0].lineColorField || chart_putus_sekolah.graphs[0].fillColorsField || chart_putus_sekolah.graphs[0].colorField;
+                var colorField = chart_putus_sekolah.graphs[0].lineColorField || chart_putus_sekolah.graphs[0]
+                    .fillColorsField || chart_putus_sekolah.graphs[0].colorField;
                 var legendData = chart_putus_sekolah.dataProvider.map(function(data, idx) {
                     var markerData = {
-                        "title": data[categoryField] + ": " + data[chart_putus_sekolah.graphs[0].valueField],
+                        "title": data[categoryField] + ": " + data[chart_putus_sekolah.graphs[0]
+                            .valueField],
                         "color": data[colorField],
                         "dataIdx": idx //store a copy of the index of where this appears in the dataProvider array for ease of removal/re-insertion
                     };

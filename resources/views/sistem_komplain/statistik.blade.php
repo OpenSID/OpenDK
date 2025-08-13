@@ -34,7 +34,8 @@
                         <h3 class="box-title">Berdasarkan Kategori</h3>
                     </div>
                     <div class="box-body">
-                        <div id="chart_kategori" style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
+                        <div id="chart_kategori"
+                            style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
                         </div>
                     </div>
                 </div>
@@ -44,7 +45,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Berdasarkan Desa</h3>
+                        <h3 class="box-title">Berdasarkan {{ config('setting.sebutan_desa') }}</h3>
                     </div>
                     <div class="box-body">
                         <div id="chart_desa" style="width: 100%; height: 500px; overflow: visible; text-align: left;">

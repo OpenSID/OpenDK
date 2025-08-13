@@ -102,11 +102,6 @@ class MediaSosialControllerTest extends TestCase
 
         $response->assertRedirect(route('informasi.media-sosial.index'));
         $response->assertSessionHas('success', 'Media Sosial berhasil disimpan!');
-
-        // Hapus file sementara
-        if (file_exists($tempPath)) {
-            unlink($tempPath);
-        }
     }
 
     /** @test */

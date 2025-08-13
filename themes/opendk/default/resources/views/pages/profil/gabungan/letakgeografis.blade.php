@@ -45,7 +45,7 @@
                         {{ terbilang($wilayah_desa->count()) }} Desa/Kelurahan </b> tersebut yaitu :
                 <ul>
                     @foreach ($wilayah_desa as $desa)
-                        <li>Desa {{ $desa->nama }}</li>
+                        <li>{{ config('setting.sebutan_desa') }} {{ $desa->nama }}</li>
                     @endforeach
                 </ul>
                 </p>

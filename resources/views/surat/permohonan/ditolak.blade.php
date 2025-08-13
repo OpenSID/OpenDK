@@ -34,7 +34,7 @@
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama Surat</th>
                                 <th>Nama Penduduk</th>
                                 <th>Ditandatangani oleh</th>

@@ -71,8 +71,8 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
         return [
             'ID',
             'Kode Desa',
-            'Nama Desa',
-            'Sebutan Desa',
+            'Nama ' . (config('setting.sebutan_desa') ?? 'Desa'),
+            'Sebutan ' . (config('setting.sebutan_desa') ?? 'Desa'),
             'Website',
             'Luas Wilayah (km²)',
             'Tanggal Dibuat',

@@ -20,7 +20,7 @@
                 @include('forms.btn-social', [
                     'export_url' => route('data.data-desa.export-excel'),
                     'export_text' => 'Export
-                            Excel',
+                                            Excel',
                 ])
             </div>
 
@@ -30,8 +30,8 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
-                                <th>Kode Desa</th>
-                                <th>Nama Desa</th>
+                                <th>Kode {{ config('setting.sebutan_desa') }}</th>
+                                <th>Nama {{ config('setting.sebutan_desa') }}</th>
                                 <th>Website</th>
                                 <th>Luas Wilayah (km<sup>2</sup>)</th>
                             </tr>

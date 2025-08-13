@@ -19,7 +19,8 @@
 
             <div class="box-header with-border">
                 {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
-                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
+                <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social"
+                    title="{{ $export_text ?? 'Ekspor' }}">
                     <i class="fa fa-download"></i>{{ $export_text ?? 'Ekspor' }}
                 </button>
             </div>
@@ -36,7 +37,7 @@
                                 <th>NIK</th>
                                 <th>Nama</th>
                                 <th>No. KK</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Alamat</th>
                                 <th>Pendidikan dalam KK</th>
                                 <th>Umur</th>
@@ -193,7 +194,7 @@
                         name: 'nama_desa',
                         render: function(data) {
                             return data ? data :
-                                '<span class="text-muted">Tidak Ada Nama Desa</span>';
+                                '<span class="text-muted">Tidak Ada Nama {{ config('setting.sebutan_desa') }}</span>';
                         }
                     },
                     {

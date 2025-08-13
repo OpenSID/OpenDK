@@ -27,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Siswa PAUD/RA</th>
                                 <th>Anak Usia PAUD/RA</th>
                                 <th>Siswa SD/MI</th>

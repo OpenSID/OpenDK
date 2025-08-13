@@ -22,7 +22,7 @@
                             <td id="program-name">: Loading...</td>
                         </tr>
                         <tr>
-                            <th>Desa</th>
+                            <th>{{ config('setting.sebutan_desa') }}</th>
                             <td id="program-desa">: Loading...</td>
                         </tr>
                         <tr>

@@ -36,7 +36,7 @@
         <table id="tbl_toilet_q1" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah Toilet</th>
                     <th class="text-center">Jumlah Sanitasi</th>
                 </tr>
@@ -57,7 +57,7 @@
         <table id="tbl_toilet_q2" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah Toilet</th>
                     <th class="text-center">Jumlah Sanitasi</th>
                 </tr>
@@ -80,7 +80,7 @@
         <table id="tbl_toilet_q3" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah Toilet</th>
                     <th class="text-center">Jumlah Sanitasi</th>
                 </tr>
@@ -101,7 +101,7 @@
         <table id="tbl_toilet_q4" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah Toilet</th>
                     <th class="text-center">Jumlah Sanitasi</th>
                 </tr>

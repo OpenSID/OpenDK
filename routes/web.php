@@ -530,6 +530,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('editdetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.editdetail', 'uses' => 'SuplemenController@editDetail']);
                     Route::put('updatedetail/{id}', ['as' => 'data.data-suplemen.updatedetail', 'uses' => 'SuplemenController@updateDetail']);
                     Route::delete('destroydetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.destroydetail', 'uses' => 'SuplemenController@destroyDetail']);
+                    Route::get('export-excel', ['as' => 'data.data-suplemen.export-excel', 'uses' => 'SuplemenController@exportExcel']);
+                    Route::get('export-terdata-excel/{id}', ['as' => 'data.data-suplemen.export-terdata-excel', 'uses' => 'SuplemenController@exportTerdataExcel']);
                 });
 
                 // Laporan Penduduk

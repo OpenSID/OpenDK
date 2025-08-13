@@ -31,10 +31,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class SuplemenTerdata extends Model
 {
+    use HasFactory;
+
     protected $table = 'das_suplemen_terdata';
 
     protected $fillable = [

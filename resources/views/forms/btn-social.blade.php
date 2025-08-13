@@ -26,7 +26,7 @@
     <form action="{{ $desa_url }}" method="POST" class="inline">
         {{ csrf_field() }}
         <button type="submit" class="btn bg-purple btn-sm btn-social" title="Ambil Data Desa Dari TrackSID">
-            <i class="fa fa-retweet"></i>{{ $desa_text ?? 'Ambil Desa' }}
+            <i class="fa fa-retweet"></i>{{ $desa_text ?? 'Ambil ' . config('setting.sebutan_desa') }}
         </button>
     </form>
 @endif

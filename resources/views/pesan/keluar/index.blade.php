@@ -112,7 +112,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#list_desa').select2({
-                placeholder: "Pilih { config('setting.sebutan_desa') }}",
+                placeholder: "Pilih {{ config('setting.sebutan_desa') }}",
                 allowClear: true
             });
 

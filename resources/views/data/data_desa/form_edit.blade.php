@@ -9,7 +9,7 @@
     <div class="col-md-4 col-sm-4 col-xs-12">
         @if ($status_pantau)
             <select class="form-control" id="list_desa" name="desa_id"
-                data-placeholder="Pilih { config('setting.sebutan_desa') }}" style="width: 100%;">
+                data-placeholder="Pilih {{ config('setting.sebutan_desa') }}" style="width: 100%;">
                 <option selected value="" disabled>Pilih {{ config('setting.sebutan_desa') }}</option>
                 @if ($desa->desa_id || $desa->nama)
                     <option selected value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>

@@ -29,3 +29,8 @@ public/error_log
 # /themes/*
 !/themes/opendk/default/
 /storage/komplain
+
+# E2E Testing
+/test-results/
+/playwright-report/
+.env.e2e

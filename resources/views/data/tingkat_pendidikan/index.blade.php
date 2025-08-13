@@ -28,7 +28,7 @@
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
                                 <!-- <th>ID</th> -->
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Tidak Tamat Sekolah</th>
                                 <th>Tamat SD Sederajat</th>
                                 <th>Tamat SMP Sederajat</th>

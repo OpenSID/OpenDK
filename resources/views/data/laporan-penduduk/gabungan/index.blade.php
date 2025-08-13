@@ -29,7 +29,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama</th>
                                 <th>Bulan</th>
                                 <th>Tahun</th>
@@ -76,7 +76,8 @@
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch, // Gunakan filterSearch di sini
+                            "filter[search]": filterSearch == 'Semua' ? searchValue :
+                            filterSearch, // Gunakan filterSearch di sini
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]
                                 ?.name,
@@ -120,7 +121,7 @@
                         data: 'attributes.config.nama_desa',
                         render: function(data) {
                             return data ? data :
-                                '<span class="text-muted">Tidak Ada Nama Desa</span>';
+                                '<span class="text-muted">Tidak Ada Nama {{ config('setting.sebutan_desa') }}</span>';
                         }
                     },
                     {

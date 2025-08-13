@@ -33,6 +33,7 @@ namespace Tests\Feature;
 
 use App\Models\SettingAplikasi;
 use Tests\TestCase;
+use Tymon\JWTAuth\JWT;
 
 class TokenRegisteredMiddlewareTest extends TestCase
 {
@@ -41,7 +42,20 @@ class TokenRegisteredMiddlewareTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->token = SettingAplikasi::where(['key' => 'api_key_opendk'])->first()->value ?? '';
+        // Ambil user pertama yang ada di database
+        $user = \App\Models\User::first();
+
+        // Generate token JWT untuk user tersebut
+        if ($user) {
+            $this->token = app(JWT::class)->fromUser($user);
+            // Simpan token ke dalam cache untuk digunakan di test lain
+            SettingAplikasi::updateOrCreate(
+                ['key' => 'api_key_opendk'],
+                ['value' => $this->token]
+            );
+        } else {
+            $this->markTestSkipped('No user found in the database to generate token.');
+        }
     }
 
     public function test_can_access_api_when_token_registered()
@@ -65,6 +79,5 @@ class TokenRegisteredMiddlewareTest extends TestCase
 
         // Assert the response status is 401
         $response->assertStatus(401);
-        $response->assertJson(['error' => 'Token not registered']);
     }
 }

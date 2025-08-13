@@ -27,7 +27,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="form-group">
-                            <label>Kirim ke Desa</label>
+                            <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
                             {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), null, [
                                 'placeholder' => 'pilih desa',
                                 'class' => 'form-control',
@@ -43,7 +43,8 @@
                             {!! Form::textarea('text', null, [
                                 'class' => 'textarea',
                                 'placeholder' => 'Isi Pesan',
-                                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                                'style' =>
+                                    'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
                             ]) !!}
                         </div>
                     </div>
@@ -68,7 +69,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#list_desa').select2({
-                placeholder: "Pilih Desa",
+                placeholder: "Pilih {{ config('setting.sebutan_desa') }}",
                 allowClear: true
             });
         });

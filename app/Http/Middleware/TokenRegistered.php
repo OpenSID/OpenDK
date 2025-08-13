@@ -34,8 +34,6 @@ namespace App\Http\Middleware;
 use App\Models\SettingAplikasi;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TokenRegistered
 {
@@ -47,9 +45,8 @@ class TokenRegistered
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {        
+    {
         $token = $request->bearerToken();
-        Log::error($token);
         $checkToken = SettingAplikasi::where(['key' => 'api_key_opendk', 'value' => $token])->exists();
         if (!$checkToken) {
             return response()->json([

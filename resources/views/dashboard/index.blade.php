@@ -14,7 +14,7 @@
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <h3>{{ number_format($data['desa'] ?? 0, 0, ',', '.') }}</h3>
-                        <p>Desa</p>
+                        <p>{{ config('setting.sebutan_desa') }}</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-building-o"></i>
@@ -121,7 +121,8 @@
                         <tbody>
                             @foreach ($top_pages_visited as $index => $page)
                                 <tr>
-                                    <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i class="fa fa-fw fa-link"></i></a> </td>
+                                    <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i
+                                                class="fa fa-fw fa-link"></i></a> </td>
                                     <td>{{ $page->total_views }}</td>
                                     <td>{{ $page->unique_visitors }}</td>
                                     <td>

@@ -5,6 +5,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 #### FITUR
 
 1. [#1285](https://github.com/OpenSID/OpenDK/issues/1285) Penambahan fungsi expor pada halaman data desa.
+2. [#1305](https://github.com/OpenSID/OpenDK/issues/1305) Penambahan pengaturan untuk penyebutan desa/kelurahan atau yang lainnya.
 
 #### BUG
 
@@ -12,3 +13,4 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### TEKNIS
 
+1. [#1304](https://github.com/OpenSID/OpenDK/issues/1304) Penambahan test e2e testing.

@@ -1,17 +1,44 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace Tests\Feature;
 
 use App\Http\Controllers\FrontEnd\SistemKomplainController;
 use App\Models\Komplain;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Tests\TestCase;
 
 class SistemKomplainControllerTest extends TestCase
 {
@@ -20,8 +47,8 @@ class SistemKomplainControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        
-        $model = new Komplain;
+
+        $model = new Komplain();
         $this->tableName = $model->getTable();
     }
 
@@ -41,7 +68,7 @@ class SistemKomplainControllerTest extends TestCase
     {
         // Disable sinkronisasi gabungan sementara
         SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->first()?->update([
-            'value' => 0
+            'value' => 0,
         ]);
 
         // Mock ID agar direktori cocok
@@ -66,7 +93,7 @@ class SistemKomplainControllerTest extends TestCase
         $penduduk = Penduduk::inRandomOrder()->first();
 
         // jika tidak ada penduduk, skip test dan dianggap berhasil
-        if (!$penduduk) {
+        if (! $penduduk) {
             return;
         }
 
@@ -98,7 +125,6 @@ class SistemKomplainControllerTest extends TestCase
         Komplain::where('judul', $data['judul'])->delete();
         // Storage::deleteDirectory("public/komplain/$komplainId");
 
-
         $this->assertDatabaseMissing($this->tableName, [
             'judul' => $data['judul'],
             'nik' => $data['nik'],
@@ -106,9 +132,7 @@ class SistemKomplainControllerTest extends TestCase
 
         // Restore setting
         SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->first()?->update([
-            'value' => 1
+            'value' => 1,
         ]);
     }
-
-
 }

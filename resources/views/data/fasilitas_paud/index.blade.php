@@ -27,7 +27,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Jumlah PAUD/RA</th>
                                 <th>Jumlah Guru PAUD/RA</th>
                                 <th>Jumlah Siswa PAUD/RA</th>

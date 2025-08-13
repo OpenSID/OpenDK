@@ -51,7 +51,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>No. KK</th>
                                 <th>NIK Penduduk</th>
                                 <th>Nama Penduduk</th>

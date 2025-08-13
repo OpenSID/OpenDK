@@ -8,7 +8,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{{ route('data.data-desa.index') }}">Data Desa</a></li>
+            <li><a href="{{ route('data.data-desa.index') }}">Data {{ config('setting.sebutan_desa') }}</a></li>
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>

@@ -18,12 +18,14 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
-                <div class="pull-right">
-                    <a href="{{ route('data.data-suplemen.export-terdata-excel', $suplemen->id) }}" class="btn btn-success btn-sm btn-social" title="Export Excel Data Terdata">
-                        <i class="fa fa-download"></i>Export Excel
-                    </a>
-                </div>
+                <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data">
+                    <i class="fa fa-plus"></i>&ensp;Tambah
+                </a>
+                
+                @include('forms.btn-social', [
+                    'export_url' => route('data.data-suplemen.export-terdata-excel', $suplemen->id)
+                ])
+              
             </div>
             <div class="box-body">
                 <div class="table-responsive">

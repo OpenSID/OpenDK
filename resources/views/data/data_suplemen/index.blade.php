@@ -22,11 +22,8 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('data.data-suplemen.create')])
-                <div class="pull-right">
-                    <a href="{{ route('data.data-suplemen.export-excel') }}" class="btn btn-success btn-sm btn-social" title="Export Excel">
-                        <i class="fa fa-download"></i>Export Excel
-                    </a>
-                </div>
+                @include('forms.btn-social', ['export_url' => route('data.data-suplemen.export-excel')])
+               
             </div>
             <div class="box-body">
                 <div class="table-responsive">

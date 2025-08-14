@@ -85,8 +85,8 @@ class ExportEpidemiPenyakit implements FromCollection, WithHeadings, WithMapping
             $epidemiPenyakit->jumlah_penderita,
             months_list()[$epidemiPenyakit->bulan] ?? $epidemiPenyakit->bulan,
             $epidemiPenyakit->tahun,
-            $epidemiPenyakit->created_at->format('d/m/Y H:i:s'),
-            $epidemiPenyakit->updated_at->format('d/m/Y H:i:s'),
+            $epidemiPenyakit->created_at ? $epidemiPenyakit->created_at->format('d/m/Y H:i:s') : '',
+            $epidemiPenyakit->updated_at ? $epidemiPenyakit->updated_at->format('d/m/Y H:i:s') : '',
         ];
     }
 

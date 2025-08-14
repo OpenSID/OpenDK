@@ -29,17 +29,33 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\JenisPenyakit;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class JenisPenyakit extends Model
+class JenisPenyakitFactory extends Factory
 {
-    use HasFactory;
-    protected $table = 'ref_penyakit';
+    protected $model = JenisPenyakit::class;
 
-    protected $fillable = [
-        'nama',
-    ];
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'nama' => $this->faker->randomElement([
+                'Demam Berdarah',
+                'Malaria',
+                'Typhus',
+                'Diare',
+                'TB Paru',
+                'Pneumonia',
+                'Hepatitis',
+                'Chikungunya'
+            ]),
+        ];
+    }
 }

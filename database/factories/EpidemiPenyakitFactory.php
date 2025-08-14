@@ -29,17 +29,40 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\DataDesa;
+use App\Models\EpidemiPenyakit;
+use App\Models\JenisPenyakit;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class JenisPenyakit extends Model
+class EpidemiPenyakitFactory extends Factory
 {
-    use HasFactory;
-    protected $table = 'ref_penyakit';
+    protected $model = EpidemiPenyakit::class;
 
-    protected $fillable = [
-        'nama',
-    ];
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        // Buat desa jika belum ada
+        if (!DataDesa::exists()) {
+            DataDesa::factory()->create();
+        }
+
+        // Buat jenis penyakit jika belum ada
+        if (!JenisPenyakit::exists()) {
+            JenisPenyakit::factory()->create();
+        }
+
+        return [
+            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
+            'penyakit_id' => JenisPenyakit::inRandomOrder()->first()->id,
+            'jumlah_penderita' => $this->faker->numberBetween(1, 50),
+            'bulan' => $this->faker->numberBetween(1, 12),
+            'tahun' => $this->faker->numberBetween(2020, 2024),
+        ];
+    }
 }

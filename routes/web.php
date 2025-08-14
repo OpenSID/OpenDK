@@ -566,6 +566,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.imunisasi.destroy', 'uses' => 'ImunisasiController@destroy']);
                     Route::get('import', ['as' => 'data.imunisasi.import', 'uses' => 'ImunisasiController@import']);
                     Route::post('do_import', ['as' => 'data.imunisasi.do_import', 'uses' => 'ImunisasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.imunisasi.export-excel', 'uses' => 'ImunisasiController@exportExcel']);
                 });
 
                 // Epidemi Penyakit

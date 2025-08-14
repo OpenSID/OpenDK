@@ -34,10 +34,8 @@
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"
-                                        placeholder="Cari Pesan">
-                                    <span style="padding-right: 25px"
-                                        class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
+                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
 
                             </div>
@@ -55,15 +53,11 @@
                                     @foreach ($list_pesan as $pesan)
                                         <tr>
                                             <td style="width: 5%">
-                                                <div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false"
-                                                    style="position: relative;"><input type="checkbox"
-                                                        style="position: absolute; opacity: 0;">
-                                                    <ins class="iCheck-helper"
-                                                        style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                                                <div class="icheckbox_flat-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" style="position: absolute; opacity: 0;">
+                                                    <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
                                                 </div>
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a
-                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>

@@ -34,8 +34,7 @@
                         <h3 class="box-title">Berdasarkan Kategori</h3>
                     </div>
                     <div class="box-body">
-                        <div id="chart_kategori"
-                            style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
+                        <div id="chart_kategori" style="width: 100%; min-height: 350px; overflow: visible; text-align: left;">
                         </div>
                     </div>
                 </div>

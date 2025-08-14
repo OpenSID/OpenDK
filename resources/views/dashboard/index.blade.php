@@ -121,8 +121,7 @@
                         <tbody>
                             @foreach ($top_pages_visited as $index => $page)
                                 <tr>
-                                    <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i
-                                                class="fa fa-fw fa-link"></i></a> </td>
+                                    <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i class="fa fa-fw fa-link"></i></a> </td>
                                     <td>{{ $page->total_views }}</td>
                                     <td>{{ $page->unique_visitors }}</td>
                                     <td>

@@ -588,6 +588,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.toilet-sanitasi.destroy', 'uses' => 'ToiletSanitasiController@destroy']);
                     Route::get('import', ['as' => 'data.toilet-sanitasi.import', 'uses' => 'ToiletSanitasiController@import']);
                     Route::post('do_import', ['as' => 'data.toilet-sanitasi.do_import', 'uses' => 'ToiletSanitasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.toilet-sanitasi.export-excel', 'uses' => 'ToiletSanitasiController@exportExcel']);
                 });
 
                 // Tingkaat Pendidikan

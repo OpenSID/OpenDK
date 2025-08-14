@@ -177,6 +177,7 @@
                     const tableData = $('#datadesa-table').DataTable();
                     const info = tableData.page.info();
                     const totalData = info.recordsTotal;
+                    
                     if (totalData === 0) {
                         Swal.fire({
                             icon: 'warning',
@@ -198,7 +199,7 @@
 
                     // Gunakan fungsi data yang sama persis dengan DataTable untuk konsistensi
                     const filterParams = tableData.ajax.params();
-                    console.log(filterParams);
+                    // console.log(filterParams);
 
 
                     // Remove pagination parameters since we want all data
@@ -235,6 +236,10 @@
 
                     urlParams.append('totalData', totalData);
 
+                    var kode_kecamatan = "{{ str_replace('.', '', config('profil.kecamatan_id')) }}";
+
+                    urlParams.append('kode_kecamatan', kode_kecamatan);
+
                     // Make fetch request
                     const response = await fetch(downloadUrl, {
                         method: 'POST',
@@ -261,7 +266,7 @@
 
                     // Get filename from response headers or generate one
                     const contentDisposition = response.headers.get('content-disposition');
-                    let filename = 'data_penduduk.xlsx';
+                    let filename = 'data_keluarga.xlsx';
                     if (contentDisposition) {
                         const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
                         if (matches != null && matches[1]) {
@@ -271,7 +276,7 @@
                         // Generate filename with timestamp
                         const now = new Date();
                         const timestamp = now.toISOString().slice(0, 19).replace(/[-:T]/g, '');
-                        filename = `data_penduduk_${timestamp}.xlsx`;
+                        filename = `data_keluarga_${timestamp}.xlsx`;
                     }
 
                     // Create blob and download

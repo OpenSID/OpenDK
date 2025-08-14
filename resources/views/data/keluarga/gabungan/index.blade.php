@@ -177,7 +177,7 @@
                     const tableData = $('#datadesa-table').DataTable();
                     const info = tableData.page.info();
                     const totalData = info.recordsTotal;
-                    
+
                     if (totalData === 0) {
                         Swal.fire({
                             icon: 'warning',

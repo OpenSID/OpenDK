@@ -23,7 +23,7 @@
             <div class="box-header with-border">
                 @include('forms.btn-social', ['create_url' => route('data.data-suplemen.create')])
                 @include('forms.btn-social', ['export_url' => route('data.data-suplemen.export-excel')])
-               
+
             </div>
             <div class="box-body">
                 <div class="table-responsive">

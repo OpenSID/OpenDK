@@ -608,6 +608,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.putus-sekolah.destroy', 'uses' => 'PutusSekolahController@destroy']);
                     Route::get('import', ['as' => 'data.putus-sekolah.import', 'uses' => 'PutusSekolahController@import']);
                     Route::post('do_import', ['as' => 'data.putus-sekolah.do_import', 'uses' => 'PutusSekolahController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.putus-sekolah.export-excel', 'uses' => 'PutusSekolahController@exportExcel']);
                 });
 
                 // Fasilitas PAUD

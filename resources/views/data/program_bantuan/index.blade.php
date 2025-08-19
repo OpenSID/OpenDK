@@ -1,60 +1,61 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ $page_title }}</li>
-        </ol>
-    </section>
-    <section class="content container-fluid">
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
+    </ol>
+</section>
+<section class="content container-fluid">
 
-        @include('partials.flash_message')
+    @include('partials.flash_message')
 
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => route('data.program-bantuan.import')])
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            @include('forms.btn-social', ['import_url' => route('data.program-bantuan.import')])
+            @include('forms.btn-social', ['export_url' => route('data.program-bantuan.export-excel')])
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Desa</label>
+                    <select class="form-control" id="list_desa">
+                        <option value="">Semua Desa</option>
+                        @foreach ($list_desa as $desa)
+                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label>{{ config('setting.sebutan_desa') }}</label>
-                        <select class="form-control" id="list_desa">
-                            <option value="">Semua {{ config('setting.sebutan_desa') }}</option>
-                            @foreach ($list_desa as $desa)
-                                <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <hr>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover dataTable" id="program-table">
-                        <thead>
-                            <tr>
-                                <th style="max-width: 150px;">Aksi</th>
-                                <th>Nama Program</th>
-                                <th>{{ config('setting.sebutan_desa') }}</th>
-                                <th>Masa Berlaku</th>
-                                <th>Sasaran</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover dataTable" id="program-table">
+                    <thead>
+                        <tr>
+                            <th style="max-width: 150px;">Aksi</th>
+                            <th>Nama Program</th>
+                            <th>Desa</th>
+                            <th>Masa Berlaku</th>
+                            <th>Sasaran</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection
 @include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             $('#list_desa').select2();
 
             var data = $('#program-table').DataTable({
@@ -99,5 +100,5 @@
                 data.ajax.reload();
             });
         });
-    </script>
+</script>
 @endpush

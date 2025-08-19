@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="list_desa" class="control-label col-md-4 col-sm-3 col-xs-12">Desa</label>
+                                <label for="list_desa" class="control-label col-md-4 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
 
                                 <div class="col-md-8">
                                     <select class="form-control" id="list_desa" name="desa_id">

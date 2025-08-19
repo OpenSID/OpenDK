@@ -173,7 +173,7 @@
                                             {{-- prettier-ignore-end --}}
                                         </tr>
                                         <tr>
-                                            <td>Domain Desa</td>
+                                            <td>Domain {{ config('setting.sebutan_desa') }}</td>
                                             <td> : </td>
                                             <td>{{ $response['domain'] }}</td>
                                         </tr>

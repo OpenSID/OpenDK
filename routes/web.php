@@ -471,6 +471,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
                     Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
+                    Route::get('export-excel', ['as' => 'data.data-desa.export-excel', 'uses' => 'DataDesaController@exportExcel']);
                 });
 
                 // Jabatan
@@ -492,7 +493,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('download-arsip-zip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsipZip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip.zip');
                 Route::get('download-arsip/{document_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.edit.download.arsip');
                 Route::get('penduduk-select2', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukSelect2'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.penduduk.select2');
-            
+
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['role:super-admin|admin-desa']], function () {
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);
@@ -530,6 +531,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('editdetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.editdetail', 'uses' => 'SuplemenController@editDetail']);
                     Route::put('updatedetail/{id}', ['as' => 'data.data-suplemen.updatedetail', 'uses' => 'SuplemenController@updateDetail']);
                     Route::delete('destroydetail/{id}/{id_suplemen}', ['as' => 'data.data-suplemen.destroydetail', 'uses' => 'SuplemenController@destroyDetail']);
+                    Route::get('export-excel', ['as' => 'data.data-suplemen.export-excel', 'uses' => 'SuplemenController@exportExcel']);
+                    Route::get('export-terdata-excel/{id}', ['as' => 'data.data-suplemen.export-terdata-excel', 'uses' => 'SuplemenController@exportTerdataExcel']);
                 });
 
                 // Laporan Penduduk
@@ -553,6 +556,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.aki-akb.destroy', 'uses' => 'AKIAKBController@destroy']);
                     Route::get('import', ['as' => 'data.aki-akb.import', 'uses' => 'AKIAKBController@import']);
                     Route::post('do_import', ['as' => 'data.aki-akb.do_import', 'uses' => 'AKIAKBController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.aki-akb.export-excel', 'uses' => 'AKIAKBController@exportExcel']);
                 });
 
                 // AKI & AKB
@@ -564,6 +568,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.imunisasi.destroy', 'uses' => 'ImunisasiController@destroy']);
                     Route::get('import', ['as' => 'data.imunisasi.import', 'uses' => 'ImunisasiController@import']);
                     Route::post('do_import', ['as' => 'data.imunisasi.do_import', 'uses' => 'ImunisasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.imunisasi.export-excel', 'uses' => 'ImunisasiController@exportExcel']);
                 });
 
                 // Epidemi Penyakit
@@ -575,6 +580,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.epidemi-penyakit.destroy', 'uses' => 'EpidemiPenyakitController@destroy']);
                     Route::get('import', ['as' => 'data.epidemi-penyakit.import', 'uses' => 'EpidemiPenyakitController@import']);
                     Route::post('do_import', ['as' => 'data.epidemi-penyakit.do_import', 'uses' => 'EpidemiPenyakitController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.epidemi-penyakit.export-excel', 'uses' => 'EpidemiPenyakitController@exportExcel']);
                 });
 
                 // Toilet Sanitasi
@@ -586,6 +592,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.toilet-sanitasi.destroy', 'uses' => 'ToiletSanitasiController@destroy']);
                     Route::get('import', ['as' => 'data.toilet-sanitasi.import', 'uses' => 'ToiletSanitasiController@import']);
                     Route::post('do_import', ['as' => 'data.toilet-sanitasi.do_import', 'uses' => 'ToiletSanitasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.toilet-sanitasi.export-excel', 'uses' => 'ToiletSanitasiController@exportExcel']);
                 });
 
                 // Tingkaat Pendidikan
@@ -595,6 +602,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.tingkat-pendidikan.destroy', 'uses' => 'TingkatPendidikanController@destroy']);
                     Route::get('import', ['as' => 'data.tingkat-pendidikan.import', 'uses' => 'TingkatPendidikanController@import']);
                     Route::post('do_import', ['as' => 'data.tingkat-pendidikan.do_import', 'uses' => 'TingkatPendidikanController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.tingkat-pendidikan.export-excel', 'uses' => 'TingkatPendidikanController@exportExcel']);
                 });
 
                 // Putus Sekolah
@@ -606,6 +614,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.putus-sekolah.destroy', 'uses' => 'PutusSekolahController@destroy']);
                     Route::get('import', ['as' => 'data.putus-sekolah.import', 'uses' => 'PutusSekolahController@import']);
                     Route::post('do_import', ['as' => 'data.putus-sekolah.do_import', 'uses' => 'PutusSekolahController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.putus-sekolah.export-excel', 'uses' => 'PutusSekolahController@exportExcel']);
                 });
 
                 // Fasilitas PAUD
@@ -637,6 +646,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-realisasi.destroy', 'uses' => 'AnggaranRealisasiController@destroy']);
                     Route::get('import', ['as' => 'data.anggaran-realisasi.import', 'uses' => 'AnggaranRealisasiController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-realisasi.do_import', 'uses' => 'AnggaranRealisasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.anggaran-realisasi.export-excel', 'uses' => 'AnggaranRealisasiController@exportExcel']);
                 });
 
                 // Anggaran Desa
@@ -919,7 +929,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::post('/backup-running', 'createBackup')->name('setting.pengaturan-database.runbackup');
                 Route::get('/backup-download/{file}', 'downloadBackup')->name('setting.pengaturan-database.download');
                 Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');
-                Route::get('/testing', [PengaturanDatabaseController::class,'testing']);
+                Route::get('/testing', [PengaturanDatabaseController::class, 'testing']);
             });
 
             // Pengaturan Database (Restore)

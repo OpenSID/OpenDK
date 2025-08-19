@@ -21,9 +21,9 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <label>Desa</label>
+                        <label>{{ config('setting.sebutan_desa') }}</label>
                         <select class="form-control" id="list_desa">
-                            <option value="">Semua Desa</option>
+                            <option value="">Semua {{ config('setting.sebutan_desa') }}</option>
                             @foreach ($list_desa as $desa)
                                 <option value="{{ $desa->kode_desa }}">{{ $desa->nama_desa }}</option>
                             @endforeach
@@ -37,7 +37,7 @@
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
                                 <th>Nama Program</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Masa Berlaku</th>
                                 <th>Sasaran</th>
                             </tr>
@@ -65,7 +65,8 @@
                     },
                     success: function(response) {
                         // Bersihkan select box
-                        $('#list_desa').empty().append('<option value="">Semua Desa</option>');
+                        $('#list_desa').empty().append(
+                            '<option value="">Semua {{ config('setting.sebutan_desa') }}</option>');
 
                         // Tambahkan data desa ke select box
                         response.data.forEach(desa => {

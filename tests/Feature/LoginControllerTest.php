@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace Tests\Feature;
 
 use App\Models\SettingAplikasi;
@@ -7,7 +36,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\View;
-use Lunaweb\RecaptchaV3\Facades\RecaptchaV3;
 use Mews\Captcha\Facades\Captcha;
 use PhpOffice\PhpSpreadsheet\Writer\Ods\Settings;
 use Tests\TestCase;
@@ -24,17 +52,17 @@ class LoginControllerTest extends TestCase
     }
 
     public function test_login_success_redirects_to_home()
-    {        
+    {
         SettingAplikasi::updateOrCreate(
             ['key' => 'google_recaptcha'],
             ['value' => 0]
         );
-        // Captcha::shouldReceive('captcha')            
+        // Captcha::shouldReceive('captcha')
         //     ->andReturn(true);
-        
+
         Captcha::shouldReceive('display')
             ->andReturn('<input type="hidden" name="captcha" value="1" />');
-        
+
         $user = User::first();
         $user->password = bcrypt('password');
         $user->save();
@@ -43,7 +71,7 @@ class LoginControllerTest extends TestCase
             'password' => 'password',
             'captcha' => '1', // Simulasi captcha valid
         ]);
-        $response->assertRedirect();                
+        $response->assertRedirect();
         $this->assertAuthenticatedAs($user);
     }
 
@@ -89,6 +117,6 @@ class LoginControllerTest extends TestCase
             'email' => $user->email,
             'password' => 'password',
         ]);
-        $response->assertRedirect(url('/'));        
+        $response->assertRedirect(url('/changedefault'));
     }
 }

@@ -1,9 +1,15 @@
 {
     "private": true,
     "scripts": {
-        "prettier-blade": "prettier resources/views/{**,**/**,**/**/**}.blade.php --write"
+        "prettier-blade": "prettier resources/views/{**,**/**,**/**/**}.blade.php --write",
+        "test:e2e": "playwright test",
+        "test:e2e:headed": "playwright test --headed",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:debug": "playwright test --debug",
+        "test:e2e:report": "playwright show-report"
     },
     "devDependencies": {
+        "@playwright/test": "^1.54.1",
         "@shufo/prettier-plugin-blade": "^1.15.0",
         "prettier": "^3.6.0"
     }

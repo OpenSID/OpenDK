@@ -8,7 +8,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{{ route('data.anggaran-desa.index') }}">Anggaran Desa</a></li>
+            <li><a href="{{ route('data.anggaran-desa.index') }}">Anggaran {{ config('setting.sebutan_desa') }}</a></li>
             <li class="active">{{ $page_title }}</li>
         </ol>
     </section>
@@ -43,7 +43,7 @@
                     <div class="row">
                         <div class="col-md-7">
                             <div class="form-group">
-                                <label for="list_desa" class="control-label col-md-5 col-sm-3 col-xs-12">Desa</label>
+                                <label for="list_desa" class="control-label col-md-5 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
 
                                 <div class="col-md-7">
                                     <select class="form-control" id="list_desa" name="desa">
@@ -80,7 +80,7 @@
 
                             <div class="form-group">
                                 <label class="control-label col-md-5 col-sm-3 col-xs-12" for="data_file">Data Anggaran
-                                    Desa</label>
+                                    {{ config('setting.sebutan_desa') }}</label>
 
                                 <div class="col-md-7">
                                     <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />

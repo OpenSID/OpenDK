@@ -29,7 +29,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama</th>
                                 <th>Bulan</th>
                                 <th>Tahun</th>
@@ -120,7 +120,7 @@
                         data: 'attributes.config.nama_desa',
                         render: function(data) {
                             return data ? data :
-                                '<span class="text-muted">Tidak Ada Nama Desa</span>';
+                                '<span class="text-muted">Tidak Ada Nama {{ config('setting.sebutan_desa') }}</span>';
                         }
                     },
                     {

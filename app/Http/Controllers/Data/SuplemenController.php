@@ -31,6 +31,8 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportSuplemen;
+use App\Exports\ExportSuplemenTerdata;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
@@ -38,6 +40,7 @@ use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class SuplemenController extends Controller
@@ -66,7 +69,7 @@ class SuplemenController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['detail_url'] = route('data.data-suplemen.show', $row->id);
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('data.data-suplemen.edit', $row->id);
                         $data['delete_url'] = route('data.data-suplemen.destroy', $row->id);
                     }
@@ -129,7 +132,7 @@ class SuplemenController extends Controller
     {
         $suplemen = Suplemen::findOrFail($id);
         $page_title = 'Data Suplemen';
-        $page_description = 'Ubah Data Suplemen : '.$suplemen->nama;
+        $page_description = 'Ubah Data Suplemen : ' . $suplemen->nama;
 
         return view('data.data_suplemen.edit', compact('page_title', 'page_description', 'suplemen'));
     }
@@ -193,7 +196,7 @@ class SuplemenController extends Controller
         $suplemen = Suplemen::findOrFail($id);
         $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title = 'Anggota Suplemen';
-        $page_description = 'Anggota Suplemen: '.ucwords(strtolower($suplemen->nama));
+        $page_description = 'Anggota Suplemen: ' . ucwords(strtolower($suplemen->nama));
 
         return view('data.data_suplemen.show', compact('page_title', 'page_description', 'suplemen', 'sasaran'));
     }
@@ -207,7 +210,7 @@ class SuplemenController extends Controller
             return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('suplemen_id', $id_terdata)->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]);
                         $data['delete_url'] = route('data.data-suplemen.destroydetail', [$row->id, $row->suplemen_id]);
                     }
@@ -341,5 +344,37 @@ class SuplemenController extends Controller
         }
 
         return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('success', 'Anggota Suplemen berhasil dihapus!');
+    }
+
+    /**
+     * Export Excel data suplemen.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        $filters = $request->only(['nama', 'sasaran']);
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-suplemen-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportSuplemen($filters), $filename);
+    }
+
+    /**
+     * Export Excel data suplemen terdata.
+     *
+     * @param Request $request
+     * @param int $id Suplemen ID
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportTerdataExcel(Request $request, $id)
+    {
+        $suplemen = Suplemen::findOrFail($id);
+        $filters = $request->only(['desa', 'nama_penduduk']);
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-suplemen-terdata-{$suplemen->slug}-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportSuplemenTerdata($id, $filters), $filename);
     }
 }

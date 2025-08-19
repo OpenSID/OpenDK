@@ -9,6 +9,19 @@
  *
  * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
  * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
@@ -18,12 +31,6 @@
 
 namespace Tests\Feature;
 
-use App\Enums\JenisJabatan;
-use App\Models\DataDesa;
-use App\Models\DataUmum;
-use App\Models\Jabatan;
-use App\Models\Profil;
-use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
@@ -32,22 +39,11 @@ class KecamatanDesaFooterBasicTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Pastikan aplikasi sudah diinstall
         if (!file_exists(storage_path('installed'))) {
             file_put_contents(storage_path('installed'), 'installed');
         }
-    }
-
-    protected function tearDown(): void
-    {
-        // Bersihkan file installed setelah test
-        $installedFile = storage_path('installed');
-        if (file_exists($installedFile)) {
-            unlink($installedFile);
-        }
-        
-        parent::tearDown();
     }
 
     /**
@@ -149,7 +145,7 @@ class KecamatanDesaFooterBasicTest extends TestCase
         if (file_exists($installedFile)) {
             unlink($installedFile);
         }
-        
+
         $this->assertFalse(sudahInstal());
 
         // Test ketika file ada

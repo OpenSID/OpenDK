@@ -31,12 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportImunisasi;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class ImunisasiController extends Controller
@@ -68,7 +70,7 @@ class ImunisasiController extends Controller
                 $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
-            })->addColumn('nama_desa', function ($row) use ($listDesa){
+            })->addColumn('nama_desa', function ($row) use ($listDesa) {
                 return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })
             ->editColumn('bulan', function ($row) {
@@ -111,7 +113,7 @@ class ImunisasiController extends Controller
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Import data gagal. '.$e->getMessage());
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Import data sukses.');
@@ -127,7 +129,7 @@ class ImunisasiController extends Controller
     {
         $imunisasi = Imunisasi::findOrFail($id);
         $page_title = 'Imunisasi';
-        $page_description = 'Ubah Imunisasi : Cakupan Imunisasi'.$imunisasi->cakupan_imunisasi;
+        $page_description = 'Ubah Imunisasi : Cakupan Imunisasi' . $imunisasi->cakupan_imunisasi;
 
         return view('data.imunisasi.edit', compact('page_title', 'page_description', 'imunisasi'));
     }
@@ -149,7 +151,7 @@ class ImunisasiController extends Controller
         } catch (\Exception $e) {
             report($e);
 
-            return back()->withInput()->with('error', 'Data gagal diubah! '.$e->getMessage());
+            return back()->withInput()->with('error', 'Data gagal diubah! ' . $e->getMessage());
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Data berhasil diubah!');
@@ -172,5 +174,20 @@ class ImunisasiController extends Controller
         }
 
         return redirect()->route('data.imunisasi.index')->with('success', 'Data sukses dihapus!');
+    }
+
+    /**
+     * Export Excel data Imunisasi.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Imunisasi tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-imunisasi-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportImunisasi(), $filename);
     }
 }

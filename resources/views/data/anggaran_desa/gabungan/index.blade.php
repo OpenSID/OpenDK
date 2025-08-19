@@ -23,7 +23,7 @@
                     <table class="table table-bordered table-hover dataTable" id="anggaran-table">
                         <thead>
                             <tr>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>No Akun</th>
                                 <th>Nama Akun</th>
                                 <th>Jumlah</th>

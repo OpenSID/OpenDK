@@ -36,7 +36,7 @@
                                 <th>NIK</th>
                                 <th>Nama</th>
                                 <th>No. KK</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Alamat</th>
                                 <th>Pendidikan dalam KK</th>
                                 <th>Umur</th>
@@ -193,7 +193,7 @@
                         name: 'nama_desa',
                         render: function(data) {
                             return data ? data :
-                                '<span class="text-muted">Tidak Ada Nama Desa</span>';
+                                '<span class="text-muted">Tidak Ada Nama {{ config('setting.sebutan_desa') }}</span>';
                         }
                     },
                     {

@@ -579,6 +579,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.epidemi-penyakit.destroy', 'uses' => 'EpidemiPenyakitController@destroy']);
                     Route::get('import', ['as' => 'data.epidemi-penyakit.import', 'uses' => 'EpidemiPenyakitController@import']);
                     Route::post('do_import', ['as' => 'data.epidemi-penyakit.do_import', 'uses' => 'EpidemiPenyakitController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.epidemi-penyakit.export-excel', 'uses' => 'EpidemiPenyakitController@exportExcel']);
                 });
 
                 // Toilet Sanitasi

@@ -10,6 +10,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 4. [#1287](https://github.com/OpenSID/OpenDK/issues/1287) Penambahan fungsi expor pada halaman laporan penduduk.
 5. [#1288](https://github.com/OpenSID/OpenDK/issues/1288) Penambahan fungsi expor pada halaman AKI & AKB.
 6. [#1289](https://github.com/OpenSID/OpenDK/issues/1289) Penambahan fungsi expor pada halaman Imunisasi.
+7. [#1290](https://github.com/OpenSID/OpenDK/issues/1290) Penambahan fungsi expor pada halaman toilet & sanitasi.
 
 #### BUG
 

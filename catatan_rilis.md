@@ -7,6 +7,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 1. [#1285](https://github.com/OpenSID/OpenDK/issues/1285) Penambahan fungsi expor pada halaman data desa.
 2. [#1305](https://github.com/OpenSID/OpenDK/issues/1305) Penambahan pengaturan untuk penyebutan desa/kelurahan atau yang lainnya.
 3. [#1286](https://github.com/OpenSID/OpenDK/issues/1286) Penambahan fungsi expor pada halaman data suplemen.
+4. [#1288](https://github.com/OpenSID/OpenDK/issues/1288) Penambahan fungsi expor pada halaman AKI & AKB.
 
 #### BUG
 

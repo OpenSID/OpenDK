@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportEpidemiPenyakit;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
@@ -38,6 +39,7 @@ use App\Models\JenisPenyakit;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class EpidemiPenyakitController extends Controller
@@ -70,7 +72,7 @@ class EpidemiPenyakitController extends Controller
                 $data['delete_url'] = route('data.epidemi-penyakit.destroy', $row->id);
 
                 return view('forms.aksi', $data);
-            })->addColumn('nama_desa', function ($row) use ($listDesa){
+            })->addColumn('nama_desa', function ($row) use ($listDesa) {
                 return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
@@ -113,7 +115,7 @@ class EpidemiPenyakitController extends Controller
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Import data gagal. '.$e->getMessage());
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return redirect()->route('data.epidemi-penyakit.index')->with('success', 'Import data sukses.');
@@ -129,7 +131,7 @@ class EpidemiPenyakitController extends Controller
     {
         $epidemi = EpidemiPenyakit::findOrFail($id);
         $page_title = 'Epidemi Penyakit';
-        $page_description = 'Ubah Epidemi Penyakit : '.$epidemi->penyakit->nama;
+        $page_description = 'Ubah Epidemi Penyakit : ' . $epidemi->penyakit->nama;
         $jenis_penyakit = JenisPenyakit::pluck('nama', 'id');
 
         return view('data.epidemi_penyakit.edit', compact('page_title', 'page_description', 'epidemi', 'jenis_penyakit'));
@@ -178,5 +180,20 @@ class EpidemiPenyakitController extends Controller
         }
 
         return redirect()->route('data.epidemi-penyakit.index')->with('success', 'Data berhasil dihapus!');
+    }
+
+    /**
+     * Export Excel data Epidemi Penyakit.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Epidemi Penyakit tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-epidemi-penyakit-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportEpidemiPenyakit(), $filename);
     }
 }

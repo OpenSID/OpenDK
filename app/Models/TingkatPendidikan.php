@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TingkatPendidikan extends Model
 {
+    use HasFactory;
     protected $table = 'das_tingkat_pendidikan';
 
     protected $fillable = [

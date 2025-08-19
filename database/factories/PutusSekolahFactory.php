@@ -29,33 +29,40 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\DataDesa;
+use App\Models\PutusSekolah;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PutusSekolah extends Model
+class PutusSekolahFactory extends Factory
 {
-    use HasFactory;
-    protected $table = 'das_putus_sekolah';
+    protected $model = PutusSekolah::class;
 
-    protected $fillable = [
-        'desa_id',
-        'siswa_paud',
-        'anak_usia_paud',
-        'siswa_sd',
-        'anak_usia_sd',
-        'siswa_smp',
-        'anak_usia_smp',
-        'siswa_sma',
-        'anak_usia_sma',
-        'semester',
-        'tahun',
-        'semester',
-    ];
-
-    public function desa()
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
     {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        // Buat desa jika belum ada
+        if (!DataDesa::exists()) {
+            DataDesa::factory()->create();
+        }
+
+        return [
+            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
+            'siswa_paud' => $this->faker->numberBetween(0, 50),
+            'anak_usia_paud' => $this->faker->numberBetween(0, 100),
+            'siswa_sd' => $this->faker->numberBetween(0, 100),
+            'anak_usia_sd' => $this->faker->numberBetween(0, 200),
+            'siswa_smp' => $this->faker->numberBetween(0, 80),
+            'anak_usia_smp' => $this->faker->numberBetween(0, 150),
+            'siswa_sma' => $this->faker->numberBetween(0, 60),
+            'anak_usia_sma' => $this->faker->numberBetween(0, 120),
+            'semester' => $this->faker->randomElement([1, 2]),
+            'tahun' => $this->faker->numberBetween(2020, 2024),
+        ];
     }
 }

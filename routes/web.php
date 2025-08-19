@@ -601,6 +601,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.tingkat-pendidikan.destroy', 'uses' => 'TingkatPendidikanController@destroy']);
                     Route::get('import', ['as' => 'data.tingkat-pendidikan.import', 'uses' => 'TingkatPendidikanController@import']);
                     Route::post('do_import', ['as' => 'data.tingkat-pendidikan.do_import', 'uses' => 'TingkatPendidikanController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.tingkat-pendidikan.export-excel', 'uses' => 'TingkatPendidikanController@exportExcel']);
                 });
 
                 // Putus Sekolah

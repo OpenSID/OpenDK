@@ -18,6 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => route('data.putus-sekolah.import')])
+                @include('forms.btn-social', ['export_url' => route('data.putus-sekolah.export-excel')])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

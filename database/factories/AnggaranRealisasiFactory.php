@@ -29,33 +29,32 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\AnggaranRealisasi;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class PutusSekolah extends Model
+class AnggaranRealisasiFactory extends Factory
 {
-    use HasFactory;
-    protected $table = 'das_putus_sekolah';
+    protected $model = AnggaranRealisasi::class;
 
-    protected $fillable = [
-        'desa_id',
-        'siswa_paud',
-        'anak_usia_paud',
-        'siswa_sd',
-        'anak_usia_sd',
-        'siswa_smp',
-        'anak_usia_smp',
-        'siswa_sma',
-        'anak_usia_sma',
-        'semester',
-        'tahun',
-        'semester',
-    ];
-
-    public function desa()
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
     {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        return [
+            'profil_id' => $this->faker->numberBetween(1, 10),
+            'total_anggaran' => $this->faker->numberBetween(100000000, 5000000000),
+            'total_belanja' => $this->faker->numberBetween(50000000, 4000000000),
+            'belanja_pegawai' => $this->faker->numberBetween(10000000, 1000000000),
+            'belanja_barang_jasa' => $this->faker->numberBetween(5000000, 500000000),
+            'belanja_modal' => $this->faker->numberBetween(20000000, 2000000000),
+            'belanja_tidak_langsung' => $this->faker->numberBetween(5000000, 200000000),
+            'bulan' => $this->faker->numberBetween(1, 12),
+            'tahun' => $this->faker->numberBetween(2020, 2024),
+        ];
     }
 }

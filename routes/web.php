@@ -510,6 +510,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
+                    Route::get('export-excel', ['as' => 'data.keluarga.export-excel', 'uses' => 'KeluargaController@exportExcel']);
                 });
 
                 // Data Suplemen
@@ -555,6 +556,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.aki-akb.destroy', 'uses' => 'AKIAKBController@destroy']);
                     Route::get('import', ['as' => 'data.aki-akb.import', 'uses' => 'AKIAKBController@import']);
                     Route::post('do_import', ['as' => 'data.aki-akb.do_import', 'uses' => 'AKIAKBController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.aki-akb.export-excel', 'uses' => 'AKIAKBController@exportExcel']);
                 });
 
                 // AKI & AKB
@@ -566,6 +568,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.imunisasi.destroy', 'uses' => 'ImunisasiController@destroy']);
                     Route::get('import', ['as' => 'data.imunisasi.import', 'uses' => 'ImunisasiController@import']);
                     Route::post('do_import', ['as' => 'data.imunisasi.do_import', 'uses' => 'ImunisasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.imunisasi.export-excel', 'uses' => 'ImunisasiController@exportExcel']);
                 });
 
                 // Epidemi Penyakit
@@ -577,6 +580,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.epidemi-penyakit.destroy', 'uses' => 'EpidemiPenyakitController@destroy']);
                     Route::get('import', ['as' => 'data.epidemi-penyakit.import', 'uses' => 'EpidemiPenyakitController@import']);
                     Route::post('do_import', ['as' => 'data.epidemi-penyakit.do_import', 'uses' => 'EpidemiPenyakitController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.epidemi-penyakit.export-excel', 'uses' => 'EpidemiPenyakitController@exportExcel']);
                 });
 
                 // Toilet Sanitasi
@@ -588,6 +592,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.toilet-sanitasi.destroy', 'uses' => 'ToiletSanitasiController@destroy']);
                     Route::get('import', ['as' => 'data.toilet-sanitasi.import', 'uses' => 'ToiletSanitasiController@import']);
                     Route::post('do_import', ['as' => 'data.toilet-sanitasi.do_import', 'uses' => 'ToiletSanitasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.toilet-sanitasi.export-excel', 'uses' => 'ToiletSanitasiController@exportExcel']);
                 });
 
                 // Tingkaat Pendidikan
@@ -597,6 +602,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.tingkat-pendidikan.destroy', 'uses' => 'TingkatPendidikanController@destroy']);
                     Route::get('import', ['as' => 'data.tingkat-pendidikan.import', 'uses' => 'TingkatPendidikanController@import']);
                     Route::post('do_import', ['as' => 'data.tingkat-pendidikan.do_import', 'uses' => 'TingkatPendidikanController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.tingkat-pendidikan.export-excel', 'uses' => 'TingkatPendidikanController@exportExcel']);
                 });
 
                 // Putus Sekolah
@@ -608,6 +614,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.putus-sekolah.destroy', 'uses' => 'PutusSekolahController@destroy']);
                     Route::get('import', ['as' => 'data.putus-sekolah.import', 'uses' => 'PutusSekolahController@import']);
                     Route::post('do_import', ['as' => 'data.putus-sekolah.do_import', 'uses' => 'PutusSekolahController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.putus-sekolah.export-excel', 'uses' => 'PutusSekolahController@exportExcel']);
                 });
 
                 // Fasilitas PAUD
@@ -640,6 +647,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-realisasi.destroy', 'uses' => 'AnggaranRealisasiController@destroy']);
                     Route::get('import', ['as' => 'data.anggaran-realisasi.import', 'uses' => 'AnggaranRealisasiController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-realisasi.do_import', 'uses' => 'AnggaranRealisasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.anggaran-realisasi.export-excel', 'uses' => 'AnggaranRealisasiController@exportExcel']);
                 });
 
                 // Anggaran Desa

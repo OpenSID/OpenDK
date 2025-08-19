@@ -20,6 +20,13 @@
         @include('partials.flash_message')
 
         <div class="box box-primary">
+            <div class="box-header with-border">
+                <a href="#" id="export-excel-btn">
+                    <button type="button" class="btn btn-primary btn-sm btn-social" title="Export Excel">
+                        <i class="fa fa-download"></i>Export Excel
+                    </button>
+                </a>
+            </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')
                 <hr>
@@ -118,6 +125,19 @@
 
             $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
+            });
+
+            // Handle export excel with filter
+            $('#export-excel-btn').on('click', function(e) {
+                e.preventDefault();
+                var desa = $('#list_desa').val();
+                var exportUrl = "{{ route('data.keluarga.export-excel') }}";
+
+                if (desa && desa !== 'Semua') {
+                    exportUrl += '?desa=' + encodeURIComponent(desa);
+                }
+
+                window.location.href = exportUrl;
             });
         });
     </script>

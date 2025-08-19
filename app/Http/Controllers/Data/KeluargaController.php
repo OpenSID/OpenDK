@@ -31,11 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportKeluarga;
 use App\Http\Controllers\Controller;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
 use App\Services\KeluargaService;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class KeluargaController extends Controller
@@ -75,7 +78,7 @@ class KeluargaController extends Controller
                     return view('forms.aksi', $data);
                 })
                 ->addColumn('foto', function ($row) {
-                    return '<img src="'.is_user($row->kepala_kk->foto, $row->kepala_kk->sex).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="' . is_user($row->kepala_kk->foto, $row->kepala_kk->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })->editColumn('tgl_cetak_kk', function ($row) {
                     return format_datetime($row->tgl_cetak_kk);
                 })
@@ -100,5 +103,22 @@ class KeluargaController extends Controller
         $view = $this->isDatabaseGabungan() ? 'data.keluarga.gabungan.show' : 'data.keluarga.show';
 
         return view($view, compact('page_title', 'page_description', 'penduduk', 'keluarga'));
+    }
+
+    /**
+     * Export data keluarga ke Excel data keluarga di lokal
+     * untuk data api gabungan melalui view
+     *
+     * @param  Request  $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        try {
+            $fileName = 'data-keluarga-' . date('Y-m-d-H-i-s') . '.xlsx';
+            return Excel::download(new ExportKeluarga(false, $request->all()), $fileName);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh data: ' . $e->getMessage());
+        }
     }
 }

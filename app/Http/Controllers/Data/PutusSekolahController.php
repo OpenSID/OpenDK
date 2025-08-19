@@ -31,11 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportPutusSekolah;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class PutusSekolahController extends Controller
@@ -116,7 +118,7 @@ class PutusSekolahController extends Controller
     {
         $siswa = PutusSekolah::with(['desa'])->findOrFail($id);
         $page_title = 'Siswa Putus Sekolah';
-        $page_description = 'Ubah Siswa Putus Sekolah : Desa '.$siswa->desa->nama;
+        $page_description = 'Ubah Siswa Putus Sekolah : Desa ' . $siswa->desa->nama;
 
         return view('data.putus_sekolah.edit', compact('page_title', 'page_description', 'siswa'));
     }
@@ -170,5 +172,20 @@ class PutusSekolahController extends Controller
         }
 
         return redirect()->route('data.putus-sekolah.index')->with('success', 'Data sukses dihapus!');
+    }
+
+    /**
+     * Export Excel data Putus Sekolah.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Putus Sekolah tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-putus-sekolah-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportPutusSekolah(), $filename);
     }
 }

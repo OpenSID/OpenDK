@@ -13,6 +13,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 7. [#1290](https://github.com/OpenSID/OpenDK/issues/1290) Penambahan fungsi expor pada halaman toilet & sanitasi.
 8. [#1291](https://github.com/OpenSID/OpenDK/issues/1291) Penambahan fungsi expor pada halaman epidemi penyakit.
 9. [#1292](https://github.com/OpenSID/OpenDK/issues/1292) Penambahan fungsi expor pada halaman tingkat pendidikan.
+10. [#1293](https://github.com/OpenSID/OpenDK/issues/1293) Penambahan fungsi expor pada halaman daftar siswa putus sekolah.
 
 #### BUG
 

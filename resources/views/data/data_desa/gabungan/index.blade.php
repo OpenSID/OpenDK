@@ -19,8 +19,7 @@
             <div class="box-header with-border">
                 @include('forms.btn-social', [
                     'export_url' => route('data.data-desa.export-excel'),
-                    'export_text' => 'Export
-                                                                            Excel',
+                    'export_text' => 'Export Excel',
                 ])
             </div>
 

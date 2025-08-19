@@ -31,12 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportAKIAKB;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class AKIAKBController extends Controller
@@ -68,7 +70,7 @@ class AKIAKBController extends Controller
                 $data['delete_url'] = route('data.aki-akb.destroy', $row->id);
 
                 return view('forms.aksi', $data);
-            })->addColumn('nama_desa', function ($row) use ($listDesa){
+            })->addColumn('nama_desa', function ($row) use ($listDesa) {
                 return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
@@ -110,7 +112,7 @@ class AKIAKBController extends Controller
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Import data gagal. '.$e->getMessage());
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return redirect()->route('data.aki-akb.index')->with('success', 'Import data sukses.');
@@ -126,7 +128,7 @@ class AKIAKBController extends Controller
     {
         $akib = AkiAkb::findOrFail($id);
         $page_title = 'AKI & AKB';
-        $page_description = 'Ubah AKI & AKB : '.$akib->id;
+        $page_description = 'Ubah AKI & AKB : ' . $akib->id;
 
         return view('data.aki_akb.edit', compact('page_title', 'page_description', 'akib'));
     }
@@ -172,5 +174,20 @@ class AKIAKBController extends Controller
         }
 
         return redirect()->route('data.aki-akb.index')->with('success', 'Data sukses dihapus!');
+    }
+
+    /**
+     * Export Excel data AKI AKB.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data AKI AKB tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-aki-akb-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportAKIAKB(), $filename);
     }
 }

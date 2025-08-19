@@ -18,6 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => route('data.aki-akb.import')])
+                @include('forms.btn-social', ['export_url' => route('data.aki-akb.export-excel')])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

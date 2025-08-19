@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LaporanPenduduk extends Model
 {
+    use HasFactory;
     protected $table = 'das_laporan_penduduk';
 
     protected $fillable = [
@@ -42,6 +44,7 @@ class LaporanPenduduk extends Model
         'bulan',
         'tahun',
         'nama_file',
+        'id_laporan_penduduk',
         'desa_id',
         'imported_at',
     ];

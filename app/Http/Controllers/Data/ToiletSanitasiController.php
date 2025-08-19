@@ -31,12 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportToiletSanitasi;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporToiletSanitasi;
 use App\Models\ToiletSanitasi;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ToiletSanitasiController extends Controller
@@ -68,7 +70,7 @@ class ToiletSanitasiController extends Controller
                 $data['delete_url'] = route('data.toilet-sanitasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
-            })->addColumn('nama_desa', function ($row) use ($listDesa){
+            })->addColumn('nama_desa', function ($row) use ($listDesa) {
                 return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })->editColumn('bulan', function ($row) {
                 return months_list()[$row->bulan];
@@ -126,7 +128,7 @@ class ToiletSanitasiController extends Controller
     {
         $toilet = ToiletSanitasi::with(['desa'])->findOrFail($id);
         $page_title = 'Toilet & Sanitasi';
-        $page_description = 'Ubah Toilet & Sanitasi : '.$toilet->desa->nama;
+        $page_description = 'Ubah Toilet & Sanitasi : ' . $toilet->desa->nama;
 
         return view('data.toilet_sanitasi.edit', compact('page_title', 'page_description', 'toilet'));
     }
@@ -172,5 +174,20 @@ class ToiletSanitasiController extends Controller
         }
 
         return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data sukses dihapus!');
+    }
+
+    /**
+     * Export Excel data Toilet Sanitasi.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Toilet Sanitasi tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-toilet-sanitasi-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportToiletSanitasi(), $filename);
     }
 }

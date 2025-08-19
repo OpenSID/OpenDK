@@ -22,6 +22,7 @@
                         @include('forms.btn-social', [
                             'import_url' => route('data.laporan-penduduk.import'),
                         ])
+                        @include('forms.btn-social', ['export_url' => route('data.laporan-penduduk.export-excel')])
                     </div>
 
                     <!-- /.box-header -->

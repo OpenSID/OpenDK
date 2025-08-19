@@ -31,11 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportTingkatPendidikan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TingkatPendidikanRequest;
 use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class TingkatPendidikanController extends Controller
@@ -60,11 +63,11 @@ class TingkatPendidikanController extends Controller
 
             return DataTables::of(
                 TingkatPendidikan::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
-                        return $query->where('desa_id', $desa);
-                    })
+                    return $query->where('desa_id', $desa);
+                })
                     ->with('desa')
                     ->get()
-                )
+            )
                 ->addColumn('aksi', function ($row) {
                     $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
 
@@ -126,5 +129,20 @@ class TingkatPendidikanController extends Controller
         }
 
         return redirect()->route('data.tingkat-pendidikan.index')->with('success', 'Data berhasil dihapus!');
+    }
+
+    /**
+     * Export Excel data Tingkat Pendidikan.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Tingkat Pendidikan tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-tingkat-pendidikan-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportTingkatPendidikan(), $filename);
     }
 }

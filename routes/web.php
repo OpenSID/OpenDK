@@ -645,6 +645,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-realisasi.destroy', 'uses' => 'AnggaranRealisasiController@destroy']);
                     Route::get('import', ['as' => 'data.anggaran-realisasi.import', 'uses' => 'AnggaranRealisasiController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-realisasi.do_import', 'uses' => 'AnggaranRealisasiController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.anggaran-realisasi.export-excel', 'uses' => 'AnggaranRealisasiController@exportExcel']);
                 });
 
                 // Anggaran Desa

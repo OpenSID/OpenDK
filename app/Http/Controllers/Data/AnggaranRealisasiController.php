@@ -31,11 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportAnggaranRealisasi;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporAnggaranRealisasi;
 use App\Models\AnggaranRealisasi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnggaranRealisasiController extends Controller
@@ -117,7 +119,7 @@ class AnggaranRealisasiController extends Controller
     {
         $anggaran = AnggaranRealisasi::findOrFail($id);
         $page_title = 'Anggaran & Realisasi';
-        $page_description = 'Ubah Anggaran & Realisasi : '.$anggaran->id;
+        $page_description = 'Ubah Anggaran & Realisasi : ' . $anggaran->id;
 
         return view('data.anggaran_realisasi.edit', compact('page_title', 'page_description', 'anggaran'));
     }
@@ -169,5 +171,20 @@ class AnggaranRealisasiController extends Controller
         }
 
         return redirect()->route('data.anggaran-realisasi.index')->with('success', 'Data sukses dihapus!');
+    }
+
+    /**
+     * Export Excel data Anggaran Realisasi.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Anggaran Realisasi tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-anggaran-realisasi-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportAnggaranRealisasi(), $filename);
     }
 }

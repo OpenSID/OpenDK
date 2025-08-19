@@ -29,25 +29,32 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\AnggaranRealisasi;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class AnggaranRealisasi extends Model
+class AnggaranRealisasiFactory extends Factory
 {
-    use HasFactory;
-    protected $table = 'das_anggaran_realisasi';
+    protected $model = AnggaranRealisasi::class;
 
-    protected $fillable = [
-        'profil_id',
-        'bulan',
-        'tahun',
-        'total_anggaran',
-        'total_belanja',
-        'belanja_pegawai',
-        'belanja_barang_jasa',
-        'belanja_modal',
-        'belanja_tidak_langsung',
-    ];
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        return [
+            'profil_id' => $this->faker->numberBetween(1, 10),
+            'total_anggaran' => $this->faker->numberBetween(100000000, 5000000000),
+            'total_belanja' => $this->faker->numberBetween(50000000, 4000000000),
+            'belanja_pegawai' => $this->faker->numberBetween(10000000, 1000000000),
+            'belanja_barang_jasa' => $this->faker->numberBetween(5000000, 500000000),
+            'belanja_modal' => $this->faker->numberBetween(20000000, 2000000000),
+            'belanja_tidak_langsung' => $this->faker->numberBetween(5000000, 200000000),
+            'bulan' => $this->faker->numberBetween(1, 12),
+            'tahun' => $this->faker->numberBetween(2020, 2024),
+        ];
+    }
 }

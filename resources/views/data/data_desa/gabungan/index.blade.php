@@ -20,7 +20,7 @@
                 @include('forms.btn-social', [
                     'export_url' => route('data.data-desa.export-excel'),
                     'export_text' => 'Export
-                                                            Excel',
+                                                                            Excel',
                 ])
             </div>
 

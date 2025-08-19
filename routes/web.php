@@ -510,6 +510,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
                     Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
+                    Route::get('export-excel', ['as' => 'data.keluarga.export-excel', 'uses' => 'KeluargaController@exportExcel']);
                 });
 
                 // Data Suplemen

@@ -78,7 +78,7 @@
                         <div class="col-md-5">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Anggaran_Realisasi.xlsx') }}">Download</a>
+                                <p>Silakan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Anggaran_Realisasi.xlsx') }}">Download</a>
                                 </p>
                             </div>
                         </div>

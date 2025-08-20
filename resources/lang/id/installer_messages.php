@@ -77,7 +77,7 @@ return [
         'menu' => [
             'templateTitle' => 'Langkah 3 | Penyetelan Lingkungan',
             'title' => 'Penyetelan Lingkungan',
-            'desc' => 'Silahkan pilih bagaimana Anda akan mengkofigurasi berkas <code>.env</code> aplikasi.',
+            'desc' => 'Silakan pilih bagaimana Anda akan mengkofigurasi berkas <code>.env</code> aplikasi.',
             'wizard-button' => 'Form Penyetelan Wizard',
             'classic-button' => 'Classic Text Editor',
         ],
@@ -183,7 +183,7 @@ return [
             'install' => 'Simpan dan Pasang',
         ],
         'success' => 'Berkas penyetelan .env Anda telah disimpan.',
-        'errors' => 'Tidak bisa menyimpan berkas .env. Silahkan buat secara manual.',
+        'errors' => 'Tidak bisa menyimpan berkas .env. Silakan buat secara manual.',
     ],
 
     'install' => 'Pasang',

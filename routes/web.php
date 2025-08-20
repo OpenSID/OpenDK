@@ -667,6 +667,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
+                    Route::get('export-excel', ['as' => 'data.laporan-apbdes.export-excel', 'uses' => 'LaporanApbdesController@exportExcel']);
                 });
 
                 // Pembangunan

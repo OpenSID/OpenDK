@@ -1,49 +1,48 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header block-breadcrumb">
-    <h1>
-        {{ $page_title ?? 'Page Title' }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li class="active">{{ $page_title }}</li>
-    </ol>
-</section>
-<section class="content container-fluid">
+    <section class="content-header block-breadcrumb">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li class="active">{{ $page_title }}</li>
+        </ol>
+    </section>
+    <section class="content container-fluid">
 
-    @include('partials.flash_message')
+        @include('partials.flash_message')
 
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <a href="#">
-                <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social"
-                    title="Export Excel">
-                    <i class="fa fa-download"></i>Export Excel
-                </button>
-            </a>
-        </div>
-        <div class="box-body">
-            @include('layouts.fragments.list-desa')
-            <hr>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover dataTable" id="anggaran-table">
-                    <thead>
-                        <tr>
-                            <th>{{ config('setting.sebutan_desa') }}</th>
-                            <th>No Akun</th>
-                            <th>Nama Akun</th>
-                            <th>Jumlah</th>
-                            <th>Bulan</th>
-                            <th>Tahun</th>
-                        </tr>
-                    </thead>
-                </table>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <a href="#">
+                    <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
+                        <i class="fa fa-download"></i>Export Excel
+                    </button>
+                </a>
+            </div>
+            <div class="box-body">
+                @include('layouts.fragments.list-desa')
+                <hr>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover dataTable" id="anggaran-table">
+                        <thead>
+                            <tr>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
+                                <th>No Akun</th>
+                                <th>Nama Akun</th>
+                                <th>Jumlah</th>
+                                <th>Bulan</th>
+                                <th>Tahun</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @include('partials.asset_sweetalert')
@@ -51,8 +50,8 @@
 @include('partials.asset_datatables')
 
 @push('scripts')
-<script type="text/javascript">
-    $(document).ready(function() {
+    <script type="text/javascript">
+        $(document).ready(function() {
             var data = $('#anggaran-table').DataTable({
                 responsive: true,
                 processing: true,
@@ -136,7 +135,7 @@
                     const tableData = $('#anggaran-table').DataTable();
                     const info = tableData.page.info();
                     const totalData = info.recordsTotal;
-                    
+
                     if (totalData === 0) {
                         Swal.fire({
                             icon: 'warning',
@@ -256,5 +255,5 @@
                 }
             }
         });
-</script>
+    </script>
 @endpush

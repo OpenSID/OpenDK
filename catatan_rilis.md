@@ -16,6 +16,7 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 10. [#1293](https://github.com/OpenSID/OpenDK/issues/1293) Penambahan fungsi expor pada halaman daftar siswa putus sekolah.
 11. [#1297](https://github.com/OpenSID/OpenDK/issues/1297) Penambahan fungsi expor excel pada halaman anggaran & realisasi.
 12. [#1284](https://github.com/OpenSID/OpenDK/issues/1284) Penambahan  fungsi expor excel pada halaman keluarga.
+13. [#1300](https://github.com/OpenSID/OpenDK/issues/1300) Penambahan fungsi expor excel pada halaman data pembangunan.
 
 #### BUG
 

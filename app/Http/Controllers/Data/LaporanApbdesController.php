@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportLaporanApbdes;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanApbdes;
 use App\Models\DataDesa;
@@ -39,6 +40,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 use ZipArchive;
 
@@ -55,7 +57,7 @@ class LaporanApbdesController extends Controller
         $page_description = 'Daftar Laporan APBDes';
         $list_desa = [];
         $view = $this->isDatabaseGabungan() ? 'data.laporan-apbdes.gabungan.index' : 'data.laporan-apbdes.index';
-        if(!$this->isDatabaseGabungan()) {
+        if (!$this->isDatabaseGabungan()) {
             $list_desa = DataDesa::get();
         }
         return view($view, compact('page_title', 'page_description', 'list_desa'));
@@ -107,7 +109,7 @@ class LaporanApbdesController extends Controller
             $apbdes = LaporanApbdes::findOrFail($id);
 
             // Hapus file apbdes
-            Storage::disk('public')->delete('apbdes/'.$apbdes->nama_file);
+            Storage::disk('public')->delete('apbdes/' . $apbdes->nama_file);
 
             $apbdes->delete();
         } catch (\Exception $e) {
@@ -159,11 +161,11 @@ class LaporanApbdesController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            $fileExtracted = glob($extract.'*.xlsx');
+            $fileExtracted = glob($extract . '*.xlsx');
 
             // Proses impor excell
             (new ImporLaporanApbdes())
-                ->queue($extract.basename($fileExtracted[0]));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (\Exception $e) {
             report($e);
 
@@ -184,11 +186,29 @@ class LaporanApbdesController extends Controller
         try {
             $getFile = LaporanApbdes::findOrFail($id);
 
-            return Storage::download('public/apbdes/'.$getFile->nama_file);
+            return Storage::download('public/apbdes/' . $getFile->nama_file);
         } catch (\Exception $e) {
             report($e);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
+        }
+    }
+
+    /**
+     * Export Excel data Laporan APBDes.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        try {
+            $timestamp = date('Y-m-d-H-i-s');
+            $filename = "data-laporan-apbdes-{$timestamp}.xlsx";
+
+            return Excel::download(new ExportLaporanApbdes($request->all()), $filename);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh data: ' . $e->getMessage());
         }
     }
 }

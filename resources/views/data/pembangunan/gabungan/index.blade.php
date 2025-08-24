@@ -15,6 +15,13 @@
         @include('partials.flash_message')
 
         <div class="box box-primary">
+            <div class="box-header with-border">
+                <a href="#">
+                    <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
+                        <i class="fa fa-download"></i>Export Excel
+                    </button>
+                </a>
+            </div>
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">
@@ -45,6 +52,7 @@
         </div>
     </section>
 @endsection
+@include('partials.asset_sweetalert')
 @include('partials.asset_select2')
 @include('partials.asset_datatables')
 
@@ -174,6 +182,139 @@
             $('#list_desa').on('select2:select', function() {
                 data.ajax.reload();
             });
+
+            // Handle export excel with filter
+            $('#export-excel-btn').on('click', function(e) {
+                downloadExcel();
+            });
+
+            // Function to download Excel
+            async function downloadExcel() {
+                try {
+                    const header = @include('components.header_bearer_api_gabungan');
+                    // Check if there's data to download
+                    const tableData = $('#pembangunan-table').DataTable();
+                    const info = tableData.page.info();
+                    const totalData = info.recordsTotal;
+
+                    if (totalData === 0) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Tidak Ada Data',
+                            text: 'Tidak ada data pembangunan desa untuk diunduh. Silakan periksa filter Anda.',
+                            confirmButtonText: 'OK'
+                        });
+                        return;
+                    }
+
+                    // Show loading state
+                    const $btnExcel = $('#export-excel-btn');
+                    $btnExcel.prop('disabled', true).html(
+                        '<i class="fa fa-spinner fa-spin"></i> Downloading...');
+
+                    // Prepare URL for download
+                    const downloadUrl = new URL(
+                        `{{ $settings['api_server_database_gabungan'] }}/api/v1/opendk/pembangunan/download`);
+
+                    // Use same data function as DataTable for consistency
+                    const filterParams = tableData.ajax.params();
+
+                    // Remove pagination parameters since we want all data
+                    delete filterParams['page[size]'];
+                    delete filterParams['page[number]'];
+
+                    // Convert filterParams to URLSearchParams for proper encoding
+                    const urlParams = new URLSearchParams();
+                    Object.keys(filterParams).forEach(key => {
+                        const value = filterParams[key];
+                        if (value !== null && value !== undefined && value !== '' && value !== 'null') {
+                            urlParams.append(key, value);
+                        }
+                    });
+
+                    urlParams.append('totalData', totalData);
+
+                    var kode_kecamatan = "{{ str_replace('.', '', config('profil.kecamatan_id')) }}";
+                    urlParams.append('kode_kecamatan', kode_kecamatan);
+
+                    // kirim kode_desa dari list_desa
+                    var kode_desa = $('#list_desa').val();
+                    urlParams.append('kode_desa', kode_desa);
+
+                    // Make fetch request
+                    const response = await fetch(downloadUrl, {
+                        method: 'POST',
+                        headers: {
+                            ...header,
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                        },
+                        body: urlParams
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        throw new Error(`HTTP ${response.status}: ${errorText}`);
+                    }
+
+                    // Check if response is actually a file
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || (!contentType.includes(
+                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') && !
+                            contentType.includes('application/vnd.ms-excel'))) {
+                        throw new Error('Response is not a valid Excel file');
+                    }
+
+                    // Get filename from response headers or generate one
+                    const contentDisposition = response.headers.get('content-disposition');
+                    let filename = 'data_anggaran_desa.xlsx';
+                    if (contentDisposition) {
+                        const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+                        if (matches != null && matches[1]) {
+                            filename = matches[1].replace(/['"]/g, '');
+                        }
+                    } else {
+                        // Generate filename with timestamp
+                        const now = new Date();
+                        const timestamp = now.toISOString().slice(0, 19).replace(/[-:T]/g, '');
+                        filename = `data_anggaran_desa_${timestamp}.xlsx`;
+                    }
+
+                    // Download the file
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    // Success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: `File ${filename} berhasil diunduh.`,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+
+                } catch (error) {
+                    console.error('Download error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Gagal mengunduh file: ' + error.message,
+                        confirmButtonText: 'OK'
+                    });
+                } finally {
+                    // Reset button state
+                    const $btnExcel = $('#export-excel-btn');
+                    $btnExcel.prop('disabled', false).html('<i class="fa fa-download"></i>Export Excel');
+                }
+            }
         });
     </script>
 @endpush

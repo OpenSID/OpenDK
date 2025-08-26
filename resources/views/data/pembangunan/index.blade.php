@@ -16,6 +16,9 @@
         @include('partials.flash_message')
 
         <div class="box box-primary">
+            <div class="box-header with-border">
+                @include('forms.btn-social', ['export_url' => route('data.pembangunan.export-excel')])
+            </div>
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">

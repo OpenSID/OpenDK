@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportProgramBantuan;
 use App\Http\Controllers\Controller;
 use App\Imports\SinkronBantuan;
 use App\Imports\SinkronPesertaBantuan;
@@ -39,6 +40,7 @@ use App\Models\PesertaProgram;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProgramBantuanController extends Controller
@@ -48,21 +50,21 @@ class ProgramBantuanController extends Controller
         $page_title = 'Program Bantuan';
         $page_description = 'Daftar Program Bantuan';
         $list_desa = DataDesa::all();
-        
+
         $view = ($this->isDatabaseGabungan()) ? 'data.program_bantuan.gabungan.index' : 'data.program_bantuan.index';
         return view($view, compact('page_title', 'page_description', 'list_desa'));
     }
 
     public function getaProgramBantuan(Request $request)
     {
-        return DataTables::of(Program::when(! empty($request->input('desa')), fn ($q) => $q->where('desa_id', $request->desa))->with('desa'))
+        return DataTables::of(Program::when(!empty($request->input('desa')), fn($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
                 $data['detail_url'] = route('data.program-bantuan.show', [$row->id, $row->desa_id]);
 
                 return view('forms.aksi', $data);
             })
             ->addColumn('masa_berlaku', function ($row) {
-                return format_date($row->start_date).' - '.format_date($row->end_date);
+                return format_date($row->start_date) . ' - ' . format_date($row->end_date);
             })
             ->editColumn('sasaran', function ($row) {
                 $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
@@ -74,19 +76,17 @@ class ProgramBantuanController extends Controller
 
     public function show($id, $desa_id, $nama = '')
     {
-        $id = $id;
-        $desa_id = $desa_id;
         $page_title = 'Detail Program';
         $sasaran = [1 => 'Penduduk/Perorangan', 2 => 'Keluarga-KK'];
-        $page_description = 'Program Bantuan - '.$nama;
-        
-        if($this->isDatabaseGabungan()){
+        $page_description = 'Program Bantuan - ' . $nama;
+
+        if ($this->isDatabaseGabungan()) {
             $view = 'data.program_bantuan.gabungan.show';
             return view($view, compact('page_title', 'sasaran', 'id', 'desa_id', 'page_description'));
         }
 
         $program = Program::with('desa')->findOrFail($id);
-        $page_description = 'Program Bantuan '.$program->nama;
+        $page_description = 'Program Bantuan ' . $program->nama;
         $peserta = PesertaProgram::where('program_id', $id)->where('desa_id', $desa_id)->get();
         return view('data.program_bantuan.show', compact('page_title', 'page_description', 'program', 'sasaran', 'peserta'));
     }
@@ -120,18 +120,36 @@ class ProgramBantuanController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            glob($extract.'*.csv');
+            glob($extract . '*.csv');
 
             (new SinkronBantuan())
-                ->queue($extract.Str::replaceLast('zip', 'csv', $name));
+                ->queue($extract . Str::replaceLast('zip', 'csv', $name));
             (new SinkronPesertaBantuan())
-                ->queue($extract.Str::replaceLast('zip', 'csv', 'peserta_'.$name));
+                ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_' . $name));
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Import data gagal. '.$e->getMessage());
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return redirect()->route('data.program-bantuan.index')->with('success', 'Import data sukses.');
+    }
+
+    /**
+     * Export Excel data Program Bantuan.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        try {
+            $timestamp = date('Y-m-d-H-i-s');
+            $filename = "data-program-bantuan-{$timestamp}.xlsx";
+
+            return Excel::download(new ExportProgramBantuan($request->all()), $filename);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh data: ' . $e->getMessage());
+        }
     }
 }

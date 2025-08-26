@@ -635,6 +635,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{id}/{id_desa}/{nama?}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.program-bantuan.export-excel', 'uses' => 'ProgramBantuanController@exportExcel']);
                 });
 
                 // Anggaran Realisasi
@@ -667,6 +668,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
+                    Route::get('export-excel', ['as' => 'data.laporan-apbdes.export-excel', 'uses' => 'LaporanApbdesController@exportExcel']);
                 });
 
                 // Pembangunan
@@ -675,6 +677,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
                     Route::get('rincian/{id}/{desa_id}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
                     Route::get('getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
+                    Route::get('export-excel', ['as' => 'data.pembangunan.export-excel', 'uses' => 'DataPembangunanController@exportExcel']);
                 });
 
                 // Lembaga Kategori

@@ -68,7 +68,7 @@
             <div class="box-body">
                 <div class="col-sm-12">
                     @if ($logs === null)
-                        <div>Log file >50M, Silahkan download.</div>
+                        <div>Log file >50M, Silakan download.</div>
                     @else
                         <div class="table-responsive">
                             <table id="table-log" class="table table-striped table table-bordered dataTable table-hover" data-ordering-index="{{ $standardFormat ? 2 : 0 }}">

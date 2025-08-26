@@ -92,7 +92,7 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data jenis dokumen belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
+                <p>Data jenis dokumen belum tersedia. Silakan tambah data <b><a href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>

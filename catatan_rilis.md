@@ -27,3 +27,4 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 #### TEKNIS
 
 1. [#1304](https://github.com/OpenSID/OpenDK/issues/1304) Penambahan test e2e testing.
+2. [#1323](https://github.com/OpenSID/OpenDK/issues/1323) Perbaikan Konsistensi bahasa baku silahkan menjadi silakan.

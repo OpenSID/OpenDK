@@ -36,7 +36,7 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data tipe requlasi belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.tipe-regulasi.index') }}">tipe regulasi</a></b> terlebih dahulu.</p>
+                <p>Data tipe requlasi belum tersedia. Silakan tambah data <b><a href="{{ route('setting.tipe-regulasi.index') }}">tipe regulasi</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>

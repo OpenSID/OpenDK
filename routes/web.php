@@ -668,6 +668,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
+                    Route::get('export-excel', ['as' => 'data.laporan-apbdes.export-excel', 'uses' => 'LaporanApbdesController@exportExcel']);
                 });
 
                 // Pembangunan
@@ -676,6 +677,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
                     Route::get('rincian/{id}/{desa_id}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
                     Route::get('getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
+                    Route::get('export-excel', ['as' => 'data.pembangunan.export-excel', 'uses' => 'DataPembangunanController@exportExcel']);
                 });
 
                 // Lembaga Kategori

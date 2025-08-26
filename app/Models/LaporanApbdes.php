@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class LaporanApbdes extends Model
 {
+    use HasFactory;
     protected $table = 'das_apbdes';
 
     protected $fillable = [
@@ -51,4 +53,8 @@ class LaporanApbdes extends Model
     /**
      * Relation Methods
      * */
+    public function desa()
+    {
+        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+    }
 }

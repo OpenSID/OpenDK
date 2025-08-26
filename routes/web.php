@@ -635,6 +635,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{id}/{id_desa}/{nama?}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.program-bantuan.export-excel', 'uses' => 'ProgramBantuanController@exportExcel']);
                 });
 
                 // Anggaran Realisasi

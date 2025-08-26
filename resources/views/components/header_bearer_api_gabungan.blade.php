@@ -1,4 +1,3 @@
-{{-- sesuaikan settingAplikasi di controller --}}
 {
 'Content-Type': 'application/json',
 'Accept': 'application/json',

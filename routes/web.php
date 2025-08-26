@@ -657,6 +657,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.anggaran-desa.destroy', 'uses' => 'AnggaranDesaController@destroy']);
                     Route::get('import', ['as' => 'data.anggaran-desa.import', 'uses' => 'AnggaranDesaController@import']);
                     Route::post('do_import', ['as' => 'data.anggaran-desa.do_import', 'uses' => 'AnggaranDesaController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.anggaran-desa.export-excel', 'uses' => 'AnggaranDesaController@exportExcel']);
                 });
 
                 // Laporan Apbdes

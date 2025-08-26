@@ -71,10 +71,8 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
-                            "filter[config_id]": $('#list_desa').val(),
-                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
-                                    ?.column]
-                                ?.name,
+                            "filter[kode_desa]": $('#list_desa').val(),
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]?.name,
                         };
                     },
                     dataSrc: function(json) {

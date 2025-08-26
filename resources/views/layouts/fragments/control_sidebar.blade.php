@@ -11,9 +11,11 @@
             {!! $content !!}
 
             <hr style="border: 1px solid #ddd;">
-            <p>Jika Anda butuh bantuan untuk menggunakan Aplikasi Dashboard Kecamatan, silahkan Anda Unduh Panduan Pengguna di bawah ini.</p>
+            <p>Jika Anda butuh bantuan untuk menggunakan Aplikasi Dashboard Kecamatan, silakan Anda Unduh Panduan
+                Pengguna di bawah ini.</p>
             <br>
-            <a href="{{ asset('storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf') }}" target="_blank" class="btn btn-primary btn-lg col-md-12"><i class="fa fa-download"></i> Unduh Panduan</a>
+            <a href="{{ asset('storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf') }}" target="_blank"
+                class="btn btn-primary btn-lg col-md-12"><i class="fa fa-download"></i> Unduh Panduan</a>
             <br>
             <br>
         </div>

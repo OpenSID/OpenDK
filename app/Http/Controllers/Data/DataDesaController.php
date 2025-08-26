@@ -199,7 +199,7 @@ class DataDesaController extends Controller
             })
             ->count();
         if ($cek > 0) {
-            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!. Data Desa sedang dipakai dimodul lainnya. silahkan hapus terlebih dahulu');
+            return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!. Data Desa sedang dipakai dimodul lainnya. silakan hapus terlebih dahulu');
         }
 
         try {

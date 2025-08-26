@@ -18,13 +18,14 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => route('data.program-bantuan.import')])
+                @include('forms.btn-social', ['export_url' => route('data.program-bantuan.export-excel')])
             </div>
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <label>{{ config('setting.sebutan_desa') }}</label>
+                        <label>Desa</label>
                         <select class="form-control" id="list_desa">
-                            <option value="">Semua {{ config('setting.sebutan_desa') }}</option>
+                            <option value="">Semua Desa</option>
                             @foreach ($list_desa as $desa)
                                 <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                             @endforeach
@@ -38,7 +39,7 @@
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>
                                 <th>Nama Program</th>
-                                <th>{{ config('setting.sebutan_desa') }}</th>
+                                <th>Desa</th>
                                 <th>Masa Berlaku</th>
                                 <th>Sasaran</th>
                             </tr>

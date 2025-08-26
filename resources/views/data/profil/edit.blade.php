@@ -18,7 +18,7 @@
         @if (!$profil->kecamatan_id)
             <div class="callout callout-warning">
                 <h4><i class="icon fa fa-warning"></i> Peringatan!</h4>
-                <p>Data profil wilayah belum lengkap. Silahkan dilengkapi terlebih dahulu!</p>
+                <p>Data profil wilayah belum lengkap. Silakan dilengkapi terlebih dahulu!</p>
             </div>
         @endif
 

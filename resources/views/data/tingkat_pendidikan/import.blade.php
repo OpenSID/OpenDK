@@ -90,7 +90,7 @@
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silahkan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Tingkat_Pendidikan.xlsx') }}">Download</a>
+                                <p>Silakan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Tingkat_Pendidikan.xlsx') }}">Download</a>
                                 </p>
                             </div>
                         </div>

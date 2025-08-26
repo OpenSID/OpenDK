@@ -43,7 +43,7 @@
         @else
             <div class="callout callout-warning">
                 <h4>Informasi!</h4>
-                <p>Data jenis penyakit belum tersedia. Silahkan tambah data <b><a href="{{ route('setting.jenis-penyakit.index') }}">jenis penyakit</a></b> terlebih dahulu.</p>
+                <p>Data jenis penyakit belum tersedia. Silakan tambah data <b><a href="{{ route('setting.jenis-penyakit.index') }}">jenis penyakit</a></b> terlebih dahulu.</p>
             </div>
         @endif
     </section>

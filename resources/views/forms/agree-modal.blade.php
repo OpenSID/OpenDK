@@ -7,7 +7,7 @@
                 <h4 class="modal-title">Ubah Status Komplain</h4>
             </div>
             <div class="modal-body">
-                <p>Silahkan pilih status di bawah ini?</p>
+                <p>Silakan pilih status di bawah ini?</p>
                 {{ Form::select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, ['class' => 'form-control']) }}
             </div>
             <div class="modal-footer">

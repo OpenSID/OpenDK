@@ -1,20 +1,22 @@
 <div id="anonim-modal" class="modal fade modal-danger in">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::open(['id' => 'anonim', 'method' => 'PUT']) !!}
+            {!! Html::form('PUT')->id('anonim')->open() !!}
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Identitas Pelapor</h4>
             </div>
             <div class="modal-body">
                 <p>Apakah Anda ingin menampilkan identitas pelapor?</p>
-                {{ Form::select('anonim', [0 => 'Tampilkan', 1 => 'Sembunyikan'], null, ['class' => 'form-control']) }}
+                {!! Html::select('anonim', [0 => 'Tampilkan', 1 => 'Sembunyikan'])->class('form-control') !!}
             </div>
             <div class="modal-footer">
-                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
-                {!! Form::submit('Simpan', ['class' => 'btn btn-warning waves-effect waves-light']) !!}
+                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
+                    data-dismiss="modal">Batal</a>
+                {!! Html::submit('Simpan')->class('btn btn-warning waves-effect waves-light') !!}
             </div>
-            {!! Form::close() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
 </div>

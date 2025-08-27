@@ -6,11 +6,12 @@
         <select name="pengurus_id" id="pengurus" class="form-control">
             <option class="form-control" value="">Pilih Pengurus</option>
             @foreach ($pengurus as $list)
-                @if (empty($user))
-                    <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
-                @else
-                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
-                @endif
+            @if (empty($user))
+            <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
+            @else
+            <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{
+                $list['id'] }}">{{ $list['nama'] }}</option>
+            @endif
             @endforeach
         </select>
     </div>
@@ -19,7 +20,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama', 'pattern' => '^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$']) !!}
+        {!! Html::text('name', old('name', $user->name ??
+        null))->class('form-control')->placeholder('Nama')->pattern('^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$') !!}
     </div>
 </div>
 <div class="form-group">
@@ -27,9 +29,9 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         @if (empty($user))
-            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Email']) !!}
+        {!! Html::text('email')->class('form-control')->placeholder('Email') !!}
         @else
-            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Email', 'readOnly' => true]) !!}
+        {!! Html::text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->readonly() !!}
         @endif
     </div>
 </div>
@@ -37,7 +39,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Telepon </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('phone', null, ['class' => 'form-control', 'placeholder' => '0xxxxxxxxxxx']) !!}
+        {!! Html::text('phone', old('phone', $user->phone ?? null))->class('form-control')->placeholder('0xxxxxxxxxxx')
+        !!}
     </div>
 </div>
 <div class="form-group">
@@ -46,50 +49,52 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="image" id="foto" class="form-control" accept="jpg,jpeg,png">
         <br>
-        <img src="{{ is_img($user->foto ?? null) }}" id="showfoto" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="{{ is_img($user->foto ?? null) }}" id="showfoto"
+            style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 
 @if (empty($user))
-    <div class="form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
 
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::password('password', ['class' => 'form-control password']) !!}
-        </div>
-        <div class="col-md-1 col-sm-1 col-xs-12">
-            <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
-        </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Html::password('password')->class('form-control password') !!}
     </div>
+    <div class="col-md-1 col-sm-1 col-xs-12">
+        <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
+    </div>
+</div>
 @endif
 
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('address', null, ['class' => 'form-control', 'cols' => 10, 'rows' => 5]) !!}
+        {!! Html::textarea('address', old('address', $user->address ?? null))->class('form-control')->cols(10)->rows(5)
+        !!}
     </div>
 </div>
 
 @if (empty($user))
 
-    <div class="form-group">
-        <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
+<div class="form-group">
+    <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ Form::select('role', $item, null, ['class' => 'form-control']) }}
-        </div>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Html::select('role', $item, old('role'))->class('form-control') !!}
     </div>
+</div>
 @elseif(auth()->user()->id == 1)
-    @if ($user->id != 1)
-        <div class="form-group">
-            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
+@if ($user->id != 1)
+<div class="form-group">
+    <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
-            <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ Form::select('role', $item, $user->getRoleNames(), ['class' => 'form-control']) }}
-            </div>
-        </div>
-    @endif
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! Html::select('role', $item, old('role', $user->getRoleNames()))->class('form-control') !!}
+    </div>
+</div>
+@endif
 @endif
 
 <div class="ln_solid"></div>
@@ -104,8 +109,8 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-    <script type="text/javascript">
-        $('#pengurus').on('change', function() {
+<script type="text/javascript">
+    $('#pengurus').on('change', function() {
             var data = $('#pengurus :selected').data('nama');
             $('input[name="name"]').val(data);
         });
@@ -140,5 +145,5 @@
                 readURL(this);
             });
         });
-    </script>
+</script>
 @endpush

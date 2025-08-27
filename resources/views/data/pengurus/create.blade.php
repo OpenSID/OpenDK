@@ -1,51 +1,47 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{{ route('data.pengurus.index') }}">Daftar Pengurus</a></li>
-            <li class="active">{{ $page_description }}</li>
-        </ol>
-    </section>
-    <section class="content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.pengurus.index') }}">Daftar Pengurus</a></li>
+        <li class="active">{{ $page_description }}</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
 
-                    {!! Form::open([
-                        'route' => 'data.pengurus.store',
-                        'method' => 'post',
-                        'files' => true,
-                        'id' => 'form-pengurus',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
-                    @include('layouts.fragments.error_message')
+                {!!
+                Html::form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                form-label-left') !!}
+                @include('layouts.fragments.error_message')
 
-                    <div class="box-body">
+                <div class="box-body">
 
-                        @include('flash::message')
-                        @php $pengurus->foto = null; @endphp
-                        @include('data.pengurus.form')
+                    @include('flash::message')
+                    @php $pengurus->foto = null; @endphp
+                    @include('data.pengurus.form')
 
-                    </div>
-                    <div class="box-footer">
-                        @include('partials.button_reset_submit')
-                    </div>
-                    {!! Form::close() !!}
                 </div>
+                <div class="box-footer">
+                    @include('partials.button_reset_submit')
+                </div>
+                {!! Html::closeForm() !!}
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection
 
 @push('scripts')
-    <script>
-        $(function() {
+<script>
+    $(function() {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
@@ -76,5 +72,5 @@
                 readURL(this);
             });
         });
-    </script>
+</script>
 @endpush

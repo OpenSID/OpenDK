@@ -1,62 +1,58 @@
 @extends('layouts.dashboard_template')
 
 @section('title')
-    Data Dokumen
+Data Dokumen
 @endsection
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ $page_title }}</li>
-        </ol>
-    </section>
-    <div class="box-header with-border">
-        @include('forms.btn-social', [
-            'back_url' => route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id]),
-        ])
-    </div>
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
+    </ol>
+</section>
+<div class="box-header with-border">
+    @include('forms.btn-social', [
+    'back_url' => route('data.pengurus.arsip', ['pengurus_id' => $pengurus_id]),
+    ])
+</div>
 
-    @include('partials.flash_message')
+@include('partials.flash_message')
 
-    <section class="content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
 
-                    {!! Form::open([
-                        'route' => 'data.pengurus.store.arsip',
-                        'method' => 'post',
-                        'files' => true,
-                        'id' => 'form-pengurus',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
-                    @include('layouts.fragments.error_message')
+                {!!
+                Html::form()->route('data.pengurus.store.arsip')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                form-label-left') !!}
+                @include('layouts.fragments.error_message')
 
-                    <div class="box-body">
+                <div class="box-body">
 
-                        @include('flash::message')
-                        @include('data.pengurus.form_create_arsip')
-                        <div class="box-footer">
-                            @include('partials.button_reset_submit')
-                        </div>
+                    @include('flash::message')
+                    @include('data.pengurus.form_create_arsip')
+                    <div class="box-footer">
+                        @include('partials.button_reset_submit')
                     </div>
-                    {!! Form::close() !!}
                 </div>
+                {!! Html::closeForm() !!}
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection
 
 @include('partials.asset_datatables')
 
 @push('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             var data = $('#pengurus-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -144,9 +140,9 @@
                 data.ajax.reload();
             });
         });
-    </script>
-    @include('forms.datatable-vertical')
-    @include('forms.delete-modal')
-    @include('forms.suspend-modal')
-    @include('forms.active-modal', ['title' => $page_title])
+</script>
+@include('forms.datatable-vertical')
+@include('forms.delete-modal')
+@include('forms.suspend-modal')
+@include('forms.active-modal', ['title' => $page_title])
 @endpush

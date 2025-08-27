@@ -1,20 +1,23 @@
 <div id="agree-modal" class="modal fade modal-danger in">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::open(['id' => 'agree', 'method' => 'PUT']) !!}
+            {!! Html::form('PUT')->id('agree')->open() !!}
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span
+                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Ubah Status Komplain</h4>
             </div>
             <div class="modal-body">
                 <p>Silakan pilih status di bawah ini?</p>
-                {{ Form::select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, ['class' => 'form-control']) }}
+                {{ Html::select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses', 'SELESAI'
+                => 'Selesai'], old('status'))->class('form-control') }}
             </div>
             <div class="modal-footer">
-                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
-                {!! Form::submit('Simpan', ['class' => 'btn btn-warning waves-effect waves-light']) !!}
+                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
+                    data-dismiss="modal">Batal</a>
+                {!! Html::submit('Simpan')->class('btn btn-warning waves-effect waves-light') !!}
             </div>
-            {!! Form::close() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
 </div>

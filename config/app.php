@@ -261,6 +261,9 @@ return [
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         // Intervention\Image\ImageServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+
+        // Spatie HTML
+        Spatie\Html\HtmlServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -308,6 +311,7 @@ return [
         // 'Eloquent' => Illuminate\Database\Eloquent\Model::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'Counter' => App\Facades\Counter::class,
+        'Html' => Spatie\Html\Facades\Html::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,

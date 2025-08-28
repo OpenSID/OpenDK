@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Form::model($jabatan, [
+                {!! Html::model($jabatan, [
                 'route' => ['data.jabatan.update', $jabatan->id],
                 'method' => 'post',
                 'id' => 'form-jabatan',

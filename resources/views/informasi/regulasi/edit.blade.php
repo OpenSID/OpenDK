@@ -31,7 +31,8 @@
 
                 <!-- form start -->
                 {!! Html::model($regulasi, 'PUT', route('informasi.regulasi.update',
-                $regulasi->id))->id('form-regulasi')->class('form-horizontal form-label-left')->files()->open() !!}
+                $regulasi->id))->id('form-regulasi')->class('form-horizontal form-label-left')->acceptsFiles()->open()
+                !!}
 
                 <div class="box-body">
 

@@ -14,7 +14,7 @@
 </section>
 <section class="content container-fluid">
 
-    {!! Html::form('POST', route('informasi.artikel.store'))->files()->open() !!}
+    {!! Html::form('POST', route('informasi.artikel.store'))->acceptsFiles()->open() !!}
 
     @include('informasi.artikel._form')
 

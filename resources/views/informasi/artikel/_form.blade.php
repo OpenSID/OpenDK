@@ -40,7 +40,10 @@
                         style="width:100%; max-height:250px; float:left;" />
 
                     {!!
-                    Html::file('gambar')->placeholder('Gambar')->class('form-control')->id('file-artikel')->accept('jpg,jpeg,png')
+                    Html::file('gambar')
+                    ->class('form-control')
+                    ->id('file-artikel')
+                    ->accept('.jpg,.jpeg,.png')
                     !!}
                     @if ($errors->has('gambar'))
                     <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>

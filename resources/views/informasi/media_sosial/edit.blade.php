@@ -31,7 +31,8 @@
 
                 <!-- form start -->
                 {!! Html::model($medsos, 'PUT', route('informasi.media-sosial.update',
-                $medsos->id))->id('form-media-sosial')->class('form-horizontal form-label-left')->files()->open() !!}
+                $medsos->id))->id('form-media-sosial')->class('form-horizontal form-label-left')->acceptsFiles()->open()
+                !!}
 
                 <div class="box-body">
 

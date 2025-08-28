@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 {!! Html::form('POST',
-                route('informasi.media-sosial.store'))->files()->id('form-media-sosial')->class('form-horizontal
+                route('informasi.media-sosial.store'))->acceptsFiles()->id('form-media-sosial')->class('form-horizontal
                 form-label-left')->open() !!}
 
                 <div class="box-body">

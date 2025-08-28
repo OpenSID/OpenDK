@@ -31,7 +31,8 @@
 
                 <!-- form start -->
                 {!! Html::model($sinergi, 'PUT', route('informasi.sinergi-program.update',
-                $sinergi->id))->id('form-sinergi-program')->class('form-horizontal form-label-left')->files()->open()
+                $sinergi->id))->id('form-sinergi-program')->class('form-horizontal
+                form-label-left')->acceptsFiles()->open()
                 !!}
 
                 <div class="box-body">

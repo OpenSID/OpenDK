@@ -31,7 +31,7 @@
 
                 <!-- form start -->
                 {!! Html::model($potensi, 'PUT', route('informasi.potensi.update',
-                $potensi->id))->id('form-potensi')->class('form-horizontal form-label-left')->files()->open() !!}
+                $potensi->id))->id('form-potensi')->class('form-horizontal form-label-left')->acceptsFiles()->open() !!}
 
                 <div class="box-body">
 

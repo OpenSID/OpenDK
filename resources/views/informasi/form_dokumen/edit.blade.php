@@ -31,7 +31,7 @@
 
                 <!-- form start -->
                 {!! Html::model($dokumen, 'PUT', route('informasi.form-dokumen.update',
-                $dokumen->id))->id('form-dokumen')->class('form-horizontal form-label-left')->files()->open() !!}
+                $dokumen->id))->id('form-dokumen')->class('form-horizontal form-label-left')->acceptsFiles()->open() !!}
 
                 <div class="box-body">
 

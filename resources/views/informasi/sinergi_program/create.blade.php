@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 {!! Html::form('POST',
-                route('informasi.sinergi-program.store'))->files()->id('form-sinergi-program')->class('form-horizontal
+                route('informasi.sinergi-program.store'))->acceptsFiles()->id('form-sinergi-program')->class('form-horizontal
                 form-label-left')->open() !!}
 
                 <div class="box-body">

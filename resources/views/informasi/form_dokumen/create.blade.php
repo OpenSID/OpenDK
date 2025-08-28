@@ -20,7 +20,7 @@
                 <div class="box-body">
                     <!-- form start -->
                     {!! Html::form('POST',
-                    route('informasi.form-dokumen.store'))->files()->id('form-dokumen')->class('form-horizontal
+                    route('informasi.form-dokumen.store'))->acceptsFiles()->id('form-dokumen')->class('form-horizontal
                     form-label-left')->open() !!}
 
                     @if (count($errors) > 0)

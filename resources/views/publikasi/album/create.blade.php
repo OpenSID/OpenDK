@@ -14,11 +14,14 @@
     </section>
     <section class="content container-fluid">
 
-        {!! Form::open(['url' => route('publikasi.album.store'), 'files' => true]) !!}
+        {!! Html::form()
+            ->url(route('publikasi.album.store'))
+            ->attribute('files', true)
+            ->open() !!}
 
         @include('publikasi.album._form')
 
-        {!! Form::close() !!}
+        {!! Html::closeForm() !!}
 
     </section>
 @endsection

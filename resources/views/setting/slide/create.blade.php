@@ -17,13 +17,13 @@
             <div class="col-md-12">
                 @include('partials.flash_message')
                 <div class="box box-primary">
-                    {!! Form::open([
-                        'route' => 'setting.slide.store',
-                        'method' => 'post',
-                        'files' => true,
-                        'id' => 'form-slide',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
+                    {!! Html::form()
+                        ->route('setting.slide.store')
+                        ->method('post')
+                        ->attribute('files', true)
+                        ->id('form-slide')
+                        ->class('form-horizontal form-label-left')
+                        ->open() !!}
                     @csrf
                     <div class="box-body">
 
@@ -44,7 +44,7 @@
                     <div class="box-footer">
                         @include('partials.button_reset_submit')
                     </div>
-                    {!! Form::close() !!}
+                    {!! Html::closeForm() !!}
                 </div>
             </div>
         </div>

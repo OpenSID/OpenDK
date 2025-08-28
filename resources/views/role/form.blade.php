@@ -1,6 +1,6 @@
 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
     <label class="control-label" for="first-name">Nama <span class="required">*</span></label>
-    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama', 'required' => true]) !!}
+    {!! Html::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama', 'required' => true]) !!}
 </div>
 <table class="table table-striped">
     <thead>
@@ -20,9 +20,9 @@
 
                 <div class="checkbox checkbox-custom checkbox-primary" style="margin-top:0px !important;margin-bottom:0px !important;">
                     @if ($rolePermission == $roleMenu)
-                        {!! Form::checkbox('create-all', 1, null, ['checked']) !!}
+                        {!! Html::checkbox('create-all', 1, null, ['checked']) !!}
                     @else
-                        {!! Form::checkbox('create-all', false, null) !!}
+                        {!! Html::checkbox('create-all', false, null) !!}
                     @endif
                     <label>
                         Select All
@@ -62,7 +62,7 @@
                             <ul style="list-style:none">
                                 <li>
                                     <div class="checkbox checkbox-custom checkbox-primary" style="margin-top:0px !important;margin-bottom:0px !important;">
-                                        {!! Form::checkbox('permissions[' . $permission['slug'] . ']', $permission_val, null, ['class' => 'create-box parent', 'data-id' => $permission['slug']]) !!}
+                                        {!! Html::checkbox('permissions[' . $permission['slug'] . ']', $permission_val, null, ['class' => 'create-box parent', 'data-id' => $permission['slug']]) !!}
                                         <label>
                                             @if ($permission_val == 1)
                                                 <span class="label label-outline label-success">Active</span>
@@ -75,7 +75,7 @@
                                 @foreach ($childs as $child)
                                     <li>
                                         <div class="checkbox checkbox-custom checkbox-primary" style="margin-top:0px !important;margin-bottom:0px !important;">
-                                            {!! Form::checkbox('permissions[' . $child->slug . ']', permission_val($myrole, $child->slug), null, ['class' => 'create-box child-' . $permission['slug'] . '']) !!}
+                                            {!! Html::checkbox('permissions[' . $child->slug . ']', permission_val($myrole, $child->slug), null, ['class' => 'create-box child-' . $permission['slug'] . '']) !!}
                                             <label>
                                                 @if (permission_val($myrole, $child->slug) == 1)
                                                     <span class="label label-outline label-success">Active</span>

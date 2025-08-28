@@ -2,14 +2,14 @@
 <div class="form-group">
     <div class="col-12">
 
-        {!! Form::text('text', null, [
-            'class' => 'form-control item-menu',
-            'maxlength' => 255,
-            'placeholder' => 'Nama Menu',
-            'id' => 'text',
+        {!! Html::text('text', null, [
+        'class' => 'form-control item-menu',
+        'maxlength' => 255,
+        'placeholder' => 'Nama Menu',
+        'id' => 'text',
         ]) !!}
 
-        {!! Form::hidden('icon', 'fa fa-list', ['class' => 'item-menu']) !!}
+        {!! Html::hidden('icon', 'fa fa-list', ['class' => 'item-menu']) !!}
     </div>
 </div>
 
@@ -17,19 +17,22 @@
 <div class="form-group">
     <div class="col-12">
         <label class="form-check-inline">
-            {!! Form::radio('source', 'link', 'link', ['class' => 'form-check-input', 'id' => 'sourceLink']) !!} Link
+            {!! Html::radio('source', 'link', 'link', ['class' => 'form-check-input', 'id' => 'sourceLink']) !!} Link
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Halaman', null, ['class' => 'form-check-input', 'id' => 'sourceHalaman']) !!} Halaman
+            {!! Html::radio('source', 'Halaman', null, ['class' => 'form-check-input', 'id' => 'sourceHalaman']) !!}
+            Halaman
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Kategori', null, ['class' => 'form-check-input', 'id' => 'sourceKategori']) !!} Kategori
+            {!! Html::radio('source', 'Kategori', null, ['class' => 'form-check-input', 'id' => 'sourceKategori']) !!}
+            Kategori
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Modul', null, ['class' => 'form-check-input', 'id' => 'sourceModul']) !!} Modul
+            {!! Html::radio('source', 'Modul', null, ['class' => 'form-check-input', 'id' => 'sourceModul']) !!} Modul
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Dokumen', null, ['class' => 'form-check-input', 'id' => 'sourceDokumen']) !!} Dokumen
+            {!! Html::radio('source', 'Dokumen', null, ['class' => 'form-check-input', 'id' => 'sourceDokumen']) !!}
+            Dokumen
         </label>
     </div>
 </div>
@@ -37,19 +40,21 @@
 <!-- Url Field -->
 <div class="form-group">
     <div class="col-12">
-        {!! Form::select('sourcelist', $sourceItem, null, ['class' => 'form-control']) !!}
-        {!! Form::text('href', null, ['class' => 'form-control item-menu', 'maxlength' => 255, 'placeholder' => 'http://contoh.com']) !!}
+        {!! Html::select('sourcelist', $sourceItem, null, ['class' => 'form-control']) !!}
+        {!! Html::text('href', null, ['class' => 'form-control item-menu', 'maxlength' => 255, 'placeholder' =>
+        'http://contoh.com']) !!}
     </div>
 </div>
 
 <div class="form-group">
-    {!! Form::label('target', 'Target') !!}
-    {!! Form::select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'], null, ['class' => 'form-control item-menu', 'id' => 'target']) !!}
+    {!! Html::label('target', 'Target') !!}
+    {!! Html::select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'], null, ['class' =>
+    'form-control item-menu', 'id' => 'target']) !!}
 </div>
 
 @push('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
             // Tampilkan input[name=href] dan sembunyikan yang lainnya saat halaman dimuat
             document.querySelector('input[name=href]').style.display = 'block';
             document.querySelector('select[name=sourcelist]').style.display = 'none';
@@ -115,8 +120,8 @@
                 document.querySelector('input[name=href]').value = selectedValue;
             });
         });
-    </script>
-    <!-- <script>
+</script>
+<!-- <script>
         $(document).ready(function() {
             $('select[name=sourcelist]').hide()
             $(':radio[name=source]').change(function() {

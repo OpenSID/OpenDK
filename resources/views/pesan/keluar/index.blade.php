@@ -25,14 +25,14 @@
                         <div class="pull-right">
                             <div class="row">
                                 <div class="col-md-6">
-                                    {!! Form::open(['route' => 'pesan.keluar', 'method' => 'get', 'id' => 'form-search-desa']) !!}
-                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
+                                    {!! Html::form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open() !!}
+                                    {!! Html::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
                                         'placeholder' => 'pilih desa',
                                         'class' => 'form-control',
                                         'id' => 'list_desa',
                                         'required',
                                     ]) !!}
-                                    {!! Form::close() !!}
+                                    {!! Html::closeForm() !!}
                                 </div>
                                 <div class="col-md-6">
                                     <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
@@ -50,15 +50,15 @@
                             <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
                             </button>
 
-                            {!! Form::open([
-                                'route' => 'pesan.arsip.multiple',
-                                'class' => 'form-group inline',
-                                'method' => 'post',
-                                'id' => 'form-multiple-arsip-pesan',
-                            ]) !!}
+                            {!! Html::form()
+                                ->route('pesan.arsip.multiple')
+                                ->class('form-group inline')
+                                ->method('post')
+                                ->id('form-multiple-arsip-pesan')
+                                ->open() !!}
                             <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
-                            {!! Form::text('array_id', null, ['hidden' => true, 'id' => 'array_multiple_id_arsip']) !!}
-                            {!! Form::close() !!}
+                            {!! Html::text('array_id', null, ['hidden' => true, 'id' => 'array_multiple_id_arsip']) !!}
+                            {!! Html::closeForm() !!}
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
                         </div>
                         <div class="table-responsive mailbox-messages">

@@ -18,13 +18,13 @@
                 @include('partials.flash_message')
                 <div class="box box-primary">
 
-                    {!! Form::model($slide, [
-                        'route' => ['setting.slide.update', $slide->id],
-                        'method' => 'put',
-                        'files' => true,
-                        'id' => 'form-slide',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
+                    {!! Html::model($slide)
+                        ->route(['setting.slide.update', $slide->id])
+                        ->method('put')
+                        ->attribute('files', true)
+                        ->id('form-slide')
+                        ->class('form-horizontal form-label-left')
+                        ->open() !!}
 
                     <div class="box-body">
 
@@ -45,7 +45,7 @@
                     <div class="box-footer">
                         @include('partials.button_reset_submit')
                     </div>
-                    {!! Form::close() !!}
+                    {!! Html::closeForm() !!}
                 </div>
             </div>
         </div>

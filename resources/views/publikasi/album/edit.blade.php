@@ -14,17 +14,17 @@
     </section>
     <section class="content container-fluid">
 
-        {!! Form::model($album, [
-            'route' => ['publikasi.album.update', $album->id],
-            'method' => 'put',
-            'id' => 'form-album',
-            'files' => true,
-        ]) !!}
+        {!! Html::model($album)
+            ->route(['publikasi.album.update', $album->id])
+            ->method('put')
+            ->id('form-album')
+            ->attribute('files', true)
+            ->open() !!}
 
         @include('flash::message')
         @include('publikasi.album._form')
 
-        {!! Form::close() !!}
+        {!! Html::closeForm() !!}
 
     </section>
 @endsection

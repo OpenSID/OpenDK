@@ -1,13 +1,13 @@
 <div class="form-group">
     <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('judul', null, ['class' => 'form-control', 'required' => true, 'id' => 'judul']) !!}
+        {!! Html::text('judul', null, ['class' => 'form-control', 'required' => true, 'id' => 'judul']) !!}
     </div>
 </div>
 <div class="form-group">
     <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi<span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('deskripsi', null, [
+        {!! Html::textarea('deskripsi', null, [
             'class' => 'textarea',
             'placeholder' => 'deskripsi',
             'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',

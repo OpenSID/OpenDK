@@ -18,14 +18,14 @@
                 <h3 class="box-title">Roles</h3>
             </div>
             <div class="box-body">
-                {!! Form::model($role, [
-                    'route' => ['setting.role.update', $role->id],
-                    'method' => 'put',
-                    'autocomplete' => 'off',
-                    'id' => 'form-role',
-                ]) !!}
+                {!! Html::model($role)
+                    ->route(['setting.role.update', $role->id])
+                    ->method('put')
+                    ->attribute('autocomplete', 'off')
+                    ->id('form-role')
+                    ->open() !!}
                 @include('role.form')
-                {!! Form::close() !!}
+                {!! Html::closeForm() !!}
             </div>
         </div>
     </section>

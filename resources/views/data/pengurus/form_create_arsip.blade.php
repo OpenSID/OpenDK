@@ -2,7 +2,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id'), null, ['placeholder' => 'Pilih Jenis Dokumen', 'class' => 'form-control', 'id' => 'jenis_dokumen_id', 'required' => true]) !!}
+        {!! Html::select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id'), null, ['placeholder' => 'Pilih
+        Jenis Dokumen', 'class' => 'form-control', 'id' => 'jenis_dokumen_id', 'required' => true]) !!}
     </div>
 
 </div>
@@ -11,7 +12,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('judul_document', $penduduk->judul_document ?? null, ['placeholder' => 'Judul Document', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('judul_document', $penduduk->judul_document ?? null, ['placeholder' => 'Judul Document', 'class'
+        => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 
@@ -19,7 +21,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="path_document" class="form-control" required="false" accept=".pdf,.doc,.docx,.xls,.xlsx">
+        <input type="file" name="path_document" class="form-control" required="false"
+            accept=".pdf,.doc,.docx,.xls,.xlsx">
         <small class="text-danger">
             Batas maksimal pengunggahan file: 80MB. Hanya mendukung format: .pdf, .doc, .docx, .xls, .xlsx
         </small>
@@ -30,16 +33,20 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('keterangan', $penduduk->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('keterangan', $penduduk->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' =>
+        'form-control', 'required' => true]) !!}
     </div>
 </div>
-{!! Form::hidden('das_penduduk_id', $data_penduduk->id ?? '', ['placeholder' => 'das_penduduk_id', 'class' => 'form-control', 'required' => true, 'readonly' => true]) !!}
-{!! Form::hidden('document_id', $penduduk->document_id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
-{!! Form::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
+{!! Html::hidden('das_penduduk_id', $data_penduduk->id ?? '', ['placeholder' => 'das_penduduk_id', 'class' =>
+'form-control', 'required' => true, 'readonly' => true]) !!}
+{!! Html::hidden('document_id', $penduduk->document_id ?? '', ['placeholder' => 'document_id', 'class' =>
+'form-control', 'required' => false, 'readonly' => true]) !!}
+{!! Html::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control',
+'required' => false, 'readonly' => true]) !!}
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             $("#pengurus_id").on('change', function() {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
@@ -70,5 +77,5 @@
                 }
             });
         });
-    </script>
+</script>
 @endpush

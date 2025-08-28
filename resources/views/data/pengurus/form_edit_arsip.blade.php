@@ -2,10 +2,11 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('jenis_surat', ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck('nama', 'id')->toArray(), isset($document) ? $document->jenis_surat : null, [
-            'class' => 'form-control',
-            'id' => 'jenis_surat',
-            'required' => true,
+        {!! Html::select('jenis_surat', ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck('nama',
+        'id')->toArray(), isset($document) ? $document->jenis_surat : null, [
+        'class' => 'form-control',
+        'id' => 'jenis_surat',
+        'required' => true,
         ]) !!}
     </div>
 
@@ -15,7 +16,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('judul_document', $document->judul_document ?? null, ['placeholder' => 'Judul Document', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('judul_document', $document->judul_document ?? null, ['placeholder' => 'Judul Document', 'class'
+        => 'form-control', 'required' => true]) !!}
     </div>
 </div>
 
@@ -34,16 +36,20 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('keterangan', $document->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('keterangan', $document->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' =>
+        'form-control', 'required' => true]) !!}
     </div>
 </div>
-{!! Form::hidden('das_penduduk_id', $document->das_penduduk_id ?? '', ['placeholder' => 'das_penduduk_id', 'class' => 'form-control', 'required' => true, 'readonly' => true]) !!}
-{!! Form::hidden('document_id', $document->id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
-{!! Form::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
+{!! Html::hidden('das_penduduk_id', $document->das_penduduk_id ?? '', ['placeholder' => 'das_penduduk_id', 'class' =>
+'form-control', 'required' => true, 'readonly' => true]) !!}
+{!! Html::hidden('document_id', $document->id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control',
+'required' => false, 'readonly' => true]) !!}
+{!! Html::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control',
+'required' => false, 'readonly' => true]) !!}
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             $("#pengurus_id").on('change', function() {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
@@ -74,5 +80,5 @@
                 }
             });
         });
-    </script>
+</script>
 @endpush

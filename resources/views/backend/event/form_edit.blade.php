@@ -1,31 +1,37 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Kegiatan <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Form::text('event_name', null, ['placeholder' => 'Nama kegiatan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('event_name', old('event_name'))->placeholder('Nama kegiatan')->class('form-control')->required()
+        !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Mulai / Selesai<span class="required">*</span></label>
     <div class="col-md-3 col-sm-8 col-xs-12">
-        {!! Form::text('waktu', null, ['id' => 'waktu', 'placeholder' => 'Waktu kegiatan', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('waktu', old('waktu'))->id('waktu')->placeholder('Waktu
+        kegiatan')->class('form-control')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Form::textarea('description', null, ['class' => 'textarea my-editor', 'placeholder' => 'Deskripsi kegiatan', 'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;', 'required' => 'required']) !!}
+        {!! Html::textarea('description', old('description'))->class('textarea my-editor')->placeholder('Deskripsi
+        kegiatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
+        padding: 10px;')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Orang yang hadir <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Form::text('attendants', null, ['placeholder' => 'contoh: BAPENAS, GUBERNUR, CAMAT', 'class' => 'form-control', 'required' => true]) !!}
+        {!! Html::text('attendants', old('attendants'))->placeholder('contoh: BAPENAS, GUBERNUR,
+        CAMAT')->class('form-control')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Status <span class="required">*</span></label>
     <div class="col-md-2 col-sm-8 col-xs-12">
-        {!! Form::select('status', ['OPEN' => 'Open', 'CLOSED' => 'Closed'], null, ['class' => 'form-control', 'required' => true, 'id' => 'status']) !!}
+        {!! Html::select('status', ['OPEN' => 'Open', 'CLOSED' => 'Closed'],
+        old('status'))->class('form-control')->required()->id('status') !!}
     </div>
 </div>
 <div id="attachment_input" class="form-group">
@@ -37,8 +43,8 @@
 @include('partials.asset_daterangepicker')
 
 @push('scripts')
-    {!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
-    <script type="application/javascript">
+{!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
+<script type="application/javascript">
     $(document).ready(function () {
         if ($('#status').val() == 'CLOSED') {
             add_atachment();

@@ -1,6 +1,6 @@
 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
     <label class="control-label" for="first-name">Nama <span class="required">*</span></label>
-    {!! Html::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama', 'required' => true]) !!}
+    {!! Html::text('name')->class('form-control')->required()->placeholder('Nama')->value(old('name', isset($role) ? $role->name : '')) !!}
 </div>
 <table class="table table-striped">
     <thead>

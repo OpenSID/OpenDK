@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::model($sinergi, 'PUT', route('informasi.sinergi-program.update',
+                {!! Html::form('PUT', route('informasi.sinergi-program.update',
                 $sinergi->id))->id('form-sinergi-program')->class('form-horizontal
                 form-label-left')->acceptsFiles()->open()
                 !!}

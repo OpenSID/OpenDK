@@ -30,9 +30,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($desa, [
-            'route' => ['data.data-desa.update', $desa->id],
-            'method' => 'put',
+            {!! Html::form('put', route('data.data-desa.update', $desa->id)),
             'id' => 'form-datadesa',
             'class' => 'form-horizontal form-label-left',
             ]) !!}
@@ -46,7 +44,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
     </div>

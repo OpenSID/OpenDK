@@ -1,8 +1,10 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Prosedur <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('judul_prosedur', old('judul_prosedur'))->class('form-control')->placeholder('Judul Prosedur')
-        !!}
+        {{ html()->text('judul_prosedur')
+        ->class('form-control')
+        ->placeholder('Judul Prosedur')
+        ->value(old('judul_prosedur', $prosedur->judul_prosedur ?? '')) }}
     </div>
 </div>
 <div class="form-group">

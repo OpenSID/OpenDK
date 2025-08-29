@@ -29,8 +29,10 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($anggaran)->route('data.anggaran-realisasi.update',
-            $anggaran->id)->method('PUT')->id('form-anggaran')->class('form-horizontal form-label-left') !!}
+            {!! Html::form('PUT', route('data.anggaran-realisasi.update', $anggaran->id))
+                ->id('form-anggaran')
+                ->class('form-horizontal form-label-left')
+                ->open() !!}
 
             <div class="box-body">
 
@@ -43,7 +45,7 @@
                 @include('partials.button_reset_submit')
             </div>
 
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
 
         </div>
     </div>

@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                {!! Html::model($keluarga, ['id' => 'form-keluarga', 'class' => 'form-horizontal form-label-left']) !!}
+                {!! Html::form() !!}
 
                 <div class="box-body">
 
@@ -26,7 +26,7 @@
                 </div>
                 <div class="box-footer">
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

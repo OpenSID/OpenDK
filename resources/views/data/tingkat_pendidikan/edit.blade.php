@@ -29,8 +29,8 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($pendidikan)->route('data.tingkat-pendidikan.update',
-            $pendidikan->id)->method('PUT')->id('form-pendidikan')->class('form-horizontal form-label-left') !!}
+            {!! Html::form('PUT', route('data.tingkat-pendidikan.update',
+            $pendidikan->id))->id('form-pendidikan')->class('form-horizontal form-label-left') !!}
 
             <div class="box-body">
 
@@ -43,7 +43,7 @@
                 @include('partials.button_reset_submit')
             </div>
 
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
 
         </div>
     </div>

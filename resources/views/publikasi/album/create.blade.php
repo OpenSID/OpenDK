@@ -21,7 +21,7 @@
 
         @include('publikasi.album._form')
 
-        {!! Html::closeForm() !!}
+        {!! Html::form()->close() !!}
 
     </section>
 @endsection

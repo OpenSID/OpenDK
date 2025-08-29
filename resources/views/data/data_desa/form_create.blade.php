@@ -41,12 +41,7 @@
     <label for="luas_wilayah" class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span
             class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        {!! Html::number('luas_wilayah', 0, [
-        'class' => 'form-control',
-        'id' => 'luas_wilayah',
-        'placeholder' => 'Luas Wilayah Desa',
-        'step' => '0.1',
-        ]) !!}
+        {!! Html::number('luas_wilayah')->class('form-control')->id('luas_wilayah')->placeholder('Luas Wilayah Desa')->value(old('luas_wilayah', isset($desa) ? $desa->luas_wilayah : '')) !!}
     </div>
 </div>
 

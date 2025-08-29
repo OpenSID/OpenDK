@@ -11,7 +11,7 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div style="display: flex; flex-direction: column;">
-            {!! Html::select('penduduk_id', $pendudukList, old('penduduk_id'))->class('form-control
+            {!! Html::select('penduduk_id', $pendudukList, old('penduduk_id')->value(old('penduduk_id', isset($lembaga)->value(old('penduduk_id', isset($anggota) ? $anggota->penduduk_id : '')) ? $lembaga->penduduk_id : '')))->class('form-control
             select2')->placeholder('Pilih Nama Anggota')->required()->style('width:100%;') !!}
         </div>
     </div>
@@ -39,7 +39,7 @@
             3 => 'Sekretaris',
             4 => 'Bendahara',
             5 => 'Anggota',
-            ], old('jabatan_id'))->placeholder('Pilih Jabatan')->class('form-control
+            ])->value(old('jabatan_id', isset($lembaga)->value(old('jabatan_id', isset($anggota) ? $anggota->jabatan_id : '')) ? $lembaga->jabatan_id : '')))->placeholder('Pilih Jabatan')->class('form-control
             select2')->required()->style('width:100%;') !!}
         </div>
     </div>

@@ -29,8 +29,8 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($siswa)->route('data.putus-sekolah.update',
-            $siswa->id)->method('PUT')->id('form-siswa')->class('form-horizontal form-label-left') !!}
+            {!! Html::form('PUT', route('data.putus-sekolah.update',
+            $siswa->id))->id('form-siswa')->class('form-horizontal form-label-left') !!}
 
             <div class="box-body">
 
@@ -42,7 +42,7 @@
                 @include('partials.button_reset_submit')
             </div>
 
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
 
         </div>
     </div>

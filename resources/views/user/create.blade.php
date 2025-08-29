@@ -35,7 +35,7 @@
             ->open() !!}
             @include('flash::message')
             @include('user.form')
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
 </section>

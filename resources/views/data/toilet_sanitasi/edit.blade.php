@@ -30,7 +30,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($toilet, 'PUT', route('data.toilet-sanitasi.update',
+            {!! Html::form('PUT', route('data.toilet-sanitasi.update',
             $toilet->id))->id('form-toilet')->class('form-horizontal form-label-left')->open() !!}
 
             <div class="box-body">

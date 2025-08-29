@@ -37,8 +37,8 @@
         @endif
 
         <!-- form start -->
-        {!! Html::model($profil)->route('data.profil.update',
-        $profil->id)->method('PUT')->id('form-profil')->class('form-horizontal form-label-left')->acceptsFiles() !!}
+        {!! Html::form('PUT', route('data.profil.update',
+        $profil->id))->id('form-profil')->class('form-horizontal form-label-left')->acceptsFiles() !!}
 
         <div class="box-body">
 
@@ -50,7 +50,7 @@
         <div class="box-footer">
             @include('partials.button_reset_submit')
         </div>
-        {!! Html::closeForm() !!}
+        {!! Html::form()->close() !!}
 
     </div>
 </section>

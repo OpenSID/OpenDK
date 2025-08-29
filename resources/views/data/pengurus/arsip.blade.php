@@ -71,7 +71,7 @@
                         @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
                     </div>
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

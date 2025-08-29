@@ -2,48 +2,66 @@
     <label for="total_anggaran" class="control-label col-md-4 col-sm-3 col-xs-12">Total Anggaran <span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('total_anggaran', null, ['class' => 'form-control', 'required' => true, 'id' =>
-        'total_anggaran']) !!}
+        {!! Html::number('total_anggaran')
+            ->value(old('total_anggaran', $anggaran->total_anggaran))
+            ->class('form-control')
+            ->required()
+            ->id('total_anggaran') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="total_belanja" class="control-label col-md-4 col-sm-3 col-xs-12">Total Belanja <span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('total_belanja', null, ['class' => 'form-control', 'required' => true, 'id' =>
-        'total_belanja']) !!}
+        {!! Html::number('total_belanja')
+            ->value(old('total_belanja', $anggaran->total_belanja))
+            ->class('form-control')
+            ->required()
+            ->id('total_belanja') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="belanja_pegawai" class="control-label col-md-4 col-sm-3 col-xs-12">Belanja Pegawai <span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('belanja_pegawai', null, ['class' => 'form-control', 'required' => true, 'id' =>
-        'belanja_pegawai']) !!}
+        {!! Html::number('belanja_pegawai')
+            ->value(old('belanja_pegawai', $anggaran->belanja_pegawai))
+            ->class('form-control')
+            ->required()
+            ->id('belanja_pegawai') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="belanja_barang_jasa" class="control-label col-md-4 col-sm-3 col-xs-12">Belanja Barang & Jasa <span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('belanja_barang_jasa', null, ['class' => 'form-control', 'required' => true, 'id' =>
-        'belanja_barang_jasa']) !!}
+        {!! Html::number('belanja_barang_jasa')
+            ->value(old('belanja_barang_jasa', $anggaran->belanja_barang_jasa))
+            ->class('form-control')
+            ->required()
+            ->id('belanja_barang_jasa') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="belanja_modal" class="control-label col-md-4 col-sm-3 col-xs-12">Belanja Modal <span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('belanja_modal', null, ['class' => 'form-control', 'required' => true, 'id' =>
-        'belanja_modal']) !!}
+        {!! Html::number('belanja_modal')
+            ->value(old('belanja_modal', $anggaran->belanja_modal))
+            ->class('form-control')
+            ->required()
+            ->id('belanja_modal') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="belanja_tidak_langsung" class="control-label col-md-4 col-sm-3 col-xs-12">Belanja Tidak Langsung <span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('belanja_tidak_langsung', null, ['class' => 'form-control', 'required' => true, 'id' =>
-        'belanja_tidak_langsung']) !!}
+        {!! Html::number('belanja_tidak_langsung')
+            ->value(old('belanja_tidak_langsung', $anggaran->belanja_tidak_langsung))
+            ->class('form-control')
+            ->required()
+            ->id('belanja_tidak_langsung') !!}
     </div>
 </div>
 <div class="form-group">

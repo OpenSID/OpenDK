@@ -10,15 +10,14 @@
                     <label class="control-label" for="judul">Judul Galeri <span
                             class="required text-danger">*</span></label>
 
-                    {!! Html::text('judul', null, ['placeholder' => 'Judul Galeri', 'class' => 'form-control']) !!}
+                    {!! Html::text('judul')->class('form-control')->placeholder('Judul Galeri')->value(old('judul', isset($galeri) ? $galeri->judul : '')) !!}
                     @if ($errors->has('judul'))
                     <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="jenis">Jenis <span class="required text-danger">*</span></label>
-                    {!! Html::select('jenis', ['file' => 'File', 'url' => 'Link'], null, ['class' => 'form-control',
-                    'id' => 'jenis']) !!}
+                    {!! Html::select('jenis', ['file' => 'File', 'url' => 'Link'])->class('form-control')->value(old('jenis', isset($galeri) ? $galeri->jenis : '')) !!}
 
                     @if ($errors->has('jenis'))
                     <span class="help-block" style="color:red">{{ $errors->first('jenis') }}</span>
@@ -27,7 +26,7 @@
                 <div class="form-group" id="view-url">
                     <label for="url" class="control-label">URL <span class="required text-danger">*</span></label>
 
-                    {!! Html::text('link', null, ['class' => 'form-control']) !!}
+                    {!! Html::text('link')->class('form-control')->value(old('link', isset($galeri) ? $galeri->link : '')) !!}
 
                     @if ($errors->has('link'))
                     <span class="help-block" style="color:red">{{ $errors->first('link') }}</span>
@@ -73,8 +72,7 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="status">Status<span class="required text-danger">*</span></label>
-                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' =>
-                    'form-control']) !!}
+                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])->class('form-control')->value(old('status', isset($galeri) ? $galeri->status : '')) !!}
                 </div>
             </div>
 

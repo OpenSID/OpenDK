@@ -17,21 +17,7 @@
         <div class="col-md-12">
             @include('partials.flash_message')
 
-            {!! Html::model($navigation)
-            ->route(['setting.navigation.update', $navigation->id])
-            ->method('put')
-            ->id('form-navigation')
-            ->class('form-horizontal form-label-left')
-            ->open() !!}
-
-            <div class="box-body">
-
-                @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <strong>Oops!</strong> Ada yang salah dengan inputan Anda.<br><br>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+            {!! Html::form(){{ $error }}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -43,7 +29,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
     </div>

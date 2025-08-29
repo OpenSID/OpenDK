@@ -17,7 +17,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="status">Status</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('status', ['1' => 'Aktif', '0' => 'Tidak Aktif'], old('status'))->class('form-control') !!}
+        {!! Html::select('status', ['1' => 'Aktif', '0' => 'Tidak Aktif']))->class('form-control') !!}
     </div>
 </div>
 <div class="ln_solid"></div>

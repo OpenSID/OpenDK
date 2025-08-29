@@ -15,12 +15,10 @@
 
     @include('partials.flash_message')
 
-    {!! Html::model($data_umum, [
-    'route' => ['data.data-umum.update', $data_umum->id],
-    'method' => 'put',
-    'id' => 'form-event',
-    'class' => 'form-horizontal form-label-left',
-    ]) !!}
+    {!! Html::form('PUT', route('data.data-umum.update', $data_umum->id))
+    ->id('form-event')
+    ->class('form-horizontal form-label-left')
+    ->open() !!}
 
     <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
 
@@ -90,7 +88,7 @@
         </div>
     </div>
 
-    {!! Html::closeForm() !!}
+    {!! Html::form()->close() !!}
 </section>
 @endsection
 

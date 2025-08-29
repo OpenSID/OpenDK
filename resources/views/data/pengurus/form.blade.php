@@ -11,18 +11,18 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Pengurus <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('nama', null, ['placeholder' => 'Nama Pengurus', 'class' => 'form-control', 'required' => true])
+        {!! Html::text('nama')->class('form-control')->required()->placeholder('Nama Pengurus')->value(old('nama', isset($pengurus) ? $pengurus->nama : ''))
         !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Gelar</label>
     <div class="col-md-2 col-sm-4 col-xs-6">
-        {!! Html::text('gelar_depan', null, ['placeholder' => 'Gelar Depan', 'class' => 'form-control']) !!}
+        {!! Html::text('gelar_depan')->class('form-control')->placeholder('Gelar Depan')->value(old('gelar_depan', isset($pengurus) ? $pengurus->gelar_depan : '')) !!}
     </div>
 
     <div class="col-md-2 col-sm-4 col-xs-6">
-        {!! Html::text('gelar_belakang', null, ['placeholder' => 'Gelar Belakang', 'class' => 'form-control']) !!}
+        {!! Html::text('gelar_belakang')->class('form-control')->placeholder('Gelar Belakang')->value(old('gelar_belakang', isset($pengurus) ? $pengurus->gelar_belakang : '')) !!}
     </div>
 </div>
 <div class="form-group">
@@ -30,120 +30,98 @@
             class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('nik', null, [
-        'placeholder' => 'Nomor Induk Kependudukan',
-        'class' => 'form-control',
-        'required' => true,
-        ]) !!}
+        {!! Html::text('nik')->class('form-control')->required()->placeholder('Nomor Induk Kependudukan')->value(old('nik', isset($pengurus) ? $pengurus->nik : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">NIP</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('nip', null, ['placeholder' => 'NIP', 'class' => 'form-control']) !!}
+        {!! Html::text('nip')->class('form-control')->placeholder('NIP')->value(old('nip', isset($pengurus) ? $pengurus->nip : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tempat Lahir <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('tempat_lahir', null, [
-        'placeholder' => 'Tempat Lahir',
-        'class' => 'form-control',
-        'required' => true,
-        ]) !!}
+        {!! Html::text('tempat_lahir')->class('form-control')->required()->placeholder('Tempat Lahir')->value(old('tempat_lahir', isset($pengurus) ? $pengurus->tempat_lahir : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal Lahir <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('tanggal_lahir', null, [
-        'placeholder' => 'Tanggal Lahir',
-        'class' => 'form-control datetime',
-        'required' => true,
-        ]) !!}
+        {!! Html::text('tanggal_lahir')->class('form-control datetime')->required()->placeholder('Tanggal Lahir')->value(old('tanggal_lahir', isset($pengurus) ? $pengurus->tanggal_lahir : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="sex">Jenis Kelamin</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('sex', ['1' => 'LAKI-LAKI', '2' => 'PEREMPUAN'], null, ['class' => 'form-control']) !!}
+        {!! Html::select('sex', ['1' => 'LAKI-LAKI', '2' => 'PEREMPUAN'])->class('form-control')->value(old('sex', isset($pengurus) ? $pengurus->sex : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pendidikan">Pendidikan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('pendidikan_id', $pendidikan, null, ['class' => 'form-control']) !!}
+        {!! Html::select('pendidikan_id', $pendidikan)->class('form-control')->value(old('pendidikan_id', isset($pengurus) ? $pengurus->pendidikan_id : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Agama</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('agama_id', $agama, null, ['class' => 'form-control']) !!}
+        {!! Html::select('agama_id', $agama)->class('form-control')->value(old('agama_id', isset($pengurus) ? $pengurus->agama_id : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Pangkat/Golongan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('pangkat', null, ['placeholder' => 'Pangkat/Golongan', 'class' => 'form-control']) !!}
+        {!! Html::text('pangkat')->class('form-control')->placeholder('Pangkat/Golongan')->value(old('pangkat', isset($pengurus) ? $pengurus->pangkat : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor SK Pengangkatan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('no_sk', null, ['placeholder' => 'Nomor SK Pengangkatan', 'class' => 'form-control']) !!}
+        {!! Html::text('no_sk')->class('form-control')->placeholder('Nomor SK Pengangkatan')->value(old('no_sk', isset($pengurus) ? $pengurus->no_sk : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal SK Pengangkatan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('tanggal_sk', null, [
-        'placeholder' => 'Tanggal SK Pengangkatan',
-        'class' => 'form-control datetime',
-        ]) !!}
+        {!! Html::text('tanggal_sk')->class('form-control datetime')->placeholder('Tanggal SK Pengangkatan')->value(old('tanggal_sk', isset($pengurus) ? $pengurus->tanggal_sk : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor SK Pemberhentian</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('no_henti', null, ['placeholder' => 'Nomor SK Pemberhentian', 'class' => 'form-control']) !!}
+        {!! Html::text('no_henti')->class('form-control')->placeholder('Nomor SK Pemberhentian')->value(old('no_henti', isset($pengurus) ? $pengurus->no_henti : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tanggal SK Pemberhentian</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('tanggal_henti', null, [
-        'placeholder' => 'Tanggal SK Pemberhentian',
-        'class' => 'form-control datetime',
-        ]) !!}
+        {!! Html::text('tanggal_henti')->class('form-control datetime')->placeholder('Tanggal SK Pemberhentian')->value(old('tanggal_henti', isset($pengurus) ? $pengurus->tanggal_henti : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Masa Jabatan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('masa_jabatan', null, [
-        'placeholder' => 'Masa Jabatan',
-        'class' => 'form-control',
-        'required' => true,
-        ]) !!}
+        {!! Html::text('masa_jabatan')->class('form-control')->required()->placeholder('Masa Jabatan')->value(old('masa_jabatan', isset($pengurus) ? $pengurus->masa_jabatan : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="agama">Jabatan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('jabatan_id', $jabatan, null, ['class' => 'form-control']) !!}
+        {!! Html::select('jabatan_id', $jabatan)->class('form-control')->value(old('jabatan_id', isset($pengurus) ? $pengurus->jabatan_id : '')) !!}
     </div>
 </div>
 
@@ -152,7 +130,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="atasan">Atasan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('atasan', $atasan, null, ['class' => 'form-control', 'placeholder' => 'Pilih Atasan']) !!}
+        {!! Html::select('atasan', $atasan)->class('form-control')->placeholder('Pilih Atasan')->value(old('atasan', isset($pengurus) ? $pengurus->atasan : '')) !!}
     </div>
 </div>
 
@@ -160,14 +138,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_tingkat">Bagan - Tingkat</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('bagan_tingkat', null, [
-        'placeholder' => 'Angka menunjukkan tingkat di bagan organisasi. Contoh: 2',
-        'class' => 'form-control',
-        'required' => false,
-        'autocomplete' => 'off',
-        'min' => 0,
-        'id' => 'bagan_tingkat',
-        ]) !!}
+        {!! Html::number('bagan_tingkat')->class('form-control')->id('bagan_tingkat')->placeholder('Angka menunjukkan tingkat di bagan organisasi. Contoh: 2')->value(old('bagan_tingkat', isset($pengurus) ? $pengurus->bagan_tingkat : '')) !!}
         <small class="text-muted">Gunakan angka 0 untuk tingkatan tertinggi.</small>
     </div>
 </div>
@@ -177,7 +148,7 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="input-group my-colorpicker2">
-            {!! Html::text('bagan_warna', null, ['class' => 'form-control', 'placeholder' => '#007ad0']) !!}
+            {!! Html::text('bagan_warna')->class('form-control')->placeholder('#007ad0')->value(old('bagan_warna', isset($pengurus) ? $pengurus->bagan_warna : '')) !!}
             <div class="input-group-addon">
                 <i></i>
             </div>

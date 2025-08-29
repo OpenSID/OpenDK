@@ -18,14 +18,7 @@
                 <h3 class="box-title">Roles</h3>
             </div>
             <div class="box-body">
-                {!! Html::model($role)
-                    ->route(['setting.role.update', $role->id])
-                    ->method('put')
-                    ->attribute('autocomplete', 'off')
-                    ->id('form-role')
-                    ->open() !!}
-                @include('role.form')
-                {!! Html::closeForm() !!}
+                {!! Html::form(){!! Html::form()->close() !!}
             </div>
         </div>
     </section>

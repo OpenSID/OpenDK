@@ -18,12 +18,7 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Html::model($jabatan, [
-                'route' => ['data.jabatan.update', $jabatan->id],
-                'method' => 'post',
-                'id' => 'form-jabatan',
-                'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! Html::form()!!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
@@ -37,7 +32,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

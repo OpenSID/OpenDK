@@ -18,8 +18,10 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Html::model($faq, 'PUT', route('informasi.faq.update',
-                $faq->id))->id('form-faq')->class('form-horizontal form-label-left')->open() !!}
+                {!! Html::form('PUT', route('informasi.faq.update', $faq->id))
+                    ->id('form-faq')
+                    ->class('form-horizontal form-label-left')
+                    ->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">

@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label class="control-label" for="judul">Judul Album</label>
 
-                    {!! Html::text('judul', null, ['placeholder' => 'Judul Album', 'class' => 'form-control']) !!}
+                    {!! Html::text('judul')->class('form-control')->placeholder('Judul Album')->value(old('judul', isset($album) ? $album->judul : '')) !!}
                     @if ($errors->has('judul'))
                         <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
@@ -32,7 +32,7 @@
 
                 <div class="form-group">
                     <label class="control-label" for="status">Status</label>
-                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' => 'form-control']) !!}
+                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])->class('form-control')->value(old('status', isset($album) ? $album->status : '')) !!}
                     @if ($errors->has('status'))
                         <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
                     @endif

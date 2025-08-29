@@ -32,7 +32,7 @@
                                         'id' => 'list_desa',
                                         'required',
                                     ]) !!}
-                                    {!! Html::closeForm() !!}
+                                    {!! Html::form()->close() !!}
                                 </div>
                                 <div class="col-md-6">
                                     <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
@@ -57,8 +57,8 @@
                                 ->id('form-multiple-arsip-pesan')
                                 ->open() !!}
                             <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
-                            {!! Html::text('array_id', null, ['hidden' => true, 'id' => 'array_multiple_id_arsip']) !!}
-                            {!! Html::closeForm() !!}
+                            {!! Html::text('array_id')->id('array_multiple_id_arsip') !!}
+                            {!! Html::form()->close() !!}
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
                         </div>
                         <div class="table-responsive mailbox-messages">

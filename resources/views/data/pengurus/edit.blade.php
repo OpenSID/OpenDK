@@ -18,8 +18,8 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Html::model($pengurus)->route('data.pengurus.update',
-                $pengurus->id)->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                {!! Html::form('POST', route('data.pengurus.update',
+                $pengurus->id))->acceptsFiles()->id('form-pengurus')->class('form-horizontal
                 form-label-left') !!}
                 @include('layouts.fragments.error_message')
 
@@ -34,7 +34,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

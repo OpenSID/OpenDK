@@ -14,7 +14,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! Html::select('status',
         ['Ya' => 'Aktif', 'Tidak' => 'Tidak Aktif'],
-        old('status', $kategori->status)
+        old('status', $kategori->status)->value(old('status', isset($kategori) ? $kategori->status : ''))
         )->class('form-control') !!}
     </div>
 </div>

@@ -58,11 +58,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Email Tujuan (Tes Email)</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('testing_mail', null, [
-        'placeholder' => 'Email Tujuan (Tes Email)',
-        'class' => 'form-control',
-        'id' => 'testing_mail',
-        ]) !!}
+        {!! Html::text('testing_mail')->class('form-control')->id('testing_mail')->placeholder('Email Tujuan (Tes Email)') !!}
     </div>
 </div>
 @endif

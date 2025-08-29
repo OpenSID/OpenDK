@@ -20,8 +20,8 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::model($anggota)->route('data.lembaga_anggota.update', $lembaga->slug,
-                $anggota->id)->method('PUT')->id('form-lembaga-anggota')->class('form-horizontal form-label-left') !!}
+                {!! Html::form('PUT', route('data.lembaga_anggota.update', $lembaga->slug,
+                $anggota->id))->id('form-lembaga-anggota')->class('form-horizontal form-label-left') !!}
 
                 @include('layouts.fragments.error_message')
 
@@ -34,7 +34,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Kategori</label>
 
-                    {!! Html::select('id_kategori', $kategori, old('id_kategori'))->class('form-control') !!}
+                    {!! Html::select('id_kategori', $kategori, old('id_kategori')->value(old('id_kategori', isset($artikel)->value(old('id_kategori', isset($artikel) ? $artikel->id_kategori : '')) ? $artikel->id_kategori : '')))->class('form-control') !!}
                     @if ($errors->has('id_kategori'))
                     <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
                     @endif
@@ -62,7 +62,7 @@
                 <!--
                 <div class="form-group">
                     {!! Html::label('kategori_id', 'Kategori') !!}
-                    {!! Html::select('kategori_id', $kategori, null, ['class' => 'form-control', 'placeholder' => 'Pilih Kategori']) !!}
+                    {!! Html::select('kategori_id', $kategori)->class('form-control')->placeholder('Pilih Kategori')->value(old('kategori_id', isset($artikel)->value(old('kategori_id', isset($artikel) ? $artikel->kategori_id : '')) ? $artikel->kategori_id : '')) !!}
 
                     @if ($errors->has('kategori_id'))
 <span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>
@@ -72,8 +72,7 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 
-                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'],
-                    old('status'))->class('form-control') !!}
+                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])->value(old('status', isset($artikel)->value(old('status', isset($artikel) ? $artikel->status : '')) ? $artikel->status : '')))->class('form-control') !!}
                     @if ($errors->has('status'))
                     <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
                     @endif

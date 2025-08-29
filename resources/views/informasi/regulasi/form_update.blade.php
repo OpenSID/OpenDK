@@ -1,21 +1,31 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipe <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('tipe_regulasi', \App\Models\TipeRegulasi::pluck('nama', 'id'),
-        old('tipe_regulasi'))->class('form-control')->id('tipe')->required() !!}
+        {!! Html::select(
+        'tipe_regulasi',
+        \App\Models\TipeRegulasi::pluck('nama', 'id'),
+        old('tipe_regulasi', isset($regulasi) ? $regulasi->tipe_regulasi : null)
+        )->class('form-control')->id('tipe')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('judul', old('judul'))->class('form-control')->placeholder('Judul Regulasi')->required() !!}
+        {{ html()->text('judul')
+        ->class('form-control')
+        ->placeholder('Judul Regulasi')
+        ->required()
+        ->value(old('judul', isset($regulasi) ? $regulasi->judul : null)) }}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required()
-        !!}
+        {{ html()->textarea('deskripsi')
+        ->class('form-control')
+        ->placeholder('Deskripsi')
+        ->required()
+        ->value(old('deskripsi', isset($regulasi) ? $regulasi->deskripsi : null)) }}
     </div>
 </div>
 <div class="form-group">

@@ -37,16 +37,10 @@
                     </div>
                     <div class="form-group">
                         <label>Subject</label>
-                        {!! Html::text('judul', null, ['placeholder' => 'Subject:', 'class' => 'form-control',
-                        'required']) !!}
+                        {!! Html::text('judul')->class('form-control')->placeholder('Subject:') !!}
                     </div>
                     <div class="form-group">
-                        {!! Html::textarea('text', null, [
-                        'class' => 'textarea',
-                        'placeholder' => 'Isi Pesan',
-                        'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
-                        #dddddd; padding: 10px;',
-                        ]) !!}
+                        {!! Html::textarea('text')->class('textarea')->placeholder('Isi Pesan') !!}
                     </div>
                 </div>
                 <!-- /.box-body -->
@@ -59,7 +53,7 @@
                 <!-- /.box-footer -->
             </div>
             <!-- /. box -->
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
 </section>

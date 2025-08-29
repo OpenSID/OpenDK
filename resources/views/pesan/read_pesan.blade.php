@@ -32,10 +32,10 @@
                         'method' => 'post',
                         'id' => 'form-arisp-pesan',
                         ]) !!}
-                        {!! Html::text('id', $pesan->id, ['hidden' => true]) !!}
+                        {!! Html::text('id') !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan </button>
-                        {!! Html::closeForm() !!}
+                        {!! Html::form()->close() !!}
                         @endif
                         {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
                     </div>
@@ -85,17 +85,11 @@
                     'method' => 'post',
                     'id' => 'form-reply-pesan',
                     ]) !!}
-                    {!! Html::text('id', $pesan->id, ['hidden' => true]) !!}
-                    {!! Html::textarea('text', null, [
-                    'class' => 'textarea',
-                    'id' => 'reply_message',
-                    'placeholder' => 'Balas Pesan',
-                    'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
-                    #dddddd; padding: 10px;',
-                    ]) !!}
+                    {!! Html::text('id') !!}
+                    {!! Html::textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan') !!}
                     <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i
                             class="fa fa-reply"></i> Balas</button>
-                    {!! Html::closeForm() !!}
+                    {!! Html::form()->close() !!}
                 </div>
             </div>
             <!-- /. box -->

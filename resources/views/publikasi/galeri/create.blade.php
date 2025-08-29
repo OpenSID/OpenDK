@@ -18,7 +18,7 @@
 
     @include('publikasi.galeri._form')
 
-    {!! Html::closeForm() !!}
+    {!! Html::form()->close() !!}
 
 </section>
 @endsection

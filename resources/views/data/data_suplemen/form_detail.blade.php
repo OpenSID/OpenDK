@@ -77,12 +77,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::textarea('keterangan', null, [
-        'class' => 'textarea',
-        'placeholder' => 'Keterangan',
-        'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:
-        10px;',
-        ]) !!}
+        {!! Html::textarea('keterangan')->class('textarea')->placeholder('Keterangan')->value(old('keterangan', isset($suplemen) ? $suplemen->keterangan : '')) !!}
     </div>
 </div>
 <div class="ln_solid"></div>

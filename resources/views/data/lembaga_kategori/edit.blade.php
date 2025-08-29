@@ -18,12 +18,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::model($kategori_lembaga, [
-                'route' => ['data.kategori-lembaga.update', $kategori_lembaga->id],
-                'method' => 'put',
-                'id' => 'form-kategori-lembaga',
-                'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! Html::form()!!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
@@ -35,7 +30,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

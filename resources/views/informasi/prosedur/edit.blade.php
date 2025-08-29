@@ -29,7 +29,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::model($prosedur, 'PUT', route('informasi.prosedur.update',
+                {!! Html::form('PUT', route('informasi.prosedur.update',
                 $prosedur->id))->id('form-event')->class('form-horizontal form-label-left')->acceptsFiles()->open() !!}
 
                 <div class="box-body">

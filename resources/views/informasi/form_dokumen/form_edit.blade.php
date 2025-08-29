@@ -2,7 +2,7 @@
     <label for="jenis_dokumen_id" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Dokumen<span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id'),
+        {!! Html::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id')->value(old('jenis_dokumen_id', isset($dokumen)->value(old('jenis_dokumen_id', isset($dokumen) ? $dokumen->jenis_dokumen_id : '')) ? $dokumen->jenis_dokumen_id : '')),
         old('jenis_dokumen_id'))->placeholder('-Pilih')->class('form-control')->id('jenis_dokumen_id')->required() !!}
     </div>
 </div>
@@ -18,12 +18,12 @@
         {!! Html::hidden('retention_days', 0)->id('retention_days') !!}
         <div class="row">
             <div class="col-md-6 pl-md-1">
-                {!! Html::select('jumlah_waktu', array_combine(range(0, 31), range(0, 31)), old('jumlah_waktu',
+                {!! Html::select('jumlah_waktu', array_combine(range(0, 31)->value(old('jumlah_waktu', isset($dokumen)->value(old('jumlah_waktu', isset($dokumen) ? $dokumen->jumlah_waktu : '')) ? $dokumen->jumlah_waktu : '')), range(0, 31)), old('jumlah_waktu',
                 $jumlah_waktu))->class('form-control')->placeholder('- Pilih -') !!}
             </div>
             <div class="col-md-6 pr-md-1">
                 {!! Html::select('tipe_waktu', $tipe_waktu_options, old('tipe_waktu',
-                $tipe_waktu))->class('form-control')->placeholder('- Pilih -') !!}
+                $tipe_waktu)->value(old('tipe_waktu', isset($dokumen)->value(old('tipe_waktu', isset($dokumen) ? $dokumen->tipe_waktu : '')) ? $dokumen->tipe_waktu : '')))->class('form-control')->placeholder('- Pilih -') !!}
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
     <label for="jenis_dokumen_id" class="control-label col-md-3 col-sm-3 col-xs-12">Status Terbit<span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('status', $status_options, old('status', $status))->class('form-control')->placeholder('- Pilih
+        {!! Html::select('status', $status_options, old('status', $status)->value(old('status', isset($dokumen)->value(old('status', isset($dokumen) ? $dokumen->status : '')) ? $dokumen->status : '')))->class('form-control')->placeholder('- Pilih
         -') !!}
     </div>
 </div>

@@ -26,17 +26,15 @@
                 </ul>
             </div>
             @endif
-            {!! Html::model($user)
-            ->route(['setting.user.update', $user->id])
-            ->method('put')
+            {!! Html::form('PUT', route('setting.user.update', $user->id))
             ->attribute('autocomplete', 'off')
             ->id('form-user')
             ->class('form-horizontal form-label-left')
-            ->attribute('files', true)
+            ->acceptsFiles()
             ->open() !!}
             @include('flash::message')
             @include('user.form')
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
 </section>

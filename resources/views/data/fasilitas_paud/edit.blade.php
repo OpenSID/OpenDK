@@ -29,12 +29,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($fasilitas, [
-            'route' => ['data.fasilitas-paud.update', $fasilitas->id],
-            'method' => 'put',
-            'id' => 'form-siswa',
-            'class' => 'form-horizontal form-label-left',
-            ]) !!}
+            {!! Html::form()!!}
 
             <div class="box-body">
 
@@ -45,7 +40,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
 
         </div>
     </div>

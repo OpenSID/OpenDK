@@ -14,7 +14,7 @@
 </section>
 <section class="content container-fluid">
 
-    {!! Html::model($artikel, 'PUT', route('informasi.artikel.update',
+    {!! Html::form('PUT', route('informasi.artikel.update',
     $artikel->id))->id('form-artikel')->acceptsFiles()->open() !!}
 
     @include('flash::message')

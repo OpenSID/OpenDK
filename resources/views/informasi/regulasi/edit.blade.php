@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::model($regulasi, 'PUT', route('informasi.regulasi.update',
+                {!! Html::form('PUT', route('informasi.regulasi.update',
                 $regulasi->id))->id('form-regulasi')->class('form-horizontal form-label-left')->acceptsFiles()->open()
                 !!}
 

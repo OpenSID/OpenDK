@@ -99,7 +99,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_impor')
             </div>
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
     </div>

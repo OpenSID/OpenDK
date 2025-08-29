@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::model($medsos, 'PUT', route('informasi.media-sosial.update',
+                {!! Html::form('PUT', route('informasi.media-sosial.update',
                 $medsos->id))->id('form-media-sosial')->class('form-horizontal form-label-left')->acceptsFiles()->open()
                 !!}
 

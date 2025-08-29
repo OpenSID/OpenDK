@@ -92,7 +92,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <h5 class="bg-primary" style="padding: 2px;">TINDAK LANJUT:</h5>
-                                        {{ Html::hidden('komplain_id', $komplain->komplain_id, ['id' => 'komplain_id'])
+                                        {{ Html::hidden('komplain_id')->id('komplain_id')
                                         }}
                                         <div id="jawabans"></div>
                                     </div>
@@ -186,7 +186,7 @@
                 <div id="form-errors-admin"></div>
                 <div class="md-form mb-4">
                     <label>Jawaban</label>
-                    {{ Html::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'jawab-admin', 'required'])
+                    {{ Html::textarea('jawaban')->class('form-control')->id('jawab-admin')
                     }}
                     {{ Html::hidden('nik', '999') }}
                 </div>
@@ -196,7 +196,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
-            {{ Html::closeForm() }}
+            {{ Html::form()->close() }}
         </div>
     </div>
 </div>
@@ -216,10 +216,9 @@
                 <div id="form-errors-admin"></div>
                 <div class="md-form mb-4">
                     <label>Jawaban</label>
-                    {{ Html::textarea('jawaban', null, ['class' => 'form-control', 'id' => 'ubah-jawab-admin',
-                    'required']) }}
+                    {{ Html::textarea('jawaban')->class('form-control')->id('ubah-jawab-admin') }}
                     {{ Html::hidden('nik', '999') }}
-                    {{ Html::hidden('id', null, ['id' => 'id_jawab']) }}
+                    {{ Html::hidden('id')->id('id_jawab') }}
                     {{ Html::hidden('_method', 'PUT') }}
                 </div>
 
@@ -228,7 +227,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
-            {{ Html::closeForm() }}
+            {{ Html::form()->close() }}
         </div>
     </div>
 </div>

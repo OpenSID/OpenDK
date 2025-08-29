@@ -106,7 +106,7 @@
                         <div class="box-body">
                             <ul id="myEditor" class="sortableLists list-group"></ul>
                             <div class="hide">
-                                {!! Html::textarea('json_menu', null, ['hidden', 'rows' => 1]) !!}
+                                {!! Html::textarea('json_menu')->rows(1) !!}
                             </div>
                         </div>
                         <div class="box-footer">
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </div>
-        {!! Html::closeForm() !!}
+        {!! Html::form()->close() !!}
     </div>
 </section>
 @endsection

@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <p>Silakan pilih status di bawah ini?</p>
                 {{ Html::select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses', 'SELESAI'
-                => 'Selesai'], old('status'))->class('form-control') }}
+                => 'Selesai']))->class('form-control') }}
             </div>
             <div class="modal-footer">
                 <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"

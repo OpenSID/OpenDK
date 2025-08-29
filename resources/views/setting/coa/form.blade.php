@@ -38,7 +38,7 @@
     <label for="id" class="control-label col-md-3 col-sm-6 col-xs-12">ID Akun <span class="required">*</span></label>
 
     <div class="col-md-3 col-sm-6 col-xs-12">
-        {!! Html::text('id', null, ['class' => 'form-control', 'required' => true, 'id' => 'id', 'readonly' => true])
+        {!! Html::text('id')->class('form-control')->id('id')->required()->readonly()
         !!}
     </div>
 </div>
@@ -47,7 +47,7 @@
             class="required">*</span></label>
 
     <div class="col-md-8 col-sm-6 col-xs-12">
-        {!! Html::text('coa_name', null, ['class' => 'form-control', 'required' => true, 'id' => 'coa_name']) !!}
+        {!! Html::text('coa_name')->class('form-control')->id('coa_name')->required() !!}
     </div>
 </div>
 <div class="ln_solid"></div>

@@ -28,14 +28,14 @@
                     </div>
                 </div>
 
-                {!! Html::model($penduduk)->id('form-penduduk')->class('form-horizontal form-label-left') !!}
+                {!! Html::form()->id('form-penduduk')->class('form-horizontal form-label-left') !!}
 
                 <div class="box-body">
 
                     @include('data.penduduk.form_show')
 
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

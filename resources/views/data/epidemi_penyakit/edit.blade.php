@@ -30,12 +30,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::model($epidemi, [
-            'route' => ['data.epidemi-penyakit.update', $epidemi->id],
-            'method' => 'put',
-            'id' => 'form-akib',
-            'class' => 'form-horizontal form-label-left',
-            ]) !!}
+            {!! Html::form()!!}
 
             <div class="box-body">
 
@@ -46,7 +41,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
         </div>
     </div>
     </div>

@@ -2,14 +2,9 @@
 <div class="form-group">
     <div class="col-12">
 
-        {!! Html::text('text', null, [
-        'class' => 'form-control item-menu',
-        'maxlength' => 255,
-        'placeholder' => 'Nama Menu',
-        'id' => 'text',
-        ]) !!}
+        {!! Html::text('text')->class('form-control item-menu')->id('text')->placeholder('Nama Menu') !!}
 
-        {!! Html::hidden('icon', 'fa fa-list', ['class' => 'item-menu']) !!}
+        {!! Html::hidden('icon')->class('item-menu') !!}
     </div>
 </div>
 
@@ -40,16 +35,14 @@
 <!-- Url Field -->
 <div class="form-group">
     <div class="col-12">
-        {!! Html::select('sourcelist', $sourceItem, null, ['class' => 'form-control']) !!}
-        {!! Html::text('href', null, ['class' => 'form-control item-menu', 'maxlength' => 255, 'placeholder' =>
-        'http://contoh.com']) !!}
+        {!! Html::select('sourcelist', $sourceItem)->class('form-control') !!}
+        {!! Html::text('href')->class('form-control item-menu')->placeholder('http://contoh.com') !!}
     </div>
 </div>
 
 <div class="form-group">
     {!! Html::label('target', 'Target') !!}
-    {!! Html::select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'], null, ['class' =>
-    'form-control item-menu', 'id' => 'target']) !!}
+    {!! Html::select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'])->class('form-control item-menu') !!}
 </div>
 
 @push('scripts')

@@ -41,7 +41,7 @@ Data Dokumen
                         @include('partials.button_reset_submit')
                     </div>
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

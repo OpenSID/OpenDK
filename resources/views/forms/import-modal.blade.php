@@ -21,7 +21,7 @@
                 {!! Html::submit('Import')->class('btn btn-primary waves-effect waves-light') !!}
 
             </div>
-            {!! Html::closeForm() !!}
+            {!! Html::form()->close() !!}
             @push('scripts')
             {!! JsValidator::formRequest('App\Http\Requests\Backend\ImportNewsRequest', '#active') !!}
             @endpush

@@ -32,7 +32,7 @@
                                 'id' => 'list_desa',
                                 'required',
                                 ]) !!}
-                                {!! Html::closeForm() !!}
+                                {!! Html::form()->close() !!}
                             </div>
                             <div class="col-md-6">
                                 <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"

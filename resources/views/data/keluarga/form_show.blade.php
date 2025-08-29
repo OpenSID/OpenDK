@@ -2,7 +2,7 @@
     <label for="no_kk" class="control-label col-md-4 col-sm-3 col-xs-12">NO Kartu keluarga </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('no_kk', old('no_kk'))->class('form-control')->disabled()->id('no_kk') !!}
+        {!! html()->text('no_kk', old('no_kk'))->class('form-control')->disabled()->id('no_kk') !!}
     </div>
 </div>
 
@@ -26,7 +26,7 @@
     <label for="tgl_daftar" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Daftar</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('tgl_daftar',
+        {!! html()->text('tgl_daftar',
         format_date($keluarga->tgl_daftar))->class('form-control')->disabled()->id('tgl_daftar') !!}
     </div>
 </div>
@@ -34,35 +34,35 @@
     <label for="alamat" class="control-label col-md-4 col-sm-3 col-xs-12">Alamat </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('alamat', old('alamat'))->class('form-control')->disabled()->id('alamat') !!}
+        {!! html()->text('alamat', old('alamat'))->class('form-control')->disabled()->id('alamat') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="dusun" class="control-label col-md-4 col-sm-3 col-xs-12">Dusun </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('dusun', old('dusun'))->class('form-control')->disabled()->id('dusun') !!}
+        {!! html()->text('dusun', old('dusun'))->class('form-control')->disabled()->id('dusun') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="rw" class="control-label col-md-4 col-sm-3 col-xs-12">RW/RT </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('rw', old('rw'))->class('form-control col-md-1')->disabled()->id('rw') !!}
+        {!! html()->text('rw', old('rw'))->class('form-control col-md-1')->disabled()->id('rw') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="rt" class="control-label col-md-4 col-sm-3 col-xs-12">RW/RT </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('rt', old('rt'))->class('form-control col-md-1')->disabled()->id('rt') !!}
+        {!! html()->text('rt', old('rt'))->class('form-control col-md-1')->disabled()->id('rt') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="tgl_cetak_kk" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Cetak KK </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('tgl_cetak_kk',
+        {!! html()->text('tgl_cetak_kk',
         format_datetime($keluarga->tgl_cetak_kk))->class('form-control')->disabled()->id('tgl_cetak_kk') !!}
     </div>
 </div>

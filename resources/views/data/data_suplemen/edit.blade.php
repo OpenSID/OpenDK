@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::form('POST', route('data.data-suplemen.update', $suplemen->id))
+                {!! html()->form('POST', route('data.data-suplemen.update', $suplemen->id))
                 ->id('form-suplemen')
                 ->class('form-horizontal form-label-left')
                 ->open() !!}
@@ -46,7 +46,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

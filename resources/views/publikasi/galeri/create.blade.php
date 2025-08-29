@@ -14,11 +14,11 @@
 </section>
 <section class="content container-fluid">
 
-    {!! Html::form(['url' => route('publikasi.galeri.store'), 'files' => true]) !!}
+    {!! html()->form(['url' => route('publikasi.galeri.store'), 'files' => true]) !!}
 
     @include('publikasi.galeri._form')
 
-    {!! Html::form()->close() !!}
+    {!! html()->form()->close() !!}
 
 </section>
 @endsection

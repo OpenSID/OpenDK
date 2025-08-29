@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::form('POST',
+                {!! html()->form('POST',
                 route('informasi.media-sosial.store'))->acceptsFiles()->id('form-media-sosial')->class('form-horizontal
                 form-label-left')->open() !!}
 
@@ -41,7 +41,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

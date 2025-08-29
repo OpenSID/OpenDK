@@ -6,10 +6,10 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Import XML</h4>
             </div>
-            {!! Html::form('POST')->route('admin.news.importxml')->id('active')->acceptsFiles() !!}
+            {!! html()->form('POST')->route('admin.news.importxml')->id('active')->acceptsFiles() !!}
 
             <div class="modal-body">
-                {!! Html::file('file')->class('form-control')->accept('text/xml') !!}
+                {!! html()->file('file')->class('form-control')->accept('text/xml') !!}
                 <a href="{{ route('admin.news.download') }}">Download example xml</a>
             </div>
 
@@ -18,10 +18,10 @@
                 <a id="active-modal-cancel" href="#" class="btn btn-danger waves-effect waves-light"
                     data-dismiss="modal">Cancel</a>
 
-                {!! Html::submit('Import')->class('btn btn-primary waves-effect waves-light') !!}
+                {!! html()->submit('Import')->class('btn btn-primary waves-effect waves-light') !!}
 
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
             @push('scripts')
             {!! JsValidator::formRequest('App\Http\Requests\Backend\ImportNewsRequest', '#active') !!}
             @endpush

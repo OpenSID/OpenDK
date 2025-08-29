@@ -29,7 +29,7 @@
             </div>
             @endif
 
-            {!! Html::form('PUT', route('data.aki-akb.update', $akib->id))
+            {!! html()->form('PUT', route('data.aki-akb.update', $akib->id))
             ->id('form-akib')
             ->class('form-horizontal form-label-left')
             ->open() !!}
@@ -42,7 +42,7 @@
                 @include('partials.button_reset_submit')
             </div>
 
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
     </div>

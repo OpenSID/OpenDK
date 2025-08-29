@@ -29,7 +29,7 @@
             </div>
             @endif
 
-            {!! Html::form('PUT', route('data.imunisasi.update',
+            {!! html()->form('PUT', route('data.imunisasi.update',
             $imunisasi->id))->id('form-imunisasi')->class('form-horizontal form-label-left') !!}
 
             <div class="box-body">
@@ -41,7 +41,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
     </div>

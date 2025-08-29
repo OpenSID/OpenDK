@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-12">
 
-            {!! Html::form([
+            {!! html()->form([
             'route' => 'data.epidemi-penyakit.do_import',
             'method' => 'post',
             'id' => 'form-import',
@@ -102,7 +102,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_impor')
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
     </div>

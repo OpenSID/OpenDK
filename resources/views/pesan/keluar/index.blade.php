@@ -1,110 +1,120 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-dashboard"></i> Pesan</li>
-        </ol>
-    </section>
-    <section class="content">
-        @include('partials.flash_message')
-        <div class="row">
-            <div class="col-md-3">
-                @include('pesan.partial_pesan_menu')
-            </div>
-
-            <div class="col-md-9">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">{{ $page_title }}</h3>
-
-                        <div class="pull-right">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    {!! Html::form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open() !!}
-                                    {!! Html::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
-                                        'placeholder' => 'pilih desa',
-                                        'class' => 'form-control',
-                                        'id' => 'list_desa',
-                                        'required',
-                                    ]) !!}
-                                    {!! Html::form()->close() !!}
-                                </div>
-                                <div class="col-md-6">
-                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
-                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
-                                </div>
-
-                            </div>
-                        </div>
-                        <!-- /.box-tools -->
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body no-padding">
-                        <div class="mailbox-controls">
-                            <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                            </button>
-
-                            {!! Html::form()
-                                ->route('pesan.arsip.multiple')
-                                ->class('form-group inline')
-                                ->method('post')
-                                ->id('form-multiple-arsip-pesan')
-                                ->open() !!}
-                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
-                            {!! Html::text('array_id')->id('array_multiple_id_arsip') !!}
-                            {!! Html::form()->close() !!}
-                            {{ $list_pesan->links('vendor.pagination.pesan') }}
-                        </div>
-                        <div class="table-responsive mailbox-messages">
-                            <table class="table table-hover table-striped">
-                                <tbody>
-                                    @foreach ($list_pesan as $pesan)
-                                        <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
-                                            <td style="width: 5%">
-                                                <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
-                                            </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
-                                            </td>
-                                            <td style="width: 65%" class="mailbox-subject">
-                                                <div>
-                                                    <b>
-                                                        @if ($pesan->diarsipkan === 1)
-                                                            [ARSIP]
-                                                        @endif
-                                                        {{ $pesan->judul }}
-                                                    </b> -
-                                                    @if ($pesan->detailPesan->count() > 0)
-                                                        {{ \Illuminate\Support\Str::limit(strip_tags($pesan->detailPesan->last()->text), 50) }}
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            <td style="width: 20%" class="mailbox-date text-right">
-                                                {{ $pesan->custom_date }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <!-- /.table -->
-                        </div>
-                        <!-- /.mail-box-messages -->
-                    </div>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /. box -->
-            </div>
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i> Pesan</li>
+    </ol>
+</section>
+<section class="content">
+    @include('partials.flash_message')
+    <div class="row">
+        <div class="col-md-3">
+            @include('pesan.partial_pesan_menu')
         </div>
-    </section>
+
+        <div class="col-md-9">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">{{ $page_title }}</h3>
+
+                    <div class="pull-right">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {!! html()->form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open()
+                                !!}
+                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
+                                'placeholder' => 'pilih desa',
+                                'class' => 'form-control',
+                                'id' => 'list_desa',
+                                'required',
+                                ]) !!}
+                                {!! html()->form()->close() !!}
+                            </div>
+                            <div class="col-md-6">
+                                <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"
+                                    placeholder="Cari Pesan">
+                                <span style="padding-right: 25px"
+                                    class="glyphicon glyphicon-search form-control-feedback"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.box-tools -->
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="mailbox-controls">
+                        <!-- Check all button -->
+                        <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                class="fa fa-square-o"></i>
+                        </button>
+
+                        {!! html()->form()
+                        ->route('pesan.arsip.multiple')
+                        ->class('form-group inline')
+                        ->method('post')
+                        ->id('form-multiple-arsip-pesan')
+                        ->open() !!}
+                        <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
+                                class="fa fa-archive"></i> Arsipkan</button>
+                        {!! html()->text('array_id')->id('array_multiple_id_arsip') !!}
+                        {!! html()->form()->close() !!}
+                        {{ $list_pesan->links('vendor.pagination.pesan') }}
+                    </div>
+                    <div class="table-responsive mailbox-messages">
+                        <table class="table table-hover table-striped">
+                            <tbody>
+                                @foreach ($list_pesan as $pesan)
+                                <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
+                                    <td style="width: 5%">
+                                        <input data-id="{{ $pesan->id }}" type="checkbox"
+                                            style="position: absolute; opacity: 0;">
+                                    </td>
+                                    <td style="width: 10%" class="mailbox-name"><a
+                                            href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama
+                                            }}</a>
+                                    </td>
+                                    <td style="width: 65%" class="mailbox-subject">
+                                        <div>
+                                            <b>
+                                                @if ($pesan->diarsipkan === 1)
+                                                [ARSIP]
+                                                @endif
+                                                {{ $pesan->judul }}
+                                            </b> -
+                                            @if ($pesan->detailPesan->count() > 0)
+                                            {{
+                                            \Illuminate\Support\Str::limit(strip_tags($pesan->detailPesan->last()->text),
+                                            50) }}
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td style="width: 20%" class="mailbox-date text-right">
+                                        {{ $pesan->custom_date }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- /.table -->
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+        </div>
+    </div>
+</section>
 @endsection
 @include('partials.asset_select2')
 @push('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             $('#list_desa').select2({
                 placeholder: "Pilih {{ config('setting.sebutan_desa') }}",
                 allowClear: true
@@ -229,5 +239,5 @@
 
             })
         });
-    </script>
+</script>
 @endpush

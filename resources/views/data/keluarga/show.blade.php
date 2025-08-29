@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                {!! Html::form() !!}
+                {!! html()->form() !!}
 
                 <div class="box-body">
 
@@ -26,7 +26,7 @@
                 </div>
                 <div class="box-footer">
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

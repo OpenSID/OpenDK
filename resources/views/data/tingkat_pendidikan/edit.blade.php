@@ -29,7 +29,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::form('PUT', route('data.tingkat-pendidikan.update',
+            {!! html()->form('PUT', route('data.tingkat-pendidikan.update',
             $pendidikan->id))->id('form-pendidikan')->class('form-horizontal form-label-left') !!}
 
             <div class="box-body">
@@ -43,7 +43,7 @@
                 @include('partials.button_reset_submit')
             </div>
 
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
 
         </div>
     </div>

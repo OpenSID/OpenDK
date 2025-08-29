@@ -17,7 +17,7 @@
         <div class="col-md-12">
             @include('partials.flash_message')
 
-            {!! Html::form()
+            {!! html()->form()
             ->route('setting.navigation.store')
             ->method('post')
             ->id('form-navigation')
@@ -43,7 +43,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
     </div>

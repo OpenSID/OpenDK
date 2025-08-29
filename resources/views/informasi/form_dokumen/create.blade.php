@@ -19,7 +19,7 @@
 
                 <div class="box-body">
                     <!-- form start -->
-                    {!! Html::form('POST',
+                    {!! html()->form('POST',
                     route('informasi.form-dokumen.store'))->acceptsFiles()->id('form-dokumen')->class('form-horizontal
                     form-label-left')->open() !!}
 
@@ -41,7 +41,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

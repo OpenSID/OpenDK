@@ -28,14 +28,14 @@
                     </div>
                 </div>
 
-                {!! Html::form() !!}
+                {!! html()->form() !!}
 
                 <div class="box-body">
 
                     @include('data.penduduk.gabungan.form_show')
 
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

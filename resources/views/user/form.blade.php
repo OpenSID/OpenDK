@@ -20,7 +20,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('name', old('name', $user->name ??
+        {!! html()->text('name', old('name', $user->name ??
         null))->class('form-control')->placeholder('Nama')->pattern('^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$') !!}
     </div>
 </div>
@@ -29,9 +29,11 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         @if (empty($user))
-        {!! Html::text('email')->class('form-control')->placeholder('Email')->value(old('email', isset($user) ? $user->email : '')) !!}
+        {!! html()->text('email')->class('form-control')->placeholder('Email')->value(old('email', isset($user) ?
+        $user->email : '')) !!}
         @else
-        {!! Html::text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->readonly() !!}
+        {!! html()->text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->readonly()
+        !!}
         @endif
     </div>
 </div>
@@ -39,7 +41,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Telepon </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('phone', old('phone', $user->phone ?? null))->class('form-control')->placeholder('0xxxxxxxxxxx')
+        {!! html()->text('phone', old('phone', $user->phone ??
+        null))->class('form-control')->placeholder('0xxxxxxxxxxx')
         !!}
     </div>
 </div>
@@ -59,7 +62,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::password('password')->class('form-control password')->value(old('password', isset($user) ? $user->password : '')) !!}
+        {!! html()->password('password')->class('form-control password')->value(old('password', isset($user) ?
+        $user->password : '')) !!}
     </div>
     <div class="col-md-1 col-sm-1 col-xs-12">
         <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
@@ -71,7 +75,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::textarea('address', old('address', $user->address ?? null))->class('form-control')->cols(10)->rows(5)
+        {!! html()->textarea('address', old('address', $user->address ??
+        null))->class('form-control')->cols(10)->rows(5)
         !!}
     </div>
 </div>
@@ -82,7 +87,8 @@
     <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('role', $item, old('role')->value(old('role', isset($user) ? $user->role : '')))->class('form-control') !!}
+        {!! html()->select('role', $item, old('role')->value(old('role', isset($user) ? $user->role :
+        '')))->class('form-control') !!}
     </div>
 </div>
 @elseif(auth()->user()->id == 1)
@@ -91,7 +97,8 @@
     <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('role', $item, old('role', $user->getRoleNames()->value(old('role', isset($user) ? $user->role : ''))))->class('form-control') !!}
+        {!! html()->select('role', $item, old('role', $user->getRoleNames()->value(old('role', isset($user) ?
+        $user->role : ''))))->class('form-control') !!}
     </div>
 </div>
 @endif

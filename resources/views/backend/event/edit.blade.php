@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Html::form('PUT', route('informasi.event.update', $event->id))
+                {!! html()->form('PUT', route('informasi.event.update', $event->id))
                 ->id('form-event')
                 ->class('form-horizontal form-label-left')
                 ->acceptsFiles()
@@ -33,7 +33,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

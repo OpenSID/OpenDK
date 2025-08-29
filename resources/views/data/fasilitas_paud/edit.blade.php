@@ -29,7 +29,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::form()!!}
+            {!! html()->form()!!}
 
             <div class="box-body">
 
@@ -40,7 +40,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
 
         </div>
     </div>

@@ -25,7 +25,7 @@
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Sebutan {{ config('setting.sebutan_desa') }}
     </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::input('sebutan_desa', 'sebutan_desa', $desa->sebutan_desa, [
+        {!! html()->input('sebutan_desa', 'sebutan_desa', $desa->sebutan_desa, [
         'class' => 'form-control',
         'placeholder' => 'Contoh : desa',
         ]) !!}
@@ -35,7 +35,7 @@
 <div class="form-group">
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::input('url', 'website', $desa->website, [
+        {!! html()->input('url', 'website', $desa->website, [
         'class' => 'form-control',
         'id' => 'website',
         'placeholder' => 'Contoh : https://berputar.opensid.or.id/',
@@ -47,7 +47,7 @@
     <label for="luas_wilayah" class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('luas_wilayah')->class('form-control')->id('luas_wilayah')->placeholder('Luas Wilayah
+        {!! html()->number('luas_wilayah')->class('form-control')->id('luas_wilayah')->placeholder('Luas Wilayah
         Desa')->value(old('luas_wilayah', isset($desa) ? $desa->luas_wilayah : '')) !!}
     </div>
 </div>

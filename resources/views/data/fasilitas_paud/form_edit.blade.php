@@ -2,7 +2,8 @@
     <label for="jumlah_paud" class="control-label col-md-4 col-sm-3 col-xs-12">Jumlah PAUD <span
             class="required">*</span></label>
     <div class="col-md-3 col-sm-6 col-xs-12">
-        {!! Html::number('jumlah_paud')->value(old('jumlah_paud', isset($fasilitas) ? $fasilitas->jumlah_paud : ''))->class('form-control')->id('jumlah_paud')->required()
+        {!! html()->number('jumlah_paud')->value(old('jumlah_paud', isset($fasilitas) ? $fasilitas->jumlah_paud :
+        ''))->class('form-control')->id('jumlah_paud')->required()
         !!}
     </div>
 </div>
@@ -10,14 +11,16 @@
     <label for="jumlah_guru_paud" class="control-label col-md-4 col-sm-3 col-xs-12">Jumlah Guru PAUD <span
             class="required">*</span></label>
     <div class="col-md-3 col-sm-6 col-xs-12">
-        {!! Html::number('jumlah_guru_paud')->value(old('jumlah_guru_paud', isset($fasilitas) ? $fasilitas->jumlah_guru_paud : ''))->class('form-control')->id('jumlah_guru_paud')->required() !!}
+        {!! html()->number('jumlah_guru_paud')->value(old('jumlah_guru_paud', isset($fasilitas) ?
+        $fasilitas->jumlah_guru_paud : ''))->class('form-control')->id('jumlah_guru_paud')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label for="jumlah_siswa_paud" class="control-label col-md-4 col-sm-3 col-xs-12">Jumlah Siswa PAUD <span
             class="required">*</span></label>
     <div class="col-md-3 col-sm-6 col-xs-12">
-        {!! Html::number('jumlah_siswa_paud')->value(old('jumlah_siswa_paud', isset($fasilitas) ? $fasilitas->jumlah_siswa_paud : ''))->class('form-control')->id('jumlah_siswa_paud')->required() !!}
+        {!! html()->number('jumlah_siswa_paud')->value(old('jumlah_siswa_paud', isset($fasilitas) ?
+        $fasilitas->jumlah_siswa_paud : ''))->class('form-control')->id('jumlah_siswa_paud')->required() !!}
     </div>
 </div>
 <div class="form-group">

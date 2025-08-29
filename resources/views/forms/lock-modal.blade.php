@@ -10,10 +10,10 @@
                 <p>Anda yakin ingin mengaktifkan data ini?</p>
             </div>
             <div class="modal-footer">
-                {!! Html::form('PUT')->id('lock')->open() !!}
+                {!! html()->form('PUT')->id('lock')->open() !!}
                 <a id="active-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
-                {!! Html::submit('Aktif')->class('btn btn-success') !!}
-                {!! Html::form()->close() !!}
+                {!! html()->submit('Aktif')->class('btn btn-success') !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

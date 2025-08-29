@@ -2,7 +2,7 @@
     <label for="kategori_id" class="control-label col-md-4 col-sm-3 col-xs-12">Kategori<span
             class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! Html::select(
+        {!! html()->select(
         'kategori_id',
         \App\Models\TipePotensi::pluck('nama_kategori', 'id'),
         old('kategori_id', isset($potensi) ? $potensi->kategori_id : null)
@@ -12,21 +12,21 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama Potensi <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! Html::text('nama_potensi', old('nama_potensi'))->class('form-control')->placeholder('Nama
+        {!! html()->text('nama_potensi', old('nama_potensi'))->class('form-control')->placeholder('Nama
         Potensi')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! Html::textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required()
+        {!! html()->textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required()
         !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Lokasi <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! Html::text('lokasi', old('lokasi'))->class('form-control')->placeholder('Lokasi')->required() !!}
+        {!! html()->text('lokasi', old('lokasi'))->class('form-control')->placeholder('Lokasi')->required() !!}
     </div>
 </div>
 <div class="form-group">

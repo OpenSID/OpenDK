@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::form('PUT', route('informasi.media-sosial.update',
+                {!! html()->form('PUT', route('informasi.media-sosial.update',
                 $medsos->id))->id('form-media-sosial')->class('form-horizontal form-label-left')->acceptsFiles()->open()
                 !!}
 
@@ -45,7 +45,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

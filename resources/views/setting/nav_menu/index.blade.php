@@ -77,7 +77,7 @@
     @include('partials.flash_message')
 
     <div class="row">
-        {!! Html::form(['route' => 'setting.navmenu.store', 'id' => 'frmEdit']) !!}
+        {!! html()->form(['route' => 'setting.navmenu.store', 'id' => 'frmEdit']) !!}
         <div class="col-md-5">
             <div class="box box-primary">
                 <div class="box-header with-border">Sumber Menu URL</div>
@@ -85,12 +85,12 @@
                     @include('setting.nav_menu.field')
                 </div>
                 <div class="box-footer">
-                    {!! Html::button('<i class="fa fa-save"></i> Simpan', [
+                    {!! html()->button('<i class="fa fa-save"></i> Simpan', [
                     'type' => 'button',
                     'class' => 'btn btn-primary btn-sm',
                     'id' => 'btnUpdate',
                     ]) !!}
-                    {!! Html::button('<i class="fa fa-plus-square"></i> Tambah', [
+                    {!! html()->button('<i class="fa fa-plus-square"></i> Tambah', [
                     'type' => 'button',
                     'class' => 'btn btn-success btn-sm',
                     'id' => 'btnAdd',
@@ -106,22 +106,22 @@
                         <div class="box-body">
                             <ul id="myEditor" class="sortableLists list-group"></ul>
                             <div class="hide">
-                                {!! Html::textarea('json_menu')->rows(1) !!}
+                                {!! html()->textarea('json_menu')->rows(1) !!}
                             </div>
                         </div>
                         <div class="box-footer">
-                            {!! Html::button('<i class="fa fa-times"></i> Batal', [
+                            {!! html()->button('<i class="fa fa-times"></i> Batal', [
                             'type' => 'button',
                             'class' => 'btn btn-danger btn-sm',
                             ]) !!}
-                            {!! Html::button('<i class="fa fa-save"></i> Simpan', ['type' => 'submit', 'class' => 'btn
+                            {!! html()->button('<i class="fa fa-save"></i> Simpan', ['type' => 'submit', 'class' => 'btn
                             btn-primary btn-sm']) !!}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {!! Html::form()->close() !!}
+        {!! html()->form()->close() !!}
     </div>
 </section>
 @endsection

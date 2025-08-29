@@ -15,7 +15,7 @@
 
     @include('partials.flash_message')
 
-    {!! Html::form('PUT', route('data.data-umum.update', $data_umum->id))
+    {!! html()->form('PUT', route('data.data-umum.update', $data_umum->id))
     ->id('form-event')
     ->class('form-horizontal form-label-left')
     ->open() !!}
@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    {!! Html::form()->close() !!}
+    {!! html()->form()->close() !!}
 </section>
 @endsection
 

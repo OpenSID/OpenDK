@@ -30,7 +30,7 @@
             @endif
 
             <!-- form start -->
-            {!! Html::form('PUT', route('data.toilet-sanitasi.update',
+            {!! html()->form('PUT', route('data.toilet-sanitasi.update',
             $toilet->id))->id('form-toilet')->class('form-horizontal form-label-left')->open() !!}
 
             <div class="box-body">
@@ -42,7 +42,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
     </div>

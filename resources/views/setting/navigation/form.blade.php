@@ -1,8 +1,10 @@
 <div class="form-group">
     <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('name')->class('form-control')->id('name')->required()->value(old('name', isset($navigation) ? $navigation->name : '')) !!}
-        {!! Html::hidden('parent_id')->class('form-control')->id('parent_id')->required()->value(old('parent_id', isset($navigation) ? $navigation->parent_id : ''))
+        {!! html()->text('name')->class('form-control')->id('name')->required()->value(old('name', isset($navigation) ?
+        $navigation->name : '')) !!}
+        {!! html()->hidden('parent_id')->class('form-control')->id('parent_id')->required()->value(old('parent_id',
+        isset($navigation) ? $navigation->parent_id : ''))
         !!}
     </div>
 </div>
@@ -55,13 +57,15 @@
 <div class="form-group" id="view-url">
     <label for="url" class="control-label col-md-4 col-sm-3 col-xs-12">Url <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('url')->class('form-control')->id('url')->required()->value(old('url', isset($navigation) ? $navigation->url : '')) !!}
+        {!! html()->text('url')->class('form-control')->id('url')->required()->value(old('url', isset($navigation) ?
+        $navigation->url : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label for="status" class="control-label col-md-4 col-sm-3 col-xs-12">Aktif <span class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        {!! Html::select('status', ['1' => 'Ya', '0' => 'Tidak'])->class('form-control')->value(old('status', isset($navigation) ? $navigation->status : '')) !!}
+        {!! html()->select('status', ['1' => 'Ya', '0' => 'Tidak'])->class('form-control')->value(old('status',
+        isset($navigation) ? $navigation->status : '')) !!}
     </div>
 </div>
 <div class="ln_solid"></div>

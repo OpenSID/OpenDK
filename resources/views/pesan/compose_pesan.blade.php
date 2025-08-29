@@ -23,12 +23,13 @@
                     <h3 class="box-title">Buat Pesan Baru</h3>
                 </div>
 
-                {!! Html::form(['route' => 'pesan.compose.post', 'method' => 'post', 'id' => 'form-compose-pesan']) !!}
+                {!! html()->form(['route' => 'pesan.compose.post', 'method' => 'post', 'id' => 'form-compose-pesan'])
+                !!}
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
                         <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
-                        {!! Html::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), null, [
+                        {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), null, [
                         'placeholder' => 'pilih desa',
                         'class' => 'form-control',
                         'id' => 'list_desa',
@@ -37,10 +38,10 @@
                     </div>
                     <div class="form-group">
                         <label>Subject</label>
-                        {!! Html::text('judul')->class('form-control')->placeholder('Subject:') !!}
+                        {!! html()->text('judul')->class('form-control')->placeholder('Subject:') !!}
                     </div>
                     <div class="form-group">
-                        {!! Html::textarea('text')->class('textarea')->placeholder('Isi Pesan') !!}
+                        {!! html()->textarea('text')->class('textarea')->placeholder('Isi Pesan') !!}
                     </div>
                 </div>
                 <!-- /.box-body -->
@@ -53,7 +54,7 @@
                 <!-- /.box-footer -->
             </div>
             <!-- /. box -->
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </section>

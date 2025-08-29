@@ -26,16 +26,16 @@
                 <div class="box-body no-padding">
                     <div class="mailbox-controls">
                         @if ($pesan->diarsipkan === 0)
-                        {!! Html::form([
+                        {!! html()->form([
                         'route' => 'pesan.arsip.post',
                         'class' => 'form-group inline',
                         'method' => 'post',
                         'id' => 'form-arisp-pesan',
                         ]) !!}
-                        {!! Html::text('id') !!}
+                        {!! html()->text('id') !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan </button>
-                        {!! Html::form()->close() !!}
+                        {!! html()->form()->close() !!}
                         @endif
                         {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
                     </div>
@@ -79,17 +79,17 @@
                 </div>
                 <div style="padding-right: 10px; padding-left: 10px"
                     class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
-                    {!! Html::form([
+                    {!! html()->form([
                     'route' => 'pesan.reply.post',
                     'class' => 'form-group inline',
                     'method' => 'post',
                     'id' => 'form-reply-pesan',
                     ]) !!}
-                    {!! Html::text('id') !!}
-                    {!! Html::textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan') !!}
+                    {!! html()->text('id') !!}
+                    {!! html()->textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan') !!}
                     <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i
                             class="fa fa-reply"></i> Balas</button>
-                    {!! Html::form()->close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
             <!-- /. box -->

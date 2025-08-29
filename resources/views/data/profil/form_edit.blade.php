@@ -102,7 +102,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Tahun Pembentukan <span
                     class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::text('tahun_pembentukan', old('tahun_pembentukan'))->placeholder('Tahun
+                {!! html()->text('tahun_pembentukan', old('tahun_pembentukan'))->placeholder('Tahun
                 Pembentukan')->class('form-control')->required() !!}
             </div>
         </div>
@@ -110,28 +110,30 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Dasar Hukum Pembentukan <span
                     class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::text('dasar_pembentukan', old('dasar_pembentukan'))->placeholder('Dasar Hukum
+                {!! html()->text('dasar_pembentukan', old('dasar_pembentukan'))->placeholder('Dasar Hukum
                 Pembentukan')->class('form-control')->required() !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::textarea('alamat',
+                {!! html()->textarea('alamat',
                 old('alamat'))->placeholder('Alamat')->class('form-control')->rows(3)->required() !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Kode Pos <span class="required">*</span></label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::text('kode_pos', old('kode_pos'))->placeholder('13210')->class('form-control')->required() !!}
+                {!! html()->text('kode_pos', old('kode_pos'))->placeholder('13210')->class('form-control')->required()
+                !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Telepon <span class="required">*</span></label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::text('telepon', old('telepon'))->placeholder('021-4567890')->class('form-control')->required()
+                {!! html()->text('telepon',
+                old('telepon'))->placeholder('021-4567890')->class('form-control')->required()
                 !!}
             </div>
         </div>
@@ -139,7 +141,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Email <span class="required">*</span></label>
 
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::text('email', old('email'))->placeholder('mail@mail.com')->class('form-control')->required()
+                {!! html()->text('email', old('email'))->placeholder('mail@mail.com')->class('form-control')->required()
                 !!}
             </div>
         </div>
@@ -171,7 +173,7 @@
         <div class="form-group">
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sambutan {{ $sebutan_kepala_wilayah }}</label>
             <div class="col-md-8 col-sm-6 col-xs-12">
-                {!! Html::textarea('sambutan', old('sambutan'))
+                {!! html()->textarea('sambutan', old('sambutan'))
                 ->class('textarea my-editor')
                 ->placeholder('Sambutan ' . $sebutan_kepala_wilayah . ' ' . $profil->nama_kecamatan . '')
                 ->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
@@ -187,7 +189,7 @@
         <div class="form-group">
             <label class="control-label col-md-2 col-sm-3 col-xs-12">Visi</label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::textarea('visi', old('visi'))->class('textarea my-editor')->placeholder('Visi
+                {!! html()->textarea('visi', old('visi'))->class('textarea my-editor')->placeholder('Visi
                 Kecamatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
                 #dddddd; padding: 10px;') !!}
             </div>
@@ -195,7 +197,7 @@
         <div class="form-group">
             <label class="control-label col-md-2 col-sm-3 col-xs-12">Misi</label>
             <div class="col-md-7 col-sm-6 col-xs-12">
-                {!! Html::textarea('misi', old('misi'))->class('textarea my-editor')->placeholder('Misi
+                {!! html()->textarea('misi', old('misi'))->class('textarea my-editor')->placeholder('Misi
                 Kecamatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
                 #dddddd; padding: 10px;') !!}
             </div>

@@ -41,7 +41,7 @@ Data Pengurus
                         @include('partials.button_reset_submit')
                     </div>
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

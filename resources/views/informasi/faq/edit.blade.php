@@ -18,10 +18,10 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Html::form('PUT', route('informasi.faq.update', $faq->id))
-                    ->id('form-faq')
-                    ->class('form-horizontal form-label-left')
-                    ->open() !!}
+                {!! html()->form('PUT', route('informasi.faq.update', $faq->id))
+                ->id('form-faq')
+                ->class('form-horizontal form-label-left')
+                ->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
@@ -34,7 +34,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

@@ -26,7 +26,7 @@
                 </ul>
             </div>
             @endif
-            {!! Html::form()
+            {!! html()->form()
             ->route('setting.user.store')
             ->method('post')
             ->attribute('files', true)
@@ -35,7 +35,7 @@
             ->open() !!}
             @include('flash::message')
             @include('user.form')
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </section>

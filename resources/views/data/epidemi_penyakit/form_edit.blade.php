@@ -3,7 +3,8 @@
             class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('jumlah_penderita')->value(old('jumlah_penderita', isset($epidemi) ? $epidemi->jumlah_penderita : ''))->class('form-control')->id('jumlah_penderita')->required() !!}
+        {!! html()->number('jumlah_penderita')->value(old('jumlah_penderita', isset($epidemi) ?
+        $epidemi->jumlah_penderita : ''))->class('form-control')->id('jumlah_penderita')->required() !!}
     </div>
 </div>
 <div class="form-group">

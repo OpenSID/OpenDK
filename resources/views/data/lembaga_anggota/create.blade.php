@@ -19,7 +19,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::form()->route('data.lembaga_anggota.store',
+                {!! html()->form()->route('data.lembaga_anggota.store',
                 $lembaga->slug)->method('POST')->id('form-lembaga-anggota')->class('form-horizontal form-label-left')
                 !!}
                 @include('layouts.fragments.error_message')
@@ -33,7 +33,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

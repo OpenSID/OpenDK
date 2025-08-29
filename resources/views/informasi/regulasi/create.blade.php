@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::form('POST', route('informasi.regulasi.store'))->id('form-regulasi')->class('form-horizontal
+                {!! html()->form('POST', route('informasi.regulasi.store'))->id('form-regulasi')->class('form-horizontal
                 form-label-left')->acceptsFiles()->open() !!}
                 <div class="box-body">
 
@@ -39,7 +39,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

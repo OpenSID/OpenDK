@@ -28,7 +28,7 @@
                     <div class="row">
                         {{-- Filter Bulan --}}
                         <div class="col-md-4 pl-md-1">
-                            {!! Html::select(
+                            {!! html()->select(
                             'bulan',
                             [
                             '01' => 'Januari',
@@ -54,7 +54,8 @@
 
                         {{-- Filter Tahun --}}
                         <div class="col-md-4 pr-md-1">
-                            {!! Html::select('tahun', array_combine(range(date('Y')->value(old('tahun', isset($dokumen) ? $dokumen->tahun : '')), date('Y') - 10), range(date('Y'),
+                            {!! html()->select('tahun', array_combine(range(date('Y')->value(old('tahun',
+                            isset($dokumen) ? $dokumen->tahun : '')), date('Y') - 10), range(date('Y'),
                             date('Y') - 10)), null, [
                             'class' => 'form-control',
                             'placeholder' => '- Pilih Tahun -',
@@ -63,7 +64,9 @@
 
                         {{-- Filter Jenis Dokumen --}}
                         <div class="col-md-4 pr-md-1">
-                            {!! Html::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id')->value(old('jenis_dokumen_id', isset($dokumen) ? $dokumen->jenis_dokumen_id : '')), null, [
+                            {!! html()->select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama',
+                            'id')->value(old('jenis_dokumen_id', isset($dokumen) ? $dokumen->jenis_dokumen_id : '')),
+                            null, [
                             'placeholder' => '-Pilih Jenis Dokumen-',
                             'class' => 'form-control',
                             'id' => 'jenis_dokumen_id',

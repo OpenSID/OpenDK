@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Tipe <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select(
+        {!! html()->select(
         'tipe_regulasi',
         \App\Models\TipeRegulasi::pluck('nama', 'id'),
         old('tipe_regulasi', isset($regulasi) ? $regulasi->tipe_regulasi : null)
@@ -11,13 +11,13 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('judul', old('judul'))->class('form-control')->placeholder('Judul Regulasi')->required() !!}
+        {!! html()->text('judul', old('judul'))->class('form-control')->placeholder('Judul Regulasi')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required()
+        {!! html()->textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required()
         !!}
     </div>
 </div>

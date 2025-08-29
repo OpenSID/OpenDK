@@ -17,7 +17,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::form('POST',
+                {!! html()->form('POST',
                 route('informasi.sinergi-program.store'))->acceptsFiles()->id('form-sinergi-program')->class('form-horizontal
                 form-label-left')->open() !!}
 
@@ -41,7 +41,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

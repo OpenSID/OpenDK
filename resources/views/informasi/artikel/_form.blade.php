@@ -9,7 +9,7 @@
                 <div class="form-group">
                     <label class="control-label" for="judul">Judul Artikel</label>
 
-                    {!! Html::text('judul', old('judul'))->placeholder('Judul Artikel')->class('form-control') !!}
+                    {!! html()->text('judul', old('judul'))->placeholder('Judul Artikel')->class('form-control') !!}
                     @if ($errors->has('judul'))
                     <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
@@ -19,7 +19,8 @@
                 <div class="form-group">
                     <label class="control-label" for="isi">Isi Artikel</label>
 
-                    {!! Html::textarea('isi', old('isi'))->class('my-editor')->placeholder('Isi Artikel')->style('width:
+                    {!! html()->textarea('isi', old('isi'))->class('my-editor')->placeholder('Isi
+                    Artikel')->style('width:
                     100%; height: 750px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;')
                     !!}
                     @if ($errors->has('isi'))
@@ -54,15 +55,17 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Kategori</label>
 
-                    {!! Html::select('id_kategori', $kategori, old('id_kategori')->value(old('id_kategori', isset($artikel)->value(old('id_kategori', isset($artikel) ? $artikel->id_kategori : '')) ? $artikel->id_kategori : '')))->class('form-control') !!}
+                    {!! html()->select('id_kategori', $kategori, old('id_kategori')->value(old('id_kategori',
+                    isset($artikel)->value(old('id_kategori', isset($artikel) ? $artikel->id_kategori : '')) ?
+                    $artikel->id_kategori : '')))->class('form-control') !!}
                     @if ($errors->has('id_kategori'))
                     <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
                     @endif
                 </div>
                 <!--
                 <div class="form-group">
-                    {!! Html::label('kategori_id', 'Kategori') !!}
-                    {!! Html::select('kategori_id', $kategori)->class('form-control')->placeholder('Pilih Kategori')->value(old('kategori_id', isset($artikel)->value(old('kategori_id', isset($artikel) ? $artikel->kategori_id : '')) ? $artikel->kategori_id : '')) !!}
+                    {!! html()->label('kategori_id', 'Kategori') !!}
+                    {!! html()->select('kategori_id', $kategori)->class('form-control')->placeholder('Pilih Kategori')->value(old('kategori_id', isset($artikel)->value(old('kategori_id', isset($artikel) ? $artikel->kategori_id : '')) ? $artikel->kategori_id : '')) !!}
 
                     @if ($errors->has('kategori_id'))
 <span class="help-block" style="color:red">{{ $errors->first('kategori_id') }}</span>
@@ -72,7 +75,9 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 
-                    {!! Html::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])->value(old('status', isset($artikel)->value(old('status', isset($artikel) ? $artikel->status : '')) ? $artikel->status : '')))->class('form-control') !!}
+                    {!! html()->select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])->value(old('status',
+                    isset($artikel)->value(old('status', isset($artikel) ? $artikel->status : '')) ? $artikel->status :
+                    '')))->class('form-control') !!}
                     @if ($errors->has('status'))
                     <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
                     @endif

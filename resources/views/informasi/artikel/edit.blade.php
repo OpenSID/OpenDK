@@ -14,13 +14,13 @@
 </section>
 <section class="content container-fluid">
 
-    {!! Html::form('PUT', route('informasi.artikel.update',
+    {!! html()->form('PUT', route('informasi.artikel.update',
     $artikel->id))->id('form-artikel')->acceptsFiles()->open() !!}
 
     @include('flash::message')
     @include('informasi.artikel._form')
 
-    {!! Html::form()->close() !!}
+    {!! html()->form()->close() !!}
 
 </section>
 @endsection

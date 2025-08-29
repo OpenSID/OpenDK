@@ -10,10 +10,10 @@
                 <p>Anda yakin ingin menangguhkan data ini?</p>
             </div>
             <div class="modal-footer">
-                {!! Html::form('POST')->id('suspend')->open() !!}
+                {!! html()->form('POST')->id('suspend')->open() !!}
                 <a id="suspend-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
-                {!! Html::submit('Tangguhkan')->class('btn btn-warning') !!}
-                {!! Html::form()->close() !!}
+                {!! html()->submit('Tangguhkan')->class('btn btn-warning') !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

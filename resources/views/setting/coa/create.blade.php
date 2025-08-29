@@ -18,7 +18,7 @@
             @include('partials.flash_message')
             <div class="box box-primary">
 
-                {!! Html::form()
+                {!! html()->form()
                 ->route('setting.coa.store')
                 ->method('post')
                 ->id('form-coa')
@@ -44,7 +44,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

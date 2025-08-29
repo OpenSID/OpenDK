@@ -10,11 +10,11 @@
                 <p>Anda yakin akan menghapus data berikut?</p>
             </div>
             <div class="modal-footer">
-                {!! Html::form('DELETE')->id('destroy')->open() !!}
+                {!! html()->form('DELETE')->id('destroy')->open() !!}
                 <a id="delete-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
                     data-dismiss="modal">Batal</a>
-                {!! Html::submit('Hapus')->class('btn btn-warning waves-effect waves-light') !!}
-                {!! Html::form()->close() !!}
+                {!! html()->submit('Hapus')->class('btn btn-warning waves-effect waves-light') !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

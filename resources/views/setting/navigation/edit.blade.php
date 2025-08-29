@@ -17,20 +17,20 @@
         <div class="col-md-12">
             @include('partials.flash_message')
 
-            {!! Html::form(){{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
-
-                @include('setting.navigation.form')
-
-            </div>
-            <div class="box-footer">
-                @include('partials.button_reset_submit')
-            </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form(){{ $error }}</li>
+            @endforeach
+            </ul>
         </div>
+        @endif
+
+        @include('setting.navigation.form')
+
+    </div>
+    <div class="box-footer">
+        @include('partials.button_reset_submit')
+    </div>
+    {!! html()->form()->close() !!}
+    </div>
     </div>
     </div>
 </section>

@@ -2,7 +2,8 @@
     <label for="tidak_tamat_sekolah" class="control-label col-md-4 col-sm-3 col-xs-12">Tidak Tamat Sekolah <span
             class="required">*</span></label>
     <div class="col-md-2 col-sm-6 col-xs-12">
-        {!! Html::number('tidak_tamat_sekolah')->value(old('tidak_tamat_sekolah', isset($pendidikan) ? $pendidikan->tidak_tamat_sekolah : ''))->class('form-control')->id('tidak_tamat_sekolah')->required() !!}
+        {!! html()->number('tidak_tamat_sekolah')->value(old('tidak_tamat_sekolah', isset($pendidikan) ?
+        $pendidikan->tidak_tamat_sekolah : ''))->class('form-control')->id('tidak_tamat_sekolah')->required() !!}
     </div>
 </div>
 
@@ -10,7 +11,8 @@
     <label for="tamat_sd" class="control-label col-md-4 col-sm-3 col-xs-12">Tamat SD <span
             class="required">*</span></label>
     <div class="col-md-2 col-sm-6 col-xs-12">
-        {!! Html::number('tamat_sd')->value(old('tamat_sd', isset($pendidikan) ? $pendidikan->tamat_sd : ''))->class('form-control')->id('tamat_sd')->required() !!}
+        {!! html()->number('tamat_sd')->value(old('tamat_sd', isset($pendidikan) ? $pendidikan->tamat_sd :
+        ''))->class('form-control')->id('tamat_sd')->required() !!}
     </div>
 </div>
 
@@ -18,7 +20,8 @@
     <label for="tamat_smp" class="control-label col-md-4 col-sm-3 col-xs-12">Tamat SMP <span
             class="required">*</span></label>
     <div class="col-md-2 col-sm-6 col-xs-12">
-        {!! Html::number('tamat_smp')->value(old('tamat_smp', isset($pendidikan) ? $pendidikan->tamat_smp : ''))->class('form-control')->id('tamat_smp')->required() !!}
+        {!! html()->number('tamat_smp')->value(old('tamat_smp', isset($pendidikan) ? $pendidikan->tamat_smp :
+        ''))->class('form-control')->id('tamat_smp')->required() !!}
     </div>
 </div>
 
@@ -26,7 +29,8 @@
     <label for="tamat_sma" class="control-label col-md-4 col-sm-3 col-xs-12">Tamat SMA <span
             class="required">*</span></label>
     <div class="col-md-2 col-sm-6 col-xs-12">
-        {!! Html::number('tamat_sma')->value(old('tamat_sma', isset($pendidikan) ? $pendidikan->tamat_sma : ''))->class('form-control')->id('tamat_sma')->required() !!}
+        {!! html()->number('tamat_sma')->value(old('tamat_sma', isset($pendidikan) ? $pendidikan->tamat_sma :
+        ''))->class('form-control')->id('tamat_sma')->required() !!}
     </div>
 </div>
 
@@ -34,7 +38,9 @@
     <label for="tamat_diploma_sederajat" class="control-label col-md-4 col-sm-3 col-xs-12">Tamat Diploma/Sederajat <span
             class="required">*</span></label>
     <div class="col-md-2 col-sm-6 col-xs-12">
-        {!! Html::number('tamat_diploma_sederajat')->value(old('tamat_diploma_sederajat', isset($pendidikan) ? $pendidikan->tamat_diploma_sederajat : ''))->class('form-control')->id('tamat_diploma_sederajat')->required() !!}
+        {!! html()->number('tamat_diploma_sederajat')->value(old('tamat_diploma_sederajat', isset($pendidikan) ?
+        $pendidikan->tamat_diploma_sederajat : ''))->class('form-control')->id('tamat_diploma_sederajat')->required()
+        !!}
     </div>
 </div>
 

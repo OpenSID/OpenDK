@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">New Password</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::password('password', ['class' => 'form-control password']) !!}
+        {!! html()->password('password', ['class' => 'form-control password']) !!}
     </div>
     <div class="col-md-1 col-sm-1 col-xs-12">
         <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
@@ -10,7 +10,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Password</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::password('conf-password', ['class' => 'form-control']) !!}
+        {!! html()->password('conf-password', ['class' => 'form-control']) !!}
     </div>
 </div>
 <input type="hidden" name="status" value="1">

@@ -24,15 +24,15 @@
                     <div class="pull-right">
                         <div class="row">
                             <div class="col-md-6">
-                                {!! Html::form()->route('pesan.index')->method('get')->id('form-search-desa')->open()
+                                {!! html()->form()->route('pesan.index')->method('get')->id('form-search-desa')->open()
                                 !!}
-                                {!! Html::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
+                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
                                 'placeholder' => 'pilih desa',
                                 'class' => 'form-control',
                                 'id' => 'list_desa',
                                 'required',
                                 ]) !!}
-                                {!! Html::form()->close() !!}
+                                {!! html()->form()->close() !!}
                             </div>
                             <div class="col-md-6">
                                 <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"

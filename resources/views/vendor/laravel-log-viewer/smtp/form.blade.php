@@ -2,7 +2,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="provider">Penyedia Server</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::select('provider', ['smtp' => 'SMTP', 'webmail' => 'Webmail', 'google' => 'Google'],
+        {!! html()->select('provider', ['smtp' => 'SMTP', 'webmail' => 'Webmail', 'google' => 'Google'],
         $email_smtp->provider, ['class' => 'form-control']) !!}
     </div>
 </div>
@@ -10,7 +10,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Host Server</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('host', $email_smtp->host, [
+        {!! html()->text('host', $email_smtp->host, [
         'placeholder' => 'Host Server',
         'class' => 'form-control',
         'required' => true,
@@ -21,7 +21,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Port</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('port', $email_smtp->port, [
+        {!! html()->text('port', $email_smtp->port, [
         'placeholder' => 'Port',
         'class' => 'form-control',
         'required' => true,
@@ -32,7 +32,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Username</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('username', $email_smtp->username, [
+        {!! html()->text('username', $email_smtp->username, [
         'placeholder' => 'Username',
         'class' => 'form-control',
         'required' => true,
@@ -43,7 +43,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Password</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('password', $email_smtp->password, [
+        {!! html()->text('password', $email_smtp->password, [
         'placeholder' => 'Password',
         'class' => 'form-control password',
         'required' => true,
@@ -58,7 +58,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Email Tujuan (Tes Email)</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('testing_mail')->class('form-control')->id('testing_mail')->placeholder('Email Tujuan (Tes Email)') !!}
+        {!! html()->text('testing_mail')->class('form-control')->id('testing_mail')->placeholder('Email Tujuan (Tes
+        Email)') !!}
     </div>
 </div>
 @endif

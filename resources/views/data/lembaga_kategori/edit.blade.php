@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::form()!!}
+                {!! html()->form()!!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
@@ -30,7 +30,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

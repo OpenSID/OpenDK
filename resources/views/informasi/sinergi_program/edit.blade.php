@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::form('PUT', route('informasi.sinergi-program.update',
+                {!! html()->form('PUT', route('informasi.sinergi-program.update',
                 $sinergi->id))->id('form-sinergi-program')->class('form-horizontal
                 form-label-left')->acceptsFiles()->open()
                 !!}
@@ -46,7 +46,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

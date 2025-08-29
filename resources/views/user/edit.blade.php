@@ -26,7 +26,7 @@
                 </ul>
             </div>
             @endif
-            {!! Html::form('PUT', route('setting.user.update', $user->id))
+            {!! html()->form('PUT', route('setting.user.update', $user->id))
             ->attribute('autocomplete', 'off')
             ->id('form-user')
             ->class('form-horizontal form-label-left')
@@ -34,7 +34,7 @@
             ->open() !!}
             @include('flash::message')
             @include('user.form')
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </section>

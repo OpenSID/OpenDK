@@ -14,12 +14,12 @@
 </section>
 <section class="content container-fluid">
 
-    {!! Html::form()!!}
+    {!! html()->form()!!}
 
     @include('flash::message')
     @include('publikasi.galeri._form')
 
-    {!! Html::form()->close() !!}
+    {!! html()->form()->close() !!}
 
 </section>
 @endsection

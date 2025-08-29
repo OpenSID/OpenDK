@@ -14,11 +14,11 @@
 </section>
 <section class="content container-fluid">
 
-    {!! Html::form('POST', route('informasi.artikel.store'))->acceptsFiles()->open() !!}
+    {!! html()->form('POST', route('informasi.artikel.store'))->acceptsFiles()->open() !!}
 
     @include('informasi.artikel._form')
 
-    {!! Html::form()->close() !!}
+    {!! html()->form()->close() !!}
 
 </section>
 @endsection

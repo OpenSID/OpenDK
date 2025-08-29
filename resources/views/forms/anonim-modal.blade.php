@@ -1,7 +1,7 @@
 <div id="anonim-modal" class="modal fade modal-danger in">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Html::form('PUT')->id('anonim')->open() !!}
+            {!! html()->form('PUT')->id('anonim')->open() !!}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="close"><span
                         aria-hidden="true">&times;</span></button>
@@ -9,14 +9,14 @@
             </div>
             <div class="modal-body">
                 <p>Apakah Anda ingin menampilkan identitas pelapor?</p>
-                {!! Html::select('anonim', [0 => 'Tampilkan', 1 => 'Sembunyikan'])->class('form-control') !!}
+                {!! html()->select('anonim', [0 => 'Tampilkan', 1 => 'Sembunyikan'])->class('form-control') !!}
             </div>
             <div class="modal-footer">
                 <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
                     data-dismiss="modal">Batal</a>
-                {!! Html::submit('Simpan')->class('btn btn-warning waves-effect waves-light') !!}
+                {!! html()->submit('Simpan')->class('btn btn-warning waves-effect waves-light') !!}
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </div>

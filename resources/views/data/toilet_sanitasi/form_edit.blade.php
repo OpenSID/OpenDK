@@ -2,7 +2,7 @@
     <label for="toilet" class="control-label col-md-4 col-sm-3 col-xs-12">Toilet <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('toilet', old('toilet'))->class('form-control')->required()->id('toilet') !!}
+        {!! html()->number('toilet', old('toilet'))->class('form-control')->required()->id('toilet') !!}
     </div>
 </div>
 <div class="form-group">
@@ -10,7 +10,7 @@
             class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('sanitasi', old('sanitasi'))->class('form-control')->required()->id('sanitasi') !!}
+        {!! html()->number('sanitasi', old('sanitasi'))->class('form-control')->required()->id('sanitasi') !!}
     </div>
 </div>
 <div class="form-group">

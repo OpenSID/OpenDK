@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Judul Prosedur <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! Html::text('judul_prosedur', old('judul_prosedur'))->class('form-control')->placeholder('Judul
+        {!! html()->text('judul_prosedur', old('judul_prosedur'))->class('form-control')->placeholder('Judul
         Prosedur')->required() !!}
     </div>
 </div>

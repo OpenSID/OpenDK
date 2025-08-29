@@ -18,7 +18,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::form('PUT', route('informasi.artikel-kategori.update', $kategori->id_kategori))
+                {!! html()->form('PUT', route('informasi.artikel-kategori.update', $kategori->id_kategori))
                 ->id('form-artikel-kategori')
                 ->class('form-horizontal form-label-left')
                 ->acceptsFiles()
@@ -34,7 +34,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

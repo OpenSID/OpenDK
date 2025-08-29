@@ -17,7 +17,8 @@
         <div class="col-md-12">
             @include('partials.flash_message')
 
-            {!! Html::form()->route('data.data-desa.store')->method('POST')->id('form-datadesa')->class('form-horizontal
+            {!!
+            html()->form()->route('data.data-desa.store')->method('POST')->id('form-datadesa')->class('form-horizontal
             form-label-left') !!}
 
             <div class="box-body">
@@ -39,7 +40,7 @@
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
     </div>

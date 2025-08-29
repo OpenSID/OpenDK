@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                {!! Html::form([
+                {!! html()->form([
                 'route' => 'data.laporan-penduduk.do_import',
                 'method' => 'post',
                 'id' => 'form-import',
@@ -66,7 +66,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_impor')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

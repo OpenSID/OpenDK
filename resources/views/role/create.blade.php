@@ -23,7 +23,7 @@
             'form') !!}
             @include('flash::message')
             @include('role.form')
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </section>

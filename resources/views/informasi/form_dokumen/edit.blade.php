@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! Html::form('PUT', route('informasi.form-dokumen.update',
+                {!! html()->form('PUT', route('informasi.form-dokumen.update',
                 $dokumen->id))->id('form-dokumen')->class('form-horizontal form-label-left')->acceptsFiles()->open() !!}
 
                 <div class="box-body">
@@ -42,7 +42,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::form()->close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </div>

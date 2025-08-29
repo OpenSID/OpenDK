@@ -1,23 +1,27 @@
 <div class="form-group">
     <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::text('judul')->class('form-control')->id('judul')->required()->value(old('judul', isset($slide) ? $slide->judul : '')) !!}
+        {!! html()->text('judul')->class('form-control')->id('judul')->required()->value(old('judul', isset($slide) ?
+        $slide->judul : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi<span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::textarea('deskripsi')->class('textarea')->placeholder('deskripsi')->value(old('deskripsi', isset($slide) ? $slide->deskripsi : '')) !!}
+        {!! html()->textarea('deskripsi')->class('textarea')->placeholder('deskripsi')->value(old('deskripsi',
+        isset($slide) ? $slide->deskripsi : '')) !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Gambar <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input accept="jpg,jpeg,png" type="file" name="gambar" id="gambar" class="form-control" {{ $slide ? '' : 'required' }}>
+        <input accept="jpg,jpeg,png" type="file" name="gambar" id="gambar" class="form-control" {{ $slide ? ''
+            : 'required' }}>
         <code>Dimensi gambar 1360 x 400 Piksel</code>
         <br>
 
-        <img src="@if (isset($slide->gambar)) {{ Str::contains($slide->gambar, 'storage') ? asset($slide->gambar) : $slide->gambar }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="@if (isset($slide->gambar)) {{ Str::contains($slide->gambar, 'storage') ? asset($slide->gambar) : $slide->gambar }} @else {{ 'http://placehold.co/1000x600' }} @endif"
+            id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
 
     </div>
 </div>
@@ -26,10 +30,10 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-    {!! JsValidator::formRequest('App\Http\Requests\SlideRequest', '#form-slide') !!}
+{!! JsValidator::formRequest('App\Http\Requests\SlideRequest', '#form-slide') !!}
 
-    <script>
-        $(function() {
+<script>
+    $(function() {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
@@ -59,5 +63,5 @@
                 readURL(this);
             });
         });
-    </script>
+</script>
 @endpush

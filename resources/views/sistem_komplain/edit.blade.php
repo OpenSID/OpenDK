@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-md-12">
             <!-- kirim komplain form -->
-            {!! Html::form()!!}
+            {!! html()->form()!!}
             <div class="box box-primary">
                 <div class="box-body">
                     @if (count($errors) > 0)
@@ -43,7 +43,9 @@
                                         class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Html::text('nik')->class('form-control')->readonly()->placeholder('NIK')->value(old('nik', isset($komplain) ? $komplain->nik : '')) !!}
+                                    {!!
+                                    html()->text('nik')->class('form-control')->readonly()->placeholder('NIK')->value(old('nik',
+                                    isset($komplain) ? $komplain->nik : '')) !!}
                                     @if ($errors->has('nik'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nik') }}</strong>
@@ -56,7 +58,9 @@
                                         class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Html::text('nama')->class('form-control')->readonly()->placeholder('Nama')->value(old('nama', isset($komplain) ? $komplain->nama : '')) !!}
+                                    {!!
+                                    html()->text('nama')->class('form-control')->readonly()->placeholder('Nama')->value(old('nama',
+                                    isset($komplain) ? $komplain->nama : '')) !!}
                                     @if ($errors->has('nama'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('nama') }}</strong>
@@ -70,7 +74,8 @@
                                         class="required">*</span></label>
 
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    {!! Html::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id')->value(old('kategori', isset($komplain) ? $komplain->kategori : '')),
+                                    {!! html()->select('kategori', \App\Models\KategoriKomplain::pluck('nama',
+                                    'id')->value(old('kategori', isset($komplain) ? $komplain->kategori : '')),
                                     null, [
                                     'class' => 'form-control',
                                     'id' => 'kategori',
@@ -89,7 +94,9 @@
                                         class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-8 col-xs-12">
-                                    {!! Html::text('judul')->class('form-control')->placeholder('Judul')->value(old('judul', isset($komplain) ? $komplain->judul : '')) !!}
+                                    {!!
+                                    html()->text('judul')->class('form-control')->placeholder('Judul')->value(old('judul',
+                                    isset($komplain) ? $komplain->judul : '')) !!}
                                     @if ($errors->has('judul'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('judul') }}</strong>
@@ -103,7 +110,9 @@
                                         class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-8 col-xs-12">
-                                    {!! Html::textarea('laporan')->class('form-control')->placeholder('Laporan')->value(old('laporan', isset($komplain) ? $komplain->laporan : '')) !!}
+                                    {!!
+                                    html()->textarea('laporan')->class('form-control')->placeholder('Laporan')->value(old('laporan',
+                                    isset($komplain) ? $komplain->laporan : '')) !!}
                                     @if ($errors->has('laporan'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('laporan') }}</strong>
@@ -174,8 +183,9 @@
                                 <label class="control-label col-md-2 col-sm-3 col-xs-12">Status</label>
 
                                 <div class="col-md-2 col-sm-2 col-xs-12">
-                                    {!! Html::select('status', ['BELUM' => 'Belum', 'PROSES' => 'Proses', 'SELESAI' =>
-                                    'Selesai'])->class('form-control')->value(old('status', isset($komplain) ? $komplain->status : '')) !!}
+                                    {!! html()->select('status', ['BELUM' => 'Belum', 'PROSES' => 'Proses', 'SELESAI' =>
+                                    'Selesai'])->class('form-control')->value(old('status', isset($komplain) ?
+                                    $komplain->status : '')) !!}
                                     @if ($errors->has('status'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('status') }}</strong>
@@ -191,7 +201,7 @@
                     @include('partials.button_reset_submit')
                 </div>
             </div>
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </section>

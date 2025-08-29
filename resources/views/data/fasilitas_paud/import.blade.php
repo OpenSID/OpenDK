@@ -19,7 +19,7 @@
         <div class="col-md-12">
 
             <!-- form start -->
-            {!! Html::form([
+            {!! html()->form([
             'route' => 'data.fasilitas-paud.do_import',
             'method' => 'post',
             'id' => 'form-import',
@@ -101,7 +101,7 @@
                 @include('partials.button_reset_impor')
             </div>
 
-            {!! Html::form()->close() !!}
+            {!! html()->form()->close() !!}
 
         </div>
     </div>

@@ -4,7 +4,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Pengaturan SMTP</h3>
             </div>
-            {!! Html::form()
+            {!! html()->form()
             ->route('setting.info-sistem.store-email-smtp')
             ->method('post')
             ->id('form-smtp')
@@ -21,7 +21,7 @@
                 <button type="submit" id="store-smtp" class="btn btn-primary btn-sm" id><i class="fa fa-save"></i>
                     Simpan</button>
             </div>
-            {!! Html::closeForm() !!}
+            {!! html()->closeForm() !!}
         </div>
     </div>
 </div>

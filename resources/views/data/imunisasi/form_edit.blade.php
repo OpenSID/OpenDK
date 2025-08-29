@@ -3,7 +3,7 @@
             class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Html::number('cakupan_imunisasi',
+        {!! html()->number('cakupan_imunisasi',
         old('cakupan_imunisasi'))->class('form-control')->required()->id('cakupan_imunisasi') !!}
     </div>
 </div>

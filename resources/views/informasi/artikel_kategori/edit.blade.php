@@ -18,12 +18,17 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! Html::model($kategori, [
+                {{-- {!! Html::model($kategori, [
                 'route' => ['informasi.artikel-kategori.update', $kategori->id_kategori],
                 'method' => 'put',
                 'id' => 'form-artikel-kategori',
                 'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                ]) !!} --}}
+                {!! Html::form('PUT', route('informasi.artikel-kategori.update', $kategori->id_kategori))
+                ->id('form-artikel-kategori')
+                ->class('form-horizontal form-label-left')
+                ->acceptsFiles()
+                ->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
@@ -35,7 +40,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

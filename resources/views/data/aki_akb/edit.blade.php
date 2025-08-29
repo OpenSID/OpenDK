@@ -29,22 +29,20 @@
             </div>
             @endif
 
-            {!! Html::model($akib, [
-            'route' => ['data.aki-akb.update', $akib->id],
-            'method' => 'put',
-            'id' => 'form-akib',
-            'class' => 'form-horizontal form-label-left',
-            ]) !!}
+            {!! Html::form('PUT', route('data.aki-akb.update', $akib->id))
+            ->id('form-akib')
+            ->class('form-horizontal form-label-left')
+            ->open() !!}
 
             <div class="box-body">
-
                 @include('data.aki_akb.form_edit')
-
             </div>
+
             <div class="box-footer">
                 @include('partials.button_reset_submit')
             </div>
-            {!! Html::closeForm() !!}
+
+            {!! Html::form()->close() !!}
         </div>
     </div>
     </div>

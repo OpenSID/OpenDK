@@ -1,37 +1,49 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Kegiatan <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Html::text('event_name', old('event_name'))->placeholder('Nama kegiatan')->class('form-control')->required()
-        !!}
+        {!! html()->text('event_name', old('event_name', $event->event_name))
+        ->placeholder('Nama kegiatan')
+        ->class('form-control')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Mulai / Selesai<span class="required">*</span></label>
     <div class="col-md-3 col-sm-8 col-xs-12">
-        {!! Html::text('waktu', old('waktu'))->id('waktu')->placeholder('Waktu
-        kegiatan')->class('form-control')->required() !!}
+        {!! html()->text('waktu', old('waktu', $event->start . ' - ' . $event->end))
+        ->id('waktu')
+        ->placeholder('Waktu kegiatan')
+        ->class('form-control')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Html::textarea('description', old('description'))->class('textarea my-editor')->placeholder('Deskripsi
-        kegiatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
-        padding: 10px;')->required() !!}
+        {!! html()->textarea('description', old('description', $event->description))
+        ->class('textarea my-editor')
+        ->placeholder('Deskripsi kegiatan')
+        ->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:
+        10px;')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Orang yang hadir <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! Html::text('attendants', old('attendants'))->placeholder('contoh: BAPENAS, GUBERNUR,
-        CAMAT')->class('form-control')->required() !!}
+        {!! html()->text('attendants', old('attendants', $event->attendants))
+        ->placeholder('contoh: BAPENAS, GUBERNUR, CAMAT')
+        ->class('form-control')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Status <span class="required">*</span></label>
     <div class="col-md-2 col-sm-8 col-xs-12">
-        {!! Html::select('status', ['OPEN' => 'Open', 'CLOSED' => 'Closed'],
-        old('status'))->class('form-control')->required()->id('status') !!}
+        {!! html()->select('status', ['OPEN' => 'Open', 'CLOSED' => 'Closed'], old('status', $event->status))
+        ->class('form-control')
+        ->required()
+        ->id('status') !!}
     </div>
 </div>
 <div id="attachment_input" class="form-group">

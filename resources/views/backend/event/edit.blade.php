@@ -18,9 +18,11 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! Html::model($event)->route('informasi.event.update',
-                $event->id)->method('PUT')->id('form-event')->class('form-horizontal form-label-left')->acceptsFiles()
-                !!}
+                {!! Html::form('PUT', route('informasi.event.update', $event->id))
+                ->id('form-event')
+                ->class('form-horizontal form-label-left')
+                ->acceptsFiles()
+                ->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
@@ -31,7 +33,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </div>

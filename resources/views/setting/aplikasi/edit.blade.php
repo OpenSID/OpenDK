@@ -19,16 +19,14 @@
     <section class="content">
         <div class="row">
             <div class="box box-primary">
-                {!! Html::model($aplikasi, [
-                'route' => ['setting.aplikasi.update', $aplikasi->id],
-                'method' => 'put',
-                'id' => 'form-setting-aplikasi',
-                'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! html()->form('PUT', route('setting.aplikasi.update', $aplikasi->id))
+                ->id('form-setting-aplikasi')
+                ->class('form-horizontal form-label-left')
+                ->open() !!}
 
                 <div class="box-body">
 
-                    @if (count($errors) > 0)
+                    @if ($errors->any())
                     <div class="alert alert-danger">
                         <strong>Oops!</strong> Ada yang salah dengan inputan Anda.<br><br>
                         <ul>
@@ -46,7 +44,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Html::closeForm() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
     </section>

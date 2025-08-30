@@ -31,11 +31,14 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportAnggaranDesa;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AnggaranDesaRequest;
 use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
 use App\Models\DataDesa;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnggaranDesaController extends Controller
@@ -55,11 +58,11 @@ class AnggaranDesaController extends Controller
 
             return DataTables::of(
                 AnggaranDesa::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
-                        return $query->where('desa_id', $desa);
-                    })
+                    return $query->where('desa_id', $desa);
+                })
                     ->with('desa')
                     ->get()
-                )
+            )
                 ->addColumn('aksi', function ($row) {
                     $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 
@@ -111,5 +114,23 @@ class AnggaranDesaController extends Controller
         }
 
         return redirect()->route('data.anggaran-desa.index')->with('success', 'Data sukses dihapus.');
+    }
+
+    /**
+     * Export Excel data Anggaran Desa.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        try {
+            $timestamp = date('Y-m-d-H-i-s');
+            $filename = "data-anggaran-desa-{$timestamp}.xlsx";
+
+            return Excel::download(new ExportAnggaranDesa($request->all()), $filename);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh data: ' . $e->getMessage());
+        }
     }
 }

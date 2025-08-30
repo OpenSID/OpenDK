@@ -136,7 +136,7 @@
             $('#action-reply').click(function (e) {
                 e.preventDefault();
                 if($('#reply_message').val() === '') {
-                    window.alert("silahkan isi pesan");
+                    window.alert("Silakan isi pesan");
                     return;
                 }
                 $('#form-reply-pesan').submit()

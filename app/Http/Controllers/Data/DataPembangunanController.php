@@ -31,11 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportPembangunan;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\Pembangunan;
 use App\Models\PembangunanDokumentasi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class DataPembangunanController extends Controller
@@ -57,9 +59,9 @@ class DataPembangunanController extends Controller
 
             $pembangunan = Pembangunan::when($desa, function ($q) use ($desa) {
                 return $desa === 'Semua'
-                ? $q : $q->where('desa_id', $desa);
+                    ? $q : $q->where('desa_id', $desa);
             })
-            ->with('dokumentasi');
+                ->with('dokumentasi');
 
             return DataTables::of($pembangunan)
                 ->addColumn('aksi', function ($row) {
@@ -72,8 +74,6 @@ class DataPembangunanController extends Controller
 
     public function rincian($id, $desa_id)
     {
-        $id = $id;
-        $desa_id = $desa_id;
         $page_title = 'Pembangunan';
         $page_description = 'Rincian Pembangunan';
         $pembangunan = Pembangunan::where('id', $id)->where('desa_id', $desa_id)->first() ?? '';
@@ -87,11 +87,29 @@ class DataPembangunanController extends Controller
             $pembangunanDokumentasi = PembangunanDokumentasi::where('desa_id', $desa_id)->where('id_pembangunan', $id)->get();
 
             return DataTables::of($pembangunanDokumentasi)
-            ->addIndexColumn()
-            ->editColumn('created_at', function ($row) {
-                return format_datetime($row->created_at);
-            })
-            ->make();
+                ->addIndexColumn()
+                ->editColumn('created_at', function ($row) {
+                    return format_datetime($row->created_at);
+                })
+                ->make();
+        }
+    }
+
+    /**
+     * Export Excel data Pembangunan.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        try {
+            $timestamp = date('Y-m-d-H-i-s');
+            $filename = "data-pembangunan-{$timestamp}.xlsx";
+
+            return Excel::download(new ExportPembangunan($request->all()), $filename);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengunduh data: ' . $e->getMessage());
         }
     }
 }

@@ -18,6 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => route('data.putus-sekolah.import')])
+                @include('forms.btn-social', ['export_url' => route('data.putus-sekolah.export-excel')])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')
@@ -27,7 +28,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Siswa PAUD/RA</th>
                                 <th>Anak Usia PAUD/RA</th>
                                 <th>Siswa SD/MI</th>

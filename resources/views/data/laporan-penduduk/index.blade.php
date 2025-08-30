@@ -22,6 +22,7 @@
                         @include('forms.btn-social', [
                             'import_url' => route('data.laporan-penduduk.import'),
                         ])
+                        @include('forms.btn-social', ['export_url' => route('data.laporan-penduduk.export-excel')])
                     </div>
 
                     <!-- /.box-header -->
@@ -35,7 +36,7 @@
                                         <thead>
                                             <tr>
                                                 <th style="max-width: 100px;">Aksi</th>
-                                                <th>Desa</th>
+                                                <th>{{ config('setting.sebutan_desa') }}</th>
                                                 <th>Nama</th>
                                                 <th>Bulan</th>
                                                 <th>Tahun</th>

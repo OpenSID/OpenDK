@@ -37,7 +37,7 @@
                                 <th>NIK</th>
                                 <th>Nama</th>
                                 <th>No. KK</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Alamat</th>
                                 <th>Pendidikan dalam KK</th>
                                 <th>Umur</th>

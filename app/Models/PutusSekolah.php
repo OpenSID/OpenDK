@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PutusSekolah extends Model
 {
+    use HasFactory;
     protected $table = 'das_putus_sekolah';
 
     protected $fillable = [

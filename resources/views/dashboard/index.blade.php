@@ -14,7 +14,7 @@
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <h3>{{ number_format($data['desa'] ?? 0, 0, ',', '.') }}</h3>
-                        <p>Desa</p>
+                        <p>{{ config('setting.sebutan_desa') }}</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-building-o"></i>

@@ -29,7 +29,8 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="desa" class="control-label col-md-4 col-sm-3 col-xs-12">Desa </label>
+    <label for="desa" class="control-label col-md-4 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}
+    </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="text" class="form-control col-md-1" value="{{ $keluarga->desa }}" disabled>

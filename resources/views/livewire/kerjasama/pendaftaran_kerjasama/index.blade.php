@@ -103,17 +103,17 @@
                         </div>
                         <div class="box-body">
                             <div class="callout callout-info">
-                                <h5>1. Cek folder kotak masuk / inbox, jika ada, maka silahkan klik pesan tersebut lalu
+                                <h5>1. Cek folder kotak masuk / inbox, jika ada, maka silakan klik pesan tersebut lalu
                                     klik
                                     tombol
                                     verifikasi email. </h5>
                                 <h5>2. Cek folder spam, jika ada, maka:<br>
                                     - Klik pesan lalu hapus label spam pada pesan tersebut.<br>
                                     - Setelah label spam dihapus, pesan akan masuk ke folder inbox.<br>
-                                    - Selanjutnya cek folder inbox, dan silahkan klik pesan dan klik tombol
+                                    - Selanjutnya cek folder inbox, dan silakan klik pesan dan klik tombol
                                     verifikasi.<br>
                                 </h5>
-                                <h5>3. Jika Anda tidak menerima pesan pada folder inbox dan folder spam, silahkan kirim
+                                <h5>3. Jika Anda tidak menerima pesan pada folder inbox dan folder spam, silakan kirim
                                     ulang
                                     pendaftaran kerjasama menggunakan email aktif untuk menerima link verifikasi baru,
                                     pastikan
@@ -173,7 +173,7 @@
                                             {{-- prettier-ignore-end --}}
                                         </tr>
                                         <tr>
-                                            <td>Domain Desa</td>
+                                            <td>Domain {{ config('setting.sebutan_desa') }}</td>
                                             <td> : </td>
                                             <td>{{ $response['domain'] }}</td>
                                         </tr>

@@ -82,7 +82,8 @@
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
                                 <li {{ Request::is(['informasi.media.terkait*']) ? 'class=active' : '' }}>
-                                    <a href="{{ route('informasi.media.terkait') }}"><i class="fa fa-circle-o"></i>Media Terkait</a>
+                                    <a href="{{ route('informasi.media.terkait') }}"><i class="fa fa-circle-o"></i>Media
+                                        Terkait</a>
                                 </li>
                             @endrole
                             @role('super-admin|admin-kecamatan|administrator-website')
@@ -149,7 +150,8 @@
                                             <a href="{{ route('data.data-umum.index') }}"><i class="fa fa-circle-o"></i>Data Umum</a>
                                         </li>
                                         <li {{ Request::is(['data/data-desa*']) ? 'class=active' : '' }}>
-                                            <a href="{{ route('data.data-desa.index') }}"><i class="fa fa-circle-o"></i>Data Desa</a>
+                                            <a href="{{ route('data.data-desa.index') }}"><i class="fa fa-circle-o"></i>Data
+                                                {{ config('setting.sebutan_desa') }}</a>
                                         </li>
                                         <li class="treeview {{ Request::is(['data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
                                             <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan
@@ -309,7 +311,8 @@
                         </a>
                         <ul class="treeview-menu">
                             @role('super-admin|admin-komplain|administrator-website')
-                                <li {{ Request::is(['admin-komplain*']) ? 'class=active' : '' }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar Keluhan</a></li>
+                                <li {{ Request::is(['admin-komplain*']) ? 'class=active' : '' }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar
+                                        Keluhan</a></li>
                             @endrole
                             @role('super-admin|admin-komplain|administrator-website')
                                 <li {{ Request::is(['admin-komplain/statistik*']) ? 'class=active' : '' }}><a href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a></li>
@@ -326,8 +329,10 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li {{ Request::is(['pesan', 'pesan/masuk']) ? 'class=active' : '' }}><a href="{{ route('pesan.index') }}"><i class="fa fa-envelope-o"></i>Pesan Masuk</a></li>
-                            <li {{ Request::is(['pesan/keluar']) ? 'class=active' : '' }}><a href="{{ route('pesan.keluar') }}"><i class="fa fa-envelope-open"></i>Pesan Keluar</a></li>
+                            <li {{ Request::is(['pesan', 'pesan/masuk']) ? 'class=active' : '' }}><a href="{{ route('pesan.index') }}"><i class="fa fa-envelope-o"></i>Pesan Masuk</a>
+                            </li>
+                            <li {{ Request::is(['pesan/keluar']) ? 'class=active' : '' }}><a href="{{ route('pesan.keluar') }}"><i class="fa fa-envelope-open"></i>Pesan
+                                    Keluar</a></li>
                             <li {{ Request::is(['pesan/arsip']) ? 'class=active' : '' }}><a href="{{ route('pesan.arsip') }}"><i class="fa fa-archive"></i>Arsip</a></li>
                         </ul>
                     </li>
@@ -335,15 +340,18 @@
 
                 @if ($user->hasrole(['super-admin', 'admin-kecamatan']))
                     <li class="treeview {{ Request::is(['surat*']) ? 'active' : '' }}">
-                        <a href="#" title="Layanan Surat"><i class="fa fa-envelope"></i> <span>Layanan Surat</span>
+                        <a href="#" title="Layanan Surat"><i class="fa fa-envelope"></i> <span>Layanan
+                                Surat</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
                             <li {{ Request::is(['surat/permohonan*']) ? 'class=active' : '' }}><a href="{{ route('surat.permohonan') }}"><i class="fa fa-files-o"></i>Permohonan</a></li>
-                            <li {{ Request::is(['surat/arsip*']) ? 'class=active' : '' }}><a href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a></li>
-                            <li {{ Request::is(['surat/pengaturan*']) ? 'class=active' : '' }}><a href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a></li>
+                            <li {{ Request::is(['surat/arsip*']) ? 'class=active' : '' }}><a href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a>
+                            </li>
+                            <li {{ Request::is(['surat/pengaturan*']) ? 'class=active' : '' }}><a href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a>
+                            </li>
                         </ul>
                     </li>
                 @endif
@@ -413,7 +421,8 @@
                                 <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
                             @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
-                                <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info Sistem</a></li>
+                                <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info
+                                        Sistem</a></li>
                             @endif
 
                             {{-- menu backup database --}}

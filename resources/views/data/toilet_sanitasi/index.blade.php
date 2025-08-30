@@ -18,6 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => route('data.toilet-sanitasi.import')])
+                @include('forms.btn-social', ['export_url' => route('data.toilet-sanitasi.export-excel')])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')
@@ -27,7 +28,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Toilet</th>
                                 <th>Sanitasi</th>
                                 <th>Bulan</th>

@@ -29,7 +29,7 @@
         <table id="tbl_imunisasi_q1" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Cakupan Imunisasi</th>
                 </tr>
             </thead>
@@ -48,7 +48,7 @@
         <table id="tbl_imunisasi_q2" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Cakupan Imunisasi</th>
                 </tr>
             </thead>
@@ -67,7 +67,7 @@
         <table id="tbl_imunisasi_q3" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Cakupan Imunisasi</th>
                 </tr>
             </thead>
@@ -86,7 +86,7 @@
         <table id="tbl_imunisasi_q4" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Cakupan Imunisasi</th>
                 </tr>
             </thead>

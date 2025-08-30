@@ -19,15 +19,16 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => route('data.laporan-apbdes.import')])
+                @include('forms.btn-social', ['export_url' => route('data.laporan-apbdes.export-excel')])
             </div>
 
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label>Desa</label>
+                            <label>{{ config('setting.sebutan_desa') }}</label>
                             <select class="form-control" id="list_desa">
-                                <option value="Semua">Semua Desa</option>
+                                <option value="Semua">Semua {{ config('setting.sebutan_desa') }}</option>
                                 @foreach ($list_desa as $desa)
                                     <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                 @endforeach
@@ -41,7 +42,7 @@
                         <thead>
                             <tr>
                                 <th style="max-width: 100px;">Aksi</th>
-                                <th>Desa</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama</th>
                                 <th>Tahun</th>
                                 <th>Semester</th>

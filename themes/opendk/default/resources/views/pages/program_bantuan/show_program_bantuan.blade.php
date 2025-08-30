@@ -7,11 +7,11 @@
                 <form class="form-horizontal">
                     <div class="col-lg-6 col-sm-12">
                         <div class="form-group">
-                            <label for="list_desa" class="col-sm-4 control-label">Desa</label>
+                            <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa</option>
+                                    <option value="Semua">Semua Desa {{ config('setting.sebutan_desa') }}</option>
                                     @foreach ($list_desa as $desa)
                                         <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
                                     @endforeach
@@ -49,7 +49,8 @@
                         <div class="active tab-pane" id="penduduk">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_bantuan_penduduk" style="width: 100%; height: 500px; overflow: hidden; text-align: left;"></div>
+                                    <div id="chart_bantuan_penduduk"
+                                        style="width: 100%; height: 500px; overflow: hidden; text-align: left;"></div>
                                 </div>
                                 <div id="tabel_bantuan_penduduk" class="col-md-12">
 
@@ -59,7 +60,8 @@
                         <div class="tab-pane" id="keluarga">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div id="chart_bantuan_keluarga" style="width: 100%; height: 500px; overflow: hidden; text-align: left;"></div>
+                                    <div id="chart_bantuan_keluarga"
+                                        style="width: 100%; height: 500px; overflow: hidden; text-align: left;"></div>
                                 </div>
                                 <div id="tabel_bantuan_keluarga" class="col-md-12">
 
@@ -117,35 +119,37 @@
         function change_das_bantuan(did, year) {
             $.ajax('{!! route('statistik.program-bantuan.chart-penduduk') !!}', {
                 beforeSend: function() {
-                    $('#chart_bantuan_penduduk').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+                    $('#chart_bantuan_penduduk').html(
+                        '<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
                 },
                 data: {
                     did: did,
                     y: year
                 }
             }).done(function(data) {
-                if(data.length){
+                if (data.length) {
                     create_chart_bantuan_penduduk(data);
-                }else{
+                } else {
                     $('#chart_bantuan_penduduk').html('<div class="text-center">Data Tidak Ditemukan</div>');
                 }
-                
+
             });
 
             $.ajax('{!! route('statistik.program-bantuan.chart-keluarga') !!}', {
                 beforeSend: function() {
-                    $('#chart_bantuan_keluarga').html('<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
+                    $('#chart_bantuan_keluarga').html(
+                        '<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');
                 },
                 data: {
                     did: did,
                     y: year
                 }
             }).done(function(data) {
-                if(data.length){
+                if (data.length) {
                     create_chart_bantuan_keluarga(data);
-                }else{
+                } else {
                     $('#chart_bantuan_keluarga').html('<div class="text-center">Data Tidak Ditemukan</div>');
-                }                
+                }
             });
         }
 
@@ -188,7 +192,7 @@
             });
         }
 
-        function create_chart_bantuan_keluarga(data) {            
+        function create_chart_bantuan_keluarga(data) {
             var chart_bantuan_keluarga = AmCharts.makeChart("chart_bantuan_keluarga", {
                 "hideCredits": true,
                 "type": "pie",

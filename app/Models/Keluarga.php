@@ -31,10 +31,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Keluarga extends Model
 {
+    use HasFactory;
     protected $table = 'das_keluarga';
 
     protected $fillable = [
@@ -46,6 +48,7 @@ class Keluarga extends Model
         'dusun',
         'rw',
         'rt',
+        'desa_id',
     ];
 
     protected $with = [

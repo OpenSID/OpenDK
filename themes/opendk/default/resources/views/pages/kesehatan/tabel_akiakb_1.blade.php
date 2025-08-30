@@ -36,7 +36,7 @@
         <table id="tbl_aki_akb_q1" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah AKI</th>
                     <th class="text-center">Jumlah AKB</th>
                 </tr>
@@ -57,7 +57,7 @@
         <table id="tbl_aki_akb_q2" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah AKI</th>
                     <th class="text-center">Jumlah AKB</th>
                 </tr>
@@ -80,7 +80,7 @@
         <table id="tbl_aki_akb_q3" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah AKI</th>
                     <th class="text-center">Jumlah AKB</th>
                 </tr>
@@ -101,7 +101,7 @@
         <table id="tbl_aki_akb_q4" class="table table-bordered table-striped">
             <thead class="bg-primary">
                 <tr>
-                    <th class="text-center">Desa</th>
+                    <th class="text-center">{{ config('setting.sebutan_desa') }}</th>
                     <th class="text-center">Jumlah AKI</th>
                     <th class="text-center">Jumlah AKB</th>
                 </tr>

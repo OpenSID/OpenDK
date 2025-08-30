@@ -3,14 +3,15 @@
     <div class="col-md-8">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i> {{ $page_description }} {{ $desa->nama }}</h3>
+                <h3 class="box-title text-bold"><i class="fa  fa-arrow-circle-right fa-lg text-blue"></i>
+                    {{ $page_description }} {{ $desa->nama }}</h3>
             </div>
             <div class="box-body">
                 <table class="table table-bordered table-hover dataTable" id="datadesa-table">
                     <thead>
                         <tr>
-                            <th>Kode Desa</th>
-                            <th>Nama Desa</th>
+                            <th>Kode {{ config('setting.sebutan_desa') }}</th>
+                            <th>Nama {{ config('setting.sebutan_desa') }}</th>
                             <th>Website</th>
                             <th>Luas Wilayah (km<sup>2</sup>)</th>
                         </tr>

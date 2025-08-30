@@ -18,13 +18,9 @@
     <div class="row">
         <div class="col-md-12">
 
-            {!! html()->form([
-            'route' => 'data.epidemi-penyakit.do_import',
-            'method' => 'post',
-            'id' => 'form-import',
-            'class' => 'form-horizontal form-label-left',
-            'files' => true,
-            ]) !!}
+            {!! html()->form('POST',
+            route('data.epidemi-penyakit.do_import'))->id('form-import')->class('form-horizontal
+            form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">
 

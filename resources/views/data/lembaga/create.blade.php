@@ -17,12 +17,8 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! html()->form([
-                'route' => 'data.lembaga.store',
-                'method' => 'POST',
-                'id' => 'form-lembaga',
-                'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! html()->form('POST', route('data.lembaga.store'))->id('form-lembaga')->class('form-horizontal
+                form-label-left')->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">

@@ -31,8 +31,7 @@
             @endif
 
             <!-- form start -->
-            {!!
-            html()->form()->route('data.toilet-sanitasi.do_import')->method('POST')->id('form-import')->class('form-horizontal
+            {!! html()->form('POST', route('data.toilet-sanitasi.do_import'))->id('form-import')->class('form-horizontal
             form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">

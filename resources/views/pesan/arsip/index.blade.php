@@ -26,12 +26,12 @@
                             <div class="col-md-6">
                                 {!! html()->form()->route('pesan.index')->method('get')->id('form-search-desa')->open()
                                 !!}
-                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
-                                'placeholder' => 'pilih desa',
-                                'class' => 'form-control',
-                                'id' => 'list_desa',
-                                'required',
-                                ]) !!}
+                                {!! html()->select('das_data_desa_id')
+                                ->options($list_desa->pluck('nama', 'id')->toArray(), 'pilih desa')
+                                ->value($desa_id)
+                                ->class('form-control')
+                                ->id('list_desa')
+                                ->required() !!}
                                 {!! html()->form()->close() !!}
                             </div>
                             <div class="col-md-6">

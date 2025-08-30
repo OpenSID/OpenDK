@@ -3,7 +3,8 @@
 <div class="form-group">
     <label for="key" class="control-label col-md-4 col-sm-3 col-xs-12">Judul</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->text('key')->value(old('key', $aplikasi->key))->class('form-control')->id('key')->readonly() !!}
+        {!! html()->text('key')->value(old('key',
+        $aplikasi->key))->class('form-control')->id('key')->attribute('readonly') !!}
     </div>
 </div>
 
@@ -43,7 +44,7 @@
     <label for="description" class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->textarea('description')->value(old('description',
-        $aplikasi->description))->class('form-control')->id('description')->rows(5)->readonly() !!}
+        $aplikasi->description))->class('form-control')->id('description')->rows(5)->attribute('readonly') !!}
     </div>
 </div>
 
@@ -51,7 +52,7 @@
     <label for="kategori" class="control-label col-md-4 col-sm-3 col-xs-12">Kategori</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->text('kategori')->value(old('kategori',
-        $aplikasi->kategori))->class('form-control')->id('kategori')->readonly() !!}
+        $aplikasi->kategori))->class('form-control')->id('kategori')->attribute('readonly') !!}
     </div>
 </div>
 

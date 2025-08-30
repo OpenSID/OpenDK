@@ -19,13 +19,8 @@
         <div class="col-md-12">
 
             <!-- form start -->
-            {!! html()->form([
-            'route' => 'data.fasilitas-paud.do_import',
-            'method' => 'post',
-            'id' => 'form-import',
-            'class' => 'form-horizontal form-label-left',
-            'files' => true,
-            ]) !!}
+            {!! html()->form('POST', route('data.fasilitas-paud.do_import'))->id('form-import')->class('form-horizontal
+            form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">
 

@@ -25,14 +25,10 @@
                     <div class="pull-right">
                         <div class="row">
                             <div class="col-md-6">
-                                {!! html()->form(['route' => 'pesan.index', 'method' => 'get', 'id' =>
-                                'form-search-desa']) !!}
-                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
-                                'placeholder' => 'pilih desa',
-                                'class' => 'form-control',
-                                'id' => 'list_desa',
-                                'required',
-                                ]) !!}
+                                {!! html()->form('GET', route('pesan.index'))->id('form-search-desa') !!}
+                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'),
+                                $desa_id)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required()
+                                !!}
                                 {!! html()->form()->close() !!}
                             </div>
                             <div class="col-md-6">
@@ -53,23 +49,15 @@
                         <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
                                 class="fa fa-square-o"></i>
                         </button>
-                        {!! html()->form([
-                        'route' => 'pesan.arsip.multiple',
-                        'class' => 'form-group inline',
-                        'method' => 'post',
-                        'id' => 'form-multiple-arsip-pesan',
-                        ]) !!}
+                        {!! html()->form('POST', route('pesan.arsip.multiple'))->class('form-group
+                        inline')->id('form-multiple-arsip-pesan') !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan</button>
                         {!! html()->text('array_id')->id('array_multiple_id_arsip') !!}
                         {!! html()->form()->close() !!}
 
-                        {!! html()->form([
-                        'route' => 'pesan.read.multiple',
-                        'class' => 'form-group inline',
-                        'method' => 'post',
-                        'id' => 'form-multiple-read-pesan',
-                        ]) !!}
+                        {!! html()->form('POST', route('pesan.read.multiple'))->class('form-group
+                        inline')->id('form-multiple-read-pesan') !!}
                         {!! html()->text('array_id')->id('array_multiple_id') !!}
                         <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>

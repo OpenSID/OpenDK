@@ -181,7 +181,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {!! html()->form(['id' => 'form-reply-admin', 'method' => 'POST']) !!}
+            {!! html()->form('POST')->id('form-reply-admin') !!}
             <div class="modal-body mx-3">
                 <div id="form-errors-admin"></div>
                 <div class="md-form mb-4">
@@ -211,7 +211,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            {!! html()->form(['id' => 'form-ubah-reply-admin', 'method' => 'POST']) !!}
+            {!! html()->form('POST')->id('form-ubah-reply-admin') !!}
             <div class="modal-body mx-3">
                 <div id="form-errors-admin"></div>
                 <div class="md-form mb-4">

@@ -9,14 +9,19 @@
             </div>
             <div class="modal-body">
                 <p>Silakan pilih status di bawah ini?</p>
-                {{ html()->select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses',
-                'SELESAI'
-                => 'Selesai']))->class('form-control') }}
+                {!! html()->select('status')
+                ->options([
+                'DITOLAK' => 'Ditolak',
+                'REVIEW' => 'Review',
+                'PROSES' => 'Proses',
+                'SELESAI' => 'Selesai'
+                ])
+                ->class('form-control') !!}
             </div>
             <div class="modal-footer">
                 <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
                     data-dismiss="modal">Batal</a>
-                {!! html()->submit('Simpan')->class('btn btn-warning waves-effect waves-light') !!}
+                {!! html()->button('Simpan')->type('submit')->class('btn btn-warning waves-effect waves-light') !!}
             </div>
             {!! html()->form()->close() !!}
         </div>

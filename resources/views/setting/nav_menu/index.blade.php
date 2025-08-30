@@ -77,7 +77,7 @@
     @include('partials.flash_message')
 
     <div class="row">
-        {!! html()->form(['route' => 'setting.navmenu.store', 'id' => 'frmEdit']) !!}
+        {{ html()->form()->route('setting.navmenu.store')->id('frmEdit')->open() }}
         <div class="col-md-5">
             <div class="box box-primary">
                 <div class="box-header with-border">Sumber Menu URL</div>
@@ -85,16 +85,16 @@
                     @include('setting.nav_menu.field')
                 </div>
                 <div class="box-footer">
-                    {!! html()->button('<i class="fa fa-save"></i> Simpan', [
-                    'type' => 'button',
-                    'class' => 'btn btn-primary btn-sm',
-                    'id' => 'btnUpdate',
-                    ]) !!}
-                    {!! html()->button('<i class="fa fa-plus-square"></i> Tambah', [
-                    'type' => 'button',
-                    'class' => 'btn btn-success btn-sm',
-                    'id' => 'btnAdd',
-                    ]) !!}
+                    {!! html()->button()
+                    ->type('button')
+                    ->class('btn btn-primary btn-sm')
+                    ->id('btnUpdate')
+                    ->html('<i class="fa fa-save"></i> Simpan') !!}
+                    {!! html()->button()
+                    ->type('button')
+                    ->class('btn btn-success btn-sm')
+                    ->id('btnAdd')
+                    ->html('<i class="fa fa-plus-square"></i> Tambah') !!}
                 </div>
             </div>
         </div>
@@ -110,12 +110,15 @@
                             </div>
                         </div>
                         <div class="box-footer">
-                            {!! html()->button('<i class="fa fa-times"></i> Batal', [
-                            'type' => 'button',
-                            'class' => 'btn btn-danger btn-sm',
-                            ]) !!}
-                            {!! html()->button('<i class="fa fa-save"></i> Simpan', ['type' => 'submit', 'class' => 'btn
-                            btn-primary btn-sm']) !!}
+                            {!! html()->button()
+                            ->type('button')
+                            ->class('btn btn-danger btn-sm')
+                            ->html('<i class="fa fa-times"></i> Batal') !!}
+
+                            {!! html()->button()
+                            ->type('submit')
+                            ->class('btn btn-primary btn-sm')
+                            ->html('<i class="fa fa-save"></i> Simpan') !!}
                         </div>
                     </div>
                 </div>

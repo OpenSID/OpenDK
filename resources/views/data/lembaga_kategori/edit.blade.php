@@ -18,7 +18,8 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! html()->form()!!}
+                {!! html()->form()->id('form-kategori-lembaga')->class('form-horizontal
+                form-label-left')->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">

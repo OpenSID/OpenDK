@@ -23,18 +23,13 @@
                     <h3 class="box-title">Buat Pesan Baru</h3>
                 </div>
 
-                {!! html()->form(['route' => 'pesan.compose.post', 'method' => 'post', 'id' => 'form-compose-pesan'])
-                !!}
+                {!! html()->form('POST', route('pesan.compose.post'))->id('form-compose-pesan')->open() !!}
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="form-group">
                         <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
-                        {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), null, [
-                        'placeholder' => 'pilih desa',
-                        'class' => 'form-control',
-                        'id' => 'list_desa',
-                        'required',
-                        ]) !!}
+                        {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'),
+                        null)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required() !!}
                     </div>
                     <div class="form-group">
                         <label>Subject</label>

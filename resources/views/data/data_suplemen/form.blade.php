@@ -18,7 +18,9 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->textarea('keterangan')->class('textarea')->placeholder('Keterangan')->value(old('keterangan',
+        {!! html()->textarea('keterangan')->class('textarea')->style('width: 100%; height: 200px; font-size: 14px;
+        line-height: 18px; border: 1px solid #dddddd; padding:
+        10px;')->placeholder('Keterangan')->value(old('keterangan',
         isset($suplemen) ? $suplemen->keterangan : '')) !!}
     </div>
 </div>

@@ -18,21 +18,34 @@
             @include('partials.flash_message')
             <div class="box box-primary">
 
-                {!! html()->form(){{ $error }}</li>
-                @endforeach
-                </ul>
+                {!! html()
+                ->form('PUT', route('setting.slide.update', $slide->id))
+                ->acceptsFiles()
+                ->id('form-slide')
+                ->class('form-horizontal form-label-left')
+                ->open() !!}
+
+                <div class="box-body">
+
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Oops!</strong> Ada yang salah dengan inputan Anda.<br><br>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    @include('setting.slide.form', ['slide' => $slide])
+
+                </div>
+                <div class="box-footer">
+                    @include('partials.button_reset_submit')
+                </div>
+                {!! html()->close() !!}
             </div>
-            @endif
-
-            @include('setting.slide.form')
-
         </div>
-        <div class="box-footer">
-            @include('partials.button_reset_submit')
-        </div>
-        {!! html()->form()->close() !!}
-    </div>
-    </div>
-    </div>
 </section>
 @endsection

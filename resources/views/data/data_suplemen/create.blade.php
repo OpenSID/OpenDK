@@ -17,12 +17,8 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {!! html()->form([
-                'route' => 'data.data-suplemen.store',
-                'method' => 'post',
-                'id' => 'form-faq',
-                'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! html()->form('POST', route('data.data-suplemen.store'))->id('form-faq')->class('form-horizontal
+                form-label-left')->open() !!}
 
                 <div class="box-body">
 

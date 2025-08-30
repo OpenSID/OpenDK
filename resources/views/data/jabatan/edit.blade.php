@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 <!-- form start -->
-                {!! html()->form()->id('form-jabatan')->class('form-horizontal form-label-left')->open() !!}
+                {!! html()->form('POST')->id('form-jabatan')->class('form-horizontal form-label-left') !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">

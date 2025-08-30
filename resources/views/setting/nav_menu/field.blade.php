@@ -1,9 +1,10 @@
 <!-- Name Field -->
 <div class="form-group">
     <div class="col-12">
-
-        {!! html()->text('text')->class('form-control item-menu')->id('text')->placeholder('Nama Menu') !!}
-
+        {!! html()->text('text')
+        ->class('form-control item-menu')
+        ->id('text')
+        ->placeholder('Nama Menu') !!}
         {!! html()->hidden('icon')->class('item-menu') !!}
     </div>
 </div>
@@ -12,22 +13,34 @@
 <div class="form-group">
     <div class="col-12">
         <label class="form-check-inline">
-            {!! html()->radio('source', 'link', 'link', ['class' => 'form-check-input', 'id' => 'sourceLink']) !!} Link
+            {!! html()->radio('source', true)
+            ->value('link')
+            ->class('form-check-input')
+            ->id('sourceLink') !!} Link
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', 'Halaman', null, ['class' => 'form-check-input', 'id' => 'sourceHalaman']) !!}
-            Halaman
+            {!! html()->radio('source', false)
+            ->value('Halaman')
+            ->class('form-check-input')
+            ->id('sourceHalaman') !!} Halaman
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', 'Kategori', null, ['class' => 'form-check-input', 'id' => 'sourceKategori']) !!}
-            Kategori
+            {!! html()->radio('source', false)
+            ->value('Kategori')
+            ->class('form-check-input')
+            ->id('sourceKategori') !!} Kategori
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', 'Modul', null, ['class' => 'form-check-input', 'id' => 'sourceModul']) !!} Modul
+            {!! html()->radio('source', false)
+            ->value('Modul')
+            ->class('form-check-input')
+            ->id('sourceModul') !!} Modul
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', 'Dokumen', null, ['class' => 'form-check-input', 'id' => 'sourceDokumen']) !!}
-            Dokumen
+            {!! html()->radio('source', false)
+            ->value('Dokumen')
+            ->class('form-check-input')
+            ->id('sourceDokumen') !!} Dokumen
         </label>
     </div>
 </div>
@@ -36,14 +49,16 @@
 <div class="form-group">
     <div class="col-12">
         {!! html()->select('sourcelist', $sourceItem)->class('form-control') !!}
-        {!! html()->text('href')->class('form-control item-menu')->placeholder('http://contoh.com') !!}
+        {!! html()->text('href')
+        ->class('form-control item-menu')
+        ->placeholder('http://contoh.com') !!}
     </div>
 </div>
 
 <div class="form-group">
     {!! html()->label('target', 'Target') !!}
-    {!! html()->select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'])->class('form-control
-    item-menu') !!}
+    {!! html()->select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'])
+    ->class('form-control item-menu') !!}
 </div>
 
 @push('scripts')

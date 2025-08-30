@@ -38,8 +38,7 @@
     <label for="id" class="control-label col-md-3 col-sm-6 col-xs-12">ID Akun <span class="required">*</span></label>
 
     <div class="col-md-3 col-sm-6 col-xs-12">
-        {!! html()->text('id')->class('form-control')->id('id')->required()->readonly()
-        !!}
+        {!! html()->text('id')->class('form-control')->id('id')->required()->attribute('readonly') !!}
     </div>
 </div>
 <div class="form-group">

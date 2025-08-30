@@ -18,13 +18,8 @@
     <div class="row">
         <div class="col-md-12">
 
-            {!! html()->form([
-            'route' => 'data.aki-akb.do_import',
-            'method' => 'post',
-            'id' => 'form-import',
-            'class' => 'form-horizontal form-label-left',
-            'files' => true,
-            ]) !!}
+            {!! html()->form('POST', route('data.aki-akb.do_import'))->id('form-import')->class('form-horizontal
+            form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">
 

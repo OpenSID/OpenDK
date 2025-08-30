@@ -20,13 +20,9 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                {!! html()->form([
-                'route' => 'data.laporan-penduduk.do_import',
-                'method' => 'post',
-                'id' => 'form-import',
-                'class' => 'form-horizontal form-label-left',
-                'files' => true,
-                ]) !!}
+                {!! html()->form('POST',
+                route('data.laporan-penduduk.do_import'))->id('form-import')->class('form-horizontal
+                form-label-left')->acceptsFiles() !!}
 
                 <div class="box-body">
 

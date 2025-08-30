@@ -26,12 +26,8 @@
                 <div class="box-body no-padding">
                     <div class="mailbox-controls">
                         @if ($pesan->diarsipkan === 0)
-                        {!! html()->form([
-                        'route' => 'pesan.arsip.post',
-                        'class' => 'form-group inline',
-                        'method' => 'post',
-                        'id' => 'form-arisp-pesan',
-                        ]) !!}
+                        {!! html()->form('POST', route('pesan.arsip.post'))->class('form-group
+                        inline')->id('form-arisp-pesan')->open() !!}
                         {!! html()->text('id') !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan </button>
@@ -79,14 +75,11 @@
                 </div>
                 <div style="padding-right: 10px; padding-left: 10px"
                     class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
-                    {!! html()->form([
-                    'route' => 'pesan.reply.post',
-                    'class' => 'form-group inline',
-                    'method' => 'post',
-                    'id' => 'form-reply-pesan',
-                    ]) !!}
-                    {!! html()->text('id') !!}
-                    {!! html()->textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan') !!}
+                    {!! html()->form('POST', route('pesan.reply.post'))->class('form-group
+                    inline')->id('form-reply-pesan')->open() !!}
+                    {!! html()->hidden('id', $pesan->id) !!}
+                    {!! html()->textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
+                    #dddddd; padding: 10px;') !!}
                     <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i
                             class="fa fa-reply"></i> Balas</button>
                     {!! html()->form()->close() !!}

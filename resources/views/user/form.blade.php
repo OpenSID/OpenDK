@@ -20,8 +20,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->text('name', old('name', $user->name ??
-        null))->class('form-control')->placeholder('Nama')->pattern('^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$') !!}
+        <input type="text" name="name" value="{{ old('name', $user->name ?? null) }}" class="form-control"
+            placeholder="Nama" pattern="^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$">
     </div>
 </div>
 <div class="form-group">
@@ -87,18 +87,17 @@
     <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->select('role', $item, old('role')->value(old('role', isset($user) ? $user->role :
-        '')))->class('form-control') !!}
+        {!! html()->select('role', $item, old('role', isset($user) ? $user->role : null))->class('form-control') !!}
     </div>
 </div>
 @elseif(auth()->user()->id == 1)
-@if ($user->id != 1)
+@if (isset($user) && $user->id != 1)
 <div class="form-group">
     <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->select('role', $item, old('role', $user->getRoleNames()->value(old('role', isset($user) ?
-        $user->role : ''))))->class('form-control') !!}
+        {!! html()->select('role', $item, old('role', isset($user) ? $user->getRoleNames()->first() :
+        null))->class('form-control') !!}
     </div>
 </div>
 @endif

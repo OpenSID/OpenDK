@@ -18,8 +18,8 @@
     <div class="row">
         <div class="col-md-12">
 
-            {!!
-            html()->form()->route('data.tingkat-pendidikan.do_import')->method('POST')->id('form-import')->class('form-horizontal
+            {!! html()->form('POST',
+            route('data.tingkat-pendidikan.do_import'))->id('form-import')->class('form-horizontal
             form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">

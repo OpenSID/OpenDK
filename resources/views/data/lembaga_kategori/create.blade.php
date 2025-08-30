@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 {!!
-                Html::form('post')->route('data.kategori-lembaga.store')->id('form-kategori-lembaga')->class('form-horizontal
+                html()->form('post')->route('data.kategori-lembaga.store')->id('form-kategori-lembaga')->class('form-horizontal
                 form-label-left') !!}
                 @include('layouts.fragments.error_message')
 

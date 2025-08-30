@@ -38,7 +38,7 @@
 
         <!-- form start -->
         {!! html()->form('PUT', route('data.profil.update',
-        $profil->id))->id('form-profil')->class('form-horizontal form-label-left')->acceptsFiles() !!}
+        $profil->id))->id('form-profil')->class('form-horizontal form-label-left')->acceptsFiles()->open() !!}
 
         <div class="box-body">
 

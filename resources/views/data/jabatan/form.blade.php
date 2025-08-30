@@ -5,7 +5,7 @@
         {!! html()->text('nama')->value(old('nama', isset($jabatan) ? $jabatan->nama :
         ''))->class('form-control')->required()->placeholder('Nama Jabatan')
         !!}
-        {{ Html::hidden('jenis')->value(old('jenis', isset($jabatan) ? $jabatan->jenis : '')) }}
+        {{ html()->hidden('jenis')->value(old('jenis', isset($jabatan) ? $jabatan->jenis : '')) }}
     </div>
 </div>
 <div class="form-group">
@@ -13,7 +13,8 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->textarea('tupoksi')->value(old('tupoksi', isset($jabatan) ? $jabatan->tupoksi :
-        ''))->class('textarea')->placeholder('Tupoksi') !!}
+        ''))->class('textarea')->placeholder('Tupoksi')->style('width: 100%; height: 200px; font-size: 14px;
+        line-height: 18px; border: 1px solid #dddddd; padding: 10px;') !!}
     </div>
 </div>
 <div class="ln_solid"></div>

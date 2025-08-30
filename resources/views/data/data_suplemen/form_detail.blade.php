@@ -1,4 +1,4 @@
-{{ Html::hidden('suplemen_id', $suplemen->id) }}
+{{ html()->hidden('suplemen_id', $suplemen->id) }}
 @if ($suplemen->sasaran == 3)
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Nama

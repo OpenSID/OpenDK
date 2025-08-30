@@ -19,7 +19,7 @@
         </div>
         <div class="box-body">
             {!!
-            Html::form()->route('setting.role.store')->method('POST')->acceptsFiles()->id('form-role')->attribute('role',
+            html()->form()->route('setting.role.store')->method('POST')->acceptsFiles()->id('form-role')->attribute('role',
             'form') !!}
             @include('flash::message')
             @include('role.form')

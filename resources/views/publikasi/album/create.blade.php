@@ -15,8 +15,8 @@
 <section class="content container-fluid">
 
     {!! html()->form()
-    ->url(route('publikasi.album.store'))
-    ->attribute('files', true)
+    ->action(route('publikasi.album.store'))
+    ->attribute('enctype', 'multipart/form-data')
     ->open() !!}
 
     @include('publikasi.album._form')

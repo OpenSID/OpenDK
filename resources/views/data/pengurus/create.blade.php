@@ -18,14 +18,18 @@
             <div class="box box-primary">
 
                 {!!
-                Html::form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
-                form-label-left') !!}
+                html()->form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                form-label-left')->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">
 
                     @include('flash::message')
-                    @php $pengurus->foto = null; @endphp
+                    @php
+                    if($pengurus) {
+                        $pengurus->foto = null;
+                    }
+                    @endphp
                     @include('data.pengurus.form')
 
                 </div>

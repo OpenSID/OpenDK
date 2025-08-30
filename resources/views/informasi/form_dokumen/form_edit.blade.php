@@ -1,17 +1,23 @@
+{{-- @dd($dokumen) --}}
 <div class="form-group">
     <label for="jenis_dokumen_id" class="control-label col-md-3 col-sm-3 col-xs-12">Jenis Dokumen<span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama',
-        'id')->value(old('jenis_dokumen_id', isset($dokumen)->value(old('jenis_dokumen_id', isset($dokumen) ?
-        $dokumen->jenis_dokumen_id : '')) ? $dokumen->jenis_dokumen_id : '')),
-        old('jenis_dokumen_id'))->placeholder('-Pilih')->class('form-control')->id('jenis_dokumen_id')->required() !!}
+        {!! html()->select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id')->toArray())
+        ->value(old('jenis_dokumen_id', isset($dokumen) ? $dokumen->jenis_dokumen_id : null))
+        ->placeholder('- Pilih -')
+        ->class('form-control')
+        ->id('jenis_dokumen_id')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Dokumen <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->text('nama_dokumen', old('nama_dokumen'))->class('form-control')->placeholder('Nama Dokumen') !!}
+        {!! html()->text('nama_dokumen', old('nama_dokumen', isset($dokumen) ? $dokumen->nama_dokumen : null))
+        ->class('form-control')
+        ->placeholder('Nama Dokumen')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group row">
@@ -20,16 +26,17 @@
         {!! html()->hidden('retention_days', 0)->id('retention_days') !!}
         <div class="row">
             <div class="col-md-6 pl-md-1">
-                {!! html()->select('jumlah_waktu', array_combine(range(0, 31)->value(old('jumlah_waktu',
-                isset($dokumen)->value(old('jumlah_waktu', isset($dokumen) ? $dokumen->jumlah_waktu : '')) ?
-                $dokumen->jumlah_waktu : '')), range(0, 31)), old('jumlah_waktu',
-                $jumlah_waktu))->class('form-control')->placeholder('- Pilih -') !!}
+                {!! html()->select('jumlah_waktu', collect(range(0, 31))->mapWithKeys(fn($v) => [$v => $v])->toArray())
+                ->value(old('jumlah_waktu', isset($dokumen) ? $jumlah_waktu : 0))
+                ->class('form-control')
+                ->placeholder('- Pilih -') !!}
             </div>
             <div class="col-md-6 pr-md-1">
-                {!! html()->select('tipe_waktu', $tipe_waktu_options, old('tipe_waktu',
-                $tipe_waktu)->value(old('tipe_waktu', isset($dokumen)->value(old('tipe_waktu', isset($dokumen) ?
-                $dokumen->tipe_waktu : '')) ? $dokumen->tipe_waktu : '')))->class('form-control')->placeholder('- Pilih
-                -') !!}
+                {!! html()->select('tipe_waktu', $tipe_waktu_options)
+                ->value(old('tipe_waktu', isset($dokumen) ? $tipe_waktu :
+                \App\Enums\TipeWaktuFormDokumen::Hari))
+                ->class('form-control')
+                ->placeholder('- Pilih -') !!}
             </div>
         </div>
     </div>
@@ -37,9 +44,12 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Dokumen</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="file_dokumen" id="file_prosedur" class="form-control">
+        {!! html()->file('file_dokumen')
+        ->class('form-control')
+        ->id('file_prosedur')
+        ->attribute('accept', '.jpeg,.png,.jpg,.gif,.svg,.xlsx,.xls,.doc,.docx,.pdf,.ppt,.pptx') !!}
         <br>
-        @if (!$dokumen->file_dokumen == '')
+        @if (!empty($dokumen->file_dokumen))
         <a class="btn btn-sm btn-primary" href="{{ asset($dokumen->file_dokumen) }}">Download File</a>
         @endif
     </div>
@@ -47,18 +57,22 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->textarea('description',
-        old('description'))->class('form-control')->placeholder('Keterangan')->required() !!}
+        {!! html()->textarea('description', old('description', isset($dokumen) ? $dokumen->description : null))
+        ->class('form-control')
+        ->placeholder('Keterangan')
+        ->required() !!}
     </div>
 </div>
 <div class="form-group">
-    <label for="jenis_dokumen_id" class="control-label col-md-3 col-sm-3 col-xs-12">Status Terbit<span
+    <label for="status" class="control-label col-md-3 col-sm-3 col-xs-12">Status Terbit<span
             class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->select('status', $status_options, old('status', $status)->value(old('status',
-        isset($dokumen)->value(old('status', isset($dokumen) ? $dokumen->status : '')) ? $dokumen->status :
-        '')))->class('form-control')->placeholder('- Pilih
-        -') !!}
+        {!! html()->select('status', $status_options)
+        ->value(old('status', isset($dokumen) ? $status : \App\Enums\StatusFormDokumen::Terbit))
+        ->class('form-control')
+        ->id('status')
+        ->placeholder('- Pilih -')
+        ->required() !!}
     </div>
 </div>
 <div class="ln_solid"></div>

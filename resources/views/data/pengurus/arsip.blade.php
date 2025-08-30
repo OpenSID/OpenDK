@@ -42,7 +42,7 @@
             <div class="box box-primary">
 
                 {!!
-                Html::form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                html()->form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
                 form-label-left') !!}
                 @include('layouts.fragments.error_message')
 

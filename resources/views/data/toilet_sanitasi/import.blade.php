@@ -32,7 +32,7 @@
 
             <!-- form start -->
             {!!
-            Html::form()->route('data.toilet-sanitasi.do_import')->method('POST')->id('form-import')->class('form-horizontal
+            html()->form()->route('data.toilet-sanitasi.do_import')->method('POST')->id('form-import')->class('form-horizontal
             form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">

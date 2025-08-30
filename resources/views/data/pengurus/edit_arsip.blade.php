@@ -28,7 +28,7 @@ Data Pengurus
             <div class="box box-primary">
 
                 {!!
-                Html::form('post')->route('data.pengurus.store.arsip')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                html()->form('post')->route('data.pengurus.store.arsip')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
                 form-label-left') !!}
                 @include('layouts.fragments.error_message')
                 <div class="box-body">

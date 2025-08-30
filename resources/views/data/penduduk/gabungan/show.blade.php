@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                {!! html()->form() !!}
+                {!! html()->form()->class('form-horizontal form-label-left')->id('form-penduduk')->open() !!}
 
                 <div class="box-body">
 

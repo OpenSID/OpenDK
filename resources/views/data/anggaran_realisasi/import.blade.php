@@ -19,7 +19,7 @@
         <div class="col-md-12">
 
             {!!
-            Html::form()->route('data.anggaran-realisasi.do_import')->method('POST')->id('form-import')->class('form-horizontal
+            html()->form()->route('data.anggaran-realisasi.do_import')->method('POST')->id('form-import')->class('form-horizontal
             form-label-left')->acceptsFiles() !!}
 
             <div class="box-body">

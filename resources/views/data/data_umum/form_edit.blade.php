@@ -6,8 +6,9 @@
                     class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->text('kecamatan')->class('form-control')->value(old('kecamatan', isset($data_umum) ?
-                $data_umum->kecamatan : '')) !!}
+                {!! html()->text('kecamatan')->disabled()->class('form-control')->value(old('kecamatan',
+                isset($data_umum) ?
+                $data_umum->profil->nama_kecamatan : '')) !!}
             </div>
         </div>
 
@@ -36,7 +37,8 @@
                     class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('ketinggian')->class('form-control')->placeholder('0')->value(old('ketinggian',
+                {!! html()->number('ketinggian')->class('form-control
+                text-right')->placeholder('0')->value(old('ketinggian',
                 isset($data_umum) ? $data_umum->ketinggian : '')) !!}
             </div>
         </div>
@@ -56,7 +58,7 @@
                     </div>
                     <div class="col-md-7">
                         {!! html()->number('luas_wilayah')->class('form-control
-                        luas_wilayah')->placeholder('0')->value(old('luas_wilayah', isset($data_umum) ?
+                        luas_wilayah text-right')->placeholder('0')->value(old('luas_wilayah', isset($data_umum) ?
                         $data_umum->luas_wilayah : '')) !!}
                     </div>
                 </div>
@@ -107,7 +109,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Puskesmas <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_puskesmas')->class('form-control')->placeholder('0')->value(old('jml_puskesmas',
+                {!! html()->number('jml_puskesmas')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_puskesmas',
                 isset($data_umum) ? $data_umum->jml_puskesmas : '')) !!}
             </div>
         </div>
@@ -118,7 +121,8 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!!
-                Html::number('jml_puskesmas_pembantu')->class('form-control')->placeholder('0')->value(old('jml_puskesmas_pembantu',
+                html()->number('jml_puskesmas_pembantu')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_puskesmas_pembantu',
                 isset($data_umum) ? $data_umum->jml_puskesmas_pembantu : '')) !!}
             </div>
         </div>
@@ -127,7 +131,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Posyandu <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_posyandu')->class('form-control')->placeholder('0')->value(old('jml_posyandu',
+                {!! html()->number('jml_posyandu')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_posyandu',
                 isset($data_umum) ? $data_umum->jml_posyandu : '')) !!}
             </div>
         </div>
@@ -138,7 +143,8 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!!
-                Html::number('jml_pondok_bersalin')->class('form-control')->placeholder('0')->value(old('jml_pondok_bersalin',
+                html()->number('jml_pondok_bersalin')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_pondok_bersalin',
                 isset($data_umum) ? $data_umum->jml_pondok_bersalin : '')) !!}
             </div>
         </div>
@@ -150,7 +156,8 @@
                     class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_paud')->class('form-control')->placeholder('0')->value(old('jml_paud',
+                {!! html()->number('jml_paud')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_paud',
                 isset($data_umum) ? $data_umum->jml_paud : '')) !!}
             </div>
         </div>
@@ -160,7 +167,7 @@
                     class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_sd')->class('form-control')->placeholder('0')->value(old('jml_sd',
+                {!! html()->number('jml_sd')->class('form-control text-right')->placeholder('0')->value(old('jml_sd',
                 isset($data_umum) ? $data_umum->jml_sd : '')) !!}
             </div>
         </div>
@@ -170,7 +177,7 @@
                     class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_smp')->class('form-control')->placeholder('0')->value(old('jml_smp',
+                {!! html()->number('jml_smp')->class('form-control text-right')->placeholder('0')->value(old('jml_smp',
                 isset($data_umum) ? $data_umum->jml_smp : '')) !!}
             </div>
         </div>
@@ -180,7 +187,7 @@
                     class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_sma')->class('form-control')->placeholder('0')->value(old('jml_sma',
+                {!! html()->number('jml_sma')->class('form-control text-right')->placeholder('0')->value(old('jml_sma',
                 isset($data_umum) ? $data_umum->jml_sma : '')) !!}
             </div>
         </div>
@@ -193,7 +200,8 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!!
-                Html::number('jml_masjid_besar')->class('form-control')->placeholder('0')->value(old('jml_masjid_besar',
+                html()->number('jml_masjid_besar')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_masjid_besar',
                 isset($data_umum) ? $data_umum->jml_masjid_besar : '')) !!}
             </div>
         </div>
@@ -202,7 +210,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Mushola <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_mushola')->class('form-control')->placeholder('0')->value(old('jml_mushola',
+                {!! html()->number('jml_mushola')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_mushola',
                 isset($data_umum) ? $data_umum->jml_mushola : '')) !!}
             </div>
         </div>
@@ -211,7 +220,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Gereja <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_gereja')->class('form-control')->placeholder('0')->value(old('jml_gereja',
+                {!! html()->number('jml_gereja')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_gereja',
                 isset($data_umum) ? $data_umum->jml_gereja : '')) !!}
             </div>
         </div>
@@ -220,7 +230,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Pasar <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->number('jml_pasar')->class('form-control')->placeholder('0')->value(old('jml_pasar',
+                {!! html()->number('jml_pasar')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_pasar',
                 isset($data_umum) ? $data_umum->jml_pasar : '')) !!}
             </div>
         </div>
@@ -231,7 +242,8 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!!
-                Html::number('jml_balai_pertemuan')->class('form-control')->placeholder('0')->value(old('jml_balai_pertemuan',
+                html()->number('jml_balai_pertemuan')->class('form-control
+                text-right')->placeholder('0')->value(old('jml_balai_pertemuan',
                 isset($data_umum) ? $data_umum->jml_balai_pertemuan : '')) !!}
             </div>
         </div>

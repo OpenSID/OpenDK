@@ -14,7 +14,15 @@
 </section>
 <section class="content container-fluid">
 
-    {!! html()->form(){!! html()->form()->close() !!}
+    {!! html()->form()
+    ->action(route('publikasi.album.update', $album->id))
+    ->method('PUT')
+    ->attribute('enctype', 'multipart/form-data')
+    ->open() !!}
+
+    @include('publikasi.album._form')
+
+    {!! html()->form()->close() !!}
 
 </section>
 @endsection

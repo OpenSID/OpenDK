@@ -20,7 +20,7 @@
                 <!-- form start -->
                 {!! html()->form('POST', route('data.pengurus.update',
                 $pengurus->id))->acceptsFiles()->id('form-pengurus')->class('form-horizontal
-                form-label-left') !!}
+                form-label-left')->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">

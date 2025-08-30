@@ -9,7 +9,8 @@
             </div>
             <div class="modal-body">
                 <p>Silakan pilih status di bawah ini?</p>
-                {{ Html::select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses', 'SELESAI'
+                {{ html()->select('status', ['DITOLAK' => 'Ditolak', 'REVIEW' => 'Review', 'PROSES' => 'Proses',
+                'SELESAI'
                 => 'Selesai']))->class('form-control') }}
             </div>
             <div class="modal-footer">

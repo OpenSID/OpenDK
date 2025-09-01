@@ -135,11 +135,24 @@ class SuplemenExportTest extends TestCase
         ]);
 
         $desa = DataDesa::factory()->create();
-        $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
+
+        // Create penduduk dengan ID eksplisit untuk mengatasi masalah incrementing
+        $pendudukId = 999999; // Use a large ID to avoid conflicts
+        $penduduk = Penduduk::create([
+            'id' => $pendudukId,
+            'nama' => 'Test Penduduk',
+            'nik' => '1234567890123456',
+            'desa_id' => $desa->desa_id,
+            'status_dasar' => 1,
+            'sex' => 1,
+            'alamat' => 'Test Alamat',
+            'tempat_lahir' => 'Test Tempat Lahir',
+            'tanggal_lahir' => '1990-01-01',
+        ]);
 
         SuplemenTerdata::create([
             'suplemen_id' => $suplemen->id,
-            'penduduk_id' => $penduduk->id, // Pastikan penduduk_id valid
+            'penduduk_id' => $pendudukId,
             'keterangan' => 'Test keterangan terdata'
         ]);
 
@@ -170,17 +183,42 @@ class SuplemenExportTest extends TestCase
         $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
         $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
 
-        $penduduk1 = Penduduk::factory()->create(['desa_id' => $desa1->desa_id]);
-        $penduduk2 = Penduduk::factory()->create(['desa_id' => $desa2->desa_id]);
+        // Create penduduk dengan ID eksplisit untuk mengatasi masalah incrementing
+        $pendudukId1 = 999998;
+        $pendudukId2 = 999997;
+
+        $penduduk1 = Penduduk::create([
+            'id' => $pendudukId1,
+            'nama' => 'Test Penduduk 1',
+            'nik' => '1111567890123456',
+            'desa_id' => $desa1->desa_id,
+            'status_dasar' => 1,
+            'sex' => 1,
+            'alamat' => 'Test Alamat 1',
+            'tempat_lahir' => 'Test Tempat Lahir 1',
+            'tanggal_lahir' => '1990-01-01',
+        ]);
+
+        $penduduk2 = Penduduk::create([
+            'id' => $pendudukId2,
+            'nama' => 'Test Penduduk 2',
+            'nik' => '2222567890123456',
+            'desa_id' => $desa2->desa_id,
+            'status_dasar' => 1,
+            'sex' => 2,
+            'alamat' => 'Test Alamat 2',
+            'tempat_lahir' => 'Test Tempat Lahir 2',
+            'tanggal_lahir' => '1991-01-01',
+        ]);
 
         SuplemenTerdata::create([
             'suplemen_id' => $suplemen->id,
-            'penduduk_id' => $penduduk1->id,
+            'penduduk_id' => $pendudukId1,
             'keterangan' => 'Test terdata 1'
         ]);
         SuplemenTerdata::create([
             'suplemen_id' => $suplemen->id,
-            'penduduk_id' => $penduduk2->id,
+            'penduduk_id' => $pendudukId2,
             'keterangan' => 'Test terdata 2'
         ]);
 

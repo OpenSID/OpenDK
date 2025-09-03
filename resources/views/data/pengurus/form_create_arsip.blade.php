@@ -2,9 +2,16 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id')->value(old('jenis_surat',
-        isset($pengurus) ? $pengurus->jenis_surat : '')), null, ['placeholder' => 'Pilih
-        Jenis Dokumen', 'class' => 'form-control', 'id' => 'jenis_dokumen_id', 'required' => true]) !!}
+        {!! html()->select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id')->value(old(
+    'jenis_surat',
+    isset($pengurus) ? $pengurus->jenis_surat : ''
+)), null, [
+    'placeholder' => 'Pilih
+        Jenis Dokumen',
+    'class' => 'form-control',
+    'id' => 'jenis_dokumen_id',
+    'required' => true
+]) !!}
     </div>
 
 </div>
@@ -35,24 +42,32 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!!
-        html()->text('keterangan')->class('form-control')->required()->placeholder('Keterangan')->value(old('keterangan',
-        isset($pengurus) ? $pengurus->keterangan : '')) !!}
+    html()->text('keterangan')->class('form-control')->required()->placeholder('Keterangan')->value(old(
+        'keterangan',
+        isset($pengurus) ? $pengurus->keterangan : ''
+    )) !!}
     </div>
 </div>
 {!!
-html()->hidden('das_penduduk_id')->class('form-control')->required()->readonly()->placeholder('das_penduduk_id')->value(old('das_penduduk_id',
-isset($pengurus) ? $pengurus->das_penduduk_id : '')) !!}
+    html()->hidden('das_penduduk_id')->class('form-control')->required()->isReadonly()->placeholder('das_penduduk_id')->value(old(
+        'das_penduduk_id',
+        isset($pengurus) ? $pengurus->das_penduduk_id : ''
+    )) !!}
 {!!
-html()->hidden('document_id')->class('form-control')->readonly()->placeholder('document_id')->value(old('document_id',
-isset($pengurus) ? $pengurus->document_id : '')) !!}
+    html()->hidden('document_id')->class('form-control')->isReadonly()->placeholder('document_id')->value(old(
+        'document_id',
+        isset($pengurus) ? $pengurus->document_id : ''
+    )) !!}
 {!!
-html()->hidden('pengurus_id')->class('form-control')->readonly()->placeholder('pengurus_id')->value(old('pengurus_id',
-isset($pengurus) ? $pengurus->pengurus_id : '')) !!}
+    html()->hidden('pengurus_id')->class('form-control')->isReadonly()->placeholder('pengurus_id')->value(old(
+        'pengurus_id',
+        isset($pengurus) ? $pengurus->pengurus_id : ''
+    )) !!}
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-            $("#pengurus_id").on('change', function() {
+    <script>
+        $(document).ready(function () {
+            $("#pengurus_id").on('change', function () {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
                     let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
@@ -60,7 +75,7 @@ isset($pengurus) ? $pengurus->pengurus_id : '')) !!}
                         url: url,
                         type: 'GET',
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             let tempat_lahir = response.tempat_lahir
                             let tanggal_lahir = response.tanggal_lahir
                             let alamat = response.alamat
@@ -74,7 +89,7 @@ isset($pengurus) ? $pengurus->pengurus_id : '')) !!}
                             $("input[name='pendidikan']").val(pendidikan);
                             $("input[name='warga_negara_agama']").val(warga_negara_agama);
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error(error);
                             alert("Terjadi kesalahan saat mengambil data.");
                         }
@@ -82,5 +97,5 @@ isset($pengurus) ? $pengurus->pengurus_id : '')) !!}
                 }
             });
         });
-</script>
+    </script>
 @endpush

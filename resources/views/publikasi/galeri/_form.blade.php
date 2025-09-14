@@ -2,60 +2,68 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="javascript:history.back()"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
+                <a href="javascript:history.back()"><button type="button" class="btn btn-info btn-sm"><i
+                            class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
-                    <label class="control-label" for="judul">Judul Galeri <span class="required text-danger">*</span></label>
+                    <label class="control-label" for="judul">Judul Galeri <span
+                            class="required text-danger">*</span></label>
 
-                    {!! Form::text('judul', null, ['placeholder' => 'Judul Galeri', 'class' => 'form-control']) !!}
+                    {!! html()->text('judul')->class('form-control')->placeholder('Judul Galeri')->value(old('judul',
+                    isset($galeri) ? $galeri->judul : '')) !!}
                     @if ($errors->has('judul'))
-                        <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
+                    <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="jenis">Jenis <span class="required text-danger">*</span></label>
-                    {!! Form::select('jenis', ['file' => 'File', 'url' => 'Link'], null, ['class' => 'form-control', 'id' => 'jenis']) !!}
+                    {!! html()->select('jenis', ['file' => 'File', 'url' =>
+                    'Link'])->class('form-control')->value(old('jenis', isset($galeri) ? $galeri->jenis : '')) !!}
 
                     @if ($errors->has('jenis'))
-                        <span class="help-block" style="color:red">{{ $errors->first('jenis') }}</span>
+                    <span class="help-block" style="color:red">{{ $errors->first('jenis') }}</span>
                     @endif
                 </div>
                 <div class="form-group" id="view-url">
                     <label for="url" class="control-label">URL <span class="required text-danger">*</span></label>
 
-                    {!! Form::text('link', null, ['class' => 'form-control']) !!}
+                    {!! html()->text('link')->class('form-control')->value(old('link', isset($galeri) ? $galeri->link :
+                    '')) !!}
 
                     @if ($errors->has('link'))
-                        <span class="help-block" style="color:red">{{ $errors->first('link') }}</span>
+                    <span class="help-block" style="color:red">{{ $errors->first('link') }}</span>
                     @endif
                 </div>
                 <div class="form-group" id="image">
-                    <label class="control-label" for="thumbnail">Thumbnail<span class="required text-danger">*</span></label>
+                    <label class="control-label" for="thumbnail">Thumbnail<span
+                            class="required text-danger">*</span></label>
 
                     <div id="preview-container" style="display: flex; gap: 10px; flex-wrap: wrap;">
                         <!-- Preview Gambar Akan Ditempatkan Di Sini -->
                         @if (isset($galeri->gambar))
-                            @foreach ($galeri->gambar as $image)
-                                <img src="{{ isThumbnail("publikasi/galeri/{$image}") }}" style="width:100px; max-height:100px; margin: 5px;">
-                            @endforeach
+                        @foreach ($galeri->gambar as $image)
+                        <img src="{{ isThumbnail(" publikasi/galeri/{$image}") }}"
+                            style="width:100px; max-height:100px; margin: 5px;">
+                        @endforeach
                         @endif
                     </div>
 
                     @if (isset($galeri->gambar) == false)
-                        <img src="{{ asset('/img/no-image.png') }}" id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
+                    <img src="{{ asset('/img/no-image.png') }}" id="showthumbnail"
+                        style="width:100%; max-height:250px; float:left;" />
                     @endif
 
-                    {!! Form::file('gambar[]', [
-                        'placeholder' => 'Thumbnail',
-                        'class' => 'form-control',
-                        'id' => 'file-album',
-                        'accept' => 'jpg,jpeg,png',
-                        'multiple' => true,
+                    {!! html()->file('gambar[]', [
+                    'placeholder' => 'Thumbnail',
+                    'class' => 'form-control',
+                    'id' => 'file-album',
+                    'accept' => 'jpg,jpeg,png',
+                    'multiple' => true,
                     ]) !!}
 
                     @if ($errors->has('gambar'))
-                        <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>
+                    <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>
                     @endif
                 </div>
             </div>
@@ -67,7 +75,8 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="status">Status<span class="required text-danger">*</span></label>
-                    {!! Form::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' => 'form-control']) !!}
+                    {!! html()->select('status', ['0' => 'Tidak Aktif', '1' =>
+                    'Aktif'])->class('form-control')->value(old('status', isset($galeri) ? $galeri->status : '')) !!}
                 </div>
             </div>
 
@@ -79,8 +88,8 @@
 </div>
 
 @push('scripts')
-    <script>
-        $(function() {
+<script>
+    $(function() {
 
             function toggleUrlFields(type) {
                 var viewUrl = $('#view-url');
@@ -143,5 +152,5 @@
                 readURL(this);
             });
         });
-    </script>
+</script>
 @endpush

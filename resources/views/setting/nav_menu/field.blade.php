@@ -1,15 +1,11 @@
 <!-- Name Field -->
 <div class="form-group">
     <div class="col-12">
-
-        {!! Form::text('text', null, [
-            'class' => 'form-control item-menu',
-            'maxlength' => 255,
-            'placeholder' => 'Nama Menu',
-            'id' => 'text',
-        ]) !!}
-
-        {!! Form::hidden('icon', 'fa fa-list', ['class' => 'item-menu']) !!}
+        {!! html()->text('text')
+        ->class('form-control item-menu')
+        ->id('text')
+        ->placeholder('Nama Menu') !!}
+        {!! html()->hidden('icon')->class('item-menu') !!}
     </div>
 </div>
 
@@ -17,19 +13,34 @@
 <div class="form-group">
     <div class="col-12">
         <label class="form-check-inline">
-            {!! Form::radio('source', 'link', 'link', ['class' => 'form-check-input', 'id' => 'sourceLink']) !!} Link
+            {!! html()->radio('source', true)
+            ->value('link')
+            ->class('form-check-input')
+            ->id('sourceLink') !!} Link
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Halaman', null, ['class' => 'form-check-input', 'id' => 'sourceHalaman']) !!} Halaman
+            {!! html()->radio('source', false)
+            ->value('Halaman')
+            ->class('form-check-input')
+            ->id('sourceHalaman') !!} Halaman
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Kategori', null, ['class' => 'form-check-input', 'id' => 'sourceKategori']) !!} Kategori
+            {!! html()->radio('source', false)
+            ->value('Kategori')
+            ->class('form-check-input')
+            ->id('sourceKategori') !!} Kategori
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Modul', null, ['class' => 'form-check-input', 'id' => 'sourceModul']) !!} Modul
+            {!! html()->radio('source', false)
+            ->value('Modul')
+            ->class('form-check-input')
+            ->id('sourceModul') !!} Modul
         </label>
         <label class="form-check-inline">
-            {!! Form::radio('source', 'Dokumen', null, ['class' => 'form-check-input', 'id' => 'sourceDokumen']) !!} Dokumen
+            {!! html()->radio('source', false)
+            ->value('Dokumen')
+            ->class('form-check-input')
+            ->id('sourceDokumen') !!} Dokumen
         </label>
     </div>
 </div>
@@ -37,19 +48,22 @@
 <!-- Url Field -->
 <div class="form-group">
     <div class="col-12">
-        {!! Form::select('sourcelist', $sourceItem, null, ['class' => 'form-control']) !!}
-        {!! Form::text('href', null, ['class' => 'form-control item-menu', 'maxlength' => 255, 'placeholder' => 'http://contoh.com']) !!}
+        {!! html()->select('sourcelist', $sourceItem)->class('form-control') !!}
+        {!! html()->text('href')
+        ->class('form-control item-menu')
+        ->placeholder('http://contoh.com') !!}
     </div>
 </div>
 
 <div class="form-group">
-    {!! Form::label('target', 'Target') !!}
-    {!! Form::select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'], null, ['class' => 'form-control item-menu', 'id' => 'target']) !!}
+    {!! html()->label('target', 'Target') !!}
+    {!! html()->select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'])
+    ->class('form-control item-menu') !!}
 </div>
 
 @push('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
             // Tampilkan input[name=href] dan sembunyikan yang lainnya saat halaman dimuat
             document.querySelector('input[name=href]').style.display = 'block';
             document.querySelector('select[name=sourcelist]').style.display = 'none';
@@ -115,8 +129,8 @@
                 document.querySelector('input[name=href]').value = selectedValue;
             });
         });
-    </script>
-    <!-- <script>
+</script>
+<!-- <script>
         $(document).ready(function() {
             $('select[name=sourcelist]').hide()
             $(':radio[name=source]').change(function() {

@@ -14,17 +14,15 @@
     </section>
     <section class="content container-fluid">
 
-        {!! Form::model($artikel, [
-            'route' => ['informasi.artikel.update', $artikel->id],
-            'method' => 'post',
-            'id' => 'form-artikel',
-            'files' => true,
-        ]) !!}
+        {!! html()->form('POST', route(
+        'informasi.artikel.update',
+        $artikel->id
+    ))->id('form-artikel')->acceptsFiles()->open() !!}
 
         @include('flash::message')
         @include('informasi.artikel._form')
 
-        {!! Form::close() !!}
+        {!! html()->form()->close() !!}
 
     </section>
 @endsection

@@ -133,7 +133,9 @@ class PengurusController extends Controller
                 return [$item->id_pengurus => "{$item->nama_pengurus} - {$item->jabatan}"];
             });
 
-        return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan', 'atasan'));
+        $pengurus = [];
+
+        return view('data.pengurus.create', compact('page_title', 'page_description', 'pendidikan', 'agama', 'jabatan', 'atasan', 'pengurus'));
     }
 
     /**

@@ -18,17 +18,10 @@
                 <div class="box box-primary">
 
                     <!-- form start -->
-                    {!! Form::model($jabatan, [
-                        'route' => ['data.jabatan.update', $jabatan->id],
-                        'method' => 'post',
-                        'id' => 'form-jabatan',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
+                    {!! html()->form('PUT', route('data.jabatan.update', $jabatan->id))->id('form-jabatan')->class('form-horizontal form-label-left')->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
-
-                        {{ method_field('PUT') }}
                         @include('flash::message')
                         @include('data.jabatan.form')
 
@@ -37,7 +30,7 @@
                     <div class="box-footer">
                         @include('partials.button_reset_submit')
                     </div>
-                    {!! Form::close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
         </div>

@@ -28,7 +28,6 @@
         "mews/captcha": "^3.2",
         "michaeldzjap/twofactor-auth": "^3.4",
         "proengsoft/laravel-jsvalidation": "^4.4",
-        "rachidlaasri/laravel-installer": "^4.1",
         "rap2hpoutre/laravel-log-viewer": "^2.0",
         "sentry/sentry-laravel": "4.0",
         "spatie/laravel-backup": "^8.2",

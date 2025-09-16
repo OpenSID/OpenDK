@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "deb9b4351cd2b10a978732fb4f38c476",
+    "content-hash": "09887a2635d2a21dd4613577200ab898",
     "packages": [
         {
             "name": "bensampo/laravel-enum",
@@ -2677,16 +2677,16 @@
         },
         {
             "name": "laravel/helpers",
-            "version": "v1.7.2",
+            "version": "v1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/helpers.git",
-                "reference": "672d79d5b5f65dc821e57783fa11f22c4d762d70"
+                "reference": "d0094b4bc4364560c8ee3a9e956596d760d4afab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/helpers/zipball/672d79d5b5f65dc821e57783fa11f22c4d762d70",
-                "reference": "672d79d5b5f65dc821e57783fa11f22c4d762d70",
+                "url": "https://api.github.com/repos/laravel/helpers/zipball/d0094b4bc4364560c8ee3a9e956596d760d4afab",
+                "reference": "d0094b4bc4364560c8ee3a9e956596d760d4afab",
                 "shasum": ""
             },
             "require": {
@@ -2728,9 +2728,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/helpers/tree/v1.7.2"
+                "source": "https://github.com/laravel/helpers/tree/v1.8.1"
             },
-            "time": "2025-01-24T15:41:25+00:00"
+            "time": "2025-09-02T15:31:25+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -5268,71 +5268,6 @@
                 "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
             "time": "2021-10-29T13:26:27+00:00"
-        },
-        {
-            "name": "rachidlaasri/laravel-installer",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rashidlaasri/LaravelInstaller.git",
-                "reference": "b751b4c23dba893e9a4a12f881a6fd8fa921d228"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rashidlaasri/LaravelInstaller/zipball/b751b4c23dba893e9a4a12f881a6fd8fa921d228",
-                "reference": "b751b4c23dba893e9a4a12f881a6fd8fa921d228",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "RachidLaasri\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/Helpers/functions.php"
-                ],
-                "psr-4": {
-                    "RachidLaasri\\LaravelInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rachid Laasri",
-                    "email": "rashidlaasri@gmail.com"
-                },
-                {
-                    "name": "Jeremy Kenedy",
-                    "email": "jeremykenedy@gmail.com"
-                }
-            ],
-            "description": "Laravel web installer",
-            "support": {
-                "issues": "https://github.com/rashidlaasri/LaravelInstaller/issues",
-                "source": "https://github.com/rashidlaasri/LaravelInstaller/tree/4.1.0"
-            },
-            "funding": [
-                {
-                    "url": "https://rachidlaasri.com",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://twitter.com/rashidlaasri",
-                    "type": "custom"
-                }
-            ],
-            "abandoned": true,
-            "time": "2020-05-19T13:19:45+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

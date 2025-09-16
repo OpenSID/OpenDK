@@ -45,8 +45,8 @@ class KDInstalled
      */
     public function handle($request, Closure $next)
     {
-        if (! sudahInstal()) {
-            return redirect()->to('install');
+        if (!sudahInstal()) {
+            return redirect()->route('installer.welcome');
         }
 
         return $next($request);

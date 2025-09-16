@@ -24,7 +24,7 @@
 
     @if (!isset($permissions['errors']))
         <div class="buttons">
-            <a href="{{ route('LaravelInstaller::environment') }}" class="button">
+            <a href="{{ route('installer.environment') }}" class="button">
                 {{ trans('installer_messages.permissions.next') }}
                 <i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
             </a>

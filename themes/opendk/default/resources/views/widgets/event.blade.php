@@ -9,7 +9,9 @@
                 <li>
                     <i class="fa fa-calendar @if ($value->status == 'OPEN') bg-maroon @else bg-gray @endif"></i>
                     <div class="timeline-item">
-                        <h4 class="timeline-header">{{ link_to('event/' . $value->slug, strtoupper($value->event_name)) }}</h4>
+                        <h4 class="timeline-header">
+                            <a href="{{ url('event/' . $value->slug) }}">{{ url('event/' . $value->slug) }}</a>
+                        </h4>
                         <small class="text-yellow"><i class="fa fa-clock-o"></i> {{ Carbon\Carbon::parse($value->start)->translatedFormat('d F Y') }}</small>
                     </div>
                 </li>

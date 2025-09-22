@@ -19,7 +19,7 @@
         <div class="col-md-12">
 
             {!! html()->form('POST', route('data.aki-akb.do_import'))->id('form-import')->class('form-horizontal
-            form-label-left')->acceptsFiles() !!}
+            form-label-left')->acceptsFiles()->open() !!}
 
             <div class="box-body">
 

@@ -30,7 +30,7 @@
 
             <!-- form start -->
             {!! html()->form('PUT', route('data.tingkat-pendidikan.update',
-            $pendidikan->id))->id('form-pendidikan')->class('form-horizontal form-label-left') !!}
+            $pendidikan->id))->id('form-pendidikan')->class('form-horizontal form-label-left')->open() !!}
 
             <div class="box-body">
 

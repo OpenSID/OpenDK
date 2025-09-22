@@ -19,7 +19,7 @@
             <div class="box box-primary">
 
                 {!! html()->form('POST',
-                route('data.data-suplemen.storedetail'))->id('form-faq')->class('form-horizontal form-label-left') !!}
+                route('data.data-suplemen.storedetail'))->id('form-faq')->class('form-horizontal form-label-left')->open() !!}
 
                 <div class="box-body">
                     <div class="table-responsive">

@@ -21,7 +21,7 @@
             <div class="box box-primary">
 
                 {!! html()->form('PUT', route('data.lembaga_anggota.update', $lembaga->slug,
-                $anggota->id))->id('form-lembaga-anggota')->class('form-horizontal form-label-left') !!}
+                $anggota->id))->id('form-lembaga-anggota')->class('form-horizontal form-label-left')->open() !!}
 
                 @include('layouts.fragments.error_message')
 

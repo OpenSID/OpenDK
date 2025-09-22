@@ -20,7 +20,7 @@
         <div class="box-body">
             {!!
             html()->form()->route('setting.role.store')->method('POST')->acceptsFiles()->id('form-role')->attribute('role',
-            'form') !!}
+            'form')->open() !!}
             @include('flash::message')
             @include('role.form')
             {!! html()->form()->close() !!}

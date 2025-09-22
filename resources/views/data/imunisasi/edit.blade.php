@@ -30,7 +30,7 @@
             @endif
 
             {!! html()->form('PUT', route('data.imunisasi.update',
-            $imunisasi->id))->id('form-imunisasi')->class('form-horizontal form-label-left') !!}
+            $imunisasi->id))->id('form-imunisasi')->class('form-horizontal form-label-left')->open() !!}
 
             <div class="box-body">
 

@@ -14,7 +14,7 @@
 </section>
 <section class="content container-fluid">
 
-    {!! html()->form()!!}
+    {!! html()->form()->open() !!}
 
     @include('flash::message')
     @include('publikasi.galeri._form')

@@ -18,7 +18,7 @@
             <div class="box box-primary">
 
                 {!! html()->form('POST', route('data.jabatan.store'))->id('form-jabatan')->class('form-horizontal
-                form-label-left') !!}
+                form-label-left')->open() !!}
                 @include('layouts.fragments.error_message')
 
                 <div class="box-body">

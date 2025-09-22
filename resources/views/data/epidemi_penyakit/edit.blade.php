@@ -30,7 +30,7 @@
             @endif
 
             <!-- form start -->
-            {!! html()->form()!!}
+            {!! html()->form()->open() !!}
 
             <div class="box-body">
 

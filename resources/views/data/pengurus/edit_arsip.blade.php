@@ -29,7 +29,7 @@ Data Pengurus
 
                 {!!
                 html()->form('post')->route('data.pengurus.store.arsip')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
-                form-label-left') !!}
+                form-label-left')->open() !!}
                 @include('layouts.fragments.error_message')
                 <div class="box-body">
                     @include('flash::message')

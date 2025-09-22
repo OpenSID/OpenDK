@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-12">
                 <!-- kirim komplain form -->
-                {!! html()->form()!!}
+                {!! html()->form()->open() !!}
                 <div class="box box-primary">
                     <div class="box-body">
                         @if (count($errors) > 0)

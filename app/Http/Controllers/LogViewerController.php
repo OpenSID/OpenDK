@@ -34,12 +34,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmailSmtpRequest;
 use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\DataTables;
 
 /**
  * Class LogViewerController
@@ -272,5 +275,108 @@ class LogViewerController extends Controller
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
+    }
+
+    /**
+     * Menampilkan data activity logs untuk DataTables
+     */
+    public function getActivityLogs(Request $request)
+    {
+        $query = Activity::with('causer')->latest();
+
+        // Filter berdasarkan event/description
+        if ($request->filled('action')) {
+            $query->where('event', $request->action);
+        }
+
+        // Filter berdasarkan user
+        if ($request->filled('user_id')) {
+            $query->where('causer_id', $request->user_id);
+        }
+
+        // Filter berdasarkan tanggal
+        if ($request->filled('date_from') && $request->filled('date_to')) {
+            $query->whereBetween('created_at', [
+                $request->date_from . ' 00:00:00',
+                $request->date_to . ' 23:59:59'
+            ]);
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('user_display', function ($log) {
+                return $log->causer ? $log->causer->name : 'System';
+            })
+            ->addColumn('action_badge', function ($log) {
+                $badges = [
+                    'login' => 'success',
+                    'logout' => 'info',
+                    'created' => 'primary',
+                    'updated' => 'warning',
+                    'deleted' => 'danger',
+                    'retrieved' => 'secondary'
+                ];
+                $badge = $badges[$log->event] ?? 'secondary';
+                return '<span class="badge badge-' . $badge . '">' . ucfirst($log->event ?? 'N/A') . '</span>';
+            })
+            ->addColumn('subject_display', function ($log) {
+                $subjectType = $log->subject_type ? class_basename($log->subject_type) : 'N/A';
+                return $subjectType . ($log->subject_id ? " (ID: {$log->subject_id})" : '');
+            })
+            ->addColumn('formatted_date', function ($log) {
+                return $log->created_at->format('d/m/Y H:i:s');
+            })
+            ->addColumn('aksi', function ($log) {
+                return '<button class="btn btn-sm btn-info view-detail" data-id="' . $log->id . '">
+                    <i class="fa fa-eye"></i> Detail
+                </button>';
+            })
+            ->rawColumns(['action_badge', 'aksi'])
+            ->make(true);
+    }
+
+    /**
+     * Menampilkan detail activity log
+     */
+    public function getActivityLogDetail($id)
+    {
+        $log = Activity::with('causer')->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $log->id,
+                'user' => $log->causer ? $log->causer->name : 'System',
+                'event' => $log->event,
+                'description' => $log->description,
+                'subject_type' => $log->subject_type,
+                'subject_id' => $log->subject_id,
+                'properties' => $log->properties,
+                'created_at' => $log->created_at->format('d/m/Y H:i:s'),
+            ]
+        ]);
+    }
+
+    /**
+     * Menghapus activity logs lama (cleanup)
+     */
+    public function cleanupActivityLogs(Request $request)
+    {
+        try {
+            $days = $request->input('days', 30); // Default 30 hari
+            $cutoffDate = now()->subDays($days);
+            
+            $deletedCount = Activity::where('created_at', '<', $cutoffDate)->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Berhasil menghapus {$deletedCount} log aktivitas yang lebih dari {$days} hari."
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus log aktivitas: ' . $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

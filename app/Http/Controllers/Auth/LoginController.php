@@ -134,11 +134,68 @@ class LoginController extends Controller
     }
     protected function authenticated(Request $request, $user)
     {
+        // Log successful login
+        activity()
+            ->causedBy($user)
+            ->performedOn($user)
+            ->event('login')
+            ->log('Pengguna berhasil masuk ke sistem');
+        
         if (($this->settings['login_2fa'] ?? false)) {
             return $this->startTwoFactorAuthProcess($request, $user);
         }
 
         return redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * Handle a failed authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        // Log failed login attempt
+        activity()
+            ->withProperties(['email' => $request->input($this->username())])
+            ->log('Percobaan login gagal');
+
+        return parent::sendFailedLoginResponse($request);
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    public function logout(Request $request)
+    {
+        // Log the logout event before logging out
+        if (auth()->check()) {
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn(auth()->user())
+                ->event('logout')
+                ->log('Pengguna keluar dari sistem');
+        }
+
+        $this->guard()->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
+
+    protected function loggedOut(Request $request)
+    {
+        // This method can be used for additional logic after logout
+        // For example, flashing a session message.
     }
 
     /**

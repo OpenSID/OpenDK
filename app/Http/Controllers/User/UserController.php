@@ -91,9 +91,23 @@ class UserController extends Controller
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 
+            // Log activity - Spatie akan otomatis log karena model User menggunakan LogsActivity trait
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user)
+                ->withProperties(['roles' => $roles])
+                ->event('created')
+                ->log("Membuat pengguna baru: {$user->name} ({$user->email})");
+
             return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
         } catch (\Exception $e) {
             report($e);
+
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'input_data' => $request->except(['password', '_token'])])
+                ->log('Gagal membuat pengguna baru');
 
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -141,6 +155,7 @@ class UserController extends Controller
         try {
             $input = $request->validated();
             $user = User::findOrFail($id);
+            
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user->update($input);
             if (! empty($request->role)) {
@@ -148,9 +163,23 @@ class UserController extends Controller
                 $user->syncRoles($roles);
             }
 
+            // Log activity
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user)
+                ->withProperties(['roles' => $roles ?? []])
+                ->event('updated')
+                ->log("Mengubah data pengguna: {$user->name} ({$user->email})");
+
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
             report($e);
+
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
+                ->log('Gagal mengubah data pengguna');
 
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -169,16 +198,29 @@ class UserController extends Controller
             $user_find = User::findOrFail($id);
 
             $user = $user_find->update($request->all());
-            $user->update([
+            $user_find->update([
                 'password' => bcrypt($request->password),
             ]);
 
-            flash()->success(trans('message.user.update-success'));
+            // Log activity
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user_find)
+                ->log("Mengubah password pengguna: {$user_find->name} ({$user_find->email})");
+
+            flash()->success('Password pengguna berhasil diperbarui');
 
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
             report($e);
-            flash()->error(trans('message.user.update-error'));
+            
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
+                ->log('Gagal mengubah password pengguna');
+            
+            flash()->error('Gagal mengubah password pengguna');
 
             return back()->withInput();
         }
@@ -197,12 +239,26 @@ class UserController extends Controller
             $user->status = 0;
             $user->save();
 
-            flash()->success(trans('general.suspend-success'));
+            // Log activity
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user)
+                ->withProperties(['action' => 'suspend', 'previous_status' => 1, 'new_status' => 0])
+                ->log("Menonaktifkan pengguna: {$user->name} ({$user->email})");
+
+            flash()->success('Pengguna berhasil dinonaktifkan');
 
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
             report($e);
-            flash()->success(trans('general.suspend-error'));
+            
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
+                ->log('Gagal menonaktifkan pengguna');
+            
+            flash()->error('Gagal menonaktifkan pengguna');
 
             return redirect()->route('setting.user.index');
         }
@@ -221,12 +277,26 @@ class UserController extends Controller
             $user->status = 1;
             $user->save();
 
-            flash()->success(trans('general.active-success'));
+            // Log activity
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($user)
+                ->withProperties(['action' => 'activate', 'previous_status' => 0, 'new_status' => 1])
+                ->log("Mengaktifkan pengguna: {$user->name} ({$user->email})");
+
+            flash()->success('Pengguna berhasil diaktifkan');
 
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
             report($e);
-            flash()->success(trans('general.active-error'));
+            
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
+                ->log('Gagal mengaktifkan pengguna');
+            
+            flash()->error('Gagal mengaktifkan pengguna');
 
             return redirect()->route('setting.user.index');
         }

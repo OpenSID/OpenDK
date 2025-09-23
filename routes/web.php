@@ -906,7 +906,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::post('/store-email-smtp', 'storeEmailSmtp')->name('setting.info-sistem.store-email-smtp');
                 Route::post('/send-test-email-smtp/{email}', 'sendTestEmailSmtp')->name('setting.info-sistem.send-test-email-smtp');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
-            });
+                // Activity Logs Routes
+                Route::get('/activity-logs/data', 'getActivityLogs')->name('setting.info-sistem.activity-logs.data');
+                Route::get('/activity-logs/detail/{id}', 'getActivityLogDetail')->name('setting.info-sistem.activity-logs.detail');
+                Route::post('/activity-logs/cleanup', 'cleanupActivityLogs')->name('setting.info-sistem.activity-logs.cleanup');
+                            });
 
             // Navigasi
             Route::group(['prefix' => 'navigation', 'controller' => NavigationController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {

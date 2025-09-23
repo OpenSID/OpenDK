@@ -110,10 +110,23 @@ class ProfilController extends Controller
             $profil->update();
             $dataumum->update();
 
+            // Log activity
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($profil)
+                ->event('updated')
+                ->log("Mengubah data profil kecamatan: {$profil->nama_kecamatan}");
+
             // Clear cache setelah update data kecamatan
             $this->clearProfilCache();
         } catch (\Exception $e) {
             report($e);
+
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'profil_id' => $id])
+                ->log('Gagal mengubah profil kecamatan');
 
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }

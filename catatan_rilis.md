@@ -12,3 +12,4 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 1. [#1329](https://github.com/OpenSID/OpenDK/issues/1329) PhpSpreadsheet vulnerable to SSRF when reading and displaying a processed HTML document in the browser.
 2. [#1331](https://github.com/OpenSID/OpenDK/issues/1331) hapus abandoned installer package, ganti ke installer manual.
+3. [#1302](https://github.com/OpenSID/OpenDK/issues/1302) Sesuaikan deprecated package.

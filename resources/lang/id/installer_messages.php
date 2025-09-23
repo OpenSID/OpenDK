@@ -189,6 +189,16 @@ return [
     'install' => 'Pasang',
 
     /**
+     * Database page translations.
+     */
+    'database' => [
+        'templateTitle' => 'Langkah 4 | Pengaturan Database',
+        'title' => 'Pengaturan Database',
+        'next' => 'Lanjutkan Instalasi',
+        'test' => 'Uji Koneksi',
+    ],
+
+    /**
      * Installed Log translations.
      */
     'installed' => [

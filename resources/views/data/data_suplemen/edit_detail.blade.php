@@ -31,10 +31,10 @@
                 @endif
 
                 <!-- form start -->
-                {!! html()->form('post', route('data.data-suplemen.updatedetail', $anggota->id)),
-                'id' => 'form-suplemen',
-                'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! html()->form('post', route('data.data-suplemen.updatedetail', $anggota->id))
+                    ->id('form-suplemen')
+                    ->class('form-horizontal form-label-left')->open()
+                    !!}
 
                 <div class="box-body">
                     <div class="table-responsive">

@@ -17,9 +17,8 @@
         <div class="col-md-12">
             @include('partials.flash_message')
 
-            {!!
-            html()->form()->route('data.data-desa.store')->method('POST')->id('form-datadesa')->class('form-horizontal
-            form-label-left') !!}
+            {!! html()->form()->route('data.data-desa.store')->method('POST')->id('form-datadesa')->class('form-horizontal
+            form-label-left')->open() !!}
 
             <div class="box-body">
 

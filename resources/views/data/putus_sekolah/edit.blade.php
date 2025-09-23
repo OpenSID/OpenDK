@@ -30,7 +30,7 @@
 
             <!-- form start -->
             {!! html()->form('PUT', route('data.putus-sekolah.update',
-            $siswa->id))->id('form-siswa')->class('form-horizontal form-label-left') !!}
+            $siswa->id))->id('form-siswa')->class('form-horizontal form-label-left')->open() !!}
 
             <div class="box-body">
 

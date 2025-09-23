@@ -20,7 +20,7 @@
 
             {!!
             html()->form()->route('data.putus-sekolah.do_import')->method('POST')->id('form-import')->class('form-horizontal
-            form-label-left')->acceptsFiles() !!}
+            form-label-left')->acceptsFiles()->open() !!}
 
             <div class="box-body">
 

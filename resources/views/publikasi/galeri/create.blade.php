@@ -14,7 +14,7 @@
 </section>
 <section class="content container-fluid">
 
-    {!! html()->form('POST', route('publikasi.galeri.store'))->acceptsFiles() !!}
+    {!! html()->form('POST', route('publikasi.galeri.store'))->acceptsFiles()->open() !!}
 
     @include('publikasi.galeri._form')
 

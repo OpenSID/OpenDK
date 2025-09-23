@@ -6,7 +6,7 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Import XML</h4>
             </div>
-            {!! html()->form('POST')->route('admin.news.importxml')->id('active')->acceptsFiles() !!}
+            {!! html()->form('POST')->route('admin.news.importxml')->id('active')->acceptsFiles()->open() !!}
 
             <div class="modal-body">
                 {!! html()->file('file')->class('form-control')->accept('text/xml') !!}

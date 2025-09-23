@@ -20,7 +20,7 @@
             <div class="box box-primary">
 
                 {!! html()->form()->route('data.lembaga_anggota.store',
-                $lembaga->slug)->method('POST')->id('form-lembaga-anggota')->class('form-horizontal form-label-left')
+                $lembaga->slug)->method('POST')->id('form-lembaga-anggota')->class('form-horizontal form-label-left')->open()
                 !!}
                 @include('layouts.fragments.error_message')
 

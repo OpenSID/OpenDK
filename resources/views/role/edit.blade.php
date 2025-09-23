@@ -18,7 +18,12 @@
             <h3 class="box-title">Roles</h3>
         </div>
         <div class="box-body">
-            {!! html()->form(){!! html()->form()->close() !!}
+            {!! html()->form('PUT', route('setting.role.update', $role->id))
+                ->attributes(['autocomplete' => 'off', 'id' => 'form-role'])
+                ->model($role)
+                ->open() !!}
+            @include('role.form')
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </section>

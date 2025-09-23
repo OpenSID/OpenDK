@@ -2,8 +2,7 @@
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Kode / Nama
         {{ config('setting.sebutan_desa') }} <span class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        <input id="desa_id" class="form-control" placeholder="00.00.00.0000" name="desa_id" type="text" required @if
-            ($status_pantau) readonly @endif />
+        <input id="desa_id" class="form-control" placeholder="00.00.00.0000" name="desa_id" type="text" required @if($status_pantau) readonly @endif />
     </div>
     <input id="nama" type="hidden" name="nama" />
     <div class="col-md-4 col-sm-4 col-xs-12">
@@ -17,32 +16,35 @@
 </div>
 
 <div class="form-group">
-    <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Sebutan Desa </label>
+    <label for="sebutan_desa" class="control-label col-md-4 col-sm-3 col-xs-12">Sebutan Desa </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->input('sebutan_desa', 'sebutan_desa', null, [
-        'class' => 'form-control',
-        'placeholder' => 'Contoh : desa',
-        ]) !!}
+        {!! html()->text('sebutan_desa')
+            ->class('form-control')
+            ->placeholder('Contoh : desa')
+            ->id('sebutan_desa')
+            ->value(old('sebutan_desa', isset($desa) ? $desa->sebutan_desa : '')) !!}
     </div>
 </div>
 
 <div class="form-group">
     <label for="website" class="control-label col-md-4 col-sm-3 col-xs-12">Website </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->input('url', 'website', null, [
-        'class' => 'form-control',
-        'id' => 'website',
-        'placeholder' => 'Contoh : https://berputar.opensid.or.id/',
-        ]) !!}
+        {!! html()->text('website')
+            ->class('form-control')
+            ->id('website')
+            ->placeholder('Contoh : https://berputar.opensid.or.id/')
+            ->value(old('website', isset($desa) ? $desa->website : '')) !!}
     </div>
 </div>
 
 <div class="form-group">
-    <label for="luas_wilayah" class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span
-            class="required">*</span></label>
+    <label for="luas_wilayah" class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span class="required">*</span></label>
     <div class="col-md-2 col-sm-2 col-xs-12">
-        {!! html()->number('luas_wilayah')->class('form-control')->id('luas_wilayah')->placeholder('Luas Wilayah
-        Desa')->value(old('luas_wilayah', isset($desa) ? $desa->luas_wilayah : '')) !!}
+        {!! html()->number('luas_wilayah')
+            ->class('form-control')
+            ->id('luas_wilayah')
+            ->placeholder('Luas Wilayah Desa')
+            ->value(old('luas_wilayah', isset($desa) ? $desa->luas_wilayah : '')) !!}
     </div>
 </div>
 

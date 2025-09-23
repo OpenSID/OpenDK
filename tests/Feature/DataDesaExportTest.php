@@ -28,6 +28,7 @@ class DataDesaExportTest extends TestCase
             ['key' => 'sinkronisasi_database_gabungan'],
             ['value' => '0']
         );
+        config(['setting.sebutan_desa' => 'Desa']);
     }
 
     /**

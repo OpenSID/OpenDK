@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="box box-primary">
-                {!! html()->form('POST')->class('form-horizontal form-label-left')->id('form-keluarga') !!}
+                {!! html()->form('POST')->class('form-horizontal form-label-left')->id('form-keluarga')->open() !!}
 
                 <div class="box-body">
 

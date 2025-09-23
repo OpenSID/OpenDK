@@ -72,8 +72,12 @@ class LoginController extends Controller
         parent::__construct();
 
         $this->middleware('guest')->except('logout');
-        $captchaView = $this->settings['google_recaptcha'] ? 'auth.google-captcha' : 'auth.captcha';
-        View::share('captchaView', $captchaView);
+
+        // Cek apakah sudah install dan settings tersedia
+        if (sudahInstal() && $this->settings) {
+            $captchaView = $this->settings['google_recaptcha'] ? 'auth.google-captcha' : 'auth.captcha';
+            View::share('captchaView', $captchaView);
+        }
     }
 
     public function redirectTo()
@@ -169,7 +173,7 @@ class LoginController extends Controller
         try {
             $user->notify(new SendToken2FA($token));
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Gagal mengirim email token 2FA.'. $e->getMessage());
+            return redirect()->route('login')->with('error', 'Gagal mengirim email token 2FA.' . $e->getMessage());
         }
     }
 }

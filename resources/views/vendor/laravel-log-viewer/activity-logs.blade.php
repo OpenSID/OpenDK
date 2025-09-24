@@ -40,7 +40,7 @@
 
         <!-- DataTable -->
         <div class="table-responsive">
-            <table id="activity-logs-table" class="table table-bordered table-striped">
+            <table id="activity-logs-table" class="table table-bordered table-striped" style="width: 100%;">
                 <thead>
                     <tr>
                         <th>No</th>

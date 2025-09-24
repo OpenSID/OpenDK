@@ -53,7 +53,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        sendFailedLoginResponse as traitSendFailedLoginResponse;
+    }
 
     /**
      * Where to redirect users after login.
@@ -163,7 +165,7 @@ class LoginController extends Controller
             ->withProperties(['email' => $request->input($this->username())])
             ->log('Percobaan login gagal');
 
-        return parent::sendFailedLoginResponse($request);
+        return $this->traitSendFailedLoginResponse($request);
     }
 
     /**

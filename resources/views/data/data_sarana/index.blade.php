@@ -13,56 +13,55 @@
 </section>
 
 <section class="content container-fluid">
+    @include('partials.flash_message')
+
     <div class="box box-primary">
         <div class="box-header with-border">
-            <form method="GET" action="{{ route('data.data-sarana.index') }}" class="form-inline">
+            <form id="filter-form" class="form-inline">
                 <div class="form-group">
-                    <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari sarana...">
-                </div>
-
-                <div class="form-group">
-                    <select name="kategori" class="form-control">
-                        <optgroup label="Sarana Kesehatan">
-                            <option value="puskesmas" {{ request('kategori') == 'puskesmas' ? 'selected' : '' }}>Puskesmas</option>
-                            <option value="puskesmas_pembantu" {{ request('kategori') == 'puskesmas_pembantu' ? 'selected' : '' }}>Puskesmas Pembantu</option>
-                            <option value="posyandu" {{ request('kategori') == 'posyandu' ? 'selected' : '' }}>Posyandu</option>
-                            <option value="pondok_bersalin" {{ request('kategori') == 'pondok_bersalin' ? 'selected' : '' }}>Pondok Bersalin</option>
-                        </optgroup>
-                        <optgroup label="Sarana Pendidikan">
-                            <option value="paud" {{ request('kategori') == 'paud' ? 'selected' : '' }}>PAUD/Sederajat</option>
-                            <option value="sd" {{ request('kategori') == 'sd' ? 'selected' : '' }}>SD/Sederajat</option>
-                            <option value="smp" {{ request('kategori') == 'smp' ? 'selected' : '' }}>SMP/Sederajat</option>
-                            <option value="sma" {{ request('kategori') == 'sma' ? 'selected' : '' }}>SMA/Sederajat</option>
-                        </optgroup>
-                        <optgroup label="Sarana Umum">
-                            <option value="masjid_besar" {{ request('kategori') == 'masjid_besar' ? 'selected' : '' }}>Masjid Besar</option>
-                            <option value="mushola" {{ request('kategori') == 'mushola' ? 'selected' : '' }}>Mushola</option>
-                            <option value="gereja" {{ request('kategori') == 'gereja' ? 'selected' : '' }}>Gereja</option>
-                            <option value="pasar" {{ request('kategori') == 'pasar' ? 'selected' : '' }}>Pasar</option>
-                            <option value="balai_pertemuan" {{ request('kategori') == 'balai_pertemuan' ? 'selected' : '' }}>Balai Pertemuan</option>
-                        </optgroup>
+                    <select name="desa_id" id="desa_id" class="form-control">
+                        <option value="">-- Semua Desa --</option>
+                        @foreach($desaSelect as $desa)
+                            <option value="{{ $desa->id }}" {{ request('desa_id') == $desa->id ? 'selected' : '' }}>
+                                {{ $desa->nama }}
+                            </option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <input type="date" name="start_date" value="{{ request('start_date') }}" class="form-control">
-                </div>
-                <div class="form-group">
-                    <input type="date" name="end_date" value="{{ request('end_date') }}" class="form-control">
+                    <select name="kategori" id="kategori" class="form-control">
+                        <option value="">-- Semua Kategori --</option>
+                        <optgroup label="Sarana Kesehatan">
+                            <option value="puskesmas">Puskesmas</option>
+                            <option value="puskesmas_pembantu">Puskesmas Pembantu</option>
+                            <option value="posyandu">Posyandu</option>
+                            <option value="pondok_bersalin">Pondok Bersalin</option>
+                        </optgroup>
+                        <optgroup label="Sarana Pendidikan">
+                            <option value="paud">PAUD/Sederajat</option>
+                            <option value="sd">SD/Sederajat</option>
+                            <option value="smp">SMP/Sederajat</option>
+                            <option value="sma">SMA/Sederajat</option>
+                        </optgroup>
+                        <optgroup label="Sarana Umum">
+                            <option value="masjid_besar">Masjid Besar</option>
+                            <option value="mushola">Mushola</option>
+                            <option value="gereja">Gereja</option>
+                            <option value="pasar">Pasar</option>
+                            <option value="balai_pertemuan">Balai Pertemuan</option>
+                        </optgroup>
+                    </select>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
                     <i class="fa fa-filter"></i> Filter
                 </button>
-                <a href="{{ route('data.data-sarana.index') }}" class="btn btn-default">
-                    <i class="fa fa-refresh"></i> Reset
+
+                <a href="{{ route('data.data-sarana.import') }}" class="btn btn-success">
+                    <i class="fa fa-upload"></i> Import
                 </a>
-                <a href="{{ route('data.data-sarana.export', [
-                        'search' => request('search'),
-                        'kategori' => request('kategori'),
-                        'start_date' => request('start_date'),
-                        'end_date' => request('end_date'),
-                    ]) }}" class="btn btn-success">
+                <a href="{{ route('data.data-sarana.export') }}" class="btn btn-success">
                     <i class="glyphicon glyphicon-download-alt"></i> Export
                 </a>
                 <a href="{{ route('data.data-sarana.create') }}" class="btn btn-success">
@@ -72,87 +71,55 @@
         </div>
 
         <div class="box-body">
-            @foreach($desas as $desa)
-                <h3 class="text-primary" style="margin-top:30px;">
-                    {{ $desa->nama }}
-                </h3>
-                <table class="table table-bordered table-striped table-hover">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="datasarana-table">
                     <thead>
-                        <tr class="bg-info">
-                            <th style="width:25%">Nama Sarana</th>
-                            <th style="width:25%">Jumlah</th>
-                            <th style="width:25%">Kategori</th>
-                            <th style="width:25%">Aksi</th>
+                        <tr>
+                            <th style="max-width: 150px;">Aksi</th>
+                            <th>Nama Sarana</th>
+                            <th>Jumlah</th>
+                            <th>Kategori</th>
+                            <th>Desa</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @forelse($desa->saranas as $sarana)
-                            <tr>
-                                <td>{{ $sarana->nama }}</td>
-                                <td>{{ $sarana->jumlah }}</td>
-                                <td><span class="label label-primary">{{ $sarana->kategori ?? '-' }}</span></td>
-                                <td>
-                                    {{-- <a href="{{ route('data.data-sarana.show', $sarana->id) }}" class="btn btn-xs btn-info">
-                                        <i class="fa fa-eye"></i> Lihat
-                                    </a> --}}
-                                    <a href="{{ route('data.data-sarana.edit', $sarana->id) }}" class="btn btn-xs btn-warning">
-                                        <i class="fa fa-edit"></i> Edit
-                                    </a>
-                                    <form action="{{ route('data.data-sarana.destroy', ['id' => $sarana->id]) }}" 
-                                        method="POST" 
-                                        style="display:inline-block;" 
-                                        onsubmit="return confirm('Yakin hapus data ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-xs btn-danger">
-                                            <i class="fa fa-trash"></i> Hapus
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">Tidak ada sarana</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
                 </table>
-            @endforeach
+            </div>
         </div>
-
-        <div class="box-footer">
-            {{ $desas->appends(request()->query())->links() }}
-        </div>
-
-        {{-- <div class="box-body">
-            <h4>Rekap Total Sarana</h4>
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>Puskesmas</td><td>{{ $rekapKategori['puskesmas'] ?? 0 }}</td></tr>
-                    <tr><td>Puskesmas Pembantu</td><td>{{ $rekapKategori['puskesmas_pembantu'] ?? 0 }}</td></tr>
-                    <tr><td>Posyandu</td><td>{{ $rekapKategori['posyandu'] ?? 0 }}</td></tr>
-                    <tr><td>Pondok Bersalin</td><td>{{ $rekapKategori['pondok_bersalin'] ?? 0 }}</td></tr>
-                    
-                    <tr><td>PAUD/Sederajat</td><td>{{ $rekapKategori['paud'] ?? 0 }}</td></tr>
-                    <tr><td>SD/Sederajat</td><td>{{ $rekapKategori['sd'] ?? 0 }}</td></tr>
-                    <tr><td>SMP/Sederajat</td><td>{{ $rekapKategori['smp'] ?? 0 }}</td></tr>
-                    <tr><td>SMA/Sederajat</td><td>{{ $rekapKategori['sma'] ?? 0 }}</td></tr>
-
-                    <tr><td>Masjid Besar</td><td>{{ $rekapKategori['masjid_besar'] ?? 0 }}</td></tr>
-                    <tr><td>Mushola</td><td>{{ $rekapKategori['mushola'] ?? 0 }}</td></tr>
-                    <tr><td>Gereja</td><td>{{ $rekapKategori['gereja'] ?? 0 }}</td></tr>
-                    <tr><td>Pasar</td><td>{{ $rekapKategori['pasar'] ?? 0 }}</td></tr>
-                    <tr><td>Balai Pertemuan</td><td>{{ $rekapKategori['balai_pertemuan'] ?? 0 }}</td></tr>
-                </tbody>
-            </table>
-        </div> --}}
-
     </div>
 </section>
 @endsection
+
+@include('partials.asset_datatables')
+
+@push('scripts')
+<script>
+$(function () {
+    var table = $('#datasarana-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('data.data-sarana.getdata') }}",
+            data: function (d) {
+                d.desa_id = $('#desa_id').val();
+                d.kategori = $('#kategori').val();
+            }
+        },
+        columns: [
+            { data: 'aksi', name: 'aksi', orderable: false, searchable: false, className: 'text-center' },
+            { data: 'nama', name: 'nama' },
+            { data: 'jumlah', name: 'jumlah' },
+            { data: 'kategori', name: 'kategori' },
+            { data: 'desa', name: 'desa.nama' },
+        ],
+        order: [[1, 'asc']]
+    });
+
+    $('#filter-form').on('submit', function(e) {
+        e.preventDefault();
+        table.ajax.reload();
+    });
+});
+</script>
+@include('forms.datatable-vertical')
+@include('forms.delete-modal')
+@endpush

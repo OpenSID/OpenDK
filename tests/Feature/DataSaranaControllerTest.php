@@ -6,6 +6,10 @@ use App\Models\DataDesa;
 use App\Models\DataSarana;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ImportDataSarana;
 
 class DataSaranaControllerTest extends TestCase
 {
@@ -14,9 +18,34 @@ class DataSaranaControllerTest extends TestCase
     public function test_index()
     {
         $response = $this->withoutMiddleware()
+            ->withSession(['error' => 'Index'])
             ->get(route('data.data-sarana.index'));
 
         $response->assertStatus(200);
+        $response->assertSee('Index');
+    }
+
+    public function test_getData()
+    {
+        $desa = DataDesa::factory()->create();
+        DataSarana::factory()->create([
+            'desa_id' => $desa->id,
+            'nama' => 'Sarana GetData',
+            'jumlah' => 2,
+            'kategori' => 'paud',
+        ]);
+
+        $response = $this->withoutMiddleware()
+            ->get(route('data.data-sarana.getdata'));
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data',
+            'recordsTotal',
+            'recordsFiltered'
+        ]);
+
+        $this->assertStringContainsString('Sarana GetData', $response->getContent());
     }
 
     public function test_create()
@@ -99,4 +128,41 @@ class DataSaranaControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertHeader('content-disposition');
     }
+
+    public function test_import_page()
+    {
+        $response = $this->withoutMiddleware()
+            ->get(route('data.data-sarana.import'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Upload');
+    }
+
+    public function test_import_excel_real_file()
+    {
+        Storage::fake('local');
+
+        // bikin file CSV beneran
+        $csvContent = "desa_id,nama,jumlah,kategori,keterangan\n1,Posyandu,5,puskesmas,Test Import";
+        $path = storage_path('framework/testing/sarana.csv');
+        file_put_contents($path, $csvContent);
+
+        $file = new UploadedFile(
+            $path,
+            'sarana.csv',
+            'text/csv',
+            null,
+            true
+        );
+
+        $response = $this->withoutMiddleware()
+            ->post(route('data.data-sarana.import-excel'), [
+                'file' => $file,
+            ]);
+
+        $response->assertRedirect();
+    }
+
+
+
 }

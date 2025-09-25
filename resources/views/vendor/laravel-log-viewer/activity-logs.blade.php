@@ -1,34 +1,32 @@
-<div class="box">
-    <div class="box-header with-border">
-        <h3 class="box-title">Log Aktivitas</h3>
-        <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-danger" id="cleanup-logs">
-                <i class="fa fa-trash"></i> Bersihkan Log Lama
-            </button>
-        </div>
-    </div>
-    
+<div class="box box-info">
     <div class="box-body">
         <!-- Filter Section -->
         <div class="row" style="margin-bottom: 15px;">
             <div class="col-md-3">
-                <select class="form-control" id="filter-action">
-                    <option value="">Semua Event</option>
-                    <option value="login">Login</option>
-                    <option value="logout">Logout</option>
-                    <option value="created">Created</option>
-                    <option value="updated">Updated</option>
-                    <option value="deleted">Deleted</option>
-                    <option value="retrieved">Retrieved</option>
+                <select class="form-control" id="filter-category">
+                    <option value="">Pilih Kategori</option>
+                    @foreach ($activityCategories as $category)
+                        <option value="{{ $category }}">{{ ucfirst($category) }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-3">
-                <input type="date" class="form-control" id="filter-date-from" placeholder="Tanggal Dari">
+                <select class="form-control" id="filter-event">
+                    <option value="">Pilih Peristiwa</option>
+                    @foreach ($activityEvents as $event)
+                        <option value="{{ $event }}">{{ ucfirst($event) }}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
-                <input type="date" class="form-control" id="filter-date-to" placeholder="Tanggal Sampai">
+                <select class="form-control" id="filter-user">
+                    <option value="">Pilih Pengguna</option>
+                    @foreach ($activityUsers as $user)
+                        <option value="{{ $user['type'] }}|{{ $user['id'] }}">{{ $user['name'] }}</option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 text-right">
                 <button type="button" class="btn btn-primary" id="apply-filter">
                     <i class="fa fa-search"></i> Filter
                 </button>
@@ -44,12 +42,14 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Pengguna</th>
-                        <th>Event</th>
-                        <th>Deskripsi</th>
-                        <th>Subject</th>
-                        <th>Tanggal</th>
                         <th>Aksi</th>
+                        <th>Kategori</th>
+                        <th>Peristiwa</th>
+                        <th>Subjek Tipe</th>
+                        <th>Penyebab Tipe</th>
+                        <th>Pengguna</th>
+                        <th>Deskripsi</th>
+                        <th>Dibuat Pada</th>
                     </tr>
                 </thead>
             </table>
@@ -68,90 +68,66 @@
                 <h4 class="modal-title">Detail Log Aktivitas</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <strong>Pengguna:</strong>
-                        <p id="detail-user"></p>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#detail-main" role="tab" data-toggle="tab">Informasi</a></li>
+                    <li role="presentation"><a href="#detail-properties-tab" role="tab" data-toggle="tab">Detail Properti</a></li>
+                </ul>
+
+                <div class="tab-content" style="margin-top: 15px;">
+                    <div role="tabpanel" class="tab-pane active" id="detail-main">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 30%;">Pengguna</th>
+                                        <td id="detail-user"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Aksi</th>
+                                        <td id="detail-action"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Deskripsi</th>
+                                        <td id="detail-description"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Subjek</th>
+                                        <td id="detail-status"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <td id="detail-created-at"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>IP Address</th>
+                                        <td id="detail-ip-address"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>User Agent</th>
+                                        <td id="detail-user-agent"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lokasi</th>
+                                        <td id="detail-location"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Referer</th>
+                                        <td id="detail-referer"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <strong>Aksi:</strong>
-                        <p id="detail-action"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <strong>Deskripsi:</strong>
-                        <p id="detail-description"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <strong>Subject Type:</strong>
-                        <p id="detail-ip"></p>
-                    </div>
-                    <div class="col-md-6">
-                        <strong>Subject ID:</strong>
-                        <p id="detail-status"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <strong>Tanggal:</strong>
-                        <p id="detail-created-at"></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <strong>IP Address:</strong>
-                        <p id="detail-ip-address"></p>
-                    </div>
-                    <div class="col-md-8">
-                        <strong>User Agent:</strong>
-                        <p id="detail-user-agent"></p>
-                    </div>
-                </div>
-                <div class="row" id="detail-properties-section" style="display: none;">
-                    <div class="col-md-12">
-                        <strong>Detail Perubahan:</strong>
-                        <pre id="detail-properties" style="background: #f4f4f4; padding: 10px; border-radius: 4px;"></pre>
+                    <div role="tabpanel" class="tab-pane" id="detail-properties-tab">
+                        <div id="detail-properties-section" style="display: none;">
+                            <pre id="detail-properties" style="background: #f4f4f4; padding: 10px; border-radius: 4px;"></pre>
+                        </div>
+                        <p id="detail-properties-empty" class="text-muted" style="display:none;">Tidak ada properti tambahan.</p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Cleanup -->
-<div class="modal fade" id="modal-cleanup" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Bersihkan Log Aktivitas</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>Hapus log yang lebih dari:</label>
-                    <select class="form-control" id="cleanup-days">
-                        <option value="7">7 hari</option>
-                        <option value="30" selected>30 hari</option>
-                        <option value="60">60 hari</option>
-                        <option value="90">90 hari</option>
-                    </select>
-                </div>
-                <div class="alert alert-warning">
-                    <i class="fa fa-warning"></i> 
-                    Tindakan ini tidak dapat dibatalkan. Log yang dihapus tidak dapat dikembalikan.
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-warning" id="confirm-cleanup">Hapus Log</button>
             </div>
         </div>
     </div>
@@ -168,21 +144,23 @@ $(document).ready(function() {
         ajax: {
             url: '{{ route("setting.info-sistem.activity-logs.data") }}',
             data: function(d) {
-                d.action = $('#filter-action').val();
-                d.date_from = $('#filter-date-from').val();
-                d.date_to = $('#filter-date-to').val();
+                d.category = $('#filter-category').val();
+                d.event = $('#filter-event').val();
+                d.user = $('#filter-user').val();
             }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+            { data: 'aksi', name: 'aksi', orderable: false, searchable: false },
+            { data: 'category', name: 'log_name' },
+            { data: 'event_badge', name: 'event' },
+            { data: 'subject_type', name: 'subject_type' },
+            { data: 'causer_type', name: 'causer_type' },
             { data: 'user_display', name: 'causer_id' },
-            { data: 'action_badge', name: 'event' },
             { data: 'description', name: 'description' },
-            { data: 'subject_display', name: 'subject_type' },
-            { data: 'formatted_date', name: 'created_at' },
-            { data: 'aksi', name: 'aksi', orderable: false, searchable: false }
+            { data: 'formatted_date', name: 'created_at' }
         ],
-        order: [[5, 'desc']],
+        order: [[8, 'desc']],
         pageLength: 25,
         language: {
             url: '//cdn.datatables.net/plug-ins/1.10.24/i18n/Indonesian.json'
@@ -196,9 +174,9 @@ $(document).ready(function() {
     });
 
     $('#reset-filter').click(function() {
-        $('#filter-action').val('');
-        $('#filter-date-from').val('');
-        $('#filter-date-to').val('');
+        $('#filter-category').val('');
+        $('#filter-event').val('');
+        $('#filter-user').val('');
         table.ajax.reload();
     });
 
@@ -210,57 +188,86 @@ $(document).ready(function() {
             .done(function(response) {
                 if (response.success) {
                     var data = response.data;
-                    $('#detail-user').text(data.user);
-                    $('#detail-action').text(data.event);
-                    $('#detail-description').text(response.description);
-                    $('#detail-status').text(response.subject_type ? (response.subject_type + ' (ID: ' + response.subject_id + ')') : 'N/A');
-                    $('#detail-created-at').text(new Date(response.created_at).toLocaleString('id-ID'));
 
-                    // Populate new fields from properties
-                    // Safely get properties, default to an empty object if it's null/undefined
-                    var properties = response.properties || {};
-                    $('#detail-ip-address').text(properties.ip_address || 'N/A');
-                    $('#detail-user-agent').text(properties.user_agent || 'N/A');
+                    $('#detail-user').text(data.user || 'System');
+                    $('#detail-action').text(data.event || '-');
+                    $('#detail-description').text(data.description || '-');
 
-                    if (data.properties && Object.keys(data.properties).length > 0) {
-                        $('#detail-properties').text(JSON.stringify(data.properties, null, 2));
+                    var subjectInfo = data.subject_type
+                        ? data.subject_type + (data.subject_id ? ' (ID: ' + data.subject_id + ')' : '')
+                        : 'N/A';
+                    $('#detail-status').text(subjectInfo);
+
+                    $('#detail-created-at').text(data.created_at || '-');
+                    $('#detail-ip-address').text(data.ip_address || 'N/A');
+                    $('#detail-user-agent').text(data.user_agent || 'N/A');
+
+                    var locationParts = [];
+                    if (data.ip_city) locationParts.push(data.ip_city);
+                    if (data.ip_region) locationParts.push(data.ip_region);
+                    if (data.ip_country) {
+                        var countryDisplay = data.ip_country;
+                        if (data.ip_country_code) {
+                            countryDisplay += ' (' + data.ip_country_code + ')';
+                        }
+                        locationParts.push(countryDisplay);
+                    }
+
+                    var locationText = locationParts.join(', ');
+                    if (! locationText) {
+                        if (data.ip_location_available === false && data.ip_location_message) {
+                            locationText = data.ip_location_message;
+                        } else {
+                            locationText = 'Tidak tersedia';
+                        }
+                    }
+                    $('#detail-location').text(locationText);
+
+                    $('#detail-referer').text(data.referer || 'Tidak tersedia');
+
+                    // switch to information tab by default
+                    $('#detail-main').addClass('active');
+                    $('#detail-properties-tab').removeClass('active');
+                    $('a[href="#detail-main"]').parent().addClass('active');
+                    $('a[href="#detail-properties-tab"]').parent().removeClass('active');
+
+                    var extra = {
+                        url: data.url || null,
+                        slug: data.slug || null,
+                        method: data.method || null,
+                        browser: data.browser || null,
+                        platform: data.platform || null,
+                        causer_type: data.causer_type || null,
+                        causer_id: data.causer_id || null,
+                        category: data.category || null,
+                        referer: data.referer || null,
+                        ip_country: data.ip_country || null,
+                        ip_region: data.ip_region || null,
+                        ip_city: data.ip_city || null,
+                        properties: data.properties || null,
+                    };
+
+                    // Remove empty values
+                    Object.keys(extra).forEach(function(key) {
+                        if (extra[key] === null || (typeof extra[key] === 'object' && extra[key] !== null && !Object.keys(extra[key]).length)) {
+                            delete extra[key];
+                        }
+                    });
+
+                    if (Object.keys(extra).length) {
                         $('#detail-properties-section').show();
+                        $('#detail-properties').text(JSON.stringify(extra, null, 2));
                     } else {
                         $('#detail-properties-section').hide();
+                        $('#detail-properties').text('');
                     }
-                    
+
                     $('#modal-detail-log').modal('show');
                 }
             })
             .fail(function() {
                 alert('Gagal memuat detail log');
             });
-    });
-
-    // Cleanup functionality
-    $('#cleanup-logs').click(function() {
-        $('#modal-cleanup').modal('show');
-    });
-
-    $('#confirm-cleanup').click(function() {
-        var days = $('#cleanup-days').val();
-        
-        $.post('{{ route("setting.info-sistem.activity-logs.cleanup") }}', {
-            days: days,
-            _token: '{{ csrf_token() }}'
-        })
-        .done(function(response) {
-            if (response.success) {
-                alert(response.message);
-                table.ajax.reload();
-                $('#modal-cleanup').modal('hide');
-            } else {
-                alert(response.message);
-            }
-        })
-        .fail(function() {
-            alert('Gagal membersihkan log');
-        });
     });
 });
 </script>

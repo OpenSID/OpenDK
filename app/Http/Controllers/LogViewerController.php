@@ -93,6 +93,62 @@ class LogViewerController extends Controller
             return $early_return;
         }
 
+        $activityCategories = Activity::query()
+            ->select('log_name')
+            ->whereNotNull('log_name')
+            ->distinct()
+            ->orderBy('log_name')
+            ->pluck('log_name')
+            ->filter()
+            ->values();
+
+        $activityEvents = Activity::query()
+            ->select('event')
+            ->whereNotNull('event')
+            ->distinct()
+            ->orderBy('event')
+            ->pluck('event')
+            ->filter()
+            ->values();
+
+        $activityUsers = Activity::query()
+            ->whereNotNull('causer_id')
+            ->whereNotNull('causer_type')
+            ->select('causer_id', 'causer_type')
+            ->distinct()
+            ->get()
+            ->groupBy('causer_type')
+            ->flatMap(function ($activities, $modelClass) {
+                if (! class_exists($modelClass)) {
+                    return collect();
+                }
+
+                $ids = $activities->pluck('causer_id')->unique()->toArray();
+
+                try {
+                    $instances = $modelClass::whereIn('id', $ids)->get();
+                } catch (\Throwable $e) {
+                    report($e);
+
+                    return collect();
+                }
+
+                return $instances->map(function ($instance) use ($modelClass) {
+                    $name = $instance->name ?? ($instance->email ?? ('ID: '.$instance->getKey()));
+
+                    return [
+                        'id' => $instance->getKey(),
+                        'type' => $modelClass,
+                        'name' => $name,
+                    ];
+                });
+            })
+            ->unique(function ($item) {
+                return $item['type'].'|'.$item['id'];
+            })
+            ->sortBy('name')
+            ->values();
+
         $data = [
             'tab' => session('tab', 'log_viewer'),
             'logs' => $this->log_viewer->all(),
@@ -104,7 +160,9 @@ class LogViewerController extends Controller
             'standardFormat' => true,
             'structure' => $this->log_viewer->foldersAndFiles(),
             'storage_path' => $this->log_viewer->getStoragePath(),
-
+            'activityCategories' => $activityCategories,
+            'activityEvents' => $activityEvents,
+            'activityUsers' => $activityUsers,
         ];
 
         if ($this->request->wantsJson()) {
@@ -284,30 +342,38 @@ class LogViewerController extends Controller
     {
         $query = Activity::with('causer')->latest();
 
-        // Filter berdasarkan event/description
-        if ($request->filled('action')) {
-            $query->where('event', $request->action);
+        // Filter berdasarkan kategori (log_name)
+        if ($request->filled('category')) {
+            $query->where('log_name', $request->category);
         }
 
-        // Filter berdasarkan user
-        if ($request->filled('user_id')) {
-            $query->where('causer_id', $request->user_id);
+        // Filter berdasarkan peristiwa (event)
+        if ($request->filled('event')) {
+            $query->where('event', $request->event);
         }
 
-        // Filter berdasarkan tanggal
-        if ($request->filled('date_from') && $request->filled('date_to')) {
-            $query->whereBetween('created_at', [
-                $request->date_from . ' 00:00:00',
-                $request->date_to . ' 23:59:59'
-            ]);
+        // Filter berdasarkan pengguna
+        if ($request->filled('user')) {
+            [$causerType, $causerId] = array_pad(explode('|', $request->user), 2, null);
+
+            if ($causerId) {
+                $query->where('causer_id', $causerId);
+            }
+
+            if ($causerType) {
+                $query->where('causer_type', $causerType);
+            }
         }
 
         return DataTables::of($query)
             ->addIndexColumn()
+            ->addColumn('category', function ($log) {
+                return $log->log_name ? ucfirst($log->log_name) : '-';
+            })
             ->addColumn('user_display', function ($log) {
                 return $log->causer ? $log->causer->name : 'System';
             })
-            ->addColumn('action_badge', function ($log) {
+            ->addColumn('event_badge', function ($log) {
                 $badges = [
                     'login' => 'success',
                     'logout' => 'info',
@@ -316,22 +382,26 @@ class LogViewerController extends Controller
                     'deleted' => 'danger',
                     'retrieved' => 'secondary'
                 ];
-                $badge = $badges[$log->event] ?? 'secondary';
-                return '<span class="badge badge-' . $badge . '">' . ucfirst($log->event ?? 'N/A') . '</span>';
+                $event = $log->event ?? 'N/A';
+                $badge = $badges[$event] ?? 'secondary';
+
+                return '<span class="badge badge-' . $badge . '">' . ucfirst($event) . '</span>';
             })
-            ->addColumn('subject_display', function ($log) {
-                $subjectType = $log->subject_type ? class_basename($log->subject_type) : 'N/A';
-                return $subjectType . ($log->subject_id ? " (ID: {$log->subject_id})" : '');
+            ->addColumn('subject_type', function ($log) {
+                return $log->subject_type ? class_basename($log->subject_type) : '-';
+            })
+            ->addColumn('causer_type', function ($log) {
+                return $log->causer_type ? class_basename($log->causer_type) : 'System';
             })
             ->addColumn('formatted_date', function ($log) {
                 return $log->created_at->format('d/m/Y H:i:s');
             })
             ->addColumn('aksi', function ($log) {
                 return '<button class="btn btn-sm btn-info view-detail" data-id="' . $log->id . '">
-                    <i class="fa fa-eye"></i> Detail
+                    <i class="fa fa-eye"></i>
                 </button>';
             })
-            ->rawColumns(['action_badge', 'aksi'])
+            ->rawColumns(['event_badge', 'aksi'])
             ->make(true);
     }
 
@@ -341,18 +411,47 @@ class LogViewerController extends Controller
     public function getActivityLogDetail($id)
     {
         $log = Activity::with('causer')->findOrFail($id);
-        
+        $properties = $log->properties ? $log->properties->toArray() : [];
+
+        $userLabel = 'System';
+        if ($log->causer) {
+            $name = $log->causer->name ?? null;
+            $email = $log->causer->email ?? null;
+            $identifier = $name ?: ($email ?: ('ID: '.$log->causer->getKey()));
+            $userLabel = $email && $name ? $name.' ('.$email.')' : $identifier;
+        }
+
+        $subjectType = $log->subject_type ? class_basename($log->subject_type) : null;
+        $causerType = $log->causer_type ? class_basename($log->causer_type) : null;
+
         return response()->json([
             'success' => true,
             'data' => [
                 'id' => $log->id,
-                'user' => $log->causer ? $log->causer->name : 'System',
+                'user' => $userLabel,
                 'event' => $log->event,
                 'description' => $log->description,
-                'subject_type' => $log->subject_type,
+                'category' => $log->log_name,
+                'subject_type' => $subjectType,
                 'subject_id' => $log->subject_id,
-                'properties' => $log->properties,
+                'causer_type' => $causerType,
+                'causer_id' => $log->causer_id,
                 'created_at' => $log->created_at->format('d/m/Y H:i:s'),
+                'ip_address' => data_get($properties, 'ip_address'),
+                'user_agent' => data_get($properties, 'user_agent'),
+                'url' => data_get($properties, 'url'),
+                'slug' => data_get($properties, 'slug'),
+                'method' => data_get($properties, 'method'),
+                'browser' => data_get($properties, 'browser'),
+                'platform' => data_get($properties, 'platform'),
+                'ip_country' => data_get($properties, 'ip_country'),
+                'ip_country_code' => data_get($properties, 'ip_country_code'),
+                'ip_region' => data_get($properties, 'ip_region'),
+                'ip_city' => data_get($properties, 'ip_city'),
+                'ip_location_available' => data_get($properties, 'ip_location_available'),
+                'ip_location_message' => data_get($properties, 'ip_location_message'),
+                'referer' => data_get($properties, 'referer'),
+                'properties' => $properties,
             ]
         ]);
     }

@@ -41,6 +41,7 @@ use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserUpdateRequest;
+use App\Services\ActivityLogger;
 
 class UserController extends Controller
 {
@@ -91,23 +92,32 @@ class UserController extends Controller
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 
-            // Log activity - Spatie akan otomatis log karena model User menggunakan LogsActivity trait
-            activity()
-                ->causedBy(auth()->user())
-                ->performedOn($user)
-                ->withProperties(['roles' => $roles])
-                ->event('created')
-                ->log("Membuat pengguna baru: {$user->name} ({$user->email})");
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'created',
+                message: "Membuat pengguna baru: {$user->name} ({$user->email})",
+                subject: $user,
+                causer: auth()->user(),
+                additionalProperties: [
+                    'user_id' => $user->id,
+                    'roles' => $roles,
+                ]
+            );
 
             return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
         } catch (\Exception $e) {
             report($e);
 
-            // Log failed activity
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['error' => $e->getMessage(), 'input_data' => $request->except(['password', '_token'])])
-                ->log('Gagal membuat pengguna baru');
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'failed',
+                message: 'Gagal membuat pengguna baru',
+                causer: auth()->user(),
+                additionalProperties: [
+                    'error' => $e->getMessage(),
+                    'input' => $request->except(['password', 'password_confirmation', '_token']),
+                ]
+            );
 
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -155,31 +165,41 @@ class UserController extends Controller
         try {
             $input = $request->validated();
             $user = User::findOrFail($id);
-            
+
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user->update($input);
-            if (! empty($request->role)) {
-                $roles = $request->input('role') ? $request->input('role') : [];
+            $roles = $request->input('role') ? $request->input('role') : [];
+            if (! empty($roles)) {
                 $user->syncRoles($roles);
             }
 
-            // Log activity
-            activity()
-                ->causedBy(auth()->user())
-                ->performedOn($user)
-                ->withProperties(['roles' => $roles ?? []])
-                ->event('updated')
-                ->log("Mengubah data pengguna: {$user->name} ({$user->email})");
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'updated',
+                message: "Mengubah data pengguna: {$user->name} ({$user->email})",
+                subject: $user,
+                causer: auth()->user(),
+                additionalProperties: [
+                    'user_id' => $user->id,
+                    'roles' => $roles,
+                    'changes' => $user->getChanges(),
+                ]
+            );
 
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
             report($e);
 
-            // Log failed activity
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
-                ->log('Gagal mengubah data pengguna');
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'failed',
+                message: 'Gagal mengubah data pengguna',
+                causer: auth()->user(),
+                additionalProperties: [
+                    'error' => $e->getMessage(),
+                    'user_id' => $id,
+                ]
+            );
 
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -202,11 +222,16 @@ class UserController extends Controller
                 'password' => bcrypt($request->password),
             ]);
 
-            // Log activity
-            activity()
-                ->causedBy(auth()->user())
-                ->performedOn($user_find)
-                ->log("Mengubah password pengguna: {$user_find->name} ({$user_find->email})");
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'password_updated',
+                message: "Mengubah password pengguna: {$user_find->name} ({$user_find->email})",
+                subject: $user_find,
+                causer: auth()->user(),
+                additionalProperties: [
+                    'user_id' => $user_find->id,
+                ]
+            );
 
             flash()->success('Password pengguna berhasil diperbarui');
 
@@ -214,11 +239,16 @@ class UserController extends Controller
         } catch (\Exception $e) {
             report($e);
             
-            // Log failed activity
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
-                ->log('Gagal mengubah password pengguna');
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'failed',
+                message: 'Gagal mengubah password pengguna',
+                causer: auth()->user(),
+                additionalProperties: [
+                    'error' => $e->getMessage(),
+                    'user_id' => $id,
+                ]
+            );
             
             flash()->error('Gagal mengubah password pengguna');
 
@@ -239,12 +269,18 @@ class UserController extends Controller
             $user->status = 0;
             $user->save();
 
-            // Log activity
-            activity()
-                ->causedBy(auth()->user())
-                ->performedOn($user)
-                ->withProperties(['action' => 'suspend', 'previous_status' => 1, 'new_status' => 0])
-                ->log("Menonaktifkan pengguna: {$user->name} ({$user->email})");
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'suspended',
+                message: "Menonaktifkan pengguna: {$user->name} ({$user->email})",
+                subject: $user,
+                causer: auth()->user(),
+                additionalProperties: [
+                    'user_id' => $user->id,
+                    'previous_status' => 1,
+                    'new_status' => 0,
+                ]
+            );
 
             flash()->success('Pengguna berhasil dinonaktifkan');
 
@@ -252,11 +288,16 @@ class UserController extends Controller
         } catch (\Exception $e) {
             report($e);
             
-            // Log failed activity
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
-                ->log('Gagal menonaktifkan pengguna');
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'failed',
+                message: 'Gagal menonaktifkan pengguna',
+                causer: auth()->user(),
+                additionalProperties: [
+                    'error' => $e->getMessage(),
+                    'user_id' => $id,
+                ]
+            );
             
             flash()->error('Gagal menonaktifkan pengguna');
 
@@ -277,12 +318,18 @@ class UserController extends Controller
             $user->status = 1;
             $user->save();
 
-            // Log activity
-            activity()
-                ->causedBy(auth()->user())
-                ->performedOn($user)
-                ->withProperties(['action' => 'activate', 'previous_status' => 0, 'new_status' => 1])
-                ->log("Mengaktifkan pengguna: {$user->name} ({$user->email})");
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'activated',
+                message: "Mengaktifkan pengguna: {$user->name} ({$user->email})",
+                subject: $user,
+                causer: auth()->user(),
+                additionalProperties: [
+                    'user_id' => $user->id,
+                    'previous_status' => 0,
+                    'new_status' => 1,
+                ]
+            );
 
             flash()->success('Pengguna berhasil diaktifkan');
 
@@ -290,11 +337,16 @@ class UserController extends Controller
         } catch (\Exception $e) {
             report($e);
             
-            // Log failed activity
-            activity()
-                ->causedBy(auth()->user())
-                ->withProperties(['error' => $e->getMessage(), 'user_id' => $id])
-                ->log('Gagal mengaktifkan pengguna');
+            ActivityLogger::log(
+                category: 'pengguna',
+                event: 'failed',
+                message: 'Gagal mengaktifkan pengguna',
+                causer: auth()->user(),
+                additionalProperties: [
+                    'error' => $e->getMessage(),
+                    'user_id' => $id,
+                ]
+            );
             
             flash()->error('Gagal mengaktifkan pengguna');
 

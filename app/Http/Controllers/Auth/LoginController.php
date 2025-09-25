@@ -31,14 +31,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\SendToken2FA;
 use App\Providers\RouteServiceProvider;
+use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
+use App\Services\ActivityLogger;
 
 class LoginController extends Controller
 {
@@ -137,11 +138,18 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         // Log successful login
-        activity()
-            ->causedBy($user)
-            ->performedOn($user)
-            ->event('login')
-            ->log('Pengguna berhasil masuk ke sistem');
+        ActivityLogger::log(
+            category: 'login',
+            event: 'success',
+            message: 'Pengguna berhasil masuk ke sistem',
+            subject: $user,
+            causer: $user,
+            additionalProperties: [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'status' => 'authenticated',
+            ]
+        );
         
         if (($this->settings['login_2fa'] ?? false)) {
             return $this->startTwoFactorAuthProcess($request, $user);
@@ -161,9 +169,17 @@ class LoginController extends Controller
     protected function sendFailedLoginResponse(Request $request)
     {
         // Log failed login attempt
-        activity()
-            ->withProperties(['email' => $request->input($this->username())])
-            ->log('Percobaan login gagal');
+        ActivityLogger::log(
+            category: 'login',
+            event: 'failed',
+            message: 'Percobaan login gagal',
+            subject: null,
+            causer: null,
+            additionalProperties: [
+                'email' => $request->input($this->username()),
+                'status' => 'invalid_credentials',
+            ]
+        );
 
         return $this->traitSendFailedLoginResponse($request);
     }
@@ -178,11 +194,18 @@ class LoginController extends Controller
     {
         // Log the logout event before logging out
         if (auth()->check()) {
-            activity()
-                ->causedBy(auth()->user())
-                ->performedOn(auth()->user())
-                ->event('logout')
-                ->log('Pengguna keluar dari sistem');
+            ActivityLogger::log(
+                category: 'login',
+                event: 'logout',
+                message: 'Pengguna keluar dari sistem',
+                subject: auth()->user(),
+                causer: auth()->user(),
+                additionalProperties: [
+                    'user_id' => auth()->id(),
+                    'email' => auth()->user()->email ?? null,
+                    'status' => 'logged_out',
+                ]
+            );
         }
 
         $this->guard()->logout();

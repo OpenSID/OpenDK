@@ -37,6 +37,7 @@ use App\Http\Resources\SuratResource;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\Surat;
+use Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -105,10 +106,31 @@ class SuratController extends Controller
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
 
-        if (! Penduduk::where('nik', $request->nik)->exists()) {
-            Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan");
+        // sesuaikan jika api gabungan aktif
+        // jika api gabungan aktif, maka pengecekan penduduk melalui api gabungan
+        if ($this->isDatabaseGabungan()) {
+            $url = $this->settings['api_server_database_gabungan'].'/api/v1/opendk';
+            $response = Http::withHeaders([
+                'Accept' => 'application/ld+json',
+                'Content-Type' => 'application/json; charset=utf-8',
+                'Authorization' => 'Bearer ' . ($this->settings['api_key_database_gabungan'] ?? ''),
+            ])->post("{$url}/penduduk-nik-tanggalahir", [
+                'nik' => $request->nik,
+            ]);
 
-            return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan", 400);
+            // kirim ke log response
+            Log::debug('Response API Gabungan: '.json_encode($response->json()));
+            if ($response->failed()) {
+                Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan melalui API Gabungan");
+
+                return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan melalui API Gabungan", 400);
+            }
+        } else {
+            if (! Penduduk::where('nik', $request->nik)->exists()) {
+                Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan");
+                
+                return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan", 400);
+            }
         }
 
         $file = $request->file('file');
@@ -118,6 +140,7 @@ class SuratController extends Controller
 
         $this->settings['pemeriksaan_camat'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif;
 
+        // ambil surat dari sini
         $surat = Surat::create([
             'desa_id' => $request->desa_id,
             'nik' => $request->nik,
@@ -159,7 +182,12 @@ class SuratController extends Controller
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
 
+        Log::debug("Kode desa {$request->desa_id} dan nomor surat {$request->nomor}");
+
+        // Model::whereRaw("REPLACE(kolom, ' ', '') = ?", ['227/IX/2025'])->get();
+
         $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $request->nomor)->firstOrFail();
+        // $surat = Surat::where('desa_id', $request->desa_id)->whereRaw("REPLACE(nomor, ' ', '') = ?", [$request->nomor])->firstOrFail();
 
         $file = public_path("storage/surat/{$surat->file}");
 

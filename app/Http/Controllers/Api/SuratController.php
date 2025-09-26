@@ -86,7 +86,9 @@ class SuratController extends Controller
         if (! $this->settings['tte']) {
             return response()->json('Kecamatan belum mengaktifkan modul TTE', 400);
         }
-
+        // dd($request->all());
+        // kirim ke log
+        Log::debug('Request API: '.json_encode($request->all()));
         $validator = Validator::make($request->all(), [
             'desa_id' => 'required',
             'nik' => 'required|integer|digits:16',
@@ -118,19 +120,22 @@ class SuratController extends Controller
                 'nik' => $request->nik,
             ]);
 
-            // kirim ke log response
-            Log::debug('Response API Gabungan: '.json_encode($response->json()));
             if ($response->failed()) {
                 Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan melalui API Gabungan");
 
                 return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan melalui API Gabungan", 400);
             }
+
+            // kirim log
+            Log::debug('Response API: '.json_encode($response->json()));
+            $nama_penduduk = $response->json('data.nama');
         } else {
-            if (! Penduduk::where('nik', $request->nik)->exists()) {
+            if (! $penduduk = Penduduk::where('nik', $request->nik)->first()) {
                 Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan");
                 
                 return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan", 400);
             }
+            $nama_penduduk = $penduduk->nama;
         }
 
         $file = $request->file('file');
@@ -140,7 +145,6 @@ class SuratController extends Controller
 
         $this->settings['pemeriksaan_camat'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif;
 
-        // ambil surat dari sini
         $surat = Surat::create([
             'desa_id' => $request->desa_id,
             'nik' => $request->nik,
@@ -148,6 +152,7 @@ class SuratController extends Controller
             'tanggal' => $request->tanggal,
             'nomor' => $request->nomor,
             'nama' => $request->nama,
+            'nama_penduduk' => $nama_penduduk,
             'file' => $file_name,
             'verifikasi_camat' => StatusVerifikasiSurat::MenungguVerifikasi,
             'verifikasi_sekretaris' => $this->settings['pemeriksaan_sekretaris'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif,

@@ -27,13 +27,13 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="form-group">
-                            <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
-                            {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), null, [
-                                'placeholder' => 'pilih desa',
-                                'class' => 'form-control',
-                                'id' => 'list_desa',
-                                'required',
-                            ]) !!}
+                            <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>                            
+                            <select class="form-control" name="das_data_desa_id" id="list_desa" required>
+                                <option value="">Semua Desa</option>
+                                @foreach ($list_desa as $desa)
+                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Subject</label>

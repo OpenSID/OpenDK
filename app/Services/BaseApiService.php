@@ -34,7 +34,7 @@ class BaseApiService
     {        
         try {
             // Buat permintaan API dengan Header dan Parameter
-            $response = Http::withHeaders($this->header)->get($this->baseUrl . $endpoint, $params);
+            $response = Http::withHeaders($this->header)->get($this->baseUrl . $endpoint, $params);            
             session()->forget('error_api');
             if($this->isFullResponse()) {
                 // Jika full response, kembalikan seluruh response

@@ -33,6 +33,7 @@ namespace App\Services;
 
 use App\Models\DataDesa;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class DesaService extends BaseApiService
 {
@@ -75,6 +76,7 @@ class DesaService extends BaseApiService
     {
         // Panggil API dan ambil data
         $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);
+        Log::info('DesaService::desa - API Response', ['data' => $filters, 'response' => $data]);
         if (! $data) {
             return collect([]);
         }

@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\Pesan;
 use App\Models\PesanDetail;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
@@ -72,7 +73,7 @@ class PesanController extends Controller
             })
             ->paginate(Pesan::PER_PAGE);
 
-        $list_desa = DataDesa::get();
+        $list_desa = (new DesaService())->listDesa();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 
@@ -121,7 +122,7 @@ class PesanController extends Controller
             })
             ->paginate(Pesan::PER_PAGE);
 
-        $list_desa = DataDesa::get();
+        $list_desa = (new DesaService())->listDesa();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 
@@ -152,7 +153,7 @@ class PesanController extends Controller
             })
             ->paginate(Pesan::PER_PAGE);
 
-        $list_desa = DataDesa::get();
+        $list_desa = (new DesaService())->listDesa();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 
@@ -181,7 +182,7 @@ class PesanController extends Controller
         $data = collect([]);
         $data->put('page_title', 'Buat Pesan');
         $data->put('page_description', 'Manajemen Pesan');
-        $list_desa = DataDesa::get();
+        $list_desa = (new DesaService())->listDesa();        
         $data = $data->merge($this->loadCounter());
         $data->put('list_desa', $list_desa);
 

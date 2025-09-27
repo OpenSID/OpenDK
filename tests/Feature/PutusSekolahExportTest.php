@@ -126,8 +126,10 @@ class PutusSekolahExportTest extends TestCase
             'desa_id' => $this->desa->desa_id
         ]);
 
-        // Verify data was created
-        $this->assertEquals(3, PutusSekolah::count());
+        $this->assertEquals(
+            3,
+            PutusSekolah::where('desa_id', $this->desa->desa_id)->count()
+        );
 
         try {
             $routeUrl = route('data.putus-sekolah.export-excel');
@@ -307,7 +309,10 @@ class PutusSekolahExportTest extends TestCase
             ]);
         }
 
-        $this->assertEquals(3, PutusSekolah::count());
+        $this->assertEquals(
+            3,
+            PutusSekolah::where('desa_id', $this->desa->desa_id)->count()
+        );
 
         $response = $this->get(route('data.putus-sekolah.export-excel'));
         

@@ -126,8 +126,10 @@ class TingkatPendidikanExportTest extends TestCase
             'desa_id' => $this->desa->desa_id
         ]);
 
-        // Verify data was created
-        $this->assertEquals(3, TingkatPendidikan::count());
+        $this->assertEquals(
+            3,
+            TingkatPendidikan::where('desa_id', $this->desa->desa_id)->count()
+        );
 
         try {
             $routeUrl = route('data.tingkat-pendidikan.export-excel');
@@ -283,7 +285,10 @@ class TingkatPendidikanExportTest extends TestCase
             ]);
         }
 
-        $this->assertEquals(3, TingkatPendidikan::count());
+        $this->assertEquals(
+            count($data),
+            TingkatPendidikan::where('desa_id', $this->desa->desa_id)->count()
+        );
 
         $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
         

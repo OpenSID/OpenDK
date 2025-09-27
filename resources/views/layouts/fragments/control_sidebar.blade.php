@@ -11,8 +11,8 @@
             {!! $content !!}
 
             <hr style="border: 1px solid #ddd;">
-            <p>Jika Anda butuh bantuan untuk menggunakan Aplikasi Dashboard Kecamatan, silakan Anda Unduh Panduan
-                Pengguna di bawah ini.</p>
+            <p>Jika Anda butuh bantuan untuk menggunakan Aplikasi Dashboard Kecamatan, silakan Anda kunjungi tautan panduan
+                pengguna di bawah ini.</p>
             <br>
             <a href="https://panduan.opendesa.id/id/opendk" target="_blank" class="btn btn-primary btn-lg col-md-12"><i class="fa fa-link"></i> Panduan</a>
             <br>

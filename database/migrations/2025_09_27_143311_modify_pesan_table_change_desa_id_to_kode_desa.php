@@ -15,7 +15,10 @@ return new class extends Migration
         // Step 1: Drop foreign key constraint first
         Schema::table('das_pesan', function (Blueprint $table) {
             // Drop foreign key constraint
-            $table->dropForeign('das_pesan_das_data_desa_id_foreign');
+            $table->dropForeign('das_pesan_das_data_desa_id_foreign');            
+        });
+
+        Schema::table('das_pesan', function (Blueprint $table) {           
             $table->text('additional_info')->nullable();
             $table->string('das_data_desa_id', 20)->nullable()->change();            
         });

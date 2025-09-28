@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -32,7 +32,6 @@
 namespace App\Http\Controllers\Pesan;
 
 use App\Http\Controllers\Controller;
-use App\Models\DataDesa;
 use App\Models\Pesan;
 use App\Models\PesanDetail;
 use App\Services\DesaService;
@@ -51,7 +50,7 @@ class PesanController extends Controller
         $data->put('sudah_dibaca', '');
         $data->put('page_description', 'Manajemen Pesan');
         $data = $data->merge($this->loadCounter());
-        $pesan = Pesan::with(['dataDesa', 'detailPesan'])
+        $pesan = Pesan::with(['detailPesan'])
             ->where('jenis', Pesan::PESAN_MASUK)
             ->where('diarsipkan', Pesan::NON_ARSIP)
             ->orderBy('sudah_dibaca', 'ASC')
@@ -106,7 +105,7 @@ class PesanController extends Controller
         $data->put('page_description', 'Manajemen Pesan');
         $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
-        $pesan = Pesan::with(['dataDesa', 'detailPesan'])
+        $pesan = Pesan::with(['detailPesan'])
             ->where('jenis', Pesan::PESAN_KELUAR)
             ->where('diarsipkan', Pesan::NON_ARSIP)
             ->orderBy('created_at', 'DESC')
@@ -138,7 +137,7 @@ class PesanController extends Controller
         $data->put('page_description', 'Manajemen Pesan');
         $data->put('sudah_dibaca', null);
         $data = $data->merge($this->loadCounter());
-        $pesan = Pesan::with(['dataDesa', 'detailPesan'])
+        $pesan = Pesan::with(['detailPesan'])
             ->where('diarsipkan', Pesan::MASUK_ARSIP)
             ->orderBy('created_at', 'DESC')
             ->when(! empty($request->get('desa_id')), function ($q) use ($request, &$data) {
@@ -182,7 +181,7 @@ class PesanController extends Controller
         $data = collect([]);
         $data->put('page_title', 'Buat Pesan');
         $data->put('page_description', 'Manajemen Pesan');
-        $list_desa = (new DesaService())->listDesa();        
+        $list_desa = (new DesaService())->listDesa();
         $data = $data->merge($this->loadCounter());
         $data->put('list_desa', $list_desa);
 
@@ -197,16 +196,18 @@ class PesanController extends Controller
         try {
             $this->validate($request, [
                 'judul' => 'required',
-                'das_data_desa_id' => 'required|exists:das_data_desa,id',
+                'das_data_desa_id' => 'required|'.(!$this->isDatabaseGabungan() ? 'exists:das_data_desa,desa_id' : ''),
                 'text' => 'required',
             ]);
 
             DB::transaction(function () use ($request) {
+                $desa = (new DesaService())->getDesaByKode($request->get('das_data_desa_id'));
                 $id = Pesan::create([
                     'das_data_desa_id' => $request->get('das_data_desa_id'),
                     'judul' => $request->get('judul'),
                     'jenis' => Pesan::PESAN_KELUAR,
                     'sudah_dibaca' => 1,
+                    'additional_info' => ['nama_desa' => $desa->nama ?? ''],
                 ])->id;
 
                 PesanDetail::create([
@@ -218,7 +219,7 @@ class PesanController extends Controller
             });
 
             return redirect()->route('pesan.keluar')->with('success', 'Pesan berhasil dikirim!');
-        } catch (\Exception $e) {            
+        } catch (\Exception $e) {
             return back()->withInput()->with('error', 'Pesan gagal dikirim!. Detail: '.$e->getMessage());
         }
     }

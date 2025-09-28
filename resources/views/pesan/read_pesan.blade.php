@@ -46,7 +46,7 @@
                                 @else
                                     Ditujukan untuk
                                 @endif:
-                                Desa {{ $pesan->dataDesa->nama }}
+                                Desa {{ $pesan->additional_info['nama_desa'] ?? '-' }}
                                 <span class="mailbox-read-time pull-right">{{ $pesan->custom_date }}</span>
                             </h5>
                         </div>

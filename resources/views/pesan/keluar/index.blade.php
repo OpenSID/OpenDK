@@ -26,12 +26,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     {!! Form::open(['route' => 'pesan.keluar', 'method' => 'get', 'id' => 'form-search-desa']) !!}
-                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
-                                        'placeholder' => 'pilih desa',
-                                        'class' => 'form-control',
-                                        'id' => 'list_desa',
-                                        'required',
-                                    ]) !!}
+                                    <select class="form-control" name="das_data_desa_id" id="list_desa" required>
+                                <option value="">Semua Desa</option>
+                                @foreach ($list_desa as $desa)
+                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                @endforeach
+                            </select>
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">
@@ -69,7 +69,7 @@
                                             <td style="width: 5%">
                                                 <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->additional_info['nama_desa'] ?? '-' }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>

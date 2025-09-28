@@ -25,12 +25,12 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     {!! Form::open(['route' => 'pesan.index', 'method' => 'get', 'id' => 'form-search-desa']) !!}
-                                    {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
-                                        'placeholder' => 'pilih desa',
-                                        'class' => 'form-control',
-                                        'id' => 'list_desa',
-                                        'required',
-                                    ]) !!}
+                                    <select class="form-control" name="das_data_desa_id" id="list_desa" required>
+                                <option value="">Semua Desa</option>
+                                @foreach ($list_desa as $desa)
+                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                @endforeach
+                            </select>
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">
@@ -57,7 +57,7 @@
                                                     <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
                                                 </div>
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->additional_info['nama_desa'] ?? '-' }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>

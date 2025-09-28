@@ -27,7 +27,7 @@
                     <!-- /.box-header -->
                     <div class="box-body">
                         <div class="form-group">
-                            <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>                            
+                            <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
                             <select class="form-control" name="das_data_desa_id" id="list_desa" required>
                                 <option value="">Semua Desa</option>
                                 @foreach ($list_desa as $desa)

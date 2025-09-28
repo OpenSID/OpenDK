@@ -27,11 +27,11 @@
                                 <div class="col-md-6">
                                     {!! Form::open(['route' => 'pesan.keluar', 'method' => 'get', 'id' => 'form-search-desa']) !!}
                                     <select class="form-control" name="das_data_desa_id" id="list_desa" required>
-                                <option value="">Semua Desa</option>
-                                @foreach ($list_desa as $desa)
-                                    <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
-                                @endforeach
-                            </select>
+                                        <option value="">Semua Desa</option>
+                                        @foreach ($list_desa as $desa)
+                                            <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
+                                        @endforeach
+                                    </select>
                                     {!! Form::close() !!}
                                 </div>
                                 <div class="col-md-6">

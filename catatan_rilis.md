@@ -7,6 +7,8 @@ Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### BUG
 
+1. [#1301](https://github.com/OpenSID/OpenDK/issues/1301) Penyesuaian permohonan surat dengan api satudata.
+2. [#1337](https://github.com/OpenSID/OpenDK/issues/1337) Ubah link panduan ke panduan.opendesa.id.
 
 #### TEKNIS
 

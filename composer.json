@@ -32,6 +32,7 @@
         "rachidlaasri/laravel-installer": "^4.1",
         "rap2hpoutre/laravel-log-viewer": "^2.0",
         "sentry/sentry-laravel": "^3.8",
+        "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-backup": "^8.2",
         "spatie/laravel-permission": "^5.5",
         "stevebauman/purify": "^6.2",

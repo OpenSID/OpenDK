@@ -37,6 +37,7 @@ use App\Models\DataUmum;
 use App\Models\Profil;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use App\Services\ActivityLogger;
 
 class ProfilController extends Controller
 {
@@ -110,10 +111,33 @@ class ProfilController extends Controller
             $profil->update();
             $dataumum->update();
 
+            ActivityLogger::log(
+                category: 'profil',
+                event: 'updated',
+                message: "Mengubah data profil kecamatan: {$profil->nama_kecamatan}",
+                subject: $profil,
+                causer: auth()->user(),
+                additionalProperties: [
+                    'profil_id' => $profil->id,
+                    'changes' => array_merge($profil->getChanges(), $dataumum?->getChanges() ?? []),
+                ]
+            );
+
             // Clear cache setelah update data kecamatan
             $this->clearProfilCache();
         } catch (\Exception $e) {
             report($e);
+
+            ActivityLogger::log(
+                category: 'profil',
+                event: 'failed',
+                message: 'Gagal mengubah profil kecamatan',
+                causer: auth()->user(),
+                additionalProperties: [
+                    'error' => $e->getMessage(),
+                    'profil_id' => $id,
+                ]
+            );
 
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }

@@ -19,6 +19,7 @@
             <ul class="nav nav-tabs">
                 <li class="logs {{ $tab == 'log_viewer' ? 'active' : '' }}"><a data-toggle="tab" href="#log_viewer">Logs</a>
                 </li>
+                <li class=" {{ $tab == 'log_aktivitas' ? 'active' : '' }}"><a data-toggle="tab" href="#log_aktivitas">Log Aktivitas</a></li>
                 <li class="log_ekstensi {{ $tab == 'ekstensi' ? 'active' : '' }}"><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
                 @role('super-admin')
                     <li class=" {{ $tab == 'info_sistem' ? 'active' : '' }}"><a data-toggle="tab" href="#info_sistem">Info
@@ -30,6 +31,9 @@
             <div class="tab-content">
                 <div id="log_viewer" class="logs tab-pane fade in  {{ $tab == 'log_viewer' ? 'active' : '' }}">
                     @include('vendor.laravel-log-viewer.log')
+                </div>
+                <div id="log_aktivitas" class="tab-pane fade in {{ $tab == 'log_aktivitas' ? 'active' : '' }}">
+                    @include('vendor.laravel-log-viewer.activity-logs')
                 </div>
                 <div id="ekstensi" class="log_ekstensi tab-pane fade in {{ $tab == 'ekstensi' ? 'active' : '' }}">
                     @include('vendor.laravel-log-viewer.kebutuhan-sistem')

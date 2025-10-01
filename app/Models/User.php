@@ -43,6 +43,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MichaelDzjap\TwoFactorAuth\TwoFactorAuthenticable;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -52,6 +54,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
     use HandlesResourceDeletion;
     use TwoFactorAuthenticable;
+    use LogsActivity;
 
     /**
      * Default password.
@@ -59,6 +62,17 @@ class User extends Authenticatable implements JWTSubject
      * @var string
      */
     public const DEFAULT_PASSWORD = '12345678';
+
+    /**
+     * Configure activity logging options
+     */
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'email', 'status', 'address', 'phone'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs();
+    }
 
     /**
      * {@inheritDoc}

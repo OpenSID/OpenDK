@@ -61,13 +61,32 @@ class AplikasiController extends Controller
         ]);
 
         try {
-            $penyakit = SettingAplikasi::findOrFail($id);
-            $penyakit->fill($request->only(['value']));
-            $penyakit->save();
+            $setting = SettingAplikasi::findOrFail($id);
+            $oldValue = $setting->value;
+            $setting->fill($request->only(['value']));
+            $setting->save();
+
+            // Log activity
+            activity()
+                ->causedBy(auth()->user())
+                ->performedOn($setting)
+                ->withProperties([
+                    'setting_name' => $setting->key,
+                    'old_value' => $oldValue,
+                    'new_value' => $request->input('value')
+                ])
+                ->event('updated')
+                ->log("Mengubah pengaturan {$setting->key}");
 
             $this->browser_title = $request->input('value');
         } catch (\Exception $e) {
             report($e);
+
+            // Log failed activity
+            activity()
+                ->causedBy(auth()->user())
+                ->withProperties(['error' => $e->getMessage(), 'setting_id' => $id])
+                ->log('Gagal mengubah pengaturan aplikasi');
 
             return back()->with('error', 'Pengaturan aplikasi gagal diubah!');
         }

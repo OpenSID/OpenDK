@@ -34,12 +34,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmailSmtpRequest;
 use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
 use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
+use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\Response;
+use Yajra\DataTables\DataTables;
 
 /**
  * Class LogViewerController
@@ -90,6 +93,62 @@ class LogViewerController extends Controller
             return $early_return;
         }
 
+        $activityCategories = Activity::query()
+            ->select('log_name')
+            ->whereNotNull('log_name')
+            ->distinct()
+            ->orderBy('log_name')
+            ->pluck('log_name')
+            ->filter()
+            ->values();
+
+        $activityEvents = Activity::query()
+            ->select('event')
+            ->whereNotNull('event')
+            ->distinct()
+            ->orderBy('event')
+            ->pluck('event')
+            ->filter()
+            ->values();
+
+        $activityUsers = Activity::query()
+            ->whereNotNull('causer_id')
+            ->whereNotNull('causer_type')
+            ->select('causer_id', 'causer_type')
+            ->distinct()
+            ->get()
+            ->groupBy('causer_type')
+            ->flatMap(function ($activities, $modelClass) {
+                if (! class_exists($modelClass)) {
+                    return collect();
+                }
+
+                $ids = $activities->pluck('causer_id')->unique()->toArray();
+
+                try {
+                    $instances = $modelClass::whereIn('id', $ids)->get();
+                } catch (\Throwable $e) {
+                    report($e);
+
+                    return collect();
+                }
+
+                return $instances->map(function ($instance) use ($modelClass) {
+                    $name = $instance->name ?? ($instance->email ?? ('ID: '.$instance->getKey()));
+
+                    return [
+                        'id' => $instance->getKey(),
+                        'type' => $modelClass,
+                        'name' => $name,
+                    ];
+                });
+            })
+            ->unique(function ($item) {
+                return $item['type'].'|'.$item['id'];
+            })
+            ->sortBy('name')
+            ->values();
+
         $data = [
             'tab' => session('tab', 'log_viewer'),
             'logs' => $this->log_viewer->all(),
@@ -101,7 +160,9 @@ class LogViewerController extends Controller
             'standardFormat' => true,
             'structure' => $this->log_viewer->foldersAndFiles(),
             'storage_path' => $this->log_viewer->getStoragePath(),
-
+            'activityCategories' => $activityCategories,
+            'activityEvents' => $activityEvents,
+            'activityUsers' => $activityUsers,
         ];
 
         if ($this->request->wantsJson()) {
@@ -272,5 +333,149 @@ class LogViewerController extends Controller
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
+    }
+
+    /**
+     * Menampilkan data activity logs untuk DataTables
+     */
+    public function getActivityLogs(Request $request)
+    {
+        $query = Activity::with('causer')->latest();
+
+        // Filter berdasarkan kategori (log_name)
+        if ($request->filled('category')) {
+            $query->where('log_name', $request->category);
+        }
+
+        // Filter berdasarkan peristiwa (event)
+        if ($request->filled('event')) {
+            $query->where('event', $request->event);
+        }
+
+        // Filter berdasarkan pengguna
+        if ($request->filled('user')) {
+            [$causerType, $causerId] = array_pad(explode('|', $request->user), 2, null);
+
+            if ($causerId) {
+                $query->where('causer_id', $causerId);
+            }
+
+            if ($causerType) {
+                $query->where('causer_type', $causerType);
+            }
+        }
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->addColumn('category', function ($log) {
+                return $log->log_name ? ucfirst($log->log_name) : '-';
+            })
+            ->addColumn('user_display', function ($log) {
+                return $log->causer ? $log->causer->name : 'System';
+            })
+            ->addColumn('event_badge', function ($log) {
+                $badges = [
+                    'login' => 'success',
+                    'logout' => 'info',
+                    'created' => 'primary',
+                    'updated' => 'warning',
+                    'deleted' => 'danger',
+                    'retrieved' => 'secondary'
+                ];
+                $event = $log->event ?? 'N/A';
+                $badge = $badges[$event] ?? 'secondary';
+
+                return '<span class="badge badge-' . $badge . '">' . ucfirst($event) . '</span>';
+            })
+            ->addColumn('subject_type', function ($log) {
+                return $log->subject_type ? class_basename($log->subject_type) : '-';
+            })
+            ->addColumn('causer_type', function ($log) {
+                return $log->causer_type ? class_basename($log->causer_type) : 'System';
+            })
+            ->addColumn('formatted_date', function ($log) {
+                return $log->created_at->format('d/m/Y H:i:s');
+            })
+            ->addColumn('aksi', function ($log) {
+                return '<button class="btn btn-sm btn-info view-detail" data-id="' . $log->id . '">
+                    <i class="fa fa-eye"></i>
+                </button>';
+            })
+            ->rawColumns(['event_badge', 'aksi'])
+            ->make(true);
+    }
+
+    /**
+     * Menampilkan detail activity log
+     */
+    public function getActivityLogDetail($id)
+    {
+        $log = Activity::with('causer')->findOrFail($id);
+        $properties = $log->properties ? $log->properties->toArray() : [];
+
+        $userLabel = 'System';
+        if ($log->causer) {
+            $name = $log->causer->name ?? null;
+            $email = $log->causer->email ?? null;
+            $identifier = $name ?: ($email ?: ('ID: '.$log->causer->getKey()));
+            $userLabel = $email && $name ? $name.' ('.$email.')' : $identifier;
+        }
+
+        $subjectType = $log->subject_type ? class_basename($log->subject_type) : null;
+        $causerType = $log->causer_type ? class_basename($log->causer_type) : null;
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $log->id,
+                'user' => $userLabel,
+                'event' => $log->event,
+                'description' => $log->description,
+                'category' => $log->log_name,
+                'subject_type' => $subjectType,
+                'subject_id' => $log->subject_id,
+                'causer_type' => $causerType,
+                'causer_id' => $log->causer_id,
+                'created_at' => $log->created_at->format('d/m/Y H:i:s'),
+                'ip_address' => data_get($properties, 'ip_address'),
+                'user_agent' => data_get($properties, 'user_agent'),
+                'url' => data_get($properties, 'url'),
+                'slug' => data_get($properties, 'slug'),
+                'method' => data_get($properties, 'method'),
+                'browser' => data_get($properties, 'browser'),
+                'platform' => data_get($properties, 'platform'),
+                'ip_country' => data_get($properties, 'ip_country'),
+                'ip_country_code' => data_get($properties, 'ip_country_code'),
+                'ip_region' => data_get($properties, 'ip_region'),
+                'ip_city' => data_get($properties, 'ip_city'),
+                'ip_location_available' => data_get($properties, 'ip_location_available'),
+                'ip_location_message' => data_get($properties, 'ip_location_message'),
+                'referer' => data_get($properties, 'referer'),
+                'properties' => $properties,
+            ]
+        ]);
+    }
+
+    /**
+     * Menghapus activity logs lama (cleanup)
+     */
+    public function cleanupActivityLogs(Request $request)
+    {
+        try {
+            $days = $request->input('days', 30); // Default 30 hari
+            $cutoffDate = now()->subDays($days);
+            
+            $deletedCount = Activity::where('created_at', '<', $cutoffDate)->delete();
+            
+            return response()->json([
+                'success' => true,
+                'message' => "Berhasil menghapus {$deletedCount} log aktivitas yang lebih dari {$days} hari."
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menghapus log aktivitas: ' . $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

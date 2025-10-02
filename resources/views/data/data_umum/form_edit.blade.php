@@ -94,7 +94,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Puskesmas <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_puskesmas', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_puskesmas', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['puskesmas'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -102,7 +103,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Puskesmas Pembantu <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_puskesmas_pembantu', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_puskesmas_pembantu', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['puskesmas_pembantu'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -110,7 +112,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Posyandu <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_posyandu', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_posyandu', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['posyandu'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -118,7 +121,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Pondok Bersalin <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_pondok_bersalin', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_pondok_bersalin', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['pondok_bersalin'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -128,7 +132,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">PAUD/Sederajat <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_paud', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_paud', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['paud'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -136,7 +141,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">SD/Sederajat <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_sd', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_sd', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['sd'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -144,7 +150,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">SMP/Sederajat <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_smp', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_smp', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['smp'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -152,7 +159,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">SMA/Sederajat <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_sma', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_sma', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['sma'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -162,7 +170,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Masjid Besar <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_masjid_besar', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_masjid_besar', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['masjid_besar'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -170,7 +179,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Mushola <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_mushola', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_mushola', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['mushola'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -178,7 +188,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Gereja <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_gereja', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_gereja', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['gereja'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -186,7 +197,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Pasar <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_pasar', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_pasar', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['pasar'] ?? 0 }}" required disabled>
             </div>
         </div>
 
@@ -194,7 +206,8 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Balai Pertemuan <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! Form::number('jml_balai_pertemuan', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!}
+                {{-- {!! Form::number('jml_balai_pertemuan', null, ['placeholder' => '0', 'class' => 'form-control', 'required', 'style' => 'text-align:right;']) !!} --}}
+                <input type="text" class="form-control" value="{{ $rekapKategori['balai_pertemuan'] ?? 0 }}" required disabled>
             </div>
         </div>
     </div>

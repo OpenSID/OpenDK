@@ -474,6 +474,20 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('export-excel', ['as' => 'data.data-desa.export-excel', 'uses' => 'DataDesaController@exportExcel']);
                 });
 
+                // Data Sarana
+                Route::group(['prefix' => 'data-sarana', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
+                    Route::get('/', ['as' => 'data.data-sarana.index', 'uses' => 'DataSaranaController@index']);
+                    Route::get('getdata', ['as' => 'data.data-sarana.getdata', 'uses' => 'DataSaranaController@getData']);
+                    Route::get('create', ['as' => 'data.data-sarana.create', 'uses' => 'DataSaranaController@create']);
+                    Route::post('store', ['as' => 'data.data-sarana.store', 'uses' => 'DataSaranaController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.data-sarana.edit', 'uses' => 'DataSaranaController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.data-sarana.update', 'uses' => 'DataSaranaController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.data-sarana.destroy', 'uses' => 'DataSaranaController@destroy']);
+                    Route::get('export', ['as' => 'data.data-sarana.export', 'uses' => 'DataSaranaController@export']);
+                    Route::get('import', ['as' => 'data.data-sarana.import', 'uses' => 'DataSaranaController@import']);
+                    Route::post('import-excel', ['as' => 'data.data-sarana.import-excel', 'uses' => 'DataSaranaController@importExcel']);
+                });
+
                 // Jabatan
                 Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 

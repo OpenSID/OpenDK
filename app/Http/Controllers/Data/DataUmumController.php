@@ -36,6 +36,7 @@ use App\Http\Requests\DataUmumRequest;
 use App\Models\DataUmum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class DataUmumController extends Controller
 {
@@ -51,7 +52,12 @@ class DataUmumController extends Controller
         $page_title = 'Data Umum';
         $page_description = 'Ubah Data Umum';
 
-        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah'));
+        $rekapKategori = DB::table('das_data_sarana')
+            ->select('kategori', DB::raw('SUM(jumlah) as total'))
+            ->groupBy('kategori')
+            ->pluck('total', 'kategori'); 
+
+        return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah', 'rekapKategori'));
     }
 
     /**

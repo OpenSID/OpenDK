@@ -136,7 +136,7 @@
                         </a>
                         <ul class="treeview-menu">
                             @if ($user->hasrole(['super-admin', 'admin-kecamatan']))
-                                <li class="treeview {{ Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/pengurus*', 'data/jabatan*']) ? 'active' : '' }}">
+                                <li class="treeview {{ Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/data-sarana*', 'data/pengurus*', 'data/jabatan*']) ? 'active' : '' }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                                         <span class="pull-right-container">
                                             <i class="fa fa-angle-left pull-right"></i>
@@ -152,6 +152,9 @@
                                         <li {{ Request::is(['data/data-desa*']) ? 'class=active' : '' }}>
                                             <a href="{{ route('data.data-desa.index') }}"><i class="fa fa-circle-o"></i>Data
                                                 {{ config('setting.sebutan_desa') }}</a>
+                                        </li>
+                                        <li {{ Request::is(['data/data-sarana*']) ? 'class=active' : '' }}>
+                                            <a href="{{ route('data.data-sarana.index') }}"><i class="fa fa-circle-o"></i>Data Sarana</a>
                                         </li>
                                         <li class="treeview {{ Request::is(['data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
                                             <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan

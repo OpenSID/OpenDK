@@ -127,6 +127,7 @@ class EpidemiPenyakitExportTest extends TestCase
     {
         $this->actingAs($this->user);
 
+        $epidemiDataSebelumnya = EpidemiPenyakit::count();
         // Buat data epidemi penyakit untuk testing
         $epidemiData = EpidemiPenyakit::factory()->count(3)->create([
             'desa_id' => $this->desa->desa_id,
@@ -134,7 +135,7 @@ class EpidemiPenyakitExportTest extends TestCase
         ]);
 
         // Verify data was created
-        $this->assertEquals(3, EpidemiPenyakit::count());
+        $this->assertEquals($epidemiData->count() + $epidemiDataSebelumnya, EpidemiPenyakit::count());
 
         try {
             $routeUrl = route('data.epidemi-penyakit.export-excel');
@@ -283,7 +284,7 @@ class EpidemiPenyakitExportTest extends TestCase
             ['bulan' => 6, 'tahun' => 2023, 'jumlah_penderita' => 15],
             ['bulan' => 12, 'tahun' => 2024, 'jumlah_penderita' => 5],
         ];
-
+        $epidemiDataSebelumnya = EpidemiPenyakit::count();
         foreach ($data as $item) {
             EpidemiPenyakit::factory()->create([
                 'desa_id' => $this->desa->desa_id,
@@ -294,7 +295,7 @@ class EpidemiPenyakitExportTest extends TestCase
             ]);
         }
 
-        $this->assertEquals(3, EpidemiPenyakit::count());
+        $this->assertEquals(3 + $epidemiDataSebelumnya, EpidemiPenyakit::count());
 
         $response = $this->get(route('data.epidemi-penyakit.export-excel'));
         

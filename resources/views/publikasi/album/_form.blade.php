@@ -2,15 +2,20 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('publikasi.album.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
+                <a href="{{ route('publikasi.album.index') }}"><button type="button" class="btn btn-info btn-sm"><i
+                            class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="judul">Judul Album</label>
 
-                    {!! Form::text('judul', null, ['placeholder' => 'Judul Album', 'class' => 'form-control']) !!}
+                    {!! html()->text('judul')
+                    ->class('form-control')
+                    ->placeholder('Judul Album')
+                    ->value(old('judul', isset($album) ? $album->judul : null))
+                    ->id('judul') !!}
                     @if ($errors->has('judul'))
-                        <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
+                    <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
                 </div>
             </div>
@@ -22,19 +27,26 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="thumbnail">Thumbnail</label>
-                    <img src="{{ isThumbnail(isset($album->gambar) ? "publikasi/album/{$album->gambar}" : null) }}" id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
+                    <img src="{{ isThumbnail(isset($album->gambar) ? " publikasi/album/{$album->gambar}" : null) }}"
+                    id="showthumbnail" style="width:100%; max-height:250px; float:left;" />
 
-                    {!! Form::file('gambar', ['placeholder' => 'Thumbnail', 'class' => 'form-control', 'id' => 'file-album', 'accept' => 'jpg,jpeg,png']) !!}
-                    @if ($errors->has('thumbnail'))
-                        <span class="help-block" style="color:red">{{ $errors->first('thumbnail') }}</span>
+                    {!! html()->file('gambar')
+                    ->class('form-control')
+                    ->id('file-album')
+                    ->attribute('accept', '.jpg,.jpeg,.png') !!}
+                    @if ($errors->has('gambar'))
+                    <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>
                     @endif
                 </div>
 
                 <div class="form-group">
                     <label class="control-label" for="status">Status</label>
-                    {!! Form::select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'], null, ['class' => 'form-control']) !!}
+                    {!! html()->select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])
+                    ->class('form-control')
+                    ->id('status')
+                    ->value(old('status', isset($album) ? $album->status : null)) !!}
                     @if ($errors->has('status'))
-                        <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
+                    <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
                     @endif
                 </div>
             </div>
@@ -47,8 +59,8 @@
 </div>
 
 @push('scripts')
-    <script>
-        $(function() {
+<script>
+    $(function() {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
@@ -80,5 +92,5 @@
                 readURL(this);
             });
         });
-    </script>
+</script>
 @endpush

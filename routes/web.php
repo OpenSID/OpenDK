@@ -71,6 +71,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
+Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Installer'], function () {
+    Route::get('/', 'InstallerController@welcome')->name('installer.welcome');
+    Route::get('/requirements', 'InstallerController@requirements')->name('installer.requirements');
+    Route::get('/permissions', 'InstallerController@permissions')->name('installer.permissions');
+    Route::get('/environment', 'InstallerController@environment')->name('installer.environment');
+    Route::get('/environment/wizard', 'InstallerController@environmentWizard')->name('installer.environmentWizard');
+    Route::get('/environment/classic', 'InstallerController@environmentClassic')->name('installer.environmentClassic');
+    Route::post('/environment/saveWizard', 'InstallerController@environmentSaveWizard')->name('installer.environmentSaveWizard');
+    Route::post('/environment/saveClassic', 'InstallerController@environmentSaveClassic')->name('installer.environmentSaveClassic');
+    Route::get('/database', 'InstallerController@database')->name('installer.database');
+    Route::get('/final', 'InstallerController@final')->name('installer.final');
+    Route::post('/final', 'InstallerController@performInstallation')->name('installer.performInstallation');
+});
+
 // Redirect if apps not installed
 Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Auth::routes([

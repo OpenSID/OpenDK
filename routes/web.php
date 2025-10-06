@@ -641,6 +641,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.fasilitas-paud.destroy', 'uses' => 'FasilitasPaudController@destroy']);
                     Route::get('import', ['as' => 'data.fasilitas-paud.import', 'uses' => 'FasilitasPaudController@import']);
                     Route::post('do_import', ['as' => 'data.fasilitas-paud.do_import', 'uses' => 'FasilitasPaudController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.fasilitas-paud.export-excel', 'uses' => 'FasilitasPaudController@exportExcel']);
                 });
 
                 // Program Bantuan

@@ -106,7 +106,6 @@
                                         Telegram<br>
                                         2. Kirim pesan /start<br>
                                         3. Bot akan memberikan ID Anda<br>
-                                        4. Lalu hubungi bot OpenDK di <strong>@OpenDKBot</strong> dan kirim /start
                                     </span>
                                     @if ($errors->has('identifier'))
                                         <span class="help-block">{{ $errors->first('identifier') }}</span>

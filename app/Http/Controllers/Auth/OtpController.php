@@ -32,6 +32,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profil;
 use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Http\Request;
@@ -45,7 +46,7 @@ class OtpController extends Controller
     public function __construct(OtpService $otpService)
     {
         parent::__construct();
-        $this->middleware('auth')->except(['showLoginForm', 'loginWithOtp', 'requestLoginOtp']);
+        $this->middleware('auth')->except(['showLoginForm', 'loginWithOtp', 'requestLoginOtp', 'showVerifyLoginForm']);
         $this->otpService = $otpService;
     }
 
@@ -204,10 +205,10 @@ class OtpController extends Controller
      */
     public function showLoginForm(Request $request)
     {
-        return view('auth.otp.login', [
-            'page_title' => 'Login dengan OTP',
-            'page_description' => 'Masukkan email atau username Anda',
-        ]);
+        $profil = $this->getProfilData();
+        $sebutan_wilayah = $this->getSebutanWilayah();
+        
+        return view('auth.otp.login', compact('profil', 'sebutan_wilayah'));
     }
 
     /**
@@ -271,10 +272,10 @@ class OtpController extends Controller
                 ->with('error', 'Silakan minta kode OTP terlebih dahulu.');
         }
 
-        return view('auth.otp.verify-login', [
-            'page_title' => 'Verifikasi OTP',
-            'page_description' => 'Masukkan kode OTP yang dikirim',
-        ]);
+        $profil = $this->getProfilData();
+        $sebutan_wilayah = $this->getSebutanWilayah();
+
+        return view('auth.otp.verify-login', compact('profil', 'sebutan_wilayah'));
     }
 
     /**
@@ -376,5 +377,25 @@ class OtpController extends Controller
         }
         
         return response()->json(['success' => false, 'message' => 'Gagal mengirim ulang kode OTP'], 500);
+    }
+
+    /**
+     * Get profil data for views
+     */
+    private function getProfilData()
+    {
+        return \App\Models\Profil::first() ?? (object)[
+            'file_logo' => null,
+            'nama_kabupaten' => 'Kabupaten',
+            'nama_kecamatan' => 'Kecamatan',
+        ];
+    }
+
+    /**
+     * Get sebutan wilayah
+     */
+    private function getSebutanWilayah()
+    {
+        return $this->settings['sebutan_desa'] ?? 'Desa';
     }
 }

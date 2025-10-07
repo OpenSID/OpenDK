@@ -92,6 +92,29 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         'register' => false,
     ]);
 
+    // OTP Routes
+    Route::namespace('\App\Http\Controllers\Auth')->group(function () {
+        // OTP Activation (requires auth)
+        Route::middleware('auth')->group(function () {
+            Route::get('/otp/activate', 'OtpController@showActivationForm')->name('otp.activate');
+            Route::post('/otp/request-activation', 'OtpController@requestActivation')->name('otp.request-activation');
+            Route::get('/otp/verify-activation', 'OtpController@showVerifyActivationForm')->name('otp.verify-activation');
+            Route::post('/otp/verify-activation', 'OtpController@verifyActivation');
+            Route::get('/otp/deactivate', 'OtpController@deactivate')->name('otp.deactivate');
+        });
+
+        // OTP Login (guest only)
+        Route::middleware('guest')->group(function () {
+            Route::get('/otp/login', 'OtpController@showLoginForm')->name('otp.login');
+            Route::post('/otp/request-login', 'OtpController@requestLoginOtp')->name('otp.request-login');
+            Route::get('/otp/verify-login', 'OtpController@showVerifyLoginForm')->name('otp.verify-login');
+            Route::post('/otp/verify-login', 'OtpController@loginWithOtp');
+        });
+
+        // OTP Resend (both auth and guest)
+        Route::post('/otp/resend', 'OtpController@resendOtp')->name('otp.resend');
+    });
+
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });

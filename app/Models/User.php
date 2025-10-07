@@ -75,6 +75,10 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'last_login',
         'pengurus_id',
+        'otp_enabled',
+        'otp_channel',
+        'otp_identifier',
+        'telegram_chat_id',
     ];
 
     /**
@@ -161,5 +165,13 @@ class User extends Authenticatable implements JWTSubject
         $this->setTwoFactorAuthId($id);
         $attributes = ['expired_at' => now()->addMinutes(config('twofactor-auth.expiry', 2))];
         $this->twoFactorAuth()->update($attributes);
+    }
+
+    /**
+     * Get the OTP tokens for the user.
+     */
+    public function otpTokens()
+    {
+        return $this->hasMany(OtpToken::class);
     }
 }

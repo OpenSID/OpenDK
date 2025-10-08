@@ -71,6 +71,15 @@
                 </p>
             </div>
 
+            <!-- Timer Display -->
+            <div class="alert alert-info text-center" id="timer-alert" style="margin-bottom: 15px; padding: 8px;">
+                <i class="fa fa-clock-o"></i>
+                <strong style="font-size: 12px;">Sisa Waktu:</strong>
+                <span id="timer-display" style="font-size: 18px; font-weight: bold; margin-left: 10px;">
+                    {{ config('otp.expiry_minutes', 5) }}:00
+                </span>
+            </div>
+
             <form method="POST" action="{{ route('otp.verify-login') }}">
                 @csrf
 
@@ -139,6 +148,8 @@
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <script>
         $(document).ready(function() {
+            var expiryMinutes = {{ config('otp.expiry_minutes', 5) }};
+            var expirySeconds = expiryMinutes * 60;
             var resendCooldown = {{ config('otp.resend_cooldown', 30) }};
             var countdown = resendCooldown;
 
@@ -207,6 +218,33 @@
                 }
             }, 1000);
 
+            // Expiry timer countdown
+            var expiryInterval = setInterval(function() {
+                expirySeconds--;
+                var percentage = (expirySeconds / (expiryMinutes * 60)) * 100;
+
+                // Update timer display
+                var minutes = Math.floor(expirySeconds / 60);
+                var seconds = expirySeconds % 60;
+                var timeString = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                $('#timer-display').text(timeString);
+
+                // Change timer color based on remaining time
+                if (percentage < 20) {
+                    $('#timer-alert').removeClass('alert-warning alert-info').addClass(
+                        'alert-danger');
+                } else if (percentage < 50) {
+                    $('#timer-alert').removeClass('alert-info').addClass('alert-warning');
+                }
+
+                if (expirySeconds <= 0) {
+                    clearInterval(expiryInterval);
+                    clearInterval(resendInterval);
+                    alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
+                    window.location.href = '{{ route('otp.login') }}';
+                }
+            }, 1000);
+
             // Resend OTP
             $('#resend-btn').click(function() {
                 if ($(this).prop('disabled')) return;
@@ -222,6 +260,14 @@
                     },
                     success: function(response) {
                         alert(response.message);
+
+                        // Reset expiry timer
+                        expirySeconds = expiryMinutes * 60;
+                        $('#timer-display').text(expiryMinutes + ':00');
+                        $('#timer-alert').removeClass('alert-danger alert-warning')
+                            .addClass('alert-info');
+
+                        // Reset resend countdown
                         countdown = resendCooldown;
                         $('#resend-btn').html(
                             '<i class="fa fa-refresh"></i> Kirim Ulang (<span id="countdown">' +
@@ -249,9 +295,9 @@
             // Auto focus first input
             $('.otp-input[data-index="0"]').focus();
 
-            // Auto dismiss flash messages
+            // Auto dismiss flash messages (except timer)
             window.setTimeout(function() {
-                $("#notifikasi, .alert").fadeTo(500, 0).slideUp(500, function() {
+                $("#notifikasi, .alert:not(#timer-alert)").fadeTo(500, 0).slideUp(500, function() {
                     $(this).remove();
                 });
             }, 5000);

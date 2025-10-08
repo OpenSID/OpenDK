@@ -41,8 +41,18 @@
                             <div class="callout callout-info">
                                 <h4><i class="icon fa fa-info-circle"></i> Informasi</h4>
                                 <p>Kode OTP telah dikirim ke {{ $channel === 'email' ? 'email' : 'Telegram' }} Anda:
-                                    <strong>{{ $identifier }}</strong></p>
+                                    <strong>{{ $identifier }}</strong>
+                                </p>
                                 <p>Kode berlaku selama <strong>{{ config('otp.expiry_minutes', 5) }} menit</strong>.</p>
+                            </div>
+
+                            <!-- Timer Display -->
+                            <div class="alert alert-info text-center" id="timer-alert" style="margin-bottom: 20px;">
+                                <i class="fa fa-clock-o"></i>
+                                <strong>Sisa Waktu:</strong>
+                                <span id="timer-display" style="font-size: 20px; font-weight: bold; margin-left: 10px;">
+                                    {{ config('otp.expiry_minutes', 5) }}:00
+                                </span>
                             </div>
 
                             <div class="form-group text-center">
@@ -79,20 +89,17 @@
                                     <i class="fa fa-refresh"></i> Kirim Ulang (<span id="countdown">30</span>s)
                                 </button>
                             </div>
-
-                            <div class="progress" id="progress-bar" style="margin-bottom: 0;">
-                                <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                    style="width: 100%"></div>
-                            </div>
                         </div>
 
-                        <div class="box-footer text-center">
-                            <button type="submit" class="btn btn-primary" id="verify-btn">
-                                <i class="fa fa-check"></i> Verifikasi
-                            </button>
-                            <a href="{{ route('otp.activate') }}" class="btn btn-default">
-                                <i class="fa fa-arrow-left"></i> Kembali
-                            </a>
+                        <div class="box-footer">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" id="verify-btn">
+                                    <i class="fa fa-check"></i> Verifikasi
+                                </button>
+                                <a href="{{ route('otp.activate') }}" class="btn btn-default">
+                                    <i class="fa fa-arrow-left"></i> Kembali
+                                </a>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -173,19 +180,28 @@
                     }
                 }, 1000);
 
-                // Expiry progress bar
-                var progressInterval = setInterval(function() {
+                // Expiry timer countdown
+                var expiryInterval = setInterval(function() {
                     expirySeconds--;
                     var percentage = (expirySeconds / (expiryMinutes * 60)) * 100;
-                    $('#progress-bar .progress-bar').css('width', percentage + '%');
 
+                    // Update timer display
+                    var minutes = Math.floor(expirySeconds / 60);
+                    var seconds = expirySeconds % 60;
+                    var timeString = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                    $('#timer-display').text(timeString);
+
+                    // Change timer color based on remaining time
                     if (percentage < 20) {
-                        $('#progress-bar .progress-bar').removeClass('progress-bar-info').addClass(
-                            'progress-bar-danger');
+                        $('#timer-alert').removeClass('alert-warning alert-info').addClass(
+                            'alert-danger');
+                    } else if (percentage < 50) {
+                        $('#timer-alert').removeClass('alert-info').addClass('alert-warning');
                     }
 
                     if (expirySeconds <= 0) {
-                        clearInterval(progressInterval);
+                        clearInterval(expiryInterval);
+                        clearInterval(resendInterval);
                         alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
                         window.location.href = '{{ route('otp.activate') }}';
                     }
@@ -206,6 +222,14 @@
                         },
                         success: function(response) {
                             alert(response.message);
+
+                            // Reset timer
+                            expirySeconds = expiryMinutes * 60;
+                            $('#timer-display').text(expiryMinutes + ':00');
+                            $('#timer-alert').removeClass('alert-danger alert-warning')
+                                .addClass('alert-info');
+
+                            // Reset resend countdown
                             countdown = resendCooldown;
                             $('#resend-btn').html(
                                 '<i class="fa fa-refresh"></i> Kirim Ulang (<span id="countdown">' +

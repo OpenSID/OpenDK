@@ -105,6 +105,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'otp_enabled' => 'boolean',
     ];
 
     /**

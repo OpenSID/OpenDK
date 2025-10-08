@@ -217,23 +217,23 @@ class OtpServiceTest extends TestCase
 
     public function test_cleanup_expired_tokens()
     {
-        // Create expired token
+        // Create expired token with different purpose to avoid deletion by generateAndSave
         OtpToken::create([
             'user_id' => $this->user->id,
             'token_hash' => Hash::make('123456'),
             'channel' => 'email',
             'identifier' => 'test@example.com',
-            'purpose' => 'login',
+            'purpose' => 'activation', // Different purpose
             'expires_at' => now()->subMinutes(10),
             'attempts' => 0,
         ]);
 
-        // Create valid token
+        // Create valid token with different purpose
         $this->otpService->generateAndSave(
             $this->user,
             'email',
             'test@example.com',
-            'login'
+            'login' // Different purpose
         );
 
         $deleted = $this->otpService->cleanupExpired();

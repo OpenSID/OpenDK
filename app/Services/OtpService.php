@@ -200,9 +200,9 @@ class OtpService
      */
     public function verify(User $user, string $otp, string $purpose = 'login'): array
     {
+        // First check if token exists at all (including expired/max attempts)
         $token = OtpToken::where('user_id', $user->id)
             ->where('purpose', $purpose)
-            ->valid()
             ->first();
 
         if (!$token) {
@@ -212,6 +212,15 @@ class OtpService
             ];
         }
 
+        // Check if expired
+        if ($token->isExpired()) {
+            return [
+                'success' => false,
+                'message' => 'Kode OTP tidak valid atau sudah kadaluarsa',
+            ];
+        }
+
+        // Check max attempts
         if ($token->hasMaxAttempts()) {
             return [
                 'success' => false,

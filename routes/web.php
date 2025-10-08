@@ -93,7 +93,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     ]);
 
     // OTP Routes
-    Route::namespace('\App\Http\Controllers\Auth')->group(function () {
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('otp.enabled')->group(function () {
         // OTP Activation (requires auth)
         Route::middleware('auth')->group(function () {
             Route::get('/otp/activate', 'OtpController@showActivationForm')->name('otp.activate');

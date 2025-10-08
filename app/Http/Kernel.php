@@ -104,6 +104,7 @@ class Kernel extends HttpKernel
         'complete_profile' => \App\Http\Middleware\CompleteProfile::class,
         'token.registered' => \App\Http\Middleware\TokenRegistered::class,
         'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
+        'otp.enabled' => \App\Http\Middleware\CheckOtpEnabled::class,
     ];
 
     /**

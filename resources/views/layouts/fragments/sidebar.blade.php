@@ -446,6 +446,21 @@
 
                         </ul>
                     </li>
+                @else
+                <li {{ Request::is(['otp/activate*']) ? 'class=active' : '' }}>
+                    <a href="{{ route('otp.activate') }}">
+                        <i class="fa fa-mobile"></i> Aktivasi OTP
+                        @if(auth()->user()->otp_enabled)
+                            <span class="pull-right">
+                                <small class="label pull-right bg-green">Aktif</small>
+                            </span>
+                        @else
+                            <span class="pull-right">
+                                <small class="label pull-right bg-yellow">Tidak Aktif</small>
+                            </span>
+                        @endif
+                    </a>
+                </li>
                 @endif
             @endif
             <li class="header">VISITOR COUNTER</li>

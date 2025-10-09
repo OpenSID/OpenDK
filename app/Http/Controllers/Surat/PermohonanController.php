@@ -83,6 +83,9 @@ class PermohonanController extends Controller
 
                 $data['download_url'] = route('surat.permohonan.download', $row->id);
 
+                $pathSurat = asset('storage/surat/' . $row->file);
+                $data['preview_url'] = $pathSurat;
+
                 return view('forms.aksi', $data);
             })
             ->editColumn('nama', function ($row) {

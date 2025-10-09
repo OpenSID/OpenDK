@@ -33,7 +33,7 @@
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 80px;">Aksi</th>
+                                <th style="min-width: 120px;">Aksi</th>
                                 <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama Surat</th>
                                 <th>Nama Penduduk</th>
@@ -60,7 +60,8 @@
                 ajax: {
                     url: "{!! route('surat.permohonan.getdata') !!}"
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center',
@@ -95,7 +96,30 @@
                     },
                 ]
             });
+
+            // Event untuk tombol pratinjau
+            $(document).on('click', '.btn-preview-surat', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                $('#modalPreviewSurat .modal-body').html('<iframe src="'+url+'" width="100%" height="500px" style="border:none;"></iframe>');
+                $('#modalPreviewSurat').modal('show');
+            });
         });
     </script>
+
+    <!-- Modal Pratinjau Surat -->
+    <div class="modal fade" id="modalPreviewSurat" tabindex="-1" role="dialog" aria-labelledby="modalPreviewSuratLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="modalPreviewSuratLabel">Pratinjau Surat</h4>
+          </div>
+          <div class="modal-body" style="min-height:520px;">
+            <!-- Konten pratinjau akan dimuat di sini -->
+          </div>
+        </div>
+      </div>
+    </div>
     @include('forms.datatable-vertical')
 @endpush

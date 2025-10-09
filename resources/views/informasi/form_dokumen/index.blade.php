@@ -1,108 +1,109 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{!! $page_title !!}</li>
-        </ol>
-    </section>
-    <section class="content container-fluid">
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{!! $page_title !!}</li>
+    </ol>
+</section>
+<section class="content container-fluid">
 
-        @include('partials.flash_message')
+    @include('partials.flash_message')
 
-        @if ($jenis_dokumen->count() > 0)
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    @include('forms.btn-social', ['create_url' => route('informasi.form-dokumen.create')])
-                </div>
+    @if ($jenis_dokumen->count() > 0)
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            @include('forms.btn-social', ['create_url' => route('informasi.form-dokumen.create')])
+        </div>
 
-                <div class="box-body">
-                    <!-- Filter Dropdown untuk bulan, tahun, dan tipe dokumen -->
-                    <div class="form-group row">
-                        <div class="col-md-8 col-sm-8 col-xs-12">
-                            <div class="row">
-                                {{-- Filter Bulan --}}
-                                <div class="col-md-4 pl-md-1">
-                                    {!! Form::select(
-                                        'bulan',
-                                        [
-                                            '01' => 'Januari',
-                                            '02' => 'Februari',
-                                            '03' => 'Maret',
-                                            '04' => 'April',
-                                            '05' => 'Mei',
-                                            '06' => 'Juni',
-                                            '07' => 'Juli',
-                                            '08' => 'Agustus',
-                                            '09' => 'September',
-                                            '10' => 'Oktober',
-                                            '11' => 'November',
-                                            '12' => 'Desember',
-                                        ],
-                                        null,
-                                        [
-                                            'class' => 'form-control',
-                                            'placeholder' => '- Pilih Bulan -',
-                                        ],
-                                    ) !!}
-                                </div>
+        <div class="box-body">
+            <!-- Filter Dropdown untuk bulan, tahun, dan tipe dokumen -->
+            <div class="form-group row">
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                    <div class="row">
+                        {{-- Filter Bulan --}}
+                        <div class="col-md-4 pl-md-1">
+                            {!! html()->select('bulan')
+                            ->options([
+                            '01' => 'Januari',
+                            '02' => 'Februari',
+                            '03' => 'Maret',
+                            '04' => 'April',
+                            '05' => 'Mei',
+                            '06' => 'Juni',
+                            '07' => 'Juli',
+                            '08' => 'Agustus',
+                            '09' => 'September',
+                            '10' => 'Oktober',
+                            '11' => 'November',
+                            '12' => 'Desember',
+                            ])
+                            ->class('form-control')
+                            ->placeholder('- Pilih Bulan -')
+                            ->value(old('bulan', isset($dokumen) ? $dokumen->bulan : '')) !!}
+                        </div>
 
-                                {{-- Filter Tahun --}}
-                                <div class="col-md-4 pr-md-1">
-                                    {!! Form::select('tahun', array_combine(range(date('Y'), date('Y') - 10), range(date('Y'), date('Y') - 10)), null, [
-                                        'class' => 'form-control',
-                                        'placeholder' => '- Pilih Tahun -',
-                                    ]) !!}
-                                </div>
+                        {{-- Filter Tahun --}}
+                        <div class="col-md-4 pr-md-1">
+                            {!! html()->select('tahun')
+                            ->options(
+                            collect(range(date('Y'), date('Y') - 10))->mapWithKeys(fn($y) => [$y => $y])->toArray()
+                            )
+                            ->class('form-control')
+                            ->placeholder('- Pilih Tahun -')
+                            ->value(old('tahun', isset($dokumen) ? $dokumen->tahun : '')) !!}
+                        </div>
 
-                                {{-- Filter Jenis Dokumen --}}
-                                <div class="col-md-4 pr-md-1">
-                                    {!! Form::select('jenis_dokumen_id', \App\Models\JenisDokumen::pluck('nama', 'id'), null, [
-                                        'placeholder' => '-Pilih Jenis Dokumen-',
-                                        'class' => 'form-control',
-                                        'id' => 'jenis_dokumen_id',
-                                    ]) !!}
-                                </div>
-                            </div>
+                        {{-- Filter Jenis Dokumen --}}
+                        <div class="col-md-4 pr-md-1">
+                            {!! html()->select('jenis_dokumen_id')
+                            ->options(\App\Models\JenisDokumen::pluck('nama', 'id')->toArray())
+                            ->class('form-control')
+                            ->placeholder('- Pilih Jenis Dokumen -')
+                            ->id('jenis_dokumen_id')
+                            ->value(old('jenis_dokumen_id', isset($dokumen) ? $dokumen->jenis_dokumen_id : '')) !!}
                         </div>
                     </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="dokumen-table">
-                            <thead>
-                                <tr>
-                                    <th class="text-center text-nowrap" style="max-width: 160px;">Aksi</th>
-                                    <th>Jenis Dokumen</th>
-                                    <th>Judul Dokumen</th>
-                                    <th>Waktu Retensi Dokumen</th>
-                                    <th>Tanggal Terbit</th>
-                                    <th>Keterangan</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
                 </div>
             </div>
-        @else
-            <div class="callout callout-warning">
-                <h4>Informasi!</h4>
-                <p>Data jenis dokumen belum tersedia. Silakan tambah data <b><a href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="dokumen-table">
+                    <thead>
+                        <tr>
+                            <th class="text-center text-nowrap" style="max-width: 160px;">Aksi</th>
+                            <th>Jenis Dokumen</th>
+                            <th>Judul Dokumen</th>
+                            <th>Waktu Retensi Dokumen</th>
+                            <th>Tanggal Terbit</th>
+                            <th>Keterangan</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-        @endif
-    </section>
+        </div>
+    </div>
+    @else
+    <div class="callout callout-warning">
+        <h4>Informasi!</h4>
+        <p>Data jenis dokumen belum tersedia. Silakan tambah data <b><a
+                    href="{{ route('setting.jenis-dokumen.index') }}">jenis dokumen</a></b> terlebih dahulu.</p>
+    </div>
+    @endif
+</section>
 @endsection
 
 @include('partials.asset_datatables')
 
 @push('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             var table = $('#dokumen-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -211,7 +212,7 @@
             });
 
         });
-    </script>
-    @include('forms.datatable-vertical')
-    @include('forms.delete-modal')
+</script>
+@include('forms.datatable-vertical')
+@include('forms.delete-modal')
 @endpush

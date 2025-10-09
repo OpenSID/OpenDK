@@ -2,7 +2,7 @@ name: Deploy OpenDK Rilis with Ansible
 
 on:
   release:
-    types: [published]
+    types: [published, edited, prereleased]
 
 permissions:
   contents: read
@@ -13,9 +13,13 @@ concurrency:
 
 jobs:
   deploy-production:
-    # Hanya jalan kalau rilis dari branch master & bukan prerelease
-    if: github.event.release.target_commitish == 'master' && github.event.release.prerelease == false
-    name: Deploy OpenDK Rilis to Production Server (Release)
+    # Hanya jalan kalau rilis dari branch master & bukan prerelease,
+    # serta event adalah published atau edited
+    if: |
+      github.event.release.target_commitish == 'master' &&
+      github.event.release.prerelease == false &&
+      (github.event.action == 'published' || github.event.action == 'edited')
+    name: Deploy OpenDK (Release)
     runs-on: ubuntu-latest
 
     steps:
@@ -35,9 +39,13 @@ jobs:
             ansible-playbook -i inventories/production/inventory.yml playbooks/deploy-opendk-rilis.yml --extra-vars "release_tag=${{ github.event.release.tag_name }}"
 
   deploy-prerelease:
-    # Hanya jalan kalau rilis dari branch master & prerelease = true
-    if: github.event.release.target_commitish == 'master' && github.event.release.prerelease == true
-    name: Deploy OpenDK Rilis to Production Server (Pre-Release)
+    # Hanya jalan kalau rilis dari branch master & prerelease = true,
+    # serta event adalah published atau edited
+    if: |
+      github.event.release.target_commitish == 'master' &&
+      github.event.release.prerelease == true &&
+      (github.event.action == 'published' || github.event.action == 'edited')
+    name: Deploy OpenDK (Pre-Release)
     runs-on: ubuntu-latest
 
     steps:

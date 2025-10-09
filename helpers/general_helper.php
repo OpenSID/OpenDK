@@ -46,7 +46,7 @@ use willvincent\Feeds\Facades\FeedsFacade;
  * @param  string  $content
  * @return string
  */
-if (! function_exists('get_tag_image')) {
+if (!function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
         if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
@@ -204,7 +204,7 @@ function get_words($sentence, $count = 10)
 
 function diff_for_humans($date)
 {
-    return  Carbon::parse($date)->diffForHumans();
+    return Carbon::parse($date)->diffForHumans();
 }
 
 function format_datetime($date)
@@ -293,7 +293,7 @@ function is_wajib_ktp($umur, $status_kawin)
     if ($umur === null) {
         return null;
     }
-    $wajib_ktp = (($umur > 16) or (! empty($status_kawin) and $status_kawin != 1));
+    $wajib_ktp = (($umur > 16) or (!empty($status_kawin) and $status_kawin != 1));
 
     return $wajib_ktp;
 }
@@ -315,7 +315,7 @@ function is_logo($url = '', $file = '/img/logo.png')
 
 function is_user($url = null, $sex = 1, $pengurus = null)
 {
-    if ($url && ! $pengurus) {
+    if ($url && !$pengurus) {
         $url = 'storage/penduduk/foto/' . $url;
     }
 
@@ -335,14 +335,14 @@ function avatar($foto)
     return is_img($foto, $default);
 }
 
-if (! function_exists('divnum')) {
+if (!function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
 
-if (! function_exists('format_number_id')) {
+if (!function_exists('format_number_id')) {
     function format_number_id($inp = 0)
     {
         return number_format($inp, 2, ',', '.');
@@ -376,7 +376,7 @@ function terbilang($angka)
     return $terbilang;
 }
 
-if (! function_exists('sudahInstal')) {
+if (!function_exists('sudahInstal')) {
     /**
      * Cek apakah sudah install OpenDK atau belum
      *
@@ -384,11 +384,38 @@ if (! function_exists('sudahInstal')) {
      */
     function sudahInstal(): bool
     {
-        if (! file_exists(storage_path('installed'))) {
+        if (!file_exists(storage_path('installed'))) {
             return false;
         }
 
         return true;
+    }
+}
+
+if (!function_exists('isActive')) {
+    /**
+     * Helper function untuk installer views - cek apakah route aktif
+     *
+     * @param string $routeName
+     * @return string
+     */
+    function isActive($routeName): string
+    {
+        // Convert old route names to new ones
+        $routeMapping = [
+            'LaravelInstaller::welcome' => 'installer.welcome',
+            'LaravelInstaller::requirements' => 'installer.requirements',
+            'LaravelInstaller::permissions' => 'installer.permissions',
+            'LaravelInstaller::environment' => 'installer.environment',
+            'LaravelInstaller::environmentWizard' => 'installer.environmentWizard',
+            'LaravelInstaller::environmentClassic' => 'installer.environmentClassic',
+            'LaravelInstaller::database' => 'installer.database',
+            'LaravelInstaller::final' => 'installer.final',
+        ];
+
+        $mappedRoute = $routeMapping[$routeName] ?? $routeName;
+
+        return request()->routeIs($mappedRoute) ? 'active' : '';
     }
 }
 
@@ -398,7 +425,7 @@ if (! function_exists('sudahInstal')) {
  * @param  string  $url
  * @return bool
  */
-if (! function_exists('checkWebsiteAccessibility')) {
+if (!function_exists('checkWebsiteAccessibility')) {
     function checkWebsiteAccessibility($url)
     {
         $options = [
@@ -425,7 +452,7 @@ if (! function_exists('checkWebsiteAccessibility')) {
     }
 }
 
-if (! function_exists('bersihkan_xss')) {
+if (!function_exists('bersihkan_xss')) {
     function bersihkan_xss($str)
     {
         $antiXSS = new AntiXSS();
@@ -436,7 +463,7 @@ if (! function_exists('bersihkan_xss')) {
     }
 }
 
-if (! function_exists('parsedown')) {
+if (!function_exists('parsedown')) {
     function parsedown($params = null)
     {
         $parsedown = new \App\Http\Controllers\Helpers\Parsedown();
@@ -449,7 +476,7 @@ if (! function_exists('parsedown')) {
     }
 }
 
-if (! function_exists('theme_new')) {
+if (!function_exists('theme_new')) {
     /**
      * Ambil model tema
      *
@@ -465,7 +492,7 @@ if (! function_exists('theme_new')) {
     }
 }
 
-if (! function_exists('scan_themes')) {
+if (!function_exists('scan_themes')) {
     function scan_themes()
     {
         $themes = \Hexadog\ThemesManager\Facades\ThemesManager::all();
@@ -487,11 +514,11 @@ if (! function_exists('scan_themes')) {
     }
 }
 
-if (! function_exists('theme_active')) {
+if (!function_exists('theme_active')) {
     function theme_active()
     {
         $themeActive = \App\Models\Themes::where('active', 1)->first();
-        if (! $themeActive) {
+        if (!$themeActive) {
             $themeActive = \App\Models\Themes::where('system', 1)->first();
             $themeActive->active = 1;
             $themeActive->save();
@@ -501,7 +528,7 @@ if (! function_exists('theme_active')) {
     }
 }
 
-if (! function_exists('getFeeds')) {
+if (!function_exists('getFeeds')) {
     function getFeeds()
     {
         return cache()->remember('feeds_desa', 60 * 60, function () {
@@ -572,7 +599,7 @@ function nama($str): ?string
 function kode_wilayah($kode_wilayah): string
 {
     $kode_prov_kab_kec = str_split(substr($kode_wilayah, 0, 6), 2);
-    $kode_desa         = (strlen($kode_wilayah) > 6) ? '.' . substr($kode_wilayah, 6) : '';
+    $kode_desa = (strlen($kode_wilayah) > 6) ? '.' . substr($kode_wilayah, 6) : '';
 
     return implode('.', $kode_prov_kab_kec) . $kode_desa;
 }
@@ -600,15 +627,15 @@ function hari($tgl): string
 function number_to_words($number, $nol_sen = true): string
 {
     $before_comma = trim(to_word($number));
-    $after_comma  = trim(comma($number));
-    $result       = $before_comma . ($nol_sen ? '' : ' koma ' . $after_comma);
+    $after_comma = trim(comma($number));
+    $result = $before_comma . ($nol_sen ? '' : ' koma ' . $after_comma);
 
     return ucwords($result . ' Rupiah');
 }
 
 function to_word($number): string
 {
-    $words      = '';
+    $words = '';
     $arr_number = [
         '',
         'satu',
@@ -627,8 +654,8 @@ function to_word($number): string
     $unit = ['', 'ribu', 'juta', 'milyar', 'triliun', 'kuadriliun', 'kuintiliun', 'sekstiliun', 'septiliun', 'oktiliun', 'noniliun', 'desiliun', 'undesiliun', 'duodesiliun', 'tredesiliun', 'kuatuordesiliun'];
 
     if (strpos($number, ',') === true) {
-        $parts       = explode(',', $number);
-        $intPart     = (int) $parts[0];
+        $parts = explode(',', $number);
+        $intPart = (int) $parts[0];
         $decimalPart = (int) $parts[1];
 
         $words = to_word($intPart) . ' koma ' . to_word($decimalPart);
@@ -669,7 +696,7 @@ function to_word($number): string
 function comma($number): string
 {
     $after_comma = stristr($number, ',');
-    $arr_number  = [
+    $arr_number = [
         'nol',
         'satu',
         'dua',
@@ -683,8 +710,8 @@ function comma($number): string
     ];
 
     $results = '';
-    $length  = strlen($after_comma);
-    $i       = 1;
+    $length = strlen($after_comma);
+    $i = 1;
 
     while ($i < $length) {
         $get = substr($after_comma, $i, 1);
@@ -710,5 +737,5 @@ function getBulan(int $bln)
 function kembalikanSlug($str): ?string
 {
     // Ganti '-' dengan spasi dan hilangkan titik '.'
-    return  str_replace(['-','.'], [' ',''], $str);
+    return str_replace(['-', '.'], [' ', ''], $str);
 }

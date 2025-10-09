@@ -35,6 +35,7 @@ use App\Enums\LogVerifikasiSurat;
 use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\LogTte;
 use App\Models\Surat;
 use GuzzleHttp\Exception\ClientException;
@@ -48,6 +49,7 @@ class PermohonanController extends Controller
 {
     public function index()
     {
+        // dd(!$this->isDatabaseGabungan(), DataDesa::pluck('desa_id'));
         $page_title = 'Permohonan Surat';
         $page_description = 'Daftar Permohonan Surat';
 
@@ -56,7 +58,10 @@ class PermohonanController extends Controller
 
     public function getData()
     {
-        return DataTables::of(Surat::permohonan())
+        // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
+        return DataTables::of(Surat::permohonan()->when(!$this->isDatabaseGabungan(), function ($query) {
+            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
+        }))
             ->addColumn('aksi', function ($row) {
                 $user = auth()->user()->pengurus_id;
                 $isAllow = false;
@@ -82,6 +87,12 @@ class PermohonanController extends Controller
             })
             ->editColumn('nama', function ($row) {
                 return "Surat {$row->nama}";
+            })
+            ->editColumn('nama_penduduk', function ($row) {
+                if (isset($row->penduduk) && !empty($row->penduduk->nama)) {
+                    return $row->penduduk->nama;
+                }
+                return $row->nama_penduduk;
             })
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
@@ -266,7 +277,10 @@ class PermohonanController extends Controller
 
     public function getDataDitolak()
     {
-        return DataTables::of(Surat::ditolak())
+        // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
+        return DataTables::of(Surat::ditolak()->when(!$this->isDatabaseGabungan(), function ($query) {
+            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
+        }))
             ->editColumn('nama', function ($row) {
                 return "Surat {$row->nama}";
             })

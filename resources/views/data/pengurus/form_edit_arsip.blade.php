@@ -2,11 +2,15 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Jenis Dokumen</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::select('jenis_surat', ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck('nama', 'id')->toArray(), isset($document) ? $document->jenis_surat : null, [
-            'class' => 'form-control',
-            'id' => 'jenis_surat',
-            'required' => true,
-        ]) !!}
+        {!! html()->select('jenis_surat', ['' => 'Pilih Jenis Dokumen'] + \App\Models\JenisSurat::pluck(
+    'nama',
+    'id'
+)->toArray()->value(old('jenis_surat', isset($pengurus) ? $pengurus->jenis_surat : '')), isset($document) ?
+    $document->jenis_surat : null, [
+    'class' => 'form-control',
+    'id' => 'jenis_surat',
+    'required' => true,
+]) !!}
     </div>
 
 </div>
@@ -15,7 +19,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Judul Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('judul_document', $document->judul_document ?? null, ['placeholder' => 'Judul Document', 'class' => 'form-control', 'required' => true]) !!}
+        {!! html()->text('judul_document')->class('form-control')->required()->placeholder('Judul
+        Document')->value(old('judul_document', isset($pengurus) ? $pengurus->judul_document : '')) !!}
     </div>
 </div>
 
@@ -34,17 +39,33 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('keterangan', $document->keterangan ?? null, ['placeholder' => 'Keterangan', 'class' => 'form-control', 'required' => true]) !!}
+        {!!
+    html()->text('keterangan')->class('form-control')->required()->placeholder('Keterangan')->value(old(
+        'keterangan',
+        isset($pengurus) ? $pengurus->keterangan : ''
+    )) !!}
     </div>
 </div>
-{!! Form::hidden('das_penduduk_id', $document->das_penduduk_id ?? '', ['placeholder' => 'das_penduduk_id', 'class' => 'form-control', 'required' => true, 'readonly' => true]) !!}
-{!! Form::hidden('document_id', $document->id ?? '', ['placeholder' => 'document_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
-{!! Form::hidden('pengurus_id', $pengurus_id ?? '', ['placeholder' => 'pengurus_id', 'class' => 'form-control', 'required' => false, 'readonly' => true]) !!}
+{!!
+    html()->hidden('das_penduduk_id')->class('form-control')->required()->isReadonly()->placeholder('das_penduduk_id')->value(old(
+        'das_penduduk_id',
+        isset($pengurus) ? $pengurus->das_penduduk_id : ''
+    )) !!}
+{!!
+    html()->hidden('document_id')->class('form-control')->isReadonly()->placeholder('document_id')->value(old(
+        'document_id',
+        isset($pengurus) ? $pengurus->document_id : ''
+    )) !!}
+{!!
+    html()->hidden('pengurus_id')->class('form-control')->isReadonly()->placeholder('pengurus_id')->value(old(
+        'pengurus_id',
+        isset($pengurus) ? $pengurus->pengurus_id : ''
+    )) !!}
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("#pengurus_id").on('change', function() {
+        $(document).ready(function () {
+            $("#pengurus_id").on('change', function () {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
                     let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
@@ -52,7 +73,7 @@
                         url: url,
                         type: 'GET',
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             let tempat_lahir = response.tempat_lahir
                             let tanggal_lahir = response.tanggal_lahir
                             let alamat = response.alamat
@@ -66,7 +87,7 @@
                             $("input[name='pendidikan']").val(pendidikan);
                             $("input[name='warga_negara_agama']").val(warga_negara_agama);
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error(error);
                             alert("Terjadi kesalahan saat mengambil data.");
                         }

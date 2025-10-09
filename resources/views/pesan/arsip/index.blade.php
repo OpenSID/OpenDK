@@ -27,7 +27,7 @@
                                 {!! html()->form()->route('pesan.index')->method('get')->id('form-search-desa')->open()
                                 !!}                                
                                 {!! html()->select('das_data_desa_id')
-                                ->options($list_desa->pluck('nama', 'id')->toArray(), 'pilih desa')
+                                ->options($list_desa->pluck('nama', 'desa_id')->toArray(), 'pilih desa')
                                 ->value($desa_id)
                                 ->class('form-control')
                                 ->id('list_desa')
@@ -64,7 +64,7 @@
                                         </div>
                                     </td>
                                     <td style="width: 10%" class="mailbox-name"><a
-                                            href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama
+                                            href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->additional_info['nama_desa'] ?? '-'
                                             }}</a>
                                     </td>
                                     <td style="width: 65%" class="mailbox-subject">

@@ -72,7 +72,7 @@ class PesanController extends Controller
             })
             ->paginate(Pesan::PER_PAGE);
 
-        $list_desa = (new DesaService())->listDesa();
+        $list_desa = (new DesaService())->listDesa();        
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 

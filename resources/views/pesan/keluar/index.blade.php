@@ -27,12 +27,8 @@
                             <div class="col-md-6">
                                 {!! html()->form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open()
                                 !!}
-                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'desa_id'), $desa_id, [
-                                'placeholder' => 'pilih desa',
-                                'class' => 'form-control',
-                                'id' => 'list_desa',
-                                'required',
-                                ]) !!}
+                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'desa_id'), $desa_id)->placeholder('Pilih '.config('setting.sebutan_desa'))->class('form-control')->id('list_desa')->required()
+                                !!}
                                 {!! html()->form()->close() !!}
                             </div>
                             <div class="col-md-6">

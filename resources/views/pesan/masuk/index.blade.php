@@ -27,7 +27,7 @@
                             <div class="col-md-6">
                                 {!! html()->form('GET', route('pesan.index'))->id('form-search-desa')->open() !!}
                                 {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'desa_id'),
-                                $desa_id)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required()
+                                $desa_id)->placeholder('Pilih '.config('setting.sebutan_desa'))->class('form-control')->id('list_desa')->required()
                                 !!}
                                 {!! html()->form()->close() !!}
                             </div>

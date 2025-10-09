@@ -27,8 +27,8 @@
                                 {!! html()->form()->route('pesan.index')->method('get')->id('form-search-desa')->open()
                                 !!}                                
                                 {!! html()->select('das_data_desa_id')
-                                ->options($list_desa->pluck('nama', 'desa_id')->toArray(), 'pilih desa')
-                                ->value($desa_id)
+                                ->options($list_desa->pluck('nama', 'desa_id'), $desa_id)
+                                ->placeholder('Pilih '.config('setting.sebutan_desa'))
                                 ->class('form-control')
                                 ->id('list_desa')
                                 ->required() !!}

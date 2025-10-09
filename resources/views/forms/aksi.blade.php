@@ -78,7 +78,6 @@
     @endif
     @if (isset($preview_url))
         <button type="button" class="btn btn-danger btn-sm btn-preview-surat {!! empty($preview_url) ? 'disabled' : '' !!}" style="width: 40px; margin-right: 2px;" data-url="{{ $preview_url }}" title="Pratinjau Surat">
-            {{-- ikon surat --}}
             <i class="fa fa-file-pdf-o"></i>
         </button>
     @endif

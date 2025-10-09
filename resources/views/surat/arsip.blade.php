@@ -83,7 +83,17 @@
                     },
                 ]
             });
+
+            // Event untuk tombol pratinjau
+            $(document).on('click', '.btn-preview-surat', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                $('#modalPreviewSurat .modal-body').html('<iframe src="'+url+'" width="100%" height="500px" style="border:none;"></iframe>');
+                $('#modalPreviewSurat').modal('show');
+            });
         });
     </script>
+
+    @include('components.modal-preview-surat')
     @include('forms.datatable-vertical')
 @endpush

@@ -64,6 +64,7 @@ class PermohonanController extends Controller
         }))
             ->addColumn('aksi', function ($row) {
                 $user = auth()->user()->pengurus_id;
+                
                 $isAllow = false;
                 if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
                     $isAllow = true;

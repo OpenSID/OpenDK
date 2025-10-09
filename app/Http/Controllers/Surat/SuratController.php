@@ -56,6 +56,8 @@ class SuratController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['download_url'] = route('surat.arsip.download', $row->id);
 
+                $pathSurat = asset('storage/surat/' . $row->file);
+                $data['preview_url'] = $pathSurat;
                 return view('forms.aksi', $data);
             })
             ->editColumn('tanggal', function ($row) {

@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        DB::table('das_setting')->where('key', 'otp_login_enabled')->delete();
+        DB::table('das_setting')->where('key', 'login_otp')->delete();
     }
 };

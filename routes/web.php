@@ -115,6 +115,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::post('/otp/resend', 'OtpController@resendOtp')->name('otp.resend');
     });
 
+    // 2FA Routes
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('auth')->group(function () {
+        Route::get('/2fa/settings', 'TwoFactorController@showSettingsForm')->name('2fa.settings');
+        Route::post('/2fa/settings', 'TwoFactorController@saveSettings')->name('2fa.save-settings');
+        Route::get('/2fa/activate', 'TwoFactorController@showActivationForm')->name('2fa.activate');
+        Route::post('/2fa/request-activation', 'TwoFactorController@requestActivation')->name('2fa.request-activation');
+        Route::get('/2fa/verify-activation', 'TwoFactorController@showVerifyActivationForm')->name('2fa.verify-activation');
+        Route::post('/2fa/verify-activation', 'TwoFactorController@verifyActivation');
+        Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
+    });
+
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });

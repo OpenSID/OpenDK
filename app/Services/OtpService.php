@@ -123,7 +123,7 @@ class OtpService
     {
         try {
             $botToken = config('otp.telegram_bot_token');
-            
+
             if (empty($botToken)) {
                 Log::warning('Telegram bot token not configured');
                 return false;
@@ -154,13 +154,24 @@ class OtpService
     private function formatTelegramMessage(int $otp, string $purpose): string
     {
         $appName = config('app.name', 'OpenDK');
-        $purposeText = $purpose === 'activation' ? 'Aktivasi OTP' : 'Login';
-        
+
+        switch ($purpose) {
+            case 'activation':
+                $purposeText = 'Aktivasi OTP';
+                break;
+            case '2fa_activation':
+                $purposeText = 'Aktivasi 2FA';
+                break;
+            default:
+                $purposeText = 'Login';
+                break;
+        }
+
         return "🔐 <b>{$appName} - {$purposeText}</b>\n\n" .
-               "Kode OTP Anda: <code>{$otp}</code>\n\n" .
-               "⏰ Berlaku selama " . config('otp.expiry_minutes', 5) . " menit\n" .
-               "🔒 Jangan bagikan kode ini kepada siapa pun\n\n" .
-               "<i>Jika Anda tidak meminta kode ini, abaikan pesan ini.</i>";
+            "Kode OTP Anda: <code>{$otp}</code>\n\n" .
+            "⏰ Berlaku selama " . config('otp.expiry_minutes', 5) . " menit\n" .
+            "🔒 Jangan bagikan kode ini kepada siapa pun\n\n" .
+            "<i>Jika Anda tidak meminta kode ini, abaikan pesan ini.</i>";
     }
 
     /**
@@ -231,7 +242,7 @@ class OtpService
         if (!Hash::check($otp, $token->token_hash)) {
             $token->incrementAttempts();
             $remainingAttempts = 3 - $token->attempts;
-            
+
             return [
                 'success' => false,
                 'message' => "Kode OTP salah. Sisa percobaan: {$remainingAttempts}",
@@ -267,7 +278,7 @@ class OtpService
     {
         try {
             $botToken = config('otp.telegram_bot_token');
-            
+
             if (empty($botToken)) {
                 return false;
             }

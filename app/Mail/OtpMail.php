@@ -64,11 +64,24 @@ class OtpMail extends Mailable
      */
     public function build()
     {
-        $subject = $this->purpose === 'activation' 
-            ? 'Kode OTP Aktivasi - ' . config('app.name')
-            : 'Kode OTP Login - ' . config('app.name');
+        switch ($this->purpose) {
+            case 'activation':
+                $subject = 'Kode OTP Aktivasi - ' . config('app.name');
+                break;
+            case '2fa_activation':
+                $subject = 'Kode OTP Aktivasi 2FA - ' . config('app.name');
+                break;
+            default:
+                $subject = 'Kode OTP Login - ' . config('app.name');
+                break;
+        }
 
         return $this->subject($subject)
-                    ->view('emails.otp');
+            ->view('emails.otp')
+            ->with([
+                'otp' => $this->otp,
+                'purpose' => $this->purpose,
+                'expiryMinutes' => $this->expiryMinutes,
+            ]);
     }
 }

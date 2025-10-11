@@ -76,6 +76,7 @@ class User extends Authenticatable implements JWTSubject
         'last_login',
         'pengurus_id',
         'otp_enabled',
+        'two_fa_enabled',
         'otp_channel',
         'otp_identifier',
         'telegram_chat_id',

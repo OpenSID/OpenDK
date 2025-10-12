@@ -102,7 +102,7 @@ class TwoFactorController extends Controller
             'telegram_chat_id' => $channel === 'telegram' ? $identifier : null,
         ]);
 
-        return back()->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
+        return redirect()->route('2fa.activate')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
     }
 
     /**
@@ -219,7 +219,7 @@ class TwoFactorController extends Controller
         // Clear session
         session()->forget('2fa_activation');
 
-        return redirect()->route('2fa.settings')
+        return redirect()->route('2fa.activate')
             ->with('success', 'Two-Factor Authentication berhasil diaktifkan!');
     }
 

@@ -14,7 +14,7 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Pengaturan Two-Factor Authentication</h3>
@@ -106,7 +106,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-save"></i> Simpan Pengaturan
                         </button>
-                        <a href="{{ route('dashboard') }}" class="btn btn-default">
+                        <a href="{{ route('2fa.activate') }}" class="btn btn-default">
                             <i class="fa fa-arrow-left"></i> Kembali
                         </a>
                     </div>

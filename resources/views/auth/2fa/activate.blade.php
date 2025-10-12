@@ -14,7 +14,7 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">Aktivasi Two-Factor Authentication</h3>
@@ -43,7 +43,7 @@
                                 memerlukan verifikasi tambahan saat login.</p>
                         </div>
 
-                        @if ($user->otp_enabled)
+                        @if ($user->two_fa_enabled)
                         <div class="alert alert-success">
                             <h4><i class="icon fa fa-check"></i> 2FA Sudah Aktif</h4>
                             <p>Two-Factor Authentication saat ini aktif pada akun Anda.</p>
@@ -81,13 +81,13 @@
                     </div>
 
                     <div class="box-footer">
-                        @if (!$user->otp_enabled && !$needsSetup)
+                        @if (!$user->two_fa_enabled && !$needsSetup)
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-send"></i> Kirim Kode Verifikasi
                         </button>
                         @endif
-                        <a href="{{ route('dashboard') }}" class="btn btn-default">
-                            <i class="fa fa-arrow-left"></i> Kembali
+                        <a href="{{ route('2fa.settings') }}" class="btn btn-default">
+                            <i class="fa fa-cogs"></i> Konfigurasi 2FA
                         </a>
                     </div>
                 </form>

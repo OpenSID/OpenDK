@@ -45,7 +45,8 @@ class TwoFactorController extends Controller
     public function __construct(OtpService $otpService)
     {
         parent::__construct();
-        $this->middleware('auth');
+        // Remove auth middleware for verify login methods
+        $this->middleware('auth')->except(['showVerifyLoginForm', 'verifyLogin']);
         $this->otpService = $otpService;
     }
 
@@ -235,5 +236,80 @@ class TwoFactorController extends Controller
         ]);
 
         return back()->with('success', 'Two-Factor Authentication berhasil dinonaktifkan.');
+    }
+
+    /**
+     * Show 2FA verification form for login
+     */
+    public function showVerifyLoginForm()
+    {
+        // Check if we have a 2FA login session
+        if (!session('two-factor:auth')) {
+            return redirect()->route('login')
+                ->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $authData = session('two-factor:auth');
+        $user = User::find($authData['id']);
+
+        if (!$user) {
+            session()->forget('two-factor:auth');
+            return redirect()->route('login')
+                ->with('error', 'Pengguna tidak ditemukan.');
+        }
+
+        return view('auth.2fa.verify-login', [
+            'page_title' => 'Verifikasi 2FA',
+            'page_description' => 'Masukkan kode 2FA untuk melanjutkan login',
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * Verify 2FA code and complete login
+     */
+    public function verifyLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|numeric|digits:6',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        // Check if we have a 2FA login session
+        if (!session('two-factor:auth')) {
+            return redirect()->route('login')
+                ->with('error', 'Sesi login tidak ditemukan. Silakan mulai lagi.');
+        }
+
+        $authData = session('two-factor:auth');
+        $user = User::find($authData['id']);
+
+        if (!$user) {
+            session()->forget('two-factor:auth');
+            return redirect()->route('login')
+                ->with('error', 'Pengguna tidak ditemukan.');
+        }
+
+        // Verify OTP for 2FA login
+        $result = $this->otpService->verify($user, $request->otp, '2fa_login');
+
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
+        }
+
+        // Login user
+        Auth::login($user, $authData['remember'] ?? false);
+
+        // Update last login
+        $user->update(['last_login' => now()]);
+
+        // Clear 2FA session
+        session()->forget('two-factor:auth');
+
+        return redirect()->intended(route('dashboard'))
+            ->with('success', 'Login berhasil!');
     }
 }

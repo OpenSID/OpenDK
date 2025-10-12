@@ -97,6 +97,9 @@
                 @case('2fa_activation')
                 Aktivasi 2FA
                 @break
+                @case('2fa_login')
+                Login 2FA
+                @break
                 @default
                 Kode OTP Login
                 @endswitch
@@ -116,6 +119,10 @@
                 Anda telah meminta untuk mengaktifkan Two-Factor Authentication (2FA). Gunakan kode berikut untuk
                 menyelesaikan
                 proses aktivasi:
+                @break
+                @case('2fa_login')
+                Anda sedang melakukan login dengan Two-Factor Authentication (2FA). Gunakan kode berikut untuk
+                menyelesaikan proses login:
                 @break
                 @default
                 Gunakan kode OTP berikut untuk login ke akun Anda:

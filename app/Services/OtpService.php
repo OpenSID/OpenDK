@@ -162,6 +162,9 @@ class OtpService
             case '2fa_activation':
                 $purposeText = 'Aktivasi 2FA';
                 break;
+            case '2fa_login':
+                $purposeText = 'Login 2FA';
+                break;
             default:
                 $purposeText = 'Login';
                 break;
@@ -231,7 +234,7 @@ class OtpService
             ];
         }
 
-        // Check max attempts
+        // Check max attempts (limit to 5 attempts)
         if ($token->hasMaxAttempts()) {
             return [
                 'success' => false,
@@ -241,20 +244,32 @@ class OtpService
 
         if (!Hash::check($otp, $token->token_hash)) {
             $token->incrementAttempts();
-            $remainingAttempts = 3 - $token->attempts;
+            $remainingAttempts = 5 - $token->attempts;
+
+            // Provide specific message based on purpose
+            $message = "Kode OTP salah. Sisa percobaan: {$remainingAttempts}";
+            if ($purpose === '2fa_login') {
+                $message = "Kode 2FA salah. Sisa percobaan: {$remainingAttempts}";
+            }
 
             return [
                 'success' => false,
-                'message' => "Kode OTP salah. Sisa percobaan: {$remainingAttempts}",
+                'message' => $message,
             ];
         }
 
         // OTP is valid, delete the token
         $token->delete();
 
+        // Provide specific success message based on purpose
+        $message = 'Kode OTP berhasil diverifikasi';
+        if ($purpose === '2fa_login') {
+            $message = 'Kode 2FA berhasil diverifikasi';
+        }
+
         return [
             'success' => true,
-            'message' => 'Kode OTP berhasil diverifikasi',
+            'message' => $message,
         ];
     }
 

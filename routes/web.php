@@ -126,6 +126,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
     });
 
+    // 2FA Login Routes (guest access)
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
+        Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');
+        Route::post('/2fa/verify-login', 'TwoFactorController@verifyLogin');
+    });
+
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });

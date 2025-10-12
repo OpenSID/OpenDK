@@ -374,6 +374,29 @@ class OtpController extends Controller
                 session(['otp_login.sent_at' => now()->timestamp]);
                 return response()->json(['success' => true, 'message' => 'Kode OTP baru telah dikirim']);
             }
+        } elseif ($purpose === '2fa_login') {
+            // Handle 2FA login resend
+            if (!session('two-factor:auth')) {
+                return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
+            }
+            
+            $authData = session('two-factor:auth');
+            $user = User::find($authData['id']);
+            
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'Pengguna tidak ditemukan'], 400);
+            }
+            
+            $result = $this->otpService->generateAndSend(
+                $user,
+                $user->otp_channel,
+                $user->otp_identifier,
+                '2fa_login'
+            );
+            
+            if ($result['sent']) {
+                return response()->json(['success' => true, 'message' => 'Kode 2FA baru telah dikirim']);
+            }
         }
         
         return response()->json(['success' => false, 'message' => 'Gagal mengirim ulang kode OTP'], 500);

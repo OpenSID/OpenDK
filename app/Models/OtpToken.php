@@ -84,7 +84,7 @@ class OtpToken extends Model
      */
     public function hasMaxAttempts(): bool
     {
-        return $this->attempts >= 3;
+        return $this->attempts >= 5;
     }
 
     /**

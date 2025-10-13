@@ -357,7 +357,7 @@
                 @endif
 
                 @if ($user->hasrole(['super-admin', 'administrator-website']))
-                    <li class="treeview {{ Request::is(['setting*', 'otp/activate*']) ? 'active' : '' }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
+                    <li class="treeview {{ Request::is(['setting*', 'otp*']) ? 'active' : '' }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -420,7 +420,7 @@
                             @if(config('setting.login_otp', true))
                             <li {{ Request::is(['otp/activate*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('otp.activate') }}">
-                                    <i class="fa fa-mobile"></i> Aktivasi OTP
+                                    <i class="fa fa-circle-o"></i> Aktivasi OTP
                                     @if(auth()->user()->otp_enabled)
                                         <span class="pull-right">
                                             <small class="label pull-right bg-green">Aktif</small>
@@ -452,7 +452,7 @@
                     @if (config('setting.login_otp', true))
                     <li {{ Request::is(['otp/activate*']) ? 'class=active' : '' }}>
                         <a href="{{ route('otp.activate') }}">
-                            <i class="fa fa-mobile"></i> Aktivasi OTP
+                            <i class="fa fa-circle-o"></i> Aktivasi OTP
                             @if(auth()->user()->otp_enabled)
                                 <span class="pull-right">
                                     <small class="label pull-right bg-green">Aktif</small>

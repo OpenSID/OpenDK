@@ -179,7 +179,7 @@ class OtpController extends Controller
         // Clear session
         session()->forget('otp_activation');
 
-        return redirect()->route('dashboard')
+        return redirect()->route('otp.activate')
             ->with('success', 'OTP berhasil diaktifkan! Anda sekarang dapat menggunakan OTP untuk login.');
     }
 

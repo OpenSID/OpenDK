@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,52 +24,38 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use App\Enums\Status;
+use App\Models\SettingAplikasi;
+use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class Pesan extends Model
+return new class () extends Migration
 {
-    use HasFactory;
-    protected $table = 'das_pesan';
-
-    protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at','additional_info'];
-
-    public const PESAN_MASUK = 'Pesan Masuk';
-
-    public const PESAN_KELUAR = 'Pesan Keluar';
-
-    public const BELUM_DIBACA = 0;
-
-    public const SUDAH_DIBACA = 1;
-
-    public const MASUK_ARSIP = 1;
-
-    public const NON_ARSIP = 0;
-
-    public const PER_PAGE = 10;
-
-    protected $casts = [
-        'additional_info' => 'array',
-    ];
-    public function detailPesan()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');
+        // Tambahkan setting untuk dukungan disabilitas tunanetra
+        SettingAplikasi::insert([
+            'key' => 'dukungan_disabilitas',
+            'value' => Status::TidakAktif,
+            'type' => 'boolean',
+            'description' => 'Aktifkan fitur dukungan aksesibilitas untuk difabel tunanetra.',
+            'kategori' => 'web',
+            'option' => '{}',
+        ]);
     }
 
-    public function dataDesa()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'das_data_desa_id');
+        SettingAplikasi::whereIn('key', ['dukungan_disabilitas'])->delete();
     }
-
-    public function getCustomDateAttribute()
-    {
-        return $this->created_at->format('d-m-Y H:i');
-    }
-}
+};

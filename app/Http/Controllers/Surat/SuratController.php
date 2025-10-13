@@ -52,7 +52,13 @@ class SuratController extends Controller
 
     public function getData()
     {
-        return DataTables::of(Surat::arsip())
+        $desa = request()->get('kode_desa');
+        return DataTables::of(Surat::arsip()
+        ->when($desa, function ($query) use ($desa) {
+            return $desa === 'Semua'
+                ? $query
+                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+        }))
             ->addColumn('aksi', function ($row) {
                 $data['download_url'] = route('surat.arsip.download', $row->id);
 
@@ -60,6 +66,12 @@ class SuratController extends Controller
             })
             ->editColumn('tanggal', function ($row) {
                 return format_date($row->tanggal);
+            })
+            ->editColumn('nama_penduduk', function ($row) {
+                if (isset($row->penduduk) && !empty($row->penduduk->nama)) {
+                    return $row->penduduk->nama;
+                }
+                return $row->nama_penduduk;
             })
             ->rawColumns(['aksi'])->make();
     }

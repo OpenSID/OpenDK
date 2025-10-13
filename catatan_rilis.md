@@ -10,6 +10,7 @@ Di rilis versi v2510.0.0 di versi ini terdapat modul komentar pada artikel dan p
 
 1. [#1301](https://github.com/OpenSID/OpenDK/issues/1301) Penyesuaian permohonan surat dengan api satudata.
 2. [#1337](https://github.com/OpenSID/OpenDK/issues/1337) Ubah link panduan ke panduan.opendesa.id.
+3. [#1343](https://github.com/OpenSID/OpenDK/issues/1343) Perbaiki form-form error karna perubahan package.
 
 #### TEKNIS
 

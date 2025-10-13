@@ -126,9 +126,6 @@
                                     <i class="fa fa-send"></i> Kirim Kode OTP
                                 </button>
                             @endif
-                            <a href="{{ route('dashboard') }}" class="btn btn-default">
-                                <i class="fa fa-arrow-left"></i> Kembali
-                            </a>
                         </div>
                     </form>
                 </div>

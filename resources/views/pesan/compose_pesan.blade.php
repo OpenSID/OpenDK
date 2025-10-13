@@ -28,7 +28,7 @@
                 <div class="box-body">
                     <div class="form-group">
                         <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
-                        {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'),
+                        {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'desa_id'),
                         null)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required() !!}
                     </div>
                     <div class="form-group">

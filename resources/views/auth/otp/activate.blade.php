@@ -14,7 +14,7 @@
 
     <section class="content">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <h3 class="box-title">Aktivasi Autentikasi OTP</h3>
@@ -47,7 +47,8 @@
                                 <div class="alert alert-success">
                                     <h4><i class="icon fa fa-check"></i> OTP Sudah Aktif</h4>
                                     <p>Anda saat ini menggunakan OTP melalui:
-                                        <strong>{{ ucfirst($user->otp_channel) }}</strong></p>
+                                        <strong>{{ ucfirst($user->otp_channel) }}</strong>
+                                    </p>
                                     <p>Identifier: <strong>{{ $user->otp_identifier }}</strong></p>
                                 </div>
 
@@ -55,8 +56,7 @@
                                     <label>Ubah Konfigurasi OTP</label>
                                     <p class="help-block">Jika Anda ingin mengubah konfigurasi OTP, nonaktifkan terlebih
                                         dahulu lalu aktifkan kembali dengan konfigurasi baru.</p>
-                                    <a href="{{ route('otp.deactivate') }}" class="btn btn-warning"
-                                        onclick="return confirm('Apakah Anda yakin ingin menonaktifkan OTP?')">
+                                    <a href="{{ route('otp.deactivate') }}" class="btn btn-warning btn-deactivate-otp">
                                         <i class="fa fa-times"></i> Nonaktifkan OTP
                                     </a>
                                 </div>
@@ -136,6 +136,7 @@
         </div>
     </section>
 
+    @include('partials.asset_sweetalert')
     @push('scripts')
         <script>
             $(document).ready(function() {
@@ -157,6 +158,25 @@
 
                 // Trigger initial state
                 $('input[name="channel"]:checked').trigger('change');
+
+                // SweetAlert2 confirmation for deactivating OTP
+                $(document).on('click', '.btn-deactivate-otp', function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    Swal.fire({
+                        title: 'Nonaktifkan OTP?',
+                        text: 'Apakah Anda yakin ingin menonaktifkan OTP?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, nonaktifkan',
+                        cancelButtonText: 'Batal',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirect to the deactivate route
+                            window.location.href = url;
+                        }
+                    });
+                });
             });
         </script>
     @endpush

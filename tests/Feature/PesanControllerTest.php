@@ -88,15 +88,15 @@ class PesanControllerTest extends CrudTestCase
         $desa = DataDesa::factory()->create();
         $response = $this->post(route('pesan.compose.post'), [
             'judul' => 'Judul Pesan',
-            'das_data_desa_id' => $desa->id,
+            'das_data_desa_id' => $desa->desa_id,
             'text' => 'Isi pesan'
         ]);
-
+        
         $response->assertRedirect(route('pesan.keluar'));
         $response->assertSessionHas('success');
         $this->assertDatabaseHas((new Pesan())->getTable(), [
             'judul' => 'Judul Pesan',
-            'das_data_desa_id' => $desa->id,
+            'das_data_desa_id' => $desa->desa_id,
         ]);
     }
 

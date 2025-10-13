@@ -230,4 +230,5 @@ class Controller extends BaseController
     {
         $this->akun_camat = $pengurus;
     }
+    
 }

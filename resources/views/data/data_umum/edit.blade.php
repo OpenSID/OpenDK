@@ -1,93 +1,95 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">Data Umum</a></li>
-        </ol>
-    </section>
-    <section class="content container-fluid">
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">Data Umum</a></li>
+    </ol>
+</section>
+<section class="content container-fluid">
 
-        @include('partials.flash_message')
+    @include('partials.flash_message')
 
-        {!! Form::model($data_umum, [
-            'route' => ['data.data-umum.update', $data_umum->id],
-            'method' => 'put',
-            'id' => 'form-event',
-            'class' => 'form-horizontal form-label-left',
-        ]) !!}
+    {!! html()->form('PUT', route('data.data-umum.update', $data_umum->id))
+    ->id('form-event')
+    ->class('form-horizontal form-label-left')
+    ->open() !!}
 
-        <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
+    <input type="hidden" name="path" id="path" value="{{ $data_umum->path }}">
 
-        <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab" data-toggle="tab">Info Wilayah</a></li>
-                <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta
-                        Wilayah</a></li>
-                <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor" data-toggle="tab">Lokasi Kantor</a></li>
-            </ul>
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="wilayah">
-                    <div class="box-body">
-                        @include('data.data_umum.form_edit')
-                    </div>
-                </div>
-
-                <div role="tabpanel" class="tab-pane" id="peta">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div id="tampil-map" style="height:500px">
-                                <div class="text-center" style="margin-top: 35vh">
-                                    <h1>Memuat Peta</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <a id="reset">
-                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
-                            Reset Peta</button>
-                    </a>
-                </div>
-
-                <div role="tabpanel" class="tab-pane" id="lokasi-kantor">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div id="tampil-lokasi-kantor" style="height:500px">
-                                <div class="text-center" style="margin-top: 35vh">
-                                    <h1>Memuat Lokasi Kantor</h1>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="lat">Latitude</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control input-sm lat" name="lat" id="lat" value="{{ $data_umum->lat }}">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="lat">Longitude</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control input-sm lng" name="lng" id="lng" value="{{ $data_umum->lng }}">
-                        </div>
-                    </div>
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#wilayah" role="tab" aria-controls="wilayah" id="wilayahTab"
+                    data-toggle="tab">Info Wilayah</a></li>
+            <li role="presentation"><a href="#peta" role="tab" aria-controls="peta" data-toggle="tab">Peta
+                    Wilayah</a></li>
+            <li role="presentation"><a href="#lokasi-kantor" role="tab" aria-controls="lokasi_kantor"
+                    data-toggle="tab">Lokasi Kantor</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="wilayah">
+                <div class="box-body">
+                    @include('data.data_umum.form_edit')
                 </div>
             </div>
 
-            <div class="box-footer">
-                @include('partials.button_reset_submit')
+            <div role="tabpanel" class="tab-pane" id="peta">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="tampil-map" style="height:500px">
+                            <div class="text-center" style="margin-top: 35vh">
+                                <h1>Memuat Peta</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <a id="reset">
+                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-refresh"></i>&nbsp;
+                        Reset Peta</button>
+                </a>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="lokasi-kantor">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div id="tampil-lokasi-kantor" style="height:500px">
+                            <div class="text-center" style="margin-top: 35vh">
+                                <h1>Memuat Lokasi Kantor</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="lat">Latitude</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-sm lat" name="lat" id="lat"
+                            value="{{ $data_umum->lat }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="lat">Longitude</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control input-sm lng" name="lng" id="lng"
+                            value="{{ $data_umum->lng }}">
+                    </div>
+                </div>
             </div>
         </div>
 
-        {!! Form::close() !!}
-    </section>
+        <div class="box-footer">
+            @include('partials.button_reset_submit')
+        </div>
+    </div>
+
+    {!! html()->form()->close() !!}
+</section>
 @endsection
 
 @include('partials.tinymce_min')
@@ -96,8 +98,8 @@
 @include('partials.asset_leaflet')
 
 @push('scripts')
-    <script>
-        function validateForm() {
+<script>
+    function validateForm() {
             var myForm = document.getElementById('form-event');
             // Check if the form is valid
             if (!myForm.checkValidity()) {
@@ -298,5 +300,5 @@
                 }
             })
         });
-    </script>
+</script>
 @endpush

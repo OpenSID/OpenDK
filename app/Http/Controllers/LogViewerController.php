@@ -34,10 +34,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmailSmtpRequest;
 use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
+use App\Helpers\SystemRequirementsChecker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Mail;
-use RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -62,7 +62,7 @@ class LogViewerController extends Controller
     /**
      * LogViewerController constructor.
      */
-    public function __construct(Controller $profil, RequirementsChecker $checker)
+    public function __construct(Controller $profil, SystemRequirementsChecker $checker)
     {
         $this->log_viewer = new LaravelLogViewer();
         $this->request = app('request');
@@ -110,7 +110,7 @@ class LogViewerController extends Controller
 
         if (is_array($data['logs']) && count($data['logs']) > 0) {
             $firstLog = reset($data['logs']);
-            if (! $firstLog['context'] && ! $firstLog['level']) {
+            if (!$firstLog['context'] && !$firstLog['level']) {
                 $data['standardFormat'] = false;
             }
         }
@@ -128,10 +128,10 @@ class LogViewerController extends Controller
         $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp();
 
         return app('view')->make($this->view_log, $data)
-        ->with('requirements', $requirements)
-        ->with('page_title', $page_title)
-        ->with('email_smtp', $email_smtp)
-        ->with('phpSupportInfo', $phpSupportInfo);
+            ->with('requirements', $requirements)
+            ->with('page_title', $page_title)
+            ->with('email_smtp', $email_smtp)
+            ->with('phpSupportInfo', $phpSupportInfo);
     }
 
     /**
@@ -157,8 +157,8 @@ class LogViewerController extends Controller
             return $this->redirect($this->request->url());
         } elseif ($this->request->has('delall')) {
             $files = ($this->log_viewer->getFolderName())
-                        ? $this->log_viewer->getFolderFiles(true)
-                        : $this->log_viewer->getFiles(true);
+                ? $this->log_viewer->getFolderFiles(true)
+                : $this->log_viewer->getFiles(true);
             foreach ($files as $file) {
                 app('files')->delete($this->log_viewer->pathToLogFile($file));
             }

@@ -76,8 +76,8 @@
                         name: 'nama'
                     },
                     {
-                        data: 'penduduk.nama',
-                        name: 'penduduk.nama',
+                        data: 'nama_penduduk',
+                        name: 'nama_penduduk',
                         orderable: false
                     },
                     {

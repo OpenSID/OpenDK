@@ -29,28 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\DataDesa;
+use App\Models\FasilitasPAUD;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-class FasilitasPAUD extends Model
+class FasilitasPAUDFactory extends Factory
 {
-    use HasFactory;
+    protected $model = FasilitasPAUD::class;
 
-    protected $table = 'das_fasilitas_paud';
-
-    protected $fillable = [
-        'desa_id',
-        'jumlah_paud',
-        'jumlah_guru_paud',
-        'jumlah_siswa_paud',
-        'tahun',
-        'semester',
-    ];
-
-    public function desa()
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
     {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        // Buat desa jika belum ada
+        if (!DataDesa::exists()) {
+            DataDesa::factory()->create();
+        }
+
+        return [
+            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
+            'jumlah_paud' => $this->faker->numberBetween(1, 20),
+            'jumlah_guru_paud' => $this->faker->numberBetween(5, 50),
+            'jumlah_siswa_paud' => $this->faker->numberBetween(20, 200),
+            'tahun' => $this->faker->numberBetween(2020, 2024),
+            'semester' => $this->faker->randomElement([1, 2]),
+        ];
     }
 }

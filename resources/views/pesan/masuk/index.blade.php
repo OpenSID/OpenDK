@@ -53,12 +53,12 @@
                         inline')->id('form-multiple-arsip-pesan')->open() !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan</button>
-                        {!! html()->text('array_id')->id('array_multiple_id_arsip') !!}
+                        {!! html()->hidden('array_id')->id('array_multiple_id_arsip') !!}
                         {!! html()->form()->close() !!}
 
                         {!! html()->form('POST', route('pesan.read.multiple'))->class('form-group
                         inline')->id('form-multiple-read-pesan')->open() !!}
-                        {!! html()->text('array_id')->id('array_multiple_id') !!}
+                        {!! html()->hidden('array_id')->id('array_multiple_id') !!}
                         <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
                         {!! html()->form()->close() !!}

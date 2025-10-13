@@ -14,9 +14,7 @@
     </section>
     <section class="content container-fluid">
 
-        {!! html()->form('PUT', route('publikasi.album.update', $album->id))
-        ->attribute('enctype', 'multipart/form-data')
-        ->open() !!}
+        {!! html()->form('PUT', route('publikasi.album.update', $album->id))->attribute('enctype', 'multipart/form-data')->open() !!}
 
         @include('publikasi.album._form')
 

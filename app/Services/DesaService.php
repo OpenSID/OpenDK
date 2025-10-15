@@ -32,7 +32,11 @@
 namespace App\Services;
 
 use App\Models\DataDesa;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use PhpParser\Node\Expr\Cast\Object_;
+use stdClass;
 
 class DesaService extends BaseApiService
 {
@@ -74,7 +78,7 @@ class DesaService extends BaseApiService
     public function desa(array $filters = [])
     {
         // Panggil API dan ambil data
-        $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);
+        $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);        
         if (! $data) {
             return collect([]);
         }
@@ -120,5 +124,17 @@ class DesaService extends BaseApiService
             return 0; // Jika tidak ada data atau total tidak tersedia, kembalikan 0
         }
         return $data['meta']['pagination']['total'];
+    }
+
+    /**
+     * Dapatkan object desa berdasarkan kode_desa tertentu
+     *
+     * @param string $kodeDesa
+     * @return collection|DataDesa|stdClass|null
+     */
+    public function getDesaByKode(string $kodeDesa): Collection|DataDesa|stdClass|null
+    {
+        $listDesa = $this->listDesa();
+        return $listDesa->where('desa_id', $kodeDesa)->first();
     }
 }

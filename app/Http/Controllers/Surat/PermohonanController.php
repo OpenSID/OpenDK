@@ -58,9 +58,17 @@ class PermohonanController extends Controller
 
     public function getData()
     {
+        $desa = request('kode_desa');
+
         // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
-        return DataTables::of(Surat::permohonan()->when(!$this->isDatabaseGabungan(), function ($query) {
+        return DataTables::of(Surat::permohonan()
+        ->when(!$this->isDatabaseGabungan(), function ($query) {
             $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
+        })
+        ->when($desa, function ($query) use ($desa) {
+            return $desa === 'Semua'
+                ? $query
+                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
         }))
             ->addColumn('aksi', function ($row) {
                 $user = auth()->user()->pengurus_id;
@@ -281,19 +289,27 @@ class PermohonanController extends Controller
 
     public function getDataDitolak()
     {
-        // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
-        return DataTables::of(Surat::ditolak()->when(!$this->isDatabaseGabungan(), function ($query) {
+        $desa = request('kode_desa');
+        $surat = Surat::ditolak()->when(!$this->isDatabaseGabungan(), function ($query) {
             $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
-        }))
-            ->editColumn('nama', function ($row) {
-                return "Surat {$row->nama}";
-            })
+        })
+        ->when($desa, function ($query) use ($desa) {
+            return $desa === 'Semua'
+                ? $query
+                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+        });
+        
+        // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
+        return DataTables::of($surat)
+            // ->editColumn('nama', function ($row) {
+            //     return "Surat {$row->nama}";
+            // })
             ->editColumn('log_verifikasi', function () {
                 return "<span class='label label-danger'>Ditolak</span>";
             })
             ->editColumn('tanggal', function ($row) {
                 return format_date($row->tanggal);
             })
-            ->rawColumns(['nama', 'log_verifikasi'])->make();
+            ->rawColumns(['log_verifikasi'])->make();
     }
 }

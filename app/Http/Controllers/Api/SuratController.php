@@ -70,7 +70,7 @@ class SuratController extends Controller
             return response()->json("Kode desa {$request->desa_id} tidak terdaftar di kecamatan", 400);
         }
 
-        $surat = Surat::where('desa_id', $request->desa_id)->get(['nomor', 'file', 'nama', 'nik', 'pengurus_id', 'log_verifikasi', 'keterangan']);
+        $surat = Surat::where('desa_id', $request->desa_id)->get(['nomor', 'file', 'nama', 'nama_penduduk', 'nik', 'pengurus_id', 'log_verifikasi', 'keterangan']);
 
         return new SuratResource(true, 'Daftar Surat', $surat);
     }

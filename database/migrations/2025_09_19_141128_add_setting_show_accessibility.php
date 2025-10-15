@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,33 +24,38 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use App\Enums\Status;
+use App\Models\SettingAplikasi;
+use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class FasilitasPAUD extends Model
+return new class () extends Migration
 {
-    use HasFactory;
-
-    protected $table = 'das_fasilitas_paud';
-
-    protected $fillable = [
-        'desa_id',
-        'jumlah_paud',
-        'jumlah_guru_paud',
-        'jumlah_siswa_paud',
-        'tahun',
-        'semester',
-    ];
-
-    public function desa()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        return $this->hasOne(DataDesa::class, 'desa_id', 'desa_id');
+        // Tambahkan setting untuk dukungan disabilitas tunanetra
+        SettingAplikasi::insert([
+            'key' => 'dukungan_disabilitas',
+            'value' => Status::TidakAktif,
+            'type' => 'boolean',
+            'description' => 'Aktifkan fitur dukungan aksesibilitas untuk difabel tunanetra.',
+            'kategori' => 'web',
+            'option' => '{}',
+        ]);
     }
-}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        SettingAplikasi::whereIn('key', ['dukungan_disabilitas'])->delete();
+    }
+};

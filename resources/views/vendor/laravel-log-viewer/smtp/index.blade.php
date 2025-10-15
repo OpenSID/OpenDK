@@ -21,7 +21,7 @@
                 <button type="submit" id="store-smtp" class="btn btn-primary btn-sm" id><i class="fa fa-save"></i>
                     Simpan</button>
             </div>
-            {!! html()->closeForm() !!}
+            {!! html()->form()->close() !!}
         </div>
     </div>
 </div>

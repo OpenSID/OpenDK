@@ -32,13 +32,13 @@
 namespace Tests\Feature;
 
 use App\Models\DataDesa;
-use App\Models\TingkatPendidikan;
+use App\Models\FasilitasPAUD;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
-class TingkatPendidikanExportTest extends TestCase
+class FasilitasPaudExportTest extends TestCase
 {
     use DatabaseTransactions, WithoutMiddleware;
 
@@ -54,21 +54,31 @@ class TingkatPendidikanExportTest extends TestCase
 
         // Buat desa untuk testing  
         $this->desa = DataDesa::factory()->create();
-    }    
+    }
+
+    protected function tearDown(): void
+    {
+        // Bersihkan data test dengan proper order
+        FasilitasPAUD::query()->forceDelete();
+        DataDesa::query()->forceDelete();
+        User::query()->forceDelete();
+
+        parent::tearDown();
+    }
 
     /** @test */
-    public function dapat_mengakses_halaman_export_tingkat_pendidikan()
+    public function dapat_mengakses_halaman_export_fasilitas_paud()
     {
         $this->actingAs($this->user);
 
         // Check if route exists first
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak ditemukan');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak ditemukan');
         }
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -80,21 +90,21 @@ class TingkatPendidikanExportTest extends TestCase
     }
 
     /** @test */
-    public function dapat_export_data_tingkat_pendidikan_kosong()
+    public function dapat_export_data_fasilitas_paud_kosong()
     {
         $this->actingAs($this->user);
 
-        // Pastikan tidak ada data tingkat pendidikan
-        TingkatPendidikan::query()->delete();
-        $this->assertEquals(0, TingkatPendidikan::count());
+        // Pastikan tidak ada data fasilitas paud
+        FasilitasPAUD::query()->delete();
+        $this->assertEquals(0, FasilitasPAUD::count());
 
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak ditemukan');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak ditemukan');
         }
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -103,29 +113,32 @@ class TingkatPendidikanExportTest extends TestCase
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
         $this->assertStringContainsString('attachment', $disposition);
-        $this->assertStringContainsString('data-tingkat-pendidikan-', $disposition);
+        $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
     }
 
     /** @test */
-    public function dapat_export_data_tingkat_pendidikan_dengan_data()
+    public function dapat_export_data_fasilitas_paud_dengan_data()
     {
         $this->actingAs($this->user);
 
-        // Buat data tingkat pendidikan untuk testing
-        $tingkatPendidikanData = TingkatPendidikan::factory()->count(3)->create([
+        // Bersihkan data terlebih dahulu
+        FasilitasPAUD::query()->delete();
+
+        // Buat data fasilitas paud untuk testing
+        $fasilitasPaudData = FasilitasPAUD::factory()->count(3)->create([
             'desa_id' => $this->desa->desa_id
         ]);
 
-    // Verify data was created for this desa (allow other tests' data to exist)
-    $this->assertGreaterThanOrEqual(3, TingkatPendidikan::where('desa_id', $this->desa->desa_id)->count());
+        // Verify data was created
+        $this->assertEquals(3, FasilitasPAUD::count());
 
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak ditemukan');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak ditemukan');
         }
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -134,50 +147,50 @@ class TingkatPendidikanExportTest extends TestCase
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
         $this->assertStringContainsString('attachment', $disposition);
-        $this->assertStringContainsString('data-tingkat-pendidikan-', $disposition);
+        $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
     }
 
     /** @test */
-    public function export_tingkat_pendidikan_menghasilkan_filename_dengan_timestamp()
+    public function export_fasilitas_paud_menghasilkan_filename_dengan_timestamp()
     {
         $this->actingAs($this->user);
 
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak ditemukan');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak ditemukan');
         }
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
 
         $response->assertStatus(200);
 
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header harus ada');
-        $this->assertStringContainsString('data-tingkat-pendidikan-', $disposition);
+        $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
         $this->assertStringContainsString('.xlsx', $disposition);
         
         // Verify timestamp format in filename (more flexible regex)
-        $this->assertMatchesRegularExpression('/data-tingkat-pendidikan-\d{4}/', $disposition);
+        $this->assertMatchesRegularExpression('/data-fasilitas-paud-\d{4}/', $disposition);
     }
 
     /** @test */
-    public function export_tingkat_pendidikan_memiliki_header_yang_benar()
+    public function export_fasilitas_paud_memiliki_header_yang_benar()
     {
         $this->actingAs($this->user);
 
         // Buat data untuk memastikan ada konten
-        TingkatPendidikan::factory()->create([
+        FasilitasPAUD::factory()->create([
             'desa_id' => $this->desa->desa_id
         ]);
 
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak ditemukan');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak ditemukan');
         }
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -200,10 +213,10 @@ class TingkatPendidikanExportTest extends TestCase
         
         // Test if route exists
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
             $this->assertNotNull($routeUrl);
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak tersedia');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak tersedia');
         }
     }
 
@@ -212,12 +225,12 @@ class TingkatPendidikanExportTest extends TestCase
     {
         // Test without authentication
         try {
-            $routeUrl = route('data.tingkat-pendidikan.export-excel');
+            $routeUrl = route('data.fasilitas-paud.export-excel');
         } catch (\Exception $e) {
-            $this->markTestSkipped('Route data.tingkat-pendidikan.export-excel tidak ditemukan');
+            $this->markTestSkipped('Route data.fasilitas-paud.export-excel tidak ditemukan');
         }
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
 
         // Should redirect to login or return 401/403 or 200 if no auth required
         $this->assertContains($response->getStatusCode(), [200, 302, 401, 403]);
@@ -227,12 +240,12 @@ class TingkatPendidikanExportTest extends TestCase
     public function test_export_functionality_unit()
     {
         // Create test data
-        $tingkatPendidikan = TingkatPendidikan::factory()->create([
+        $fasilitasPaud = FasilitasPAUD::factory()->create([
             'desa_id' => $this->desa->desa_id
         ]);
 
         // Test the export class directly
-        $export = new \App\Exports\ExportTingkatPendidikan();
+        $export = new \App\Exports\ExportFasilitasPaud();
         
         // Test collection method
         $collection = $export->collection();
@@ -243,12 +256,14 @@ class TingkatPendidikanExportTest extends TestCase
         $headings = $export->headings();
         $this->assertIsArray($headings, 'Headings should be an array');
         $this->assertContains('Nama Desa', $headings, 'Should contain expected heading');
-        $this->assertContains('Tidak Tamat Sekolah', $headings, 'Should contain education level heading');
+        $this->assertContains('Jumlah PAUD/RA', $headings, 'Should contain PAUD count heading');
+        $this->assertContains('Jumlah Guru PAUD/RA', $headings, 'Should contain teacher count heading');
+        $this->assertContains('Jumlah Siswa PAUD/RA', $headings, 'Should contain student count heading');
         
         // Test mapping method
-        $mapped = $export->map($tingkatPendidikan);
+        $mapped = $export->map($fasilitasPaud);
         $this->assertIsArray($mapped, 'Mapped data should be an array');
-        $this->assertCount(11, $mapped, 'Should have 11 mapped fields');
+        $this->assertCount(9, $mapped, 'Should have 9 mapped fields');
     }
 
     /** @test */
@@ -256,34 +271,37 @@ class TingkatPendidikanExportTest extends TestCase
     {
         $this->actingAs($this->user);
 
+        // Bersihkan data terlebih dahulu
+        FasilitasPAUD::query()->delete();
+
         // Test scenario: Multiple years and semesters
         $data = [
-            ['tahun' => 2023, 'semester' => 1, 'tidak_tamat_sekolah' => 10, 'tamat_sd' => 50],
-            ['tahun' => 2023, 'semester' => 2, 'tidak_tamat_sekolah' => 8, 'tamat_sd' => 55],
-            ['tahun' => 2024, 'semester' => 1, 'tidak_tamat_sekolah' => 5, 'tamat_sd' => 60],
+            ['tahun' => 2023, 'semester' => 1, 'jumlah_paud' => 5, 'jumlah_guru_paud' => 20, 'jumlah_siswa_paud' => 100],
+            ['tahun' => 2023, 'semester' => 2, 'jumlah_paud' => 6, 'jumlah_guru_paud' => 22, 'jumlah_siswa_paud' => 110],
+            ['tahun' => 2024, 'semester' => 1, 'jumlah_paud' => 7, 'jumlah_guru_paud' => 25, 'jumlah_siswa_paud' => 120],
         ];
 
         foreach ($data as $item) {
-            TingkatPendidikan::factory()->create([
+            FasilitasPAUD::factory()->create([
                 'desa_id' => $this->desa->desa_id,
                 'tahun' => $item['tahun'],
                 'semester' => $item['semester'],
-                'tidak_tamat_sekolah' => $item['tidak_tamat_sekolah'],
-                'tamat_sd' => $item['tamat_sd'],
+                'jumlah_paud' => $item['jumlah_paud'],
+                'jumlah_guru_paud' => $item['jumlah_guru_paud'],
+                'jumlah_siswa_paud' => $item['jumlah_siswa_paud'],
             ]);
         }
 
-    // Verify data was created for this desa (allow other tests' data to exist)
-    $this->assertGreaterThanOrEqual(3, TingkatPendidikan::where('desa_id', $this->desa->desa_id)->count());
+        $this->assertEquals(3, FasilitasPAUD::count());
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
         
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         
         // Verify filename includes timestamp
         $disposition = $response->headers->get('Content-Disposition');
-        $this->assertStringContainsString('data-tingkat-pendidikan-', $disposition);
+        $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
         $this->assertStringContainsString('.xlsx', $disposition);
     }
 
@@ -292,25 +310,71 @@ class TingkatPendidikanExportTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        // Test with edge case data
-        TingkatPendidikan::factory()->create([
+        // Test with edge case data (zero values)
+        FasilitasPAUD::factory()->create([
             'desa_id' => $this->desa->desa_id,
-            'tidak_tamat_sekolah' => 0,
-            'tamat_sd' => 0,
-            'tamat_smp' => 0,
-            'tamat_sma' => 0,
-            'tamat_diploma_sederajat' => 0,
+            'jumlah_paud' => 0,
+            'jumlah_guru_paud' => 0,
+            'jumlah_siswa_paud' => 0,
             'tahun' => 2024,
             'semester' => 1,
         ]);
 
-        $response = $this->get(route('data.tingkat-pendidikan.export-excel'));
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
         
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         
         // Should still work with zero values
         $disposition = $response->headers->get('Content-Disposition');
-        $this->assertStringContainsString('data-tingkat-pendidikan-', $disposition);
+        $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
+    }
+
+    /** @test */
+    public function test_export_with_large_dataset()
+    {
+        $this->actingAs($this->user);
+
+        // Bersihkan data terlebih dahulu
+        FasilitasPAUD::query()->delete();
+
+        // Create a larger dataset to test performance
+        FasilitasPAUD::factory()->count(50)->create([
+            'desa_id' => $this->desa->desa_id
+        ]);
+
+        $this->assertEquals(50, FasilitasPAUD::count());
+
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
+        
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        
+        // Verify successful download with large dataset
+        $disposition = $response->headers->get('Content-Disposition');
+        $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
+    }
+
+    /** @test */
+    public function test_export_includes_desa_relation()
+    {
+        $this->actingAs($this->user);
+
+        // Create data with known desa
+        $fasilitasPaud = FasilitasPAUD::factory()->create([
+            'desa_id' => $this->desa->desa_id,
+            'jumlah_paud' => 10,
+            'jumlah_guru_paud' => 30,
+            'jumlah_siswa_paud' => 150,
+        ]);
+
+        // Verify relationship works
+        $this->assertNotNull($fasilitasPaud->desa);
+        $this->assertEquals($this->desa->desa_id, $fasilitasPaud->desa->desa_id);
+
+        $response = $this->get(route('data.fasilitas-paud.export-excel'));
+        
+        $response->assertStatus(200);
+        $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }
 }

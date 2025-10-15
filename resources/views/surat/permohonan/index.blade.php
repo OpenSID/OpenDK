@@ -35,7 +35,7 @@
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
-                                <th style="min-width: 80px;">Aksi</th>
+                                <th style="min-width: 120px;">Aksi</th>
                                 <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama Surat</th>
                                 <th>Nama Penduduk</th>
@@ -79,7 +79,8 @@
                         };
                     },
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center',
@@ -116,10 +117,22 @@
                 ]
             });
 
-            $('#list_desa').on('select2:select', function(e) {
+            // Event untuk tombol pratinjau
+            $(document).on('click', '.btn-preview-surat', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                $('#modalPreviewSurat .modal-body').html('<iframe src="'+url+'" width="100%" height="500px" style="border:none;"></iframe>');
+                $('#modalPreviewSurat').modal('show');
+           
+            });
+
+         $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
             });
-        });
+
+    });
     </script>
+    
+    @include('components.modal-preview-surat')
     @include('forms.datatable-vertical')
 @endpush

@@ -72,6 +72,7 @@ class PermohonanController extends Controller
         }))
             ->addColumn('aksi', function ($row) {
                 $user = auth()->user()->pengurus_id;
+                
                 $isAllow = false;
                 if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
                     $isAllow = true;
@@ -90,6 +91,9 @@ class PermohonanController extends Controller
                 }
 
                 $data['download_url'] = route('surat.permohonan.download', $row->id);
+
+                $pathSurat = asset('storage/surat/' . $row->file);
+                $data['preview_url'] = $pathSurat;
 
                 return view('forms.aksi', $data);
             })

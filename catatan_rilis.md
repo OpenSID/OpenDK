@@ -7,6 +7,7 @@ Di rilis versi v2510.0.0 di versi ini terdapat modul komentar pada artikel dan p
 2. [#1350](https://github.com/OpenSID/OpenDK/issues/1350) Penambahan filter desa di permohonan surat OpenDK.
 3. [#1294](https://github.com/OpenSID/OpenDK/issues/1294) Penambahan fitur export di modul fasilitas paud.
 4. [#1342](https://github.com/OpenSID/OpenDK/issues/1342) Sesuaikan surat tte OpenDK.
+5. [#1352](https://github.com/OpenSID/OpenDK/issues/1352) Penambahan fitur preview surat.
 
 #### BUG
 

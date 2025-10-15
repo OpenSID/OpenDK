@@ -28,7 +28,7 @@
                         @if ($pesan->diarsipkan === 0)
                         {!! html()->form('POST', route('pesan.arsip.post'))->class('form-group
                         inline')->id('form-arisp-pesan')->open() !!}
-                        {!! html()->text('id') !!}
+                        {!! html()->hidden('id', $pesan->id) !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan </button>
                         {!! html()->form()->close() !!}
@@ -43,7 +43,7 @@
                             @else
                             Ditujukan untuk
                             @endif:
-                            Desa {{ $pesan->dataDesa->nama }}
+                            Desa {{ $pesan->additional_info['nama_desa'] ?? '-' }}
                             <span class="mailbox-read-time pull-right">{{ $pesan->custom_date }}</span>
                         </h5>
                     </div>

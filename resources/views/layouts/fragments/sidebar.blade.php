@@ -513,8 +513,6 @@
                                         @endif
                                     </a>
                                 </li>
-                            @endif
-                            @if (config('setting.login_2fa', true))
                                 <li {{ Request::is(['2fa/*']) ? 'class=active' : '' }}>
                                     <a href="{{ route('2fa.activate') }}">
                                         <i class="fa fa-circle-o"></i> Aktivasi 2FA
@@ -566,8 +564,6 @@
                                 @endif
                             </a>
                         </li>
-                    @endif
-                    @if (config('setting.login_2fa', true))
                         <li {{ Request::is(['2fa/*']) ? 'class=active' : '' }}>
                             <a href="{{ route('2fa.activate') }}">
                                 <i class="fa fa-circle-o"></i> Aktivasi 2FA

@@ -139,7 +139,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         // Check if 2FA is enabled for the user
-        if ($user->two_fa_enabled) {
+        if ($user->two_fa_enabled && config('setting.login_otp', true)) {
             return $this->startTwoFactorAuthProcess($request, $user);
         }
 

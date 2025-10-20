@@ -123,7 +123,6 @@ class OtpService
     {
         try {
             $botToken = config('otp.telegram_bot_token');
-
             if (empty($botToken)) {
                 Log::warning('Telegram bot token not configured');
                 return false;
@@ -293,7 +292,6 @@ class OtpService
     {
         try {
             $botToken = config('otp.telegram_bot_token');
-
             if (empty($botToken)) {
                 return false;
             }

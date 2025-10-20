@@ -530,6 +530,22 @@
                                     </a>
                                 </li>
                             @endif
+                            @if(config('setting.login_otp', true))
+                            <li {{ Request::is(['otp/activate*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('otp.activate') }}">
+                                    <i class="fa fa-circle-o"></i> Aktivasi OTP
+                                    @if(auth()->user()->otp_enabled)
+                                        <span class="pull-right">
+                                            <small class="label pull-right bg-green">Aktif</small>
+                                        </span>
+                                    @else
+                                        <span class="pull-right">
+                                            <small class="label pull-right bg-yellow">Tidak Aktif</small>
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
+                            @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a
                                         href="{{ route('setting.aplikasi.index') }}"><i

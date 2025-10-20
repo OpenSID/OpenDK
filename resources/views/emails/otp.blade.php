@@ -91,17 +91,20 @@
             <h1>{{ config('app.name') }}</h1>
             <p>
                 @switch($purpose)
-                @case('activation')
-                Aktivasi OTP
-                @break
-                @case('2fa_activation')
-                Aktivasi 2FA
-                @break
-                @case('2fa_login')
-                Login 2FA
-                @break
-                @default
-                Kode OTP Login
+                    @case('activation')
+                        Aktivasi OTP
+                    @break
+
+                    @case('2fa_activation')
+                        Aktivasi 2FA
+                    @break
+
+                    @case('2fa_login')
+                        Login 2FA
+                    @break
+
+                    @default
+                        Kode OTP Login
                 @endswitch
             </p>
         </div>
@@ -111,21 +114,24 @@
 
             <p class="info">
                 @switch($purpose)
-                @case('activation')
-                Anda telah meminta untuk mengaktifkan autentikasi OTP. Gunakan kode berikut untuk menyelesaikan
-                proses aktivasi:
-                @break
-                @case('2fa_activation')
-                Anda telah meminta untuk mengaktifkan Two-Factor Authentication (2FA). Gunakan kode berikut untuk
-                menyelesaikan
-                proses aktivasi:
-                @break
-                @case('2fa_login')
-                Anda sedang melakukan login dengan Two-Factor Authentication (2FA). Gunakan kode berikut untuk
-                menyelesaikan proses login:
-                @break
-                @default
-                Gunakan kode OTP berikut untuk login ke akun Anda:
+                    @case('activation')
+                        Anda telah meminta untuk mengaktifkan autentikasi OTP. Gunakan kode berikut untuk menyelesaikan
+                        proses aktivasi:
+                    @break
+
+                    @case('2fa_activation')
+                        Anda telah meminta untuk mengaktifkan Two-Factor Authentication (2FA). Gunakan kode berikut untuk
+                        menyelesaikan
+                        proses aktivasi:
+                    @break
+
+                    @case('2fa_login')
+                        Anda sedang melakukan login dengan Two-Factor Authentication (2FA). Gunakan kode berikut untuk
+                        menyelesaikan proses login:
+                    @break
+
+                    @default
+                        Gunakan kode OTP berikut untuk login ke akun Anda:
                 @endswitch
             </p>
 

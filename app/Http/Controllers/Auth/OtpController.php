@@ -51,6 +51,80 @@ class OtpController extends Controller
     }
 
     /**
+     * Combined OTP & 2FA management page
+     */
+    public function index()
+    {
+        $user = Auth::user();
+        $needsSetup = empty($user->otp_channel) || empty($user->otp_identifier);
+        $otpEnabled = $user->otp_enabled;
+        $twoFaEnabled = $user->two_fa_enabled;
+
+        return view('auth.otp2fa.index', [
+            'page_title' => 'OTP & 2FA',
+            'page_description' => 'Pengaturan dan status OTP serta Two-Factor Authentication',
+            'user' => $user,
+            'needsSetup' => $needsSetup,
+            'otpEnabled' => $otpEnabled,
+            'twoFaEnabled' => $twoFaEnabled,
+        ]);
+    }
+
+    /**
+     * Show settings form
+     */
+    public function showSettingsForm()
+    {
+        $user = Auth::user();
+
+        return view('auth.otp2fa.settings', [
+            'page_title' => 'Pengaturan OTP & 2FA',
+            'page_description' => 'Konfigurasi OTP dan Two-Factor Authentication',
+            'user' => $user,
+        ]);
+    }
+
+     /**
+     * Save 2FA settings (email/telegram contact)
+     */
+    public function saveSettings(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'channel' => 'required|in:email,telegram',
+            'identifier' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $user = Auth::user();
+        $channel = $request->channel;
+        $identifier = $request->identifier;
+
+        // Validate identifier based on channel
+        if ($channel === 'email') {
+            $emailValidator = Validator::make(['email' => $identifier], [
+                'email' => 'required|email',
+            ]);
+
+            if ($emailValidator->fails()) {
+                return back()->withErrors(['identifier' => 'Format email tidak valid'])->withInput();
+            }
+        } elseif ($channel === 'telegram') {
+            // For Telegram, we'll store the identifier but validate later during activation
+        }
+
+        // Save 2FA contact information (but don't activate yet)
+        $user->update([
+            'otp_channel' => $channel,
+            'otp_identifier' => $identifier
+        ]);
+
+        return redirect()->route('otp2fa.index')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
+    }
+
+    /**
      * Show OTP activation form
      */
     public function showActivationForm()
@@ -188,8 +262,8 @@ class OtpController extends Controller
         
         $user->update([
             'otp_enabled' => false,
-            'otp_channel' => null,
-            'otp_identifier' => null,
+            // 'otp_channel' => null,
+            // 'otp_identifier' => null,
         ]);
 
         return back()->with('success', 'OTP berhasil dinonaktifkan.');

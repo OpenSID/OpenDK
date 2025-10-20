@@ -117,7 +117,7 @@ class TwoFactorController extends Controller
             'otp_identifier' => $identifier
         ]);
 
-    return redirect()->route('otp2fa.index')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
+        return redirect()->route('otp2fa.index')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
     }
 
     /**

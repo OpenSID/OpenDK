@@ -357,7 +357,7 @@
                 @endif
 
                 @if ($user->hasrole(['super-admin', 'administrator-website']))
-                    <li class="treeview {{ Request::is(['setting*']) ? 'active' : '' }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
+                    <li class="treeview {{ Request::is(['setting*', 'otp*']) ? 'active' : '' }}"><a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -417,6 +417,22 @@
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif
+                            @if(config('setting.login_otp', true))
+                            <li {{ Request::is(['otp/activate*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('otp.activate') }}">
+                                    <i class="fa fa-circle-o"></i> Aktivasi OTP
+                                    @if(auth()->user()->otp_enabled)
+                                        <span class="pull-right">
+                                            <small class="label pull-right bg-green">Aktif</small>
+                                        </span>
+                                    @else
+                                        <span class="pull-right">
+                                            <small class="label pull-right bg-yellow">Tidak Aktif</small>
+                                        </span>
+                                    @endif
+                                </a>
+                            </li>
+                            @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
                             @endif
@@ -432,6 +448,23 @@
 
                         </ul>
                     </li>
+                @else
+                    @if (config('setting.login_otp', true))
+                    <li {{ Request::is(['otp/activate*']) ? 'class=active' : '' }}>
+                        <a href="{{ route('otp.activate') }}">
+                            <i class="fa fa-circle-o"></i> Aktivasi OTP
+                            @if(auth()->user()->otp_enabled)
+                                <span class="pull-right">
+                                    <small class="label pull-right bg-green">Aktif</small>
+                                </span>
+                            @else
+                                <span class="pull-right">
+                                    <small class="label pull-right bg-yellow">Tidak Aktif</small>
+                                </span>
+                            @endif
+                        </a>
+                    </li>
+                    @endif
                 @endif
             @endif
             <li class="header">VISITOR COUNTER</li>

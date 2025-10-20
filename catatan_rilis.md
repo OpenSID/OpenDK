@@ -8,6 +8,7 @@ Di rilis versi v2510.0.0 di versi ini terdapat modul komentar pada artikel dan p
 3. [#1294](https://github.com/OpenSID/OpenDK/issues/1294) Penambahan fitur export di modul fasilitas paud.
 4. [#1342](https://github.com/OpenSID/OpenDK/issues/1342) Sesuaikan surat tte OpenDK.
 5. [#1352](https://github.com/OpenSID/OpenDK/issues/1352) Penambahan fitur preview surat.
+6. [#1348](https://github.com/OpenSID/OpenDK/issues/1348) Penambahan fitur login OTP passwordless dengan dukungan email dan telegram sebagai alternatif autentikasi.
 
 #### BUG
 

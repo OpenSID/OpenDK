@@ -79,7 +79,6 @@ class User extends Authenticatable implements JWTSubject
         'two_fa_enabled',
         'otp_channel',
         'otp_identifier',
-        'telegram_chat_id',
     ];
 
     /**

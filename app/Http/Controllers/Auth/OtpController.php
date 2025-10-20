@@ -173,7 +173,6 @@ class OtpController extends Controller
             'otp_enabled' => true,
             'otp_channel' => $activation['channel'],
             'otp_identifier' => $activation['identifier'],
-            'telegram_chat_id' => $activation['channel'] === 'telegram' ? $activation['identifier'] : null,
         ]);
 
         // Clear session
@@ -194,7 +193,6 @@ class OtpController extends Controller
             'otp_enabled' => false,
             'otp_channel' => null,
             'otp_identifier' => null,
-            'telegram_chat_id' => null,
         ]);
 
         return back()->with('success', 'OTP berhasil dinonaktifkan.');

@@ -98,8 +98,7 @@ class TwoFactorController extends Controller
         // Save 2FA contact information (but don't activate yet)
         $user->update([
             'otp_channel' => $channel,
-            'otp_identifier' => $identifier,
-            'telegram_chat_id' => $channel === 'telegram' ? $identifier : null,
+            'otp_identifier' => $identifier
         ]);
 
         return redirect()->route('2fa.activate')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');

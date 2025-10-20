@@ -123,7 +123,7 @@ class OtpController extends Controller
     public function showVerifyActivationForm()
     {
         if (!session('otp_activation')) {
-            return redirect()->route('otp.activate')
+            return redirect()->route('otp2fa.index')
                 ->with('error', 'Silakan minta kode OTP terlebih dahulu.');
         }
 
@@ -151,7 +151,7 @@ class OtpController extends Controller
         }
 
         if (!session('otp_activation')) {
-            return redirect()->route('otp.activate')
+            return redirect()->route('otp2fa.index')
                 ->with('error', 'Sesi aktivasi tidak ditemukan. Silakan mulai lagi.');
         }
 
@@ -175,7 +175,7 @@ class OtpController extends Controller
         // Clear session
         session()->forget('otp_activation');
 
-        return redirect()->route('otp.activate')
+        return redirect()->route('otp2fa.index')
             ->with('success', 'OTP berhasil diaktifkan! Anda sekarang dapat menggunakan OTP untuk login.');
     }
 

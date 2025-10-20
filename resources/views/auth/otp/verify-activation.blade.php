@@ -8,7 +8,7 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{{ route('otp.activate') }}">Aktivasi OTP</a></li>
+            <li><a href="{{ route('otp2fa.index') }}">OTP & 2FA</a></li>
             <li class="active">Verifikasi</li>
         </ol>
     </section>
@@ -96,7 +96,7 @@
                                 <button type="submit" class="btn btn-primary" id="verify-btn">
                                     <i class="fa fa-check"></i> Verifikasi
                                 </button>
-                                <a href="{{ route('otp.activate') }}" class="btn btn-default">
+                                <a href="{{ route('otp2fa.index') }}" class="btn btn-default">
                                     <i class="fa fa-arrow-left"></i> Kembali
                                 </a>
                             </div>
@@ -203,7 +203,7 @@
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
                         alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
-                        window.location.href = '{{ route('otp.activate') }}';
+                        window.location.href = '{{ route('otp2fa.index') }}';
                     }
                 }, 1000);
 

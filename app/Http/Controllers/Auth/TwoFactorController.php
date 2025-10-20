@@ -51,6 +51,22 @@ class TwoFactorController extends Controller
     }
 
     /**
+     * Combined OTP & 2FA management page
+     */
+    public function index()
+    {
+        $user = Auth::user();
+        $needsSetup = empty($user->otp_channel) || empty($user->otp_identifier);
+
+        return view('auth.otp2fa.index', [
+            'page_title' => 'OTP & 2FA',
+            'page_description' => 'Pengaturan dan status OTP serta Two-Factor Authentication',
+            'user' => $user,
+            'needsSetup' => $needsSetup,
+        ]);
+    }
+
+    /**
      * Show 2FA settings form
      */
     public function showSettingsForm()
@@ -101,7 +117,7 @@ class TwoFactorController extends Controller
             'otp_identifier' => $identifier
         ]);
 
-        return redirect()->route('2fa.activate')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
+    return redirect()->route('otp2fa.index')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
     }
 
     /**
@@ -167,7 +183,7 @@ class TwoFactorController extends Controller
     public function showVerifyActivationForm()
     {
         if (!session('2fa_activation')) {
-            return redirect()->route('2fa.activate')
+            return redirect()->route('otp2fa.index')
                 ->with('error', 'Silakan minta kode OTP terlebih dahulu.');
         }
 
@@ -195,7 +211,7 @@ class TwoFactorController extends Controller
         }
 
         if (!session('2fa_activation')) {
-            return redirect()->route('2fa.activate')
+            return redirect()->route('otp2fa.index')
                 ->with('error', 'Sesi aktivasi tidak ditemukan. Silakan mulai lagi.');
         }
 
@@ -218,7 +234,7 @@ class TwoFactorController extends Controller
         // Clear session
         session()->forget('2fa_activation');
 
-        return redirect()->route('2fa.activate')
+        return redirect()->route('otp2fa.index')
             ->with('success', 'Two-Factor Authentication berhasil diaktifkan!');
     }
 

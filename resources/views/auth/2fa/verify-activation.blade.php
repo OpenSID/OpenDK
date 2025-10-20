@@ -1,117 +1,117 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header">
-    <h1>
-        {{ $page_title ?? 'Page Title' }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('2fa.activate') }}">Aktivasi 2FA</a></li>
-        <li class="active">Verifikasi</li>
-    </ol>
-</section>
+    <section class="content-header">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{{ route('otp2fa.index') }}">OTP & 2FA</a></li>
+            <li class="active">Verifikasi</li>
+        </ol>
+    </section>
 
-<section class="content">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Verifikasi Kode 2FA</h3>
-                </div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Verifikasi Kode 2FA</h3>
+                    </div>
 
-                <form action="{{ route('2fa.verify-activation') }}" method="POST">
-                    @csrf
-                    <div class="box-body">
-                        @if (session('success'))
-                        <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ session('success') }}
-                        </div>
-                        @endif
-
-                        @if (session('error'))
-                        <div class="alert alert-danger alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            {{ session('error') }}
-                        </div>
-                        @endif
-
-                        <div class="callout callout-info" style="margin-bottom: 15px;">
-                            <p style="margin: 0; font-size: 12px;">
-                                <i class="fa fa-info-circle"></i> Kode OTP berlaku selama
-                                <strong>{{ config('otp.expiry_minutes', 5) }} menit</strong>
-                            </p>
-                        </div>
-
-                        <!-- Timer Display -->
-                        <div class="alert alert-info text-center" id="timer-alert"
-                            style="margin-bottom: 15px; padding: 8px;">
-                            <i class="fa fa-clock-o"></i>
-                            <strong style="font-size: 12px;">Sisa Waktu:</strong>
-                            <span id="timer-display" style="font-size: 18px; font-weight: bold; margin-left: 10px;">
-                                {{ config('otp.expiry_minutes', 5) }}:00
-                            </span>
-                        </div>
-
-                        <div class="form-group text-center">
-                            <label>Masukkan 6 Digit Kode OTP</label>
-                            <div class="otp-container"
-                                style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
-                                <input type="text" class="form-control otp-input" maxlength="1"
-                                    style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                    data-index="0">
-                                <input type="text" class="form-control otp-input" maxlength="1"
-                                    style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                    data-index="1">
-                                <input type="text" class="form-control otp-input" maxlength="1"
-                                    style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                    data-index="2">
-                                <input type="text" class="form-control otp-input" maxlength="1"
-                                    style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                    data-index="3">
-                                <input type="text" class="form-control otp-input" maxlength="1"
-                                    style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                    data-index="4">
-                                <input type="text" class="form-control otp-input" maxlength="1"
-                                    style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                    data-index="5">
-                            </div>
-                            <input type="hidden" name="otp" id="otp-value">
-                            @if ($errors->has('otp'))
-                            <span class="help-block text-danger">{{ $errors->first('otp') }}</span>
+                    <form action="{{ route('2fa.verify-activation') }}" method="POST">
+                        @csrf
+                        <div class="box-body">
+                            @if (session('success'))
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ session('success') }}
+                                </div>
                             @endif
+
+                            @if (session('error'))
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+
+                            <div class="callout callout-info" style="margin-bottom: 15px;">
+                                <p style="margin: 0; font-size: 12px;">
+                                    <i class="fa fa-info-circle"></i> Kode OTP berlaku selama
+                                    <strong>{{ config('otp.expiry_minutes', 5) }} menit</strong>
+                                </p>
+                            </div>
+
+                            <!-- Timer Display -->
+                            <div class="alert alert-info text-center" id="timer-alert"
+                                style="margin-bottom: 15px; padding: 8px;">
+                                <i class="fa fa-clock-o"></i>
+                                <strong style="font-size: 12px;">Sisa Waktu:</strong>
+                                <span id="timer-display" style="font-size: 18px; font-weight: bold; margin-left: 10px;">
+                                    {{ config('otp.expiry_minutes', 5) }}:00
+                                </span>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <label>Masukkan 6 Digit Kode OTP</label>
+                                <div class="otp-container"
+                                    style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+                                    <input type="text" class="form-control otp-input" maxlength="1"
+                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
+                                        data-index="0">
+                                    <input type="text" class="form-control otp-input" maxlength="1"
+                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
+                                        data-index="1">
+                                    <input type="text" class="form-control otp-input" maxlength="1"
+                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
+                                        data-index="2">
+                                    <input type="text" class="form-control otp-input" maxlength="1"
+                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
+                                        data-index="3">
+                                    <input type="text" class="form-control otp-input" maxlength="1"
+                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
+                                        data-index="4">
+                                    <input type="text" class="form-control otp-input" maxlength="1"
+                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
+                                        data-index="5">
+                                </div>
+                                <input type="hidden" name="otp" id="otp-value">
+                                @if ($errors->has('otp'))
+                                    <span class="help-block text-danger">{{ $errors->first('otp') }}</span>
+                                @endif
+                            </div>
+
+                            <div class="form-group text-center">
+                                <p>Tidak menerima kode?</p>
+                                <button type="button" class="btn btn-link" id="resend-btn" disabled>
+                                    <i class="fa fa-refresh"></i> Kirim Ulang (<span
+                                        id="countdown">{{ config('otp.resend_cooldown', 30) }}</span>s)
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="form-group text-center">
-                            <p>Tidak menerima kode?</p>
-                            <button type="button" class="btn btn-link" id="resend-btn" disabled>
-                                <i class="fa fa-refresh"></i> Kirim Ulang (<span id="countdown">{{
-                                    config('otp.resend_cooldown', 30) }}</span>s)
-                            </button>
+                        <div class="box-footer">
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary" id="verify-btn">
+                                    <i class="fa fa-check"></i> Verifikasi
+                                </button>
+                                <a href="{{ route('otp2fa.index') }}" class="btn btn-default">
+                                    <i class="fa fa-arrow-left"></i> Kembali
+                                </a>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="box-footer">
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary" id="verify-btn">
-                                <i class="fa fa-check"></i> Verifikasi
-                            </button>
-                            <a href="{{ route('2fa.activate') }}" class="btn btn-default">
-                                <i class="fa fa-arrow-left"></i> Kembali
-                            </a>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-@push('scripts')
-<script>
-    $(document).ready(function() {
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
                 var expiryMinutes = {{ config('otp.expiry_minutes', 5) }};
                 var expirySeconds = expiryMinutes * 60;
                 var resendCooldown = {{ config('otp.resend_cooldown', 30) }};
@@ -205,7 +205,7 @@
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
                         alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
-                        window.location.href = '{{ route('2fa.activate') }}';
+                        window.location.href = '{{ route('otp2fa.index') }}';
                     }
                 }, 1000);
 
@@ -246,6 +246,6 @@
                     });
                 });
             });
-</script>
-@endpush
+        </script>
+    @endpush
 @endsection

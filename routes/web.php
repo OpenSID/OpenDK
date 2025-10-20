@@ -516,6 +516,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 // Data Desa
                 Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                    Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
                     Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
@@ -524,7 +525,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('create', ['as' => 'data.data-desa.create', 'uses' => 'DataDesaController@create']);
                     Route::post('store', ['as' => 'data.data-desa.store', 'uses' => 'DataDesaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
                     Route::get('export-excel', ['as' => 'data.data-desa.export-excel', 'uses' => 'DataDesaController@exportExcel']);
                 });
@@ -681,6 +681,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.fasilitas-paud.destroy', 'uses' => 'FasilitasPaudController@destroy']);
                     Route::get('import', ['as' => 'data.fasilitas-paud.import', 'uses' => 'FasilitasPaudController@import']);
                     Route::post('do_import', ['as' => 'data.fasilitas-paud.do_import', 'uses' => 'FasilitasPaudController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.fasilitas-paud.export-excel', 'uses' => 'FasilitasPaudController@exportExcel']);
                 });
 
                 // Program Bantuan

@@ -25,14 +25,8 @@
                     <div class="pull-right">
                         <div class="row">
                             <div class="col-md-6">
-                                {!! html()->form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open()
-                                !!}
-                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id, [
-                                'placeholder' => 'pilih desa',
-                                'class' => 'form-control',
-                                'id' => 'list_desa',
-                                'required',
-                                ]) !!}
+                                {!! html()->form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open() !!}
+                                {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required() !!}
                                 {!! html()->form()->close() !!}
                             </div>
                             <div class="col-md-6">
@@ -62,7 +56,7 @@
                         ->open() !!}
                         <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
                                 class="fa fa-archive"></i> Arsipkan</button>
-                        {!! html()->text('array_id')->id('array_multiple_id_arsip') !!}
+                        {!! html()->hidden('array_id')->id('array_multiple_id_arsip') !!}
                         {!! html()->form()->close() !!}
                         {{ $list_pesan->links('vendor.pagination.pesan') }}
                     </div>

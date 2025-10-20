@@ -2,40 +2,39 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header block-breadcrumb">
-    <h1>
-        {{ $page_title ?? 'Page Title' }}
-        <small>{{ $page_description ?? '' }}</small>
-    </h1>
-    <ol class="breadcrumb">
-        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="{{ route('data.kategori-lembaga.index') }}"> Daftar Kategori Lembaga </a></li>
-        <li class="active">{{ $page_description }}</li>
-    </ol>
-</section>
-<section class="content container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="box box-primary">
+    <section class="content-header block-breadcrumb">
+        <h1>
+            {{ $page_title ?? 'Page Title' }}
+            <small>{{ $page_description ?? '' }}</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="{{ route('data.kategori-lembaga.index') }}"> Daftar Kategori Lembaga </a></li>
+            <li class="active">{{ $page_description }}</li>
+        </ol>
+    </section>
+    <section class="content container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
 
-                {!! html()->form()->id('form-kategori-lembaga')->class('form-horizontal
-                form-label-left')->open() !!}
-                @include('layouts.fragments.error_message')
+                    {!! html()->form('PUT', route('data.kategori-lembaga.update', $kategori_lembaga->id))->id('form-kategori-lembaga')->class('form-horizontal form-label-left')->open() !!}
+                    @include('layouts.fragments.error_message')
 
-                <div class="box-body">
+                    <div class="box-body">
 
-                    @include('flash::message')
-                    @include('data.lembaga_kategori.form')
+                        @include('flash::message')
+                        @include('data.lembaga_kategori.form')
 
+                    </div>
+                    <div class="box-footer">
+                        @include('partials.button_reset_submit')
+                    </div>
+                    {!! html()->form()->close() !!}
                 </div>
-                <div class="box-footer">
-                    @include('partials.button_reset_submit')
-                </div>
-                {!! html()->form()->close() !!}
             </div>
         </div>
-    </div>
-</section>
+    </section>
 @endsection
 
 @include('partials.tinymce_min')

@@ -3,24 +3,22 @@
             class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
         {!! html()->select(
-        'kategori_id',
-        \App\Models\TipePotensi::pluck('nama_kategori', 'id'),
-        old('kategori_id', isset($potensi) ? $potensi->kategori_id : null)
-        )->placeholder('-Pilih')->class('form-control')->id('kategori_id')->required() !!}
+                'kategori_id',
+                \App\Models\TipePotensi::pluck('nama_kategori', 'id'),
+                old('kategori_id', isset($potensi) ? $potensi->kategori_id : null),
+            )->placeholder('-Pilih')->class('form-control')->id('kategori_id')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Nama Potensi <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! html()->text('nama_potensi', old('nama_potensi'))->class('form-control')->placeholder('Nama
-        Potensi')->required() !!}
+        {!! html()->text('nama_potensi', old('nama_potensi'))->class('form-control')->placeholder('Nama Potensi')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! html()->textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required()
-        !!}
+        {!! html()->textarea('deskripsi', old('deskripsi'))->class('form-control')->placeholder('Deskripsi')->required() !!}
     </div>
 </div>
 <div class="form-group">
@@ -43,5 +41,5 @@
 @include('partials.asset_jqueryvalidation')
 
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\PotensiRequest', '#form-potensi') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\PotensiRequest', '#form-potensi') !!}
 @endpush

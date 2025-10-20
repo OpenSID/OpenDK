@@ -50,22 +50,6 @@
 
             @include('partials.flash_message')
 
-            <!-- Login Tabs -->
-            @if (config('setting.login_otp', true))
-            <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-                <a href="#password-login" aria-controls="password-login" role="tab" data-toggle="tab">
-                    <i class="fa fa-lock"></i> Password
-                </a>
-            </li>
-                <li role="presentation">
-                    <a href="#otp-login" aria-controls="otp-login" role="tab" data-toggle="tab">
-                        <i class="fa fa-mobile"></i> OTP
-                    </a>
-                </li>
-            </ul>
-            @endif
-
             <div class="tab-content" style="padding-top: 15px;">
                 <!-- Password Login Tab -->
                 <div role="tabpanel" class="tab-pane active" id="password-login">
@@ -114,22 +98,15 @@
                             </div>
                             <!-- /.col -->
                         </div>
+                        @if (config('setting.login_otp', true))
+                        <div>
+                            <a href="{{ route('otp.login') }}">
+                                <i class="fa fa-lock"></i> Login dengan OTP
+                            </a>
+                        </div>
+                        @endif
                     </form>
                 </div>
-
-                <!-- OTP Login Tab -->
-                @if (config('setting.login_otp', true))
-                    <div role="tabpanel" class="tab-pane" id="otp-login">
-                        <div class="callout callout-info" style="margin-bottom: 15px; padding: 10px;">
-                            <p style="margin: 0;"><i class="fa fa-info-circle"></i> Login menggunakan kode OTP yang
-                                dikirim
-                                ke email atau Telegram Anda.</p>
-                        </div>
-                        <a href="{{ route('otp.login') }}" class="btn btn-primary btn-block">
-                            <i class="fa fa-mobile"></i> Login dengan OTP
-                        </a>
-                    </div>
-                @endif
             </div>
 
             <hr />

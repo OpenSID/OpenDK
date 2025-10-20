@@ -1,31 +1,25 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Kegiatan <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! html()->text('event_name', old('event_name'))->placeholder('Nama
-        kegiatan')->class('form-control')->required()
-        !!}
+        {!! html()->text('event_name', old('event_name'))->placeholder('Nama kegiatan')->class('form-control')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Mulai / Selesai<span class="required">*</span></label>
     <div class="col-md-3 col-sm-8 col-xs-12">
-        {!! html()->text('waktu', old('waktu'))->id('waktu')->placeholder('Waktu
-        kegiatan')->class('form-control')->required() !!}
+        {!! html()->text('waktu', old('waktu'))->id('waktu')->placeholder('Waktu kegiatan')->class('form-control')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! html()->textarea('description', old('description'))->class('textarea my-editor')->placeholder('Deskripsi
-        kegiatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
-        padding: 10px;')->required() !!}
+        {!! html()->textarea('description', old('description'))->class('textarea my-editor')->placeholder('Deskripsi kegiatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;')->required() !!}
     </div>
 </div>
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Orang yang hadir <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! html()->text('attendants', old('attendants'))->placeholder('contoh: BAPENAS, GUBERNUR, ' .
-        strtoupper($sebutan_kepala_wilayah) . '')->class('form-control')->required() !!}
+        {!! html()->text('attendants', old('attendants'))->placeholder('contoh: BAPENAS, GUBERNUR, ' . strtoupper($sebutan_kepala_wilayah) . '')->class('form-control')->required() !!}
     </div>
 </div>
 <div id="attachment_input" class="form-group">
@@ -37,8 +31,8 @@
 @include('partials.asset_daterangepicker')
 
 @push('scripts')
-{!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
-<script type="application/javascript">
+    {!! JsValidator::formRequest('App\Http\Requests\EventRequest', '#form-event') !!}
+    <script type="application/javascript">
     $('#status').on('change', function() {
         if( this.value == 'CLOSED' ) {
             $('#attachment_input').html('<label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>' +

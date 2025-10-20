@@ -18,6 +18,7 @@ return new class extends Migration {
             $twoFa->delete();
         }
 
+        // setting login_otp sekarang digunakan untuk OTP dan 2FA
         $setting = SettingAplikasi::where('key', 'login_otp')->first();
         if ($setting) {
             $setting->description = 'Aktifkan fitur login dengan OTP (One-Time Password) atau 2FA (Two-Factor Authentication) untuk keamanan tambahan';

@@ -56,11 +56,14 @@ class OtpController extends Controller
     public function showActivationForm()
     {
         $user = Auth::user();
-        
+        // Determine whether user has configured a contact method for OTP/2FA
+        $needsSetup = empty($user->otp_channel) || empty($user->otp_identifier);
+
         return view('auth.otp.activate', [
             'page_title' => 'Aktivasi OTP',
             'page_description' => 'Aktifkan autentikasi OTP untuk keamanan tambahan',
             'user' => $user,
+            'needsSetup' => $needsSetup,
         ]);
     }
 
@@ -69,38 +72,32 @@ class OtpController extends Controller
      */
     public function requestActivation(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'channel' => 'required|in:email,telegram',
-            'identifier' => 'required|string',
-        ]);
+        // Use user's configured contact (same as 2FA settings)
+        $user = Auth::user();
 
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+        if (empty($user->otp_channel) || empty($user->otp_identifier)) {
+            return back()->with('error', 'Silakan atur metode verifikasi terlebih dahulu di halaman pengaturan sebelum mengaktifkan OTP.')->withInput();
         }
 
-        $user = Auth::user();
-        $channel = $request->channel;
-        $identifier = $request->identifier;
+        $channel = $user->otp_channel;
+        $identifier = $user->otp_identifier;
 
-        // Validate identifier based on channel
+        // For email, validate format; for telegram, verify chat id via service
         if ($channel === 'email') {
             $emailValidator = Validator::make(['email' => $identifier], [
                 'email' => 'required|email',
             ]);
-            
+
             if ($emailValidator->fails()) {
-                return back()->withErrors(['identifier' => 'Format email tidak valid'])->withInput();
+                return back()->with('error', 'Alamat email pada pengaturan tidak valid. Silakan perbarui di halaman pengaturan.');
             }
         } elseif ($channel === 'telegram') {
-            // Verify Telegram chat ID
             if (!$this->otpService->verifyTelegramChatId($identifier)) {
-                return back()->withErrors([
-                    'identifier' => 'Chat ID Telegram tidak valid. Pastikan Anda sudah mengirim /start ke bot.'
-                ])->withInput();
+                return back()->with('error', 'Chat ID Telegram tidak valid. Silakan perbarui pengaturan Telegram di halaman pengaturan.');
             }
         }
 
-        // Generate and send OTP
+        // Generate and send OTP for activation using stored config
         $result = $this->otpService->generateAndSend($user, $channel, $identifier, 'activation');
 
         if (!$result['sent']) {

@@ -17,7 +17,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Pengaturan Two-Factor Authentication</h3>
+                        <h3 class="box-title">{{ $page_title }}</h3>
                     </div>
 
                     <form action="{{ route('2fa.save-settings') }}" method="POST">
@@ -83,7 +83,7 @@
                                     <i class="fa fa-info-circle"></i> Email diambil dari profil Anda.
                                     @if (empty($user->email))
                                         <strong class="text-danger">Email belum diisi!</strong>
-                                        <a href="{{ route('data.profil.index') }}">Lengkapi profil</a>
+                                        {{-- <a href="{{ route('data.profil.index') }}">Lengkapi profil</a> --}}
                                     @endif
                                 </span>
                                 @if ($errors->has('email'))
@@ -106,8 +106,9 @@
                                     <i class="fa fa-info-circle"></i> Telegram ID diambil dari profil Anda.
                                     @if (empty($user->telegram_id))
                                         <strong class="text-danger">Telegram ID belum diisi!</strong>
-                                        <a href="{{ route('data.profil.index') }}">Lengkapi profil</a><br>
+                                        {{-- <a href="{{ route('data.profil.index') }}">Lengkapi profil</a> --}}
                                     @endif
+                                    <br>
                                     <strong>Cara mendapatkan Chat ID:</strong><br>
                                     1. Buka bot <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a> di
                                     Telegram<br>
@@ -124,11 +125,11 @@
                                 <p>Pastikan Anda memiliki akses ke email atau Telegram yang Anda daftarkan.
                                     Setelah menyimpan, sistem akan mengirim kode verifikasi untuk memastikan metode
                                     verifikasi berfungsi.</p>
-                                @if ($user->otp_verified && $user->otp_channel)
+                                {{-- @if ($user->otp_verified && $user->otp_channel)
                                     <p><strong class="text-info"><i class="fa fa-info-circle"></i> Jika Anda mengganti
                                             metode verifikasi, fitur OTP dan 2FA yang aktif akan dinonaktifkan dan Anda
                                             perlu verifikasi ulang serta mengaktifkan kembali.</strong></p>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
 

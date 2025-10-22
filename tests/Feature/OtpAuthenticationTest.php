@@ -76,10 +76,12 @@ class OtpAuthenticationTest extends TestCase
     {
         Mail::fake();
 
-        $response = $this->actingAs($this->user)->post(route('otp.request-activation'), [
-            'channel' => 'email',
-            'identifier' => 'test@example.com',
+        // Set up user with email and channel
+        $this->user->update([
+            'otp_channel' => 'email',
         ]);
+
+        $response = $this->actingAs($this->user)->post(route('otp.request-activation'));
 
         $response->assertRedirect(route('otp.verify-activation'));
         $response->assertSessionHas('success');
@@ -95,6 +97,11 @@ class OtpAuthenticationTest extends TestCase
 
     public function test_user_can_activate_otp_with_valid_code()
     {
+        // Set up user with email and channel
+        $this->user->update([
+            'otp_channel' => 'email',
+        ]);
+
         $otpService = new OtpService();
         $result = $otpService->generateAndSave($this->user, 'email', 'test@example.com', 'activation');
         
@@ -110,14 +117,13 @@ class OtpAuthenticationTest extends TestCase
             'otp' => (string) $result['otp'],
         ]);
 
-        $response->assertRedirect(route('dashboard'));
+        $response->assertRedirect(route('otp2fa.index'));
         $response->assertSessionHas('success');
 
         // Check user OTP enabled
         $this->user->refresh();
         $this->assertTrue($this->user->otp_enabled);
         $this->assertEquals('email', $this->user->otp_channel);
-        $this->assertEquals('test@example.com', $this->user->otp_identifier);
     }
 
     public function test_user_cannot_activate_otp_with_invalid_code()
@@ -151,7 +157,6 @@ class OtpAuthenticationTest extends TestCase
         $this->user->update([
             'otp_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $response = $this->actingAs($this->user)->get(route('otp.deactivate'));
@@ -162,8 +167,6 @@ class OtpAuthenticationTest extends TestCase
         // Check user OTP disabled
         $this->user->refresh();
         $this->assertFalse($this->user->otp_enabled);
-        $this->assertNull($this->user->otp_channel);
-        $this->assertNull($this->user->otp_identifier);
     }
 
     public function test_otp_login_page_is_displayed()
@@ -180,7 +183,6 @@ class OtpAuthenticationTest extends TestCase
         $this->user->update([
             'otp_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         Mail::fake();
@@ -216,7 +218,6 @@ class OtpAuthenticationTest extends TestCase
         $this->user->update([
             'otp_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $otpService = new OtpService();
@@ -243,7 +244,6 @@ class OtpAuthenticationTest extends TestCase
         $this->user->update([
             'otp_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $otpService = new OtpService();

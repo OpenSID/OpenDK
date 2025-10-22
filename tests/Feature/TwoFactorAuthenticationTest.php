@@ -76,45 +76,43 @@ class TwoFactorAuthenticationTest extends TestCase
     {
         $response = $this->actingAs($this->user)->post(route('2fa.save-settings'), [
             'channel' => 'email',
-            'identifier' => 'test@example.com',
+            'email' => 'test@example.com',
         ]);
 
-        $response->assertRedirect(route('2fa.activate'));
+        $response->assertRedirect(route('otp2fa.index'));
         $response->assertSessionHas('success');
 
         // Check user 2FA settings updated
         $this->user->refresh();
         $this->assertEquals('email', $this->user->otp_channel);
-        $this->assertEquals('test@example.com', $this->user->otp_identifier);
-        $this->assertNull($this->user->telegram_chat_id);
+        $this->assertEquals('test@example.com', $this->user->email);
     }
 
     public function test_user_can_save_2fa_settings_with_telegram_channel()
     {
         $response = $this->actingAs($this->user)->post(route('2fa.save-settings'), [
             'channel' => 'telegram',
-            'identifier' => '123456789',
+            'telegram_id' => '123456789',
         ]);
 
-        $response->assertRedirect(route('2fa.activate'));
+        $response->assertRedirect(route('otp2fa.index'));
         $response->assertSessionHas('success');
 
         // Check user 2FA settings updated
         $this->user->refresh();
         $this->assertEquals('telegram', $this->user->otp_channel);
-        $this->assertEquals('123456789', $this->user->otp_identifier);
-        $this->assertEquals('123456789', $this->user->telegram_chat_id);
+        $this->assertEquals('123456789', $this->user->telegram_id);
     }
 
     public function test_user_cannot_save_2fa_settings_with_invalid_email()
     {
         $response = $this->actingAs($this->user)->post(route('2fa.save-settings'), [
             'channel' => 'email',
-            'identifier' => 'invalid-email',
+            'email' => 'invalid-email',
         ]);
 
         $response->assertRedirect();
-        $response->assertSessionHasErrors('identifier');
+        $response->assertSessionHasErrors('email');
     }
 
     public function test_user_cannot_save_2fa_settings_without_channel()
@@ -155,7 +153,6 @@ class TwoFactorAuthenticationTest extends TestCase
         // Set up user 2FA settings first
         $this->user->update([
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         Mail::fake();
@@ -212,7 +209,6 @@ class TwoFactorAuthenticationTest extends TestCase
         // First set up the user with 2FA settings
         $this->user->update([
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $otpService = new OtpService();
@@ -237,7 +233,6 @@ class TwoFactorAuthenticationTest extends TestCase
         $this->user->refresh();
         $this->assertTrue((bool) $this->user->two_fa_enabled);
         $this->assertEquals('email', $this->user->otp_channel);
-        $this->assertEquals('test@example.com', $this->user->otp_identifier);
     }
 
     public function test_user_cannot_activate_2fa_with_invalid_code()
@@ -245,7 +240,6 @@ class TwoFactorAuthenticationTest extends TestCase
         // First set up the user with 2FA settings
         $this->user->update([
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $otpService = new OtpService();
@@ -310,7 +304,6 @@ class TwoFactorAuthenticationTest extends TestCase
         $this->user->update([
             'two_fa_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $response = $this->actingAs($this->user)->get(route('2fa.deactivate'));
@@ -354,7 +347,6 @@ class TwoFactorAuthenticationTest extends TestCase
         $this->user->update([
             'two_fa_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $otpService = new OtpService();
@@ -381,7 +373,6 @@ class TwoFactorAuthenticationTest extends TestCase
         $this->user->update([
             'two_fa_enabled' => true,
             'otp_channel' => 'email',
-            'otp_identifier' => 'test@example.com',
         ]);
 
         $otpService = new OtpService();

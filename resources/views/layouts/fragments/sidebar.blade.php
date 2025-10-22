@@ -422,8 +422,9 @@
                 @endif
 
                 @if ($user->hasrole(['super-admin', 'administrator-website']))
-                    <li class="treeview {{ Request::is(['setting*', 'otp/*', '2fa/*', 'otp-2fa*']) ? 'active' : '' }}"><a
-                            href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
+                    <li
+                        class="treeview {{ Request::is(['setting*', 'otp/*', '2fa/*', 'otp-2fa*']) ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-cogs"></i> <span>Pengaturan</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -498,25 +499,23 @@
                                         href="{{ route('setting.user.index') }}"><i
                                             class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif
-                            @if (config('setting.login_otp', true))
-                                <li {{ Request::is(['otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
-                                    <a href="{{ route('otp2fa.index') }}">
-                                        <i class="fa fa-circle-o"></i> OTP & 2FA
-                                        {{-- <span class="pull-right">
-                                            @if (auth()->user()->otp_enabled)
-                                                <small class="label pull-right bg-green">OTP</small>
-                                            @else
-                                                <small class="label pull-right bg-yellow">OTP</small>
-                                            @endif
-                                            @if (auth()->user()->two_fa_enabled)
-                                                <small class="label pull-right bg-green">2FA</small>
-                                            @else
-                                                <small class="label pull-right bg-yellow">2FA</small>
-                                            @endif
-                                        </span> --}}
-                                    </a>
-                                </li>
-                            @endif
+                            <li {{ Request::is(['otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('otp2fa.index') }}">
+                                    <i class="fa fa-circle-o"></i> OTP & 2FA
+                                    {{-- <span class="pull-right">
+                                        @if (auth()->user()->otp_enabled)
+                                            <small class="label pull-right bg-green">OTP</small>
+                                        @else
+                                            <small class="label pull-right bg-yellow">OTP</small>
+                                        @endif
+                                        @if (auth()->user()->two_fa_enabled)
+                                            <small class="label pull-right bg-green">2FA</small>
+                                        @else
+                                            <small class="label pull-right bg-yellow">2FA</small>
+                                        @endif
+                                    </span> --}}
+                                </a>
+                            </li>
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a
                                         href="{{ route('setting.aplikasi.index') }}"><i
@@ -538,25 +537,23 @@
                         </ul>
                     </li>
                 @else
-                    @if (config('setting.login_otp', true))
-                        <li {{ Request::is(['otp-2fa*', 'otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
-                            <a href="{{ route('otp2fa.index') }}">
-                                <i class="fa fa-shield"></i> OTP & 2FA
-                                {{-- <span class="pull-right">
-                                    @if (auth()->user()->otp_enabled)
-                                        <small class="label pull-right bg-green">OTP</small>
-                                    @else
-                                        <small class="label pull-right bg-yellow">OTP</small>
-                                    @endif
-                                    @if (auth()->user()->two_fa_enabled)
-                                        <small class="label pull-right bg-green">2FA</small>
-                                    @else
-                                        <small class="label pull-right bg-yellow">2FA</small>
-                                    @endif
-                                </span> --}}
-                            </a>
-                        </li>
-                    @endif
+                    <li {{ Request::is(['otp-2fa*', 'otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
+                        <a href="{{ route('otp2fa.index') }}">
+                            <i class="fa fa-shield"></i> OTP & 2FA
+                            {{-- <span class="pull-right">
+                                @if (auth()->user()->otp_enabled)
+                                    <small class="label pull-right bg-green">OTP</small>
+                                @else
+                                    <small class="label pull-right bg-yellow">OTP</small>
+                                @endif
+                                @if (auth()->user()->two_fa_enabled)
+                                    <small class="label pull-right bg-green">2FA</small>
+                                @else
+                                    <small class="label pull-right bg-yellow">2FA</small>
+                                @endif
+                            </span> --}}
+                        </a>
+                    </li>
                 @endif
             @endif
             <li class="header">VISITOR COUNTER</li>

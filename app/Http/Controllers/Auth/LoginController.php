@@ -139,7 +139,7 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         // Check if 2FA is enabled for the user
-        if ($user->two_fa_enabled && config('setting.login_otp', true)) {
+        if ($user->two_fa_enabled) {
             return $this->startTwoFactorAuthProcess($request, $user);
         }
 
@@ -162,15 +162,25 @@ class LoginController extends Controller
             array_merge(['id' => $user->id], $request->only('email', 'remember'))
         );
 
+        // Get identifier based on channel
+        $channel = $user->otp_channel;
+        if ($channel === 'email') {
+            $identifier = $user->email;
+        } elseif ($channel === 'telegram') {
+            $identifier = $user->telegram_id;
+        } else {
+            return redirect()->route('login')->with('error', 'Metode verifikasi belum diatur. Silakan hubungi administrator.');
+        }
+
         // Generate and send OTP using the existing OTP service
         $otpService = app(\App\Services\OtpService::class);
-        $result = $otpService->generateAndSend($user, $user->otp_channel, $user->otp_identifier, '2fa_login');
+        $result = $otpService->generateAndSend($user, $channel, $identifier, '2fa_login');
 
         if (!$result['sent']) {
             return redirect()->route('login')->with('error', 'Gagal mengirim kode 2FA. Silakan coba lagi.');
         }
 
         return redirect()->route('2fa.verify-login')
-            ->with('success', 'Kode 2FA telah dikirim ke ' . ($user->otp_channel === 'email' ? 'email' : 'Telegram') . ' Anda.');
+            ->with('success', 'Kode 2FA telah dikirim ke ' . ($channel === 'email' ? 'email' : 'Telegram') . ' Anda.');
     }
 }

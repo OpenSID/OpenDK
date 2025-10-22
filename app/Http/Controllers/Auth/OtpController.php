@@ -56,7 +56,7 @@ class OtpController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $needsSetup = empty($user->otp_channel) || empty($user->otp_identifier);
+        $needsSetup = false; // No longer need setup, use email and telegram_id from user
         $otpEnabled = $user->otp_enabled;
         $twoFaEnabled = $user->two_fa_enabled;
 
@@ -85,13 +85,12 @@ class OtpController extends Controller
     }
 
      /**
-     * Save 2FA settings (email/telegram contact)
+     * Save 2FA settings (email/telegram contact) and send verification code
      */
     public function saveSettings(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'channel' => 'required|in:email,telegram',
-            'identifier' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -100,28 +99,127 @@ class OtpController extends Controller
 
         $user = Auth::user();
         $channel = $request->channel;
-        $identifier = $request->identifier;
-
-        // Validate identifier based on channel
+        
+        // Check if channel changed, reset verified status
+        $channelChanged = $user->otp_channel !== $channel;
+        
+        // Validate that the required identifier exists
         if ($channel === 'email') {
+            if (empty($user->email)) {
+                return back()->with('error', 'Email belum diatur. Silakan perbarui email Anda di menu User terlebih dahulu.');
+            }
+            $identifier = $user->email;
+            
+            // Validate email format
             $emailValidator = Validator::make(['email' => $identifier], [
                 'email' => 'required|email',
             ]);
-
+            
             if ($emailValidator->fails()) {
-                return back()->withErrors(['identifier' => 'Format email tidak valid'])->withInput();
+                return back()->with('error', 'Format email tidak valid. Silakan perbarui email Anda di menu User.');
             }
         } elseif ($channel === 'telegram') {
-            // For Telegram, we'll store the identifier but validate later during activation
+            if (empty($user->telegram_id)) {
+                return back()->with('error', 'Telegram ID belum diatur. Silakan perbarui Telegram ID Anda di menu User terlebih dahulu.');
+            }
+            $identifier = $user->telegram_id;
+            
+            // Verify telegram chat ID
+            if (!$this->otpService->verifyTelegramChatId($identifier)) {
+                return back()->with('error', 'Telegram ID tidak valid. Silakan periksa kembali Telegram ID Anda di menu User.');
+            }
         }
 
-        // Save 2FA contact information (but don't activate yet)
-        $user->update([
+        // Update user channel and reset verified if changed
+        $updateData = [
             'otp_channel' => $channel,
-            'otp_identifier' => $identifier
+        ];
+        
+        if ($channelChanged) {
+            $updateData['otp_verified'] = false;
+            $updateData['otp_enabled'] = false;
+            $updateData['two_fa_enabled'] = false;
+        }
+        
+        $user->update($updateData);
+
+        // Send verification code to confirm the identifier works
+        $result = $this->otpService->generateAndSend($user, $channel, $identifier, 'settings_verification');
+
+        if (!$result['sent']) {
+            return back()->with('error', 'Gagal mengirim kode verifikasi. Silakan periksa ' . ($channel === 'email' ? 'email' : 'Telegram ID') . ' Anda dan coba lagi.');
+        }
+
+        // Store verification session
+        session([
+            'settings_verification' => [
+                'channel' => $channel,
+                'identifier' => $identifier,
+                'sent_at' => now()->timestamp,
+            ]
         ]);
 
-        return redirect()->route('otp2fa.index')->with('success', 'Pengaturan 2FA berhasil disimpan. Silakan aktifkan 2FA untuk mulai menggunakannya.');
+        return redirect()->route('otp2fa.verify-settings')
+            ->with('success', 'Kode verifikasi telah dikirim ke ' . ($channel === 'email' ? 'email' : 'Telegram') . ' Anda. Silakan masukkan kode untuk mengonfirmasi pengaturan.');
+    }
+
+    /**
+     * Show settings verification form
+     */
+    public function showVerifySettingsForm()
+    {
+        if (!session('settings_verification')) {
+            return redirect()->route('otp2fa.settings')
+                ->with('error', 'Silakan simpan pengaturan terlebih dahulu.');
+        }
+
+        $verification = session('settings_verification');
+        
+        return view('auth.otp2fa.verify-settings', [
+            'page_title' => 'Verifikasi Pengaturan OTP & 2FA',
+            'page_description' => 'Masukkan kode verifikasi untuk mengonfirmasi pengaturan',
+            'channel' => $verification['channel'],
+            'identifier' => $verification['identifier'],
+        ]);
+    }
+
+    /**
+     * Verify settings with OTP code
+     */
+    public function verifySettings(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'otp' => 'required|numeric|digits:6',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        if (!session('settings_verification')) {
+            return redirect()->route('otp2fa.settings')
+                ->with('error', 'Sesi verifikasi tidak ditemukan. Silakan simpan pengaturan lagi.');
+        }
+
+        $user = Auth::user();
+        
+        // Verify OTP
+        $result = $this->otpService->verify($user, $request->otp, 'settings_verification');
+
+        if (!$result['success']) {
+            return back()->with('error', $result['message']);
+        }
+
+        // Mark user as verified
+        $user->update([
+            'otp_verified' => true,
+        ]);
+
+        // Clear session
+        session()->forget('settings_verification');
+
+        return redirect()->route('otp2fa.index')
+            ->with('success', 'Pengaturan berhasil dikonfirmasi! Sekarang Anda dapat mengaktifkan OTP atau 2FA.');
     }
 
     /**
@@ -130,8 +228,8 @@ class OtpController extends Controller
     public function showActivationForm()
     {
         $user = Auth::user();
-        // Determine whether user has configured a contact method for OTP/2FA
-        $needsSetup = empty($user->otp_channel) || empty($user->otp_identifier);
+        // No longer need setup check
+        $needsSetup = false;
 
         return view('auth.otp.activate', [
             'page_title' => 'Aktivasi OTP',
@@ -142,112 +240,26 @@ class OtpController extends Controller
     }
 
     /**
-     * Request OTP for activation
+     * Request OTP for activation (directly activate without verification)
      */
     public function requestActivation(Request $request)
     {
-        // Use user's configured contact (same as 2FA settings)
+        // Use user's configured contact (email or telegram_id)
         $user = Auth::user();
 
-        if (empty($user->otp_channel) || empty($user->otp_identifier)) {
-            return back()->with('error', 'Silakan atur metode verifikasi terlebih dahulu di halaman pengaturan sebelum mengaktifkan OTP.')->withInput();
+        // Check if user has verified their channel
+        if (!$user->otp_verified) {
+            return back()->with('error', 'Anda belum memverifikasi channel verifikasi. Silakan verifikasi di halaman pengaturan terlebih dahulu.');
         }
 
-        $channel = $user->otp_channel;
-        $identifier = $user->otp_identifier;
-
-        // For email, validate format; for telegram, verify chat id via service
-        if ($channel === 'email') {
-            $emailValidator = Validator::make(['email' => $identifier], [
-                'email' => 'required|email',
-            ]);
-
-            if ($emailValidator->fails()) {
-                return back()->with('error', 'Alamat email pada pengaturan tidak valid. Silakan perbarui di halaman pengaturan.');
-            }
-        } elseif ($channel === 'telegram') {
-            if (!$this->otpService->verifyTelegramChatId($identifier)) {
-                return back()->with('error', 'Chat ID Telegram tidak valid. Silakan perbarui pengaturan Telegram di halaman pengaturan.');
-            }
+        if (empty($user->otp_channel)) {
+            return back()->with('error', 'Silakan pilih metode verifikasi terlebih dahulu di halaman pengaturan sebelum mengaktifkan OTP.')->withInput();
         }
 
-        // Generate and send OTP for activation using stored config
-        $result = $this->otpService->generateAndSend($user, $channel, $identifier, 'activation');
-
-        if (!$result['sent']) {
-            return back()->with('error', 'Gagal mengirim kode OTP. Silakan coba lagi.')->withInput();
-        }
-
-        // Store activation data in session
-        session([
-            'otp_activation' => [
-                'channel' => $channel,
-                'identifier' => $identifier,
-                'sent_at' => now()->timestamp,
-            ]
-        ]);
-
-        return redirect()->route('otp.verify-activation')
-            ->with('success', 'Kode OTP telah dikirim ke ' . ($channel === 'email' ? 'email' : 'Telegram') . ' Anda.');
-    }
-
-    /**
-     * Show OTP verification form for activation
-     */
-    public function showVerifyActivationForm()
-    {
-        if (!session('otp_activation')) {
-            return redirect()->route('otp2fa.index')
-                ->with('error', 'Silakan minta kode OTP terlebih dahulu.');
-        }
-
-        $activation = session('otp_activation');
-        
-        return view('auth.otp.verify-activation', [
-            'page_title' => 'Verifikasi OTP',
-            'page_description' => 'Masukkan kode OTP untuk mengaktifkan fitur',
-            'channel' => $activation['channel'],
-            'identifier' => $activation['identifier'],
-        ]);
-    }
-
-    /**
-     * Verify and activate OTP
-     */
-    public function verifyActivation(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'otp' => 'required|numeric|digits:6',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        if (!session('otp_activation')) {
-            return redirect()->route('otp2fa.index')
-                ->with('error', 'Sesi aktivasi tidak ditemukan. Silakan mulai lagi.');
-        }
-
-        $user = Auth::user();
-        $activation = session('otp_activation');
-        
-        // Verify OTP
-        $result = $this->otpService->verify($user, $request->otp, 'activation');
-
-        if (!$result['success']) {
-            return back()->with('error', $result['message']);
-        }
-
-        // Activate OTP for user
+        // Activate OTP for user directly
         $user->update([
             'otp_enabled' => true,
-            'otp_channel' => $activation['channel'],
-            'otp_identifier' => $activation['identifier'],
         ]);
-
-        // Clear session
-        session()->forget('otp_activation');
 
         return redirect()->route('otp2fa.index')
             ->with('success', 'OTP berhasil diaktifkan! Anda sekarang dapat menggunakan OTP untuk login.');
@@ -262,8 +274,6 @@ class OtpController extends Controller
         
         $user->update([
             'otp_enabled' => false,
-            // 'otp_channel' => null,
-            // 'otp_identifier' => null,
         ]);
 
         return back()->with('success', 'OTP berhasil dinonaktifkan.');
@@ -307,11 +317,21 @@ class OtpController extends Controller
             return back()->with('error', 'OTP belum diaktifkan untuk pengguna ini. Silakan login dengan password.')->withInput();
         }
 
+        // Get identifier based on channel
+        $channel = $user->otp_channel;
+        if ($channel === 'email') {
+            $identifier = $user->email;
+        } elseif ($channel === 'telegram') {
+            $identifier = $user->telegram_id;
+        } else {
+            return back()->with('error', 'Metode verifikasi belum diatur.')->withInput();
+        }
+
         // Generate and send OTP
         $result = $this->otpService->generateAndSend(
             $user,
-            $user->otp_channel,
-            $user->otp_identifier,
+            $channel,
+            $identifier,
             'login'
         );
 
@@ -401,7 +421,26 @@ class OtpController extends Controller
     {
         $purpose = $request->input('purpose', 'login');
         
-        if ($purpose === 'activation') {
+        if ($purpose === 'settings_verification') {
+            if (!session('settings_verification')) {
+                return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
+            }
+            
+            $verification = session('settings_verification');
+            $user = Auth::user();
+            
+            $result = $this->otpService->generateAndSend(
+                $user,
+                $verification['channel'],
+                $verification['identifier'],
+                'settings_verification'
+            );
+            
+            if ($result['sent']) {
+                session(['settings_verification.sent_at' => now()->timestamp]);
+                return response()->json(['success' => true, 'message' => 'Kode verifikasi baru telah dikirim']);
+            }
+        } elseif ($purpose === 'activation') {
             if (!session('otp_activation')) {
                 return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
             }
@@ -432,10 +471,20 @@ class OtpController extends Controller
                 return response()->json(['success' => false, 'message' => 'Pengguna tidak ditemukan'], 400);
             }
             
+            // Get identifier based on channel
+            $channel = $user->otp_channel;
+            if ($channel === 'email') {
+                $identifier = $user->email;
+            } elseif ($channel === 'telegram') {
+                $identifier = $user->telegram_id;
+            } else {
+                return response()->json(['success' => false, 'message' => 'Metode verifikasi belum diatur'], 400);
+            }
+            
             $result = $this->otpService->generateAndSend(
                 $user,
-                $user->otp_channel,
-                $user->otp_identifier,
+                $channel,
+                $identifier,
                 'login'
             );
             
@@ -456,10 +505,20 @@ class OtpController extends Controller
                 return response()->json(['success' => false, 'message' => 'Pengguna tidak ditemukan'], 400);
             }
             
+            // Get identifier based on channel
+            $channel = $user->otp_channel;
+            if ($channel === 'email') {
+                $identifier = $user->email;
+            } elseif ($channel === 'telegram') {
+                $identifier = $user->telegram_id;
+            } else {
+                return response()->json(['success' => false, 'message' => 'Metode verifikasi belum diatur'], 400);
+            }
+            
             $result = $this->otpService->generateAndSend(
                 $user,
-                $user->otp_channel,
-                $user->otp_identifier,
+                $channel,
+                $identifier,
                 '2fa_login'
             );
             

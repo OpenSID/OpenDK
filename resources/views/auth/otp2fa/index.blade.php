@@ -32,12 +32,31 @@
                     <div class="box-body">
                         <p><strong>Metode verifikasi:</strong>
                             {{ $user->otp_channel ? ucfirst($user->otp_channel) : '-' }}</p>
-                        <p><strong>Identifier:</strong>
-                            {{ $user->otp_identifier ?? '-' }}</p>
 
-                        @if ($needsSetup)
+                        @if ($user->otp_channel === 'email')
+                            <p><strong>Email:</strong> {{ $user->email ?? '-' }}</p>
+                        @elseif($user->otp_channel === 'telegram')
+                            <p><strong>Telegram ID:</strong> {{ $user->telegram_id ?? '-' }}</p>
+                        @endif
+
+                        <p><strong>Status Verifikasi:</strong>
+                            @if ($user->otp_verified)
+                                <span class="label label-success"><i class="fa fa-check-circle"></i> Terverifikasi</span>
+                            @else
+                                <span class="label label-warning"><i class="fa fa-exclamation-circle"></i> Belum
+                                    Verifikasi</span>
+                            @endif
+                        </p>
+
+                        @if (!$user->otp_channel)
                             <div class="alert alert-warning">
                                 Anda belum mengatur metode verifikasi. Silakan klik tombol "Atur Email / Telegram".
+                            </div>
+                        @elseif(!$user->otp_verified)
+                            <div class="alert alert-warning">
+                                <i class="fa fa-exclamation-triangle"></i> Anda belum memverifikasi channel verifikasi.
+                                Silakan <a href="{{ route('otp2fa.settings') }}"><strong>verifikasi di halaman
+                                        pengaturan</strong></a> untuk dapat mengaktifkan OTP atau 2FA.
                             </div>
                         @endif
                     </div>
@@ -57,12 +76,13 @@
                             @if ($otpEnabled)
                                 <a href="{{ route('otp.deactivate') }}" class="btn btn-warning">Nonaktifkan OTP</a>
                             @else
-                                <button type="submit" class="btn btn-primary" {{ $needsSetup ? 'disabled' : '' }}>
-                                    Kirim Kode Aktivasi OTP
+                                <button type="submit" class="btn btn-primary"
+                                    {{ !$user->otp_verified ? 'disabled' : '' }}>
+                                    Aktifkan OTP
                                 </button>
-                                @if ($needsSetup)
-                                    <p class="help-block text-danger" style="margin-top:8px">Silakan atur kontak verifikasi
-                                        terlebih dahulu.</p>
+                                @if (!$user->otp_verified)
+                                    <p class="help-block text-danger" style="margin-top:8px">Silakan verifikasi channel
+                                        terlebih dahulu di halaman pengaturan.</p>
                                 @endif
                             @endif
                         </form>
@@ -84,12 +104,13 @@
                             @if ($twoFaEnabled)
                                 <a href="{{ route('2fa.deactivate') }}" class="btn btn-warning">Nonaktifkan 2FA</a>
                             @else
-                                <button type="submit" class="btn btn-primary" {{ $needsSetup ? 'disabled' : '' }}>
-                                    Kirim Kode Aktivasi 2FA
+                                <button type="submit" class="btn btn-primary"
+                                    {{ !$user->otp_verified ? 'disabled' : '' }}>
+                                    Aktifkan 2FA
                                 </button>
-                                @if ($needsSetup)
-                                    <p class="help-block text-danger" style="margin-top:8px">Silakan atur kontak verifikasi
-                                        terlebih dahulu.</p>
+                                @if (!$user->otp_verified)
+                                    <p class="help-block text-danger" style="margin-top:8px">Silakan verifikasi channel
+                                        terlebih dahulu di halaman pengaturan.</p>
                                 @endif
                             @endif
                         </form>

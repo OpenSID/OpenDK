@@ -39,8 +39,12 @@
 
                             <div class="callout callout-info">
                                 <h4><i class="icon fa fa-info-circle"></i> Informasi</h4>
-                                <p>Pilih metode verifikasi untuk Two-Factor Authentication (2FA). Setelah menyimpan
-                                    pengaturan, Anda perlu mengaktifkan 2FA di halaman aktivasi.</p>
+                                <p>Pilih metode verifikasi untuk OTP dan Two-Factor Authentication (2FA). Email dan Telegram
+                                    ID akan
+                                    diambil dari data profil Anda. Jika perlu mengubah, silakan update profil Anda terlebih
+                                    dahulu.</p>
+                                <p><strong>Setelah menyimpan, Anda akan diminta memasukkan kode verifikasi untuk memastikan
+                                        metode verifikasi dapat menerima kode dengan baik.</strong></p>
                             </div>
 
                             <div class="form-group {{ $errors->has('channel') ? 'has-error' : '' }}">
@@ -65,40 +69,66 @@
                                 @endif
                             </div>
 
-                            <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}" id="email-group">
+                            <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}" id="email-group">
                                 <label for="email">Alamat Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" name="identifier"
-                                    placeholder="email@example.com"
-                                    value="{{ old('identifier', $user->otp_channel == 'email' ? $user->otp_identifier : $user->email) }}"
-                                    required>
-                                <span class="help-block">Masukkan alamat email yang valid untuk menerima kode OTP.</span>
-                                @if ($errors->has('identifier'))
-                                    <span class="help-block">{{ $errors->first('identifier') }}</span>
+                                <div class="input-group">
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="email@example.com" value="{{ old('email', $user->email) }}" readonly
+                                        required>
+                                    <span class="input-group-addon bg-gray" style="cursor: not-allowed;">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </div>
+                                <span class="help-block">
+                                    <i class="fa fa-info-circle"></i> Email diambil dari profil Anda.
+                                    @if (empty($user->email))
+                                        <strong class="text-danger">Email belum diisi!</strong>
+                                        <a href="{{ route('data.profil.index') }}">Lengkapi profil</a>
+                                    @endif
+                                </span>
+                                @if ($errors->has('email'))
+                                    <span class="help-block text-danger">{{ $errors->first('email') }}</span>
                                 @endif
                             </div>
 
-                            <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}" id="telegram-group"
-                                style="display: none;">
+                            <div class="form-group {{ $errors->has('telegram_id') ? 'has-error' : '' }}"
+                                id="telegram-group" style="display: none;">
                                 <label for="telegram">Chat ID Telegram <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="telegram" name="telegram_identifier"
-                                    placeholder="123456789"
-                                    value="{{ old('identifier', $user->otp_channel == 'telegram' ? $user->otp_identifier : '') }}">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="telegram" name="telegram_id"
+                                        placeholder="123456789" value="{{ old('telegram_id', $user->telegram_id) }}"
+                                        readonly required>
+                                    <span class="input-group-addon bg-gray" style="cursor: not-allowed;">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                </div>
                                 <span class="help-block">
+                                    <i class="fa fa-info-circle"></i> Telegram ID diambil dari profil Anda.
+                                    @if (empty($user->telegram_id))
+                                        <strong class="text-danger">Telegram ID belum diisi!</strong>
+                                        <a href="{{ route('data.profil.index') }}">Lengkapi profil</a><br>
+                                    @endif
                                     <strong>Cara mendapatkan Chat ID:</strong><br>
                                     1. Buka bot <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a> di
                                     Telegram<br>
                                     2. Kirim pesan /start<br>
                                     3. Bot akan memberikan ID Anda<br>
                                 </span>
-                                @if ($errors->has('identifier'))
-                                    <span class="help-block">{{ $errors->first('identifier') }}</span>
+                                @if ($errors->has('telegram_id'))
+                                    <span class="help-block text-danger">{{ $errors->first('telegram_id') }}</span>
                                 @endif
                             </div>
 
                             <div class="callout callout-warning">
                                 <h4><i class="icon fa fa-warning"></i> Perhatian!</h4>
-                                <p>Pastikan Anda memiliki akses ke email atau Telegram yang Anda daftarkan. Setelah
-                                    menyimpan pengaturan ini, Anda perlu mengaktifkan 2FA di halaman aktivasi.</p>
+                                <p>Pastikan Anda memiliki akses ke email atau Telegram yang Anda daftarkan.
+                                    Setelah menyimpan, sistem akan mengirim kode verifikasi untuk memastikan metode
+                                    verifikasi berfungsi.</p>
+                                @if ($user->otp_verified && $user->otp_channel)
+                                    <p><strong class="text-info"><i class="fa fa-info-circle"></i> Jika Anda mengganti
+                                            metode verifikasi, fitur OTP dan 2FA yang aktif akan dinonaktifkan dan Anda
+                                            perlu verifikasi ulang serta mengaktifkan kembali.</strong></p>
+                                @endif
                             </div>
                         </div>
 
@@ -125,13 +155,13 @@
                     if (channel === 'email') {
                         $('#email-group').show();
                         $('#telegram-group').hide();
-                        $('#email').attr('name', 'identifier').prop('required', true);
-                        $('#telegram').attr('name', 'telegram_identifier').prop('required', false);
+                        $('#email').prop('required', true);
+                        $('#telegram').prop('required', false);
                     } else if (channel === 'telegram') {
                         $('#email-group').hide();
                         $('#telegram-group').show();
-                        $('#telegram').attr('name', 'identifier').prop('required', true);
-                        $('#email').attr('name', 'email_identifier').prop('required', false);
+                        $('#telegram').prop('required', true);
+                        $('#email').prop('required', false);
                     }
                 });
 

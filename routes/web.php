@@ -121,12 +121,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         // Combined OTP & 2FA management page
         Route::get('/otp-2fa', 'OtpController@index')->name('otp2fa.index');
         Route::get('/otp-2fa/settings', 'OtpController@showSettingsForm')->name('otp2fa.settings');
+        Route::post('/otp-2fa/settings', 'OtpController@saveSettings')->name('2fa.save-settings');
+        Route::get('/otp-2fa/verify-settings', 'OtpController@showVerifySettingsForm')->name('otp2fa.verify-settings');
+        Route::post('/otp-2fa/verify-settings', 'OtpController@verifySettings')->name('otp2fa.verify-settings.post');
 
         // Redirect old 2fa activate page to unified page
         Route::get('/2fa/activate', function () { return redirect()->route('otp2fa.index'); })->name('2fa.activate');
 
-        Route::post('/2fa/settings', 'TwoFactorController@saveSettings')->name('2fa.save-settings');
-        Route::get('/2fa/activate', 'TwoFactorController@showActivationForm')->name('2fa.activate');
         Route::post('/2fa/request-activation', 'TwoFactorController@requestActivation')->name('2fa.request-activation');
         Route::get('/2fa/verify-activation', 'TwoFactorController@showVerifyActivationForm')->name('2fa.verify-activation');
         Route::post('/2fa/verify-activation', 'TwoFactorController@verifyActivation');

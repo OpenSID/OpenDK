@@ -139,100 +139,26 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Request OTP for 2FA activation
+     * Request OTP for 2FA activation (directly activate without verification)
      */
     public function requestActivation(Request $request)
     {
         $user = Auth::user();
 
+        // Check if user has verified their channel
+        if (!$user->otp_verified) {
+            return back()->with('error', 'Anda belum memverifikasi channel verifikasi. Silakan verifikasi di halaman pengaturan terlebih dahulu.');
+        }
+
         // Check if user has set up 2FA contact information
-        if (empty($user->otp_channel) || empty($user->otp_identifier)) {
+        if (empty($user->otp_channel)) {
             return back()->with('error', 'Silakan atur metode verifikasi terlebih dahulu sebelum mengaktifkan 2FA.');
         }
 
-        // Verify Telegram chat ID if using Telegram
-        if ($user->otp_channel === 'telegram') {
-            if (!$this->otpService->verifyTelegramChatId($user->otp_identifier)) {
-                return back()->with('error', 'Chat ID Telegram tidak valid. Pastikan Anda sudah mengirim /start ke bot.');
-            }
-        }
-
-        // Generate and send OTP
-        $result = $this->otpService->generateAndSend($user, $user->otp_channel, $user->otp_identifier, '2fa_activation');
-
-        if (!$result['sent']) {
-            return back()->with('error', 'Gagal mengirim kode OTP. Silakan coba lagi.');
-        }
-
-        // Store activation data in session
-        session([
-            '2fa_activation' => [
-                'channel' => $user->otp_channel,
-                'identifier' => $user->otp_identifier,
-                'sent_at' => now()->timestamp,
-            ]
-        ]);
-
-        return redirect()->route('2fa.verify-activation')
-            ->with('success', 'Kode OTP telah dikirim ke ' . ($user->otp_channel === 'email' ? 'email' : 'Telegram') . ' Anda.');
-    }
-
-    /**
-     * Show OTP verification form for 2FA activation
-     */
-    public function showVerifyActivationForm()
-    {
-        if (!session('2fa_activation')) {
-            return redirect()->route('otp2fa.index')
-                ->with('error', 'Silakan minta kode OTP terlebih dahulu.');
-        }
-
-        $activation = session('2fa_activation');
-
-        return view('auth.2fa.verify-activation', [
-            'page_title' => 'Verifikasi 2FA',
-            'page_description' => 'Masukkan kode OTP untuk mengaktifkan 2FA',
-            'channel' => $activation['channel'],
-            'identifier' => $activation['identifier'],
-        ]);
-    }
-
-    /**
-     * Verify and activate 2FA
-     */
-    public function verifyActivation(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'otp' => 'required|numeric|digits:6',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
-        }
-
-        if (!session('2fa_activation')) {
-            return redirect()->route('otp2fa.index')
-                ->with('error', 'Sesi aktivasi tidak ditemukan. Silakan mulai lagi.');
-        }
-
-        $user = Auth::user();
-        $activation = session('2fa_activation');
-
-        // Verify OTP
-        $result = $this->otpService->verify($user, $request->otp, '2fa_activation');
-
-        if (!$result['success']) {
-            return back()->with('error', $result['message']);
-        }
-
-        // Activate 2FA for user
+        // Activate 2FA for user directly
         $user->update([
-            // 'otp_enabled' => true,
             'two_fa_enabled' => true,
         ]);
-
-        // Clear session
-        session()->forget('2fa_activation');
 
         return redirect()->route('otp2fa.index')
             ->with('success', 'Two-Factor Authentication berhasil diaktifkan!');

@@ -49,7 +49,11 @@
                                     <p>Anda saat ini menggunakan OTP melalui:
                                         <strong>{{ ucfirst($user->otp_channel) }}</strong>
                                     </p>
-                                    <p>Identifier: <strong>{{ $user->otp_identifier }}</strong></p>
+                                    @if ($user->otp_channel === 'email')
+                                        <p>Email: <strong>{{ $user->email }}</strong></p>
+                                    @elseif($user->otp_channel === 'telegram')
+                                        <p>Telegram ID: <strong>{{ $user->telegram_id }}</strong></p>
+                                    @endif
                                 </div>
 
                                 <div class="form-group">
@@ -61,7 +65,7 @@
                                     </a>
                                 </div>
                             @else
-                                @if (!empty($needsSetup) && $needsSetup)
+                                @if (!$user->otp_channel)
                                     <div class="alert alert-warning">
                                         <h4><i class="icon fa fa-warning"></i> Konfigurasi Diperlukan</h4>
                                         <p>Anda perlu mengatur metode verifikasi (Email atau Telegram) terlebih dahulu
@@ -79,7 +83,11 @@
                                         <p>Metode verifikasi Anda telah diatur. Klik tombol di bawah untuk mengirim kode
                                             verifikasi dan mengaktifkan OTP.</p>
                                         <p>Metode verifikasi: <strong>{{ ucfirst($user->otp_channel) }}</strong></p>
-                                        <p>Identifier: <strong>{{ $user->otp_identifier }}</strong></p>
+                                        @if ($user->otp_channel === 'email')
+                                            <p>Email: <strong>{{ $user->email }}</strong></p>
+                                        @elseif($user->otp_channel === 'telegram')
+                                            <p>Telegram ID: <strong>{{ $user->telegram_id }}</strong></p>
+                                        @endif
                                     </div>
                                 @endif
                             @endif

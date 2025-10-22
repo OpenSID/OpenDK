@@ -71,6 +71,7 @@ class User extends Authenticatable implements JWTSubject
         'image',
         'address',
         'phone',
+        'telegram_id',
         'gender',
         'status',
         'last_login',
@@ -78,7 +79,7 @@ class User extends Authenticatable implements JWTSubject
         'otp_enabled',
         'two_fa_enabled',
         'otp_channel',
-        'otp_identifier',
+        'otp_verified',
     ];
 
     /**
@@ -118,7 +119,7 @@ class User extends Authenticatable implements JWTSubject
 
     public static function datatables()
     {
-        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone');
+        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone', 'telegram_id', 'otp_channel', 'otp_verified');
     }
 
     public function getFotoAttribute()

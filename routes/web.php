@@ -96,7 +96,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Route::namespace('\App\Http\Controllers\Auth')->middleware('otp.enabled')->group(function () {
         // OTP Activation (requires auth)
         Route::middleware('auth')->group(function () {
-            Route::get('/otp/activate', 'OtpController@showActivationForm')->name('otp.activate');
+            // Redirect old individual activate page to unified page
+            Route::get('/otp/activate', function () { return redirect()->route('otp2fa.index'); })->name('otp.activate');
             Route::post('/otp/request-activation', 'OtpController@requestActivation')->name('otp.request-activation');
             Route::get('/otp/verify-activation', 'OtpController@showVerifyActivationForm')->name('otp.verify-activation');
             Route::post('/otp/verify-activation', 'OtpController@verifyActivation');
@@ -113,6 +114,30 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
         // OTP Resend (both auth and guest)
         Route::post('/otp/resend', 'OtpController@resendOtp')->name('otp.resend');
+    });
+
+    // 2FA Routes
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('auth')->group(function () {
+        // Combined OTP & 2FA management page
+        Route::get('/otp-2fa', 'OtpController@index')->name('otp2fa.index');
+        Route::get('/otp-2fa/settings', 'OtpController@showSettingsForm')->name('otp2fa.settings');
+        Route::post('/otp-2fa/settings', 'OtpController@saveSettings')->name('2fa.save-settings');
+        Route::get('/otp-2fa/verify-settings', 'OtpController@showVerifySettingsForm')->name('otp2fa.verify-settings');
+        Route::post('/otp-2fa/verify-settings', 'OtpController@verifySettings')->name('otp2fa.verify-settings.post');
+
+        // Redirect old 2fa activate page to unified page
+        Route::get('/2fa/activate', function () { return redirect()->route('otp2fa.index'); })->name('2fa.activate');
+
+        Route::post('/2fa/request-activation', 'TwoFactorController@requestActivation')->name('2fa.request-activation');
+        Route::get('/2fa/verify-activation', 'TwoFactorController@showVerifyActivationForm')->name('2fa.verify-activation');
+        Route::post('/2fa/verify-activation', 'TwoFactorController@verifyActivation');
+        Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
+    });
+
+    // 2FA Login Routes (guest access)
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
+        Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');
+        Route::post('/2fa/verify-login', 'TwoFactorController@verifyLogin');
     });
 
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {

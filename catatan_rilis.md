@@ -9,7 +9,7 @@ Di rilis versi v2510.0.0 di versi ini terdapat modul komentar pada artikel dan p
 4. [#1342](https://github.com/OpenSID/OpenDK/issues/1342) Sesuaikan surat tte OpenDK.
 5. [#1352](https://github.com/OpenSID/OpenDK/issues/1352) Penambahan fitur preview surat.
 6. [#1348](https://github.com/OpenSID/OpenDK/issues/1348) Penambahan fitur login OTP passwordless dengan dukungan email dan telegram sebagai alternatif autentikasi.
-
+7. [#1354](https://github.com/OpenSID/OpenDK/issues/1354) Penambahan 2FA keamaan login.
 #### BUG
 
 1. [#1301](https://github.com/OpenSID/OpenDK/issues/1301) Penyesuaian permohonan surat dengan api satudata.

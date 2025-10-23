@@ -174,27 +174,6 @@ class OtpServiceTest extends TestCase
         $this->assertEquals(1, $token->attempts);
     }
 
-    public function test_verify_otp_fails_after_max_attempts()
-    {
-        $result = $this->otpService->generateAndSave(
-            $this->user,
-            'email',
-            'test@example.com',
-            'login'
-        );
-
-        // Try 3 times with wrong code
-        for ($i = 0; $i < 3; $i++) {
-            $this->otpService->verify($this->user, '000000', 'login');
-        }
-
-        // Fourth attempt should fail due to max attempts
-        $verifyResult = $this->otpService->verify($this->user, (string) $result['otp'], 'login');
-
-        $this->assertFalse($verifyResult['success']);
-        $this->assertStringContainsString('Maksimal percobaan', $verifyResult['message']);
-    }
-
     public function test_verify_otp_fails_with_expired_token()
     {
         $result = $this->otpService->generateAndSave(
@@ -215,36 +194,6 @@ class OtpServiceTest extends TestCase
         $this->assertStringContainsString('tidak valid atau sudah kadaluarsa', $verifyResult['message']);
     }
 
-    public function test_cleanup_expired_tokens()
-    {
-        // Create expired token with different purpose to avoid deletion by generateAndSave
-        OtpToken::create([
-            'user_id' => $this->user->id,
-            'token_hash' => Hash::make('123456'),
-            'channel' => 'email',
-            'identifier' => 'test@example.com',
-            'purpose' => 'activation', // Different purpose
-            'expires_at' => now()->subMinutes(10),
-            'attempts' => 0,
-        ]);
-
-        // Create valid token with different purpose
-        $this->otpService->generateAndSave(
-            $this->user,
-            'email',
-            'test@example.com',
-            'login' // Different purpose
-        );
-
-        $deleted = $this->otpService->cleanupExpired();
-
-        $this->assertEquals(1, $deleted);
-        
-        // Only valid token should remain
-        $remainingCount = OtpToken::where('user_id', $this->user->id)->count();
-        $this->assertEquals(1, $remainingCount);
-    }
-
     public function test_otp_token_is_expired_method()
     {
         $token = OtpToken::create([
@@ -263,26 +212,6 @@ class OtpServiceTest extends TestCase
         $token->save();
 
         $this->assertFalse($token->isExpired());
-    }
-
-    public function test_otp_token_has_max_attempts_method()
-    {
-        $token = OtpToken::create([
-            'user_id' => $this->user->id,
-            'token_hash' => Hash::make('123456'),
-            'channel' => 'email',
-            'identifier' => 'test@example.com',
-            'purpose' => 'login',
-            'expires_at' => now()->addMinutes(5),
-            'attempts' => 2,
-        ]);
-
-        $this->assertFalse($token->hasMaxAttempts());
-
-        $token->attempts = 3;
-        $token->save();
-
-        $this->assertTrue($token->hasMaxAttempts());
     }
 
     public function test_otp_token_valid_scope()

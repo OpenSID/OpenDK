@@ -123,7 +123,6 @@ class OtpService
     {
         try {
             $botToken = config('otp.telegram_bot_token');
-            
             if (empty($botToken)) {
                 Log::warning('Telegram bot token not configured');
                 return false;
@@ -154,13 +153,27 @@ class OtpService
     private function formatTelegramMessage(int $otp, string $purpose): string
     {
         $appName = config('app.name', 'OpenDK');
-        $purposeText = $purpose === 'activation' ? 'Aktivasi OTP' : 'Login';
-        
+
+        switch ($purpose) {
+            case 'activation':
+                $purposeText = 'Aktivasi OTP';
+                break;
+            case '2fa_activation':
+                $purposeText = 'Aktivasi 2FA';
+                break;
+            case '2fa_login':
+                $purposeText = 'Login 2FA';
+                break;
+            default:
+                $purposeText = 'Login';
+                break;
+        }
+
         return "🔐 <b>{$appName} - {$purposeText}</b>\n\n" .
-               "Kode OTP Anda: <code>{$otp}</code>\n\n" .
-               "⏰ Berlaku selama " . config('otp.expiry_minutes', 5) . " menit\n" .
-               "🔒 Jangan bagikan kode ini kepada siapa pun\n\n" .
-               "<i>Jika Anda tidak meminta kode ini, abaikan pesan ini.</i>";
+            "Kode OTP Anda: <code>{$otp}</code>\n\n" .
+            "⏰ Berlaku selama " . config('otp.expiry_minutes', 5) . " menit\n" .
+            "🔒 Jangan bagikan kode ini kepada siapa pun\n\n" .
+            "<i>Jika Anda tidak meminta kode ini, abaikan pesan ini.</i>";
     }
 
     /**
@@ -220,7 +233,7 @@ class OtpService
             ];
         }
 
-        // Check max attempts
+        // Check max attempts (limit to 5 attempts)
         if ($token->hasMaxAttempts()) {
             return [
                 'success' => false,
@@ -230,20 +243,32 @@ class OtpService
 
         if (!Hash::check($otp, $token->token_hash)) {
             $token->incrementAttempts();
-            $remainingAttempts = 3 - $token->attempts;
-            
+            $remainingAttempts = 5 - $token->attempts;
+
+            // Provide specific message based on purpose
+            $message = "Kode OTP salah. Sisa percobaan: {$remainingAttempts}";
+            if ($purpose === '2fa_login') {
+                $message = "Kode 2FA salah. Sisa percobaan: {$remainingAttempts}";
+            }
+
             return [
                 'success' => false,
-                'message' => "Kode OTP salah. Sisa percobaan: {$remainingAttempts}",
+                'message' => $message,
             ];
         }
 
         // OTP is valid, delete the token
         $token->delete();
 
+        // Provide specific success message based on purpose
+        $message = 'Kode OTP berhasil diverifikasi';
+        if ($purpose === '2fa_login') {
+            $message = 'Kode 2FA berhasil diverifikasi';
+        }
+
         return [
             'success' => true,
-            'message' => 'Kode OTP berhasil diverifikasi',
+            'message' => $message,
         ];
     }
 
@@ -267,7 +292,6 @@ class OtpService
     {
         try {
             $botToken = config('otp.telegram_bot_token');
-            
             if (empty($botToken)) {
                 return false;
             }

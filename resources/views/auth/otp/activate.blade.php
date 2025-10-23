@@ -49,7 +49,11 @@
                                     <p>Anda saat ini menggunakan OTP melalui:
                                         <strong>{{ ucfirst($user->otp_channel) }}</strong>
                                     </p>
-                                    <p>Identifier: <strong>{{ $user->otp_identifier }}</strong></p>
+                                    @if ($user->otp_channel === 'email')
+                                        <p>Email: <strong>{{ $user->email }}</strong></p>
+                                    @elseif($user->otp_channel === 'telegram')
+                                        <p>Telegram ID: <strong>{{ $user->telegram_id }}</strong></p>
+                                    @endif
                                 </div>
 
                                 <div class="form-group">
@@ -61,62 +65,31 @@
                                     </a>
                                 </div>
                             @else
-                                <div class="form-group {{ $errors->has('channel') ? 'has-error' : '' }}">
-                                    <label>Pilih Saluran OTP <span class="text-danger">*</span></label>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="channel" value="email"
-                                                {{ old('channel') == 'email' ? 'checked' : '' }} required>
-                                            <i class="fa fa-envelope"></i> Email
-                                        </label>
+                                @if (!$user->otp_channel)
+                                    <div class="alert alert-warning">
+                                        <h4><i class="icon fa fa-warning"></i> Konfigurasi Diperlukan</h4>
+                                        <p>Anda perlu mengatur metode verifikasi (Email atau Telegram) terlebih dahulu
+                                            sebelum
+                                            mengaktifkan OTP.</p>
+                                        <p>
+                                            <a href="{{ route('2fa.settings') }}" class="btn btn-primary">
+                                                <i class="fa fa-cogs"></i> Buka Pengaturan OTP/2FA
+                                            </a>
+                                        </p>
                                     </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="channel" value="telegram"
-                                                {{ old('channel') == 'telegram' ? 'checked' : '' }}>
-                                            <i class="fa fa-telegram"></i> Telegram
-                                        </label>
+                                @else
+                                    <div class="alert alert-info">
+                                        <h4><i class="icon fa fa-info-circle"></i> Siap untuk Diaktifkan</h4>
+                                        <p>Metode verifikasi Anda telah diatur. Klik tombol di bawah untuk mengirim kode
+                                            verifikasi dan mengaktifkan OTP.</p>
+                                        <p>Metode verifikasi: <strong>{{ ucfirst($user->otp_channel) }}</strong></p>
+                                        @if ($user->otp_channel === 'email')
+                                            <p>Email: <strong>{{ $user->email }}</strong></p>
+                                        @elseif($user->otp_channel === 'telegram')
+                                            <p>Telegram ID: <strong>{{ $user->telegram_id }}</strong></p>
+                                        @endif
                                     </div>
-                                    @if ($errors->has('channel'))
-                                        <span class="help-block">{{ $errors->first('channel') }}</span>
-                                    @endif
-                                </div>
-
-                                <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}"
-                                    id="email-group">
-                                    <label for="email">Alamat Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" id="email" name="identifier"
-                                        placeholder="email@example.com" value="{{ old('identifier', $user->email) }}"
-                                        required>
-                                    <span class="help-block">Masukkan alamat email yang valid untuk menerima kode
-                                        OTP.</span>
-                                    @if ($errors->has('identifier'))
-                                        <span class="help-block">{{ $errors->first('identifier') }}</span>
-                                    @endif
-                                </div>
-
-                                <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}"
-                                    id="telegram-group" style="display: none;">
-                                    <label for="telegram">Chat ID Telegram <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="telegram" name="telegram_identifier"
-                                        placeholder="123456789" value="{{ old('identifier') }}">
-                                    <span class="help-block">
-                                        <strong>Cara mendapatkan Chat ID:</strong><br>
-                                        1. Buka bot <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a> di
-                                        Telegram<br>
-                                        2. Kirim pesan /start<br>
-                                        3. Bot akan memberikan ID Anda<br>
-                                    </span>
-                                    @if ($errors->has('identifier'))
-                                        <span class="help-block">{{ $errors->first('identifier') }}</span>
-                                    @endif
-                                </div>
-
-                                <div class="callout callout-warning">
-                                    <h4><i class="icon fa fa-warning"></i> Perhatian!</h4>
-                                    <p>Pastikan Anda memiliki akses ke email atau Telegram yang Anda daftarkan. Kode
-                                        verifikasi akan dikirim ke saluran yang Anda pilih.</p>
-                                </div>
+                                @endif
                             @endif
                         </div>
 
@@ -126,9 +99,6 @@
                                     <i class="fa fa-send"></i> Kirim Kode OTP
                                 </button>
                             @endif
-                            <a href="{{ route('dashboard') }}" class="btn btn-default">
-                                <i class="fa fa-arrow-left"></i> Kembali
-                            </a>
                         </div>
                     </form>
                 </div>

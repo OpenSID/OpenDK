@@ -98,13 +98,11 @@
                             </div>
                             <!-- /.col -->
                         </div>
-                        @if (config('setting.login_otp', true))
                         <div>
                             <a href="{{ route('otp.login') }}">
                                 <i class="fa fa-lock"></i> Login dengan OTP
                             </a>
                         </div>
-                        @endif
                     </form>
                 </div>
             </div>

@@ -65,6 +65,7 @@ class UserRequest extends FormRequest
             'name' => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
             'email' => 'required|email|unique:users,email'.$id,
             'phone' => 'nullable|numeric|digits_between:10,13',
+            'telegram_id' => 'nullable|string|max:100',
             'password' => $password,
             'address' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',

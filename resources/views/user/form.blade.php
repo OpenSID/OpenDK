@@ -9,8 +9,8 @@
                 @if (empty($user))
                     <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
                 @else
-                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{
-                    $list['id'] }}">{{ $list['nama'] }}</option>
+                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}"
+                        value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
                 @endif
             @endforeach
         </select>
@@ -29,11 +29,9 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         @if (empty($user))
-            {!! html()->text('email')->class('form-control')->placeholder('Email')->value(old('email', isset($user) ?
-            $user->email : '')) !!}
+            {!! html()->text('email')->class('form-control')->placeholder('Email')->value(old('email', isset($user) ? $user->email : '')) !!}
         @else
-            {!! html()->text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->isReadonly()
-            !!}
+            {!! html()->text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->isReadonly() !!}
         @endif
     </div>
 </div>
@@ -41,9 +39,18 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Telepon </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->text('phone', old('phone', $user->phone ??
-    null))->class('form-control')->placeholder('0xxxxxxxxxxx')
-        !!}
+        {!! html()->text('phone', old('phone', $user->phone ?? null))->class('form-control')->placeholder('0xxxxxxxxxxx') !!}
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Telegram ID </label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! html()->text('telegram_id', old('telegram_id', $user->telegram_id ?? null))->class('form-control')->placeholder('Telegram Chat ID') !!}
+        <small class="help-block">
+            ID Telegram untuk menerima kode OTP/2FA. Dapatkan ID dari
+            <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a>
+        </small>
     </div>
 </div>
 <div class="form-group">
@@ -62,8 +69,7 @@
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! html()->password('password')->class('form-control password')->value(old('password', isset($user) ?
-            $user->password : '')) !!}
+            {!! html()->password('password')->class('form-control password')->value(old('password', isset($user) ? $user->password : '')) !!}
         </div>
         <div class="col-md-1 col-sm-1 col-xs-12">
             <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
@@ -75,9 +81,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->textarea('address', old('address', $user->address ??
-    null))->class('form-control')->cols(10)->rows(5)
-        !!}
+        {!! html()->textarea('address', old('address', $user->address ?? null))->class('form-control')->cols(10)->rows(5) !!}
     </div>
 </div>
 
@@ -93,11 +97,11 @@
 @elseif(auth()->user()->id == 1)
     @if (isset($user) && $user->id != 1)
         <div class="form-group">
-            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
+            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {!! html()->select('role', $item, old('role', isset($user) ? $user->getRoleNames()->first() :
-                    null))->class('form-control') !!}
+                {!! html()->select('role', $item, old('role', isset($user) ? $user->getRoleNames()->first() : null))->class('form-control') !!}
             </div>
         </div>
     @endif
@@ -116,23 +120,24 @@
 
 @push('scripts')
     <script type="text/javascript">
-        $('#pengurus').on('change', function () {
+        $('#pengurus').on('change', function() {
             var data = $('#pengurus :selected').data('nama');
             $('input[name="name"]').val(data);
         });
 
-        $(function () {
+        $(function() {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
+                    var extension = input.files[0].name.split('.').pop()
+                    .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes
                         var reader = new FileReader();
-                        reader.onload = function (e) {
+                        reader.onload = function(e) {
 
                             $('#showfoto').attr('src', e.target.result);
                             $('#showfoto').removeClass('hide');
@@ -147,7 +152,7 @@
                 }
             }
 
-            $("#foto").change(function () {
+            $("#foto").change(function() {
                 readURL(this);
             });
         });

@@ -45,17 +45,8 @@ class CheckOtpEnabled
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!config('setting.login_otp', true)) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'message' => 'Fitur OTP tidak diaktifkan.'
-                ], 403);
-            }
-
-            return redirect()->route('login')
-                ->with('error', 'Fitur OTP tidak diaktifkan.');
-        }
-
+        // OTP feature is now always available
+        // Each user can enable/disable it individually via their settings
         return $next($request);
     }
 }

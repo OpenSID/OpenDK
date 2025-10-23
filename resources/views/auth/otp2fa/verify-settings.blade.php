@@ -3,8 +3,8 @@
 @section('content')
     <section class="content-header">
         <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
+            Verifikasi Pengaturan OTP/2FA
+            <small>Konfirmasi Identitas</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
@@ -18,10 +18,10 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Verifikasi Kode OTP</h3>
+                        <h3 class="box-title">Verifikasi Kode</h3>
                     </div>
 
-                    <form action="{{ route('otp.verify-activation') }}" method="POST">
+                    <form action="{{ route('otp2fa.verify-settings.post') }}" method="POST">
                         @csrf
                         <div class="box-body">
                             @if (session('success'))
@@ -40,7 +40,8 @@
 
                             <div class="callout callout-info">
                                 <h4><i class="icon fa fa-info-circle"></i> Informasi</h4>
-                                <p>Kode OTP telah dikirim ke {{ $channel === 'email' ? 'email' : 'Telegram' }} Anda:
+                                <p>Kode verifikasi telah dikirim ke
+                                    {{ $channel === 'email' ? 'email' : 'Telegram' }} Anda:
                                     <strong>{{ $identifier }}</strong>
                                 </p>
                                 <p>Kode berlaku selama <strong>{{ config('otp.expiry_minutes', 5) }} menit</strong>.</p>
@@ -56,7 +57,7 @@
                             </div>
 
                             <div class="form-group text-center">
-                                <label>Masukkan 6 Digit Kode OTP</label>
+                                <label>Masukkan 6 Digit Kode Verifikasi</label>
                                 <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
                                     <input type="text" class="form-control otp-input" maxlength="1"
                                         style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
@@ -202,7 +203,7 @@
                     if (expirySeconds <= 0) {
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
-                        alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
+                        alert('Kode verifikasi telah kadaluarsa. Silakan minta kode baru.');
                         window.location.href = '{{ route('otp2fa.index') }}';
                     }
                 }, 1000);
@@ -218,7 +219,7 @@
                         method: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
-                            purpose: 'activation'
+                            purpose: 'settings_verification'
                         },
                         success: function(response) {
                             alert(response.message);
@@ -247,7 +248,7 @@
                             }, 1000);
                         },
                         error: function(xhr) {
-                            alert('Gagal mengirim ulang kode OTP');
+                            alert('Gagal mengirim ulang kode verifikasi');
                             $('#resend-btn').prop('disabled', false).html(
                                 '<i class="fa fa-refresh"></i> Kirim Ulang');
                         }

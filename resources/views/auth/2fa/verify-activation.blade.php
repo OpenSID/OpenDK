@@ -18,10 +18,10 @@
             <div class="col-md-6 col-md-offset-3">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Verifikasi Kode OTP</h3>
+                        <h3 class="box-title">Verifikasi Kode 2FA</h3>
                     </div>
 
-                    <form action="{{ route('otp.verify-activation') }}" method="POST">
+                    <form action="{{ route('2fa.verify-activation') }}" method="POST">
                         @csrf
                         <div class="box-body">
                             @if (session('success'))
@@ -38,26 +38,27 @@
                                 </div>
                             @endif
 
-                            <div class="callout callout-info">
-                                <h4><i class="icon fa fa-info-circle"></i> Informasi</h4>
-                                <p>Kode OTP telah dikirim ke {{ $channel === 'email' ? 'email' : 'Telegram' }} Anda:
-                                    <strong>{{ $identifier }}</strong>
+                            <div class="callout callout-info" style="margin-bottom: 15px;">
+                                <p style="margin: 0; font-size: 12px;">
+                                    <i class="fa fa-info-circle"></i> Kode OTP berlaku selama
+                                    <strong>{{ config('otp.expiry_minutes', 5) }} menit</strong>
                                 </p>
-                                <p>Kode berlaku selama <strong>{{ config('otp.expiry_minutes', 5) }} menit</strong>.</p>
                             </div>
 
                             <!-- Timer Display -->
-                            <div class="alert alert-info text-center" id="timer-alert" style="margin-bottom: 20px;">
+                            <div class="alert alert-info text-center" id="timer-alert"
+                                style="margin-bottom: 15px; padding: 8px;">
                                 <i class="fa fa-clock-o"></i>
-                                <strong>Sisa Waktu:</strong>
-                                <span id="timer-display" style="font-size: 20px; font-weight: bold; margin-left: 10px;">
+                                <strong style="font-size: 12px;">Sisa Waktu:</strong>
+                                <span id="timer-display" style="font-size: 18px; font-weight: bold; margin-left: 10px;">
                                     {{ config('otp.expiry_minutes', 5) }}:00
                                 </span>
                             </div>
 
                             <div class="form-group text-center">
                                 <label>Masukkan 6 Digit Kode OTP</label>
-                                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
+                                <div class="otp-container"
+                                    style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
                                     <input type="text" class="form-control otp-input" maxlength="1"
                                         style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
                                         data-index="0">
@@ -86,7 +87,8 @@
                             <div class="form-group text-center">
                                 <p>Tidak menerima kode?</p>
                                 <button type="button" class="btn btn-link" id="resend-btn" disabled>
-                                    <i class="fa fa-refresh"></i> Kirim Ulang (<span id="countdown">30</span>s)
+                                    <i class="fa fa-refresh"></i> Kirim Ulang (<span
+                                        id="countdown">{{ config('otp.resend_cooldown', 30) }}</span>s)
                                 </button>
                             </div>
                         </div>
@@ -211,30 +213,19 @@
                 $('#resend-btn').click(function() {
                     if ($(this).prop('disabled')) return;
 
-                    $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Mengirim...');
-
-                    $.ajax({
-                        url: '{{ route('otp.resend') }}',
-                        method: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            purpose: 'activation'
-                        },
-                        success: function(response) {
-                            alert(response.message);
-
-                            // Reset timer
-                            expirySeconds = expiryMinutes * 60;
-                            $('#timer-display').text(expiryMinutes + ':00');
-                            $('#timer-alert').removeClass('alert-danger alert-warning')
-                                .addClass('alert-info');
-
-                            // Reset resend countdown
+                    $.post('{{ route('otp.resend') }}', {
+                        purpose: '2fa_activation',
+                        _token: '{{ csrf_token() }}'
+                    }, function(response) {
+                        if (response.success) {
+                            // Reset countdown
                             countdown = resendCooldown;
-                            $('#resend-btn').html(
+                            $('#resend-btn').prop('disabled', true).html(
                                 '<i class="fa fa-refresh"></i> Kirim Ulang (<span id="countdown">' +
                                 countdown + '</span>s)');
 
+                            // Restart resend interval
+                            clearInterval(resendInterval);
                             resendInterval = setInterval(function() {
                                 countdown--;
                                 $('#countdown').text(countdown);
@@ -245,17 +236,15 @@
                                         '<i class="fa fa-refresh"></i> Kirim Ulang');
                                 }
                             }, 1000);
-                        },
-                        error: function(xhr) {
-                            alert('Gagal mengirim ulang kode OTP');
-                            $('#resend-btn').prop('disabled', false).html(
-                                '<i class="fa fa-refresh"></i> Kirim Ulang');
+
+                            alert('Kode OTP baru telah dikirim.');
+                        } else {
+                            alert(response.message || 'Gagal mengirim ulang kode OTP.');
                         }
+                    }).fail(function() {
+                        alert('Gagal mengirim ulang kode OTP.');
                     });
                 });
-
-                // Auto focus first input
-                $('.otp-input[data-index="0"]').focus();
             });
         </script>
     @endpush

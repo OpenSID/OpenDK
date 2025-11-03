@@ -30,12 +30,10 @@
                 @endif
 
                 <!-- form start -->
-                {!! Form::model($desa, [
-                    'route' => ['data.data-desa.update', $desa->id],
-                    'method' => 'put',
-                    'id' => 'form-datadesa',
-                    'class' => 'form-horizontal form-label-left',
-                ]) !!}
+                {!! html()->form('PUT', route('data.data-desa.update', $desa->id))->attributes([
+                        'id' => 'form-datadesa',
+                        'class' => 'form-horizontal form-label-left',
+                    ])->open() !!}
 
                 <div class="box-body">
 
@@ -46,7 +44,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! Form::close() !!}
+                {!! html()->form()->close() !!}
             </div>
         </div>
         </div>

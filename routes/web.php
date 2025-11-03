@@ -71,11 +71,74 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
+Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Installer'], function () {
+    Route::get('/', 'InstallerController@welcome')->name('installer.welcome');
+    Route::get('/requirements', 'InstallerController@requirements')->name('installer.requirements');
+    Route::get('/permissions', 'InstallerController@permissions')->name('installer.permissions');
+    Route::get('/environment', 'InstallerController@environment')->name('installer.environment');
+    Route::get('/environment/wizard', 'InstallerController@environmentWizard')->name('installer.environmentWizard');
+    Route::get('/environment/classic', 'InstallerController@environmentClassic')->name('installer.environmentClassic');
+    Route::post('/environment/saveWizard', 'InstallerController@environmentSaveWizard')->name('installer.environmentSaveWizard');
+    Route::post('/environment/saveClassic', 'InstallerController@environmentSaveClassic')->name('installer.environmentSaveClassic');
+    Route::get('/database', 'InstallerController@database')->name('installer.database');
+    Route::get('/final', 'InstallerController@final')->name('installer.final');
+    Route::post('/final', 'InstallerController@performInstallation')->name('installer.performInstallation');
+});
+
 // Redirect if apps not installed
 Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Auth::routes([
         'register' => false,
     ]);
+
+    // OTP Routes
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('otp.enabled')->group(function () {
+        // OTP Activation (requires auth)
+        Route::middleware('auth')->group(function () {
+            // Redirect old individual activate page to unified page
+            Route::get('/otp/activate', function () { return redirect()->route('otp2fa.index'); })->name('otp.activate');
+            Route::post('/otp/request-activation', 'OtpController@requestActivation')->name('otp.request-activation');
+            Route::get('/otp/verify-activation', 'OtpController@showVerifyActivationForm')->name('otp.verify-activation');
+            Route::post('/otp/verify-activation', 'OtpController@verifyActivation');
+            Route::get('/otp/deactivate', 'OtpController@deactivate')->name('otp.deactivate');
+        });
+
+        // OTP Login (guest only)
+        Route::middleware('guest')->group(function () {
+            Route::get('/otp/login', 'OtpController@showLoginForm')->name('otp.login');
+            Route::post('/otp/request-login', 'OtpController@requestLoginOtp')->name('otp.request-login');
+            Route::get('/otp/verify-login', 'OtpController@showVerifyLoginForm')->name('otp.verify-login');
+            Route::post('/otp/verify-login', 'OtpController@loginWithOtp');
+        });
+
+        // OTP Resend (both auth and guest)
+        Route::post('/otp/resend', 'OtpController@resendOtp')->name('otp.resend');
+    });
+
+    // 2FA Routes
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('auth')->group(function () {
+        // Combined OTP & 2FA management page
+        Route::get('/otp-2fa', 'OtpController@index')->name('otp2fa.index');
+        Route::get('/otp-2fa/settings', 'OtpController@showSettingsForm')->name('otp2fa.settings');
+        Route::post('/otp-2fa/settings', 'OtpController@saveSettings')->name('2fa.save-settings');
+        Route::get('/otp-2fa/verify-settings', 'OtpController@showVerifySettingsForm')->name('otp2fa.verify-settings');
+        Route::post('/otp-2fa/verify-settings', 'OtpController@verifySettings')->name('otp2fa.verify-settings.post');
+
+        // Redirect old 2fa activate page to unified page
+        Route::get('/2fa/activate', function () { return redirect()->route('otp2fa.index'); })->name('2fa.activate');
+
+        Route::post('/2fa/request-activation', 'TwoFactorController@requestActivation')->name('2fa.request-activation');
+        Route::get('/2fa/verify-activation', 'TwoFactorController@showVerifyActivationForm')->name('2fa.verify-activation');
+        Route::post('/2fa/verify-activation', 'TwoFactorController@verifyActivation');
+        Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
+    });
+
+    // 2FA Login Routes (guest access)
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
+        Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');
+        Route::post('/2fa/verify-login', 'TwoFactorController@verifyLogin');
+    });
 
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'role:administrator-website|super-admin|admin-kecamatan']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
@@ -461,6 +524,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 // Data Desa
                 Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                    Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
                     Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
                     Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
@@ -469,7 +533,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('create', ['as' => 'data.data-desa.create', 'uses' => 'DataDesaController@create']);
                     Route::post('store', ['as' => 'data.data-desa.store', 'uses' => 'DataDesaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
-                    Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
                     Route::get('export-excel', ['as' => 'data.data-desa.export-excel', 'uses' => 'DataDesaController@exportExcel']);
                 });
@@ -626,6 +689,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'data.fasilitas-paud.destroy', 'uses' => 'FasilitasPaudController@destroy']);
                     Route::get('import', ['as' => 'data.fasilitas-paud.import', 'uses' => 'FasilitasPaudController@import']);
                     Route::post('do_import', ['as' => 'data.fasilitas-paud.do_import', 'uses' => 'FasilitasPaudController@do_import']);
+                    Route::get('export-excel', ['as' => 'data.fasilitas-paud.export-excel', 'uses' => 'FasilitasPaudController@exportExcel']);
                 });
 
                 // Program Bantuan

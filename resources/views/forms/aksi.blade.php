@@ -76,6 +76,11 @@
             <span style="color: green;">Active</span>
         </a>
     @endif
+    @if (isset($preview_url))
+        <button type="button" class="btn btn-danger btn-sm btn-preview-surat {!! empty($preview_url) ? 'disabled' : '' !!}" style="width: 40px; margin-right: 2px;" data-url="{{ $preview_url }}" title="Pratinjau Surat">
+            <i class="fa fa-file-pdf-o"></i>
+        </button>
+    @endif
     @if (isset($download_url))
         <a href="{!! empty($download_url) ? 'javascript:void(0)' : $download_url !!}" class="{!! empty($download_url) ? 'disabled' : '' !!}" title="Unduh" data-button="download">
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-download"></i></button>

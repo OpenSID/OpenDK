@@ -1,6 +1,7 @@
 <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
     <label class="control-label" for="first-name">Nama <span class="required">*</span></label>
-    {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama', 'required' => true]) !!}
+    {!! html()->text('name')->class('form-control')->required()->placeholder('Nama')->value(old('name', isset($role) ?
+    $role->name : '')) !!}
 </div>
 <table class="table table-striped">
     <thead>
@@ -8,21 +9,22 @@
             <th>Daftar Menu</th>
             <th class="non-user text-center">
                 @php
-                    if (isset($role)) {
-                        $format = json_decode(json_encode($role), true);
-                        $rolePermission = count($format['permissions']) + 1;
-                        $roleMenu = count($menu);
-                    } else {
-                        $rolePermission = 0;
-                        $roleMenu = 1;
-                    }
+                if (isset($role)) {
+                $format = json_decode(json_encode($role), true);
+                $rolePermission = count($format['permissions']) + 1;
+                $roleMenu = count($menu);
+                } else {
+                $rolePermission = 0;
+                $roleMenu = 1;
+                }
                 @endphp
 
-                <div class="checkbox checkbox-custom checkbox-primary" style="margin-top:0px !important;margin-bottom:0px !important;">
+                <div class="checkbox checkbox-custom checkbox-primary"
+                    style="margin-top:0px !important;margin-bottom:0px !important;">
                     @if ($rolePermission == $roleMenu)
-                        {!! Form::checkbox('create-all', 1, null, ['checked']) !!}
+                    {!! html()->checkbox('create-all', 1, null, ['checked']) !!}
                     @else
-                        {!! Form::checkbox('create-all', false, null) !!}
+                    {!! html()->checkbox('create-all', false, null) !!}
                     @endif
                     <label>
                         Select All
@@ -33,64 +35,68 @@
     </thead>
     <tbody>
         @foreach ($permissions as $key => $permission)
-            @if ($permission['parent_id'] == 0)
-                @php
-                    $childs = define_child($permission['id']);
-                    if (isset($role)) {
-                        $permission_val = permission_val($role->id, $permission['slug']);
-                        $myrole = $role->id;
-                    } else {
-                        $permission_val = 0;
-                        $myrole = 0;
-                    }
-                @endphp
-                @if ($permission['slug'] != 'admin')
-                    <tr>
-                        <td>
-                            <ul>
-                                <li>
-                                    {{ $permission['name'] }}
-                                    <ul>
-                                        @foreach ($childs as $child)
-                                            <li>{{ ucfirst($child->name) }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </li>
-                            </ul>
-                        </td>
-                        <td class="non-user text-center">
-                            <ul style="list-style:none">
-                                <li>
-                                    <div class="checkbox checkbox-custom checkbox-primary" style="margin-top:0px !important;margin-bottom:0px !important;">
-                                        {!! Form::checkbox('permissions[' . $permission['slug'] . ']', $permission_val, null, ['class' => 'create-box parent', 'data-id' => $permission['slug']]) !!}
-                                        <label>
-                                            @if ($permission_val == 1)
-                                                <span class="label label-outline label-success">Active</span>
-                                            @else
-                                                <span class="label label-outline label-danger">InActive</span>
-                                            @endif
-                                        </label>
-                                    </div>
-                                </li>
-                                @foreach ($childs as $child)
-                                    <li>
-                                        <div class="checkbox checkbox-custom checkbox-primary" style="margin-top:0px !important;margin-bottom:0px !important;">
-                                            {!! Form::checkbox('permissions[' . $child->slug . ']', permission_val($myrole, $child->slug), null, ['class' => 'create-box child-' . $permission['slug'] . '']) !!}
-                                            <label>
-                                                @if (permission_val($myrole, $child->slug) == 1)
-                                                    <span class="label label-outline label-success">Active</span>
-                                                @else
-                                                    <span class="label label-outline label-danger">InActive</span>
-                                                @endif
-                                            </label>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </td>
-                    </tr>
-                @endif
-            @endif
+        @if ($permission['parent_id'] == 0)
+        @php
+        $childs = define_child($permission['id']);
+        if (isset($role)) {
+        $permission_val = permission_val($role->id, $permission['slug']);
+        $myrole = $role->id;
+        } else {
+        $permission_val = 0;
+        $myrole = 0;
+        }
+        @endphp
+        @if ($permission['slug'] != 'admin')
+        <tr>
+            <td>
+                <ul>
+                    <li>
+                        {{ $permission['name'] }}
+                        <ul>
+                            @foreach ($childs as $child)
+                            <li>{{ ucfirst($child->name) }}</a></li>
+                            @endforeach
+                        </ul>
+                    </li>
+                </ul>
+            </td>
+            <td class="non-user text-center">
+                <ul style="list-style:none">
+                    <li>
+                        <div class="checkbox checkbox-custom checkbox-primary"
+                            style="margin-top:0px !important;margin-bottom:0px !important;">
+                            {!! html()->checkbox('permissions[' . $permission['slug'] . ']', $permission_val, null,
+                            ['class' => 'create-box parent', 'data-id' => $permission['slug']]) !!}
+                            <label>
+                                @if ($permission_val == 1)
+                                <span class="label label-outline label-success">Active</span>
+                                @else
+                                <span class="label label-outline label-danger">InActive</span>
+                                @endif
+                            </label>
+                        </div>
+                    </li>
+                    @foreach ($childs as $child)
+                    <li>
+                        <div class="checkbox checkbox-custom checkbox-primary"
+                            style="margin-top:0px !important;margin-bottom:0px !important;">
+                            {!! html()->checkbox('permissions[' . $child->slug . ']', permission_val($myrole,
+                            $child->slug), null, ['class' => 'create-box child-' . $permission['slug'] . '']) !!}
+                            <label>
+                                @if (permission_val($myrole, $child->slug) == 1)
+                                <span class="label label-outline label-success">Active</span>
+                                @else
+                                <span class="label label-outline label-danger">InActive</span>
+                                @endif
+                            </label>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+            </td>
+        </tr>
+        @endif
+        @endif
         @endforeach
     </tbody>
 </table>
@@ -103,8 +109,8 @@
     </div>
 </div>
 @push('scripts')
-    <script type="text/javascript">
-        $('input[name=create-all]').on('click', function() {
+<script type="text/javascript">
+    $('input[name=create-all]').on('click', function() {
             $(".create-box").prop('checked', $(this).prop('checked'));
             $(".create-box").each(function(n, v) {
                 if ($(this).prop('checked')) {
@@ -176,5 +182,5 @@
             }
 
         });
-    </script>
+</script>
 @endpush

@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout Ansible Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Deploy via SSH using appleboy/ssh-action
         uses: appleboy/ssh-action@v1.2.0

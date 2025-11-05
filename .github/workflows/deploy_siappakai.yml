@@ -1,0 +1,39 @@
+name: Deploy SiapPakai Update OpenDK with Ansible
+
+on:
+  release:
+    types: [published, edited, prereleased]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-opendk-siappakai-rilis
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    # rilis dari branch 'master' & bukan prerelease
+    if: |
+      github.event.release.target_commitish == 'master' &&
+      github.event.release.prerelease == false &&
+      (github.event.action == 'published' || github.event.action == 'edited')
+    name: Deploy SiapPakai Update OpenDK ke Server SiapPakai
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Ansible Code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH using appleboy/ssh-action
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.CICD_SERVER_IP }}
+          username: ${{ secrets.CICD_SERVER_USER }}
+          key: ${{ secrets.CICD_SERVER_PRIVATE_KEY }}
+          port: ${{ secrets.CICD_SERVER_IP_PORT }}
+          script: |
+            set -euo pipefail
+            cd ${{ secrets.CICD_SERVER_PATH }}
+            nohup ansible-playbook -i inventories/production/inventory.yml playbooks/siappakai-update-opendk.yml --vault-password-file ~/.vault_pass.txt > /tmp/ansible-siappakai-update-opendk.log 2>&1 &
+            echo "Ansible playbook started in background. Check /tmp/ansible-siappakai-update-opendk.log for output."

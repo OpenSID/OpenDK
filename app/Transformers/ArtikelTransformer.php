@@ -29,35 +29,65 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Frontend\ArtikelController;
-use App\Http\Controllers\Api\Frontend\ProfilController;
+namespace App\Transformers;
 
-/*
-|--------------------------------------------------------------------------
-| Frontend API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register frontend API routes for your application.
-| These routes are typically accessible without authentication and are
-| designed for public consumption by frontend applications.
-|
-*/
+use App\Models\Artikel;
+use League\Fractal\TransformerAbstract;
 
-Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
-    
+class ArtikelTransformer extends TransformerAbstract
+{
     /**
-     * Artikel API Routes
+     * List of resources possible to include
+     *
+     * @var array
      */
-    Route::group(['prefix' => 'artikel', 'controller' => ArtikelController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/artikel        
-    });
+    protected array $availableIncludes = [
+        'kategori',
+        'comments'
+    ];
 
     /**
-     * Profil API Routes
+     * Turn this item object into a generic array
+     *
+     * @param Artikel $artikel
+     * @return array
      */
-    Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
-    });
+    public function transform(Artikel $artikel): array
+    {
+        return $artikel->toArray();
+    }
 
-});
+    /**
+     * Include Kategori
+     *
+     * @param Artikel $artikel
+     * @return \League\Fractal\Resource\Item|null
+     */
+    public function includeKategori(Artikel $artikel)
+    {
+        $kategori = $artikel->kategori;
+        
+        if ($kategori) {
+            return $this->item($kategori, new ArtikelKategoriTransformer(),'kategori');
+        }
+
+        return null;
+    }
+
+    /**
+     * Include Comments
+     *
+     * @param Artikel $artikel
+     * @return \League\Fractal\Resource\Collection|null
+     */
+    public function includeComments(Artikel $artikel)
+    {
+        $comments = $artikel->comments;
+        
+        if ($comments) {
+            return $this->collection($comments, new CommentTransformer(),'comments');
+        }
+
+        return null;
+    }
+}

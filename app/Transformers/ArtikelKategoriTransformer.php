@@ -29,35 +29,49 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Frontend\ArtikelController;
-use App\Http\Controllers\Api\Frontend\ProfilController;
+namespace App\Transformers;
 
-/*
-|--------------------------------------------------------------------------
-| Frontend API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register frontend API routes for your application.
-| These routes are typically accessible without authentication and are
-| designed for public consumption by frontend applications.
-|
-*/
+use App\Models\ArtikelKategori;
+use League\Fractal\TransformerAbstract;
 
-Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
-    
+class ArtikelKategoriTransformer extends TransformerAbstract
+{
     /**
-     * Artikel API Routes
+     * List of resources possible to include
+     *
+     * @var array
      */
-    Route::group(['prefix' => 'artikel', 'controller' => ArtikelController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/artikel        
-    });
+    protected array $availableIncludes = [
+        'artikels'
+    ];
 
     /**
-     * Profil API Routes
+     * Turn this item object into a generic array
+     *
+     * @param ArtikelKategori $kategori
+     * @return array
      */
-    Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
-    });
+    public function transform(ArtikelKategori $kategori): array
+    {
+        $kategori->type = 'kategori';
+        $kategori->id = $kategori->id_kategori;
+        return $kategori->toArray();
+    }
 
-});
+    /**
+     * Include Artikels
+     *
+     * @param ArtikelKategori $kategori
+     * @return \League\Fractal\Resource\Collection|null
+     */
+    public function includeArtikels(ArtikelKategori $kategori)
+    {
+        $artikels = $kategori->artikels;
+        
+        if ($artikels) {
+            return $this->collection($artikels, new ArtikelTransformer());
+        }
+
+        return null;
+    }
+}

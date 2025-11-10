@@ -15,6 +15,12 @@ class ArtikelKategori extends Model
     protected $primaryKey = 'id_kategori';
 
     protected $guarded = ['id_kategori'];
+    
+    protected $fillable = [
+        'nama_kategori',
+        'slug',
+        'info',
+    ];
 
     /**
      * Return the sluggable configuration array for this model.

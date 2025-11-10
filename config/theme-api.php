@@ -34,6 +34,44 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Artikel API Settings
+    |--------------------------------------------------------------------------
+    */
+    'artikel' => [
+        'default_per_page' => env('ARTIKEL_API_DEFAULT_PER_PAGE', 15),
+        'max_per_page' => env('ARTIKEL_API_MAX_PER_PAGE', 100),
+        'cache_prefix' => env('ARTIKEL_API_CACHE_PREFIX', 'artikel:api'),
+        'allowed_sort_fields' => [
+            'created_at', 'updated_at', 'judul', 'id'
+        ],
+        'allowed_filters' => [
+            'kategori', 'search', 'status'
+        ],
+        'default_sort' => 'created_at',
+        'default_order' => 'desc',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Profil API Settings
+    |--------------------------------------------------------------------------
+    */
+    'profil' => [
+        'default_per_page' => env('PROFIL_API_DEFAULT_PER_PAGE', 15),
+        'max_per_page' => env('PROFIL_API_MAX_PER_PAGE', 100),
+        'cache_prefix' => env('PROFIL_API_CACHE_PREFIX', 'profil:api'),
+        'allowed_sort_fields' => [
+            'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'created_at', 'updated_at', 'id'
+        ],
+        'allowed_filters' => [
+            'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'kecamatan_id', 'kabupaten_id', 'provinsi_id', 'search'
+        ],
+        'default_sort' => 'nama_kecamatan',
+        'default_order' => 'asc',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Theme and Endpoint Settings
     |--------------------------------------------------------------------------
     */

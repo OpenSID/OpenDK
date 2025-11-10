@@ -29,35 +29,40 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Frontend\ArtikelController;
-use App\Http\Controllers\Api\Frontend\ProfilController;
+namespace App\Repositories;
 
-/*
-|--------------------------------------------------------------------------
-| Frontend API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register frontend API routes for your application.
-| These routes are typically accessible without authentication and are
-| designed for public consumption by frontend applications.
-|
-*/
+use App\Models\Artikel;
+use Spatie\QueryBuilder\AllowedFilter;
 
-Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
+class ArtikelApiRepository extends BaseApiRepository
+{
+    /**
+     * Constructor
+     */
+    public function __construct(Artikel $model)
+    {
+        parent::__construct($model);
+        
+        // Initialize allowed filters, sorts, and includes
+        $this->allowedFilters = [
+            'judul','slug',
+            AllowedFilter::exact('id'),
+            AllowedFilter::exact('status'),
+            AllowedFilter::exact('id_kategori'),   
+            AllowedFilter::callback('search', function($query, $value){                
+                $query->where('judul', 'LIKE', '%'.$value.'%')
+                        ->orWhere('slug', 'LIKE', '%'.$value.'%');
+            }),
+            AllowedFilter::callback('kategori', function($query, $value){                
+                $query->whereIn('id_kategori', static fn($q) => $q->select('id_kategori')->from('das_artikel_kategori')->where('nama_kategori',$value));
+            }),
+        ];
+        $this->allowedSorts = ['created_at', 'updated_at', 'judul', 'id'];
+        $this->allowedIncludes = ['kategori', 'comments'];
+        $this->defaultSort = '-created_at';
+    }
     
-    /**
-     * Artikel API Routes
-     */
-    Route::group(['prefix' => 'artikel', 'controller' => ArtikelController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/artikel        
-    });
-
-    /**
-     * Profil API Routes
-     */
-    Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
-    });
-
-});
+    public function data(){
+        return $this->getFilteredApi()->jsonPaginate();
+    }        
+}

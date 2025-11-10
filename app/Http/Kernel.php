@@ -105,6 +105,7 @@ class Kernel extends HttpKernel
         'token.registered' => \App\Http\Middleware\TokenRegistered::class,
         'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
         'otp.enabled' => \App\Http\Middleware\CheckOtpEnabled::class,
+        'api.fronted' => \App\Http\Middleware\ThemeApiMiddleware::class,
     ];
 
     /**

@@ -31,7 +31,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Frontend\ArtikelController;
+use App\Http\Controllers\Api\Frontend\DesaController;
 use App\Http\Controllers\Api\Frontend\ProfilController;
+use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,4 +65,13 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 
+    Route::group(['prefix' => 'desa', 'controller' => DesaController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/profil        
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    Route::group(['prefix' => 'statistik-penduduk', 'controller' => StatistikPendudukController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/profil        
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
 });

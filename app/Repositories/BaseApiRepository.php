@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\AllowedSort;
 use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 abstract class BaseApiRepository implements BaseRepositoryInterface
 {

@@ -34,57 +34,16 @@ namespace App\Transformers;
 use App\Models\DataDesa;
 use League\Fractal\TransformerAbstract;
 
-class DataDesaTransformer extends TransformerAbstract
-{
-    /**
-     * List of resources possible to include
-     *
-     * @var array
-     */
-    protected array $availableIncludes = [
-        'profil'
-    ];
-
+class StatistikPendudukTransformer extends TransformerAbstract
+{    
     /**
      * Turn this item object into a generic array
      *
-     * @param DataDesa $dataDesa
+     * @param $data
      * @return array
      */
-    public function transform(DataDesa $dataDesa): array
+    public function transform(array $data): array
     {
-        return [
-            'id' => (int) ($dataDesa->id ?? $dataDesa->desa_id),
-            'desa_id' => $dataDesa->desa_id,
-            'kode_desa' => $dataDesa->kode_desa,
-            'nama' => $dataDesa->nama,
-            'sebutan_desa' => $dataDesa->sebutan_desa,
-            'nama_lengkap' => ucwords($dataDesa->sebutan_desa . ' ' . $dataDesa->nama),
-            'website' => $dataDesa->website,
-            'website_url_feed' => $dataDesa->website_url_feed,
-            'luas_wilayah' => (float) $dataDesa->luas_wilayah,
-            'peta' => [
-                'path' => $dataDesa->path,
-            ],
-            'created_at' => $dataDesa->created_at,
-            'updated_at' => $dataDesa->updated_at,
-        ];
-    }
-
-    /**
-     * Include Profil
-     *
-     * @param DataDesa $dataDesa
-     * @return \League\Fractal\Resource\Item|null
-     */
-    public function includeProfil(DataDesa $dataDesa)
-    {
-        $profil = $dataDesa->profil;
-        
-        if ($profil) {
-            return $this->item($profil, new ProfilTransformer());
-        }
-
-        return null;
-    }
+        return $data;
+    }    
 }

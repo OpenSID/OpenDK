@@ -33,10 +33,10 @@ namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\ArtikelApiRepository;
 use App\Transformers\ArtikelTransformer;
+use App\Http\Requests\Api\Frontend\StoreCommentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -201,15 +201,15 @@ class ArtikelController extends BaseController
         return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->artikelApiRepository->data(), new ArtikelTransformer());
         });
-    }
-    
+    }        
+
     /**
-     * Display the specified article by ID.
+     * Store a new comment for an article.
      *
-     * @OA\Get(
-     *     path="/api/v1/artikel/{id}",
-     *     summary="Get single article by ID",
-     *     description="Retrieve a single article by its ID",
+     * @OA\Post(
+     *     path="/api/v1/artikel/{id}/comments",
+     *     summary="Add comment to article",
+     *     description="Store a new comment for the specified article",
      *     tags={"Artikel"},
      *     @OA\Parameter(
      *         name="id",
@@ -218,31 +218,29 @@ class ArtikelController extends BaseController
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Parameter(
-     *         name="include",
-     *         in="query",
-     *         description="Include relationships (comma-separated)",
-     *         required=false,
-     *         @OA\Schema(type="string", example="kategori,comments")
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nama", "email", "body"},
+     *             @OA\Property(property="nama", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="body", type="string", example="Ini adalah komentar saya"),
+     *             @OA\Property(property="comment_id", type="integer", nullable=true, example=null, description="Parent comment ID for replies")
+     *         )
      *     ),
      *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation",
+     *         response=201,
+     *         description="Comment created successfully",
      *         @OA\JsonContent(
      *             @OA\Property(property="data", type="object", example={
-     *                 "type": "artikel",
-     *                 "id": "9",
-     *                 "attributes": {
-     *                     "id_kategori": null,
-     *                     "slug": "eveniet-nemo-praesentium-et-dolores-dolor-nemo",
-     *                     "judul": "Eveniet nemo praesentium et dolores dolor nemo.",
-     *                     "kategori_id": null,
-     *                     "gambar": "/storage/artikel//img/no-image.png",
-     *                     "isi": "Modi ut voluptate eaque. Pariatur sed et vitae ex velit asperiores neque.",
-     *                     "status": 1,
-     *                     "created_at": "2025-01-05T14:19:31.000000Z",
-     *                     "updated_at": "2025-01-27T08:47:27.000000Z"
-     *                 }
+     *                 "id": 1,
+     *                 "das_artikel_id": 5,
+     *                 "nama": "John Doe",
+     *                 "email": "john@example.com",
+     *                 "body": "Ini adalah komentar saya",
+     *                 "comment_id": null,
+     *                 "created_at": "2025-01-10T09:50:00.000000Z",
+     *                 "updated_at": "2025-01-10T09:50:00.000000Z"
      *             })
      *         )
      *     ),
@@ -254,198 +252,50 @@ class ArtikelController extends BaseController
      *                 "message": "Artikel not found"
      *             })
      *         )
-     *     )
-     * )
-     */
-    public function show(int $id, Request $request): Fractal|JsonResponse
-    {
-        $params = $request->only(['include']);
-        $cacheKey = $this->getCacheKey("show:{$id}", $params);
-
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($id, $request) {
-            $artikel = $this->artikelApiRepository->find($id);
-            
-            if (!$artikel) {
-                return response()->json([
-                    'errors' => [
-                        'message' => 'Artikel not found'
-                    ]
-                ], 404);
-            }
-
-            return $this->fractal($artikel, new ArtikelTransformer());
-        });
-    }
-
-    /**
-     * Display the specified article by slug.
-     *
-     * @OA\Get(
-     *     path="/api/v1/artikel/slug/{slug}",
-     *     summary="Get single article by slug",
-     *     description="Retrieve a single article by its slug",
-     *     tags={"Artikel"},
-     *     @OA\Parameter(
-     *         name="slug",
-     *         in="path",
-     *         description="Article slug",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Parameter(
-     *         name="include",
-     *         in="query",
-     *         description="Include relationships (comma-separated)",
-     *         required=false,
-     *         @OA\Schema(type="string", example="kategori,comments")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Article not found"
-     *     )
-     * )
-     */
-    public function showBySlug(string $slug, Request $request): Fractal|JsonResponse
-    {
-        $params = $request->only(['include']);
-        $cacheKey = $this->getCacheKey("showBySlug:{$slug}", $params);
-
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($slug, $request) {
-            $artikel = $this->artikelApiRepository->findBySlug($slug);
-            
-            if (!$artikel) {
-                return response()->json([
-                    'errors' => [
-                        'message' => 'Artikel not found'
-                    ]
-                ], 404);
-            }
-
-            return $this->fractal($artikel, new ArtikelTransformer());
-        });
-    }
-
-    /**
-     * Display popular articles.
-     *
-     * @OA\Get(
-     *     path="/api/v1/artikel/popular",
-     *     summary="Get popular articles",
-     *     description="Retrieve popular articles with optional limit",
-     *     tags={"Artikel"},
-     *     @OA\Parameter(
-     *         name="limit",
-     *         in="query",
-     *         description="Number of articles to return (max: 100)",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=10, minimum=1, maximum=100)
-     *     ),
-     *     @OA\Parameter(
-     *         name="include",
-     *         in="query",
-     *         description="Include relationships (comma-separated)",
-     *         required=false,
-     *         @OA\Schema(type="string", example="kategori")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation"
      *     ),
      *     @OA\Response(
      *         response=422,
-     *         description="Validation error"
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "nama": ["The nama field is required."],
+     *                 "email": ["The email field is required."],
+     *                 "body": ["The komentar field is required."]
+     *             })
+     *         )
      *     )
      * )
      */
-    public function popular(Request $request): Fractal|JsonResponse
+    public function storeComment(StoreCommentRequest $request, int $id): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'limit' => 'nullable|integer|min:1|max:100',
-        ]);
-
-        if ($validator->fails()) {
+        // Check if article exists
+        $artikel = $this->artikelApiRepository->find($id);
+        
+        if (!$artikel) {
             return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
+                'errors' => [
+                    'message' => 'Artikel not found'
+                ]
+            ], 404);
         }
 
-        $params = $request->only(['limit', 'include']);
-        $cacheKey = $this->getCacheKey('popular', $params);
-
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            $limit = $request->get('limit', 10);
-            
-            // For now, we'll just get the latest articles as "popular"
-            // In a real implementation, you might track views or have a popularity metric
-            $articles = \App\Models\Artikel::where('status', 1)
-                ->orderBy('created_at', 'desc')
-                ->limit($limit)
-                ->get();
-
-            return $this->fractal($articles, new ArtikelTransformer());
-        });
-    }
-
-    /**
-     * Display latest articles.
-     *
-     * @OA\Get(
-     *     path="/api/v1/artikel/latest",
-     *     summary="Get latest articles",
-     *     description="Retrieve latest articles with optional limit",
-     *     tags={"Artikel"},
-     *     @OA\Parameter(
-     *         name="limit",
-     *         in="query",
-     *         description="Number of articles to return (max: 100)",
-     *         required=false,
-     *         @OA\Schema(type="integer", default=10, minimum=1, maximum=100)
-     *     ),
-     *     @OA\Parameter(
-     *         name="include",
-     *         in="query",
-     *         description="Include relationships (comma-separated)",
-     *         required=false,
-     *         @OA\Schema(type="string", example="kategori")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful operation"
-     *     ),
-     *     @OA\Response(
-     *         response=422,
-     *         description="Validation error"
-     *     )
-     * )
-     */
-    public function latest(Request $request): Fractal|JsonResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'limit' => 'nullable|integer|min:1|max:100',
+        // Create comment
+        $comment = \App\Models\Comment::create([
+            'das_artikel_id' => $id,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'body' => $request->body,
+            'comment_id' => $request->comment_id,// diisi jika reply comments
+            'status' => 'pending', // Default status
+            'ip_address' => $request->ip(),
+            'device' => $request->userAgent(),
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors()
-            ], 422);
-        }
+        // Clear cache for the article
+        $this->removeCachePrefix();
 
-        $params = $request->only(['limit', 'include']);
-        $cacheKey = $this->getCacheKey('latest', $params);
-
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            $limit = $request->get('limit', 10);
-            
-            $articles = \App\Models\Artikel::where('status', 1)
-                ->orderBy('created_at', 'desc')
-                ->limit($limit)
-                ->get();
-
-            return $this->fractal($articles, new ArtikelTransformer());
-        });
+        return response()->json([
+            'data' => $comment
+        ], 201);
     }
 }

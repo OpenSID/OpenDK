@@ -187,54 +187,81 @@ class ArtikelControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
-
+        
     /**
-     * Test getting single article by ID.
+     * Test storing a comment for an article.
      *
      * @return void
      */
-    public function test_can_get_single_article_by_id()
+    public function test_can_store_comment_for_article()
     {
         $artikel = Artikel::first();
 
-        $response = $this->getJson("/api/frontend/v1/artikel?filter[id]={$artikel->id}");
+        $response = $this->postJson("/api/frontend/v1/artikel/{$artikel->id}/comments", [
+            'nama' => 'Test User',
+            'email' => 'test@example.com',
+            'body' => 'Ini adalah komentar test',
+        ]);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
             ->assertJsonStructure([
                 'data' => [
-                    [
-                        'type',
-                        'id',
-                        'attributes' => [
-                            'id_kategori',
-                            'slug',
-                            'judul',
-                            'kategori_id',
-                            'gambar',
-                            'isi',
-                            'status',
-                            'created_at',
-                            'updated_at'
-                        ]
-                    ]
+                    'id',
+                    'das_artikel_id',
+                    'status',
+                    'nama',
+                    'email',
+                    'body',
+                    'comment_id',
+                    'ip_address',
+                    'device',
+                    'created_at',
+                    'updated_at'
                 ]
             ]);
     }
 
     /**
-     * Test getting single article by ID with includes.
+     * Test storing comment with invalid data returns validation error.
      *
      * @return void
      */
-    public function test_can_get_single_article_by_id_with_includes()
+    public function test_store_comment_with_invalid_data_returns_validation_error()
     {
         $artikel = Artikel::first();
 
-        $response = $this->getJson("/api/frontend/v1/artikel?filter[id]=$artikel->id}?include=kategori,comments");
+        $response = $this->postJson("/api/frontend/v1/artikel/{$artikel->id}/comments", [
+            'nama' => '',
+            'email' => 'invalid-email',
+            'body' => '',
+        ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(422)
+            ->assertJsonStructure([
+                'errors'
+            ]);
     }
 
+    /**
+     * Test storing comment for non-existent article returns 404.
+     *
+     * @return void
+     */
+    public function test_store_comment_for_non_existent_article_returns_404()
+    {
+        $response = $this->postJson("/api/frontend/v1/artikel/999999/comments", [
+            'nama' => 'Test User',
+            'email' => 'test@example.com',
+            'body' => 'Ini adalah komentar test',
+        ]);
+
+        $response->assertStatus(404)
+            ->assertJson([
+                'errors' => [
+                    'message' => 'Artikel not found'
+                ]
+            ]);
+    }
 
     /**
      * Test validation error for invalid sort field.
@@ -264,7 +291,6 @@ class ArtikelControllerTest extends TestCase
             'slug' => 'test-artikel-1',
             'isi' => 'Ini adalah konten test artikel 1',
             'id_kategori' => $kategori->id_kategori,
-            'kategori_id' => $kategori->id_kategori,
             'gambar' => '/storage/test/image1.jpg',
             'status' => 1,
         ]);
@@ -274,7 +300,6 @@ class ArtikelControllerTest extends TestCase
             'slug' => 'test-artikel-2',
             'isi' => 'Ini adalah konten test artikel 2',
             'id_kategori' => $kategori->id_kategori,
-            'kategori_id' => $kategori->id_kategori,
             'gambar' => '/storage/test/image2.jpg',
             'status' => 1,
         ]);
@@ -284,7 +309,6 @@ class ArtikelControllerTest extends TestCase
             'slug' => 'test-artikel-3',
             'isi' => 'Ini adalah konten test artikel 3',
             'id_kategori' => null,
-            'kategori_id' => null,
             'gambar' => '/storage/test/image3.jpg',
             'status' => 0, // draft
         ]);

@@ -29,38 +29,51 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Frontend\ArtikelController;
-use App\Http\Controllers\Api\Frontend\ProfilController;
+namespace App\Http\Requests\Api\Frontend;
 
-/*
-|--------------------------------------------------------------------------
-| Frontend API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register frontend API routes for your application.
-| These routes are typically accessible without authentication and are
-| designed for public consumption by frontend applications.
-|
-*/
+use Illuminate\Foundation\Http\FormRequest;
 
-Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
-    
+class StoreCommentRequest extends FormRequest
+{
     /**
-     * Artikel API Routes
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    Route::group(['prefix' => 'artikel', 'controller' => ArtikelController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/artikel        
-        Route::post('/{id}/comments', 'storeComment');              // POST /api/v1/artikel/{id}/comments
-        Route::delete('cache/{prefix?}','removeCachePrefix');
-    });
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
-     * Profil API Routes
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
      */
-    Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
-        Route::delete('cache/{prefix?}','removeCachePrefix');
-    });
+    public function rules()
+    {
+        return [
+            'nama' => 'required|string|max:191',
+            'email' => 'nullable|email|max:191',
+            'body' => 'required|string',
+            'comment_id' => 'nullable|integer|exists:das_artikel_comment,id',
+        ];
+    }
 
-});
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'nama.required' => 'Nama wajib diisi',
+            'nama.max' => 'Nama maksimal 191 karakter',
+            'email.email' => 'Format email tidak valid',
+            'email.max' => 'Email maksimal 191 karakter',
+            'body.required' => 'Komentar wajib diisi',
+            'comment_id.exists' => 'Komentar induk tidak ditemukan',
+        ];
+    }
+}

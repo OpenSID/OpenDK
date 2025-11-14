@@ -31,18 +31,53 @@
 
 namespace App\Transformers;
 
+use App\Models\JawabKomplain;
 use League\Fractal\TransformerAbstract;
 
-class StatistikPendudukTransformer extends TransformerAbstract
-{    
+class JawabKomplainTransformer extends TransformerAbstract
+{
+    /**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected array $availableIncludes = [
+        'penjawab_komplain'
+    ];
+
     /**
      * Turn this item object into a generic array
      *
-     * @param $data
+     * @param JawabKomplain $jawabKomplain
      * @return array
      */
-    public function transform(array $data): array
-    {        
-        return $data;
-    }    
+    public function transform(JawabKomplain $jawabKomplain): array
+    {
+        return [
+            'id' => $jawabKomplain->id,
+            'komplain_id' => $jawabKomplain->komplain_id,
+            'jawaban' => $jawabKomplain->jawaban,
+            'penjawab' => $jawabKomplain->penjawab,
+            'nik' => $jawabKomplain->nik,
+            'created_at' => $jawabKomplain->created_at,
+            'updated_at' => $jawabKomplain->updated_at,
+        ];
+    }
+
+    /**
+     * Include Penjawab Komplain
+     *
+     * @param JawabKomplain $jawabKomplain
+     * @return \League\Fractal\Resource\Item|null
+     */
+    public function includePenjawabKomplain(JawabKomplain $jawabKomplain)
+    {
+        $penjawab = $jawabKomplain->penjawab_komplain;
+        
+        if ($penjawab) {
+            return $this->item($penjawab, new \App\Transformers\PendudukTransformer(), 'penjawab_komplain');
+        }
+
+        return null;
+    }
 }

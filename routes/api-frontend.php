@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\Frontend\ArtikelController;
 use App\Http\Controllers\Api\Frontend\DesaController;
 use App\Http\Controllers\Api\Frontend\ProfilController;
 use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
+use App\Http\Controllers\Api\Frontend\KomplainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,12 +67,25 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
     });
 
     Route::group(['prefix' => 'desa', 'controller' => DesaController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
+        Route::get('/', 'index');                                    // GET /api/v1/desa        
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 
     Route::group(['prefix' => 'statistik-penduduk', 'controller' => StatistikPendudukController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
+        Route::get('/', 'index');                                    // GET /api/v1/statistik-penduduk
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    /**
+     * Komplain API Routes
+     */
+    Route::group(['prefix' => 'komplain', 'controller' => KomplainController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/komplain
+        Route::post('/', 'store');                                   // POST /api/v1/komplain
+        Route::get('/{id}', 'show');                                 // GET /api/v1/komplain/{id}
+        Route::post('/{id}/reply', 'reply');                          // POST /api/v1/komplain/{id}/reply
+        Route::get('/{id}/replies', 'getReplies');                   // GET /api/v1/komplain/{id}/replies
+        Route::get('/track/{tracking_id}', 'track');                  // GET /api/v1/komplain/track/{tracking_id}
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 });

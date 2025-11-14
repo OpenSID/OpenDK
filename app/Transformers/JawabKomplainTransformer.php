@@ -29,56 +29,55 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Transformers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
+use App\Models\JawabKomplain;
+use League\Fractal\TransformerAbstract;
 
-class RouteServiceProvider extends ServiceProvider
+class JawabKomplainTransformer extends TransformerAbstract
 {
     /**
-     * The path to the "home" route for your application.
+     * List of resources possible to include
      *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
+     * @var array
      */
-    public const HOME = '/dashboard';
+    protected array $availableIncludes = [
+        'penjawab_komplain'
+    ];
 
     /**
-     * Define your route model bindings, pattern filters, and other route configuration.
+     * Turn this item object into a generic array
      *
-     * @return void
+     * @param JawabKomplain $jawabKomplain
+     * @return array
      */
-    public function boot()
+    public function transform(JawabKomplain $jawabKomplain): array
     {
-        $this->configureRateLimiting();
-
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-            Route::middleware('theme.api')
-                ->prefix('api/frontend')
-                ->group(base_path('routes/api-frontend.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        return [
+            'id' => $jawabKomplain->id,
+            'komplain_id' => $jawabKomplain->komplain_id,
+            'jawaban' => $jawabKomplain->jawaban,
+            'penjawab' => $jawabKomplain->penjawab,
+            'nik' => $jawabKomplain->nik,
+            'created_at' => $jawabKomplain->created_at,
+            'updated_at' => $jawabKomplain->updated_at,
+        ];
     }
 
     /**
-     * Configure the rate limiters for the application.
+     * Include Penjawab Komplain
      *
-     * @return void
+     * @param JawabKomplain $jawabKomplain
+     * @return \League\Fractal\Resource\Item|null
      */
-    protected function configureRateLimiting()
+    public function includePenjawabKomplain(JawabKomplain $jawabKomplain)
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        $penjawab = $jawabKomplain->penjawab_komplain;
+        
+        if ($penjawab) {
+            return $this->item($penjawab, new \App\Transformers\PendudukTransformer(), 'penjawab_komplain');
+        }
+
+        return null;
     }
 }

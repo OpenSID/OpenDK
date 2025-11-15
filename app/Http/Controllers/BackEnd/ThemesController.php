@@ -4,8 +4,10 @@ namespace App\Http\Controllers\BackEnd;
 
 use App\Http\Controllers\BackEndController;
 use App\Models\Themes;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
 
 class ThemesController extends BackEndController
 {
@@ -23,14 +25,25 @@ class ThemesController extends BackEndController
         Themes::where('active', 1)->update(['active' => 0]);
         $themes->update(['active' => 1]);
 
-        return redirect()->route('setting.themes.index')->with('success', 'Tema berhasil diaktifkan');
+        // Clear all theme API cache
+        $this->clearThemeCache();
+
+        // Load theme hooks if exists
+        $this->loadThemeHooks($themes->name);
+
+        return redirect()->route('setting.themes.index')
+            ->with('success', 'Tema berhasil diaktifkan. Cache API telah dibersihkan.');
     }
 
     public function reScan()
     {
         scan_themes();
 
-        return redirect()->route('setting.themes.index')->with('success', 'Tema berhasil pindai ulang');
+        // Clear cache after rescan
+        $this->clearThemeCache();
+
+        return redirect()->route('setting.themes.index')
+            ->with('success', 'Tema berhasil dipindai ulang');
     }
 
     public function upload()
@@ -60,7 +73,11 @@ class ThemesController extends BackEndController
 
                 if (file_exists($composerPath)) {
                     $composerData = json_decode(file_get_contents($composerPath), true);
-                    $newFolder = base_path('themes/'.$composerData['name']);
+
+                    // Validate theme structure
+                    $this->validateThemeStructure($extractedPath, $folderTheme);
+
+                    $newFolder = base_path('themes/' . $composerData['name']);
 
                     if (File::move("$extractedPath/$folderTheme", $newFolder)) {
                         File::deleteDirectory($extractedPath);
@@ -68,9 +85,12 @@ class ThemesController extends BackEndController
 
                         scan_themes();
 
+                        // Load theme hooks
+                        $this->loadThemeHooks($composerData['name']);
+
                         return response()->json([
                             'status' => 'success',
-                            'message' => 'Tema berhasil diunggah',
+                            'message' => 'Tema berhasil diunggah dan siap digunakan',
                         ]);
                     } else {
                         File::deleteDirectory($extractedPath);
@@ -79,7 +99,7 @@ class ThemesController extends BackEndController
                 }
             }
         } catch (\Exception $e) {
-            Log::error('File upload failed: '.$e->getMessage());
+            Log::error('File upload failed: ' . $e->getMessage());
         }
 
         return response()->json([
@@ -88,11 +108,97 @@ class ThemesController extends BackEndController
         ]);
     }
 
-    // destroy
     public function destroy(Themes $themes)
     {
+        // Don't delete active theme
+        if ($themes->active) {
+            return redirect()->route('setting.themes.index')
+                ->with('error', 'Tidak dapat menghapus tema yang sedang aktif');
+        }
+
         $themes->delete();
 
-        return redirect()->route('setting.themes.index')->with('success', 'Theme berhasil dihapus');
+        // Clear cache
+        $this->clearThemeCache();
+
+        return redirect()->route('setting.themes.index')
+            ->with('success', 'Tema berhasil dihapus');
+    }
+
+    /**
+     * Clear all theme-related cache
+     */
+    private function clearThemeCache()
+    {
+        // Clear specific cache keys
+        Cache::forget('active_theme');
+        $store = Cache::getStore();
+        if (method_exists($store, 'tags')) {
+            // Tagged cache supported, clear tag and exit to avoid duplicate calls below
+            Cache::tags(['theme_api'])->flush();
+            Log::info('Theme cache cleared via tags');
+        } else {
+            // Alternative: Clear by prefix
+            $keys = Cache::get('theme_api:*');
+            foreach ($keys ?? [] as $key) {
+                Cache::forget($key);
+            }
+        }
+
+        Log::info('Theme cache cleared');
+    }
+
+    /**
+     * Load theme hooks/filters
+     */
+    private function loadThemeHooks(string $themePath)
+    {
+        $hooksFile = base_path("themes/{$themePath}/hooks.php");
+
+        if (file_exists($hooksFile)) {
+            try {
+                include_once $hooksFile;
+                Log::info("Theme hooks loaded: {$themePath}");
+            } catch (\Exception $e) {
+                Log::error("Failed to load theme hooks: {$e->getMessage()}");
+            }
+        }
+    }
+
+    /**
+     * Validate theme structure for API compatibility
+     */
+    private function validateThemeStructure(string $path, string $folder)
+    {
+        $requiredFiles = [
+            'composer.json',
+            'theme.json',
+        ];
+
+        foreach ($requiredFiles as $file) {
+            if (!file_exists("$path/$folder/$file")) {
+                throw new \Exception("File {$file} tidak ditemukan di tema");
+            }
+        }
+
+        // Validate theme.json
+        $themeConfig = json_decode(file_get_contents("$path/$folder/theme.json"), true);
+
+        if (!isset($themeConfig['api_version'])) {
+            Log::warning("Tema tidak mendefinisikan api_version, gunakan v1 sebagai default");
+        }
+
+        return true;
+    }
+
+    /**
+     * Clear API cache manually (untuk admin)
+     */
+    public function clearCache()
+    {
+        $this->clearThemeCache();
+
+        return redirect()->route('setting.themes.index')
+            ->with('success', 'Cache API tema berhasil dibersihkan');
     }
 }

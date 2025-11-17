@@ -29,56 +29,65 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Transformers;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
+use App\Models\Artikel;
+use League\Fractal\TransformerAbstract;
 
-class RouteServiceProvider extends ServiceProvider
+class ArtikelTransformer extends TransformerAbstract
 {
     /**
-     * The path to the "home" route for your application.
+     * List of resources possible to include
      *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
+     * @var array
      */
-    public const HOME = '/dashboard';
+    protected array $availableIncludes = [
+        'kategori',
+        'comments'
+    ];
 
     /**
-     * Define your route model bindings, pattern filters, and other route configuration.
+     * Turn this item object into a generic array
      *
-     * @return void
+     * @param Artikel $artikel
+     * @return array
      */
-    public function boot()
+    public function transform(Artikel $artikel): array
     {
-        $this->configureRateLimiting();
-
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-            Route::middleware('theme.api')
-                ->prefix('api/frontend')
-                ->group(base_path('routes/api-frontend.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        return $artikel->toArray();
     }
 
     /**
-     * Configure the rate limiters for the application.
+     * Include Kategori
      *
-     * @return void
+     * @param Artikel $artikel
+     * @return \League\Fractal\Resource\Item|null
      */
-    protected function configureRateLimiting()
+    public function includeKategori(Artikel $artikel)
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        $kategori = $artikel->kategori;
+        
+        if ($kategori) {
+            return $this->item($kategori, new ArtikelKategoriTransformer(),'kategori');
+        }
+
+        return null;
+    }
+
+    /**
+     * Include Comments
+     *
+     * @param Artikel $artikel
+     * @return \League\Fractal\Resource\Collection|null
+     */
+    public function includeComments(Artikel $artikel)
+    {
+        $comments = $artikel->comments;
+        
+        if ($comments) {
+            return $this->collection($comments, new CommentTransformer(),'comments');
+        }
+
+        return null;
     }
 }

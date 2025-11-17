@@ -29,56 +29,51 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Http\Requests\Api\Frontend;
 
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Http\FormRequest;
 
-class RouteServiceProvider extends ServiceProvider
+class StoreCommentRequest extends FormRequest
 {
     /**
-     * The path to the "home" route for your application.
+     * Determine if the user is authorized to make this request.
      *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
+     * @return bool
      */
-    public const HOME = '/dashboard';
-
-    /**
-     * Define your route model bindings, pattern filters, and other route configuration.
-     *
-     * @return void
-     */
-    public function boot()
+    public function authorize()
     {
-        $this->configureRateLimiting();
-
-        $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
-            Route::middleware('theme.api')
-                ->prefix('api/frontend')
-                ->group(base_path('routes/api-frontend.php'));
-
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
-        });
+        return true;
     }
 
     /**
-     * Configure the rate limiters for the application.
+     * Get the validation rules that apply to the request.
      *
-     * @return void
+     * @return array
      */
-    protected function configureRateLimiting()
+    public function rules()
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
+        return [
+            'nama' => 'required|string|max:191',
+            'email' => 'nullable|email|max:191',
+            'body' => 'required|string',
+            'comment_id' => 'nullable|integer|exists:das_artikel_comment,id',
+        ];
+    }
+
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'nama.required' => 'Nama wajib diisi',
+            'nama.max' => 'Nama maksimal 191 karakter',
+            'email.email' => 'Format email tidak valid',
+            'email.max' => 'Email maksimal 191 karakter',
+            'body.required' => 'Komentar wajib diisi',
+            'comment_id.exists' => 'Komentar induk tidak ditemukan',
+        ];
     }
 }

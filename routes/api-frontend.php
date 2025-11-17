@@ -32,6 +32,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Frontend\ArtikelController;
 use App\Http\Controllers\Api\Frontend\DesaController;
+use App\Http\Controllers\Api\Frontend\KategoriController;
 use App\Http\Controllers\Api\Frontend\ProfilController;
 use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 use App\Http\Controllers\Api\Frontend\KomplainController;
@@ -59,6 +60,14 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
     });
 
     /**
+     * Kategori API Routes
+     */
+    Route::group(['prefix' => 'kategori', 'controller' => KategoriController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/kategori                
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    /**
      * Profil API Routes
      */
     Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
@@ -81,11 +90,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'komplain', 'controller' => KomplainController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/komplain
-        Route::post('/', 'store');                                   // POST /api/v1/komplain
-        Route::get('/{id}', 'show');                                 // GET /api/v1/komplain/{id}
-        Route::post('/{id}/reply', 'reply');                          // POST /api/v1/komplain/{id}/reply
-        Route::get('/{id}/replies', 'getReplies');                   // GET /api/v1/komplain/{id}/replies
-        Route::get('/track/{tracking_id}', 'track');                  // GET /api/v1/komplain/track/{tracking_id}
+        Route::post('/', 'store');                                   // POST /api/v1/komplain        
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 });

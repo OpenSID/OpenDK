@@ -29,50 +29,36 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Transformers;
+namespace App\Repositories;
 
 use App\Models\ArtikelKategori;
-use League\Fractal\TransformerAbstract;
+use Spatie\QueryBuilder\AllowedFilter;
 
-class ArtikelKategoriTransformer extends TransformerAbstract
+class KategoriApiRepository extends BaseApiRepository
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * Constructor
      */
-    protected array $availableIncludes = [
-        'artikels'
-    ];
-
-    /**
-     * Turn this item object into a generic array
-     *
-     * @param ArtikelKategori $kategori
-     * @return array
-     */
-    public function transform(ArtikelKategori $kategori): array
+    public function __construct(ArtikelKategori $model)
     {
-        $kategori->type = 'kategori';
-        $kategori->id = $kategori->id_kategori;
-        $kategori->link = route('berita-kategori',['slug' => $kategori->slug]);        
-        return $kategori->toArray();
-    }
-
-    /**
-     * Include Artikels
-     *
-     * @param ArtikelKategori $kategori
-     * @return \League\Fractal\Resource\Collection|null
-     */
-    public function includeArtikels(ArtikelKategori $kategori)
-    {
-        $artikels = $kategori->artikels;
+        parent::__construct($model);
         
-        if ($artikels) {
-            return $this->collection($artikels, new ArtikelTransformer());
-        }
-
-        return null;
+        // Initialize allowed filters, sorts, and includes
+        $this->allowedFilters = [
+            'nama_kategori',
+            AllowedFilter::exact('id_kategori'),
+            AllowedFilter::exact('slug'),                        
+            AllowedFilter::callback('search', function($query, $value){                
+                $query->where('nama', 'LIKE', '%'.$value.'%')
+                        ->orWhere('slug', 'LIKE', '%'.$value.'%');
+            }),            
+        ];
+        $this->allowedSorts = ['created_at', 'updated_at', 'nama', 'id'];
+        $this->allowedIncludes = [];
+        $this->defaultSort = '-created_at';
     }
+    
+    public function data(){
+        return $this->getFilteredApi()->jsonPaginate();
+    }        
 }

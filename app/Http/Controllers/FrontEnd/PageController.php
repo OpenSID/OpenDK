@@ -57,7 +57,13 @@ class PageController extends FrontEndController
 
         return view('pages.index', [
             'page_title' => 'Beranda',
-            'cari' => null,            
+            'cari' => null, 
+            'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
+                'filter[status]' => 1,
+                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
+                'sort' => '-created_at',
+                'include' => 'kategori'
+            ]))
         ]);
     }
 
@@ -336,20 +342,19 @@ class PageController extends FrontEndController
     }
 
     public function kategori($slug)
-    {
-        // Temukan kategori berdasarkan slug
-        $kategori = \App\Models\ArtikelKategori::where('slug', $slug)->firstOrFail();
-
-        // Ambil semua artikel yang termasuk dalam kategori tersebut
-        $berita_kategori = Artikel::with('kategori')
-            ->where('id_kategori', $kategori->id_kategori)
-            ->where('status', '1')
-            ->latest()
-            ->paginate(10);
-
-        return view('pages.berita.kategori', [
-            'artikel' => $berita_kategori,
-            'kategori' => $kategori,
+    {        
+        return view('pages.berita.kategori', [                        
+            'apiBaseKategori' => url($this->urlApi.'/kategori?'.http_build_query([                
+                'filter[slug]' => $slug,
+                'page[size]' => 1, 
+            ])),
+            'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
+                'filter[status]' => 1,
+                'filter[kategori.slug]' => $slug,
+                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
+                'sort' => '-created_at',
+                'include' => 'kategori'
+            ]))
         ]);
     }
 

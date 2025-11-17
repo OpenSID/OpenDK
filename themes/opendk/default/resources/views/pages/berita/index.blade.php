@@ -7,14 +7,9 @@
 @push('scripts')
 <script>
     $(function() {
-        const apiBase ="{!! url($urlApi.'/artikel?'.http_build_query([
-        'filter[status]' => 1,
-        'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
-        'sort' => '-created_at',
-        'include' => 'kategori'
-    ])) !!}";
-
-            function renderArticles(items) {
+        let apiBase ="{!! $apiBase !!}";
+        
+            function renderArticles(items, includes) {
                 if (!items || items.length === 0) {
                     return '<div class="callout callout-info"><p class="text-bold">Tidak ada berita kecamatan yang ditampilkan!</p></div>';
                 }
@@ -23,7 +18,7 @@
                     const item = single.attributes;
                     var kategoriHtml = '';
                     if (item.kategori && item.kategori.nama_kategori) {
-                        kategoriHtml = '|&ensp;<i class="fa fa-tag"></i>&ensp;<a href="' + (item.kategori.link) + '">' + item.kategori.nama_kategori + '</a>';
+                        kategoriHtml = '|&ensp;<i class="fa fa-tag"></i>&ensp;<a href="' + (includes['kategori'][item.id_kategori]?.link) + '">' + item.kategori.nama_kategori + '</a>';
                     }
                     var isi = (item.isi || '').replace(/(<([^>]+)>)/gi, "");
                     var excerpt = isi.length > 250 ? isi.substr(0, 250) + '...' : isi;
@@ -57,7 +52,17 @@
             $.getJSON(apiBase + '&page[number]=' + pageNumber)
                 .done(function(res) {
                     var items = res.data || res;
-                    var html = renderArticles(items);
+                    const includes = []
+                    if(res.included){
+                        res.included.forEach(item => {
+                            if (!includes[item.type]) {
+                                includes[item.type] = {};
+                            }
+                            includes[item.type][item.id] = item.attributes;
+                        });    
+                    }
+                    
+                    var html = renderArticles(items, includes);
                     var $container = $('#kecamatan .post.clearfix');
 
                     $container.html(html);

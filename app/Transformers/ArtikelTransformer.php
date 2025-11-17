@@ -56,7 +56,7 @@ class ArtikelTransformer extends TransformerAbstract
     {
         $artikel->tanggal = format_date($artikel->getRawOriginal('created_at'));
         $artikel->link = $artikel->link;
-        $artikel->gambar_src = is_img($artikel->gambar);
+        $artikel->gambar_src = is_img($artikel->gambar);        
         return $artikel->toArray();
     }
 
@@ -70,8 +70,7 @@ class ArtikelTransformer extends TransformerAbstract
     {
         $kategori = $artikel->kategori;
         
-        if ($kategori) {
-            $kategori->link = route('berita-kategori',['slug' => $kategori->slug]);
+        if ($kategori) {            
             return $this->item($kategori, new ArtikelKategoriTransformer(),'kategori');
         }
 

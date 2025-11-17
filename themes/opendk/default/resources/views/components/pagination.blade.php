@@ -15,7 +15,7 @@
         var totalPages = data.meta.pagination.total_pages;
         var currentPage = data.meta.pagination.current_page;
 
-        if (totalPages >= 1) {            
+        if (totalPages > 1) {            
 
             var paginationListHTML = ``;
 

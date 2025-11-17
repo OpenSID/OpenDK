@@ -32,23 +32,13 @@
 namespace App\Repositories;
 
 use App\Repositories\Contracts\BaseRepositoryInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\AllowedSort;
-use Spatie\QueryBuilder\QueryBuilder;
-<<<<<<< HEAD
-use Illuminate\Pagination\LengthAwarePaginator;
-=======
->>>>>>> origin/dev
 
-abstract class BaseApiRepository implements BaseRepositoryInterface
+abstract class BaseRepository implements BaseRepositoryInterface
 {
     protected Model|Builder $model;
-    protected array $allowedFilters = [];
-    protected array $allowedSorts = [];
-    protected array $allowedIncludes = [];
-    protected string $defaultSort = '-created_at';
 
     public function __construct(Model $model)
     {
@@ -125,6 +115,18 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
+     * Get paginated results
+     *
+     * @param int $perPage
+     * @param array $columns
+     * @return LengthAwarePaginator
+     */
+    public function paginate(int $perPage = 15, array $columns = ['*'])
+    {
+        return $this->model->paginate($perPage, $columns);
+    }
+
+    /**
      * Apply filters to query
      *
      * @param array $filters
@@ -198,44 +200,5 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     protected function getQuery(): Builder
     {
         return $this->model instanceof Builder ? $this->model : $this->model->newQuery();
-    }
-
-    /**
-     * Get query builder with Spatie Query Builder (if available)
-     */
-    protected function getQueryBuilder()
-    {
-        return QueryBuilder::for($this->model);
-    }    
-
-    /**
-     * Apply custom filters
-     */
-    protected function addCustomFilter(string $name, callable $callback): self
-    {
-        $this->allowedFilters[] = AllowedFilter::callback($name, $callback);
-        return $this;
-    }
-
-    /**
-     * Apply custom sorts
-     */
-    protected function addCustomSort(string $field): self
-    {
-        $this->allowedSorts[] = AllowedSort::callback('sort', $field);
-        return $this;
-    }
-
-    /**
-     * Add allowed includes
-     */
-    protected function addAllowedInclude(string $relation): self
-    {
-        $this->allowedIncludes[] = $relation;
-        return $this;
-    }
-
-    protected function getFilteredApi(){
-        return $this->getQueryBuilder()->allowedFilters($this->allowedFilters)->allowedSorts($this->allowedSorts)->allowedIncludes($this->allowedIncludes);
     }
 }

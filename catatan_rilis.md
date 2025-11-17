@@ -9,5 +9,6 @@ Di rilis versi v2511.0.0 di versi ini terdapat modul komentar pada artikel dan p
 #### BUG
 
 
-
 #### TEKNIS
+
+1. [#1370](https://github.com/OpenSID/OpenDK/issues/1370) Update package playwright.

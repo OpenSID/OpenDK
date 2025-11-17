@@ -37,7 +37,6 @@ use App\Models\Artikel;
 use App\Facades\Counter;
 use App\Models\DataDesa;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
@@ -58,8 +57,7 @@ class PageController extends FrontEndController
 
         return view('pages.index', [
             'page_title' => 'Beranda',
-            'cari' => null,
-            'artikel' => Artikel::with('kategori')->latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
+            'cari' => null,            
         ]);
     }
 

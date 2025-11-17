@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\View;
 class FrontEndController extends Controller
 {
     protected $settings;
-
+    protected $urlApi = 'api/frontend/v1';
     public function __construct()
     {
         parent::__construct();
@@ -60,6 +60,7 @@ class FrontEndController extends Controller
             'navmenus' => NavMenu::with('children.children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
             'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
             'slides' => Slide::orderBy('created_at', 'DESC')->get(),
+            'urlApi' => $this->urlApi
         ]);
     }
 

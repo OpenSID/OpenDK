@@ -54,7 +54,7 @@ class ArtikelKategoriTransformer extends TransformerAbstract
     public function transform(ArtikelKategori $kategori): array
     {
         $kategori->type = 'kategori';
-        $kategori->id = $kategori->id_kategori;
+        $kategori->id = $kategori->id_kategori;        
         return $kategori->toArray();
     }
 

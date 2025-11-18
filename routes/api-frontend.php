@@ -36,6 +36,7 @@ use App\Http\Controllers\Api\Frontend\KategoriController;
 use App\Http\Controllers\Api\Frontend\ProfilController;
 use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 use App\Http\Controllers\Api\Frontend\KomplainController;
+use App\Http\Controllers\Api\Frontend\WebsiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,11 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      * Kategori API Routes
      */
     Route::group(['prefix' => 'kategori', 'controller' => KategoriController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/kategori                
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    Route::group(['prefix' => 'website', 'controller' => WebsiteController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/kategori                
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });

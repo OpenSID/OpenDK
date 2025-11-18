@@ -29,40 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Repositories;
+namespace App\Transformers;
 
-use App\Models\Profil;
-use Spatie\QueryBuilder\AllowedFilter;
+use App\Support\Collection;
+use League\Fractal\TransformerAbstract;
 
-class ProfilApiRepository extends BaseApiRepository
+class WebsiteTransformer extends TransformerAbstract
 {
     /**
-     * Constructor
+     * Turn this item object into a generic array
+     *
+     * @param mixed $data
+     * @return array
      */
-    public function __construct(Profil $model)
+    public function transform($data): array
     {
-        parent::__construct($model);
+        // Handle different data types
+        if (is_array($data)) {
+            return $data;
+        }
         
-        // Initialize allowed filters, sorts, and includes
-        $this->allowedFilters = [
-            'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi',
-            AllowedFilter::exact('id'),
-            AllowedFilter::exact('kecamatan_id'),
-            AllowedFilter::exact('kabupaten_id'),
-            AllowedFilter::exact('provinsi_id'),
-            AllowedFilter::callback('search', function($query, $value){                
-                $query->where('nama_kecamatan', 'LIKE', '%'.$value.'%')
-                      ->orWhere('nama_kabupaten', 'LIKE', '%'.$value.'%')
-                      ->orWhere('nama_provinsi', 'LIKE', '%'.$value.'%')
-                      ->orWhere('alamat', 'LIKE', '%'.$value.'%');
-            }),
-        ];
-        $this->allowedSorts = ['nama_kecamatan', 'nama_kabupaten', 'nama_provinsi', 'created_at', 'updated_at', 'id'];
-        $this->allowedIncludes = ['dataUmum', 'dataDesa','strukturOrganisasi'];
-        $this->defaultSort = 'nama_kecamatan';
-    }
-    
-    public function data(){        
-        return $this->getFilteredApi()->jsonPaginate();
+        // If it's an object with toArray method
+        if (method_exists($data, 'toArray')) {
+            return $data->toArray();
+        }
+        
+        // If it's a paginator, get the items
+        if (method_exists($data, 'items')) {
+            return $data->items();
+        }
+        
+        // Default fallback
+        return (array) $data;
     }
 }

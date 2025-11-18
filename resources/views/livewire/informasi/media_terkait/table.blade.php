@@ -4,7 +4,8 @@
             <x-button color="success" wire:click="create" loading="Tambah...">
                 <i class="fa fa-plus"></i> Tambah
             </x-button>
-            <button wire:click="$emit('deleteSelected')" class="btn btn-danger btn-sm" {{ count($selectedItems) === 0 ? 'disabled' : '' }}>
+            <button wire:click="deleteSelected" class="btn btn-danger btn-sm"
+                {{ count($selectedItems) === 0 ? 'disabled' : '' }}>
                 Hapus Terpilih ({{ count($selectedItems) }})
             </button>
         </div>
@@ -41,7 +42,9 @@
                             </x-table-cell>
                             <x-table-cell>{{ $item->nama }}</x-table-cell>
                             <x-table-cell>
-                                <img src="{{ Storage::url('media_terkait/' . $item->logo) }}" style="width: 80px; height: 60px; object-fit: contain; background: #f5f5f5;" alt="Logo">
+                                <img src="{{ Storage::url('media_terkait/' . $item->logo) }}"
+                                    style="width: 80px; height: 60px; object-fit: contain; background: #f5f5f5;"
+                                    alt="Logo">
                             </x-table-cell>
                             <x-table-cell>
                                 @if ($item->status == 1)

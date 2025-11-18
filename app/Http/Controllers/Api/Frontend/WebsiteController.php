@@ -31,9 +31,11 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
+use App\Models\Profil;
 use App\Repositories\DesaApiRepository;
 use App\Repositories\ProfilApiRepository;
 use App\Repositories\WebsiteApiRepository;
+use App\Transformers\ProfilTransformer;
 use App\Transformers\WebsiteTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -64,10 +66,9 @@ class WebsiteController extends BaseController
         $cacheKey = $this->getCacheKey('index', $params);
 
         return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            $websiteData = $this->websiteApiRepository->getAllWebsiteData();
-            
+            $websiteData = $this->websiteApiRepository->getAllWebsiteData();              
             return $this->fractal([
-                ['id' => 'profile',  $this->profilApiRepository->getDataArray()],
+                ['id' => 'profile',  (new ProfilTransformer())->transform(Profil::with(['dataUmum'])->first())],
                 ['id' => 'desa',  $this->desaApiRepository->getDataArray()],
                 ['id' => 'events',  $websiteData['events']],
                 ['id' => 'medsos',  $websiteData['medsos']],

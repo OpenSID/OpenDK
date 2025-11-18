@@ -317,7 +317,7 @@
                 <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i>
                         ${profile.telepon}</small></li>
             </ul>`;
-            console.log(profileHtml)
+            
             $('#desa-profil-container').html(profileHtml)
         }
         // Function to update pengurus widget

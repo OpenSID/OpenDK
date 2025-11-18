@@ -34,3 +34,6 @@ public/error_log
 /test-results/
 /playwright-report/
 .env.e2e
+
+# Pest Browser Testing
+/tests/Browser/Screenshots

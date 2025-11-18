@@ -105,9 +105,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      * Galeri API Routes
      */
     Route::group(['prefix' => 'galeri', 'controller' => GaleriController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/galeri
-        Route::get('/{id}', 'show');                                 // GET /api/v1/galeri/{id}
-        Route::get('/album/{slug}', 'getByAlbumSlug');               // GET /api/v1/galeri/album/{slug}
+        Route::get('/', 'index');                                    // GET /api/v1/galeri        
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 });

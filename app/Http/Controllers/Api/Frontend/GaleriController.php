@@ -20,7 +20,7 @@
  *
  * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
  * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
- * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ * KEWAJIBAN APAPUN ATAS PENGGUNAN ATAU LAINNYA TERKAIT APLIKASI INI.
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
@@ -31,10 +31,8 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
-use App\Repositories\DesaApiRepository;
-use App\Repositories\StatistikPendudukApiRepository;
-use App\Transformers\DataDesaTransformer;
-use App\Transformers\StatistikPendudukTransformer;
+use App\Repositories\GaleriApiRepository;
+use App\Transformers\GaleriTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -43,8 +41,8 @@ use Spatie\Fractal\Fractal;
 /**
  * @OA\Info(
  *     version="1.0.0",
- *     title="OpenDK Desa API",
- *     description="API untuk mengakses data profil dengan Spatie Query Builder filtering dan sorting",
+ *     title="OpenDK Galeri API",
+ *     description="API untuk mengakses data galeri",
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -52,30 +50,30 @@ use Spatie\Fractal\Fractal;
  * )
  *
  * @OA\Tag(
- *     name="Desa",
- *     description="API endpoints untuk mengelola profil"
+ *     name="Galeri",
+ *     description="API endpoints untuk mengelola galeri"
  * )
  */
 
-class StatistikPendudukController extends BaseController
+class GaleriController extends BaseController
 {
-    protected StatistikPendudukApiRepository $repository;
+    protected GaleriApiRepository $galeriApiRepository;
 
     public function __construct(
-        StatistikPendudukApiRepository $repository
+        GaleriApiRepository $galeriApiRepository
     ) {
-        $this->repository = $repository;
-        $this->prefix = config('theme-api.statistikPenduduk.cache_prefix', 'statistikPenduduk:api');
+        $this->galeriApiRepository = $galeriApiRepository;
+        $this->prefix = config('theme-api.galeri.cache_prefix', 'galeri:api');
     }
 
     /**
-     * Display a listing of desa with advanced filtering and sorting.
+     * Display a listing of galeri with advanced filtering and sorting.
      *
      * @OA\Get(
-     *     path="/api/v1/frontend/desa",
-     *     summary="Get list of desa",
-     *     description="Retrieve paginated list of desa with filtering, sorting, and search capabilities using Spatie Query Builder",
-     *     tags={"Desa"},
+     *     path="/api/v1/frontend/galeri",
+     *     summary="Get list of galeri",
+     *     description="Retrieve paginated list of galeri with filtering, sorting, and search capabilities using Spatie Query Builder",
+     *     tags={"Galeri"},
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
@@ -90,37 +88,62 @@ class StatistikPendudukController extends BaseController
      *         required=false,
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *     @OA\Parameter(
+     *         name="filter[status]",
+     *         in="query",
+     *         description="Filter galeri by status",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1, enum={0,1})
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter[album_id]",
+     *         in="query",
+     *         description="Filter galeri by album ID",
+     *         required=false,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter[judul]",
+     *         in="query",
+     *         description="Filter galeri by title",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
      *         @OA\JsonContent(
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
-     *                 @OA\Property(property="type", type="string", example=null),
+     *                 @OA\Property(property="type", type="string", example="galeri"),
      *                 @OA\Property(property="id", type="string", example="1"),
-     *             @OA\Property(property="attributes", type="object", example={
-     *                     "desa_id": "3171011001",
-     *                     "kode_desa": "3171011001",
-     *                     "nama": "Menteng",
-     *                     "sebutan_desa": "Kelurahan",
-     *                     "website": "https://menteng.jakarta.go.id",
-     *                     "luas_wilayah": "1.23",
-     *                     "path": "/menteng"
+     *                 @OA\Property(property="attributes", type="object", example={
+     *                     "id": 1,
+     *                     "album_id": 1,
+     *                     "judul": "Judul Galeri",
+     *                     "gambar": {"gambar1.jpg", "gambar2.jpg"},
+     *                     "link": null,
+     *                     "jenis": "file",
+     *                     "status": true,
+     *                     "slug": "judul-galeri",
+     *                     "created_at": "2023-01-01T00:00:00.0000Z",
+     *                     "updated_at": "2023-01-01T00:00.0000Z"
      *                 })
      *             )),
      *             @OA\Property(property="meta", type="object", example={
      *                 "pagination": {
      *                     "total": 20,
      *                     "count": 20,
-     *                     "per_page": 30,
+     *                     "per_page": 15,
      *                     "current_page": 1,
-     *                     "total_pages": 1
+     *                     "total_pages": 2
      *                 }
      *             }),
      *             @OA\Property(property="links", type="object", example={
-     *                 "self": "http://localhost:8000/api/frontend/v1/desa?page[number]=1",
-     *                 "first": "http://localhost:8000/api/frontend/v1/desa?page[number]=1",
-     *                 "last": "http://localhost:8000/api/frontend/v1/desa?page[number]=1"
+     *                 "first": "http://localhost:8000/api/frontend/v1/galeri?page[number]=1",
+     *                 "last": "http://localhost:8000/api/frontend/v1/galeri?page[number]=2",
+     *                 "prev": null,
+     *                 "next": "http://localhost:8000/api/frontend/v1/galeri?page[number]=2"
      *             })
      *         )
      *     ),
@@ -129,8 +152,8 @@ class StatistikPendudukController extends BaseController
      *         description="Validation error",
      *         @OA\JsonContent(
      *             @OA\Property(property="errors", type="object", example={
-     *                 "per_page": ["The per page must not be greater than 100."],
-     *                 "sort": ["The selected sort is invalid."]
+     *                 "per_page": {"The per page must not be greater than 100."},
+     *                 "sort": {"The selected sort is invalid."}
      *             })
      *         )
      *     ),
@@ -145,12 +168,11 @@ class StatistikPendudukController extends BaseController
      */
     public function index(Request $request): Fractal|JsonResponse
     {
-        $params = $request->only(['page', 'filter', 'search', 'sort', 'order', 'include']);
-        $cacheKey = $this->getCacheKey('index', $params);        
+        $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
+        $cacheKey = $this->getCacheKey('index', $params);
+        
         return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            $kategori = $request->get('kategori', 'Semua');
-            $tahun = $request->get('tahun', date('Y'));            
-            return $this->fractal($this->repository->data($kategori, $tahun), new StatistikPendudukTransformer(), 'statistik-penduduk');    
+            return $this->fractal($this->galeriApiRepository->data(), new GaleriTransformer, 'galeri');    
         });
     }    
 }

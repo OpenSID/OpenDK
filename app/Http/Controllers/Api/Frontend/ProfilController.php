@@ -71,7 +71,7 @@ class ProfilController extends BaseController
      * Display a listing of profiles with advanced filtering and sorting.
      *
      * @OA\Get(
-     *     path="/api/v1/profil",
+     *     path="/api/v1/frontend/profil",
      *     summary="Get list of profiles",
      *     description="Retrieve paginated list of profiles with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Profil"},

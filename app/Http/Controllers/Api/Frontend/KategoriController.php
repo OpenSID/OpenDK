@@ -72,7 +72,7 @@ class KategoriController extends BaseController
      * Display a listing of articles with advanced filtering and sorting.
      *
      * @OA\Get(
-     *     path="/api/v1/kategori",
+     *     path="/api/v1/frontend/kategori",
      *     summary="Get list of articles",
      *     description="Retrieve paginated list of articles with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Kategori"},

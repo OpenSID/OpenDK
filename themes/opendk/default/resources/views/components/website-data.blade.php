@@ -25,7 +25,7 @@
                 // Update social media
                 updateSocialMedia(websiteData.medsos);
 
-                updateProfile(websiteData.profile[0]);
+                updateProfile(websiteData.profile);
                 // Update desa list
                 updateDesaList(websiteData.desa);
 

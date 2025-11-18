@@ -32,6 +32,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Frontend\ArtikelController;
 use App\Http\Controllers\Api\Frontend\DesaController;
+use App\Http\Controllers\Api\Frontend\GaleriController;
 use App\Http\Controllers\Api\Frontend\KategoriController;
 use App\Http\Controllers\Api\Frontend\ProfilController;
 use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
@@ -96,7 +97,17 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'komplain', 'controller' => KomplainController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/komplain
-        Route::post('/', 'store');                                   // POST /api/v1/komplain        
+        Route::post('/', 'store');                                   // POST /api/v1/komplain
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    /**
+     * Galeri API Routes
+     */
+    Route::group(['prefix' => 'galeri', 'controller' => GaleriController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/galeri
+        Route::get('/{id}', 'show');                                 // GET /api/v1/galeri/{id}
+        Route::get('/album/{slug}', 'getByAlbumSlug');               // GET /api/v1/galeri/album/{slug}
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 });

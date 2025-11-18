@@ -71,7 +71,7 @@ class ArtikelController extends BaseController
      * Display a listing of articles with advanced filtering and sorting.
      *
      * @OA\Get(
-     *     path="/api/v1/artikel",
+     *     path="/api/v1/frontend/artikel",
      *     summary="Get list of articles",
      *     description="Retrieve paginated list of articles with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Artikel"},
@@ -207,7 +207,7 @@ class ArtikelController extends BaseController
      * Store a new comment for an article.
      *
      * @OA\Post(
-     *     path="/api/v1/artikel/{id}/comments",
+     *     path="/api/v1/frontend/artikel/{id}/comments",
      *     summary="Add comment to article",
      *     description="Store a new comment for the specified article",
      *     tags={"Artikel"},

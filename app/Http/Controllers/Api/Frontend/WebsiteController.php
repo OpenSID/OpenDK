@@ -79,6 +79,7 @@ class WebsiteController extends BaseController
                 ['id' => 'sinergi',  $websiteData['sinergi']],
                 ['id' => 'slides',  $websiteData['slides']],
                 ['id' => 'counter',  $websiteData['counter']],
+                ['id' => 'config',  config('profil')],
             ], new WebsiteTransformer());
         });
     }    

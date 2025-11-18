@@ -122,9 +122,9 @@
                 // Update header
                 $('#nama-kecamatan').text(profile.nama_kecamatan.toUpperCase());
                 $('#nama-kecamatan-batas').text(profile.nama_kecamatan.toLowerCase());
-                $('#sebutan-wilayah').text('{{ $sebutan_wilayah }}');
+                $('#sebutan-wilayah').text('{{ config('profil.sebutan_wilayah') }}');
                 $('#nama-wilayah-lengkap').text([
-                    '{{ $sebutan_wilayah }}',
+                    '{{ config('profil.sebutan_wilayah') }}',
                     profile.nama_kecamatan,
                     'Kabupaten',
                     profile.nama_kabupaten,
@@ -135,7 +135,7 @@
                 // Update geographical data
                 $('#luas-wilayah').text(profile.data_umum ? parseFloat(profile.data_umum.luas_wilayah_value).toLocaleString() : 'N/A');
                 $('#jumlah-desa').text(desa.length);
-                $('#jumlah-desa-terbilang').text(terbilang(profile.datadesa ? profile.datadesa.length : 0));
+                $('#jumlah-desa-terbilang').text(terbilang(desa.length));
 
                 // Update borders
                 $('#bts-wil-utara').text(profile.data_umum ? profile.data_umum.bts_wil_utara : '');

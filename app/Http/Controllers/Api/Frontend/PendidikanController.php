@@ -29,35 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Http\Controllers\Api\Frontend;
 
-use App\Facades\Counter;
-use App\Http\Controllers\FrontEndController;
+use App\Services\StatistikChartTingkatPendidikanService;
+use App\Services\PendidikanChartPutusSekolahService;
+use App\Services\PendidikanChartFasilitasPAUDService;
 
-class PublikasiController extends FrontEndController
+class PendidikanController extends BaseController
 {
-    public function album()
+
+    public function getChartTingkatPendidikan()
     {
-        Counter::count('publik.publikasi.album');
+        $did = request('did');
+        $year = request('y');
+
+        return (new StatistikChartTingkatPendidikanService)->chart($did, $year);
         
-        $page_title = 'Galeri';
-
-        return view('pages.publikasi.album', compact('page_title'));
     }
 
-    public function galeri($slug)
+    public function getChartPutusSekolah()
     {
-        Counter::count('publik.publikasi.album');        
-        $page_title = 'Galeri';
+        $did = request('did');
+        $year = request('y');
 
-        return view('pages.publikasi.galeri', compact('page_title', 'slug'));
+        return (new PendidikanChartPutusSekolahService)->chart($did, $year);
     }
 
-    public function galeri_detail($slug)
+    public function getChartFasilitasPAUD()
     {
-        Counter::count('publik.publikasi.album');        
-        $page_title = 'Galeri';
+        $did = request('did');
+        $year = request('y');
 
-        return view('pages.publikasi.galeri_detail', compact('page_title', 'slug'));
+        return (new PendidikanChartFasilitasPAUDService)->chart($did, $year);
     }
 }

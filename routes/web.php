@@ -223,10 +223,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('chart-kependudukan-kelamin', 'KependudukanController@getChartPendudukKelamin')->name('statistik.chart-kependudukan-kelamin');
                 Route::get('data-penduduk', 'KependudukanController@getDataPenduduk')->name('statistik.data-penduduk');
 
-                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');
-                Route::get('chart-tingkat-pendidikan', 'PendidikanController@getChartTingkatPendidikan')->name('statistik.pendidikan.chart-tingkat-pendidikan');
-                Route::get('chart-putus-sekolah', 'PendidikanController@getChartPutusSekolah')->name('statistik.pendidikan.chart-putus-sekolah');
-                Route::get('chart-fasilitas-paud', 'PendidikanController@getChartFasilitasPAUD')->name('statistik.pendidikan.chart-fasilitas-paud');
+                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');                
 
                 Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
                 Route::get('chart-penduduk', 'ProgramBantuanController@getChartBantuanPenduduk')->name('statistik.program-bantuan.chart-penduduk');
@@ -238,11 +235,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
                 Route::get('chart-anggaran-desa', 'AnggaranDesaController@getChartAnggaranDesa')->name('statistik.chart-anggaran-desa');
 
-                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');
-                Route::get('chart-akiakb', 'KesehatanController@getChartAKIAKB')->name('statistik.kesehatan.chart-akiakb');
-                Route::get('chart-imunisasi', 'KesehatanController@getChartImunisasi')->name('statistik.kesehatan.chart-imunisasi');
-                Route::get('chart-penyakit', 'KesehatanController@getChartEpidemiPenyakit')->name('statistik.kesehatan.chart-penyakit');
-                Route::get('chart-sanitasi', 'KesehatanController@getChartToiletSanitasi')->name('statistik.kesehatan.chart-sanitasi');
+                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');                
             });
 
             Route::group(['prefix' => 'unduhan'], function () {

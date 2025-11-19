@@ -124,7 +124,7 @@
         });
 
         function change_das_kesehatan(did, year) {
-            $.ajax('{!! route('statistik.kesehatan.chart-akiakb') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-akiakb') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -159,7 +159,7 @@
                 });
             });
 
-            $.ajax('{!! route('statistik.kesehatan.chart-imunisasi') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-imunisasi') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -194,7 +194,7 @@
                 });
             });
 
-            $.ajax('{!! route('statistik.kesehatan.chart-penyakit') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-penyakit') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -209,7 +209,7 @@
                 $('#tabel_penyakit').html(data['tabel']);
             });
 
-            $.ajax('{!! route('statistik.kesehatan.chart-sanitasi') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-sanitasi') !!}', {
                 data: {
                     did: did,
                     y: year

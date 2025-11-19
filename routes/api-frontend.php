@@ -39,6 +39,8 @@ use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 use App\Http\Controllers\Api\Frontend\KomplainController;
 use App\Http\Controllers\Api\Frontend\WebsiteController;
 use App\Http\Controllers\Api\Frontend\AlbumController;
+use App\Http\Controllers\Api\Frontend\KesehatanController;
+use App\Http\Controllers\Api\Frontend\PendidikanController;
 use App\Http\Controllers\Api\Frontend\PotensiController;
 
 /*
@@ -53,14 +55,14 @@ use App\Http\Controllers\Api\Frontend\PotensiController;
 */
 
 Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
-    
+
     /**
      * Artikel API Routes
      */
     Route::group(['prefix' => 'artikel', 'controller' => ArtikelController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/artikel        
         Route::post('/{id}/comments', 'storeComment');              // POST /api/v1/artikel/{id}/comments
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     /**
@@ -68,12 +70,12 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'kategori', 'controller' => KategoriController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/kategori                
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     Route::group(['prefix' => 'website', 'controller' => WebsiteController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/kategori                
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     /**
@@ -81,18 +83,18 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/profil        
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     Route::group(['prefix' => 'desa', 'controller' => DesaController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/desa        
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     Route::group(['prefix' => 'statistik-penduduk', 'controller' => StatistikPendudukController::class], function () {
-        Route::get('/', 'index');             
+        Route::get('/', 'index');
         Route::get('/listYear', 'listYear');                                    // GET /api/v1/statistik-penduduk
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     /**
@@ -101,7 +103,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
     Route::group(['prefix' => 'komplain', 'controller' => KomplainController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/komplain
         Route::post('/', 'store');                                   // POST /api/v1/komplain
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     /**
@@ -109,7 +111,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'galeri', 'controller' => GaleriController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/galeri
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     /**
@@ -117,7 +119,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'album', 'controller' => AlbumController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/album
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     /**
@@ -125,6 +127,21 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'potensi', 'controller' => PotensiController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/potensi
-        Route::delete('cache/{prefix?}','removeCachePrefix');
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
+    });
+
+    Route::group(['prefix' => 'statistik'], function () {
+        Route::group(['controller' => PendidikanController::class], function () {
+            Route::get('chart-tingkat-pendidikan', 'getChartTingkatPendidikan')->name('api.statistik.pendidikan.chart-tingkat-pendidikan');
+            Route::get('chart-putus-sekolah', 'getChartPutusSekolah')->name('api.statistik.pendidikan.chart-putus-sekolah');
+            Route::get('chart-fasilitas-paud', 'getChartFasilitasPAUD')->name('api.statistik.pendidikan.chart-fasilitas-paud');
+        });
+
+        Route::group(['controller' => KesehatanController::class], function () {
+            Route::get('chart-akiakb', 'getChartAKIAKB')->name('api.statistik.kesehatan.chart-akiakb');
+            Route::get('chart-imunisasi', 'getChartImunisasi')->name('api.statistik.kesehatan.chart-imunisasi');
+            Route::get('chart-penyakit', 'getChartEpidemiPenyakit')->name('api.statistik.kesehatan.chart-penyakit');
+            Route::get('chart-sanitasi', 'getChartToiletSanitasi')->name('api.statistik.kesehatan.chart-sanitasi');
+        });
     });
 });

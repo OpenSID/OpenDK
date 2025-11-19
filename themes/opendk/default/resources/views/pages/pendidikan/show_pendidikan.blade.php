@@ -112,7 +112,7 @@
 
         function change_das_pendidikan(did, year) {
 
-            $.ajax('{!! route('statistik.pendidikan.chart-tingkat-pendidikan') !!}', {
+            $.ajax('{!! route('api.statistik.pendidikan.chart-tingkat-pendidikan') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -121,7 +121,7 @@
                 create_chart_tingkat_pendidikan(data['grafik']);
             });
 
-            $.ajax('{!! route('statistik.pendidikan.chart-putus-sekolah') !!}', {
+            $.ajax('{!! route('api.statistik.pendidikan.chart-putus-sekolah') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -130,7 +130,7 @@
                 create_chart_putus_sekolah(data['grafik']);
             });
 
-            $.ajax('{!! route('statistik.pendidikan.chart-fasilitas-paud') !!}', {
+            $.ajax('{!! route('api.statistik.pendidikan.chart-fasilitas-paud') !!}', {
                 data: {
                     did: did,
                     y: year

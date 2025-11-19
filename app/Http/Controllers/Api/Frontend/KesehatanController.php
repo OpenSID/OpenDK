@@ -29,21 +29,48 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Http\Controllers\Api\Frontend;
 
-use App\Facades\Counter;
-use App\Http\Controllers\FrontEndController;
+use App\Services\KesehatanChartAKIAKBService;
+use App\Services\KesehatanChartImunisasiService;
+use App\Services\KesehatanChartEpidemiPenyakitService;
+use App\Services\KesehatanChartToiletSanitasiService;
 
-class KesehatanController extends FrontEndController
+class KesehatanController extends BaseController
 {    
-    // Dashboiard Kesehatan AKI & AKB
-    public function showKesehatan()
+    // Get Data Chart AKI & AKB
+    public function getChartAKIAKB()
     {
-        Counter::count('statistik.kesehatan');
+        $did = request('did');
+        $year = request('y');
 
-        $page_title = 'Kesehatan';
-        $page_description = 'Data Kesehatan';                
+        return (new KesehatanChartAKIAKBService)->chart($did, $year);
+    }
 
-        return view('pages.kesehatan.show_kesehatan', compact('page_title', 'page_description'));
-    }    
+    // Get Data Chart Cakupan Imunisasi
+    public function getChartImunisasi()
+    {
+        $did = request('did');
+        $year = request('y');
+
+        return (new KesehatanChartImunisasiService)->chart($did, $year);
+    }
+
+    // Get Chart Epidemi Penyakit
+    public function getChartEpidemiPenyakit()
+    {
+        $did = request('did');
+        $year = request('y');
+
+        return (new KesehatanChartEpidemiPenyakitService)->chart($did, $year);
+    }
+
+    // Get Chart Toilet & Sanitasi
+    public function getChartToiletSanitasi()
+    {
+        $did = request('did');
+        $year = request('y');
+
+        return (new KesehatanChartToiletSanitasiService)->chart($did, $year);
+    }
 }

@@ -154,24 +154,19 @@ class PageController extends FrontEndController
     }
 
     public function PotensiByKategory($slug)
-    {
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+    {        
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi';
+        $page_description = 'Potensi-Potensi';     
 
-        $potensis = DB::table('das_potensi')->where('kategori_id', $kategoriPotensi->id)->simplePaginate(10);
-
-        return view('pages.potensi.index', compact(['page_title', 'page_description', 'potensis', 'kategoriPotensi']));
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug']));
     }
 
     public function PotensiShow($kategori, $slug)
-    {
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+    {        
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi Kecamatan';
-        $potensi = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
+        $page_description = 'Potensi-Potensi Kecamatan';     
 
-        return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi', 'kategoriPotensi']));
+        return view('pages.potensi.show', compact(['page_title', 'page_description', 'slug']));
     }
 
     public function DesaShow($slug)

@@ -39,6 +39,7 @@ use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 use App\Http\Controllers\Api\Frontend\KomplainController;
 use App\Http\Controllers\Api\Frontend\WebsiteController;
 use App\Http\Controllers\Api\Frontend\AlbumController;
+use App\Http\Controllers\Api\Frontend\PotensiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +116,14 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'album', 'controller' => AlbumController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/album
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    /**
+     * Potensi API Routes
+     */
+    Route::group(['prefix' => 'potensi', 'controller' => PotensiController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/potensi
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 });

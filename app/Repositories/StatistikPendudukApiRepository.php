@@ -52,12 +52,11 @@ class StatistikPendudukApiRepository extends BaseApiRepository
     }
     
     public function data($did, $year)
-    {                        
-        $listYears = $this->yearsList();
+    {
+        $listYears = $this->yearsList($year)['tahun'] ?? [date('Y')];
         return [            
             [
-                'id' => 1,
-                'yearList' => $listYears,
+                'id' => 1,                
                 'dashboard' => (new StatistikPendudukService())->dashboard($did, $year),
                 'chart' => [
                     'penduduk' => (new StatistikChartPendudukService())->chart($did, $listYears),
@@ -67,12 +66,11 @@ class StatistikPendudukApiRepository extends BaseApiRepository
                     'penduduk-kawin' => (new StatistikChartPendudukPerkawinanService())->chart($did, $year),
                     'penduduk-agama' => (new StatistikChartPendudukAgamaService())->chart($did, $year)
                 ]
-            ]
-            
+            ]            
         ];
     }
 
-    private function yearsList($max_tahun = null)
+    public function yearsList($max_tahun = null)
     {
         $min_tahun = (new StatistikPendudukService())->minYear() ?? date('Y');
 
@@ -81,6 +79,6 @@ class StatistikPendudukApiRepository extends BaseApiRepository
             $daftar_tahun[] = $y;
         }
 
-        return $daftar_tahun;
+        return ['id' => 'tahun', 'tahun' => $daftar_tahun];
     }        
 }

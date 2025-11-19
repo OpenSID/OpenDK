@@ -46,11 +46,9 @@ class KesehatanController extends FrontEndController
         Counter::count('statistik.kesehatan');
 
         $page_title = 'Kesehatan';
-        $page_description = 'Data Kesehatan';
-        $year_list = years_list();
-        $list_desa = (new DesaService())->listDesa();
+        $page_description = 'Data Kesehatan';                
 
-        return view('pages.kesehatan.show_kesehatan', compact('page_title', 'page_description', 'year_list', 'list_desa'));
+        return view('pages.kesehatan.show_kesehatan', compact('page_title', 'page_description'));
     }
 
     // Get Data Chart AKI & AKB

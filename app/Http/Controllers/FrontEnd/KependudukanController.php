@@ -71,11 +71,7 @@ class KependudukanController extends FrontEndController
         Counter::count('statistik.kependudukan');
 
         $data['page_title'] = 'Kependudukan';
-        $data['page_description'] = 'Statistik Kependudukan';
-        $data['year_list'] = $this->yearsList();
-        $data['list_desa'] = $this->desaService->listDesa();
-
-        $data = array_merge($data, $this->createDashboardKependudukan('Semua', date('Y')));
+        $data['page_description'] = 'Statistik Kependudukan';                
 
         return view('pages.kependudukan.show_kependudukan')->with($data);
     }

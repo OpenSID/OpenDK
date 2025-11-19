@@ -90,7 +90,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
     });
 
     Route::group(['prefix' => 'statistik-penduduk', 'controller' => StatistikPendudukController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/statistik-penduduk
+        Route::get('/', 'index');             
+        Route::get('/listYear', 'listYear');                                    // GET /api/v1/statistik-penduduk
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 

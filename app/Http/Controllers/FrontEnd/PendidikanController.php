@@ -60,8 +60,6 @@ class PendidikanController extends FrontEndController
 
         $data['page_title'] = 'Pendidikan';
         $data['page_description'] = 'Data Pendidikan '.$this->sebutan_wilayah;
-        $data['year_list'] = years_list();        
-        $data['list_desa'] = $this->desaService->listDesa();
         $data['gabungan'] = $this->isDatabaseGabungan() ? true : false;
 
         return view('pages.pendidikan.show_pendidikan')->with($data);

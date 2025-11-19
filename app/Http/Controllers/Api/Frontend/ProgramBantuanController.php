@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,25 +24,30 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Http\Controllers\Api\Frontend;
 
-use App\Http\Controllers\FrontEndController;
+use App\Services\StatistikChartBantuanKeluargaService;
+use App\Services\StatistikChartBantuanPendudukService;
 
-class AnggaranDesaController extends FrontEndController
+class ProgramBantuanController extends BaseController
 {
-    /**
-     * Menampilkan Data Anggaran Dan realisasi Kecamatan
-     **/
-    public function showAnggaranDesa()
+
+    public function getChartBantuanPenduduk()
     {
-        $data['page_title'] = 'Anggaran Desa (APBDes)';
-        $data['page_description'] = 'Data Anggaran Desa (APBDes)';        
-        $data['hide_list_month'] = $this->isDatabaseGabungan() ? true : false;
-        return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
-    }    
+        $did = request('did');
+        $year = request('y');
+        return (new StatistikChartBantuanPendudukService)->chart($did, $year);
+    }
+
+    public function getChartBantuanKeluarga()
+    {
+        $did = request('did');
+        $year = request('y');
+        return (new StatistikChartBantuanKeluargaService)->chart($did, $year);
+    }
 }

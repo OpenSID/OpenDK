@@ -29,20 +29,25 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Http\Controllers\Api\Frontend;
 
-use App\Http\Controllers\FrontEndController;
-
-class AnggaranDesaController extends FrontEndController
+use App\Services\StatistikChartAnggaranDesaService;
+class AnggaranDesaController extends BaseController
 {
-    /**
-     * Menampilkan Data Anggaran Dan realisasi Kecamatan
-     **/
-    public function showAnggaranDesa()
+    public function getChartAnggaranDesa()
     {
-        $data['page_title'] = 'Anggaran Desa (APBDes)';
-        $data['page_description'] = 'Data Anggaran Desa (APBDes)';        
-        $data['hide_list_month'] = $this->isDatabaseGabungan() ? true : false;
-        return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
-    }    
+        $mid = request('mid');
+        $did = request('did');
+        $year = request('y');
+
+        $dataAnggaran = (new StatistikChartAnggaranDesaService())->chart($mid, $did, $year);
+        if($this->isDatabaseGabungan()){
+            $dataDetail = collect($dataAnggaran['data-detail'])->keyBy('id');            
+            unset($dataAnggaran['data-detail']);
+            $dataAnggaran['detail'] = view('pages.anggaran_desa.gabungan.detail_anggaran', compact('did', 'mid', 'year', 'dataDetail'))->render();
+        }else {
+            $dataAnggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
+        }        
+        return $dataAnggaran;
+    }
 }

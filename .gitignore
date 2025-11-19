@@ -36,4 +36,8 @@ public/error_log
 .env.e2e
 
 # Pest Browser Testing
-/tests/Browser/Screenshots
+/tests/Browser/screenshots
+/tests/Browser/console
+# /tests/e2e-backup
+playwright-report/
+test-results/

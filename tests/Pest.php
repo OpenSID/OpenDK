@@ -16,7 +16,11 @@ pest()->extend(Tests\TestCase::class)
     ->in('Feature');
 
 pest()->extend(Tests\TestCase::class)
-    ->in('Browser');
+    ->in('Browser')
+    ->beforeEach(function () {
+        // Set headless mode for faster execution
+        config(['app.url' => env('APP_URL', 'http://opendk.test')]);
+    });
 
 /*
 |--------------------------------------------------------------------------

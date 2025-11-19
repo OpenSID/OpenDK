@@ -6,7 +6,7 @@ use App\Models\Potensi;
 use League\Fractal\TransformerAbstract;
 
 class PotensiTransformer extends TransformerAbstract
-{    
+{
 
     /**
      * Transform object data
@@ -16,9 +16,8 @@ class PotensiTransformer extends TransformerAbstract
      */
     public function transform(Potensi $potensi): array
     {
-        $data = $potensi->toArray();            
-        $data['file_gambar_path'] = is_img($data['file_gambar']);
-        $data['slug'] = str_slug($data['nama_potensi']);
+        $data = $potensi->toArray();
+        $data['file_gambar_path'] = $data['file_gambar'] ? asset('storage/' . $data['file_gambar']) : null;
         return $data;
-    }    
+    }
 }

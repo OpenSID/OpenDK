@@ -2,28 +2,28 @@
 
 namespace App\Repositories;
 
-use App\Models\Potensi;
+use App\Models\Regulasi;
 use Spatie\QueryBuilder\AllowedFilter;
 
-class PotensiApiRepository extends BaseApiRepository
+class RegulasiApiRepository extends BaseApiRepository
 {
     /**
      * Constructor
      */
-    public function __construct(Potensi $model)
+    public function __construct(Regulasi $model)
     {
         parent::__construct($model);
         $this->allowedFilters = [
-            'nama_potensi',
+            'judul',
             'deskripsi',
-            'lokasi',
-            AllowedFilter::exact('kategori_id'),
+            'tipe_regulasi',
+            AllowedFilter::exact('kecamatan_id'),
             AllowedFilter::exact('tipe.id'),
         ];
         $this->allowedSorts = [
             'id',
-            'nama_potensi',
-            'kategori_id',
+            'judul',
+            'tipe_regulasi',
             'created_at',
             'updated_at'
         ];

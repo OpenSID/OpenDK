@@ -32,9 +32,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Frontend\ArtikelController;
 use App\Http\Controllers\Api\Frontend\DesaController;
+use App\Http\Controllers\Api\Frontend\FormDokumenController;
 use App\Http\Controllers\Api\Frontend\GaleriController;
 use App\Http\Controllers\Api\Frontend\KategoriController;
 use App\Http\Controllers\Api\Frontend\ProfilController;
+use App\Http\Controllers\Api\Frontend\RegulasiController;
 use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 use App\Http\Controllers\Api\Frontend\KomplainController;
 use App\Http\Controllers\Api\Frontend\WebsiteController;
@@ -130,6 +132,22 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'potensi', 'controller' => PotensiController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/potensi
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
+    });
+
+    /**
+     * Form Dokumen API Routes
+     */
+    Route::group(['prefix' => 'form-dokumen', 'controller' => FormDokumenController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/form-dokumen
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
+    });
+
+    /**
+     * Regulasi API Routes
+     */
+    Route::group(['prefix' => 'regulasi', 'controller' => RegulasiController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/regulasi
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 

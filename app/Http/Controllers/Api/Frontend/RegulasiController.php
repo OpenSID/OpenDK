@@ -31,8 +31,8 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
-use App\Repositories\PotensiApiRepository;
-use App\Transformers\PotensiTransformer;
+use App\Repositories\RegulasiApiRepository;
+use App\Transformers\RegulasiTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
@@ -41,8 +41,8 @@ use Spatie\Fractal\Fractal;
 /**
  * @OA\Info(
  *     version="1.0.0",
- *     title="OpenDK Potensi API",
- *     description="API untuk mengakses data potensi",
+ *     title="OpenDK Regulasi API",
+ *     description="API untuk mengakses data regulasi",
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -50,30 +50,30 @@ use Spatie\Fractal\Fractal;
  * )
  *
  * @OA\Tag(
- *     name="Potensi",
- *     description="API endpoints untuk mengelola potensi"
+ *     name="Regulasi",
+ *     description="API endpoints untuk mengelola regulasi"
  * )
  */
 
-class PotensiController extends BaseController
+class RegulasiController extends BaseController
 {
-    protected PotensiApiRepository $potensiApiRepository;
+    protected RegulasiApiRepository $regulasiApiRepository;
 
     public function __construct(
-        PotensiApiRepository $potensiApiRepository
+        RegulasiApiRepository $regulasiApiRepository
     ) {
-        $this->potensiApiRepository = $potensiApiRepository;
-        $this->prefix = config('theme-api.potensi.cache_prefix', 'potensi:api');
+        $this->regulasiApiRepository = $regulasiApiRepository;
+        $this->prefix = config('theme-api.regulasi.cache_prefix', 'regulasi:api');
     }
 
     /**
-     * Display a listing of potensi with advanced filtering and sorting.
+     * Display a listing of regulasi with advanced filtering and sorting.
      *
      * @OA\Get(
-     *     path="/api/frontend/v1/potensi",
-     *     summary="Get list of potensi",
-     *     description="Retrieve paginated list of potensi with filtering, sorting, and search capabilities using Spatie Query Builder",
-     *     tags={"Potensi"},
+     *     path="/api/frontend/v1/regulasi",
+     *     summary="Get list of regulasi",
+     *     description="Retrieve paginated list of regulasi with filtering, sorting, and search capabilities using Spatie Query Builder",
+     *     tags={"Regulasi"},
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
@@ -89,30 +89,30 @@ class PotensiController extends BaseController
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
      *     @OA\Parameter(
-     *         name="filter[nama_potensi]",
+     *         name="filter[judul]",
      *         in="query",
-     *         description="Filter potensi by name",
+     *         description="Filter regulasi by title",
      *         required=false,
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Parameter(
      *         name="filter[deskripsi]",
      *         in="query",
-     *         description="Filter potensi by description",
+     *         description="Filter regulasi by description",
      *         required=false,
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Parameter(
-     *         name="filter[lokasi]",
+     *         name="filter[tipe_regulasi]",
      *         in="query",
-     *         description="Filter potensi by location",
+     *         description="Filter regulasi by type",
      *         required=false,
      *         @OA\Schema(type="string")
      *     ),
      *     @OA\Parameter(
-     *         name="filter[kategori_id]",
+     *         name="filter[kecamatan_id]",
      *         in="query",
-     *         description="Filter potensi by category ID",
+     *         description="Filter regulasi by district ID",
      *         required=false,
      *         @OA\Schema(type="integer")
      *     ),
@@ -122,18 +122,17 @@ class PotensiController extends BaseController
      *         @OA\JsonContent(
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
-     *                 @OA\Property(property="type", type="string", example="potensi"),
+     *                 @OA\Property(property="type", type="string", example="regulasi"),
      *                 @OA\Property(property="id", type="string", example="1"),
      *                 @OA\Property(property="attributes", type="object", example={
      *                     "id": 1,
-     *                     "kategori_id": 1,
-     *                     "nama_potensi": "Nama Potensi",
-     *                     "deskripsi": "Deskripsi potensi",
-     *                     "lokasi": "Lokasi potensi",
-     *                     "long": "110.123456",
-     *                     "lat": "-7.123456",
-     *                     "file_gambar": "potensi.jpg",
-     *                     "file_gambar_path": "http://localhost:8000/storage/potensi.jpg",
+     *                     "kecamatan_id": 1,
+     *                     "tipe_regulasi": "Peraturan Desa",
+     *                     "judul": "Judul Regulasi",
+     *                     "deskripsi": "Deskripsi regulasi",
+     *                     "file_regulasi": "regulasi.pdf",
+     *                     "mime_type": "application/pdf",
+     *                     "file_regulasi_path": "http://localhost:8000/storage/regulasi.pdf",
      *                     "created_at": "2023-01-01T00:00:00.0000Z",
      *                     "updated_at": "2023-01-01T00:00:00.000Z"
      *                 })
@@ -148,10 +147,10 @@ class PotensiController extends BaseController
      *                 }
      *             }),
      *             @OA\Property(property="links", type="object", example={
-     *                 "first": "http://localhost:8000/api/frontend/v1/potensi?page[number]=1",
-     *                 "last": "http://localhost:8000/api/frontend/v1/potensi?page[number]=2",
+     *                 "first": "http://localhost:8000/api/frontend/v1/regulasi?page[number]=1",
+     *                 "last": "http://localhost:8000/api/frontend/v1/regulasi?page[number]=2",
      *                 "prev": null,
-     *                 "next": "http://localhost:8000/api/frontend/v1/potensi?page[number]=2"
+     *                 "next": "http://localhost:8000/api/frontend/v1/regulasi?page[number]=2"
      *             })
      *         )
      *     ),
@@ -180,7 +179,7 @@ class PotensiController extends BaseController
         $cacheKey = $this->getCacheKey('index', $params);
 
         return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            return $this->fractal($this->potensiApiRepository->data(), new PotensiTransformer, 'potensi');
+            return $this->fractal($this->regulasiApiRepository->data(), new RegulasiTransformer, 'regulasi');
         });
     }
 }

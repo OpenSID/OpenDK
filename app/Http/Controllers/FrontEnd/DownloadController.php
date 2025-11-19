@@ -37,9 +37,6 @@ use App\Models\Prosedur;
 use App\Models\Regulasi;
 use App\Models\FormDokumen;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 
 class DownloadController extends FrontEndController
 {

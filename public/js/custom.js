@@ -81,6 +81,14 @@ function terbilang(angka) {
     return hasil.trim();
 }
 
+// Helper function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            var options = { year: 'numeric', month: 'long', day: 'numeric' };
+            var date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', options);
+        }
 //drop down menu
 $(".drop-down").hover(function () {
 	$('.dropdown-menu').addClass('display-on');

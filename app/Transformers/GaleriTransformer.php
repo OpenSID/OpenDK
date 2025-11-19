@@ -6,16 +6,7 @@ use App\Models\Galeri;
 use League\Fractal\TransformerAbstract;
 
 class GaleriTransformer extends TransformerAbstract
-{
-    /**
-     * List of resources to automatically include
-     *
-     * @var array
-     */
-    protected array $defaultIncludes = [
-        'album'
-    ];
-
+{    
     /**
      * List of resources possible to include
      *
@@ -33,7 +24,9 @@ class GaleriTransformer extends TransformerAbstract
      */
     public function transform(Galeri $galeri): array
     {
-        return $galeri->toArray();
+        $data = $galeri->toArray();                
+        
+        return $data;
     }
 
     /**

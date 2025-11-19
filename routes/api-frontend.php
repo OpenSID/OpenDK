@@ -38,6 +38,7 @@ use App\Http\Controllers\Api\Frontend\ProfilController;
 use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
 use App\Http\Controllers\Api\Frontend\KomplainController;
 use App\Http\Controllers\Api\Frontend\WebsiteController;
+use App\Http\Controllers\Api\Frontend\AlbumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,7 +106,15 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      * Galeri API Routes
      */
     Route::group(['prefix' => 'galeri', 'controller' => GaleriController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/galeri        
+        Route::get('/', 'index');                                    // GET /api/v1/galeri
+        Route::delete('cache/{prefix?}','removeCachePrefix');
+    });
+
+    /**
+     * Album API Routes
+     */
+    Route::group(['prefix' => 'album', 'controller' => AlbumController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/album
         Route::delete('cache/{prefix?}','removeCachePrefix');
     });
 });

@@ -2,26 +2,22 @@
 
 namespace App\Repositories;
 
-use App\Models\Galeri;
+use App\Models\Album;
 use Spatie\QueryBuilder\AllowedFilter;
 
-class GaleriApiRepository extends BaseApiRepository
+class AlbumApiRepository extends BaseApiRepository
 {
     /**
      * Constructor
      */
-    public function __construct(Galeri $model)
+    public function __construct(Album $model)
     {
         parent::__construct($model);
         $this->allowedFilters = [
             'judul',
             'gambar',
-            'link',
             AllowedFilter::exact('status'),
-            AllowedFilter::exact('album_id'),
-            AllowedFilter::exact('album.slug'),
             AllowedFilter::exact('slug'),
-            AllowedFilter::exact('jenis'),
         ];
         $this->allowedSorts = [
             'id',
@@ -29,7 +25,7 @@ class GaleriApiRepository extends BaseApiRepository
             'created_at',
             'updated_at'
         ];
-        $this->allowedIncludes = ['album'];
+        $this->allowedIncludes = ['galeris'];
         $this->defaultSort = '-created_at';
     }
 

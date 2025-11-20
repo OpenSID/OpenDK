@@ -45,32 +45,10 @@ class DownloadController extends FrontEndController
         Counter::count('unduhan.prosedur');
 
         $page_title = 'Prosedur';
-        $page_description = 'Daftar SOP Kecamatan';
-        $prosedurs = Prosedur::all();
+        $page_description = 'Daftar SOP Kecamatan';        
 
-        return view('pages.unduhan.prosedur', compact(['page_title', 'page_description', 'prosedurs']));
-    }
-
-    public function getDataProsedur()
-    {
-        return DataTables::of(Prosedur::all())
-            ->addColumn('aksi', function ($row) {
-                $data['show_url'] = route('unduhan.prosedur.show', ['nama_prosedur' => str_slug($row->judul_prosedur)]);
-
-                return view('forms.aksi', $data);
-            })
-            ->editColumn('judul_prosedur', function ($row) {
-                return $row->judul_prosedur;
-            })->make();
-    }
-
-    public function showProsedur($nama_prosedur)
-    {
-        $prosedur = Prosedur::where('slug', $nama_prosedur)->first();
-        $page_title = 'Detail Prosedur :'.$prosedur->judul_prosedur;
-
-        return view('pages.unduhan.prosedur_show', compact('page_title', 'prosedur'));
-    }
+        return view('pages.unduhan.prosedur', compact(['page_title', 'page_description']));
+    }    
 
     public function downloadProsedur($file)
     {
@@ -85,18 +63,9 @@ class DownloadController extends FrontEndController
 
         // TODO: Gunakan datatables
         $page_title = 'Regulasi';
-        $page_description = 'Daftar regulasi Kecamatan';
-        $regulasi = Regulasi::orderBy('id', 'asc')->paginate(10);
+        $page_description = 'Daftar regulasi Kecamatan';        
 
-        return view('pages.unduhan.regulasi', compact('page_title', 'page_description', 'regulasi'));
-    }
-
-    public function showRegulasi($nama_regulasi)
-    {
-        $regulasi = Regulasi::where('judul', str_replace('-', ' ', $nama_regulasi))->first();
-        $page_title = 'Detail Regulasi :'.$regulasi->judul;
-
-        return view('pages.unduhan.regulasi_show', compact('page_title', 'regulasi'));
+        return view('pages.unduhan.regulasi', compact('page_title', 'page_description'));
     }
 
     public function downloadRegulasi($file)

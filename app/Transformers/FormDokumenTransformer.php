@@ -6,8 +6,7 @@ use App\Models\FormDokumen;
 use League\Fractal\TransformerAbstract;
 
 class FormDokumenTransformer extends TransformerAbstract
-{
-
+{    
     /**
      * Transform object data
      *
@@ -17,7 +16,7 @@ class FormDokumenTransformer extends TransformerAbstract
     public function transform(FormDokumen $formDokumen): array
     {
         $data = $formDokumen->toArray();
-        $data['file_dokumen_path'] = $data['file_dokumen'] ? asset('storage/' . $data['file_dokumen']) : null;
+        $data['file_dokumen_path'] = $data['file_dokumen'] ? asset($data['file_dokumen']) : null;
         return $data;
     }
 }

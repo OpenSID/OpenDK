@@ -19,6 +19,7 @@ class RegulasiApiRepository extends BaseApiRepository
             'tipe_regulasi',
             AllowedFilter::exact('kecamatan_id'),
             AllowedFilter::exact('tipe.id'),
+            AllowedFilter::exact('id'),
         ];
         $this->allowedSorts = [
             'id',

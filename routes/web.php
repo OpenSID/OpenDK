@@ -239,9 +239,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::permanentRedirect('/', '/');
-                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');
-                    Route::get('getdata', 'DownloadController@getDataProsedur')->name('unduhan.prosedur.getdata');
-                    Route::get('{nama_prosedur}', 'DownloadController@showProsedur')->name('unduhan.prosedur.show');
+                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');                                        
                     Route::get('{file}/download', 'DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
                 });
 

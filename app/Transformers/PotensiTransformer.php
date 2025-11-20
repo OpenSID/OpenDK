@@ -17,7 +17,7 @@ class PotensiTransformer extends TransformerAbstract
     public function transform(Potensi $potensi): array
     {
         $data = $potensi->toArray();
-        $data['file_gambar_path'] = $data['file_gambar'] ? asset('storage/' . $data['file_gambar']) : null;
+        $data['file_gambar_path'] = is_img($potensi->file_gambar);
         return $data;
     }
 }

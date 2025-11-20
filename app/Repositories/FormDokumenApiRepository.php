@@ -21,6 +21,11 @@ class FormDokumenApiRepository extends BaseApiRepository
             AllowedFilter::exact('is_published'),
             AllowedFilter::exact('published_at'),
             AllowedFilter::exact('expired_at'),
+            AllowedFilter::callback('aktif', function ($q, $value) {
+                if($value){
+                    $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
+                }                
+            })
         ];
         $this->allowedSorts = [
             'id',
@@ -37,6 +42,6 @@ class FormDokumenApiRepository extends BaseApiRepository
 
     public function data()
     {
-        return $this->getFilteredApi()->jsonPaginate();
+        return $this->getFilteredApi()->with('jenisDokumen')->jsonPaginate();
     }
 }

@@ -18,6 +18,7 @@ class PotensiApiRepository extends BaseApiRepository
             'deskripsi',
             'lokasi',
             AllowedFilter::exact('kategori_id'),
+            AllowedFilter::exact('id'),
             AllowedFilter::exact('tipe.id'),
         ];
         $this->allowedSorts = [

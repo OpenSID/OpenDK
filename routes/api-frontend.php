@@ -48,6 +48,7 @@ use App\Http\Controllers\Api\Frontend\ProgramBantuanController;
 use App\Http\Controllers\Api\Frontend\AnggaranRealisasiController;
 use App\Http\Controllers\Api\Frontend\AnggaranDesaController;
 use App\Http\Controllers\Api\Frontend\FaqController;
+use App\Http\Controllers\Api\Frontend\KependudukanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,7 +153,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    Route::group(['prefix' => 'statistik'], function () {
+    Route::group(['prefix' => 'statistik'], function () {        
         Route::group(['controller' => PendidikanController::class], function () {
             Route::get('chart-tingkat-pendidikan', 'getChartTingkatPendidikan')->name('api.statistik.pendidikan.chart-tingkat-pendidikan');
             Route::get('chart-putus-sekolah', 'getChartPutusSekolah')->name('api.statistik.pendidikan.chart-putus-sekolah');
@@ -169,8 +170,8 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
             Route::get('chart-penduduk', 'getChartBantuanPenduduk')->name('api.statistik.program-bantuan.chart-penduduk');
             Route::get('chart-keluarga', 'getChartBantuanKeluarga')->name('api.statistik.program-bantuan.chart-keluarga');
         });
-        Route::get('chart-anggaran-realisasi', [AnggaranRealisasiController::class,'getChartAnggaranRealisasi'])->name('api.statistik.chart-anggaran-realisasi');
-        Route::get('chart-anggaran-desa', [AnggaranDesaController::class,'getChartAnggaranDesa'])->name('api.statistik.chart-anggaran-desa');        
+        Route::get('chart-anggaran-realisasi', [AnggaranRealisasiController::class, 'getChartAnggaranRealisasi'])->name('api.statistik.chart-anggaran-realisasi');
+        Route::get('chart-anggaran-desa', [AnggaranDesaController::class, 'getChartAnggaranDesa'])->name('api.statistik.chart-anggaran-desa');
     });
-    Route::get('faq', action: [FaqController::class,'index']);
+    Route::get('faq', action: [FaqController::class, 'index']);
 });

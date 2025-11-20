@@ -47,6 +47,7 @@ use App\Http\Controllers\Api\Frontend\PotensiController;
 use App\Http\Controllers\Api\Frontend\ProgramBantuanController;
 use App\Http\Controllers\Api\Frontend\AnggaranRealisasiController;
 use App\Http\Controllers\Api\Frontend\AnggaranDesaController;
+use App\Http\Controllers\Api\Frontend\FaqController;
 
 /*
 |--------------------------------------------------------------------------
@@ -169,6 +170,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
             Route::get('chart-keluarga', 'getChartBantuanKeluarga')->name('api.statistik.program-bantuan.chart-keluarga');
         });
         Route::get('chart-anggaran-realisasi', [AnggaranRealisasiController::class,'getChartAnggaranRealisasi'])->name('api.statistik.chart-anggaran-realisasi');
-        Route::get('chart-anggaran-desa', [AnggaranDesaController::class,'getChartAnggaranDesa'])->name('api.statistik.chart-anggaran-desa');
+        Route::get('chart-anggaran-desa', [AnggaranDesaController::class,'getChartAnggaranDesa'])->name('api.statistik.chart-anggaran-desa');        
     });
+    Route::get('faq', action: [FaqController::class,'index']);
 });

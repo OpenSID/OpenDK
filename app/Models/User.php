@@ -43,6 +43,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MichaelDzjap\TwoFactorAuth\TwoFactorAuthenticable;
+use App\Traits\TenantScoped;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -52,6 +53,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
     use HandlesResourceDeletion;
     use TwoFactorAuthenticable;
+    use TenantScoped;
 
     /**
      * Default password.

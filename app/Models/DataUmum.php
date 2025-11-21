@@ -32,9 +32,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\TenantScoped;
 
 class DataUmum extends Model
 {
+    use TenantScoped;
     // Attributes
     protected $table = 'das_data_umum';
 

@@ -33,9 +33,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\TenantScoped;
 
 class Profil extends Model
 {
+    use TenantScoped;
     // ID Kecamatan untuk default profil
 
     protected $table = 'das_profil';

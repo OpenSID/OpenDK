@@ -37,13 +37,38 @@ use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\TenantScoped;
 
 class Pengurus extends Model
 {
     use HasFactory;
     use HandlesResourceDeletion;
+    use TenantScoped;
 
     protected $table = 'das_pengurus';
+
+    protected $fillable = [
+        'nama',
+        'gelar_depan',
+        'gelar_belakang',
+        'nip',
+        'nik',
+        'status',
+        'foto',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'sex',
+        'pendidikan_id',
+        'agama_id',
+        'no_sk',
+        'tanggal_sk',
+        'masa_jabatan',
+        'pangkat',
+        'no_henti',
+        'tanggal_henti',
+        'jabatan_id',
+        'kecamatan_id',  // Added for multi-tenant support
+    ];
 
     protected $guarded = [
         'id',

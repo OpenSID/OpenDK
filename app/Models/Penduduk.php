@@ -33,10 +33,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\TenantScoped;
 
 class Penduduk extends Model
 {
-    use HasFactory;
+    use HasFactory, TenantScoped;
 
     public $incrementing = false;
 

@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
 
-class TipeRegulasi extends Model
+class TipeRegulasi extends BaseModel
 {
     use Sluggable;
 

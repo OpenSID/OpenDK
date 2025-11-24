@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class CounterVisitor extends Model
+class CounterVisitor extends BaseModel
 {
     protected $table = 'das_counter_visitor';
 

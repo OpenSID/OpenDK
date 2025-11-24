@@ -33,9 +33,8 @@ namespace App\Models;
 
 use App\Enums\StatusSurat;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Surat extends Model
+class Surat extends BaseModel
 {
     use HasFactory;
     

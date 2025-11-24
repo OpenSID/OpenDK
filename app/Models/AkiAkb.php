@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class AkiAkb extends Model
+class AkiAkb extends BaseModel
 {
     use HasFactory;
     protected $table = 'das_akib';

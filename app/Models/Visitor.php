@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Support\Carbon;
 use App\Enums\VisitorFilterEnum;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Visitor extends Model
+class Visitor extends BaseModel
 {
     use HasFactory;
 

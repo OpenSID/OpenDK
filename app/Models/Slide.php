@@ -33,9 +33,8 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 
-class Slide extends Model
+class Slide extends BaseModel
 {
     use HandlesResourceDeletion;
 

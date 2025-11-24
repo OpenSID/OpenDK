@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 
-class Regulasi extends Model
+class Regulasi extends BaseModel
 {
     use HandlesResourceDeletion;
 

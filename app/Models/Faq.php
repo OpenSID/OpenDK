@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Faq extends Model
+class Faq extends BaseModel
 {
     /**
      * The attributes that are mass assignable.

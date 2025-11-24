@@ -32,11 +32,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use App\Traits\TenantScoped;
 
-class DataDesa extends Model
+class DataDesa extends BaseModel
 {
     use HasFactory, TenantScoped;
     protected $table = 'das_data_desa';

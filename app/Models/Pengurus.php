@@ -34,16 +34,14 @@ namespace App\Models;
 use App\Enums\Status;
 use App\Enums\JenisJabatan;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Traits\TenantScoped;
 
-class Pengurus extends Model
+class Pengurus extends BaseModel
 {
     use HasFactory;
     use HandlesResourceDeletion;
-    use TenantScoped;
+    
 
     protected $table = 'das_pengurus';
 
@@ -66,8 +64,7 @@ class Pengurus extends Model
         'pangkat',
         'no_henti',
         'tanggal_henti',
-        'jabatan_id',
-        'kecamatan_id',  // Added for multi-tenant support
+        'jabatan_id'        
     ];
 
     protected $guarded = [

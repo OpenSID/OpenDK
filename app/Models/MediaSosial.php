@@ -33,9 +33,8 @@ namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class MediaSosial extends Model
+class MediaSosial extends BaseModel
 {
     use HandlesResourceDeletion, HasFactory;
 

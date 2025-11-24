@@ -31,10 +31,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 
-class Themes extends Model
+class Themes extends BaseModel
 {
     protected $table = 'das_themes';
 

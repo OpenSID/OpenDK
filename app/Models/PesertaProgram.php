@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class PesertaProgram extends Model
+class PesertaProgram extends BaseModel
 {
     protected $table = 'das_peserta_program';
 

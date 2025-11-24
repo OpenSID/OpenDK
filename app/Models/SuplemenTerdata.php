@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class SuplemenTerdata extends Model
+class SuplemenTerdata extends BaseModel
 {
     use HasFactory;
 

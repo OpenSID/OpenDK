@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
 
-class JenisDokumen extends Model
+class JenisDokumen extends BaseModel
 {
     use HasFactory;
 

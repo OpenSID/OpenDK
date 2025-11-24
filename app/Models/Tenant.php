@@ -20,9 +20,10 @@ class Tenant extends Model
      */
     protected $fillable = [
         'kode_kecamatan',
-        'nama_kecamatan',
-        'offset_start',
-        'offset_end'        
+        'name',
+        'id_start_range',
+        'id_end_range',
+        'description'
     ];
 
     /**
@@ -31,7 +32,7 @@ class Tenant extends Model
      * @var array
      */
     protected $casts = [
-        'offset_start' => 'integer',
-        'offset_end' => 'integer'        
-    ];    
+        'id_start_range' => 'integer',
+        'id_end_range' => 'integer'
+    ];
 }

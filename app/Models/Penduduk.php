@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Penduduk extends BaseModel
 {
-    use HasFactory, TenantScoped;
+    use HasFactory;
 
     public $incrementing = false;
 

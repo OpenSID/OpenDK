@@ -36,7 +36,7 @@ use Illuminate\Support\Str;
 
 class DataDesa extends BaseModel
 {
-    use HasFactory, TenantScoped;
+    use HasFactory;
     protected $table = 'das_data_desa';
 
     protected $fillable = [

@@ -66,15 +66,12 @@ return new class extends Migration
         'das_tipe_regulasi',
         'das_toilet_sanitasi',
         'das_wil_clusterdesa',
-        'documents',
-        'failed_jobs',
-        'galeris',
-        'jobs',
+        'documents',        
+        'galeris',        
         'kategoris',
         'log_imports',
         'log_penduduk',
-        'media_terkaits',
-        'migrations',
+        'media_terkaits',        
         'model_has_permissions',
         'model_has_roles',
         'nav_menus',
@@ -121,10 +118,10 @@ return new class extends Migration
         $tables = $this->tables;
         $defaultTenantId = \Illuminate\Support\Facades\DB::table('tenants')->min('id');
         foreach ($tables as $table) {
-            if (Schema::hasTable($table) && !Schema::hasColumn($table, 'tenant_id')) {
+            if (!Schema::hasColumn($table, 'tenant_id')) {
                 Schema::table($table, function (Blueprint $blueprint) use ($table) {
                     $blueprint->unsignedBigInteger('tenant_id')->nullable();
-                    $blueprint->foreignId('tenant_id')->on('tenants')->references('id')->onDelete('cascade')->onUpdate('cascade');
+                    $blueprint->foreign('tenant_id')->on('tenants')->references('id')->onDelete('cascade')->onUpdate('cascade');
                 });
 
                 // Update existing records to set tenant_id to default tenant
@@ -151,9 +148,6 @@ return new class extends Migration
                     $blueprint->dropColumn('tenant_id');
                 });
             }
-        }
-
-        // Drop the tenants table
-        Schema::dropIfExists('tenants');
+        }        
     }
 };

@@ -9,10 +9,8 @@
                             <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa {{ config('setting.sebutan_desa') }}</option>
-                                    @foreach ($list_desa as $desa)
-                                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
-                                    @endforeach
+                                    <option value="Semua">Semua {{ config('setting.sebutan_desa') }}</option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -24,10 +22,7 @@
 
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
-                                    <option value="Semua">Semua</option>
-                                    @foreach ($year_list as $year)
-                                        <option value="{{ $year }}">{{ $year }}</option>
-                                    @endforeach
+                                    <option value="Semua">Semua</option>                                    
                                 </select>
                             </div>
                         </div>
@@ -104,39 +99,32 @@
 @push('scripts')
     <script>
         $(function() {
-            // Select 2 Kecamatan
-            $('#list_desa').select2();
+            generateDropdownYear('#list_year')
+            $(document).on('websiteDataLoaded', function(event, websiteData) {
+                if (websiteData.desa) {
+                            var desaSelect = $('#list_desa');                                                                        
+                            websiteData.desa.forEach(function(item) {
+                                desaSelect.append(`<option value='${item.desa_id}'>${item.nama}</option>`);
+                            });
+                            
+                        desaSelect.select2();
+                }
+            })
+            
             $('#list_year').select2();
             // Change Dashboard when Lsit Desa changed
-            $('#list_desa').on('select2:select', function(e) {
-                var did = e.params.data;
+            $('#list_desa,#list_year').on('change', function(e) {
+                var did = $('#list_desa').find(":selected").val();
                 var year = $('#list_year').find(":selected").text();
 
                 change_das_kesehatan(did.id, year);
-            });
-
-            // Change Dashboard when List Year changed
-            $('#list_year').on('select2:select', function(e) {
-                var did = $('#list_desa').find(":selected").val();
-                var year = this.value;
-                change_das_kesehatan(did, year);
-            });
-
-
-            /*
-             * Initial Dashboard
-             */
-            var did = $('#list_desa').find(":selected").val();
-            var year = $('#list_year').find(":selected").text();
-
-            change_das_kesehatan(did, year);
-            /*
-             * End Initial Dashboard
-             */
+            });            
+            $('#list_year').trigger('change');
+            
         });
 
         function change_das_kesehatan(did, year) {
-            $.ajax('{!! route('statistik.kesehatan.chart-akiakb') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-akiakb') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -171,7 +159,7 @@
                 });
             });
 
-            $.ajax('{!! route('statistik.kesehatan.chart-imunisasi') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-imunisasi') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -206,7 +194,7 @@
                 });
             });
 
-            $.ajax('{!! route('statistik.kesehatan.chart-penyakit') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-penyakit') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -221,7 +209,7 @@
                 $('#tabel_penyakit').html(data['tabel']);
             });
 
-            $.ajax('{!! route('statistik.kesehatan.chart-sanitasi') !!}', {
+            $.ajax('{!! route('api.statistik.kesehatan.chart-sanitasi') !!}', {
                 data: {
                     did: did,
                     y: year

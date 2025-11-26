@@ -27,9 +27,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
                                     <option value="Semua">Semua</option>
-                                    @foreach ($year_list as $year)
-                                        <option value="{{ $year }}">{{ $year }}</option>
-                                    @endforeach
+                                    
                                 </select>
                             </div>
                         </div>
@@ -201,42 +199,23 @@
 @push('scripts')
     <script>
         $(function() {
-
+            generateDropdownYear('#list_year')
             // Select 2 Kecamatan
             $('#list_months').select2();
             $('#list_year').select2();
 
-            var mid = $('#list_months').find(":selected").val();
-            var year = $('#list_year').find(":selected").val();
-
-            /*
-             Initial Chart Dashboard Pendidikan
-             */
-            change_das_anggaran(mid, year);
-            /*
-             End Initial
-             */
-
-
             // Change div das_kependudukan when Kecamatan changed
-            $('#list_months').on('select2:select', function(e) {
+            $('#list_months,#list_year').on('change', function(e) {
                 var mid = $('#list_months').find(":selected").val();
                 var year = $('#list_year').find(":selected").val();
                 change_das_anggaran(mid, year);
-
             });
-
-            $('#list_year').on('select2:select', function(e) {
-                var mid = $('#list_months').find(":selected").val();
-                var year = $('#list_year').find(":selected").val();
-
-                change_das_anggaran(mid, year);
-            });
+            $('#list_year').trigger('change');
         });
 
         function change_das_anggaran(mid, year) {
 
-            $.ajax('{!! route('statistik.chart-anggaran-realisasi') !!}', {
+            $.ajax('{!! route('api.statistik.chart-anggaran-realisasi') !!}', {
                 data: {
                     mid: mid,
                     y: year

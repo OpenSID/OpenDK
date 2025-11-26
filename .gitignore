@@ -34,3 +34,4 @@ public/error_log
 /test-results/
 /playwright-report/
 .env.e2e
+.scribe

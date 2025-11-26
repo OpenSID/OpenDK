@@ -70,7 +70,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+// Route untuk dokumentasi API
+Route::get('/docs', function () {
+    return view('swagger');
+})->name('swagger');
 // Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
 Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Installer'], function () {
     Route::get('/', 'InstallerController@welcome')->name('installer.welcome');

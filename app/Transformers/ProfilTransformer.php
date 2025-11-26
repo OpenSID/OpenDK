@@ -58,6 +58,9 @@ class ProfilTransformer extends TransformerAbstract
      */
     public function transform(Profil $profil): array
     {
+        $profil->file_struktur_organisasi_path = is_img($profil->file_struktur_organisasi);
+        $profil->foto_kepala_wilayah_path = is_img($profil->foto_kepala_wilayah, 'img/no-profile.png');        
+        $profil->file_logo_path = is_img($profil->file_logo);
         return $profil->toArray();
     }
 

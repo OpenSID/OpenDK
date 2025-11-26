@@ -10,8 +10,26 @@
                 <center>
                     <img class="img-circle" style="display:block;margin:auto" src="{{ is_logo($profil->file_logo) }}">
                 </center>
-                <p> {!! $profil->dataumum->sejarah !!}</p>
+                <p id="sejarah-container"></p>
             </div>
         </div>
     </div>
 @endsection
+@push('scripts')
+<script>
+    $(function(){
+        $(document).on('websiteDataLoaded', function(event, websiteData) {
+            var profile = null;  
+            let sejarah = null;          
+            if (websiteData.profile) {
+                profile = websiteData.profile;                    
+                sejarah = profile.data_umum.sejarah;
+            }      
+            
+            if (!sejarah) return;
+
+            $('#sejarah-container').html(sejarah);
+        });
+    })
+</script>
+@endpush

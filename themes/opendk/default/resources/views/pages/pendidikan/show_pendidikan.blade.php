@@ -10,10 +10,7 @@
                             <label for="list_desa" class="col-sm-4 control-label">{{ config('setting.sebutan_desa') }}</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_desa">
-                                    <option value="Semua">Semua Desa {{ config('setting.sebutan_desa') }}</option>
-                                    @foreach ($list_desa as $desa)
-                                        <option value="{{ $desa->desa_id }}">{{ $desa->nama }}</option>
-                                    @endforeach
+                                    <option value="Semua">Semua {{ config('setting.sebutan_desa') }}</option>                                    
                                 </select>
                             </div>
                         </div>
@@ -23,9 +20,7 @@
                             <label for="list_year" class="col-sm-4 control-label">Tahun</label>
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
-                                    @foreach ($year_list as $year)
-                                        <option value="{{ $year }}">{{ $year }}</option>
-                                    @endforeach
+                                    
                                 </select>
                             </div>
                         </div>
@@ -81,41 +76,43 @@
 @push('scripts')
     <script>
         $(function() {
+            generateDropdownYear('#list_year')
+            $(document).on('websiteDataLoaded', function(event, websiteData) {
+                if (websiteData.desa) {
+                            var desaSelect = $('#list_desa');                                                                        
+                            websiteData.desa.forEach(function(item) {
+                                desaSelect.append(`<option value='${item.desa_id}'>${item.nama}</option>`);
+                            });
+                            
+                        desaSelect.select2();
+                }
+                    
+                $('#list_year').select2();            
+                /*
+                * End Initial
+                */
 
-            // Select 2 Kecamatan
-            $('#list_desa').select2();
-            $('#list_year').select2();
+                // Change div das_kependudukan when Kecamatan changed
 
-            var did = $('#list_desa').find(":selected").val();
-            var year = $('#list_year').find(":selected").val();
+                $('#list_desa').on('change', function(e) {
+                    var did = $('#list_desa').find(":selected").val();
+                    var year = $('#list_year').find(":selected").val();
+                    change_das_pendidikan(did, year);
+                });
 
-            /*
-             * Initial Chart Dashboard Pendidikan
-             */
-            change_das_pendidikan(did, year);
-            /*
-             * End Initial
-             */
+                $('#list_year').on('change', function(e) {
+                    var did = $('#list_desa').find(":selected").val();
+                    var year = $('#list_year').find(":selected").val();
 
-            // Change div das_kependudukan when Kecamatan changed
-
-            $('#list_desa').on('select2:select', function(e) {
-                var did = $('#list_desa').find(":selected").val();
-                var year = $('#list_year').find(":selected").val();
-                change_das_pendidikan(did, year);
-            });
-
-            $('#list_year').on('select2:select', function(e) {
-                var did = $('#list_desa').find(":selected").val();
-                var year = $('#list_year').find(":selected").val();
-
-                change_das_pendidikan(did, year);
-            });
+                    change_das_pendidikan(did, year);
+                });
+                $('#list_year').trigger('change')
+            }); 
         });
 
         function change_das_pendidikan(did, year) {
 
-            $.ajax('{!! route('statistik.pendidikan.chart-tingkat-pendidikan') !!}', {
+            $.ajax('{!! route('api.statistik.pendidikan.chart-tingkat-pendidikan') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -124,7 +121,7 @@
                 create_chart_tingkat_pendidikan(data['grafik']);
             });
 
-            $.ajax('{!! route('statistik.pendidikan.chart-putus-sekolah') !!}', {
+            $.ajax('{!! route('api.statistik.pendidikan.chart-putus-sekolah') !!}', {
                 data: {
                     did: did,
                     y: year
@@ -133,7 +130,7 @@
                 create_chart_putus_sekolah(data['grafik']);
             });
 
-            $.ajax('{!! route('statistik.pendidikan.chart-fasilitas-paud') !!}', {
+            $.ajax('{!! route('api.statistik.pendidikan.chart-fasilitas-paud') !!}', {
                 data: {
                     did: did,
                     y: year

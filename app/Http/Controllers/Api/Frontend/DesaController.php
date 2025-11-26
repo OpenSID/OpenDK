@@ -70,7 +70,7 @@ class DesaController extends BaseController
      * Display a listing of desa with advanced filtering and sorting.
      *
      * @OA\Get(
-     *     path="/api/v1/desa",
+     *     path="/api/v1/frontend/desa",
      *     summary="Get list of desa",
      *     description="Retrieve paginated list of desa with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Desa"},

@@ -23,7 +23,7 @@ return new class extends Migration
             ->first();        
         // Provide default values if pengaturan_aplikasi is empty
         if (!$kecamatan) {
-            $kecamatan = (object)['value' => 'Desa Default'];
+            $kecamatan = (object)['nama_kecamatan' => 'Desa Default', 'kecamatan_id' => '00.00.00'];
         }        
         if ($kecamatan) {
             DB::table('tenants')->insert([

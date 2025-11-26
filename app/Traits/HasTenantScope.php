@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 trait HasTenantScope
 {
@@ -14,15 +15,20 @@ trait HasTenantScope
      */
     public static function bootHasTenantScope()
     {
-        static::addGlobalScope('tenant_scope', function (Builder $builder) {            
+        static::addGlobalScope('tenant_scope', function (Builder $builder) {
+            // Check if application is installed first
+            if (!function_exists('sudahInstal') || !sudahInstal()) {
+                return;
+            }                    
+            
             $model = $builder->getModel();
             $table = $model->getTable();
-            if (!app()->bound('current_tenant')) {                              
+            if (!app()->bound('current_tenant')) {
                 $tenantCode = env('KODE_KECAMATAN');
-                $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()                                            
+                $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
             }else{
                 $tenant = app('current_tenant');
-            }            
+            }
             
             if (!$tenant) {
                 Log::debug('HasTenantScope: No tenant found, skipping scope');

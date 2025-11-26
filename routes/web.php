@@ -49,13 +49,8 @@ use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\BackEnd\EventController;
 use App\Http\Controllers\Setting\PengaturanDatabaseController;
-use App\Http\Controllers\UploadTemporaryImage;
-use App\Http\Controllers\UploadTemporaryImageController;
-use Maatwebsite\Excel\Row;
 use App\Models\DataDesa;
-use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
@@ -87,7 +82,7 @@ Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Instal
 });
 
 // Redirect if apps not installed
-Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
+Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], function () {
     Auth::routes([
         'register' => false,
     ]);

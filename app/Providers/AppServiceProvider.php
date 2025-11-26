@@ -42,6 +42,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Doctrine\DBAL\Types\Type;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -74,8 +76,13 @@ class AppServiceProvider extends ServiceProvider
 
         if (!Type::hasType('tinyinteger')) {
             Type::addType('tinyinteger', 'Doctrine\DBAL\Types\SmallIntType');
-            $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-            $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
+            try {
+                $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
+                $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+            
         }
 
         resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {

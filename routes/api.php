@@ -55,7 +55,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => ['installed', 'tenant', 'xss_sanitization']], function () {
     /**
      * Authentication api
      */

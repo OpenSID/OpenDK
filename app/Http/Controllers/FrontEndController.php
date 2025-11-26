@@ -48,19 +48,23 @@ class FrontEndController extends Controller
     public function __construct()
     {
         parent::__construct();
-        theme_active();
+        
+        // Check if application is installed before executing database queries
+        if (function_exists('sudahInstal') && sudahInstal()) {
+            theme_active();
 
-        $this->settings = SettingAplikasi::pluck('value', 'key');
+            $this->settings = SettingAplikasi::pluck('value', 'key');
 
-        View::share([
-            'events' => Event::getOpenEvents(),
-            'medsos' => MediaSosial::where('status', 1)->get(),
-            'media_terkait' => MediaTerkait::where('status', 1)->get(),
-            'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
-            'navmenus' => NavMenu::with('children.children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
-            'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
-            'slides' => Slide::orderBy('created_at', 'DESC')->get(),
-        ]);
+            View::share([
+                'events' => Event::getOpenEvents(),
+                'medsos' => MediaSosial::where('status', 1)->get(),
+                'media_terkait' => MediaTerkait::where('status', 1)->get(),
+                'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
+                'navmenus' => NavMenu::with('children.children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
+                'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
+                'slides' => Slide::orderBy('created_at', 'DESC')->get(),
+            ]);
+        }
     }
 
     protected function isDatabaseGabungan()

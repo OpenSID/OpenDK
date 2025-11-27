@@ -46,7 +46,7 @@ class DemoDasDataDesaTableSeeder extends Seeder
     public function run()
     {
         $profil = Profil::first();
-
+        DB::table('das_data_desa')->truncate();
         $dataDesa = [
             [
                 'profil_id' => $profil->id,

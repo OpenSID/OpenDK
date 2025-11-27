@@ -19,27 +19,27 @@ trait HasTenantScope
             // Check if application is installed first
             if (!function_exists('sudahInstal') || !sudahInstal()) {
                 return;
-            }                    
-            
+            }
+
             $model = $builder->getModel();
             $table = $model->getTable();
             if (!app()->bound('current_tenant')) {
                 $tenantCode = env('KODE_KECAMATAN');
                 $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
-            }else{
+            } else {
                 $tenant = app('current_tenant');
             }
-            
+
             if (!$tenant) {
                 Log::debug('HasTenantScope: No tenant found, skipping scope');
                 return;
             }
-            
-            $tenantId = $tenant->id;            
+
+            $tenantId = $tenant->id;
 
             // bisa dipastikan setiap tabel ada kolom tenant_id
             try {
-                $builder->where($table . '.tenant_id', $tenantId);                
+                $builder->where($table . '.tenant_id', $tenantId);
             } catch (\Exception $e) {
                 // In case schema is not available (e.g., during certain artisan commands), skip scope
                 Log::error("HasTenantScope: Error applying tenant scope", [
@@ -58,16 +58,21 @@ trait HasTenantScope
             if (!app()->bound('current_tenant')) {
                 $tenantCode = env('KODE_KECAMATAN');
                 $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
-            }else{
+            } else {
                 $tenant = app('current_tenant');
             }
-            
+
             $model->tenant_id = $tenant->id;
             $model->id = self::getNextIdForTenant($tenant, $model);
-        });        
+        });
 
         static::deleting(function ($model) {
-            $tenant = app('current_tenant');
+            if (!app()->bound('current_tenant')) {
+                $tenantCode = env('KODE_KECAMATAN');
+                $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
+            } else {
+                $tenant = app('current_tenant');
+            }
             if ($tenant) {
                 // Pastikan model yang akan dihapus memiliki tenant_id yang sesuai
                 if ($model->tenant_id !== $tenant->id) {
@@ -82,18 +87,23 @@ trait HasTenantScope
      */
     public function delete()
     {
-        $tenant = app('current_tenant');
-        
+        if (!app()->bound('current_tenant')) {
+            $tenantCode = env('KODE_KECAMATAN');
+            $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
+        } else {
+            $tenant = app('current_tenant');
+        }
+
         if ($tenant) {
             // Hanya lanjutkan penghapusan jika tenant_id cocok
             if ($this->tenant_id !== $tenant->id) {
                 throw new \Exception('Unauthorized: Cannot delete record from different tenant');
             }
-            
+
             // Hapus record hanya jika tenant_id cocok
             return parent::delete();
         }
-        
+
         // Jika tidak ada tenant, lanjutkan dengan delete biasa
         return parent::delete();
     }
@@ -102,7 +112,7 @@ trait HasTenantScope
     {
         $modelClass = get_class($model);
         $table = $model->getTable();
-        $tenantId = $tenant->id;       
+        $tenantId = $tenant->id;
 
         // We need to query without the global tenant scope to get the max ID for the specific tenant.
         $lastId = $modelClass::withoutGlobalScope('tenant_scope')
@@ -110,9 +120,9 @@ trait HasTenantScope
             ->max('id');
 
         if (!is_null($lastId) && $lastId >= $tenant->id_end_range) {
-            $errorMessage = 'ID telah mencapai batas akhir range yang diizinkan untuk tenant ini yaitu . ' .$tenant->id_end_range.
+            $errorMessage = 'ID telah mencapai batas akhir range yang diizinkan untuk tenant ini yaitu . ' . $tenant->id_end_range .
                 ' Tabel: ' . $table . ', Tenant ID: ' . $tenantId;
-                
+
             Log::error($errorMessage, [
                 'model' => $modelClass,
                 'table' => $table,
@@ -121,11 +131,11 @@ trait HasTenantScope
                 'id_start_range' => $tenant->id_start_range,
                 'id_end_range' => $tenant->id_end_range
             ]);
-            
+
             throw new \App\Exceptions\TenantIdRangeExceededException($errorMessage);
         }
 
-        $nextId = is_null($lastId) ? $tenant->id_start_range : $lastId + 1;    
+        $nextId = is_null($lastId) ? $tenant->id_start_range : $lastId + 1;
 
         return $nextId;
     }

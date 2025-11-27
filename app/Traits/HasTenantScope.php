@@ -16,6 +16,11 @@ trait HasTenantScope
     public static function bootHasTenantScope()
     {
         static::addGlobalScope('tenant_scope', function (Builder $builder) {
+            // Check if running in console mode and tenants table doesn't exist
+            if (app()->runningInConsole() && !Schema::hasTable('tenants')) {
+                return; // Skip tenant scope when in console and tenants table doesn't exist
+            }
+
             // Check if application is installed first
             if (!function_exists('sudahInstal') || !sudahInstal()) {
                 return;
@@ -55,6 +60,11 @@ trait HasTenantScope
 
         // When creating, automatically set tenant_id if the column exists
         static::creating(function ($model) {
+            // Check if running in console mode and tenants table doesn't exist
+            if (app()->runningInConsole() && !Schema::hasTable('tenants')) {
+                return; // Skip tenant scope when in console and tenants table doesn't exist
+            }
+            
             if (!app()->bound('current_tenant')) {
                 $tenantCode = env('KODE_KECAMATAN');
                 $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()

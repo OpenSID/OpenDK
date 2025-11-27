@@ -31,38 +31,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Event;
-use App\Models\Slide;
-use App\Models\Navigation;
-use App\Models\MediaSosial;
-use App\Models\MediaTerkait;
-use App\Models\NavMenu;
 use App\Models\SettingAplikasi;
-use App\Models\SinergiProgram;
 use Illuminate\Support\Facades\View;
 
 class FrontEndController extends Controller
 {
     protected $settings;
-
+    protected $urlApi = 'api/frontend/v1';
     public function __construct()
     {
         parent::__construct();
-        
+
         // Check if application is installed before executing database queries
-        if (function_exists('sudahInstal') && sudahInstal()) {            
-            theme_active();            
+        if (function_exists('sudahInstal') && sudahInstal()) {
+            theme_active();
 
-            $this->settings = SettingAplikasi::pluck('value', 'key');            
-
-            View::share([                
-                'events' => Event::getOpenEvents(),
-                'medsos' => MediaSosial::where('status', 1)->get(),
-                'media_terkait' => MediaTerkait::where('status', 1)->get(),
-                'navigations' => Navigation::with('childrens')->whereNull('parent_id')->where('status', 1)->orderBy('order', 'asc')->get(),
-                'navmenus' => NavMenu::with('children.children')->whereNull('parent_id')->where('is_show', 1)->orderBy('order', 'asc')->get(),
-                'sinergi' => SinergiProgram::where('status', 1)->orderBy('urutan', 'asc')->get(),
-                'slides' => Slide::orderBy('created_at', 'DESC')->get(),
+            $this->settings = SettingAplikasi::pluck('value', 'key');
+            View::share([
+                'urlApi' => url($this->urlApi),
+                'events' => null, // Placeholder for events
+                'medsos' => null, // Placeholder for media sosial
+                'media_terkait' => null, // Placeholder for media terkait
+                'navigations' => null, // Placeholder for navigations
+                'navmenus' => null, // Placeholder for navmenus
+                'pengurus' => null, // Placeholder for pengurus
+                'sinergi' => null, // Placeholder for sinergi
+                'slides' => null, // Placeholder for slides
             ]);
         }
     }

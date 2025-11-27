@@ -55,6 +55,7 @@ class ArtikelKategoriTransformer extends TransformerAbstract
     {
         $kategori->type = 'kategori';
         $kategori->id = $kategori->id_kategori;
+        $kategori->link = route('berita-kategori',['slug' => $kategori->slug]);        
         return $kategori->toArray();
     }
 

@@ -73,7 +73,7 @@ class KomplainController extends BaseController
      * Display a listing of complaints.
      *
      * @OA\Get(
-     *     path="/api/v1/komplain",
+     *     path="/api/v1/frontend/komplain",
      *     summary="Get list of complaints",
      *     description="Retrieve paginated list of complaints with filtering and search capabilities",
      *     tags={"Komplain"},
@@ -167,7 +167,7 @@ class KomplainController extends BaseController
      * Store a newly created complaint.
      *
      * @OA\Post(
-     *     path="/api/v1/komplain",
+     *     path="/api/v1/frontend/komplain",
      *     summary="Create a new complaint",
      *     description="Store a new complaint with attachments",
      *     tags={"Komplain"},

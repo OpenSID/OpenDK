@@ -32,8 +32,7 @@
 namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\FrontEndController;
-use App\Services\DesaService;
-use App\Services\StatistikChartAnggaranDesaService;
+
 class AnggaranDesaController extends FrontEndController
 {
     /**
@@ -42,27 +41,8 @@ class AnggaranDesaController extends FrontEndController
     public function showAnggaranDesa()
     {
         $data['page_title'] = 'Anggaran Desa (APBDes)';
-        $data['page_description'] = 'Data Anggaran Desa (APBDes)';
-        $data['year_list'] = years_list();
-        $data['list_desa'] = (new DesaService())->listDesa();
+        $data['page_description'] = 'Data Anggaran Desa (APBDes)';        
         $data['hide_list_month'] = $this->isDatabaseGabungan() ? true : false;
         return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
-    }
-
-    public function getChartAnggaranDesa()
-    {
-        $mid = request('mid');
-        $did = request('did');
-        $year = request('y');
-
-        $dataAnggaran = (new StatistikChartAnggaranDesaService())->chart($mid, $did, $year);
-        if($this->isDatabaseGabungan()){
-            $dataDetail = collect($dataAnggaran['data-detail'])->keyBy('id');            
-            unset($dataAnggaran['data-detail']);
-            $dataAnggaran['detail'] = view('pages.anggaran_desa.gabungan.detail_anggaran', compact('did', 'mid', 'year', 'dataDetail'))->render();
-        }else {
-            $dataAnggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('did', 'mid', 'year'))->render();
-        }        
-        return $dataAnggaran;
-    }
+    }    
 }

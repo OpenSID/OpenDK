@@ -64,5 +64,9 @@ class ProfilApiRepository extends BaseApiRepository
     
     public function data(){        
         return $this->getFilteredApi()->jsonPaginate();
-    }    
+    }
+
+    public function dataWebsite(){
+        return $this->getFilteredApi()->with(['dataUmum','strukturOrganisasi'])->get();
+    }
 }

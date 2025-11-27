@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
+use App\Models\SettingAplikasi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -164,5 +165,11 @@ class BaseController extends Controller
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    protected function isDatabaseGabungan()
+    {
+        $setting = SettingAplikasi::where('key','sinkronisasi_database_gabungan')->first();
+        return ($setting->value ?? null) === '1';
     }
 }

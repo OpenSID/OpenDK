@@ -73,7 +73,8 @@ trait HasTenantScope
             }
 
             $model->tenant_id = $tenant->id;
-            $model->id = self::getNextIdForTenant($tenant, $model);
+            $keyName = $model->getKeyName() ?? 'id';
+            $model->$keyName = self::getNextIdForTenant($tenant, $model);
         });
 
         static::deleting(function ($model) {
@@ -123,11 +124,12 @@ trait HasTenantScope
         $modelClass = get_class($model);
         $table = $model->getTable();
         $tenantId = $tenant->id;
-
+        $keyName = $model->getKeyName() ?? 'id';
+        
         // We need to query without the global tenant scope to get the max ID for the specific tenant.
         $lastId = $modelClass::withoutGlobalScope('tenant_scope')
             ->where('tenant_id', $tenantId)
-            ->max('id');
+            ->max($keyName);
 
         if (!is_null($lastId) && $lastId >= $tenant->id_end_range) {
             $errorMessage = 'ID telah mencapai batas akhir range yang diizinkan untuk tenant ini yaitu . ' . $tenant->id_end_range .

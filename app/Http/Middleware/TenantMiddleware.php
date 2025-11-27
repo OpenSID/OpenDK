@@ -23,11 +23,11 @@ class TenantMiddleware
             return $next($request);
         }
 
-        // Only try to access database if tables exist
-        if (!Schema::hasTable('tenants')) {
-            Log::debug('TenantMiddleware: Tenants table does not exist, skipping tenant assignment');
-            return $next($request);
-        }
+        // // Only try to access database if tables exist
+        // if (!Schema::hasTable('tenants')) {
+        //     Log::debug('TenantMiddleware: Tenants table does not exist, skipping tenant assignment');
+        //     return $next($request);
+        // }
 
         $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
         

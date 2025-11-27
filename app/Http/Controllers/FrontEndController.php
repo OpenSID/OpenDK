@@ -50,12 +50,12 @@ class FrontEndController extends Controller
         parent::__construct();
         
         // Check if application is installed before executing database queries
-        if (function_exists('sudahInstal') && sudahInstal()) {
-            theme_active();
+        if (function_exists('sudahInstal') && sudahInstal()) {            
+            theme_active();            
 
-            $this->settings = SettingAplikasi::pluck('value', 'key');
+            $this->settings = SettingAplikasi::pluck('value', 'key');            
 
-            View::share([
+            View::share([                
                 'events' => Event::getOpenEvents(),
                 'medsos' => MediaSosial::where('status', 1)->get(),
                 'media_terkait' => MediaTerkait::where('status', 1)->get(),

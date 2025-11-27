@@ -55,7 +55,12 @@ trait HasTenantScope
 
         // When creating, automatically set tenant_id if the column exists
         static::creating(function ($model) {
-            $tenant = app('current_tenant');
+            if (!app()->bound('current_tenant')) {
+                $tenantCode = env('KODE_KECAMATAN');
+                $tenant = Tenant::where('kode_kecamatan', $tenantCode)->first(); // Use first() instead of firstOrFail()
+            }else{
+                $tenant = app('current_tenant');
+            }
             
             $model->tenant_id = $tenant->id;
             $model->id = self::getNextIdForTenant($tenant, $model);

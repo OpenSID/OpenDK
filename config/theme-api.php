@@ -70,6 +70,31 @@ return [
         'default_order' => 'asc',
     ],
 
+    'desa' => [
+        'default_per_page' => env('DESA_API_DEFAULT_PER_PAGE', 15),
+        'max_per_page' => env('DESA_API_MAX_PER_PAGE', 100),
+        'cache_prefix' => env('DESA_API_CACHE_PREFIX', 'desa:api'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Galeri API Settings
+    |--------------------------------------------------------------------------
+    */
+    'galeri' => [
+        'default_per_page' => env('GALERI_API_DEFAULT_PER_PAGE', 15),
+        'max_per_page' => env('GALERI_API_MAX_PER_PAGE', 100),
+        'cache_prefix' => env('GALERI_API_CACHE_PREFIX', 'galeri:api'),
+        'allowed_sort_fields' => [
+            'judul', 'created_at', 'updated_at', 'id'
+        ],
+        'allowed_filters' => [
+            'status', 'album_id', 'judul'
+        ],
+        'default_sort' => 'created_at',
+        'default_order' => 'desc',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Theme and Endpoint Settings

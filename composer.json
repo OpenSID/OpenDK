@@ -47,6 +47,7 @@
         "beyondcode/laravel-query-detector": "2.1",
         "fakerphp/faker": "^1.9.1",
         "filp/whoops": "~2.0",
+        "knuckleswtf/scribe": "^5.5",
         "laravel/pint": "^1.5",
         "laravel/tinker": "^2.7",
         "mockery/mockery": "^1.4.4",

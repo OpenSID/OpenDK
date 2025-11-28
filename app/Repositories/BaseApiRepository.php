@@ -237,4 +237,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     {
         return $this->getQueryBuilder()->allowedFilters($this->allowedFilters)->allowedSorts($this->allowedSorts)->allowedIncludes($this->allowedIncludes);
     }
+
+    public function getDataArray(){
+        return $this->getFilteredApi()->get();
+    }
 }

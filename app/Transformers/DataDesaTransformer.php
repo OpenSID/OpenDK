@@ -54,7 +54,7 @@ class DataDesaTransformer extends TransformerAbstract
     public function transform(DataDesa $dataDesa): array
     {
         return [
-            'id' => (int) $dataDesa->id,
+            'id' => (int) ($dataDesa->id ?? $dataDesa->desa_id),
             'desa_id' => $dataDesa->desa_id,
             'kode_desa' => $dataDesa->kode_desa,
             'nama' => $dataDesa->nama,

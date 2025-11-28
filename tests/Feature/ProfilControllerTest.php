@@ -35,7 +35,6 @@ use App\Models\Profil;
 use App\Models\DataUmum;
 use App\Models\DataDesa;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 

@@ -48,6 +48,7 @@ class ArtikelApiRepository extends BaseApiRepository
             'judul','slug',
             AllowedFilter::exact('id'),
             AllowedFilter::exact('status'),
+            AllowedFilter::exact('kategori.slug'),
             AllowedFilter::exact('id_kategori'),   
             AllowedFilter::callback('search', function($query, $value){                
                 $query->where('judul', 'LIKE', '%'.$value.'%')

@@ -17,6 +17,12 @@ class SuplemenExportTest extends TestCase
 {
     use WithoutMiddleware, DatabaseTransactions;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        Suplemen::query()->delete();
+    }
+
     /**
      * Test export excel suplemen.
      *

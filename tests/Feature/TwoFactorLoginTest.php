@@ -50,8 +50,12 @@ class TwoFactorLoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Logout any authenticated user from parent TestCase
+        auth()->logout();
+
         $this->otpService = new OtpService();
-        
+
         // Disable captcha for testing
         SettingAplikasi::updateOrCreate(
             ['key' => 'google_recaptcha'],
@@ -60,7 +64,7 @@ class TwoFactorLoginTest extends TestCase
 
         Captcha::shouldReceive('display')
             ->andReturn('<input type="hidden" name="captcha" value="1" />');
-        
+
         // Create a test user with 2FA enabled
         $this->user = User::factory()->create([
             'email' => '2fa-test@example.com',

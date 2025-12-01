@@ -6,7 +6,6 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class Galeri extends Model
 {
@@ -25,6 +24,8 @@ class Galeri extends Model
         'gambar' => 'array',
         'status' => 'boolean',
     ];
+
+    protected $appends = ['gambar_path'];
 
     /**
      * Return the sluggable configuration array for this model.
@@ -51,5 +52,10 @@ class Galeri extends Model
     public function Album(): BelongsTo
     {
         return $this->belongsTo(Album::class);
+    }
+
+    protected function getGambarPathAttribute(){
+        $gambar = $this->gambar[0];
+        return $this->attributes['jenis'] == 'file' ? isThumbnail("publikasi/galeri/".$gambar) : asset('/img/no-image.png');
     }
 }

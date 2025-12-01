@@ -37,7 +37,6 @@ use App\Models\Artikel;
 use App\Facades\Counter;
 use App\Models\DataDesa;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use willvincent\Feeds\Facades\FeedsFacade;
@@ -58,8 +57,13 @@ class PageController extends FrontEndController
 
         return view('pages.index', [
             'page_title' => 'Beranda',
-            'cari' => null,
-            'artikel' => Artikel::with('kategori')->latest()->status()->paginate(config('setting.artikel_kecamatan_perhalaman') ?? 10),
+            'cari' => null, 
+            'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
+                'filter[status]' => 1,
+                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
+                'sort' => '-created_at',
+                'include' => 'kategori'
+            ]))
         ]);
     }
 
@@ -150,24 +154,19 @@ class PageController extends FrontEndController
     }
 
     public function PotensiByKategory($slug)
-    {
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+    {        
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi';
+        $page_description = 'Potensi-Potensi';     
 
-        $potensis = DB::table('das_potensi')->where('kategori_id', $kategoriPotensi->id)->simplePaginate(10);
-
-        return view('pages.potensi.index', compact(['page_title', 'page_description', 'potensis', 'kategoriPotensi']));
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug']));
     }
 
     public function PotensiShow($kategori, $slug)
-    {
-        $kategoriPotensi = DB::table('das_tipe_potensi')->where('slug', $slug)->first();
+    {        
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi Kecamatan';
-        $potensi = DB::table('das_potensi')->where('nama_potensi', str_replace('-', ' ', $slug))->first();
+        $page_description = 'Potensi-Potensi Kecamatan';     
 
-        return view('pages.potensi.show', compact(['page_title', 'page_description', 'potensi', 'kategoriPotensi']));
+        return view('pages.potensi.show', compact(['page_title', 'page_description', 'slug']));
     }
 
     public function DesaShow($slug)
@@ -338,20 +337,19 @@ class PageController extends FrontEndController
     }
 
     public function kategori($slug)
-    {
-        // Temukan kategori berdasarkan slug
-        $kategori = \App\Models\ArtikelKategori::where('slug', $slug)->firstOrFail();
-
-        // Ambil semua artikel yang termasuk dalam kategori tersebut
-        $berita_kategori = Artikel::with('kategori')
-            ->where('id_kategori', $kategori->id_kategori)
-            ->where('status', '1')
-            ->latest()
-            ->paginate(10);
-
-        return view('pages.berita.kategori', [
-            'artikel' => $berita_kategori,
-            'kategori' => $kategori,
+    {        
+        return view('pages.berita.kategori', [                        
+            'apiBaseKategori' => url($this->urlApi.'/kategori?'.http_build_query([                
+                'filter[slug]' => $slug,
+                'page[size]' => 1, 
+            ])),
+            'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
+                'filter[status]' => 1,
+                'filter[kategori.slug]' => $slug,
+                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
+                'sort' => '-created_at',
+                'include' => 'kategori'
+            ]))
         ]);
     }
 

@@ -35,7 +35,7 @@ use App\Enums\{LogVerifikasiSurat, StatusSurat};
 use App\Http\Middleware\{Authenticate, CompleteProfile};
 use App\Models\{DataDesa, Surat};
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Spatie\Permission\Middlewares\{PermissionMiddleware, RoleMiddleware};
+use Spatie\Permission\Middleware\{PermissionMiddleware, RoleMiddleware};
 use Tests\TestCase;
 
 class FilterDesaSuratTest extends TestCase

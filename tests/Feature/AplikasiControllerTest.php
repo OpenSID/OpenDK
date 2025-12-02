@@ -88,6 +88,6 @@ class AplikasiControllerTest extends CrudTestCase
             ]);
 
         $response->assertRedirect(route('setting.aplikasi.edit', $setting->id));
-        $response->assertSessionHasErrors('value');
+        $response->assertInvalid(['value']); // Laravel 11 way
     }
 }

@@ -36,8 +36,8 @@ use App\Http\Middleware\CompleteProfile;
 use App\Models\MediaSosial;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use Tests\TestCase;
 
 class MediaSosialControllerTest extends TestCase
@@ -88,9 +88,9 @@ class MediaSosialControllerTest extends TestCase
         );
 
         $data = [
-            'logo'   => $file,
-            'url'    => 'https://example.com',
-            'nama'   => 'Instagram',
+            'logo' => $file,
+            'url' => 'https://example.com',
+            'nama' => 'Instagram',
             'status' => 1,
         ];
 
@@ -111,7 +111,7 @@ class MediaSosialControllerTest extends TestCase
 
         $data = [
             'nama' => 'Updated Media Sosial',
-            'url'    => 'https://example.com',
+            'url' => 'https://example.com',
             'status' => 1,
         ];
 

@@ -48,8 +48,12 @@ class OtpLoginTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Logout any authenticated user from parent TestCase
+        auth()->logout();
+
         $this->otpService = new OtpService();
-        
+
         // Create a test user with OTP enabled
         $this->user = User::factory()->create([
             'email' => 'otp-test@example.com',

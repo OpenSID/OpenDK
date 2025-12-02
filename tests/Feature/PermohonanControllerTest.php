@@ -38,7 +38,7 @@ use App\Models\Pengurus;
 use App\Models\Surat;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Spatie\Permission\Middlewares\{PermissionMiddleware, RoleMiddleware};
+use Spatie\Permission\Middleware\{PermissionMiddleware, RoleMiddleware};
 use Tests\TestCase;
 
 class PermohonanControllerTest extends TestCase

@@ -404,7 +404,7 @@ class ProfilControllerTest extends TestCase
             'jml_pasar' => 2,
             'jml_balai_pertemuan' => 5,
             'embed_peta' => '<iframe>test</iframe>',
-            'path' => '[[123, 456], [789, 012]]',
+            'path' => '[[123, 456], [789, 12]]',
             'lat' => -6.2088,
             'lng' => 106.8456,
         ]);
@@ -416,7 +416,7 @@ class ProfilControllerTest extends TestCase
             'sebutan_desa' => 'Kelurahan',
             'website' => 'https://test.desa.id',
             'luas_wilayah' => 125.5,
-            'path' => '[[123, 456], [789, 012]]',
+            'path' => '[[123, 456], [789, 12]]',
         ]);
     }
 }

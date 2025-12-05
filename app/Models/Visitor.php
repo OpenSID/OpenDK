@@ -89,6 +89,6 @@ class Visitor extends BaseModel
 
     public static function countAllVisitors()
     {
-        return \Illuminate\Support\Facades\DB::table('visitors')->distinct('ip_address')->count('ip_address');
+        return self::distinct('ip_address')->count('ip_address');
     }
 }

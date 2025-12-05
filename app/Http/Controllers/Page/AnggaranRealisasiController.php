@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Page;
 use App\Facades\Counter;
 use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
+use App\Models\AnggaranRealisasi;
 use Illuminate\Support\Facades\DB;
 
 class AnggaranRealisasiController extends Controller
@@ -70,7 +71,7 @@ class AnggaranRealisasiController extends Controller
             $belanja_tidak_langsung = 0;
 
             foreach (array_sort(years_list()) as $yearls) {
-                $query_result = DB::table('das_anggaran_realisasi')
+                $query_result = AnggaranRealisasi::query()
                     ->select('*')
                     ->where('profil_id', '=', $this->profil->id);
                 if ($mid != 'Semua') {
@@ -137,7 +138,7 @@ class AnggaranRealisasiController extends Controller
             $belanja_modal = 0;
             $belanja_tidak_langsung = 0;
 
-            $query_result = DB::table('das_anggaran_realisasi')
+            $query_result = AnggaranRealisasi::query()
                 ->selectRaw('sum(total_anggaran) as total_anggaran, sum(total_belanja) as total_belanja,
                 sum(belanja_pegawai) as belanja_pegawai, sum(belanja_barang_jasa) as belanja_barang_jasa,
                 sum(belanja_modal) as belanja_modal, sum(belanja_tidak_langsung) as belanja_tidak_langsung')

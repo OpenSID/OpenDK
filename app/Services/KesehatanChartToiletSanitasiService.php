@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\ToiletSanitasi;
+use App\Models\DataDesa;
 use Illuminate\Support\Facades\DB;
 
 class KesehatanChartToiletSanitasiService
@@ -16,7 +18,7 @@ class KesehatanChartToiletSanitasiService
         $data_kesehatan = [];
         if ($year == 'Semua') {
             foreach (years_list() as $yearl) {
-                $query = DB::table('das_toilet_sanitasi')
+                $query = ToiletSanitasi::query()
                     ->where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query->where('desa_id', '=', $did);
@@ -32,7 +34,7 @@ class KesehatanChartToiletSanitasiService
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query = DB::table('das_toilet_sanitasi')
+                $query = ToiletSanitasi::query()
                     ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
                     ->where('tahun', $year);
                 if ($did != 'Semua') {
@@ -56,7 +58,7 @@ class KesehatanChartToiletSanitasiService
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query = DB::table('das_toilet_sanitasi')
+                $query = ToiletSanitasi::query()
                     ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
                     ->where('tahun', $year);
                 $data_tabel['quartal'][$key] = [
@@ -67,7 +69,7 @@ class KesehatanChartToiletSanitasiService
 
             // Detail Desa
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query = DB::table('das_toilet_sanitasi')
+                $query = ToiletSanitasi::query()
                     ->join('das_data_desa', 'das_toilet_sanitasi.desa_id', '=', 'das_data_desa.desa_id')
                     ->selectRaw('das_data_desa.nama, sum(das_toilet_sanitasi.toilet) as toilet, sum(das_toilet_sanitasi.sanitasi) as sanitasi')
                     ->whereRaw('das_toilet_sanitasi.bulan in ('.$this->getIdsQuartal($key).')')
@@ -81,7 +83,7 @@ class KesehatanChartToiletSanitasiService
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
-                $query = DB::table('das_toilet_sanitasi')
+                $query = ToiletSanitasi::query()
                     ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
                     ->where('tahun', $year)
                     ->where('desa_id', $did);

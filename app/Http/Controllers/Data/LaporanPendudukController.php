@@ -36,6 +36,7 @@ use App\Exports\LaporanPendudukExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporLaporanPenduduk;
 use App\Models\LaporanPenduduk;
+use App\Models\DataDesa;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -69,7 +70,7 @@ class LaporanPendudukController extends Controller
     {
         $desa = $request->input('desa');
 
-        $query = DB::table('das_laporan_penduduk')
+        $query = LaporanPenduduk::query()
             ->leftJoin('das_data_desa', 'das_laporan_penduduk.desa_id', '=', 'das_data_desa.desa_id')
             ->select([
                 'das_laporan_penduduk.id',

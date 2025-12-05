@@ -32,6 +32,9 @@
 namespace App\Providers;
 
 use App\Support\Collection;
+use App\Models\Penduduk;
+use App\Models\SettingAplikasi;
+use App\Models\Profil;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
@@ -100,7 +103,7 @@ class AppServiceProvider extends ServiceProvider
     protected function penduduk()
     {        
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();
+            $query = Penduduk::where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();
 
             if ($query) {
                 return true;
@@ -110,7 +113,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('password_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('tanggal_lahir', $value)->whereRaw("nik = '" . $parameters[0] . "'")->exists();
+            $query = Penduduk::where('tanggal_lahir', $value)->whereRaw("nik = '" . $parameters[0] . "'")->exists();
 
             if ($query) {
                 return true;
@@ -120,8 +123,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('unique_key', function ($attribute, $value, $parameters) {
-            $query = DB::table($parameters[0])
-                ->where('key', $value)
+            $query = SettingAplikasi::where('key', $value)
                 ->first();
 
             if (! $query || $query->id == $parameters[1]) {
@@ -149,8 +151,7 @@ class AppServiceProvider extends ServiceProvider
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
                 return  Schema::hasTable('das_setting')
-                    ? DB::table('das_setting')
-                    ->get(['key', 'value'])
+                    ? SettingAplikasi::get(['key', 'value'])
                     ->keyBy('key')
                     ->transform(function ($setting) {
                         return $setting->value;
@@ -160,7 +161,7 @@ class AppServiceProvider extends ServiceProvider
 
             'profil' => Cache::remember('profil', 24 * 60 * 60, function () {
                 if (Schema::hasTable('das_profil')) {
-                    $profil = DB::table('das_profil')
+                    $profil = Profil::query()
                         ->get()
                         ->map(function ($item) {
                             return (array) $item;

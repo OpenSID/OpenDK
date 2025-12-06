@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Agama extends Model
+class Agama extends BaseModel
 {
     protected $table = 'ref_agama';
 

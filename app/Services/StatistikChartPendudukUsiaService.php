@@ -33,7 +33,8 @@ namespace App\Services;
 
 use App\Enums\LabelStatistik;
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\DB;
+use App\Models\Umur;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartPendudukUsiaService extends BaseApiService
 {
@@ -59,7 +60,7 @@ class StatistikChartPendudukUsiaService extends BaseApiService
                     $data[] = ['umur' => ucfirst(strtolower($item['attributes']['nama'])), 'value' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#09a8ff'];
                 }                
             } catch (\Exception $e) {
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
@@ -70,7 +71,7 @@ class StatistikChartPendudukUsiaService extends BaseApiService
     {
         // Data Grafik Kategori Usia
         $data = [];
-        $categories = DB::table('ref_umur')->orderBy('ref_umur.dari')->where('status', '=', 1)->get();
+        $categories = Umur::orderBy('dari')->where('status', '=', 1)->get();
         $data = [];
         $penduduk = new Penduduk();
         foreach ($categories as $umur) {

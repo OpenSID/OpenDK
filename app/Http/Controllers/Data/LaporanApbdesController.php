@@ -72,7 +72,7 @@ class LaporanApbdesController extends Controller
     {
         $desa = $request->input('desa');
 
-        $query = DB::table('das_apbdes')
+        $query = LaporanApbdes::query()
             ->leftJoin('das_data_desa', 'das_apbdes.desa_id', '=', 'das_data_desa.desa_id')
             ->select([
                 'das_apbdes.id',

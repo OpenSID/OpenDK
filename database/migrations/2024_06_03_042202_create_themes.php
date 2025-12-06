@@ -35,13 +35,7 @@ return new class extends Migration
                 $table->mediumText('options')->nullable();
                 $table->timestamps();
             });
-        }
-
-        try {
-            scan_themes();
-        } catch (\Exception $e) {
-            Log::error('Error scanning themes: ' . $e->getMessage());
-        }
+        }        
     }
 
     /**

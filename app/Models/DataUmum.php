@@ -31,10 +31,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class DataUmum extends Model
+class DataUmum extends BaseModel
 {
+    
     // Attributes
     protected $table = 'das_data_umum';
 

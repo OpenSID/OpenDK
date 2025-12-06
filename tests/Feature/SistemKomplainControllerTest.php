@@ -44,12 +44,15 @@ class SistemKomplainControllerTest extends TestCase
 {
     protected $tableName;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $model = new Komplain();
         $this->tableName = $model->getTable();
+        
+        // Disable the TrackVisitors middleware to prevent duplicate visitor entries
+        $this->withoutMiddleware(\App\Http\Middleware\TrackVisitors::class);
     }
 
     public function test_get_kirim_form_komplain()

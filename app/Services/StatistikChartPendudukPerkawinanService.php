@@ -33,7 +33,8 @@ namespace App\Services;
 
 use App\Enums\LabelStatistik;
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\DB;
+use App\Models\Kawin;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartPendudukPerkawinanService extends BaseApiService
 {
@@ -59,7 +60,7 @@ class StatistikChartPendudukPerkawinanService extends BaseApiService
                     $data[] = ['status' => ucfirst(strtolower($item['attributes']['nama'])), 'total' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#'.random_color()];
                 }
             } catch (\Exception $e) {
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
@@ -71,7 +72,7 @@ class StatistikChartPendudukPerkawinanService extends BaseApiService
         $penduduk = new Penduduk();
         // Data Chart Penduduk By Status Perkawinan
         $data = [];
-        $statusKawin = DB::table('ref_kawin')->orderBy('id')->get();        
+        $statusKawin = Kawin::orderBy('id')->get();
         foreach ($statusKawin as $val) {
             $total = $penduduk->getPendudukAktif($did, $year)
                 ->where('status_kawin', $val->id)

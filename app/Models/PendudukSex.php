@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class PendudukSex extends Model
+class PendudukSex extends BaseModel
 {
     protected $table = 'das_penduduk_sex';
 

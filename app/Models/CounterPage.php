@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class CounterPage extends Model
+class CounterPage extends BaseModel
 {
     protected $table = 'das_counter_page';
 

@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class EpidemiPenyakit extends Model
+class EpidemiPenyakit extends BaseModel
 {
     use HasFactory;
     protected $table = 'das_epidemi_penyakit';

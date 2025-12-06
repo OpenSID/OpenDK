@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Survei extends Model
+class Survei extends BaseModel
 {
     protected $table = 'das_survei';
 

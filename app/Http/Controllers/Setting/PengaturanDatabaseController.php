@@ -8,14 +8,9 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Backup\Tasks\Backup\BackupJobFactory;
-
 use Illuminate\Support\Facades\Artisan;
-
-use Illuminate\Support\Facades\File;
-
 use Exception;
-use App\Http\Controllers\Setting\ZipArchive;
+
 
 
 class PengaturanDatabaseController extends Controller
@@ -25,6 +20,8 @@ class PengaturanDatabaseController extends Controller
 
     public function __construct()
     {
+        $this->middleware('check.tenant.count');
+        
         $this->destination = config('backup.backup.name');
     }
 
@@ -72,16 +69,16 @@ class PengaturanDatabaseController extends Controller
     {
         try {
             Log::info('Starting backup process.');
-    
+
             Artisan::call('backup:run');
-    
+
             Log::info('Backup command output: ' . Artisan::output());
             Log::info('Ending backup process.');
-    
+
             return response()->json(['success' => true, 'message' => 'Backup completed successfully']);
         } catch (\Exception $e) {
             Log::error('Backup process failed: ' . $e->getMessage(), ['exception' => $e]);
-    
+
             return response()->json(['success' => false, 'message' => 'Backup process failed', 'error' => $e->getMessage()], 500);
         }
     }
@@ -166,7 +163,7 @@ class PengaturanDatabaseController extends Controller
         $file = $request->file('backupFile');
         $setDir = 'backup-temp';
         $path = $file->storeAs($setDir, $file->getClientOriginalName());
-        
+
         try {
             Log::info('Starting restore process.');
 

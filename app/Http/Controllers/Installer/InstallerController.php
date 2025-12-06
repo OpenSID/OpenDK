@@ -301,7 +301,7 @@ class InstallerController extends Controller
                 storage_path('installed'),
                 sprintf('%s berhasil DIPASANG pada %s', config('app.name', 'OpenDK'), now())
             );
-
+            
             $migrationOutput = \Artisan::output();
 
         } catch (\Exception $e) {

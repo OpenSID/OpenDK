@@ -32,8 +32,10 @@
 namespace Database\Seeders\Demo;
 
 use App\Models\Artikel;
+use App\Models\Comment;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DemoArtikelSeeder extends Seeder
 {
@@ -44,7 +46,8 @@ class DemoArtikelSeeder extends Seeder
      */
     public function run()
     {
-        Artikel::truncate();
+        DB::statement('delete from das_artikel_comment');
+        DB::statement('delete from das_artikel');
 
         $faker = Factory::create('id-ID');
 

@@ -70,7 +70,7 @@ class PendudukController extends Controller
         if (request()->ajax()) {
             $desa = $request->input('desa');
 
-            $query = DB::table('das_penduduk')
+            $query = Penduduk::query()
                 ->leftJoin('das_data_desa', 'das_penduduk.desa_id', '=', 'das_data_desa.desa_id')
                 ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->leftJoin('ref_kawin', 'das_penduduk.status_kawin', '=', 'ref_kawin.id')

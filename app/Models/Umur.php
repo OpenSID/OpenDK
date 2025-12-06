@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Umur extends Model
+class Umur extends BaseModel
 {
     protected $table = 'ref_umur';
 

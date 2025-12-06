@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class PutusSekolah extends Model
+class PutusSekolah extends BaseModel
 {
     use HasFactory;
     protected $table = 'das_putus_sekolah';

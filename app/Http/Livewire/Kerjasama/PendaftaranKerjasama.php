@@ -44,7 +44,7 @@ class PendaftaranKerjasama extends Component
 
         // Periksa apakah 'layanan_opendesa_token' tidak ada
         if (!property_exists($setting, 'layanan_opendesa_token')) {
-            DB::table('das_setting')->insert([
+            SettingAplikasi::insert([
                 'key' => 'layanan_opendesa_token',
                 'value' => 0,
                 'type' => 'input',

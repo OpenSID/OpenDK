@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class LogImport extends Model
+class LogImport extends BaseModel
 {
     protected $table = 'log_imports';
 

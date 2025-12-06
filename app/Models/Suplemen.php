@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Suplemen extends Model
+class Suplemen extends BaseModel
 {
     use HasFactory;
 

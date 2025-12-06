@@ -32,6 +32,7 @@
 namespace Database\Seeders\Demo;
 
 use App\Models\DataDesa;
+use App\Models\Pesan;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,7 @@ class DemoPesanSeeder extends Seeder
         $sample_enum = ['Pesan Masuk', 'Pesan Keluar'];
 
         for ($i = 1; $i <= $defaultCounter; $i++) {
-            DB::table('das_pesan')->insert([
+            Pesan::create([
                 'judul' => $faker->text(50),
                 'das_data_desa_id' => $faker->randomElement($das_desa),
                 'jenis' => $faker->randomElement($sample_enum),

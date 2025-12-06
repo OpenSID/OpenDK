@@ -33,7 +33,9 @@ namespace App\Services;
 
 use App\Enums\LabelStatistik;
 use App\Models\Penduduk;
+use App\Models\Agama;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartPendudukAgamaService extends BaseApiService
 {    
@@ -59,7 +61,7 @@ class StatistikChartPendudukAgamaService extends BaseApiService
                     $data[] = ['religion' => ucfirst(strtolower($item['attributes']['nama'])), 'total' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#'.random_color()];
                 }
             } catch (\Exception $e) {
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
@@ -71,7 +73,7 @@ class StatistikChartPendudukAgamaService extends BaseApiService
         $penduduk = new Penduduk();
         // Data Chart Penduduk By Aama
         $data = [];
-        $agama = DB::table('ref_agama')->orderBy('id')->get();        
+        $agama = Agama::orderBy('id')->get();
         foreach ($agama as $val) {
             $total = $penduduk->getPendudukAktif($did, $year)
                 ->where('agama_id', $val->id)

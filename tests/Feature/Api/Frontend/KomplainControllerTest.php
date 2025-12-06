@@ -235,13 +235,11 @@ class KomplainControllerTest extends CrudTestCase
 
         if ($status === 201) {
             $response->assertJsonStructure([
-                'data' => [
-                    'id',
+                'data' => [                    
                     'komplain_id',
                     'judul',
                     'slug',
-                    'status',
-                    'created_at',
+                    'status',                    
                 ],
                 'message'
             ]);

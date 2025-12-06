@@ -169,7 +169,7 @@ class AppServiceProvider extends ServiceProvider
                         ->first() ?? null;
 
                     if ($profil) {
-                        if (in_array($profil['provinsi_id'], [91, 92])) {
+                        if (in_array($profil['provinsi_id'] ?? '', [91, 92])) {
                             $profil['sebutan_wilayah'] = 'Distrik';
                             $profil['sebutan_kepala_wilayah'] = 'Kepala Distrik';
                         } else {

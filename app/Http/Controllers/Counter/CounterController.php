@@ -37,6 +37,7 @@ use App\Models\CounterPage;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\CounterPageVisitor;
 use App\Models\Profil;
 
 class CounterController extends Controller
@@ -125,8 +126,7 @@ class CounterController extends Controller
 
     protected function geTopPage()
     {
-        $sql = DB::table('das_counter_page_visitor')
-            ->selectRaw('page_id, COUNT(*) AS total')
+        $sql = CounterPageVisitor::selectRaw('page_id, COUNT(*) AS total')
             ->groupBy('page_id')
             ->orderBy('total', 'desc')
             ->get();

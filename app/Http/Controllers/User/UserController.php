@@ -121,8 +121,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        if(!Auth::user()->hasRole(['super-admin'])){
-            if($id != Auth::user()->id){
+        $user = Auth::user();
+        if(!$user->roles->contains('name', 'super-admin')){
+            if($id != $user->id){
                 abort(403, 'Anda tidak berhak mengubah user tersebut');
             }
         }
@@ -153,8 +154,9 @@ class UserController extends Controller
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }
-            if(!Auth::user()->hasRole(['super-admin'])){
-                return redirect()->route('dashboard')->with('success', 'User berhasil diperbarui!');    
+            $user = Auth::user();
+            if(!$user->roles->contains('name', 'super-admin')){
+                return redirect()->route('dashboard')->with('success', 'User berhasil diperbarui!');
             }
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {

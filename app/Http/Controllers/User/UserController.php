@@ -41,6 +41,7 @@ use App\Http\Requests\UserRequest;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -120,6 +121,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        if(!Auth::user()->hasRole(['super-admin'])){
+            if($id != Auth::user()->id){
+                abort(403, 'Anda tidak berhak mengubah user tersebut');
+            }
+        }
         $page_title = 'Pengguna';
         $page_description = 'Ubah Data';
         $user = User::findOrFail($id);
@@ -147,7 +153,9 @@ class UserController extends Controller
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }
-
+            if(!Auth::user()->hasRole(['super-admin'])){
+                return redirect()->route('dashboard')->with('success', 'User berhasil diperbarui!');    
+            }
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
             report($e);

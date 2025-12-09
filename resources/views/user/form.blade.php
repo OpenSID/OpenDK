@@ -9,7 +9,8 @@
                 @if (empty($user))
                     <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
                 @else
-                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
+                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}"
+                        value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
                 @endif
             @endforeach
         </select>
@@ -19,7 +20,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Nama', 'pattern' => '^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$']) !!}
+        <input type="text" name="name" value="{{ old('name', $user->name ?? null) }}" class="form-control"
+            placeholder="Nama" pattern="^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$">
     </div>
 </div>
 <div class="form-group">
@@ -27,9 +29,9 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         @if (empty($user))
-            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Email']) !!}
+            {!! html()->text('email')->class('form-control')->placeholder('Email')->value(old('email', isset($user) ? $user->email : '')) !!}
         @else
-            {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Email', 'readOnly' => true]) !!}
+            {!! html()->text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->isReadonly() !!}
         @endif
     </div>
 </div>
@@ -37,7 +39,18 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Telepon </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::text('phone', null, ['class' => 'form-control', 'placeholder' => '0xxxxxxxxxxx']) !!}
+        {!! html()->text('phone', old('phone', $user->phone ?? null))->class('form-control')->placeholder('0xxxxxxxxxxx') !!}
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Telegram ID </label>
+
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        {!! html()->text('telegram_id', old('telegram_id', $user->telegram_id ?? null))->class('form-control')->placeholder('Telegram Chat ID') !!}
+        <small class="help-block">
+            ID Telegram untuk menerima kode OTP/2FA. Dapatkan ID dari
+            <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a>
+        </small>
     </div>
 </div>
 <div class="form-group">
@@ -46,7 +59,8 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="image" id="foto" class="form-control" accept="jpg,jpeg,png">
         <br>
-        <img src="{{ is_img($user->foto ?? null) }}" id="showfoto" style="max-width:400px;max-height:250px;float:left;" />
+        <img src="{{ is_img($user->foto ?? null) }}" id="showfoto"
+            style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 
@@ -55,7 +69,7 @@
         <label class="control-label col-md-3 col-sm-3 col-xs-12">Password <span class="required">*</span></label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! Form::password('password', ['class' => 'form-control password']) !!}
+            {!! html()->password('password')->class('form-control password')->value(old('password', isset($user) ? $user->password : '')) !!}
         </div>
         <div class="col-md-1 col-sm-1 col-xs-12">
             <button type="button" class="btn showpass"><i class="fa fa-eye" aria-hidden="true"></i></button>
@@ -67,7 +81,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Alamat <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::textarea('address', null, ['class' => 'form-control', 'cols' => 10, 'rows' => 5]) !!}
+        {!! html()->textarea('address', old('address', $user->address ?? null))->class('form-control')->cols(10)->rows(5) !!}
     </div>
 </div>
 
@@ -77,16 +91,17 @@
         <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            {{ Form::select('role', $item, null, ['class' => 'form-control']) }}
+            {!! html()->select('role', $item, old('role', isset($user) ? $user->role : null))->class('form-control') !!}
         </div>
     </div>
 @elseif(auth()->user()->id == 1)
-    @if ($user->id != 1)
+    @if (isset($user) && $user->id != 1)
         <div class="form-group">
-            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
+            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
-                {{ Form::select('role', $item, $user->getRoleNames(), ['class' => 'form-control']) }}
+                {!! html()->select('role', $item, old('role', isset($user) ? $user->getRoleNames()->first() : null))->class('form-control') !!}
             </div>
         </div>
     @endif
@@ -116,7 +131,8 @@
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
+                    var extension = input.files[0].name.split('.').pop()
+                    .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes

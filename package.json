@@ -12,5 +12,8 @@
         "@playwright/test": "^1.56.1",
         "@shufo/prettier-plugin-blade": "^1.15.0",
         "prettier": "^3.6.0"
+    },
+    "dependencies": {
+        "playwright": "^1.55.1"
     }
 }

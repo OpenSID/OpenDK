@@ -14,7 +14,7 @@ class ArtikelKategori extends Model
 
     protected $primaryKey = 'id_kategori';
 
-    protected $guarded = ['id_kategori'];
+    protected $guarded = ['id_kategori'];        
 
     /**
      * Return the sluggable configuration array for this model.

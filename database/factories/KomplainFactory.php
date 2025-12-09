@@ -21,7 +21,7 @@ class KomplainFactory extends Factory
             'judul' => $judul,
             'slug' => Str::slug($judul) . '-' . $this->faker->unique()->randomNumber(3),
             'laporan' => $this->faker->paragraph,
-            'status' => $this->faker->randomElement(['baru', 'proses', 'selesai']),
+            'status' => $this->faker->randomElement(['REVIEW', 'DITERIMA', 'DITOLAK', 'Selesai']),
             'lampiran1' => null,
             'lampiran2' => null,
             'lampiran3' => null,

@@ -17,26 +17,24 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! Form::open([
-                        'route' => 'data.pengurus.store',
-                        'method' => 'post',
-                        'files' => true,
-                        'id' => 'form-pengurus',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
+                    {!! html()->form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal form-label-left')->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
 
                         @include('flash::message')
-                        @php $pengurus->foto = null; @endphp
+                        @php
+                            if ($pengurus) {
+                                $pengurus->foto = null;
+                            }
+                        @endphp
                         @include('data.pengurus.form')
 
                     </div>
                     <div class="box-footer">
                         @include('partials.button_reset_submit')
                     </div>
-                    {!! Form::close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
         </div>

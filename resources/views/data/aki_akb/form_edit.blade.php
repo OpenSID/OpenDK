@@ -1,13 +1,25 @@
 <div class="form-group">
-    <label for="aki" class="control-label col-md-4 col-sm-3 col-xs-12">Angka Kematian Ibu <span class="required">*</span></label>
+    <label for="aki" class="control-label col-md-4 col-sm-3 col-xs-12">
+        Angka Kematian Ibu <span class="required">*</span>
+    </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::number('aki', null, ['class' => 'form-control', 'required' => true, 'id' => 'aki']) !!}
+        {!! html()->number('aki')
+        ->value($akib->aki)
+        ->class('form-control')
+        ->required()
+        ->id('aki') !!}
     </div>
 </div>
 <div class="form-group">
-    <label for="akb" class="control-label col-md-4 col-sm-3 col-xs-12">Angka Kematian Bayi <span class="required">*</span></label>
+    <label for="akb" class="control-label col-md-4 col-sm-3 col-xs-12">
+        Angka Kematian Bayi <span class="required">*</span>
+    </label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! Form::number('akb', null, ['class' => 'form-control', 'required' => true, 'id' => 'akb']) !!}
+        {!! html()->number('akb')
+        ->value($akib->akb)
+        ->class('form-control')
+        ->required()
+        ->id('akb') !!}
     </div>
 </div>
 <div class="form-group">
@@ -16,11 +28,11 @@
     <div class="col-md-8">
         <select class="form-control" id="bulan" name="bulan">
             @foreach (months_list() as $key => $month)
-                @if ($akib->bulan == $key)
-                    <option selected value="{{ $key }}">{{ $month }}</option>
-                @else
-                    <option value="{{ $key }}">{{ $month }}</option>
-                @endif
+            @if ($akib->bulan == $key)
+            <option selected value="{{ $key }}">{{ $month }}</option>
+            @else
+            <option value="{{ $key }}">{{ $month }}</option>
+            @endif
             @endforeach
         </select>
     </div>
@@ -32,11 +44,11 @@
     <div class="col-md-8">
         <select class="form-control" id="list_year" name="tahun">
             @foreach (years_list() as $year)
-                @if ($akib->tahun == $year)
-                    <option selected value="{{ $year }}">{{ $year }}</option>
-                @else
-                    <option value="{{ $year }}">{{ $year }}</option>
-                @endif
+            @if ($akib->tahun == $year)
+            <option selected value="{{ $year }}">{{ $year }}</option>
+            @else
+            <option value="{{ $year }}">{{ $year }}</option>
+            @endif
             @endforeach
         </select>
     </div>

@@ -1,72 +1,64 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-dashboard"></i> Pesan</li>
-        </ol>
-    </section>
-    <section class="content">
-        @include('partials.flash_message')
-        <div class="row">
-            <div class="col-md-3">
-                @include('pesan.partial_pesan_menu')
-            </div>
-
-            <div class="col-md-9">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Buat Pesan Baru</h3>
-                    </div>
-
-                    {!! Form::open(['route' => 'pesan.compose.post', 'method' => 'post', 'id' => 'form-compose-pesan']) !!}
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
-                            {!! Form::select('das_data_desa_id', $list_desa->pluck('nama', 'id'), null, [
-                                'placeholder' => 'pilih desa',
-                                'class' => 'form-control',
-                                'id' => 'list_desa',
-                                'required',
-                            ]) !!}
-                        </div>
-                        <div class="form-group">
-                            <label>Subject</label>
-                            {!! Form::text('judul', null, ['placeholder' => 'Subject:', 'class' => 'form-control', 'required']) !!}
-                        </div>
-                        <div class="form-group">
-                            {!! Form::textarea('text', null, [
-                                'class' => 'textarea',
-                                'placeholder' => 'Isi Pesan',
-                                'style' => 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
-                            ]) !!}
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
-                    <div class="box-footer">
-                        <div class="pull-right">
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Kirim</button>
-                        </div>
-                        <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Batal</button>
-                    </div>
-                    <!-- /.box-footer -->
-                </div>
-                <!-- /. box -->
-                {!! Form::close() !!}
-            </div>
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i> Pesan</li>
+    </ol>
+</section>
+<section class="content">
+    @include('partials.flash_message')
+    <div class="row">
+        <div class="col-md-3">
+            @include('pesan.partial_pesan_menu')
         </div>
-    </section>
+
+        <div class="col-md-9">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Buat Pesan Baru</h3>
+                </div>
+
+                {!! html()->form('POST', route('pesan.compose.post'))->id('form-compose-pesan')->open() !!}
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="form-group">
+                        <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
+                        {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'desa_id'),
+                        null)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required() !!}
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        {!! html()->text('judul')->class('form-control')->placeholder('Subject:') !!}
+                    </div>
+                    <div class="form-group">
+                        {!! html()->textarea('text')->class('textarea')->placeholder('Isi Pesan') !!}
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Kirim</button>
+                    </div>
+                    <button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Batal</button>
+                </div>
+                <!-- /.box-footer -->
+            </div>
+            <!-- /. box -->
+            {!! html()->form()->close() !!}
+        </div>
+    </div>
+</section>
 @endsection
 @include('partials.asset_tinymce')
 @include('partials.asset_select2')
 @push('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             $('#list_desa').select2({
                 placeholder: "Pilih {{ config('setting.sebutan_desa') }}",
                 allowClear: true
@@ -94,5 +86,5 @@
             relative_urls: false,
             remove_script_host: false
         });
-    </script>
+</script>
 @endpush

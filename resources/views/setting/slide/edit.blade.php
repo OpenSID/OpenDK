@@ -20,6 +20,7 @@
 
                 {!! html()
                 ->form('PUT', route('setting.slide.update', $slide->id))
+                ->attribute('enctype', 'multipart/form-data')
                 ->acceptsFiles()
                 ->id('form-slide')
                 ->class('form-horizontal form-label-left')
@@ -44,7 +45,7 @@
                 <div class="box-footer">
                     @include('partials.button_reset_submit')
                 </div>
-                {!! html()->close() !!}
+                {!! html()->form()->close() !!}                
             </div>
         </div>
 </section>

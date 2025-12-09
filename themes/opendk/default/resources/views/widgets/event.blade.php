@@ -2,27 +2,12 @@
     <h2 class="box-title text-bold">AGENDA KEGIATAN</h2>
 </div>
 <br>
-<ul class="timeline">
-    @if (count($events) > 0)
-        @foreach ($events as $key => $event)
-            @foreach ($event as $value)
-                <li>
-                    <i class="fa fa-calendar @if ($value->status == 'OPEN') bg-maroon @else bg-gray @endif"></i>
-                    <div class="timeline-item">
-                        <h4 class="timeline-header">
-                            <a href="{{ url('event/' . $value->slug) }}">{{ url('event/' . $value->slug) }}</a>
-                        </h4>
-                        <small class="text-yellow"><i class="fa fa-clock-o"></i> {{ Carbon\Carbon::parse($value->start)->translatedFormat('d F Y') }}</small>
-                    </div>
-                </li>
-                <br />
-            @endforeach
-        @endforeach
-    @else
+<div id="events-widget">
+    <ul class="timeline">
         <li class="time-label">
             <span class="bg-gray">
-                Event tidak tersedia.
+                Loading events...
             </span>
         </li>
-    @endif
-</ul>
+    </ul>
+</div>

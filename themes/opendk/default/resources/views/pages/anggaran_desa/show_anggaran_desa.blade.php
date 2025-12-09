@@ -18,10 +18,7 @@
                                 <input type="hidden" id="profil_id" value="{{ $profil->id }}">
                                 <select class="form-control" id="list_desa">
                                     <option value="Semua">Semua Desa</option>
-                                    @foreach ($list_desa as $desa)
-                                        {{ config('setting.sebutan_desa') }}< <option value="{{ $desa->desa_id }}">
-                                            {{ $desa->nama }}</option>
-                                    @endforeach
+                                    
                                 </select>
                             </div>
                         </div>
@@ -45,9 +42,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control" id="list_year">
                                     <option value="Semua">Semua</option>
-                                    @foreach ($year_list as $year)
-                                        <option value="{{ $year }}">{{ $year }}</option>
-                                    @endforeach
+                                    
                                 </select>
                             </div>
                         </div>
@@ -78,52 +73,34 @@
     <!-- /.content -->
     @endsection @include('partials.asset_amcharts') @include('partials.asset_select2') @push('scripts')
     <script>
-        $(function() {
-
-            // Select 2 Kecamatan
-            $('#list_desa').select2();
+        $(function() {            
             $('#list_months').select2();
+            generateDropdownYear('#list_year')
+            $(document).on('websiteDataLoaded', function(event, websiteData) {
+                if (websiteData.desa) {
+                            var desaSelect = $('#list_desa');                                                                        
+                            websiteData.desa.forEach(function(item) {
+                                desaSelect.append(`<option value='${item.desa_id}'>${item.nama}</option>`);
+                            });
+                            
+                        desaSelect.select2();
+                }
+            })
+            
             $('#list_year').select2();
-
-
-            var did = $('#list_desa').find(":selected").val();
-            var mid = $('#list_months').find(":selected").val();
-            var year = $('#list_year').find(":selected").val();
-
-            /*
-             Initial Chart Dashboard Pendidikan
-             */
-            das_chart_anggaran(mid, did, year);
-            /*
-             End Initial
-             */
-
-
-            $('#list_desa').on('select2:select', function(e) {
+            // Change Dashboard when Lsit Desa changed
+            $('#list_desa,#list_year,#list_months').on('change', function(e) {
                 var did = $('#list_desa').find(":selected").val();
+                var year = $('#list_year').find(":selected").text();
                 var mid = $('#list_months').find(":selected").val();
-                var year = $('#list_year').find(":selected").val();
                 das_chart_anggaran(mid, did, year);
-            });
-
-            $('#list_months').on('select2:select', function(e) {
-                var did = $('#list_desa').find(":selected").val();
-                var mid = $('#list_months').find(":selected").val();
-                var year = $('#list_year').find(":selected").val();
-                das_chart_anggaran(mid, did, year);
-            });
-
-            $('#list_year').on('select2:select', function(e) {
-                var did = $('#list_desa').find(":selected").val();
-                var mid = $('#list_months').find(":selected").val();
-                var year = $('#list_year').find(":selected").val();
-                das_chart_anggaran(mid, did, year);
-            });
+            });            
+            $('#list_year').trigger('change');
         });
 
         function das_chart_anggaran(mid, did, year) {
 
-            $.ajax('{!! route('statistik.chart-anggaran-desa') !!}', {
+            $.ajax('{!! route('api.statistik.chart-anggaran-desa') !!}', {
                 beforeSend: function() {
                     $('#chartdiv').html(
                         '<div class="text-center"><i class="fa fa-spinner fa-spin fa-3x fa-fw"></i></div>');

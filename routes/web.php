@@ -841,13 +841,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
-                Route::post('store', 'store')->name('setting.user.store');
-                Route::get('edit/{id}', 'edit')->name('setting.user.edit');
-                Route::put('update/{id}', 'update')->name('setting.user.update');
+                Route::post('store', 'store')->name('setting.user.store');                
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
                 Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::post('destroy/{id}', 'destroy')->name('setting.user.destroy');
-                Route::post('active/{id}', 'active')->name('setting.user.active');
+                Route::post('active/{id}', 'active')->name('setting.user.active');                
+            });
+
+            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {                
+                Route::get('edit/{id}', 'edit')->name('setting.user.edit');
+                Route::put('update/{id}', 'update')->name('setting.user.update');                
                 Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });

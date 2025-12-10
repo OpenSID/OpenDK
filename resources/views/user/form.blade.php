@@ -1,4 +1,5 @@
 @include('partials.flash_message')
+@role('super-admin')
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Pengurus</label>
 
@@ -16,6 +17,7 @@
         </select>
     </div>
 </div>
+@endrole
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 

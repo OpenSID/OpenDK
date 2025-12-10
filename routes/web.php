@@ -95,7 +95,9 @@ Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], func
         // OTP Activation (requires auth)
         Route::middleware('auth')->group(function () {
             // Redirect old individual activate page to unified page
-            Route::get('/otp/activate', function () { return redirect()->route('otp2fa.index'); })->name('otp.activate');
+            Route::get('/otp/activate', function () {
+                return redirect()->route('otp2fa.index');
+            })->name('otp.activate');
             Route::post('/otp/request-activation', 'OtpController@requestActivation')->name('otp.request-activation');
             Route::get('/otp/verify-activation', 'OtpController@showVerifyActivationForm')->name('otp.verify-activation');
             Route::post('/otp/verify-activation', 'OtpController@verifyActivation');
@@ -124,7 +126,9 @@ Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], func
         Route::post('/otp-2fa/verify-settings', 'OtpController@verifySettings')->name('otp2fa.verify-settings.post');
 
         // Redirect old 2fa activate page to unified page
-        Route::get('/2fa/activate', function () { return redirect()->route('otp2fa.index'); })->name('2fa.activate');
+        Route::get('/2fa/activate', function () {
+            return redirect()->route('otp2fa.index');
+        })->name('2fa.activate');
 
         Route::post('/2fa/request-activation', 'TwoFactorController@requestActivation')->name('2fa.request-activation');
         Route::get('/2fa/verify-activation', 'TwoFactorController@showVerifyActivationForm')->name('2fa.verify-activation');
@@ -211,17 +215,17 @@ Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], func
 
             Route::group(['prefix' => 'statistik'], function () {
                 Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
-                Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');                
+                Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
 
-                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');                
+                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');
 
-                Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');                
+                Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
 
-                Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');                
+                Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');
 
-                Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');                
+                Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
 
-                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');                
+                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');
             });
 
             Route::group(['prefix' => 'unduhan'], function () {
@@ -229,7 +233,7 @@ Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], func
 
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::permanentRedirect('/', '/');
-                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');                                        
+                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');
                     Route::get('{file}/download', 'DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
                 });
 
@@ -928,7 +932,7 @@ Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], func
                 Route::get('/', 'index')->name('setting.themes.index');
                 Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
                 Route::get('rescan', 'rescan')->name('setting.themes.rescan');
-                Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');                
+                Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');
                 // post to-upload
                 Route::post('upload', 'upload')->name('setting.themes.upload');
                 Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
@@ -977,7 +981,11 @@ Route::group(['middleware' => ['installed', 'tenant', 'xss_sanitization']], func
                 Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');
                 Route::get('/testing', [PengaturanDatabaseController::class, 'testing']);
             });
-
+            Route::group(['middleware' => ['role:super-admin']], function () {
+                // Duplikasi functionality
+                Route::get('duplikasi', [App\Http\Controllers\DuplikasiController::class, 'showForm'])->name('duplikasi.form');
+                Route::post('duplikasi', [App\Http\Controllers\DuplikasiController::class, 'duplicate'])->name('duplikasi.process');
+            });
             // Pengaturan Database (Restore)
             Route::group(['prefix' => 'restore-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['role:super-admin|administrator-website']], function () {
                 Route::get('/', 'restoreDatabase')->name('setting.pengaturan-database.restore');

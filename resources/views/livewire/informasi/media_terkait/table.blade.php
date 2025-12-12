@@ -13,7 +13,7 @@
             <!-- Filter dan Pencarian -->
             <div class="row">
                 <div class="col-md-1">
-                    <x-select wire:model="status" style="width: 80px;">
+                    <x-select wire:model.live="status" style="width: 80px;">
                         <option value="">Semua</option>
                         <option value="1">Aktif</option>
                         <option value="0">Tidak Aktif</option>

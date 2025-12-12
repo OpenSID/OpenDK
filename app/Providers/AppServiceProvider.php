@@ -46,7 +46,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use MichaelDzjap\TwoFactorAuth\Providers\EmailTwoFactorProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -77,15 +76,8 @@ class AppServiceProvider extends ServiceProvider
             $this->file();
         }
 
-        if (!Type::hasType('tinyinteger')) {
-            Type::addType('tinyinteger', 'Doctrine\DBAL\Types\SmallIntType');
-            $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-            $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
-        }
-
-        resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {
-            return new \App\Providers\EmailTwoFactorProvider();
-        });       
+        // Note: Doctrine DBAL tinyinteger type removed for Laravel 11 compatibility
+        // If needed, consider using native MySQL migrations instead
         
         // bypass validasi captcha saat unit testing
         if (app()->environment('testing') || app()->environment('local')) {

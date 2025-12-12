@@ -44,6 +44,15 @@ class LoginControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Logout any authenticated user from parent TestCase
+        // This is necessary because base TestCase automatically authenticates a user
+        auth()->logout();
+    }
+
     public function test_login_form_displayed()
     {
         $response = $this->get(route('login'));

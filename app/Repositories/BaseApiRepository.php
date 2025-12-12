@@ -198,11 +198,13 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
 
     /**
      * Get query builder with Spatie Query Builder (if available)
+     * Laravel 11 compatibility: Ensure we pass a Builder instance
      */
     protected function getQueryBuilder()
     {
-        return QueryBuilder::for($this->model);
-    }    
+        $query = $this->model instanceof Builder ? $this->model : $this->model->newQuery();
+        return QueryBuilder::for($query);
+    }
 
     /**
      * Apply custom filters
@@ -231,7 +233,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
         return $this;
     }
 
-    protected function getFilteredApi(){
+    protected function getFilteredApi()
+    {
         return $this->getQueryBuilder()->allowedFilters($this->allowedFilters)->allowedSorts($this->allowedSorts)->allowedIncludes($this->allowedIncludes);
     }
 

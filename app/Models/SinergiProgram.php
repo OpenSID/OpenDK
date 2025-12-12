@@ -33,9 +33,8 @@ namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class SinergiProgram extends Model
+class SinergiProgram extends BaseModel
 {
     use HandlesResourceDeletion, HasFactory;
 

@@ -33,9 +33,8 @@ namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Menu extends BaseModel
 {
     use Sluggable;
 

@@ -49,7 +49,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class        
     ];
 
     /**
@@ -66,7 +66,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\SecurityHeaders::class,
-            \App\Http\Middleware\GlobalShareMiddleware::class,
+            \App\Http\Middleware\GlobalShareMiddleware::class,            
         ],
 
         'api' => [
@@ -104,8 +104,10 @@ class Kernel extends HttpKernel
         'complete_profile' => \App\Http\Middleware\CompleteProfile::class,
         'token.registered' => \App\Http\Middleware\TokenRegistered::class,
         'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
-        'otp.enabled' => \App\Http\Middleware\CheckOtpEnabled::class,        
+        'otp.enabled' => \App\Http\Middleware\CheckOtpEnabled::class,
         'theme.api' => \App\Http\Middleware\ThemeApiMiddleware::class,
+        'tenant' => \App\Http\Middleware\TenantMiddleware::class,
+        'check.tenant.count' => \App\Http\Middleware\CheckTenantCount::class,
     ];
 
     /**
@@ -116,6 +118,8 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewarePriority = [
+        \App\Http\Middleware\KDInstalled::class,
+        \App\Http\Middleware\TenantMiddleware::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,

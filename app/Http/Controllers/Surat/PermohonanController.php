@@ -71,12 +71,12 @@ class PermohonanController extends Controller
                 : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
         }))
             ->addColumn('aksi', function ($row) {
-                $user = auth()->user()->pengurus_id;
+                $user = auth()->user()?->pengurus_id;
                 
                 $isAllow = false;
                 if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
                     $isAllow = true;
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris?->id) {
                     $isAllow = true;
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
                     $isAllow = true;

@@ -32,7 +32,9 @@
 namespace Database\Seeders\Demo;
 
 use App\Enums\MenuTipe;
+use App\Models\DataDesa;
 use App\Models\Navigation;
+use App\Models\Potensi;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +51,7 @@ class DemoDasNavigationTableSeeder extends Seeder
         // Submenu
         $subMenu = [];
 
-        DB::table('das_data_desa')->get()->each(function ($data) use (&$subMenu) {
+        DataDesa::all()->each(function ($data) use (&$subMenu) {
             $slug = $data->sebutan_desa . '-' . Str::slug($data->nama);
             $subMenu[] = [
                 'parent_id' => Navigation::where('slug', 'desa')->first()->id,
@@ -62,7 +64,7 @@ class DemoDasNavigationTableSeeder extends Seeder
             ];
         });
 
-        DB::table('das_tipe_potensi')->get()->each(function ($data) use (&$subMenu) {
+        Potensi::all()->each(function ($data) use (&$subMenu) {
             $subMenu[] = [
                 'parent_id' => Navigation::where('slug', 'potensi')->first()->id,
                 'name' => $data->nama_kategori,
@@ -73,7 +75,10 @@ class DemoDasNavigationTableSeeder extends Seeder
                 'status' => 1,
             ];
         });
-
-        DB::table('das_navigation')->insert($subMenu);
+        if($subMenu){
+            foreach ($subMenu as $key => $item) {
+                Navigation::create($item);
+            }
+        }        
     }
 }

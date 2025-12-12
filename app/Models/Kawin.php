@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Kawin extends Model
+class Kawin extends BaseModel
 {
     protected $table = 'ref_kawin';
 

@@ -518,7 +518,8 @@ if (!function_exists('theme_active')) {
     function theme_active()
     {
         $themeActive = \App\Models\Themes::where('active', 1)->first();
-        if (!$themeActive) {
+        if (!$themeActive) {            
+            scan_themes();
             $themeActive = \App\Models\Themes::where('system', 1)->first();
             $themeActive->active = 1;
             $themeActive->save();

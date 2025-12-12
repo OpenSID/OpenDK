@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class PembangunanDokumentasi extends Model
+class PembangunanDokumentasi extends BaseModel
 {
     protected $table = 'das_pembangunan_dokumentasi';
 

@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 
-class Potensi extends Model
+class Potensi extends BaseModel
 {
     use HandlesResourceDeletion;
 

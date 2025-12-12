@@ -32,8 +32,10 @@
 namespace App\Services;
 
 use App\Models\CoaType;
+use App\Models\AnggaranDesa;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartAnggaranDesaService extends BaseApiService
 {
@@ -98,7 +100,7 @@ class StatistikChartAnggaranDesaService extends BaseApiService
                     $data['data-detail'] = $this->buildTree();
                 }                                
             } catch (\Exception $e) {
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
@@ -114,7 +116,7 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         if ($mid == 'Semua' && $year == 'Semua') {
             $tmp = [];
             foreach ($type as $val) {
-                $queryAnggaran = DB::table('das_anggaran_desa')->select('*')
+                $queryAnggaran = AnggaranDesa::select('*')
                     ->where('no_akun', 'LIKE', $val->id.'%');
                 if ($did != 'Semua') {
                     $queryAnggaran->where('desa_id', $did);
@@ -129,7 +131,7 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         } elseif ($mid != 'Semua' && $year == 'Semua') {
             $tmp = [];
             foreach ($type as $val) {
-                $queryAnggaran = DB::table('das_anggaran_desa')->select('*')
+                $queryAnggaran = AnggaranDesa::select('*')
                     ->where('no_akun', 'LIKE', $val->id.'%')
                     ->where('bulan', $mid);
                 if ($did != 'Semua') {
@@ -145,7 +147,7 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         } elseif ($mid == 'Semua' && $year != 'Semua') {
             $tmp = [];
             foreach ($type as $val) {
-                $queryAnggaran = DB::table('das_anggaran_desa')->select('*')
+                $queryAnggaran = AnggaranDesa::select('*')
                     ->where('no_akun', 'LIKE', $val->id.'%')
                     ->where('tahun', $year);
                 if ($did != 'Semua') {
@@ -160,7 +162,7 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         } elseif ($mid != 'Semua' && $year != 'Semua') {
             $tmp = [];
             foreach ($type as $val) {
-                $queryAnggaran = DB::table('das_anggaran_desa')->select('*')
+                $queryAnggaran = AnggaranDesa::select('*')
                     ->where('no_akun', 'LIKE', $val->id.'%')
                     ->where('bulan', $mid)
                     ->where('tahun', $year);

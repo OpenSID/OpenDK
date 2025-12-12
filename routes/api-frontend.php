@@ -61,8 +61,8 @@ use App\Http\Controllers\Api\Frontend\KependudukanController;
 |
 */
 
-Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
-
+Route::group(['prefix' => 'v1', 'middleware' => ['installed', 'tenant', 'xss_sanitization']], function () {
+    
     /**
      * Artikel API Routes
      */

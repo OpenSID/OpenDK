@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PendudukSex;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,9 +17,11 @@ class PendudukSexSeeder extends Seeder
     public function run()
     {
         // Insert data ke tabel das_penduduk_sex
-        DB::table('das_penduduk_sex')->insert([
-            ['id' => 1, 'nama' => 'Laki-laki'],
-            ['id' => 2, 'nama' => 'Perempuan'],
-        ]);
+        if(!PendudukSex::whereNama('Laki-laki')->exists()){
+            PendudukSex::create(['nama' => 'Laki-laki']);
+        }
+        if(!PendudukSex::whereNama('Perempuan')->exists()){
+            PendudukSex::create(['nama' => 'Perempuan']);
+        }
     }
 }

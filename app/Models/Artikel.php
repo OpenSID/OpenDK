@@ -33,13 +33,12 @@ namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Artikel extends Model
+class Artikel extends BaseModel
 {
     use Sluggable;
     use HasFactory;

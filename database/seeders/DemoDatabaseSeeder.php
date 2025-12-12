@@ -103,7 +103,8 @@ class DemoDatabaseSeeder extends Seeder
         $this->call(DemoMediaSosialSeeder::class);
         $this->call(DemoSinergiProgramSeeder::class);
         $this->call(DemoSliderSeeder::class);
-        $this->call(DemoDasNavigationTableSeeder::class);
+        // sama dengan DasNavigationTableSeeder dan sudah dipanggil pada databaseSeeder
+        //$this->call(DemoDasNavigationTableSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

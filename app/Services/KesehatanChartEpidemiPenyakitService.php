@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\EpidemiPenyakit;
+use App\Models\JenisPenyakit;
 use Illuminate\Support\Facades\DB;
 
 class KesehatanChartEpidemiPenyakitService
@@ -17,8 +19,7 @@ class KesehatanChartEpidemiPenyakitService
         if ($year == 'Semua') {
             foreach (years_list() as $yearl) {
                 // SD
-                $query = DB::table('das_epidemi_penyakit')
-                    ->where('tahun', '=', $yearl);
+                $query = EpidemiPenyakit::where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $query->where('desa_id', '=', $did);
                 }
@@ -32,20 +33,18 @@ class KesehatanChartEpidemiPenyakitService
             $datas = [];
 
             foreach (semester() as $key => $val) {
-                $penyakit = DB::table('ref_penyakit')->get();
+                $penyakit = JenisPenyakit::get();
                 $temp = [];
                 foreach ($penyakit as $value) {
-                    $query_total = DB::table('das_epidemi_penyakit')
-                        //->join('ref_penyakit', 'das_epidemi_penyakit.penyakit_id', '=', 'ref_penyakit.id')
-                        ->where('das_epidemi_penyakit.kecamatan_id', '=', get_kode_kecamatan())
-                        ->whereRaw('das_epidemi_penyakit.bulan in ('.$this->getIdsSemester($key).')')
-                        ->where('das_epidemi_penyakit.tahun', $year)
-                        ->where('das_epidemi_penyakit.penyakit_id', $value->id);
+                    $query_total = EpidemiPenyakit::where('kecamatan_id', '=', get_kode_kecamatan())
+                        ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
+                        ->where('tahun', $year)
+                        ->where('penyakit_id', $value->id);
 
                     if ($did != 'Semua') {
-                        $query_total->where('das_epidemi_penyakit.desa_id', '=', $did);
+                        $query_total->where('desa_id', '=', $did);
                     }
-                    $total = $query_total->sum('das_epidemi_penyakit.jumlah_penderita');
+                    $total = $query_total->sum('jumlah_penderita');
                     $temp['penyakit'.$value->id] = $total;
                 }
                 $temp['year'] = 'Semester '.$key;

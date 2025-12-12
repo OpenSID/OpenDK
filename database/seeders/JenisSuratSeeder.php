@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\JenisSurat;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class JenisSuratSeeder extends Seeder
@@ -28,11 +29,13 @@ class JenisSuratSeeder extends Seeder
             'Surat Keterangan Kematian dari Kepala Desa/Kelurahan',
             'Surat imigrasi / STMD (Surat Tanda Melapor Diri)',
         ];
-
+        $now = Carbon::now();
         foreach ($items as $item) {
-            JenisSurat::create([
+            DB::table('das_jenis_surat') ->insert([
                 'nama' => $item,
                 'slug' => Str::slug($item),
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
         }
     }

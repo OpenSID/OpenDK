@@ -106,7 +106,28 @@ class ProfilController extends Controller
                 $request->file('file_logo')->move('storage/profil/file_logo/', $fileLogoName);
                 $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
             }
+            
+            // jika ada perubahan kecamatan_id pada profil maka update juga nilai pada tenant dan KODE_KECAMATAN pada file .env
+            if ($profil->isDirty('kecamatan_id')) {
+                // Update tenant value if multi-tenancy is used
+                $tenant = $profil->tenant;
+                if ($tenant) {
+                    $tenant->kode_kecamatan = $profil->kecamatan_id;
+                    $tenant->save();
+                }
 
+                // Update KODE_KECAMATAN in .env
+                $envPath = base_path('.env');
+                if (file_exists($envPath)) {
+                    $envContent = file_get_contents($envPath);
+                    $envContent = preg_replace(
+                        '/^KODE_KECAMATAN=.*$/m',
+                        'KODE_KECAMATAN=' . $profil->kecamatan_id,
+                        $envContent
+                    );
+                    file_put_contents($envPath, $envContent);
+                }
+            }
             $profil->update();
             $dataumum->update();
 

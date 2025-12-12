@@ -33,9 +33,11 @@ namespace App\Services;
 
 use App\Enums\LabelStatistik;
 use App\Models\DataDesa;
+use App\Models\TingkatPendidikan;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartTingkatPendidikanService extends BaseApiService
 {
@@ -90,8 +92,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
                 $dataPendidikan[] = $this->mappingDataPendidikan($json, $key);
             }
         } catch (\Exception $e) {
-            \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+            Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
+        }
         return $dataPendidikan;
     }
 
@@ -119,8 +121,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
                 $dataPendidikan[] = $this->mappingDataPendidikan($json, $key);
             }
         } catch (\Exception $e) {
-            \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+            Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
+        }
         return $dataPendidikan;
     }
 
@@ -138,8 +140,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
             $json = $this->apiRequest('/api/v1/statistik-web/penduduk', $filters);
             $dataPendidikan[] = $this->mappingDataPendidikan($json, $year);
         } catch (\Exception $e) {
-            \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+            Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
+        }
         return $dataPendidikan;
     }
 
@@ -166,8 +168,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
                 $dataPendidikan[] = $this->mappingDataPendidikan($json, $key);
             }
         } catch (\Exception $e) {
-            \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+            Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
+        }
         return $dataPendidikan;
     }
 
@@ -194,8 +196,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         if ($year == 'Semua' && $did == 'Semua') {
             foreach (years_list() as $yearl) {
                 // SD
-                $queryPendidikan = DB::table('das_tingkat_pendidikan')
-                    ->where('tahun', '=', $yearl);
+                $queryPendidikan = TingkatPendidikan::where('tahun', '=', $yearl);
 
                 $dataPendidikan[] = [
                     'year' => $yearl,
@@ -211,8 +212,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
             // Quartal
             $desa = DataDesa::all();
             foreach ($desa as $value) {
-                $queryPendidikan = DB::table('das_tingkat_pendidikan')
-                    ->selectRaw('sum(tidak_tamat_sekolah) as tidak_tamat_sekolah, sum(tamat_sd) as tamat_sd, sum(tamat_smp) as tamat_smp, sum(tamat_sma) as tamat_sma, sum(tamat_diploma_sederajat) as tamat_diploma_sederajat')
+                $queryPendidikan = TingkatPendidikan::selectRaw('sum(tidak_tamat_sekolah) as tidak_tamat_sekolah, sum(tamat_sd) as tamat_sd, sum(tamat_smp) as tamat_smp, sum(tamat_sma) as tamat_sma, sum(tamat_diploma_sederajat) as tamat_diploma_sederajat')
                    // ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
                     ->where('tahun', $year)
                     ->where('desa_id', '=', $value->desa_id)
@@ -233,8 +233,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
             $dataTabel = [];
             // Quartal
             foreach (semester() as $key => $value) {
-                $queryPendidikan = DB::table('das_tingkat_pendidikan')
-                    ->selectRaw('sum(tidak_tamat_sekolah) as tidak_tamat_sekolah, sum(tamat_sd) as tamat_sd, sum(tamat_smp) as tamat_smp, sum(tamat_sma) as tamat_sma, sum(tamat_diploma_sederajat) as tamat_diploma_sederajat')
+                $queryPendidikan = TingkatPendidikan::selectRaw('sum(tidak_tamat_sekolah) as tidak_tamat_sekolah, sum(tamat_sd) as tamat_sd, sum(tamat_smp) as tamat_smp, sum(tamat_sma) as tamat_sma, sum(tamat_diploma_sederajat) as tamat_diploma_sederajat')
                     // ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
                     ->where('tahun', $year)
                     ->where('desa_id', '=', $did)
@@ -255,10 +254,9 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         } elseif ($year == 'Semua' && $did != 'Semua') {
             foreach (years_list() as $yearl) {
                 // SD
-                $queryPendidikan = DB::table('das_tingkat_pendidikan')
-                    ->where('tahun', '=', $yearl)
+                $queryPendidikan = TingkatPendidikan::where('tahun', '=', $yearl)
                     ->where('desa_id', $did);
-
+    
                 $dataPendidikan[] = [
                     'year' => $yearl,
                     'tidak_tamat_sekolah' => $queryPendidikan->sum('tidak_tamat_sekolah'),

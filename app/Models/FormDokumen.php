@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 
-class FormDokumen extends Model
+class FormDokumen extends BaseModel
 {
     use HandlesResourceDeletion;
 

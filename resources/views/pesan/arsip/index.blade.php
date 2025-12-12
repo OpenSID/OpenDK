@@ -58,7 +58,7 @@
                                                 </div>
                                             </td>
                                             <td style="width: 10%" class="mailbox-name"><a
-                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama ?? '-' }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>

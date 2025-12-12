@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class PesanDetail extends Model
+class PesanDetail extends BaseModel
 {
     protected $table = 'das_pesan_detail';
 

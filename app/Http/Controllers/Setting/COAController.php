@@ -74,7 +74,7 @@ class COAController extends Controller
                 'coa_name' => $request->input('coa_name'),
                 'id' => $request->input('id'),
             ];
-            DB::table('ref_coa')->insert($data);
+            Coa::insert($data);
         } catch (\Exception $e) {
             report($e);
 

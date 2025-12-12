@@ -32,9 +32,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class FasilitasPAUD extends Model
+class FasilitasPAUD extends BaseModel
 {
     use HasFactory;
 

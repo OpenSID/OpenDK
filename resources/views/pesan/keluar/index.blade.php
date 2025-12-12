@@ -70,7 +70,7 @@
                                             style="position: absolute; opacity: 0;">
                                     </td>
                                     <td style="width: 10%" class="mailbox-name"><a
-                                            href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama
+                                            href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama ?? '-'
                                             }}</a>
                                     </td>
                                     <td style="width: 65%" class="mailbox-subject">

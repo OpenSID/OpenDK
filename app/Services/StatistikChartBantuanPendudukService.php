@@ -33,7 +33,9 @@ namespace App\Services;
 
 use App\Enums\LabelStatistik;
 use App\Models\Program;
-use Illuminate\Support\Facades\DB;
+use App\Models\PesertaProgram;
+use App\Models\Penduduk;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartBantuanPendudukService extends BaseApiService
 {
@@ -65,7 +67,7 @@ class StatistikChartBantuanPendudukService extends BaseApiService
                 
                 return $data;
             } catch (\Exception $e) {
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
@@ -79,7 +81,7 @@ class StatistikChartBantuanPendudukService extends BaseApiService
         $program = Program::where('sasaran', $sasaran)->get();
 
         foreach ($program as $prog) {
-            $queryResult = DB::table('das_peserta_program')
+            $queryResult = PesertaProgram::query()
                 ->join('das_penduduk', 'das_peserta_program.kartu_nik', '=', 'das_penduduk.nik')
                 ->where('das_peserta_program.sasaran', '=', $sasaran)
                 ->where('das_peserta_program.program_id', '=', $prog->id);

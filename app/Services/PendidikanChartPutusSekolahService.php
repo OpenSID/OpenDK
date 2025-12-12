@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\DataDesa;
+use App\Models\PutusSekolah;
 use Illuminate\Support\Facades\DB;
 
 class PendidikanChartPutusSekolahService
@@ -16,7 +17,7 @@ class PendidikanChartPutusSekolahService
         if ($year == 'Semua' && $did == 'Semua') {
             foreach (years_list() as $yearl) {
                 // SD
-                $queryPendidikan = DB::table('das_putus_sekolah')
+                $queryPendidikan = PutusSekolah::query()
                     ->where('tahun', '=', $yearl);
 
                 $dataPendidikan[] = [
@@ -34,7 +35,7 @@ class PendidikanChartPutusSekolahService
         } elseif ($year == 'Semua' && $did != 'Semua') {
             foreach (years_list() as $yearl) {
                 // SD
-                $queryPendidikan = DB::table('das_putus_sekolah')
+                $queryPendidikan = PutusSekolah::query()
                     ->where('tahun', '=', $yearl)
                     ->where('desa_id', $did);
 
@@ -54,7 +55,7 @@ class PendidikanChartPutusSekolahService
             $desa = DataDesa::all();
             foreach ($desa as $value) {
                 // SD
-                $queryPendidikan = DB::table('das_putus_sekolah')
+                $queryPendidikan = PutusSekolah::query()
                     ->where('tahun', '=', $year)
                     ->where('desa_id', $value->desa_id);
 
@@ -74,7 +75,7 @@ class PendidikanChartPutusSekolahService
             $dataTabel = [];
             // Quartal
             foreach (semester() as $key => $kuartal) {
-                $queryPendidikan = DB::table('das_putus_sekolah')
+                $queryPendidikan = PutusSekolah::query()
                     // ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
                     ->where('tahun', $year)
                     ->where('desa_id', '=', $did);

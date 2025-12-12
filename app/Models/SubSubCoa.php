@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class SubSubCoa extends Model
+class SubSubCoa extends BaseModel
 {
     protected $table = 'ref_sub_sub_coa';
 

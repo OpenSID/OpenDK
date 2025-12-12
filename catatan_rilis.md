@@ -6,6 +6,7 @@ Di rilis versi v2512.0.0 di versi ini terdapat modul komentar pada artikel dan p
  
 #### BUG
 
+1. [#1389](https://github.com/OpenSID/OpenDK/issues/1389) Perbaikan error 500 ketika tambah gambar slide.
 
 #### TEKNIS
 

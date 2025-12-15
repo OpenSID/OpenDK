@@ -3,6 +3,7 @@ Di rilis versi v2512.0.0 di versi ini terdapat modul komentar pada artikel dan p
 #### FITUR
 
 1. [#1387](https://github.com/OpenSID/OpenDK/issues/1387) Penambahan fitur untuk mengatur id telegram/email pengguna secara mandiri.
+2. [#1369](https://github.com/OpenSID/OpenDK/issues/1369) Penerapan Multi-Tenant OpenDK dengan Offset ID.
  
 #### BUG
 

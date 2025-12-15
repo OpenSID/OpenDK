@@ -33,11 +33,10 @@ namespace App\Models;
 
 use App\Enums\MenuTipe;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Navigation extends Model
+class Navigation extends BaseModel
 {
 
     /**

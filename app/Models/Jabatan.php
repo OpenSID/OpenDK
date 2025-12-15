@@ -33,9 +33,8 @@ namespace App\Models;
 
 use App\Enums\JenisJabatan;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Jabatan extends Model
+class Jabatan extends BaseModel
 {
     use HasFactory;
     

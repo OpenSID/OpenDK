@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\FasilitasPAUD;
 use Illuminate\Support\Facades\DB;
 
 class PendidikanChartFasilitasPAUDService
@@ -15,8 +16,7 @@ class PendidikanChartFasilitasPAUDService
         if ($year == 'Semua') {
             foreach (years_list() as $yearl) {
                 // SD
-                $queryPendidikan = DB::table('das_fasilitas_paud')
-                    ->where('tahun', '=', $yearl);
+                $queryPendidikan = FasilitasPAUD::where('tahun', '=', $yearl);
                 if ($did != 'Semua') {
                     $queryPendidikan->where('desa_id', '=', $did);
                 }
@@ -32,8 +32,7 @@ class PendidikanChartFasilitasPAUDService
             $dataTabel = [];
             // Quartal
             foreach (semester() as $key => $kuartal) {
-                $queryPendidikan = DB::table('das_fasilitas_paud')
-                    ->whereRaw('semester in ('.$this->getIdsSemester($key).')')
+                $queryPendidikan = FasilitasPAUD::whereRaw('semester in ('.$this->getIdsSemester($key).')')
                     ->where('tahun', $year);
                 if ($did != 'Semua') {
                     $queryPendidikan->where('desa_id', '=', $did);

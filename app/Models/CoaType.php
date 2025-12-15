@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class CoaType extends Model
+class CoaType extends BaseModel
 {
     protected $table = 'ref_coa_type';
 

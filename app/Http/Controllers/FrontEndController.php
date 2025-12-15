@@ -41,20 +41,24 @@ class FrontEndController extends Controller
     public function __construct()
     {
         parent::__construct();
-        theme_active();
 
-        $this->settings = SettingAplikasi::pluck('value', 'key');
-        View::share([
-            'urlApi' => url($this->urlApi),
-            'events' => null, // Placeholder for events
-            'medsos' => null, // Placeholder for media sosial
-            'media_terkait' => null, // Placeholder for media terkait
-            'navigations' => null, // Placeholder for navigations
-            'navmenus' => null, // Placeholder for navmenus
-            'pengurus' => null, // Placeholder for pengurus
-            'sinergi' => null, // Placeholder for sinergi
-            'slides' => null, // Placeholder for slides
-        ]);
+        // Check if application is installed before executing database queries
+        if (function_exists('sudahInstal') && sudahInstal()) {
+            theme_active();
+
+            $this->settings = SettingAplikasi::pluck('value', 'key');
+            View::share([
+                'urlApi' => url($this->urlApi),
+                'events' => null, // Placeholder for events
+                'medsos' => null, // Placeholder for media sosial
+                'media_terkait' => null, // Placeholder for media terkait
+                'navigations' => null, // Placeholder for navigations
+                'navmenus' => null, // Placeholder for navmenus
+                'pengurus' => null, // Placeholder for pengurus
+                'sinergi' => null, // Placeholder for sinergi
+                'slides' => null, // Placeholder for slides
+            ]);
+        }
     }
 
     protected function isDatabaseGabungan()

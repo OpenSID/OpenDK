@@ -273,7 +273,7 @@ class AdminKomplainController extends Controller
         $data_chart = [];
         $kategori = KategoriKomplain::all();
         foreach ($kategori as $value) {
-            $query_total = DB::table('das_komplain')
+            $query_total = Komplain::query()
                 ->where('kategori', '=', $value->id);
             $total = $query_total->count();
             $data_chart[] = ['kategori' => $value->nama, 'value' => $total];
@@ -288,7 +288,7 @@ class AdminKomplainController extends Controller
         $status = ['REVIEW', 'DITOLAK', 'BELUM', 'PROSES', 'SELESAI'];
         $colors = ['REVIEW' => '#f4f4f4', 'DITOLAK' => '#c9302c', 'BELUM' => '#286090', 'PROSES' => '#ec971f', 'SELESAI' => '#00a65a'];
         foreach ($status as $value) {
-            $query_total = DB::table('das_komplain')
+            $query_total = Komplain::query()
                 ->where('status', '=', $value);
             $total = $query_total->count();
             $data_chart[] = ['status' => ucfirst(strtolower($value)), 'value' => $total, 'color' => $colors[$value]];
@@ -302,7 +302,7 @@ class AdminKomplainController extends Controller
         $data_chart = [];
         $desa = DataDesa::all();
         foreach ($desa as $value) {
-            $query_total = DB::table('das_komplain')
+            $query_total = Komplain::query()
                 ->join('das_penduduk', 'das_komplain.nik', '=', 'das_penduduk.nik')
             ->where('das_penduduk.desa_id', $value->desa_id);
             $total = $query_total->count();

@@ -533,6 +533,11 @@
                                 <a href="{{ route('setting.pengaturan-database.backup') }}"><i
                                         class="fa fa-circle-o"></i>Pengaturan Database</a>
                             </li>
+                            <li
+                                {{ Request::is(['setting/duplikasi', 'setting/duplikasi']) ? 'class=active' : '' }}>
+                                <a href="{{ route('duplikasi.form') }}"><i
+                                        class="fa fa-circle-o"></i>Salin Database</a>
+                            </li>
 
                         </ul>
                     </li>

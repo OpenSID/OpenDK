@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class KategoriLembaga extends Model
+class KategoriLembaga extends BaseModel
 {
     use HasFactory;
     protected $table = 'das_lembaga_kategori';

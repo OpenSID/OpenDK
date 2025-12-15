@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Warganegara extends Model
+class Warganegara extends BaseModel
 {
     protected $table = 'ref_warganegara';
 

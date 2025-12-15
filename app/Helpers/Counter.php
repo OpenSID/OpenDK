@@ -45,6 +45,9 @@ use Jaybizzle\CrawlerDetect\CrawlerDetect;
 
 class Counter
 {
+    private $visitor;
+    private $hasDnt;
+
     public function __construct(CrawlerDetect $visitor)
     {
         $this->visitor = $visitor;
@@ -142,11 +145,10 @@ class Counter
      */
     public function allHits($days = null)
     {
-        $prefix = config('database.connections.'.config('database.default').'.prefix');
         if ($days) {
-            $hits = DB::table($prefix.'das_counter_page_visitor')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = \App\Models\CounterPageVisitor::where('created_at', '>=', now()->subDays($days))->count();
         } else {
-            $hits = DB::table($prefix.'das_counter_page_visitor')->count();
+            $hits = \App\Models\CounterPageVisitor::count();
         }
 
         return number_format($hits);
@@ -165,11 +167,10 @@ class Counter
      */
     public function allVisitors($days = null)
     {
-        $prefix = config('database.connections.'.config('database.default').'.prefix');
         if ($days) {
-            $hits = DB::table($prefix.'das_counter_page_visitor')->distinct('visitor_id')->where('created_at', '>=', Carbon::now()->subDays($days))->count();
+            $hits = \App\Models\CounterPageVisitor::distinct('visitor_id')->where('created_at', '>=', now()->subDays($days))->count('visitor_id');
         } else {
-            $hits = DB::table($prefix.'das_counter_page_visitor')->distinct('visitor_id')->count();
+            $hits = \App\Models\CounterPageVisitor::distinct('visitor_id')->count('visitor_id');
         }
 
         return number_format($hits);
@@ -268,7 +269,7 @@ class Counter
         $page_record = self::createPageIfNotPresent($page);
         $visitor = self::hashVisitor();
         $visitor_record = self::createVisitorRecordIfNotPresent($visitor);
-        $page_record->visitors()->sync([$visitor_record->id => ['created_at' => Carbon::now()]], false);
+        $page_record->visitors()->sync([$visitor_record->id => ['created_at' => now()]], false);
     }
 
     /**

@@ -32,7 +32,10 @@
 namespace App\Services;
 
 use App\Enums\LabelStatistik;
+use App\Models\GolonganDarah;
+use App\Models\Penduduk;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartPendudukGolDarahService extends BaseApiService
 {
@@ -58,7 +61,7 @@ class StatistikChartPendudukGolDarahService extends BaseApiService
                     $data[] = ['blod_type' => $item['attributes']['nama'], 'total' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#'.random_color()];
                 }
             } catch (\Exception $e) {
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
@@ -69,11 +72,9 @@ class StatistikChartPendudukGolDarahService extends BaseApiService
     {
         // Data Chart Penduduk By Golongan Darah
         $data = [];
-        $golonganDarah = DB::table('ref_golongan_darah')->orderBy('id')->get();
+        $golonganDarah = GolonganDarah::orderBy('id')->get();
         foreach ($golonganDarah as $val) {
-            $queryTotal = DB::table('das_penduduk')
-                //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
-                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
+            $queryTotal = Penduduk::leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
                 ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
             if ($val->id != 13) {

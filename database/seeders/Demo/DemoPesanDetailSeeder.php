@@ -32,6 +32,7 @@
 namespace Database\Seeders\Demo;
 
 use App\Models\Pesan;
+use App\Models\PesanDetail;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -59,7 +60,7 @@ class DemoPesanDetailSeeder extends Seeder
         $pesan_id = $pesan->pluck('id');
 
         for ($i = 1; $i <= $defaultCounter; $i++) {
-            DB::table('das_pesan_detail')->insert([
+            PesanDetail::create([
                 'pesan_id' => $faker->randomElement($pesan_id),
                 'text' => $faker->text,
                 'pengirim' => 'desa',

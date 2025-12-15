@@ -38,6 +38,14 @@ class WebsiteFooterTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        // Disable the TrackVisitors middleware to prevent duplicate visitor entries
+        $this->withoutMiddleware(\App\Http\Middleware\TrackVisitors::class);
+    }
+
     /** @test */
     public function homepage_footer_contains_sebutan_desa_config()
     {

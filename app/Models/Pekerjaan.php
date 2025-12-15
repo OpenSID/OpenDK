@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class Pekerjaan extends Model
+class Pekerjaan extends BaseModel
 {
     protected $table = 'ref_pekerjaan';
 

@@ -31,6 +31,7 @@
 
 namespace Database\Seeders\Demo;
 
+use App\Models\DataUmum;
 use App\Models\Profil;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +47,7 @@ class DemoDasDataUmumTableSeeder extends Seeder
     {
         DB::table('das_data_umum')->truncate();
 
-        DB::table('das_data_umum')->insert([
+        DataUmum::create([
             'id' => 1,
             'profil_id' => Profil::first()->id,
             'sejarah' => 'Contoh sejarah kecamatan.',

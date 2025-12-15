@@ -35,6 +35,7 @@ use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
+use App\Models\FormDokumen;
 use App\Models\Pengurus;
 use App\Models\Profil;
 use App\Services\DesaService;
@@ -123,7 +124,7 @@ class ProfilController extends FrontEndController
     public function showProfile()
     {
         $profil = $this->profil;
-        $dokumen = DB::table('das_form_dokumen')->take(5)->get();
+        $dokumen = FormDokumen::take(5)->get();
 
         $page_title = 'Profil';
 

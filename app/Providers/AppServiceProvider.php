@@ -31,10 +31,10 @@
 
 namespace App\Providers;
 
-use App\Models\DataDesa;
-use App\Models\DataUmum;
-use App\Models\Penduduk;
 use App\Support\Collection;
+use App\Models\Penduduk;
+use App\Models\SettingAplikasi;
+use App\Models\Profil;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
@@ -45,8 +45,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
-use MichaelDzjap\TwoFactorAuth\Providers\EmailTwoFactorProvider;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -79,8 +79,13 @@ class AppServiceProvider extends ServiceProvider
 
         if (!Type::hasType('tinyinteger')) {
             Type::addType('tinyinteger', 'Doctrine\DBAL\Types\SmallIntType');
-            $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-            $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
+            try {
+                $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
+                $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
+            
         }
 
         resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {
@@ -96,36 +101,9 @@ class AppServiceProvider extends ServiceProvider
     }
 
     protected function penduduk()
-    {
-        // kecamatan_id harus dihapus pada migrasi database/migrations/2021_10_12_081718_alter_table_das_data_umum.php
-        // jumlah_penduduk dll dihapus pada migrasi database/migrations/2021_01_02_055931_dropcolomn_data_umum_table.php           
-        // Penduduk::saved(function ($model) {
-        //     
-        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();            
-        //      
-        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-        //     $dataUmum->save();
-        // });
-
-        // Penduduk::deleted(function ($model) {
-        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
-
-        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-        //     $dataUmum->save();
-        // });
-
+    {        
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();
+            $query = Penduduk::where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();
 
             if ($query) {
                 return true;
@@ -135,7 +113,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('password_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('tanggal_lahir', $value)->whereRaw("nik = '" . $parameters[0] . "'")->exists();
+            $query = Penduduk::where('tanggal_lahir', $value)->whereRaw("nik = '" . $parameters[0] . "'")->exists();
 
             if ($query) {
                 return true;
@@ -145,8 +123,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('unique_key', function ($attribute, $value, $parameters) {
-            $query = DB::table($parameters[0])
-                ->where('key', $value)
+            $query = SettingAplikasi::where('key', $value)
                 ->first();
 
             if (! $query || $query->id == $parameters[1]) {
@@ -174,8 +151,7 @@ class AppServiceProvider extends ServiceProvider
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
                 return  Schema::hasTable('das_setting')
-                    ? DB::table('das_setting')
-                    ->get(['key', 'value'])
+                    ? SettingAplikasi::get(['key', 'value'])
                     ->keyBy('key')
                     ->transform(function ($setting) {
                         return $setting->value;
@@ -185,7 +161,7 @@ class AppServiceProvider extends ServiceProvider
 
             'profil' => Cache::remember('profil', 24 * 60 * 60, function () {
                 if (Schema::hasTable('das_profil')) {
-                    $profil = DB::table('das_profil')
+                    $profil = Profil::query()
                         ->get()
                         ->map(function ($item) {
                             return (array) $item;
@@ -193,7 +169,7 @@ class AppServiceProvider extends ServiceProvider
                         ->first() ?? null;
 
                     if ($profil) {
-                        if (in_array($profil['provinsi_id'], [91, 92])) {
+                        if (in_array($profil['provinsi_id'] ?? '', [91, 92])) {
                             $profil['sebutan_wilayah'] = 'Distrik';
                             $profil['sebutan_kepala_wilayah'] = 'Kepala Distrik';
                         } else {

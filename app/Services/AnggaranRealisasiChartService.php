@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Profil;
+use App\Models\AnggaranRealisasi;
 use Illuminate\Support\Facades\DB;
 
 class AnggaranRealisasiChartService
@@ -21,8 +22,7 @@ class AnggaranRealisasiChartService
             $belanja_tidak_langsung = 0;
 
             foreach (array_sort(years_list()) as $yearls) {
-                $query_result = DB::table('das_anggaran_realisasi')
-                    ->select('*')
+                $query_result = AnggaranRealisasi::select('*')
                     ->where('profil_id', '=', $profil_id);
                 if ($mid != 'Semua') {
                     $query_result->where('bulan', '=', $mid);
@@ -88,10 +88,9 @@ class AnggaranRealisasiChartService
             $belanja_modal = 0;
             $belanja_tidak_langsung = 0;
 
-            $query_result = DB::table('das_anggaran_realisasi')
-                ->selectRaw('sum(total_anggaran) as total_anggaran, sum(total_belanja) as total_belanja,
-                sum(belanja_pegawai) as belanja_pegawai, sum(belanja_barang_jasa) as belanja_barang_jasa,
-                sum(belanja_modal) as belanja_modal, sum(belanja_tidak_langsung) as belanja_tidak_langsung')
+            $query_result = AnggaranRealisasi::selectRaw('sum(total_anggaran) as total_anggaran, sum(total_belanja) as total_belanja,
+            sum(belanja_pegawai) as belanja_pegawai, sum(belanja_barang_jasa) as belanja_barang_jasa,
+            sum(belanja_modal) as belanja_modal, sum(belanja_tidak_langsung) as belanja_tidak_langsung')
                 ->where('profil_id', '=', $profil_id);
 
             if ($mid != 'Semua') {

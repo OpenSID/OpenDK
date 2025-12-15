@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class CaraKB extends Model
+class CaraKB extends BaseModel
 {
     protected $table = 'ref_cara_kb';
 

@@ -31,10 +31,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OtpToken extends Model
+class OtpToken extends BaseModel
 {
     /**
      * {@inheritDoc}

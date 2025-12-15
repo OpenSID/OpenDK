@@ -32,6 +32,7 @@
 namespace Database\Seeders\Demo;
 
 use App\Enums\JenisJabatan;
+use App\Models\Pengurus;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -43,7 +44,7 @@ class DemoDasPengurusTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {        
         $data = [
             'nama' => 'H. Hadi Fathurrahman, S.Sos, M.AP',
             'gelar_depan' => null,
@@ -66,7 +67,8 @@ class DemoDasPengurusTableSeeder extends Seeder
             'jabatan_id' => JenisJabatan::Camat,
             'created_at' => now(),
         ];
-
-        DB::table('das_pengurus')->insert($data);
+        if(!Pengurus::whereJabatanId(JenisJabatan::Camat)->exists()){
+            Pengurus::create($data);
+        }        
     }
 }

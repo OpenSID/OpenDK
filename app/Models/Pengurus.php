@@ -34,16 +34,38 @@ namespace App\Models;
 use App\Enums\Status;
 use App\Enums\JenisJabatan;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Pengurus extends Model
+class Pengurus extends BaseModel
 {
     use HasFactory;
     use HandlesResourceDeletion;
+    
 
     protected $table = 'das_pengurus';
+
+    protected $fillable = [
+        'nama',
+        'gelar_depan',
+        'gelar_belakang',
+        'nip',
+        'nik',
+        'status',
+        'foto',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'sex',
+        'pendidikan_id',
+        'agama_id',
+        'no_sk',
+        'tanggal_sk',
+        'masa_jabatan',
+        'pangkat',
+        'no_henti',
+        'tanggal_henti',
+        'jabatan_id'        
+    ];
 
     protected $guarded = [
         'id',

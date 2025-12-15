@@ -3,9 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class MediaTerkait extends Model
+class MediaTerkait extends BaseModel
 {
     use HasFactory;
 

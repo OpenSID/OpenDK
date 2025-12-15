@@ -31,9 +31,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 
-class WilClusterDesa extends Model
+class WilClusterDesa extends BaseModel
 {
     protected $table = 'das_wil_clusterdesa';
 }

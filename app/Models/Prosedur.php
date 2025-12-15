@@ -32,11 +32,10 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Prosedur extends Model
+class Prosedur extends BaseModel
 {
     use HasFactory;
     use Sluggable;

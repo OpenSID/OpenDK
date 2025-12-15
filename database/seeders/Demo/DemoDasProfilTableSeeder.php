@@ -31,6 +31,7 @@
 
 namespace Database\Seeders\Demo;
 
+use App\Models\Profil;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -45,7 +46,7 @@ class DemoDasProfilTableSeeder extends Seeder
     {
         DB::table('das_profil')->truncate();
 
-        DB::table('das_profil')->insert([
+        Profil::create([
             'id' => 1,
             'provinsi_id' => '53',
             'nama_provinsi' => 'Nusa Tenggara Timur',

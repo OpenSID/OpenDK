@@ -34,6 +34,7 @@ namespace Database\Seeders\Demo;
 use App\Imports\ImporImunisasi;
 use Illuminate\Database\Seeder;
 use Maatwebsite\Excel\Facades\Excel;
+use Throwable;
 
 class DemoImunisasiSeeder extends Seeder
 {
@@ -44,13 +45,16 @@ class DemoImunisasiSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporImunisasi([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Cakupan_Imunisasi.xlsx',
-            'public'
-        );
+        try {
+            Excel::import(
+                new ImporImunisasi([
+                    'bulan' => now()->month,
+                    'tahun' => now()->year,
+                ]),
+                'template_upload/Format_Upload_Cakupan_Imunisasi.xlsx',
+                'public'
+            );
+        } catch (Throwable $th) {
+        }
     }
 }

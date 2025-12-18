@@ -44,13 +44,17 @@ class DemoAKIAKBSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporAKIAKB([
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_AKI_&_AKB.xlsx',
-            'public'
-        );
+        try {
+            Excel::import(
+                new ImporAKIAKB([
+                    'bulan' => now()->month,
+                    'tahun' => now()->year,
+                ]),
+                'template_upload/Format_Upload_AKI_&_AKB.xlsx',
+                'public'
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }        
     }
 }

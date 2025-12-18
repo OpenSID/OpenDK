@@ -254,13 +254,13 @@ class DasNavigationTableSeeder extends Seeder
             ];
         });
 
-        Potensi::all()->each(function ($data) use (&$subMenu) {
+        Potensi::all()->each(function ($data) use (&$subMenu) {            
             $subMenu[] = [
                 'parent_id' => Navigation::where('slug', 'potensi')->first()->id,
-                'name' => $data->nama_kategori,
-                'slug' => 'potensi-' . $data->slug,
+                'name' => $data->nama_potensi,                
+                'slug' => 'potensi-' . Str::slug($data->nama_potensi),
                 'type' => MenuTipe::POTENSI,
-                'url' => 'potensi/' . $data->slug,
+                'url' => 'potensi/' . Str::slug($data->nama_potensi),
                 'order' => $data->id,
                 'status' => 1,
             ];

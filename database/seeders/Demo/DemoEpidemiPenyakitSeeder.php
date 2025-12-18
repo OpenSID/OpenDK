@@ -45,14 +45,18 @@ class DemoEpidemiPenyakitSeeder extends Seeder
      */
     public function run()
     {
-        Excel::import(
-            new ImporEpidemiPenyakit([
-                'penyakit_id' => JenisPenyakit::first()->id,
-                'bulan' => now()->month,
-                'tahun' => now()->year,
-            ]),
-            'template_upload/Format_Upload_Epidemi_Penyakit.xlsx',
-            'public'
-        );
+        try {
+            Excel::import(
+                new ImporEpidemiPenyakit([
+                    'penyakit_id' => JenisPenyakit::first()->id,
+                    'bulan' => now()->month,
+                    'tahun' => now()->year,
+                ]),
+                'template_upload/Format_Upload_Epidemi_Penyakit.xlsx',
+                'public'
+            );
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

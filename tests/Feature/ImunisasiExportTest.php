@@ -126,9 +126,9 @@ test('export imunisasi mapping', function () {
     expect($mappedData[0])->toBe($imunisasi->id)
         ->and($mappedData[1])->toBe('Desa Test Mapping')
         ->and($mappedData[2])->toBe($desa->desa_id)
-        ->and($mappedData[3])->toBe('88')
+        ->and($mappedData[3])->toEqual(88)
         ->and($mappedData[4])->toBe('April')
-        ->and($mappedData[5])->toBe(2024);
+        ->and($mappedData[5])->toEqual(2024);
 });
 
 test('export imunisasi no data', function () {

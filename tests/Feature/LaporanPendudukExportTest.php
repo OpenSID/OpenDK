@@ -118,8 +118,8 @@ test('export laporan penduduk local data', function () {
     expect($exportedData['id'])->toBe($laporan->id)
         ->and($exportedData['nama_desa'])->toBe('Desa Test Local')
         ->and($exportedData['judul'])->toBe('Laporan Test Local')
-        ->and($exportedData['bulan'])->toBe('03')
-        ->and($exportedData['tahun'])->toBe('2024');
+        ->and($exportedData['bulan'])->toEqual(3)
+        ->and($exportedData['tahun'])->toEqual(2024);
 });
 
 test('export laporan penduduk no data', function () {

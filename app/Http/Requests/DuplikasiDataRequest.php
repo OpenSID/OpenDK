@@ -23,8 +23,7 @@ class DuplikasiDataRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'kode_kecamatan' => 'required|string|max:255',
+        return [            
             'id_start_range' => 'required|integer|min:1',
             'id_end_range' => 'required|integer|min:1|gte:id_start_range',
         ];
@@ -36,14 +35,13 @@ class DuplikasiDataRequest extends FormRequest
     public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
-            if (!$validator->errors()->count()) {
-                $tenantCode = $this->input('kode_kecamatan');
+            if (!$validator->errors()->count()) {                
                 $idStartRange = $this->input('id_start_range');
                 $idEndRange = $this->input('id_end_range');
 
                 // Check if the requested range [idStartRange, idEndRange] overlaps with 
                 // any existing tenant's range in the tenants table (excluding the target tenant if it exists)
-                $existingTenants = \DB::table('tenants')->where('kode_kecamatan', '!=', $tenantCode)->get();
+                $existingTenants = \DB::table('tenants')->get();
 
                 foreach ($existingTenants as $existingTenant) {
                     $existingStart = $existingTenant->id_start_range;
@@ -71,10 +69,7 @@ class DuplikasiDataRequest extends FormRequest
      */
     public function messages(): array
     {
-        return [
-            'kode_kecamatan.required' => 'Kode kecamatan tujuan wajib diisi.',
-            'kode_kecamatan.string' => 'Kode kecamatan tujuan harus berupa teks.',
-            'kode_kecamatan.max' => 'Kode kecamatan tujuan tidak boleh lebih dari 255 karakter.',
+        return [            
             'id_start_range.required' => 'ID range awal wajib diisi.',
             'id_start_range.integer' => 'ID range awal harus berupa angka.',
             'id_start_range.min' => 'ID range awal minimal 1.',

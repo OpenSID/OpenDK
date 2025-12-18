@@ -47,16 +47,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                             <div class="form-text">ID kecamatan tujuan (opsional)</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tenant_code" class="form-label">Kode Kecamatan Tujuan</label>
-                            <input type="text" class="form-control @error('tenant_code') is-invalid @enderror"
-                                   id="tenant_code" name="tenant_code" value="{{ old('tenant_code') }}" required>
-                            @error('tenant_code')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div class="form-text">Kode kecamatan tujuan untuk data diduplikasi</div>
-                        </div>
+                        </div>                        
                         
                         <div class="mb-3">
                             <label for="id_start_range" class="form-label">ID Range Awal (Target)</label>

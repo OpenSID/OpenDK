@@ -72,9 +72,11 @@ trait HasTenantScope
                 $tenant = app('current_tenant');
             }
 
-            $model->tenant_id = $tenant->id;
-            $keyName = $model->getKeyName() ?? 'id';
-            $model->$keyName = self::getNextIdForTenant($tenant, $model);
+            if ($tenant) {
+                $model->tenant_id = $tenant->id;
+                $keyName = $model->getKeyName() ?? 'id';
+                $model->$keyName = self::getNextIdForTenant($tenant, $model);
+            }
         });
 
         static::deleting(function ($model) {

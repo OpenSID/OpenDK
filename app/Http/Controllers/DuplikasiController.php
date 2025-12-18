@@ -47,31 +47,25 @@ class DuplikasiController extends Controller
      * Handle the duplication request
      */
     public function duplicate(DuplikasiDataRequest $request)
-    {
-        $tenantCode = $request->input('tenant_code');
+    {        
         $idStartRange = $request->input('id_start_range');
         $idEndRange = $request->input('id_end_range');
         $id = $request->input('id');
         // Get the current tenant to make sure we're getting the right data
         $currentTenant = app('current_tenant');
         if (!$currentTenant) {
-            return redirect()->back()->withErrors(['tenant_code' => 'No current tenant found']);
-        }
-        
-        // Get or create the new tenant based on the provided code
-        $newTenant = DB::table('tenants')->where('code', $tenantCode)->when(!empty($id), static fn($q) => $q->orWhere('id', $id))->first();
-        if ($newTenant) {
-            return redirect()->back()->withErrors(['error' => 'Kode desa sudah ada, jadi tidak bisa dilakukan duplikasi']);
-        }
+            return redirect()->back()->withErrors(['kode_kecamatan' => 'No current tenant found']);
+        }                
 
         // Perform duplication
         try {
             // Start transaction to ensure data consistency
             DB::beginTransaction();
             // Create a new tenant with default values
+            $currentTenant = app('current_tenant');
             $tenantData = [
-                'code' => $tenantCode,
-                'name' => 'Tenant ' . $tenantCode,
+                'kode_kecamatan' => 'temp-'.$currentTenant->kode_kecamatan,
+                'name' => $currentTenant->name,
                 'id_start_range' => $idStartRange,
                 'id_end_range' => $idEndRange,
                 'created_at' => now(),
@@ -107,10 +101,17 @@ class DuplikasiController extends Controller
     {
         // Get the list of columns for the table
         $columns = Schema::getColumnListing($table);
-
+        $primaryKey = 'id';
+        switch($table){
+            case 'das_artikel_kategori':
+                $primaryKey = 'id_kategori';
+                break;
+            default:
+        }
+        
         // Remove tenant_id from columns if it exists to avoid conflicts during duplication
-        $columns = array_filter($columns, function ($column) {
-            return !in_array($column, ['id', 'tenant_id']);
+        $columns = array_filter($columns, function ($column)use($primaryKey) {
+            return !in_array($column, [$primaryKey, 'tenant_id']);
         });
 
         // Convert back to indexed array
@@ -119,11 +120,11 @@ class DuplikasiController extends Controller
         if (!empty($columns)) {
             // Build the column list for the INSERT statement
             $columnList = implode('`, `', $columns);
-            $columnListWithTenant = '`id`, `' . $columnList . '`, `tenant_id`';
+            $columnListWithTenant = '`'.$primaryKey.'`, `' . $columnList . '`, `tenant_id`';
 
             // Build the SELECT statement
             $selectList = implode('`, `', $columns);
-            $selectWithTenant = '(id + ' . $selisihIdStartRange . ') as `id`, `' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
+            $selectWithTenant = '('.$primaryKey.' + ' . $selisihIdStartRange . ') as `'.$primaryKey.'`, `' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
 
             // Execute the INSERT ... SELECT query to duplicate data
             $query = "INSERT INTO `{$table}` ({$columnListWithTenant})
@@ -166,21 +167,104 @@ class DuplikasiController extends Controller
         });
 
         // Convert back to indexed array
-        $columns = array_values($columns);        
+        $columns = array_values($columns);
         try {
             $foreignKey = array_filter($columns, function ($column) {
                 return \Illuminate\Support\Str::endsWith($column,'_id');
             });
             if($foreignKey){
                 foreach ($foreignKey as $key => $column) {
+                    // Update foreign key values with the offset
                     $query = 'update '.$table.' set '.$column.'= ('.$column.' + ?) where tenant_id = ?';
                     DB::statement($query, [$selisihIdStartRange, $newTenantId]);
                     Log::info('update  kolom '.$column.' tabel '.$table,['query' => $query, 'bindings' => [$newTenantId]]);
-                }    
+                    
+                    // Update tenant_id for related data if the column references a table with tenant_id
+                    $this->updateRelatedTenantId($table, $column, $newTenantId, $selisihIdStartRange);
+                }
             }
         }catch (\Exception $e) {
-
+            Log::error('Error updating foreign keys for table '.$table.': '.$e->getMessage());
         }
+    }
+    
+    /**
+     * Update tenant_id for related data to ensure data consistency
+     */
+    private function updateRelatedTenantId($table, $foreignKeyColumn, $newTenantId, $selisihIdStartRange)
+    {
+        try {
+            // Get the referenced table name from the foreign key column
+            $referencedTable = $this->getReferencedTableFromForeignKey($table, $foreignKeyColumn);
+            
+            if ($referencedTable && in_array($referencedTable, $this->tableWithTenantId)) {
+                // Update tenant_id for records in the referenced table that match the foreign keys
+                $query = "UPDATE `{$referencedTable}` SET tenant_id = ? WHERE id IN (
+                    SELECT {$foreignKeyColumn} FROM `{$table}` WHERE tenant_id = ?
+                )";
+                
+                DB::statement($query, [$newTenantId, $newTenantId]);
+                Log::info('update tenant_id tabel '.$referencedTable.' berdasarkan '.$table.'.'.$foreignKeyColumn,[
+                    'query' => $query,
+                    'bindings' => [$newTenantId, $newTenantId]
+                ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error updating related tenant_id for '.$table.'.'.$foreignKeyColumn.': '.$e->getMessage());
+        }
+    }
+    
+    /**
+     * Get the referenced table name from a foreign key column
+     */
+    private function getReferencedTableFromForeignKey($table, $foreignKeyColumn)
+    {
+        // Common foreign key to table mappings
+        $mappings = [
+            'user_id' => 'users',
+            'penduduk_id' => 'das_penduduk',
+            'kategori_id' => 'das_artikel_kategori',
+            'id_kategori' => 'das_artikel_kategori',
+            'id_pembangunan' => 'das_pembangunan',
+            'id_suplemen' => 'das_suplemen',
+            'id_lembaga' => 'das_lembaga',
+            'id_claster' => 'das_claster',
+            'id_penduduk' => 'das_penduduk',
+            'id_keluarga' => 'das_keluarga',
+            'id_desa' => 'config',
+            'id_kecamatan' => 'ref_kecamatan',
+            'id_kabupaten' => 'ref_kabupaten',
+            'id_provinsi' => 'ref_provinsi',
+            'role_id' => 'roles',
+            'permission_id' => 'permissions',
+            'album_id' => 'albums',
+            'parent_id' => $table, // Self-referencing
+        ];
+        
+        // Remove _id suffix to get the base name
+        $baseName = str_replace('_id', '', $foreignKeyColumn);
+        
+        // Check if we have a direct mapping
+        if (isset($mappings[$foreignKeyColumn])) {
+            return $mappings[$foreignKeyColumn];
+        }
+        
+        // Try to infer the table name from the column name
+        if (Schema::hasTable('das_' . $baseName)) {
+            return 'das_' . $baseName;
+        }
+        
+        if (Schema::hasTable($baseName)) {
+            return $baseName;
+        }
+        
+        // Special cases for common patterns
+        if ($baseName === 'artikel') return 'das_artikel';
+        if ($baseName === 'galeri') return 'galeris';
+        if ($baseName === 'navigation') return 'das_navigation';
+        if ($baseName === 'menu') return 'nav_menus';
+        
+        return null;
     }
 
     private function generateSqlBackup($tenant){                     

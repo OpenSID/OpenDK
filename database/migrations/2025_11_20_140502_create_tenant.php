@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('kode_kecamatan')->unique(); // Using kecamatan code for identification
+            $table->string('kode_kecamatan'); // tidak diset unique, dikarenakan digunakan untuk proses export data
             $table->unsignedBigInteger('id_start_range')->nullable(); // Starting offset for ID range
             $table->unsignedBigInteger('id_end_range')->nullable(); // Ending offset for ID range
             $table->text('description')->nullable();            
@@ -30,7 +30,7 @@ return new class extends Migration
                 'kode_kecamatan' => $kecamatan->kecamatan_id,
                 'name' => $kecamatan->nama_kecamatan,
                 'id_start_range' => 1,
-                'id_end_range' => 999999999,
+                'id_end_range' => 999999,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

@@ -135,17 +135,10 @@ trait HasTenantScope
 
         if (!is_null($lastId) && $lastId >= $tenant->id_end_range) {
             $errorMessage = 'ID telah mencapai batas akhir range yang diizinkan untuk tenant ini yaitu . ' . $tenant->id_end_range .
-                ' Tabel: ' . $table . ', Tenant ID: ' . $tenantId;
-
-            Log::error($errorMessage, [
-                'model' => $modelClass,
-                'table' => $table,
-                'tenant_id' => $tenantId,
-                'last_id' => $lastId,
-                'id_start_range' => $tenant->id_start_range,
-                'id_end_range' => $tenant->id_end_range
-            ]);
-
+                ' Tabel: ' . $table . ', Tenant ID: ' . $tenantId;            
+            if (!app()->runningInConsole()) {
+                session()->flash('error-tenant-exceed', $errorMessage);                
+            }
             throw new \App\Exceptions\TenantIdRangeExceededException($errorMessage);
         }
 

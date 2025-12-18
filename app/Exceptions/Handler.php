@@ -101,4 +101,25 @@ class Handler extends ExceptionHandler
         //     Integration::captureUnhandledException($e);
         // });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        // Tangkap TenantIdRangeExceededException di level global
+        if ($exception instanceof TenantIdRangeExceededException) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    'error' => 'Tenant ID Range Exceeded'
+                ], 422);
+            }
+
+            // Gunakan both: flash message + validation error
+            return back()
+                ->with('error', $exception->getMessage())        // Flash message
+                ->withErrors([$exception->getMessage()])        // Validation error
+                ->withInput();
+        }
+
+        return parent::render($request, $exception);
+    }
 }

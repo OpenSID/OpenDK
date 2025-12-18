@@ -28,8 +28,9 @@ class DuplikasiController extends Controller
         'model_has_roles',
         'model_has_permissions',
         'role_has_permissions',
-        'password_resets',
-    ];  
+        'password_resets',        
+    ];
+    
     private $tenantQueryGenerator;
     public function __construct(){
         $this->tenantQueryGenerator = new TenantQueryGeneratorService();
@@ -106,6 +107,9 @@ class DuplikasiController extends Controller
             case 'das_artikel_kategori':
                 $primaryKey = 'id_kategori';
                 break;
+            case 'das_counter_page_visitor':
+                $primaryKey = '';
+                break;
             default:
         }
         
@@ -116,7 +120,7 @@ class DuplikasiController extends Controller
 
         // Convert back to indexed array
         $columns = array_values($columns);
-
+        Log::info('columns tabel '.$table,['columns' => $columns]);
         if (!empty($columns)) {
             // Build the column list for the INSERT statement
             $columnList = implode('`, `', $columns);
@@ -125,7 +129,10 @@ class DuplikasiController extends Controller
             // Build the SELECT statement
             $selectList = implode('`, `', $columns);
             $selectWithTenant = '('.$primaryKey.' + ' . $selisihIdStartRange . ') as `'.$primaryKey.'`, `' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
-
+            if(!$primaryKey){
+                $columnListWithTenant = '`' . $columnList . '`, `tenant_id`';
+                $selectWithTenant = '`' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
+            }
             // Execute the INSERT ... SELECT query to duplicate data
             $query = "INSERT INTO `{$table}` ({$columnListWithTenant})
                    SELECT {$selectWithTenant}

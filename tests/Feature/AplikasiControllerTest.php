@@ -29,65 +29,73 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
-
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CompleteProfile;
+use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\CrudTestCase;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
-class AplikasiControllerTest extends CrudTestCase
-{
-    use DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    public function test_index_displays_settings()
-    {
-        $response = $this->get(route('setting.aplikasi.index'));
+beforeEach(function () {
+    $this->withViewErrors([]);
+    $this->withoutMiddleware([
+        Authenticate::class,
+        RoleMiddleware::class,
+        PermissionMiddleware::class,
+        CompleteProfile::class,
+        GlobalShareMiddleware::class,
+    ]);
+    // disabled database gabungan for testing
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '0']
+    );
+});
 
-        $response->assertStatus(200);
-        $response->assertViewIs('setting.aplikasi.index');
-        $response->assertViewHas('page_title', 'Pengaturan Aplikasi');
-    }
+test('index displays settings', function () {
+    $response = $this->get(route('setting.aplikasi.index'));
 
-    public function test_edit_displays_edit_form()
-    {
+    $response->assertStatus(200);
+    $response->assertViewIs('setting.aplikasi.index');
+    $response->assertViewHas('page_title', 'Pengaturan Aplikasi');
+});
 
-        $setting = SettingAplikasi::factory()->create();
+test('edit displays edit form', function () {
+    $setting = SettingAplikasi::factory()->create();
 
-        $response = $this->get(route('setting.aplikasi.edit', $setting->id));
+    $response = $this->get(route('setting.aplikasi.edit', $setting->id));
 
-        $response->assertStatus(200);
-        $response->assertViewIs('setting.aplikasi.edit');
-        $response->assertViewHas('aplikasi', $setting);
-    }
+    $response->assertStatus(200);
+    $response->assertViewIs('setting.aplikasi.edit');
+    $response->assertViewHas('aplikasi', $setting);
+});
 
-    public function test_update_success()
-    {
+test('update success', function () {
+    $setting = SettingAplikasi::factory()->create(['value' => 'lama']);
 
-        $setting = SettingAplikasi::factory()->create(['value' => 'lama']);
+    $response = $this->put(route('setting.aplikasi.update', $setting->id), [
+        'value' => 'baru',
+    ]);
 
-        $response = $this->put(route('setting.aplikasi.update', $setting->id), [
-            'value' => 'baru',
+    $response->assertRedirect(route('setting.aplikasi.index'));
+    $response->assertSessionHas('success');
+    $this->assertDatabaseHas($setting->getTable(), [
+        'id' => $setting->id,
+        'value' => 'baru',
+    ]);
+});
+
+test('update validation error', function () {
+    $setting = SettingAplikasi::factory()->create();
+
+    $response = $this->from(route('setting.aplikasi.edit', $setting->id))
+        ->put(route('setting.aplikasi.update', $setting->id), [
+            'value' => '',
         ]);
 
-        $response->assertRedirect(route('setting.aplikasi.index'));
-        $response->assertSessionHas('success');
-        $this->assertDatabaseHas($setting->getTable(), [
-            'id' => $setting->id,
-            'value' => 'baru',
-        ]);
-    }
-
-    public function test_update_validation_error()
-    {
-
-        $setting = SettingAplikasi::factory()->create();
-
-        $response = $this->from(route('setting.aplikasi.edit', $setting->id))
-            ->put(route('setting.aplikasi.update', $setting->id), [
-                'value' => '',
-            ]);
-
-        $response->assertRedirect(route('setting.aplikasi.edit', $setting->id));
-        $response->assertInvalid(['value']); // Laravel 11 way
-    }
-}
+    $response->assertRedirect(route('setting.aplikasi.edit', $setting->id));
+    $response->assertInvalid(['value']); // Laravel 11 way
+});

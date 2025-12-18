@@ -8,91 +8,50 @@
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
  * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- *
- * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
- * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
- * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
- * asal tunduk pada syarat berikut:
- *
- * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
- * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
- * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
- *
- * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
- * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
- * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
- *
- * @package    OpenDK
- * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
- * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
- * @link       https://github.com/OpenSID/opendk
  */
-
-namespace Tests\Feature\Livewire;
 
 use App\Http\Livewire\Widget\WidgetController;
 use App\Models\Widget;
 use Livewire\Livewire;
-use Tests\TestCase;
 
-class WidgetControllerTest extends TestCase
-{
-    /** @test */
-    public function test_component_can_render()
-    {
-        $component = Livewire::test(WidgetController::class);
+test('component can render', function () {
+    $component = Livewire::test(WidgetController::class);
+    $component->assertStatus(200);
+});
 
-        $component->assertStatus(200);
+test('widget page contains livewire component', function () {
+    Livewire::withQueryParams(['search' => 'test', 'page' => 2])
+        ->test(WidgetController::class)
+        ->assertSet('search', 'test')
+        ->assertSet('page', 2);
+});
+
+test('widget search shows correct results', function () {
+    $widget = Widget::inRandomOrder()->first();
+
+    if (!$widget) {
+        $this->markTestSkipped('Tidak ada data di database untuk diuji.');
     }
 
-    /** Menguji properti `search` dan `page` bisa menerima data */
-    public function test_widget_page_contains_livewire_component()
-    {
-        Livewire::withQueryParams(['search' => 'test', 'page' => 2])
-            ->test(WidgetController::class)
-            ->assertSet('search', 'test')
-            ->assertSet('page', 2);
-    }
+    Livewire::test(WidgetController::class)
+        ->set('search', $widget->judul)
+        ->call('render')
+        ->assertSee($widget->judul);
+});
 
-    /** Menguji apakah data yang di cari ada */
-    public function test_widget_search_shows_correct_results()
-    {
-        $widget = Widget::inRandomOrder()->first();
+test('can create a widget', function () {
+    Livewire::test(WidgetController::class)
+        ->set('widget.judul', 'Widget Baru')
+        ->set('widget.jenis_widget', 3)
+        ->set('widget.isi', 'Isi Widget Baru')
+        ->call('store');
 
-        if (!$widget) {
-            $this->markTestSkipped('Tidak ada data di database untuk diuji.');
-        }
+    $this->assertDatabaseHas('widgets', ['judul' => 'Widget Baru']);
 
-        Livewire::test(WidgetController::class)
-            ->set('search', $widget->judul)
-            ->call('render')
-            ->assertSee($widget->judul);
-    }
+    $widget = Widget::where('judul', 'Widget Baru')->first();
+    expect($widget)->not->toBeNull();
 
-    /** create data baru */
-    public function test_can_create_a_widget()
-    {
-        Livewire::test(WidgetController::class)
-            ->set('widget.judul', 'Widget Baru')
-            ->set('widget.jenis_widget', 3)
-            ->set('widget.isi', 'Isi Widget Baru')
-            ->call('store');
+    Livewire::test(WidgetController::class)->call('destroy', $widget->id);
 
-        $this->assertDatabaseHas('widgets', ['judul' => 'Widget Baru']);
-
-        // Ambil ID widget yang baru dibuat
-        $widget = Widget::where('judul', 'Widget Baru')->first();
-
-        // Pastikan widget ditemukan sebelum dihapus
-        $this->assertNotNull($widget);
-
-        // Hapus widget
-        Livewire::test(WidgetController::class)
-            ->call('destroy', $widget->id);
-
-        // Pastikan widget sudah dihapus dari database
-        $this->assertDatabaseMissing('widgets', ['judul' => 'Widget Baru']);
-    }
-
-}
+    $this->assertDatabaseMissing('widgets', ['judul' => 'Widget Baru']);
+});

@@ -29,49 +29,39 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature\Http\Middleware;
-
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
-class MaintenanceModeTest extends TestCase
-{
-    use DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    /** @test */
-    public function it_aborts_with_503_when_maintenance_mode_is_enabled()
-    {
-        SettingAplikasi::updateOrCreate([
-            'key' => 'mode_maintenance',
-        ], [
-            'value' => 1,
-            'type' => 'boolean',
-            'description' => 'Mode maintenance.',
-            'kategori' => 'web',
-            'option' => '{}',
-        ]);
+test('it aborts with 503 when maintenance mode is enabled', function () {
+    SettingAplikasi::updateOrCreate([
+        'key' => 'mode_maintenance',
+    ], [
+        'value' => 1,
+        'type' => 'boolean',
+        'description' => 'Mode maintenance.',
+        'kategori' => 'web',
+        'option' => '{}',
+    ]);
 
-        $response = $this->get('/');
+    $response = $this->get('/');
 
-        $response->assertStatus(503);
-    }
+    $response->assertStatus(503);
+});
 
-    /** @test */
-    public function it_allows_request_when_maintenance_mode_is_disabled()
-    {
-        SettingAplikasi::updateOrCreate([
-            'key' => 'mode_maintenance',
-        ], [
-            'value' => 0,
-            'type' => 'boolean',
-            'description' => 'Mode maintenance.',
-            'kategori' => 'web',
-            'option' => '{}',
-        ]);
+test('it allows request when maintenance mode is disabled', function () {
+    SettingAplikasi::updateOrCreate([
+        'key' => 'mode_maintenance',
+    ], [
+        'value' => 0,
+        'type' => 'boolean',
+        'description' => 'Mode maintenance.',
+        'kategori' => 'web',
+        'option' => '{}',
+    ]);
 
-        $response = $this->get('/');
+    $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
-}
+    $response->assertStatus(200);
+});

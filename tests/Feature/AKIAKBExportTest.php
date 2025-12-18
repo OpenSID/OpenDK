@@ -1,197 +1,153 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Exports\ExportAKIAKB;
 use App\Models\AkiAkb;
 use App\Models\DataDesa;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Maatwebsite\Excel\Facades\Excel;
-use Tests\TestCase;
 
-class AKIAKBExportTest extends TestCase
-{
-    use WithoutMiddleware, DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    /**
-     * Set up test environment untuk testing export AKI AKB.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
+beforeEach(function () {
+    $this->withoutMiddleware();
 
-        // Menonaktifkan database gabungan untuk testing
-        SettingAplikasi::updateOrCreate(
-            ['key' => 'sinkronisasi_database_gabungan'],
-            ['value' => '0']
-        );
-    }
+    // Menonaktifkan database gabungan untuk testing
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '0']
+    );
+});
 
-    /**
-     * Test export Excel AKI AKB.
-     *
-     * @return void
-     */
-    public function test_export_excel_aki_akb()
-    {
-        // Arrange: Bersihkan data dan buat data test baru
-        AkiAkb::query()->delete();
+test('export excel aki akb', function () {
+    // Arrange: Bersihkan data dan buat data test baru
+    AkiAkb::query()->delete();
 
-        $desa = DataDesa::factory()->create([
-            'nama' => 'Desa Test AKI AKB'
-        ]);
+    $desa = DataDesa::factory()->create([
+        'nama' => 'Desa Test AKI AKB'
+    ]);
 
-        AkiAkb::factory()->create([
-            'desa_id' => $desa->desa_id,
-            'aki' => 5,
-            'akb' => 3,
-            'bulan' => 1,
-            'tahun' => 2024,
-        ]);
+    AkiAkb::factory()->create([
+        'desa_id' => $desa->desa_id,
+        'aki' => 5,
+        'akb' => 3,
+        'bulan' => 1,
+        'tahun' => 2024,
+    ]);
 
-        AkiAkb::factory()->create([
-            'desa_id' => $desa->desa_id,
-            'aki' => 2,
-            'akb' => 1,
-            'bulan' => 2,
-            'tahun' => 2024,
-        ]);
+    AkiAkb::factory()->create([
+        'desa_id' => $desa->desa_id,
+        'aki' => 2,
+        'akb' => 1,
+        'bulan' => 2,
+        'tahun' => 2024,
+    ]);
 
-        // Act: Export AKI AKB
-        Excel::fake();
+    // Act: Export AKI AKB
+    Excel::fake();
 
-        $response = $this->get('/data/aki-akb/export-excel');
+    $response = $this->get('/data/aki-akb/export-excel');
 
-        // Assert: Periksa bahwa export berhasil 
-        $response->assertSuccessful();
+    // Assert: Periksa bahwa export berhasil
+    $response->assertSuccessful();
 
-        // Periksa bahwa data tersedia
-        $akiAkbCount = AkiAkb::count();
-        $this->assertEquals(2, $akiAkbCount);
-    }
+    // Periksa bahwa data tersedia
+    expect(AkiAkb::count())->toBe(2);
+});
 
-    /**
-     * Test struktur heading export AKI AKB.
-     *
-     * @return void
-     */
-    public function test_export_aki_akb_headings()
-    {
-        // Arrange: Buat instance export
-        $export = new ExportAKIAKB();
+test('export aki akb headings', function () {
+    // Arrange: Buat instance export
+    $export = new ExportAKIAKB();
 
-        // Act: Ambil headings
-        $headings = $export->headings();
+    // Act: Ambil headings
+    $headings = $export->headings();
 
-        // Assert: Periksa struktur headings
-        $expectedHeadings = [
-            'ID',
-            'Nama Desa',
-            'Kode Desa',
-            'Jumlah AKI',
-            'Jumlah AKB',
-            'Bulan',
-            'Tahun',
-            'Tanggal Dibuat',
-            'Tanggal Diperbarui',
-        ];
+    // Assert: Periksa struktur headings
+    $expectedHeadings = [
+        'ID',
+        'Nama Desa',
+        'Kode Desa',
+        'Jumlah AKI',
+        'Jumlah AKB',
+        'Bulan',
+        'Tahun',
+        'Tanggal Dibuat',
+        'Tanggal Diperbarui',
+    ];
 
-        $this->assertEquals($expectedHeadings, $headings);
-    }
+    expect($headings)->toBe($expectedHeadings);
+});
 
-    /**
-     * Test export data AKI AKB dari database lokal.
-     *
-     * @return void
-     */
-    public function test_export_aki_akb_data()
-    {
-        // Arrange: Bersihkan data dan buat data test baru
-        AkiAkb::query()->delete();
+test('export aki akb data', function () {
+    // Arrange: Bersihkan data dan buat data test baru
+    AkiAkb::query()->delete();
 
-        $desa = DataDesa::factory()->create([
-            'nama' => 'Desa Test Export'
-        ]);
+    $desa = DataDesa::factory()->create([
+        'nama' => 'Desa Test Export'
+    ]);
 
-        $akiAkb = AkiAkb::factory()->create([
-            'desa_id' => $desa->desa_id,
-            'aki' => 7,
-            'akb' => 4,
-            'bulan' => 3,
-            'tahun' => 2024,
-        ]);
+    $akiAkb = AkiAkb::factory()->create([
+        'desa_id' => $desa->desa_id,
+        'aki' => 7,
+        'akb' => 4,
+        'bulan' => 3,
+        'tahun' => 2024,
+    ]);
 
-        // Act: Buat export
-        $export = new ExportAKIAKB();
-        $collection = $export->collection();
+    // Act: Buat export
+    $export = new ExportAKIAKB();
+    $collection = $export->collection();
 
-        // Assert: Periksa data yang diekspor
-        $this->assertCount(1, $collection);
+    // Assert: Periksa data yang diekspor
+    expect($collection)->toHaveCount(1);
 
-        $exportedData = $collection->first();
-        $this->assertEquals($akiAkb->id, $exportedData->id);
-        $this->assertEquals('Desa Test Export', $exportedData->desa->nama);
-        $this->assertEquals(7, $exportedData->aki);
-        $this->assertEquals(4, $exportedData->akb);
-        $this->assertEquals(3, $exportedData->bulan);
-        $this->assertEquals(2024, $exportedData->tahun);
-    }
+    $exportedData = $collection->first();
+    expect($exportedData->id)->toBe($akiAkb->id)
+        ->and($exportedData->desa->nama)->toBe('Desa Test Export')
+        ->and($exportedData->aki)->toBe(7)
+        ->and($exportedData->akb)->toBe(4)
+        ->and($exportedData->bulan)->toBe(3)
+        ->and($exportedData->tahun)->toBe(2024);
+});
 
-    /**
-     * Test format mapping data export AKI AKB.
-     *
-     * @return void
-     */
-    public function test_export_aki_akb_mapping()
-    {
-        // Arrange: Bersihkan data dan buat data test
-        AkiAkb::query()->delete();
+test('export aki akb mapping', function () {
+    // Arrange: Bersihkan data dan buat data test
+    AkiAkb::query()->delete();
 
-        $desa = DataDesa::factory()->create([
-            'nama' => 'Desa Test Mapping'
-        ]);
+    $desa = DataDesa::factory()->create([
+        'nama' => 'Desa Test Mapping'
+    ]);
 
-        $akiAkb = AkiAkb::factory()->create([
-            'desa_id' => $desa->desa_id,
-            'aki' => 6,
-            'akb' => 2,
-            'bulan' => 4,
-            'tahun' => 2024,
-        ]);
+    $akiAkb = AkiAkb::factory()->create([
+        'desa_id' => $desa->desa_id,
+        'aki' => 6,
+        'akb' => 2,
+        'bulan' => 4,
+        'tahun' => 2024,
+    ]);
 
-        // Act: Test mapping
-        $export = new ExportAKIAKB();
-        $mappedData = $export->map($akiAkb);
+    // Act: Test mapping
+    $export = new ExportAKIAKB();
+    $mappedData = $export->map($akiAkb);
 
-        // Assert: Periksa format mapping
-        $this->assertEquals($akiAkb->id, $mappedData[0]);
-        $this->assertEquals('Desa Test Mapping', $mappedData[1]);
-        $this->assertEquals($desa->desa_id, $mappedData[2]);
-        $this->assertEquals(6, $mappedData[3]);
-        $this->assertEquals(2, $mappedData[4]);
-        $this->assertEquals('April', $mappedData[5]); // months_list()[4] = 'April'
-        $this->assertEquals(2024, $mappedData[6]);
-    }
+    // Assert: Periksa format mapping
+    expect($mappedData[0])->toBe($akiAkb->id)
+        ->and($mappedData[1])->toBe('Desa Test Mapping')
+        ->and($mappedData[2])->toBe($desa->desa_id)
+        ->and($mappedData[3])->toBe(6)
+        ->and($mappedData[4])->toBe(2)
+        ->and($mappedData[5])->toBe('April') // months_list()[4] = 'April'
+        ->and($mappedData[6])->toBe(2024);
+});
 
-    /**
-     * Test export ketika tidak ada data AKI AKB.
-     *
-     * @return void
-     */
-    public function test_export_aki_akb_no_data()
-    {
-        // Arrange: Pastikan tidak ada data AKI AKB
-        AkiAkb::query()->delete();
+test('export aki akb no data', function () {
+    // Arrange: Pastikan tidak ada data AKI AKB
+    AkiAkb::query()->delete();
 
-        // Act: Export ketika tidak ada data
-        $export = new ExportAKIAKB();
-        $collection = $export->collection();
+    // Act: Export ketika tidak ada data
+    $export = new ExportAKIAKB();
+    $collection = $export->collection();
 
-        // Assert: Periksa bahwa collection kosong
-        $this->assertCount(0, $collection);
-    }
-}
+    // Assert: Periksa bahwa collection kosong
+    expect($collection)->toHaveCount(0);
+});

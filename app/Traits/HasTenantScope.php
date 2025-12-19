@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\Tenant;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -17,7 +18,7 @@ trait HasTenantScope
     {
         static::addGlobalScope('tenant_scope', function (Builder $builder) {
             // Check if running in console mode and tenants table doesn't exist
-            if (app()->runningInConsole() && !Schema::hasTable('tenants')) {
+            if (app()->runningInConsole()) {
                 return; // Skip tenant scope when in console and tenants table doesn't exist
             }
 
@@ -45,7 +46,7 @@ trait HasTenantScope
             // bisa dipastikan setiap tabel ada kolom tenant_id
             try {
                 $builder->where($table . '.tenant_id', $tenantId);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // In case schema is not available (e.g., during certain artisan commands), skip scope
                 Log::error("HasTenantScope: Error applying tenant scope", [
                     'error' => $e->getMessage(),

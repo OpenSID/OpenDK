@@ -28,11 +28,12 @@ class DuplikasiController extends Controller
         'model_has_roles',
         'model_has_permissions',
         'role_has_permissions',
-        'password_resets',        
+        'password_resets',
     ];
-    
+
     private $tenantQueryGenerator;
-    public function __construct(){
+    public function __construct()
+    {
         $this->tenantQueryGenerator = new TenantQueryGeneratorService();
         $this->tableWithTenantId = array_diff(DefautTenantTable::HAS_TENANT_COLUMN, $this->tableWithoutIdColumn);
     }
@@ -48,7 +49,7 @@ class DuplikasiController extends Controller
      * Handle the duplication request
      */
     public function duplicate(DuplikasiDataRequest $request)
-    {        
+    {
         $idStartRange = $request->input('id_start_range');
         $idEndRange = $request->input('id_end_range');
         $id = $request->input('id');
@@ -56,7 +57,7 @@ class DuplikasiController extends Controller
         $currentTenant = app('current_tenant');
         if (!$currentTenant) {
             return redirect()->back()->withErrors(['kode_kecamatan' => 'No current tenant found']);
-        }                
+        }
 
         // Perform duplication
         try {
@@ -65,14 +66,14 @@ class DuplikasiController extends Controller
             // Create a new tenant with default values
             $currentTenant = app('current_tenant');
             $tenantData = [
-                'kode_kecamatan' => 'temp-'.$currentTenant->kode_kecamatan,
+                'kode_kecamatan' => 'temp-' . $currentTenant->kode_kecamatan,
                 'name' => $currentTenant->name,
                 'id_start_range' => $idStartRange,
                 'id_end_range' => $idEndRange,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-            if($id){
+            if ($id) {
                 $tenantData['id'] = $id;
             }
             $newTenantId = DB::table('tenants')->insertGetId($tenantData);
@@ -82,10 +83,10 @@ class DuplikasiController extends Controller
             // generate sql backup untuk digabungkan pada sistem PBB lain
             $sqlContent = $this->generateSqlBackup($newTenant);
             // bersihkan data kembali
-            Tenant::where('id', $newTenant->id)->delete();            
+            Tenant::where('id', $newTenant->id)->delete();
             DB::commit();
             $filename = 'tenant_' . $newTenant->id . '_queries_insert_' . now()->format('Y-m-d_H-i-s') . '.sql';
-            return response()->streamDownload(function() use($sqlContent){
+            return response()->streamDownload(function () use ($sqlContent) {
                 echo $sqlContent;
             }, $filename, ['Content-Type' => 'application/sql']);
         } catch (\Exception $e) {
@@ -103,7 +104,7 @@ class DuplikasiController extends Controller
         // Get the list of columns for the table
         $columns = Schema::getColumnListing($table);
         $primaryKey = 'id';
-        switch($table){
+        switch ($table) {
             case 'das_artikel_kategori':
                 $primaryKey = 'id_kategori';
                 break;
@@ -112,24 +113,24 @@ class DuplikasiController extends Controller
                 break;
             default:
         }
-        
+
         // Remove tenant_id from columns if it exists to avoid conflicts during duplication
-        $columns = array_filter($columns, function ($column)use($primaryKey) {
+        $columns = array_filter($columns, function ($column) use ($primaryKey) {
             return !in_array($column, [$primaryKey, 'tenant_id']);
         });
 
         // Convert back to indexed array
         $columns = array_values($columns);
-        Log::info('columns tabel '.$table,['columns' => $columns]);
+        Log::info('columns tabel ' . $table, ['columns' => $columns]);
         if (!empty($columns)) {
             // Build the column list for the INSERT statement
             $columnList = implode('`, `', $columns);
-            $columnListWithTenant = '`'.$primaryKey.'`, `' . $columnList . '`, `tenant_id`';
+            $columnListWithTenant = '`' . $primaryKey . '`, `' . $columnList . '`, `tenant_id`';
 
             // Build the SELECT statement
             $selectList = implode('`, `', $columns);
-            $selectWithTenant = '('.$primaryKey.' + ' . $selisihIdStartRange . ') as `'.$primaryKey.'`, `' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
-            if(!$primaryKey){
+            $selectWithTenant = '(' . $primaryKey . ' + ' . $selisihIdStartRange . ') as `' . $primaryKey . '`, `' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
+            if (!$primaryKey) {
                 $columnListWithTenant = '`' . $columnList . '`, `tenant_id`';
                 $selectWithTenant = '`' . $selectList . '`, ' . $newTenantId . ' as `tenant_id`';
             }
@@ -140,8 +141,7 @@ class DuplikasiController extends Controller
                    WHERE `tenant_id` = ?";
 
             DB::statement($query, [$currentTenantId]);
-            Log::info('duplikasi tabel '.$table,['query' => $query, 'bindings' => [$currentTenantId]]);
-            
+            Log::info('duplikasi tabel ' . $table, ['query' => $query, 'bindings' => [$currentTenantId]]);
         }
     }
 
@@ -153,18 +153,19 @@ class DuplikasiController extends Controller
         try {
             $selisihIdStartRange = ($newTenant->id_start_range - $currentTenant->id_start_range);
             foreach ($this->tableWithTenantId as $table) {
-                $this->duplicateTable($table, $currentTenant->id, $newTenant->id,$selisihIdStartRange);
+                $this->duplicateTable($table, $currentTenant->id, $newTenant->id, $selisihIdStartRange);
             }
 
             foreach (array_merge($this->tableWithTenantId, $this->tableWithoutIdColumn) as $table) {
-                $this->updateForeignKey($table, $newTenant->id,$selisihIdStartRange);
+                $this->updateForeignKey($table, $newTenant->id, $selisihIdStartRange);
             }
         } catch (\Exception $e) {
             throw $e;
         }
     }
 
-    private function updateForeignKey($table, $newTenantId, $selisihIdStartRange){
+    private function updateForeignKey($table, $newTenantId, $selisihIdStartRange)
+    {
         // Get the list of columns for the table
         $columns = Schema::getColumnListing($table);
 
@@ -177,24 +178,24 @@ class DuplikasiController extends Controller
         $columns = array_values($columns);
         try {
             $foreignKey = array_filter($columns, function ($column) {
-                return \Illuminate\Support\Str::endsWith($column,'_id');
+                return \Illuminate\Support\Str::endsWith($column, '_id');
             });
-            if($foreignKey){
+            if ($foreignKey) {
                 foreach ($foreignKey as $key => $column) {
                     // Update foreign key values with the offset
-                    $query = 'update '.$table.' set '.$column.'= ('.$column.' + ?) where tenant_id = ?';
+                    $query = 'update ' . $table . ' set ' . $column . '= (' . $column . ' + ?) where tenant_id = ?';
                     DB::statement($query, [$selisihIdStartRange, $newTenantId]);
-                    Log::info('update  kolom '.$column.' tabel '.$table,['query' => $query, 'bindings' => [$newTenantId]]);
-                    
+                    Log::info('update  kolom ' . $column . ' tabel ' . $table, ['query' => $query, 'bindings' => [$newTenantId]]);
+
                     // Update tenant_id for related data if the column references a table with tenant_id
                     $this->updateRelatedTenantId($table, $column, $newTenantId, $selisihIdStartRange);
                 }
             }
-        }catch (\Exception $e) {
-            Log::error('Error updating foreign keys for table '.$table.': '.$e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Error updating foreign keys for table ' . $table . ': ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Update tenant_id for related data to ensure data consistency
      */
@@ -203,24 +204,24 @@ class DuplikasiController extends Controller
         try {
             // Get the referenced table name from the foreign key column
             $referencedTable = $this->getReferencedTableFromForeignKey($table, $foreignKeyColumn);
-            
+
             if ($referencedTable && in_array($referencedTable, $this->tableWithTenantId)) {
                 // Update tenant_id for records in the referenced table that match the foreign keys
                 $query = "UPDATE `{$referencedTable}` SET tenant_id = ? WHERE id IN (
                     SELECT {$foreignKeyColumn} FROM `{$table}` WHERE tenant_id = ?
                 )";
-                
+
                 DB::statement($query, [$newTenantId, $newTenantId]);
-                Log::info('update tenant_id tabel '.$referencedTable.' berdasarkan '.$table.'.'.$foreignKeyColumn,[
+                Log::info('update tenant_id tabel ' . $referencedTable . ' berdasarkan ' . $table . '.' . $foreignKeyColumn, [
                     'query' => $query,
                     'bindings' => [$newTenantId, $newTenantId]
                 ]);
             }
         } catch (\Exception $e) {
-            Log::error('Error updating related tenant_id for '.$table.'.'.$foreignKeyColumn.': '.$e->getMessage());
+            Log::error('Error updating related tenant_id for ' . $table . '.' . $foreignKeyColumn . ': ' . $e->getMessage());
         }
     }
-    
+
     /**
      * Get the referenced table name from a foreign key column
      */
@@ -247,35 +248,38 @@ class DuplikasiController extends Controller
             'album_id' => 'albums',
             'parent_id' => $table, // Self-referencing
         ];
-        
+
         // Remove _id suffix to get the base name
         $baseName = str_replace('_id', '', $foreignKeyColumn);
-        
+
         // Check if we have a direct mapping
         if (isset($mappings[$foreignKeyColumn])) {
             return $mappings[$foreignKeyColumn];
         }
-        
+
         // Try to infer the table name from the column name
         if (Schema::hasTable('das_' . $baseName)) {
             return 'das_' . $baseName;
         }
-        
+
         if (Schema::hasTable($baseName)) {
             return $baseName;
         }
-        
+
         // Special cases for common patterns
         if ($baseName === 'artikel') return 'das_artikel';
         if ($baseName === 'galeri') return 'galeris';
         if ($baseName === 'navigation') return 'das_navigation';
         if ($baseName === 'menu') return 'nav_menus';
-        
+
         return null;
     }
 
-    private function generateSqlBackup($tenant){                     
-        return $this->tenantQueryGenerator->generateSqlFileContent($tenant->id, null, 'insert');    
+    private function generateSqlBackup($tenant)
+    {
+        $sqlContent = "SET FOREIGN_KEY_CHECKS=0;\n\n";
+        $sqlContent .= $this->tenantQueryGenerator->generateSqlFileContent($tenant->id, null, 'insert');
+        $sqlContent .= "\n\nSET FOREIGN_KEY_CHECKS=1;";
+        return $sqlContent;        
     }
 }
-

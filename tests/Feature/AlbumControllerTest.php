@@ -35,8 +35,8 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use Tests\TestCase;
 
 class AlbumControllerTest extends TestCase

@@ -416,8 +416,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{medsos}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
                 });
 
-                Route::get('/media-terkait', [\App\Http\Livewire\Informasi\MediaTerkaitController::class, '__invoke'])->name('informasi.media.terkait');
-
                 // Sinergi Program
                 Route::group(['prefix' => 'sinergi-program'], function () {
                     Route::get('/', ['as' => 'informasi.sinergi-program.index', 'uses' => 'SinergiProgramController@index']);
@@ -471,6 +469,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::group(['prefix' => 'kerjasama'], function () {
             Route::get('/pendaftaran-kerjasama', \App\Http\Livewire\Kerjasama\PendaftaranKerjasama::class)->name('kerjasama.pendaftaran.kerjasama');
             Route::get('/template', [\App\Http\Controllers\Kerjasama\PendaftaranKerjasamaController::class, 'dokumen_template'])->name('kerjasama.pendaftaran.kerjasama.template');
+        });
+
+        // Media Terkait (Livewire)
+        Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
+            Route::get('/media-terkait', \App\Http\Livewire\Informasi\MediaTerkaitController::class)->name('informasi.media.terkait');
         });
 
         /**

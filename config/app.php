@@ -292,8 +292,6 @@ return [
 
         //Dynamic smtp
         App\Providers\SmtpServiceProvider::class,
-
-        MichaelDzjap\TwoFactorAuth\TwoFactorAuthServiceProvider::class
     ],
 
     /*

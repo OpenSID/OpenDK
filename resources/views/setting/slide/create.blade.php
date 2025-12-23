@@ -21,6 +21,7 @@
                 ->route('setting.slide.store')
                 ->method('post')
                 ->attribute('files', true)
+                ->attribute('enctype', 'multipart/form-data')
                 ->id('form-slide')
                 ->class('form-horizontal form-label-left')
                 ->open() !!}

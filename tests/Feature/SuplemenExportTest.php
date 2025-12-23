@@ -1,7 +1,5 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Exports\ExportSuplemen;
 use App\Exports\ExportSuplemenTerdata;
 use App\Models\DataDesa;
@@ -9,334 +7,214 @@ use App\Models\Penduduk;
 use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Maatwebsite\Excel\Facades\Excel;
-use Tests\TestCase;
 
-class SuplemenExportTest extends TestCase
-{
-    use WithoutMiddleware, DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        Suplemen::query()->delete();
-    }
+beforeEach(function () {
+    $this->withoutMiddleware();
+    Suplemen::query()->delete();
+});
 
-    /**
-     * Test export excel suplemen.
-     *
-     * @return void
-     */
-    public function test_export_excel_suplemen()
-    {
-        // Arrange: Buat beberapa data test
-        Suplemen::factory()->count(3)->create();
+test('export excel suplemen', function () {
+    Suplemen::factory()->count(3)->create();
 
-        // Act: Export suplemen
-        Excel::fake(); // Fake Excel facade
+    Excel::fake();
+    $response = $this->get('/data/data-suplemen/export-excel');
 
-        $response = $this->get('/data/data-suplemen/export-excel'); // Route untuk export suplemen
+    $response->assertSuccessful();
+});
 
-        // Assert: Periksa bahwa export dipanggil
-        $response->assertSuccessful();
-    }
+test('export excel suplemen with filters', function () {
+    Suplemen::factory()->create(['nama' => 'Suplemen Test 1', 'sasaran' => 1]);
+    Suplemen::factory()->create(['nama' => 'Suplemen Test 2', 'sasaran' => 2]);
 
-    /**
-     * Test export excel suplemen dengan filter.
-     *
-     * @return void
-     */
-    public function test_export_excel_suplemen_with_filters()
-    {
-        // Arrange: Buat data test dengan nama dan sasaran berbeda
-        Suplemen::factory()->create(['nama' => 'Suplemen Test 1', 'sasaran' => 1]);
-        Suplemen::factory()->create(['nama' => 'Suplemen Test 2', 'sasaran' => 2]);
+    Excel::fake();
+    $response = $this->get('/data/data-suplemen/export-excel?nama=Test&sasaran=1');
 
-        // Act: Export dengan filter
-        Excel::fake(); // Fake Excel facade
+    $response->assertSuccessful();
+});
 
-        $response = $this->get('/data/data-suplemen/export-excel?nama=Test&sasaran=1');
+test('export suplemen no filter', function () {
+    Suplemen::factory()->count(5)->create();
 
-        // Assert: Periksa bahwa export dipanggil dengan filter
-        $response->assertSuccessful();
-    }
+    $export = new ExportSuplemen([]);
+    $collection = $export->collection();
 
-    /**
-     * Test export suplemen tanpa filter.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_no_filter()
-    {
-        // Arrange: Buat data test
-        Suplemen::factory()->count(5)->create();
+    expect($collection->count())->toBe(Suplemen::count())
+        ->and($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class);
+});
 
-        // Act: Buat instance export tanpa filter
-        $export = new ExportSuplemen([]);
-        $collection = $export->collection();
+test('export suplemen with nama filter', function () {
+    Suplemen::factory()->create(['nama' => 'BLT Dana Desa']);
+    Suplemen::factory()->create(['nama' => 'PKH Keluarga']);
+    Suplemen::factory()->create(['nama' => 'Bantuan Pangan']);
 
-        // Assert: Periksa data collection
-        $this->assertEquals(Suplemen::count(), $collection->count());
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $collection);
-    }
+    $export = new ExportSuplemen(['nama' => 'BLT']);
+    $collection = $export->collection();
 
-    /**
-     * Test export suplemen dengan filter nama.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_with_nama_filter()
-    {
-        // Arrange: Buat data test dengan nama berbeda
-        Suplemen::factory()->create(['nama' => 'BLT Dana Desa']);
-        Suplemen::factory()->create(['nama' => 'PKH Keluarga']);
-        Suplemen::factory()->create(['nama' => 'Bantuan Pangan']);
+    expect($collection->count())->toBe(1)
+        ->and($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class);
+});
 
-        // Act: Buat instance export dengan filter nama
-        $export = new ExportSuplemen(['nama' => 'BLT']);
-        $collection = $export->collection();
+test('export suplemen with sasaran filter', function () {
+    Suplemen::create(['nama' => 'Suplemen Penduduk 1', 'slug' => 'suplemen-penduduk-1', 'sasaran' => 1, 'keterangan' => 'Test']);
+    Suplemen::create(['nama' => 'Suplemen Penduduk 2', 'slug' => 'suplemen-penduduk-2', 'sasaran' => 1, 'keterangan' => 'Test']);
+    Suplemen::create(['nama' => 'Suplemen Keluarga 1', 'slug' => 'suplemen-keluarga-1', 'sasaran' => 2, 'keterangan' => 'Test']);
+    Suplemen::create(['nama' => 'Suplemen Keluarga 2', 'slug' => 'suplemen-keluarga-2', 'sasaran' => 2, 'keterangan' => 'Test']);
+    Suplemen::create(['nama' => 'Suplemen Keluarga 3', 'slug' => 'suplemen-keluarga-3', 'sasaran' => 2, 'keterangan' => 'Test']);
 
-        // Assert: Periksa data collection yang terfilter
-        $this->assertEquals(1, $collection->count());
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $collection);
-    }
+    $export = new ExportSuplemen(['sasaran' => 1]);
+    $collection = $export->collection();
 
-    /**
-     * Test export suplemen dengan filter sasaran.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_with_sasaran_filter()
-    {
-        // Arrange: Buat data test dengan sasaran berbeda secara manual
-        Suplemen::create(['nama' => 'Suplemen Penduduk 1', 'slug' => 'suplemen-penduduk-1', 'sasaran' => 1, 'keterangan' => 'Test']);
-        Suplemen::create(['nama' => 'Suplemen Penduduk 2', 'slug' => 'suplemen-penduduk-2', 'sasaran' => 1, 'keterangan' => 'Test']);
-        Suplemen::create(['nama' => 'Suplemen Keluarga 1', 'slug' => 'suplemen-keluarga-1', 'sasaran' => 2, 'keterangan' => 'Test']);
-        Suplemen::create(['nama' => 'Suplemen Keluarga 2', 'slug' => 'suplemen-keluarga-2', 'sasaran' => 2, 'keterangan' => 'Test']);
-        Suplemen::create(['nama' => 'Suplemen Keluarga 3', 'slug' => 'suplemen-keluarga-3', 'sasaran' => 2, 'keterangan' => 'Test']);
+    expect($collection->count())->toBe(2);
+});
 
-        // Act: Buat instance export dengan filter sasaran
-        $export = new ExportSuplemen(['sasaran' => 1]);
-        $collection = $export->collection();
+test('export excel suplemen terdata', function () {
+    $suplemen = Suplemen::create([
+        'nama' => 'Test Suplemen',
+        'slug' => 'test-suplemen',
+        'sasaran' => 1,
+        'keterangan' => 'Test keterangan'
+    ]);
 
-        // Assert: Periksa data collection yang terfilter
-        $this->assertEquals(2, $collection->count());
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $collection);
-    }
+    $desa = DataDesa::factory()->create();
+    $pendudukId = 999999;
+    Penduduk::create([
+        'id' => $pendudukId,
+        'nama' => 'Test Penduduk',
+        'nik' => '1234567890123456',
+        'desa_id' => $desa->desa_id,
+        'status_dasar' => 1,
+        'sex' => 1,
+        'alamat' => 'Test Alamat',
+        'tempat_lahir' => 'Test Tempat Lahir',
+        'tanggal_lahir' => '1990-01-01',
+    ]);
 
-    /**
-     * Test export excel suplemen terdata.
-     *
-     * @return void
-     */
-    public function test_export_excel_suplemen_terdata()
-    {
-        // Arrange: Buat data test secara manual untuk menghindari factory issue
-        $suplemen = Suplemen::create([
-            'nama' => 'Test Suplemen',
-            'slug' => 'test-suplemen',
-            'sasaran' => 1,
-            'keterangan' => 'Test keterangan'
-        ]);
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id' => $pendudukId,
+        'keterangan' => 'Test keterangan terdata'
+    ]);
 
-        $desa = DataDesa::factory()->create();
+    Excel::fake();
+    $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}");
 
-        // Create penduduk dengan ID eksplisit untuk mengatasi masalah incrementing
-        $pendudukId = 999999; // Use a large ID to avoid conflicts
-        $penduduk = Penduduk::create([
-            'id' => $pendudukId,
-            'nama' => 'Test Penduduk',
-            'nik' => '1234567890123456',
-            'desa_id' => $desa->desa_id,
-            'status_dasar' => 1,
-            'sex' => 1,
-            'alamat' => 'Test Alamat',
-            'tempat_lahir' => 'Test Tempat Lahir',
-            'tanggal_lahir' => '1990-01-01',
-        ]);
+    $response->assertSuccessful();
+});
 
-        SuplemenTerdata::create([
-            'suplemen_id' => $suplemen->id,
-            'penduduk_id' => $pendudukId,
-            'keterangan' => 'Test keterangan terdata'
-        ]);
+test('export suplemen terdata with desa filter', function () {
+    $suplemen = Suplemen::create([
+        'nama' => 'Test Suplemen Filter',
+        'slug' => 'test-suplemen-filter',
+        'sasaran' => 1,
+        'keterangan' => 'Test keterangan filter'
+    ]);
 
-        // Act: Export suplemen terdata
-        Excel::fake(); // Fake Excel facade
+    $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
+    $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
 
-        $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}");
+    $pendudukId1 = 999998;
+    $pendudukId2 = 999997;
 
-        // Assert: Periksa bahwa export dipanggil
-        $response->assertSuccessful();
-    }
+    Penduduk::create([
+        'id' => $pendudukId1,
+        'nama' => 'Test Penduduk 1',
+        'nik' => '1111567890123456',
+        'desa_id' => $desa1->desa_id,
+        'status_dasar' => 1,
+        'sex' => 1,
+        'alamat' => 'Test Alamat 1',
+        'tempat_lahir' => 'Test Tempat Lahir 1',
+        'tanggal_lahir' => '1990-01-01',
+    ]);
 
-    /**
-     * Test export suplemen terdata dengan filter desa.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_terdata_with_desa_filter()
-    {
-        // Arrange: Buat data test dengan beberapa desa
-        $suplemen = Suplemen::create([
-            'nama' => 'Test Suplemen Filter',
-            'slug' => 'test-suplemen-filter',
-            'sasaran' => 1,
-            'keterangan' => 'Test keterangan filter'
-        ]);
+    Penduduk::create([
+        'id' => $pendudukId2,
+        'nama' => 'Test Penduduk 2',
+        'nik' => '2222567890123456',
+        'desa_id' => $desa2->desa_id,
+        'status_dasar' => 1,
+        'sex' => 2,
+        'alamat' => 'Test Alamat 2',
+        'tempat_lahir' => 'Test Tempat Lahir 2',
+        'tanggal_lahir' => '1991-01-01',
+    ]);
 
-        $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
-        $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
+    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $pendudukId1, 'keterangan' => 'Test terdata 1']);
+    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $pendudukId2, 'keterangan' => 'Test terdata 2']);
 
-        // Create penduduk dengan ID eksplisit untuk mengatasi masalah incrementing
-        $pendudukId1 = 999998;
-        $pendudukId2 = 999997;
+    Excel::fake();
+    $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}?desa={$desa1->desa_id}");
 
-        $penduduk1 = Penduduk::create([
-            'id' => $pendudukId1,
-            'nama' => 'Test Penduduk 1',
-            'nik' => '1111567890123456',
-            'desa_id' => $desa1->desa_id,
-            'status_dasar' => 1,
-            'sex' => 1,
-            'alamat' => 'Test Alamat 1',
-            'tempat_lahir' => 'Test Tempat Lahir 1',
-            'tanggal_lahir' => '1990-01-01',
-        ]);
+    $response->assertSuccessful();
+});
 
-        $penduduk2 = Penduduk::create([
-            'id' => $pendudukId2,
-            'nama' => 'Test Penduduk 2',
-            'nik' => '2222567890123456',
-            'desa_id' => $desa2->desa_id,
-            'status_dasar' => 1,
-            'sex' => 2,
-            'alamat' => 'Test Alamat 2',
-            'tempat_lahir' => 'Test Tempat Lahir 2',
-            'tanggal_lahir' => '1991-01-01',
-        ]);
+test('export suplemen headings', function () {
+    $export = new ExportSuplemen([]);
+    $headings = $export->headings();
 
-        SuplemenTerdata::create([
-            'suplemen_id' => $suplemen->id,
-            'penduduk_id' => $pendudukId1,
-            'keterangan' => 'Test terdata 1'
-        ]);
-        SuplemenTerdata::create([
-            'suplemen_id' => $suplemen->id,
-            'penduduk_id' => $pendudukId2,
-            'keterangan' => 'Test terdata 2'
-        ]);
+    $expectedHeadings = [
+        'ID',
+        'Nama Suplemen',
+        'Slug',
+        'Sasaran',
+        'Keterangan',
+        'Jumlah Terdata',
+        'Tanggal Dibuat',
+        'Tanggal Diperbarui',
+    ];
 
-        // Act: Export dengan filter desa
-        Excel::fake(); // Fake Excel facade
+    expect($headings)->toBe($expectedHeadings);
+});
 
-        $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}?desa={$desa1->desa_id}");
+test('export suplemen mapping', function () {
+    $suplemen = Suplemen::factory()->create([
+        'nama' => 'Test Suplemen',
+        'slug' => 'test-suplemen',
+        'sasaran' => 1,
+        'keterangan' => 'Test Keterangan'
+    ]);
 
-        // Assert: Periksa bahwa export dipanggil dengan filter
-        $response->assertSuccessful();
-    }
+    $export = new ExportSuplemen([]);
+    $mappedData = $export->map($suplemen);
 
-    /**
-     * Test export headings suplemen.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_headings()
-    {
-        // Act: Buat instance export
-        $export = new ExportSuplemen([]);
-        $headings = $export->headings();
+    expect($mappedData)->toBeArray()
+        ->and($mappedData[0])->toBe($suplemen->id)
+        ->and($mappedData[1])->toBe('Test Suplemen')
+        ->and($mappedData[2])->toBe('test-suplemen')
+        ->and($mappedData[3])->toBe('Penduduk')
+        ->and($mappedData[4])->toBe('Test Keterangan');
+});
 
-        // Assert: Periksa headings
-        $expectedHeadings = [
-            'ID',
-            'Nama Suplemen',
-            'Slug',
-            'Sasaran',
-            'Keterangan',
-            'Jumlah Terdata',
-            'Tanggal Dibuat',
-            'Tanggal Diperbarui',
-        ];
+test('export suplemen terdata headings', function () {
+    $export = new ExportSuplemenTerdata();
+    $headings = $export->headings();
 
-        $this->assertEquals($expectedHeadings, $headings);
-    }
+    $expectedHeadings = [
+        'ID',
+        'Nama Suplemen',
+        'NIK',
+        'Nama Penduduk',
+        'Jenis Kelamin',
+        'Tempat Lahir',
+        'Tanggal Lahir',
+        'Umur',
+        'Alamat',
+        'Desa',
+        'Keterangan Suplemen',
+        'Tanggal Dibuat',
+        'Tanggal Diperbarui',
+    ];
 
-    /**
-     * Test export mapping suplemen.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_mapping()
-    {
-        // Arrange: Buat data test
-        $suplemen = Suplemen::factory()->create([
-            'nama' => 'Test Suplemen',
-            'slug' => 'test-suplemen',
-            'sasaran' => 1,
-            'keterangan' => 'Test Keterangan'
-        ]);
+    expect($headings)->toBe($expectedHeadings);
+});
 
-        // Act: Buat instance export dan test mapping
-        $export = new ExportSuplemen([]);
-        $mappedData = $export->map($suplemen);
+test('export suplemen styles', function () {
+    $export = new ExportSuplemen([]);
+    $worksheet = $this->createMock(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::class);
+    $styles = $export->styles($worksheet);
 
-        // Assert: Periksa struktur data yang dimapping
-        $this->assertIsArray($mappedData);
-        $this->assertEquals($suplemen->id, $mappedData[0]);
-        $this->assertEquals('Test Suplemen', $mappedData[1]);
-        $this->assertEquals('test-suplemen', $mappedData[2]);
-        $this->assertEquals('Penduduk', $mappedData[3]);
-        $this->assertEquals('Test Keterangan', $mappedData[4]);
-    }
-
-    /**
-     * Test export headings suplemen terdata.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_terdata_headings()
-    {
-        // Act: Buat instance export
-        $export = new ExportSuplemenTerdata();
-        $headings = $export->headings();
-
-        // Assert: Periksa headings
-        $expectedHeadings = [
-            'ID',
-            'Nama Suplemen',
-            'NIK',
-            'Nama Penduduk',
-            'Jenis Kelamin',
-            'Tempat Lahir',
-            'Tanggal Lahir',
-            'Umur',
-            'Alamat',
-            'Desa',
-            'Keterangan Suplemen',
-            'Tanggal Dibuat',
-            'Tanggal Diperbarui',
-        ];
-
-        $this->assertEquals($expectedHeadings, $headings);
-    }
-
-    /**
-     * Test export styles suplemen.
-     *
-     * @return void
-     */
-    public function test_export_suplemen_styles()
-    {
-        // Act: Buat instance export
-        $export = new ExportSuplemen([]);
-
-        // Buat mock worksheet
-        $worksheet = $this->createMock(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::class);
-
-        // Assert: Method ada dan mengembalikan array styles
-        $styles = $export->styles($worksheet);
-        $this->assertIsArray($styles);
-    }
-}
+    expect($styles)->toBeArray();
+});

@@ -29,103 +29,96 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
-
 use App\Models\SettingAplikasi;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\View;
 use Mews\Captcha\Facades\Captcha;
-use PhpOffice\PhpSpreadsheet\Writer\Ods\Settings;
-use Tests\TestCase;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Notification;
 
-class LoginControllerTest extends TestCase
-{
-    use DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+beforeEach(function () {
+    // Logout any authenticated user from parent TestCase
+    // This is necessary because base TestCase automatically authenticates a user
+    auth()->logout();
+});
 
-        // Logout any authenticated user from parent TestCase
-        // This is necessary because base TestCase automatically authenticates a user
-        auth()->logout();
-    }
+test('login form displayed', function () {
+    $response = $this->get(route('login'));
 
-    public function test_login_form_displayed()
-    {
-        $response = $this->get(route('login'));
-        $response->assertStatus(200);
-        $response->assertViewIs('auth.login');
-    }
+    $response->assertStatus(200);
+    $response->assertViewIs('auth.login');
+});
 
-    public function test_login_success_redirects_to_home()
-    {
-        SettingAplikasi::updateOrCreate(
-            ['key' => 'google_recaptcha'],
-            ['value' => 0]
-        );
-        // Captcha::shouldReceive('captcha')
-        //     ->andReturn(true);
+test('login success redirects to home', function () {
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'google_recaptcha'],
+        ['value' => 0]
+    );
 
-        Captcha::shouldReceive('display')
-            ->andReturn('<input type="hidden" name="captcha" value="1" />');
+    Captcha::shouldReceive('display')
+        ->andReturn('<input type="hidden" name="captcha" value="1" />');
 
-        $user = User::first();
-        $user->password = bcrypt('password');
-        $user->save();
-        $response = $this->post(route('login'), [
-            'email' => $user->email,
-            'password' => 'password',
-            'captcha' => '1', // Simulasi captcha valid
-        ]);
-        $response->assertRedirect();
-        $this->assertAuthenticatedAs($user);
-    }
+    $user = User::first();
+    $user->password = bcrypt('password');
+    $user->save();
 
-    public function test_login_with_wrong_password_fails()
-    {
-        $user = User::factory()->create([
-            'password' => bcrypt('password'),
-        ]);
-        $response = $this->from(route('login'))->post(route('login'), [
-            'email' => $user->email,
-            'password' => 'wrongpassword',
-        ]);
-        $response->assertRedirect(route('login'));
-        $response->assertSessionHasErrors();
-        $this->assertGuest();
-    }
+    $response = $this->post(route('login'), [
+        'email' => $user->email,
+        'password' => 'password',
+        'captcha' => '1', // Simulasi captcha valid
+    ]);
 
-    public function test_login_requires_captcha()
-    {
-        // Simulasi settings captcha aktif
-        View::share('captchaView', 'auth.captcha');
-        config(['settings.google_recaptcha' => false]);
+    $response->assertRedirect();
+    $this->assertAuthenticatedAs($user);
+});
 
-        $response = $this->from(route('login'))->post(route('login'), [
-            'email' => 'user@example.com',
-            'password' => 'password',
-            // Tidak mengirim captcha
-        ]);
-        $response->assertRedirect(route('login'));
-        $response->assertSessionHasErrors();
-    }
+test('login with wrong password fails', function () {
+    $user = User::factory()->create([
+        'password' => bcrypt('password'),
+    ]);
 
-    public function test_login_with_2fa_enabled_redirects_to_token()
-    {
-        Notification::fake();
-        $user = User::factory()->create([
-            'password' => bcrypt('password'),
-        ]);
-        // Simulasi settings login_2fa aktif
-        config(['settings.login_2fa' => true]);
-        // Simulasi login
-        $response = $this->post(route('login'), [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
-        $response->assertRedirect(url('/changedefault'));
-    }
-}
+    $response = $this->from(route('login'))->post(route('login'), [
+        'email' => $user->email,
+        'password' => 'wrongpassword',
+    ]);
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors();
+    $this->assertGuest();
+});
+
+test('login requires captcha', function () {
+    // Simulasi settings captcha aktif
+    View::share('captchaView', 'auth.captcha');
+    config(['settings.google_recaptcha' => false]);
+
+    $response = $this->from(route('login'))->post(route('login'), [
+        'email' => 'user@example.com',
+        'password' => 'password',
+        // Tidak mengirim captcha
+    ]);
+
+    $response->assertRedirect(route('login'));
+    $response->assertSessionHasErrors();
+});
+
+test('login with 2fa enabled redirects to token', function () {
+    Notification::fake();
+
+    $user = User::factory()->create([
+        'password' => bcrypt('password'),
+    ]);
+
+    // Simulasi settings login_2fa aktif
+    config(['settings.login_2fa' => true]);
+
+    // Simulasi login
+    $response = $this->post(route('login'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    $response->assertRedirect(url('/changedefault'));
+});

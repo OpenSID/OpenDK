@@ -1,156 +1,111 @@
 <?php
 
-namespace Tests\Feature;
-
 use App\Exports\ExportLaporanApbdes;
-use App\Models\LaporanApbdes;
 use App\Models\DataDesa;
+use App\Models\LaporanApbdes;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Maatwebsite\Excel\Facades\Excel;
-use Tests\TestCase;
 
-class LaporanApbdesExportTest extends TestCase
-{
-    use WithoutMiddleware, DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    /**
-     * Menyiapkan lingkungan test.
-     *
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
+beforeEach(function () {
+    $this->withoutMiddleware();
 
-        // nonaktifkan database gabungan untuk testing
-        SettingAplikasi::updateOrCreate(
-            ['key' => 'sinkronisasi_database_gabungan'],
-            ['value' => '0']
-        );
-    }
+    // nonaktifkan database gabungan untuk testing
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '0']
+    );
+});
 
-    /**
-     * Test export excel laporan apbdes.
-     *
-     * @return void
-     */
-    public function test_export_excel_laporan_apbdes()
-    {
-        // Arrange: Buat beberapa data test
-        $desa = DataDesa::factory()->create();
-        LaporanApbdes::factory()->count(3)->create([
-            'desa_id' => $desa->desa_id
-        ]);
+test('export excel laporan apbdes', function () {
+    // Arrange: Buat beberapa data test
+    $desa = DataDesa::factory()->create();
+    LaporanApbdes::factory()->count(3)->create([
+        'desa_id' => $desa->desa_id
+    ]);
 
-        // Act: Export laporan apbdes
-        Excel::fake(); // Fake Excel facade
+    // Act: Export laporan apbdes
+    Excel::fake();
 
-        $response = $this->get('/data/laporan-apbdes/export-excel'); // Route untuk export laporan apbdes
+    $response = $this->get('/data/laporan-apbdes/export-excel');
 
-        // Assert: Periksa bahwa export dipanggil
-        $response->assertSuccessful();
-        // Cukup periksa response berhasil karena filename dinamis dengan timestamp
-    }
+    // Assert: Periksa bahwa export berhasil
+    $response->assertSuccessful();
+});
 
-    /**
-     * Test export excel laporan apbdes dengan filter desa.
-     *
-     * @return void
-     */
-    public function test_export_excel_laporan_apbdes_with_desa_filter()
-    {
-        // Arrange: Buat data test dengan beberapa desa
-        $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
-        $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
+test('export excel laporan apbdes with desa filter', function () {
+    // Arrange: Buat data test dengan beberapa desa
+    $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
+    $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
 
-        LaporanApbdes::factory()->count(2)->create([
-            'desa_id' => $desa1->desa_id
-        ]);
-        LaporanApbdes::factory()->count(3)->create([
-            'desa_id' => $desa2->desa_id
-        ]);
+    LaporanApbdes::factory()->count(2)->create([
+        'desa_id' => $desa1->desa_id
+    ]);
+    LaporanApbdes::factory()->count(3)->create([
+        'desa_id' => $desa2->desa_id
+    ]);
 
-        // Act: Export dengan filter desa
-        Excel::fake(); // Fake Excel facade
+    // Act: Export dengan filter desa
+    Excel::fake();
 
-        $response = $this->get('/data/laporan-apbdes/export-excel?desa_id=' . $desa1->desa_id);
+    $response = $this->get('/data/laporan-apbdes/export-excel?desa_id=' . $desa1->desa_id);
 
-        // Assert: Periksa bahwa export dipanggil dengan filter
-        $response->assertSuccessful();
-        // Cukup periksa response berhasil karena filename dinamis dengan timestamp
-    }
+    // Assert: Periksa bahwa export berhasil
+    $response->assertSuccessful();
+});
 
-    /**
-     * Test export laporan apbdes dengan database lokal tanpa filter.
-     *
-     * @return void
-     */
-    public function test_export_laporan_apbdes_local_database_no_filter()
-    {
-        // Arrange: Buat data test
-        $desa = DataDesa::factory()->create();
-        LaporanApbdes::factory()->count(5)->create([
-            'desa_id' => $desa->desa_id
-        ]);
+test('export laporan apbdes local database no filter', function () {
+    // Arrange: Buat data test
+    $desa = DataDesa::factory()->create();
+    LaporanApbdes::factory()->count(5)->create([
+        'desa_id' => $desa->desa_id
+    ]);
 
-        // Act: Buat instance export tanpa filter
-        $export = new ExportLaporanApbdes();
-        $collection = $export->collection();
+    // Act: Buat instance export tanpa filter
+    $export = new ExportLaporanApbdes();
+    $collection = $export->collection();
 
-        // Assert: Periksa data collection
-        $this->assertEquals(LaporanApbdes::count(), $collection->count());
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $collection);
-    }
+    // Assert: Periksa data collection
+    expect($collection->count())->toBe(LaporanApbdes::count())
+        ->and($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class);
+});
 
-    /**
-     * Test export laporan apbdes dengan database lokal dengan filter desa.
-     *
-     * @return void
-     */
-    public function test_export_laporan_apbdes_local_database_with_desa_filter()
-    {
-        // Arrange: Buat data test dengan beberapa desa
-        $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
-        $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
+test('export laporan apbdes local database with desa filter', function () {
+    // Arrange: Buat data test dengan beberapa desa
+    $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
+    $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
 
-        LaporanApbdes::factory()->count(2)->create([
-            'desa_id' => $desa1->desa_id
-        ]);
-        LaporanApbdes::factory()->count(3)->create([
-            'desa_id' => $desa2->desa_id
-        ]);
+    LaporanApbdes::factory()->count(2)->create([
+        'desa_id' => $desa1->desa_id
+    ]);
+    LaporanApbdes::factory()->count(3)->create([
+        'desa_id' => $desa2->desa_id
+    ]);
 
-        // Act: Buat instance export dengan filter desa
-        $export = new ExportLaporanApbdes(['desa_id' => $desa1->desa_id]);
-        $collection = $export->collection();
+    // Act: Buat instance export dengan filter desa
+    $export = new ExportLaporanApbdes(['desa_id' => $desa1->desa_id]);
+    $collection = $export->collection();
 
-        // Assert: Periksa data collection yang terfilter
-        $expectedCount = LaporanApbdes::where('desa_id', $desa1->desa_id)->count();
-        $this->assertEquals($expectedCount, $collection->count());
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $collection);
-    }
+    // Assert: Periksa data collection yang terfilter
+    $expectedCount = LaporanApbdes::where('desa_id', $desa1->desa_id)->count();
+    expect($collection->count())->toBe($expectedCount)
+        ->and($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class);
+});
 
-    /**
-     * Test export laporan apbdes dengan filter 'Semua' (harus mengembalikan semua data).
-     *
-     * @return void
-     */
-    public function test_export_laporan_apbdes_with_semua_filter()
-    {
-        // Arrange: Buat data test
-        $desa = DataDesa::factory()->create();
-        LaporanApbdes::factory()->count(4)->create([
-            'desa_id' => $desa->desa_id
-        ]);
+test('export laporan apbdes with semua filter', function () {
+    // Arrange: Buat data test
+    $desa = DataDesa::factory()->create();
+    LaporanApbdes::factory()->count(4)->create([
+        'desa_id' => $desa->desa_id
+    ]);
 
-        // Act: Buat instance export dengan filter 'Semua'
-        $export = new ExportLaporanApbdes(['desa_id' => 'Semua']);
-        $collection = $export->collection();
+    // Act: Buat instance export dengan filter 'Semua'
+    $export = new ExportLaporanApbdes(['desa_id' => 'Semua']);
+    $collection = $export->collection();
 
-        // Assert: Periksa bahwa semua data dikembalikan
-        $this->assertEquals(LaporanApbdes::count(), $collection->count());
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $collection);
-    }
-}
+    // Assert: Periksa bahwa semua data dikembalikan
+    expect($collection->count())->toBe(LaporanApbdes::count())
+        ->and($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class);
+});

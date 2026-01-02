@@ -29,107 +29,96 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
-
-use App\Enums\{JenisJabatan, LogVerifikasiSurat, StatusSurat};
-use App\Http\Middleware\{Authenticate, CompleteProfile};
+use App\Enums\JenisJabatan;
+use App\Enums\LogVerifikasiSurat;
+use App\Enums\StatusSurat;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\CompleteProfile;
 use App\Models\Jabatan;
 use App\Models\Pengurus;
 use App\Models\Surat;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Spatie\Permission\Middlewares\{PermissionMiddleware, RoleMiddleware};
-use Tests\TestCase;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
-class PermohonanControllerTest extends TestCase
-{
-    use DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    protected string $tableName;
+beforeEach(function () {
+    $this->tableName = (new Surat())->getTable();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    $this->withViewErrors([]);
+    $this->withoutMiddleware([
+        Authenticate::class,
+        RoleMiddleware::class,
+        PermissionMiddleware::class,
+        CompleteProfile::class,
+    ]);
+});
 
-        $this->tableName = (new Surat())->getTable();
+test('index menampilkan view permohonan', function () {
+    $this->get(route('surat.permohonan'))
+        ->assertStatus(200)
+        ->assertViewIs('surat.permohonan.index');
+});
 
-        $this->withViewErrors([]);
-        $this->withoutMiddleware([
-            Authenticate::class,
-            RoleMiddleware::class,
-            PermissionMiddleware::class,
-            CompleteProfile::class,
-        ]);
-    }
+test('show menampilkan detail permohonan surat', function () {
+    $jabatan = Jabatan::factory()->create([
+        'nama' => 'Sekretaris',
+        'jenis' => JenisJabatan::Sekretaris,
+    ]);
 
-    public function test_index_menampilkan_view_permohonan()
-    {
-        $this->get(route('surat.permohonan'))
-            ->assertStatus(200)
-            ->assertViewIs('surat.permohonan.index');
-    }
+    $pengurus = Pengurus::factory()->create([
+        'jabatan_id' => $jabatan->id,
+    ]);
 
-    public function test_show_menampilkan_detail_permohonan_surat()
-    {
-        $jabatan = Jabatan::factory()->create([
-            'nama' => 'Sekretaris',
-            'jenis' => JenisJabatan::Sekretaris,
-        ]);
+    $user = User::factory()->create([
+        'pengurus_id' => $pengurus->id,
+    ]);
 
-        $pengurus = Pengurus::factory()->create([
-            'jabatan_id' => $jabatan->id,
-        ]);
+    $this->actingAs($user);
 
-        $user = User::factory()->create([
-            'pengurus_id' => $pengurus->id,
-        ]);
+    $surat = Surat::factory()->create([
+        'log_verifikasi' => LogVerifikasiSurat::Sekretaris,
+        'pengurus_id' => $pengurus->id,
+    ]);
 
-        $this->actingAs($user);
+    $this->app->bind(\App\Http\Controllers\Surat\PermohonanController::class, function () use ($pengurus) {
+        $controller = new \App\Http\Controllers\Surat\PermohonanController();
+        $controller->setAkunSekretaris($pengurus);
+        return $controller;
+    });
 
-        $surat = Surat::factory()->create([
-            'log_verifikasi' => LogVerifikasiSurat::Sekretaris,
-            'pengurus_id' => $pengurus->id,
-        ]);
+    $this->get(route('surat.permohonan.show', $surat->id))
+        ->assertStatus(200)
+        ->assertViewIs('surat.permohonan.show');
 
-        $this->app->bind(\App\Http\Controllers\Surat\PermohonanController::class, function () use ($pengurus) {
-            $controller = new \App\Http\Controllers\Surat\PermohonanController();
-            $controller->setAkunSekretaris($pengurus);
-            return $controller;
-        });
+    $this->assertDatabaseHas($this->tableName, [
+        'id' => $surat->id,
+    ]);
+});
 
-        $this->get(route('surat.permohonan.show', $surat->id))
-            ->assertStatus(200)
-            ->assertViewIs('surat.permohonan.show');
+test('tolak memperbarui status surat ke ditolak', function () {
+    $surat = Surat::factory()->create();
 
-        $this->assertDatabaseHas($this->tableName, [
-            'id' => $surat->id,
-        ]);
-    }
+    $user = User::factory()->create();
+    $this->actingAs($user);
 
-    public function test_tolak_memperbarui_status_surat_ke_ditolak()
-    {
-        $surat = Surat::factory()->create();
+    $data = ['keterangan' => 'Alasan penolakan surat ini'];
 
-        $user = User::factory()->create();
-        $this->actingAs($user);
+    $this->postJson(route('surat.permohonan.tolak', $surat->id), $data)
+        ->assertStatus(200);
 
-        $data = ['keterangan' => 'Alasan penolakan surat ini'];
+    $this->assertDatabaseHas($this->tableName, [
+        'id' => $surat->id,
+        'log_verifikasi' => LogVerifikasiSurat::Ditolak,
+        'status' => StatusSurat::Ditolak,
+        'keterangan' => $data['keterangan'],
+    ]);
+});
 
-        $this->postJson(route('surat.permohonan.tolak', $surat->id), $data)
-            ->assertStatus(200);
-
-        $this->assertDatabaseHas($this->tableName, [
-            'id' => $surat->id,
-            'log_verifikasi' => LogVerifikasiSurat::Ditolak,
-            'status' => StatusSurat::Ditolak,
-            'keterangan' => $data['keterangan'],
-        ]);
-    }
-
-    public function test_ditolak_menampilkan_view_ditolak()
-    {
-        $this->get(route('surat.permohonan.ditolak'))
-            ->assertStatus(200)
-            ->assertViewIs('surat.permohonan.ditolak');
-    }
-}
+test('ditolak menampilkan view ditolak', function () {
+    $this->get(route('surat.permohonan.ditolak'))
+        ->assertStatus(200)
+        ->assertViewIs('surat.permohonan.ditolak');
+});

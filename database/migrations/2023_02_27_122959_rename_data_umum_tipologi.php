@@ -43,6 +43,7 @@ class RenameDataUmumTipologi extends Migration
     public function up()
     {
         Schema::table('das_data_umum', function (Blueprint $table) {
+            $table->longText('tipologi')->nullable()->change();
             $table->renameColumn('tipologi', 'sejarah');
         });
     }

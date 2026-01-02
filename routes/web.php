@@ -416,8 +416,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{medsos}', ['as' => 'informasi.media-sosial.destroy', 'uses' => 'MediaSosialController@destroy']);
                 });
 
-                Route::get('/media-terkait', [\App\Http\Livewire\Informasi\MediaTerkaitController::class, '__invoke'])->name('informasi.media.terkait');
-
                 // Sinergi Program
                 Route::group(['prefix' => 'sinergi-program'], function () {
                     Route::get('/', ['as' => 'informasi.sinergi-program.index', 'uses' => 'SinergiProgramController@index']);
@@ -471,6 +469,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::group(['prefix' => 'kerjasama'], function () {
             Route::get('/pendaftaran-kerjasama', \App\Http\Livewire\Kerjasama\PendaftaranKerjasama::class)->name('kerjasama.pendaftaran.kerjasama');
             Route::get('/template', [\App\Http\Controllers\Kerjasama\PendaftaranKerjasamaController::class, 'dokumen_template'])->name('kerjasama.pendaftaran.kerjasama.template');
+        });
+
+        // Media Terkait (Livewire)
+        Route::group(['prefix' => 'informasi', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
+            Route::get('/media-terkait', \App\Http\Livewire\Informasi\MediaTerkaitController::class)->name('informasi.media.terkait');
         });
 
         /**
@@ -841,13 +844,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
-                Route::post('store', 'store')->name('setting.user.store');
-                Route::get('edit/{id}', 'edit')->name('setting.user.edit');
-                Route::put('update/{id}', 'update')->name('setting.user.update');
+                Route::post('store', 'store')->name('setting.user.store');                
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
                 Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::post('destroy/{id}', 'destroy')->name('setting.user.destroy');
-                Route::post('active/{id}', 'active')->name('setting.user.active');
+                Route::post('active/{id}', 'active')->name('setting.user.active');                
+            });
+
+            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {                
+                Route::get('edit/{id}', 'edit')->name('setting.user.edit');
+                Route::put('update/{id}', 'update')->name('setting.user.update');                
                 Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });

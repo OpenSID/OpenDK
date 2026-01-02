@@ -36,4 +36,20 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+
+    /**
+     * Set up the test environment.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Authenticate a user for all tests to prevent 403 errors
+        // This is necessary for Laravel 11 where authorization is stricter
+        $user = \App\Models\User::first();
+        if (!$user) {
+            $user = \App\Models\User::factory()->create();
+        }
+        $this->actingAs($user);
+    }
 }

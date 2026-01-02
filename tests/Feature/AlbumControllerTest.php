@@ -29,100 +29,87 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
-
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Models\Album;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
-use Tests\TestCase;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
-class AlbumControllerTest extends TestCase
-{
-    use DatabaseTransactions;
-    /**
-     * Set up the test environment.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->withViewErrors([]);
-        $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class]); // Disable middleware for this test
-    }
+uses(DatabaseTransactions::class);
 
-    public function test_display_the_album_index_page()
-    {
-        $response = $this->get(route('publikasi.album.index'));
+beforeEach(function () {
+    $this->withViewErrors([]);
+    $this->withoutMiddleware([
+        Authenticate::class,
+        RoleMiddleware::class,
+        PermissionMiddleware::class,
+        CompleteProfile::class,
+    ]);
+});
 
-        $response->assertStatus(200);
-        $response->assertViewIs('publikasi.album.index');
-    }
+test('display the album index page', function () {
+    $response = $this->get(route('publikasi.album.index'));
 
-    /** @test */
-    public function test_create_an_album()
-    {
-        $data = [
-            'judul' => 'Test Album',
-            'status' => true,
-            'gambar' => null, // Assuming no image upload for this test
-        ];
+    $response->assertStatus(200);
+    $response->assertViewIs('publikasi.album.index');
+});
 
-        $response = $this->post(route('publikasi.album.store'), $data);
+test('create an album', function () {
+    $data = [
+        'judul' => 'Test Album',
+        'status' => true,
+        'gambar' => null, // Assuming no image upload for this test
+    ];
 
-        $this->assertDatabaseHas('albums', [
-            'judul' => 'Test Album',
-        ]);
+    $response = $this->post(route('publikasi.album.store'), $data);
 
-        $response->assertRedirect(route('publikasi.album.index'));
-        $response->assertSessionHas('success', 'Album berhasil disimpan!');
-    }
+    $this->assertDatabaseHas('albums', [
+        'judul' => 'Test Album',
+    ]);
 
-    /** @test */
-    public function test_update_an_album()
-    {
-        $album = Album::factory()->create();
+    $response->assertRedirect(route('publikasi.album.index'));
+    $response->assertSessionHas('success', 'Album berhasil disimpan!');
+});
 
-        $data = [
-            'judul' => 'Updated Album',
-        ];
+test('update an album', function () {
+    $album = Album::factory()->create();
 
-        $response = $this->put(route('publikasi.album.update', $album->id), $data);
-        $this->assertDatabaseHas('albums', [
-            'judul' => 'Updated Album',
-        ]);
+    $data = [
+        'judul' => 'Updated Album',
+    ];
 
-        $response->assertRedirect(route('publikasi.album.index'));
-        $response->assertSessionHas('success', 'Album berhasil diubah!');
-    }
+    $response = $this->put(route('publikasi.album.update', $album->id), $data);
 
-    /** @test */
-    public function test_delete_an_album()
-    {
-        $album = Album::factory()->create();
+    $this->assertDatabaseHas('albums', [
+        'judul' => 'Updated Album',
+    ]);
 
-        $response = $this->delete(route('publikasi.album.destroy', $album->id));
+    $response->assertRedirect(route('publikasi.album.index'));
+    $response->assertSessionHas('success', 'Album berhasil diubah!');
+});
 
-        $this->assertDatabaseMissing('albums', [
-            'id' => $album->id,
-        ]);
+test('delete an album', function () {
+    $album = Album::factory()->create();
 
-        $response->assertRedirect(route('publikasi.album.index'));
-        $response->assertSessionHas('success', 'Album sukses dihapus!');
-    }
+    $response = $this->delete(route('publikasi.album.destroy', $album->id));
 
-    /** @test */
-    public function test_toggle_album_status()
-    {
-        $album = Album::factory()->create(['status' => 0]);
+    $this->assertDatabaseMissing('albums', [
+        'id' => $album->id,
+    ]);
 
-        $response = $this->put(route('publikasi.album.status', $album->id));
+    $response->assertRedirect(route('publikasi.album.index'));
+    $response->assertSessionHas('success', 'Album sukses dihapus!');
+});
 
-        $album->refresh();
+test('toggle album status', function () {
+    $album = Album::factory()->create(['status' => 0]);
 
-        $this->assertTrue($album->status, 'Album status should be toggled to 1');
+    $response = $this->put(route('publikasi.album.status', $album->id));
 
-        $response->assertRedirect(route('publikasi.album.index'));
-    }
-}
+    $album->refresh();
+
+    expect($album->status)->toBeTrue();
+
+    $response->assertRedirect(route('publikasi.album.index'));
+});

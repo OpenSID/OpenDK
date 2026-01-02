@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,46 +24,39 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+namespace App\Http\Requests;
 
-use Carbon\Carbon;
-use MichaelDzjap\TwoFactorAuth\Contracts\TwoFactorProvider;
-use MichaelDzjap\TwoFactorAuth\Exceptions\TokenExpiredException;
-use MichaelDzjap\TwoFactorAuth\Providers\BaseProvider;
+use App\Rules\Password;
+use Illuminate\Foundation\Http\FormRequest;
 
-class EmailTwoFactorProvider extends BaseProvider implements TwoFactorProvider
+class UserUpdateRequest extends FormRequest
 {
     /**
-     * {@inheritdoc}
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    public function register($user): void
+    public function authorize()
     {
-        //
+        return true;
     }
 
     /**
-     * {@inheritdoc}
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
      */
-    public function unregister($user)
+    public function rules()
     {
-        //
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function verify($user, string $token)
-    {
-        $savedToken = $user->twoFactorAuth;
-        if (Carbon::createFromFormat('Y-m-d H:i:s',$savedToken->expired_at)->isPast()) {
-            throw new TokenExpiredException();
-        }
+        $id = ','.$this->segment(4);
         
-        return $savedToken->id == $token;
+        return [
+            'password' => ['nullable', 'min:8', 'max:32', 'confirmed', new Password()],
+        ];
     }
 }

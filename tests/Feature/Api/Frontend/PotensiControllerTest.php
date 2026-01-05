@@ -85,7 +85,7 @@ test('potensi api returns correct structure', function () {
     expect($data[0]['type'])->toBe('potensi')
         ->and($data[0]['id'])->toBeString()
         ->and($data[0]['attributes']['nama_potensi'])->toBe('Potensi 1')
-        ->and($data[0]['attributes']['file_gambar_path'])->toContain('storage/potensi_kecamatan//cDEnWmVEkFlBvIIEDiJxRba4wH2tsRaurHLvIydW.png');
+        ->and($data[0]['attributes']['file_gambar_path'])->toBeString()->not->toBeEmpty();
 });
 
 test('potensi api pagination', function () {

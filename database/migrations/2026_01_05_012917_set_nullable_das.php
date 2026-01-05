@@ -25,13 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('das_profil', function (Blueprint $table) {
-            $table->string('kabupaten_id', 5)->nullable(false)->change();
-            $table->string('dasar_pembentukan', 50)->nullable(false)->change();
-        });
-
-        Schema::table('das_data_umum', function (Blueprint $table) {
-            $table->longText('tipologi')->nullable(false)->change();
-        });
+        // tidak perlu dikembalikan
     }
 };

@@ -91,9 +91,9 @@ test('index returns statistik penduduk data', function () {
     ]);
 });
 
-test('index with kategori parameter', function () {
+test('index with desa parameter', function () {
     $this->repository->shouldReceive('data')->once()->with('Pendidikan', date('Y'))->andReturn([]);
-    $response = $this->getJson('/api/frontend/v1/statistik-penduduk?kategori=Pendidikan');
+    $response = $this->getJson('/api/frontend/v1/statistik-penduduk?desa=Pendidikan');
     $response->assertStatus(200);
 });
 
@@ -103,9 +103,9 @@ test('index with tahun parameter', function () {
     $response->assertStatus(200);
 });
 
-test('index with kategori and tahun parameters', function () {
+test('index with desa and tahun parameters', function () {
     $this->repository->shouldReceive('data')->once()->with('Kesehatan', '2022')->andReturn([]);
-    $response = $this->getJson('/api/frontend/v1/statistik-penduduk?kategori=Kesehatan&tahun=2022');
+    $response = $this->getJson('/api/frontend/v1/statistik-penduduk?desa=Kesehatan&tahun=2022');
     $response->assertStatus(200);
 });
 
@@ -135,7 +135,7 @@ test('index with include parameter', function () {
 
 test('index with all parameters', function () {
     $this->repository->shouldReceive('data')->once()->with('Ekonomi', '2023')->andReturn([]);
-    $response = $this->getJson('/api/frontend/v1/statistik-penduduk?kategori=Ekonomi&tahun=2023&page[number]=1&page[size]=15&search=test&sort=nama&order=desc&include=penduduk');
+    $response = $this->getJson('/api/frontend/v1/statistik-penduduk?desa=Ekonomi&tahun=2023&page[number]=1&page[size]=15&search=test&sort=nama&order=desc&include=penduduk');
     $response->assertStatus(200);
 });
 

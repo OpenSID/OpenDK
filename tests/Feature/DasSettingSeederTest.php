@@ -46,7 +46,6 @@ test('semua setting key terdaftar dalam database', function () {
         'api_key_database_gabungan',
         'api_key_opendk',
         'layanan_opendesa_token',
-        'login_2fa',
         'google_recaptcha',
         'jenis_peta',
         'map_box',

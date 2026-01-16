@@ -137,6 +137,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
     });
 
+    // Profile Routes (User Profile Management)
+    Route::namespace('\App\Http\Controllers\Auth')->prefix('profile')->middleware('auth')->group(function () {
+        Route::get('password', 'ProfileController@password')->name('profile.password');
+        Route::post('password', 'ProfileController@updatePassword')->name('profile.password.update');
+    });
+
     // 2FA Login Routes (guest access)
     Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
         Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');

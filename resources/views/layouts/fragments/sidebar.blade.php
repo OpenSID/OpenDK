@@ -499,6 +499,11 @@
                                         href="{{ route('setting.user.index') }}"><i
                                             class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif
+                            <li {{ Request::is(['profile/password']) ? 'class=active' : '' }}>
+                                <a href="{{ route('profile.password') }}">
+                                    <i class="fa fa-circle-o"></i> Ganti Password
+                                </a>
+                            </li>
                             <li {{ Request::is(['otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('otp2fa.index') }}">
                                     <i class="fa fa-circle-o"></i> OTP & 2FA
@@ -537,6 +542,11 @@
                         </ul>
                     </li>
                 @else
+                    <li {{ Request::is(['profile/password']) ? 'class=active' : '' }}>
+                        <a href="{{ route('profile.password') }}">
+                            <i class="fa fa-lock"></i> Ganti Password
+                        </a>
+                    </li>
                     <li {{ Request::is(['otp-2fa*', 'otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
                         <a href="{{ route('otp2fa.index') }}">
                             <i class="fa fa-shield"></i> OTP & 2FA

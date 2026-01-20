@@ -78,7 +78,7 @@ class PermohonanController extends Controller
                     $isAllow = true;
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
                     $isAllow = true;
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat?->id) {
                     $isAllow = true;
                 }
 

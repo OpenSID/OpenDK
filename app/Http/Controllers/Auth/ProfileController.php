@@ -38,6 +38,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
@@ -55,7 +56,6 @@ class ProfileController extends Controller
     }
 
     /**
-     * Tampilkan form ganti password.
      *
      * @return View
      */
@@ -65,9 +65,8 @@ class ProfileController extends Controller
     }
 
     /**
-     * Proses ganti password user yang sedang login.
      *
-     * @param  ChangePasswordRequest  $request
+     * @param  ChangePasswordRequest  
      * @return RedirectResponse
      */
     public function updatePassword(ChangePasswordRequest $request): RedirectResponse
@@ -75,21 +74,25 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        // Verifikasi password saat ini
         if (! Hash::check($request->current_password, $user->password)) {
             return back()
                 ->withInput()
                 ->with('error', trans('password.change_failed'));
         }
 
-        // Update password baru
         $user->update([
             'password' => bcrypt($request->password),
         ]);
 
-        // Kirim email notifikasi
-        Mail::to($user->email)->send(new PasswordChangedMail($user->name));
+        if($user->email){
+            try{
+                Mail::to($user->email)->send(new PasswordChangedMail($user->name));
+            } catch(\Exception $e){
+                Log::error('failed to send password change email: ' . $e->getMessage());
+            }
 
+        }
+    
         return back()->with('success', trans('password.change_success'));
     }
 }

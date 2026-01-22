@@ -84,8 +84,6 @@ class ProfileController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        Auth::logoutOtherDevices($request->current_password);
-
         if($user->email){
             try{
                 Mail::to($user->email)->send(new PasswordChangedMail($user->name));

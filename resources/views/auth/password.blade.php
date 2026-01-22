@@ -242,6 +242,15 @@
                 this.setCustomValidity('');
             }
         });
+
+        // Add listener to password field as well
+        passwordInput.addEventListener('input', function() {
+            if (confirm.value && confirm.value !== this.value) {
+                confirm.setCustomValidity('Password tidak cocok');
+            } else {
+                confirm.setCustomValidity('');
+            }
+        });
     }
 })();
 </script>

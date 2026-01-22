@@ -140,7 +140,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     // Profile Routes (User Profile Management)
     Route::namespace('\App\Http\Controllers\Auth')->prefix('profile')->middleware('auth')->group(function () {
         Route::get('password', 'ProfileController@password')->name('profile.password');
-        Route::post('password', 'ProfileController@updatePassword')->name('profile.password.update');
+        Route::post('password', 'ProfileController@updatePassword')
+            ->middleware('throttle:5,1')
+            ->name('profile.password.update');
     });
 
     // 2FA Login Routes (guest access)

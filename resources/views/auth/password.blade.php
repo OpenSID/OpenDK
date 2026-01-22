@@ -39,7 +39,7 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('profile.password.update') }}" class="form-horizontal" autocomplete="off">
+                        <form method="POST" action="{{ route('profile.password.update') }}" class="form-horizontal">
                             @csrf
 
                             <!-- Password Saat Ini -->
@@ -49,7 +49,7 @@
                                 </label>
                                 <div class="col-sm-6">
                                     <input type="password" class="form-control" id="current_password"
-                                           name="current_password" placeholder="Masukkan password saat ini" required autofocus>
+                                           name="current_password" placeholder="Masukkan password saat ini" required autofocus autocomplete="current-password">
                                 </div>
                                 <div class="col-sm-1">
                                     <button type="button" class="btn btn-default btn-sm toggle-password" data-target="current_password">
@@ -67,7 +67,7 @@
                                 </label>
                                 <div class="col-sm-7">
                                     <input type="password" class="form-control" id="password"
-                                           name="password" placeholder="Masukkan password baru (min. 8 karakter)" required>
+                                           name="password" placeholder="Masukkan password baru (min. 8 karakter)" required autocomplete="new-password">
                                     <!-- Password Strength Indicator -->
                                     <div class="progress password-strength mt-5" style="height: 5px; display: none;">
                                         <div class="progress-bar progress-bar-danger" style="width: 0%"></div>
@@ -93,7 +93,7 @@
                                 </label>
                                 <div class="col-sm-6">
                                     <input type="password" class="form-control" id="password_confirmation"
-                                           name="password_confirmation" placeholder="Ulangi password baru" required>
+                                           name="password_confirmation" placeholder="Ulangi password baru" required autocomplete="new-password">
                                 </div>
                                 <div class="col-sm-1">
                                     <button type="button" class="btn btn-default btn-sm toggle-password" data-target="password_confirmation">
@@ -232,7 +232,6 @@
         });
     }
 
-    // Password confirmation match indicator
     var confirm = document.getElementById('password_confirmation');
 
     if (confirm && passwordInput) {

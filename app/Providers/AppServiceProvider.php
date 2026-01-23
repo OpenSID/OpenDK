@@ -34,6 +34,7 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
+use App\Services\CacheService;
 use App\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -54,7 +55,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {}
+    public function register()
+    {
+        $this->app->singleton(CacheService::class, function () {
+            return new CacheService();
+        });
+    }
 
     /**
      * Bootstrap any application services.

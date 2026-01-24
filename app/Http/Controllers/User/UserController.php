@@ -178,8 +178,7 @@ class UserController extends Controller
         try {
             $user_find = User::findOrFail($id);
 
-            $user = $user_find->update($request->all());
-            $user->update([
+            $user_find->update([
                 'password' => bcrypt($request->password),
             ]);
 

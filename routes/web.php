@@ -91,8 +91,14 @@ Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Instal
 
 // Redirect if apps not installed
 Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
+    
+    Route::post('/login', 'Auth\LoginController@authenticate')
+        ->middleware('throttle:login')
+        ->name('login');
+
     Auth::routes([
         'register' => false,
+        'login' => false, 
     ]);
 
     // OTP Routes

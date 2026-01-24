@@ -146,7 +146,7 @@ class PengurusController extends Controller
     public function store(PengurusRequest $request)
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             Pengurus::create($input);
         } catch (\Exception $e) {
@@ -196,7 +196,7 @@ class PengurusController extends Controller
         $pengurus = Pengurus::findOrFail($id);
 
         try {
-            $input = $request->all();
+            $input = $request->validated();
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             $pengurus->update($input);
         } catch (\Exception $e) {

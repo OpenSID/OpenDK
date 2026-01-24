@@ -42,9 +42,26 @@ class Penduduk extends Model
 
     protected $table = 'das_penduduk';
 
-    protected $fillable = [];
-
-    protected $guarded = [];
+    /**
+     * Field yang dilindungi dari mass assignment.
+     *
+     * Field-field ini bersifat sensitif dan tidak boleh diubah sembarangan
+     * melalui mass assignment untuk keamanan data.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = [
+        'id',
+        'nik',                  // Identitas unik penduduk
+        'no_kk',                // Nomor Kartu Keluarga
+        'status_dasar',         // Status dasar (hidup/matih/pindah)
+        'desa_id',              // Kode desa - mencegah pindah desa ilegal
+        'kecamatan_id',         // Kode kecamatan
+        'kabupaten_id',         // Kode kabupaten
+        'provinsi_id',          // Kode provinsi
+        'id_pend_desa',         // ID dari OpenSID desa
+        'imported_at',          // Timestamp import
+    ];
 
     /**
      * Relation Methods

@@ -432,6 +432,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         });
 
         /**
+         * Group Routing for PPID
+         */
+        Route::namespace('\App\Http\Controllers')->group(function () {
+            Route::group(['prefix' => 'ppid', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
+                Route::get('/pengaturan', ['as' => 'ppid.pengaturan.index', 'uses' => 'PpidPengaturanController@index']);
+                Route::put('/pengaturan/{id}', ['as' => 'ppid.pengaturan.update', 'uses' => 'PpidPengaturanController@update']);
+            });
+        });
+
+        /**
          * Group Routing for Publikasi
          */
         Route::namespace('\App\Http\Controllers\Publikasi')->group(function () {

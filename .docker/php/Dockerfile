@@ -1,13 +1,8 @@
-# dockerfile
-FROM php:7.4-fpm
+FROM php:8.3-fpm
 
-# Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
-
-# Set working directory
 WORKDIR /var/www
 
-# Install dependencies
+# 1. Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
     libpng-dev \
@@ -20,39 +15,42 @@ RUN apt-get update && apt-get install -y \
     curl \
     libonig-dev \
     libzip-dev \
-    libwebp-dev
+    libwebp-dev \
+    gnupg \
+    git \
+    libicu-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install extensions
-RUN docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ --with-webp=/usr/include/ \
-    && docker-php-ext-install gd
-RUN pecl install -o -f redis \
-    &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
+# 2. Install PHP extensions (Added 'sockets' here)
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install gd \
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath intl sockets
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# 3. Install Redis
+RUN pecl install redis \
+    && docker-php-ext-enable redis
 
-# NPM for frontend builds
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - \
-    && apt-get install -y nodejs
+# 4. Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Add user for laravel application
+# Add user
 RUN groupadd -g 1000 www \
     && useradd -u 1000 -ms /bin/bash -g www www
 
-# Copy existing application directory contents
-COPY ./ /var/www
-
-# Copy existing application directory permissions
+# Copy application code
 COPY --chown=www:www . /var/www
 
-# Change current user to www
+# We explicitly REMOVE the broken testing tools from composer.json inside the container
+# This prevents the version conflict error entirely.
+RUN git config --global --add safe.directory /var/www \
+    && rm -f config/scribe.php \
+    && composer remove --dev pestphp/pest pestphp/pest-plugin-browser pestphp/pest-plugin-laravel --no-update --no-interaction \
+    && composer install --no-interaction --optimize-autoloader --no-dev --ignore-platform-reqs
+
+# Change user
 USER www
 
-# Expose port 9000 and start php-fpm server
 EXPOSE 9000
 CMD ["php-fpm"]

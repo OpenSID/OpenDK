@@ -48,8 +48,58 @@
 </section>
 @endsection
 
+<!-- Modal Tambah Pertanyaan -->
+<div class="modal fade" id="modalTambahPertanyaan" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">
+                    <i class="fa fa-plus-circle"></i> Tambah Pertanyaan
+                </h4>
+            </div>
+            <form id="formTambahPertanyaan">
+                <div class="modal-body">
+                    <input type="hidden" name="ppid_tipe" id="inputPpidTipe" value="1">
+
+                    <div class="form-group">
+                        <label>Judul Pertanyaan <span class="required">*</span></label>
+                        <input type="text" name="ppid_judul" id="inputPpidJudul"
+                            class="form-control" placeholder="Masukkan judul pertanyaan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status <span class="required">*</span></label>
+                        <select name="ppid_status" id="inputPpidStatus" class="form-control" required>
+                            <option value="1">Aktif</option>
+                            <option value="0">Non-Aktif</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <i class="fa fa-times"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-save"></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @push('scripts')
 <script>
+    // CSRF Token untuk AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     $(function() {
         var fileTypes = ['jpg', 'jpeg', 'png', 'bmp']; //acceptable file types
 
@@ -77,6 +127,107 @@
         $("#ppid_banner").change(function() {
             readURL(this);
         });
+
+        // Handle submit form tambah pertanyaan
+        $('#formTambahPertanyaan').on('submit', function(e) {
+            e.preventDefault();
+
+            var formData = $(this).serialize();
+            var url = '{{ route("ppid.pertanyaan.store") }}';
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        $('#modalTambahPertanyaan').modal('hide');
+                        location.reload();
+                    } else {
+                        alert('Gagal menambahkan pertanyaan.');
+                    }
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        var errors = xhr.responseJSON.errors;
+                        var errorMessage = '';
+                        for (var key in errors) {
+                            errorMessage += errors[key][0] + '\n';
+                        }
+                        alert(errorMessage);
+                    } else {
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    }
+                }
+            });
+        });
     });
+
+    // Tampilkan modal tambah pertanyaan berdasarkan tipe
+    function showTambahPertanyaanModal(tipe) {
+        $('#inputPpidTipe').val(tipe);
+        $('#inputPpidJudul').val('');
+        $('#inputPpidStatus').val('1');
+
+        var tipeLabels = {
+            '0': 'Keberatan',
+            '1': 'Informasi',
+            '2': 'Mendapatkan'
+        };
+
+        $('#modalTambahPertanyaan .modal-title').html(
+            '<i class="fa fa-plus-circle"></i> Tambah Pertanyaan - ' + tipeLabels[tipe]
+        );
+
+        $('#modalTambahPertanyaan').modal('show');
+    }
+
+    // Toggle status pertanyaan
+    function toggleStatus(id, currentStatus) {
+        var newStatus = currentStatus === '1' ? '0' : '1';
+        var url = '{{ route("ppid.pertanyaan.updateStatus", "ID") }}'.replace('ID', id);
+
+        if (confirm('Ubah status pertanyaan ini?')) {
+            $.ajax({
+                url: url,
+                method: 'PATCH',
+                data: {
+                    ppid_status: newStatus
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Gagal mengupdate status.');
+                    }
+                },
+                error: function() {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            });
+        }
+    }
+
+    // Hapus pertanyaan
+    function deletePertanyaan(id) {
+        var url = '{{ route("ppid.pertanyaan.destroy", "ID") }}'.replace('ID', id);
+
+        if (confirm('Yakin ingin menghapus pertanyaan ini?')) {
+            $.ajax({
+                url: url,
+                method: 'DELETE',
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Gagal menghapus pertanyaan.');
+                    }
+                },
+                error: function() {
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                }
+            });
+        }
+    }
 </script>
 @endpush

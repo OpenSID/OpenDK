@@ -438,6 +438,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'ppid', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan|kontributor-artikel']], function () {
                 Route::get('/pengaturan', ['as' => 'ppid.pengaturan.index', 'uses' => 'PpidPengaturanController@index']);
                 Route::put('/pengaturan/{id}', ['as' => 'ppid.pengaturan.update', 'uses' => 'PpidPengaturanController@update']);
+
+                // Pertanyaan CRUD
+                Route::post('/pertanyaan', ['as' => 'ppid.pertanyaan.store', 'uses' => 'PpidPengaturanController@storePertanyaan']);
+                Route::delete('/pertanyaan/{id}', ['as' => 'ppid.pertanyaan.destroy', 'uses' => 'PpidPengaturanController@destroyPertanyaan']);
+                Route::patch('/pertanyaan/{id}/status', ['as' => 'ppid.pertanyaan.updateStatus', 'uses' => 'PpidPengaturanController@updateStatusPertanyaan']);
             });
         });
 

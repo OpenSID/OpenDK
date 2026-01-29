@@ -114,13 +114,192 @@
             </div>
         </div>
 
-        <!-- Box Informasi Tambahan -->
+        <!-- Box Form Permohonan - Pertanyaan -->
         <div class="box box-solid box-success">
             <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-info-circle"></i> Form Permohonan</h3>
+                <h3 class="box-title"><i class="fa fa-list"></i> Form Permohonan</h3>
             </div>
             <div class="box-body">
-                
+                <!-- Tab Navigasi -->
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#tab-informasi" data-toggle="tab" aria-expanded="true">
+                            <i class="fa fa-info-circle"></i> Informasi
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#tab-mendapatkan" data-toggle="tab" aria-expanded="false">
+                            <i class="fa fa-download"></i> Mendapatkan
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="#tab-keberatan" data-toggle="tab" aria-expanded="false">
+                            <i class="fa fa-exclamation-triangle"></i> Keberatan
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <!-- Tab Informasi -->
+                    <div class="tab-pane active" id="tab-informasi">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-sm btn-success" onclick="showTambahPertanyaanModal(1)">
+                                <i class="fa fa-plus"></i> Tambah Pertanyaan
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="table-informasi">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Pertanyaan</th>
+                                        <th style="width: 100px;">Status</th>
+                                        <th style="width: 100px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(isset($pertanyaanInformasi) && $pertanyaanInformasi->count() > 0)
+                                        @foreach($pertanyaanInformasi as $index => $item)
+                                        <tr data-id="{{ $item->id }}">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->ppid_judul }}</td>
+                                            <td>
+                                                <span class="label {{ $item->ppid_status == '1' ? 'label-success' : 'label-default' }}">
+                                                    {{ $item->ppid_status == '1' ? 'Aktif' : 'Non-Aktif' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-xs btn-warning"
+                                                    onclick="toggleStatus({{ $item->id }}, '{{ $item->ppid_status }}')"
+                                                    title="Toggle Status">
+                                                    <i class="fa fa-power-off"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-danger"
+                                                    onclick="deletePertanyaan({{ $item->id }})"
+                                                    title="Hapus">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center">Belum ada pertanyaan</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Mendapatkan -->
+                    <div class="tab-pane" id="tab-mendapatkan">
+                 
+                        <div class="form-group">
+                            <button type="button" class="btn btn-sm btn-success" onclick="showTambahPertanyaanModal(2)">
+                                <i class="fa fa-plus"></i> Tambah Pertanyaan
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="table-mendapatkan">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Pertanyaan</th>
+                                        <th style="width: 100px;">Status</th>
+                                        <th style="width: 100px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(isset($pertanyaanMendapatkan) && $pertanyaanMendapatkan->count() > 0)
+                                        @foreach($pertanyaanMendapatkan as $index => $item)
+                                        <tr data-id="{{ $item->id }}">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->ppid_judul }}</td>
+                                            <td>
+                                                <span class="label {{ $item->ppid_status == '1' ? 'label-success' : 'label-default' }}">
+                                                    {{ $item->ppid_status == '1' ? 'Aktif' : 'Non-Aktif' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-xs btn-warning"
+                                                    onclick="toggleStatus({{ $item->id }}, '{{ $item->ppid_status }}')"
+                                                    title="Toggle Status">
+                                                    <i class="fa fa-power-off"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-danger"
+                                                    onclick="deletePertanyaan({{ $item->id }})"
+                                                    title="Hapus">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center">Belum ada pertanyaan</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab Keberatan -->
+                    <div class="tab-pane" id="tab-keberatan">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-sm btn-success" onclick="showTambahPertanyaanModal(0)">
+                                <i class="fa fa-plus"></i> Tambah Pertanyaan
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="table-keberatan">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Pertanyaan</th>
+                                        <th style="width: 100px;">Status</th>
+                                        <th style="width: 100px;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if(isset($pertanyaanKeberatan) && $pertanyaanKeberatan->count() > 0)
+                                        @foreach($pertanyaanKeberatan as $index => $item)
+                                        <tr data-id="{{ $item->id }}">
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $item->ppid_judul }}</td>
+                                            <td>
+                                                <span class="label {{ $item->ppid_status == '1' ? 'label-success' : 'label-default' }}">
+                                                    {{ $item->ppid_status == '1' ? 'Aktif' : 'Non-Aktif' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-xs btn-warning"
+                                                    onclick="toggleStatus({{ $item->id }}, '{{ $item->ppid_status }}')"
+                                                    title="Toggle Status">
+                                                    <i class="fa fa-power-off"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-xs btn-danger"
+                                                    onclick="deletePertanyaan({{ $item->id }})"
+                                                    title="Hapus">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center">Belum ada pertanyaan</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

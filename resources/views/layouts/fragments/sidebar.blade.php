@@ -421,6 +421,21 @@
                     </li>
                 @endif
 
+                  @if ($user->hasrole(['super-admin', 'admin-kecamatan', 'administrator-website']))
+                    <li class="treeview {{ Request::is(['ppid/*']) ? 'active' : '' }}">
+                        <a href="#"><i class="fa fa-info-circle"></i> <span>PPID</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li {{ Request::is(['ppid/pengaturan*']) ? 'class=active' : '' }}>
+                                <a href="{{ route('ppid.pengaturan.index') }}"><i class="fa fa-circle-o"></i>Pengaturan</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
                 @if ($user->hasrole(['super-admin', 'administrator-website']))
                     <li
                         class="treeview {{ Request::is(['setting*', 'otp/*', '2fa/*', 'otp-2fa*']) ? 'active' : '' }}">

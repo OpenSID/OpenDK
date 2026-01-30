@@ -77,7 +77,8 @@ class ProfileController extends Controller
         if (! Hash::check($request->current_password, $user->password)) {
             return back()
                 ->withInput()
-                ->with('error', trans('password.change_failed'));
+                ->withErrors(['current_password' => trans('passwords.change_failed')])
+                ->with('error', trans('passwords.change_failed'));
         }
 
         $user->update([
@@ -93,6 +94,6 @@ class ProfileController extends Controller
 
         }
     
-        return back()->with('success', trans('password.change_success'));
+        return back()->with('success', trans('passwords.change_success'));
     }
 }

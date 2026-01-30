@@ -45,7 +45,7 @@
                             <!-- Password Saat Ini -->
                             <div class="form-group {{ $errors->has('current_password') ? 'has-error' : '' }}">
                                 <label for="current_password" class="col-sm-3 control-label">
-                                    <i class="fa fa-key text-primary"></i> Password Saat Ini
+                                     Password Saat Ini
                                 </label>
                                 <div class="col-sm-6">
                                     <input type="password" class="form-control" id="current_password"
@@ -63,9 +63,9 @@
                             <!-- Password Baru -->
                             <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
                                 <label for="password" class="col-sm-3 control-label">
-                                    <i class="fa fa-lock text-primary"></i> Password Baru
+                                    Password Baru
                                 </label>
-                                <div class="col-sm-7">
+                                <div class="col-sm-6">
                                     <input type="password" class="form-control" id="password"
                                            name="password" placeholder="Masukkan password baru (min. 8 karakter)" required autocomplete="new-password">
                                     <!-- Password Strength Indicator -->
@@ -89,7 +89,7 @@
                             <!-- Konfirmasi Password Baru -->
                             <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
                                 <label for="password_confirmation" class="col-sm-3 control-label">
-                                    <i class="fa fa-check-circle text-primary"></i> Konfirmasi Password
+                                     Konfirmasi Password
                                 </label>
                                 <div class="col-sm-6">
                                     <input type="password" class="form-control" id="password_confirmation"

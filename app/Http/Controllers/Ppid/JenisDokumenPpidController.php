@@ -68,6 +68,7 @@ class JenisDokumenPpidController extends Controller
     public function index()
     {
         $page_description = 'Daftar Jenis Dokumen';
+
         return view('ppid.jenis_dokumen.index', compact('page_description'));
     }
 
@@ -329,6 +330,7 @@ class JenisDokumenPpidController extends Controller
             DB::commit();
 
             if ($request->ajax()) {
+
                 return response()->json([
                     'success' => true,
                     'message' => 'Urutan Jenis Dokumen berhasil diperbarui'
@@ -342,6 +344,7 @@ class JenisDokumenPpidController extends Controller
             report($e);
 
             if ($request->ajax()) {
+                
                 return response()->json([
                     'success' => false,
                     'message' => 'Gagal memperbarui urutan: ' . $e->getMessage()
@@ -359,7 +362,7 @@ class JenisDokumenPpidController extends Controller
     {
         try {
             $jenis = PpidJenisDokumen::findOrFail($id);
-            $jenis->status = ($jenis->status == 1) ? 0 : 1;
+            $jenis->status = ($jenis->status == '1') ? '0' : '1';
             $jenis->save();
 
             return redirect()->route('ppid.jenis-dokumen.index')

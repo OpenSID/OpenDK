@@ -216,17 +216,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
             Route::group(['prefix' => 'statistik'], function () {
                 Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
-                Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');                
+                Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
 
-                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');                
+                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');
 
-                Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');                
+                Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
 
-                Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');                
+                Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');
 
-                Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');                
+                Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
 
-                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');                
+                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');
             });
 
             Route::group(['prefix' => 'unduhan'], function () {
@@ -234,7 +234,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::permanentRedirect('/', '/');
-                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');                                        
+                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');
                     Route::get('{file}/download', 'DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
                 });
 
@@ -836,6 +836,27 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         });
 
         /**
+         * Group Routing for PPID
+         */
+        Route::namespace('\App\Http\Controllers\PPID')->group(function () {
+
+            Route::group(['prefix' => 'ppid', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                Route::group(['prefix' => 'jenis-dokumen'], function () {
+                    Route::get('/', ['as' => 'ppid.jenis-dokumen.index', 'uses' => 'JenisDokumenPpidController@index']);
+                    Route::get('create', ['as' => 'ppid.jenis-dokumen.create', 'uses' => 'JenisDokumenPpidController@create']);
+                    Route::get('getdata', ['as' => 'ppid.jenis-dokumen.getdata', 'uses' => 'JenisDokumenPpidController@getData']);
+                    Route::post('store', ['as' => 'ppid.jenis-dokumen.store', 'uses' => 'JenisDokumenPpidController@store']);
+                    Route::get('edit/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.edit', 'uses' => 'JenisDokumenPpidController@edit']);
+                    Route::put('update/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.update', 'uses' => 'JenisDokumenPpidController@update']);
+                    Route::delete('destroy/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.destroy', 'uses' => 'JenisDokumenPpidController@destroy']);
+                    Route::post('/bulk-delete', ['as' => 'ppid.jenis-dokumen.bulk-delete', 'uses' => 'JenisDokumenPpidController@bulkDelete']);
+                    Route::put('status/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.status', 'uses' => 'JenisDokumenPpidController@status']);
+                    Route::post('update-order', ['as' => 'ppid.jenis-dokumen.update-order', 'uses' => 'JenisDokumenPpidController@updateOrder']);
+                });
+            });
+        });
+
+        /**
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {
@@ -844,16 +865,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
-                Route::post('store', 'store')->name('setting.user.store');                
+                Route::post('store', 'store')->name('setting.user.store');
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
                 Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::post('destroy/{id}', 'destroy')->name('setting.user.destroy');
-                Route::post('active/{id}', 'active')->name('setting.user.active');                
+                Route::post('active/{id}', 'active')->name('setting.user.active');
             });
 
-            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {                
+            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.user.edit');
-                Route::put('update/{id}', 'update')->name('setting.user.update');                
+                Route::put('update/{id}', 'update')->name('setting.user.update');
                 Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
@@ -939,7 +960,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.themes.index');
                 Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
                 Route::get('rescan', 'rescan')->name('setting.themes.rescan');
-                Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');                
+                Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');
                 // post to-upload
                 Route::post('upload', 'upload')->name('setting.themes.upload');
                 Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');

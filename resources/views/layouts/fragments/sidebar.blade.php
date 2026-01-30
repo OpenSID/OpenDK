@@ -421,6 +421,24 @@
                     </li>
                 @endif
 
+                @if ($user->hasrole(['super-admin', 'admin-kecamatan']))
+                    <li class="treeview {{ Request::is(['ppid*']) ? 'active' : '' }}">
+                        <a href="#" title="Layanan Surat"><i class="fa fa-envelope"></i> <span>PPID
+                            </span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li {{ Request::is(['ppid/jenis-dokumen*']) ? 'class=active' : '' }}><a
+                                    href="{{ route('ppid.jenis-dokumen.index') }}"><i
+                                        class="fa fa-folder-open"></i>Jenis
+                                    Dokumen</a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
+
                 @if ($user->hasrole(['super-admin', 'administrator-website']))
                     <li
                         class="treeview {{ Request::is(['setting*', 'otp/*', '2fa/*', 'otp-2fa*']) ? 'active' : '' }}">

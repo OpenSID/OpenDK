@@ -29,7 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\PPID;
+namespace App\Http\Controllers\Ppid;
 
 use App\Http\Controllers\Controller;
 use App\Models\PpidJenisDokumen;
@@ -172,9 +172,8 @@ class JenisDokumenPpidController extends Controller
             'nama' => 'required|string|max:150',
             'slug' => 'required|unique:ppid_jenis_dokumen,slug',
         ], [
-            'slug.unique' => 'Nama Jenis Dokumen sudah ada atau menghasilkan slug yang duplikat.'
+            'slug.unique' => 'Nama Jenis Dokumen sudah ada.'
         ]);
-
         try {
             PpidJenisDokumen::create([
                 'nama'      => $request->nama,
@@ -203,7 +202,15 @@ class JenisDokumenPpidController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate(['nama' => 'required|string|max:150']);
+        $slug = Str::slug($request->nama);
+        $request->merge(['slug' => $slug]);
+        $request->validate([
+            'nama' => 'required|string|max:150',
+            'slug' => 'required|unique:ppid_jenis_dokumen,slug,' . $id,
+        ], [
+            'nama.required' => 'Nama Jenis Dokumen wajib diisi.',
+            'slug.unique'   => 'Nama ini sudah digunakan oleh dokumen lain.'
+        ]);
 
         try {
             $jenis = PpidJenisDokumen::findOrFail($id);

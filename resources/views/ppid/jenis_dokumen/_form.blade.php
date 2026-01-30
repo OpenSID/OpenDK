@@ -14,6 +14,9 @@
                     @if ($errors->has('nama'))
                         <span class="help-block" style="color:red">{{ $errors->first('nama') }}</span>
                     @endif
+                    @if ($errors->has('slug'))
+                        <span class="help-block" style="color:red">{{ $errors->first('slug') }}</span>
+                    @endif
                 </div>
 
                 <div class="form-group">

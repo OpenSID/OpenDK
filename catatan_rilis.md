@@ -13,4 +13,4 @@ Di rilis versi v2602.0.0 di versi ini terdapat modul komentar pada artikel dan p
 
 #### TEKNIS
 
-1. [#1403](https://github.com/OpenSID/OpenDK/issues/1403) Perbaikan SQL Injection di AppServiceProvider.phpPerbaikan SQL Injection di AppServiceProvider.php.
+1. [#1403](https://github.com/OpenSID/OpenDK/issues/1403) Perbaikan SQL Injection di AppServiceProvider.php.

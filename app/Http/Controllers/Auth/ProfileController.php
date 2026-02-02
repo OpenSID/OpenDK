@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -32,11 +32,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ChangeRequest;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Mail\PasswordChangedMail;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
-class ChangeDefaultController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -46,30 +52,48 @@ class ChangeDefaultController extends Controller
     public function __construct()
     {
         parent::__construct();
+        $this->middleware('auth');
     }
 
     /**
-     * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return View
      */
-    public function index()
+    public function password(): View
     {
-        return view('auth/change');
+        return view('auth.password');
     }
 
     /**
-     * Store new password.
      *
-     * @param  \App\Http\Requests\ChangeRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  ChangePasswordRequest  
+     * @return RedirectResponse
      */
-    public function store(ChangeRequest $request)
+    public function updatePassword(ChangePasswordRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
-        $user->update(['password' => $request->password]);
 
-        return redirect()->route('dashboard');
+        if (! Hash::check($request->current_password, $user->password)) {
+            return back()
+                ->withInput()
+                ->withErrors(['current_password' => trans('passwords.change_failed')])
+                ->with('error', trans('passwords.change_failed'));
+        }
+
+        $user->update([
+            'password' => bcrypt($request->password),
+        ]);
+
+        if($user->email){
+            try{
+                Mail::to($user->email)->send(new PasswordChangedMail($user->name));
+            } catch(\Exception $e){
+                Log::error('failed to send password change email: ' . $e->getMessage());
+            }
+
+        }
+    
+        return back()->with('success', trans('passwords.change_success'));
     }
 }

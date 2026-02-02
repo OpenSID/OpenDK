@@ -29,51 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Listeners;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Services\CacheService;
+use Illuminate\Support\Facades\Log;
 
-class UserRequest extends FormRequest
+class ClearArtikelCacheListener
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Handle the event.
      *
-     * @return bool
+     * @param  object  $event
+     * @return void
      */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        if ($this->isMethod('put')) {
-            $id = ','.$this->segment(4);
-            $password = '';
-        } else {
-            $id = '';
-            $password = [
-                'required',
-                'min:8',
-                'max:32',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
-            ];
+    public function handle($event)
+    {        
+        try {
+            // Ambil CacheService dari container (sudah didaftarkan di AppServiceProvider)
+            $cacheService = app(CacheService::class);            
+            $prefix = config('theme-api.artikel.cache_prefix', 'artikel:api');
+            $cacheService->removeCachePrefix($prefix);
+        } catch (\Exception $e) {
+            // Log error jika terjadi exception
+            Log::error('Exception occurred while clearing artikel cache', [
+                'message' => $e->getMessage(),
+            ]);
         }
-
-        return [
-            'name' => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email' => 'required|email|unique:users,email'.$id,
-            'phone' => 'nullable|numeric|digits_between:10,13',
-            'telegram_id' => 'nullable|string|max:100',
-            'password' => $password,
-            'address' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
-            'pengurus_id' => 'nullable|integer',
-        ];
     }
 }

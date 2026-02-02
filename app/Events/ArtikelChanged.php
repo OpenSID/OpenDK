@@ -29,51 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Events;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Artikel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class UserRequest extends FormRequest
+class ArtikelChanged
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    use Dispatchable;
+    use SerializesModels;
+
+    public $artikel;
 
     /**
-     * Get the validation rules that apply to the request.
+     * Create a new event instance.
      *
-     * @return array
+     * @param  Artikel  $artikel
+     * @return void
      */
-    public function rules()
+    public function __construct(Artikel $artikel)
     {
-        if ($this->isMethod('put')) {
-            $id = ','.$this->segment(4);
-            $password = '';
-        } else {
-            $id = '';
-            $password = [
-                'required',
-                'min:8',
-                'max:32',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
-            ];
-        }
-
-        return [
-            'name' => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email' => 'required|email|unique:users,email'.$id,
-            'phone' => 'nullable|numeric|digits_between:10,13',
-            'telegram_id' => 'nullable|string|max:100',
-            'password' => $password,
-            'address' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
-            'pengurus_id' => 'nullable|integer',
-        ];
+        $this->artikel = $artikel;
     }
 }

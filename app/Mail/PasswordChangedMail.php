@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,44 +24,48 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Mail;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Bus\Queueable;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
 
-class UserUpdateRequest extends FormRequest
+class PasswordChangedMail extends Mailable
 {
+    use Queueable, SerializesModels;
+
     /**
-     * Determine if the user is authorized to make this request.
+     * The user name.
      *
-     * @return bool
+     * @var string
      */
-    public function authorize()
+    public $name;
+
+    /**
+     * Create a new message instance.
+     *
+     * @param  string  $name
+     * @return void
+     */
+    public function __construct($name)
     {
-        return true;
+        $this->name = $name;
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Build the message.
      *
-     * @return array
+     * @return $this
      */
-    public function rules()
+    public function build()
     {
-        $id = ','.$this->segment(4);
-
-        return [
-            'password' => [
-                'nullable',
-                'min:8',
-                'max:32',
-                'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
-            ],
-        ];
+        return $this
+            ->subject('Password Anda Telah Diubah')
+            ->view('emails.password_changed');
     }
 }

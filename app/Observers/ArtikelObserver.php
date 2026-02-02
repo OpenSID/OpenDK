@@ -29,51 +29,65 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+namespace App\Observers;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Events\ArtikelChanged;
+use App\Models\Artikel;
 
-class UserRequest extends FormRequest
+class ArtikelObserver
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Handle the Artikel "created" event.
      *
-     * @return bool
+     * @param  Artikel  $artikel
+     * @return void
      */
-    public function authorize()
+    public function created(Artikel $artikel)
     {
-        return true;
+        ArtikelChanged::dispatch($artikel);
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Handle the Artikel "updated" event.
      *
-     * @return array
+     * @param  Artikel  $artikel
+     * @return void
      */
-    public function rules()
+    public function updated(Artikel $artikel)
     {
-        if ($this->isMethod('put')) {
-            $id = ','.$this->segment(4);
-            $password = '';
-        } else {
-            $id = '';
-            $password = [
-                'required',
-                'min:8',
-                'max:32',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
-            ];
-        }
+        ArtikelChanged::dispatch($artikel);
+    }
 
-        return [
-            'name' => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
-            'email' => 'required|email|unique:users,email'.$id,
-            'phone' => 'nullable|numeric|digits_between:10,13',
-            'telegram_id' => 'nullable|string|max:100',
-            'password' => $password,
-            'address' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
-            'pengurus_id' => 'nullable|integer',
-        ];
+    /**
+     * Handle the Artikel "deleted" event.
+     *
+     * @param  Artikel  $artikel
+     * @return void
+     */
+    public function deleted(Artikel $artikel)
+    {
+        ArtikelChanged::dispatch($artikel);
+    }
+
+    /**
+     * Handle the Artikel "restored" event.
+     *
+     * @param  Artikel  $artikel
+     * @return void
+     */
+    public function restored(Artikel $artikel)
+    {
+        ArtikelChanged::dispatch($artikel);
+    }
+
+    /**
+     * Handle the Artikel "force deleted" event.
+     *
+     * @param  Artikel  $artikel
+     * @return void
+     */
+    public function forceDeleted(Artikel $artikel)
+    {
+        ArtikelChanged::dispatch($artikel);
     }
 }

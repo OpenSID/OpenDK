@@ -61,10 +61,10 @@ jobs:
           DB_PASSWORD: secret
         run: php artisan migrate --force
 
-      - name: Run PHPUnit Unit Tests
+      - name: Run Full Test Suite
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: testing_db
           DB_USERNAME: root
           DB_PASSWORD: secret
-        run: vendor/bin/phpunit --testsuite=Unit --colors=always --stderr
+        run: php artisan test --colors=always --parallel

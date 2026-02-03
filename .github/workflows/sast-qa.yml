@@ -1,0 +1,60 @@
+name: SAST & QA
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  qa_style:
+    name: QA Code Style (PHPCS)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run PHPCS (PSR-12)
+        run: vendor/bin/phpcs --standard=PSR12 app/ || true
+
+  codeql:
+    name: SAST (CodeQL)
+    needs: qa_style
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'php' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2

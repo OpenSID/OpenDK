@@ -1,0 +1,70 @@
+name: PHPUnit Unit Tests
+
+on:
+  pull_request:
+    branches: [master, rilis-dev, bug-fix, dev]
+
+jobs:
+  phpunit-unit:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, bcmath, xml, gd, exif, pdo_mysql
+          coverage: none
+
+      - name: Cache composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress --no-scripts
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Generate key
+        run: php artisan key:generate --ansi
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Wait for MySQL
+        run: sleep 15
+
+      - name: Run migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate --force
+
+      - name: Run PHPUnit Unit Tests
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: vendor/bin/phpunit --testsuite=Unit --colors=always --stderr

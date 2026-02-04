@@ -186,4 +186,9 @@ class DataDesa extends Model
     {
         return $this->desa_id;
     }
+
+     public function saranas()
+    {
+        return $this->hasMany(DataSarana::class, 'desa_id', 'desa_id');
+    }
 }

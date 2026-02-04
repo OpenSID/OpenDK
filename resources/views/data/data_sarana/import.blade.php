@@ -1,170 +1,101 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-<section class="content-header">
-    <h1>{{ $page_title }}</h1>
-    <small>{{ $page_description }}</small>
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.data-sarana.index') }}">Data Sarana</a></li>
+        <li class="active">{{ $page_description ?? '' }}</li>
+    </ol>
 </section>
-
 <section class="content container-fluid">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Import Data Sarana</h3>
-        </div>
-        <div class="panel-body">
-            <form action="{{ route('data.data-sarana.import-excel') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label for="file">Pilih File Excel</label>
-                    <div class="input-group">
-                        <label class="input-group-btn">
-                            <span class="btn btn-primary">
-                                Browse&hellip; <input type="file" name="file" style="display: none;" required>
-                            </span>
-                        </label>
-                        <input type="text" class="form-control" readonly>
+
+    @include('partials.flash_message')
+    <div class="row">
+        <div class="col-md-12">
+
+            {!! html()->form('POST',
+            route('data.data-sarana.import-excel'))->id('form-import')->class('form-horizontal
+            form-label-left')->acceptsFiles()->open() !!}
+
+            <div class="box-body">
+
+                @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <strong>Ups!</strong> Ada beberapa masalah dengan masukan Anda.<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <div class="row">
+                    <div class="col-md-6">                        
+                        <div class="form-group">
+                            <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Sarana</label>
+
+                            <div class="col-md-8">
+                                <input type="file" id="data_file" name="file" class="form-control" required
+                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="well">
+                            <p>Instruksi Upload Data:</p>
+                            <p>Silakan download template upload data di sini: <a
+                                    href="{{ asset('storage/template_upload/Format_Upload_Data_Sarana.xlsx') }}">Download</a>
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success">Import</button>
-            </form>
-
-            <script>
-            document.querySelector('input[type=file]').addEventListener('change', function(e){
-                var fileName = e.target.files[0].name;
-                this.closest('.input-group').querySelector('input.form-control').value = fileName;
-            });
-            </script>
-
-            <h4>Contoh Format Import Excel</h4>
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>desa_id</th>
-                        <th>nama</th>
-                        <th>jumlah</th>
-                        <th>kategori</th>
-                        <th>keterangan</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Posyandu Melati</td>
-                        <td>3</td>
-                        <td>puskesmas</td>
-                        <td>Bangunan permanen</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>PAUD Tunas Bangsa</td>
-                        <td>2</td>
-                        <td>paud</td>
-                        <td>Kondisi baik</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Pasar</td>
-                        <td>1</td>
-                        <td>pasar</td>
-                        <td>Perlu perbaikan pagar</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h4>List Kategori Data Sarana</h4>
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Kategori</th>
-                        <th>Sub Kategori</th>
-                        <th>Value (Untuk kategori import)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Sarana Kesehatan -->
-                    <tr>
-                        <td rowspan="4">Sarana Kesehatan</td>
-                        <td>Puskesmas</td>
-                        <td>puskesmas</td>
-                    </tr>
-                    <tr>
-                        <td>Puskesmas Pembantu</td>
-                        <td>puskesmas_pembantu</td>
-                    </tr>
-                    <tr>
-                        <td>Posyandu</td>
-                        <td>posyandu</td>
-                    </tr>
-                    <tr>
-                        <td>Pondok Bersalin</td>
-                        <td>pondok_bersalin</td>
-                    </tr>
-
-                    <!-- Sarana Pendidikan -->
-                    <tr>
-                        <td rowspan="4">Sarana Pendidikan</td>
-                        <td>PAUD/Sederajat</td>
-                        <td>paud</td>
-                    </tr>
-                    <tr>
-                        <td>SD/Sederajat</td>
-                        <td>sd</td>
-                    </tr>
-                    <tr>
-                        <td>SMP/Sederajat</td>
-                        <td>smp</td>
-                    </tr>
-                    <tr>
-                        <td>SMA/Sederajat</td>
-                        <td>sma</td>
-                    </tr>
-
-                    <!-- Sarana Umum -->
-                    <tr>
-                        <td rowspan="5">Sarana Umum</td>
-                        <td>Masjid Besar</td>
-                        <td>masjid_besar</td>
-                    </tr>
-                    <tr>
-                        <td>Mushola</td>
-                        <td>mushola</td>
-                    </tr>
-                    <tr>
-                        <td>Gereja</td>
-                        <td>gereja</td>
-                    </tr>
-                    <tr>
-                        <td>Pasar</td>
-                        <td>pasar</td>
-                    </tr>
-                    <tr>
-                        <td>Balai Pertemuan</td>
-                        <td>balai_pertemuan</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h4>List Id Desa</h4>
-            <table class="table table-bordered table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nama Desa</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($desas as $desa)
-                        <tr>
-                            <td>{{ $desa->id }}</td>
-                            <td>{{ $desa->nama }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="2" class="text-center">Belum ada data desa</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            </div>
+            <div class="box-footer">
+                @include('partials.button_reset_impor')
+            </div>
+            {!! html()->form()->close() !!}
         </div>
+    </div>
     </div>
 </section>
 @endsection
+@include('partials.asset_select2')
+@include('partials.asset_datetimepicker')
+@push('scripts')
+<script>
+    $(function() {
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('#showgambar').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#foto").change(function() {
+                readURL(this);
+            });
+
+            //Datetimepicker
+            $('.datepicker').each(function() {
+                var $this = $(this);
+                $this.datetimepicker({
+                    format: 'YYYY-MM-D'
+                });
+            });
+
+        })
+</script>
+@endpush

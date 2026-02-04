@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Enums\KategoriSarana;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -25,11 +26,11 @@ class ExportDataSarana implements FromCollection, WithHeadings, WithStyles, With
     {
         return $this->data->map(function ($item) {
             return [
-                $item->id,
+                $item->desa_id,
                 $item->desa->nama ?? '-',
                 $item->nama,
                 $item->jumlah,
-                $item->kategori,
+                KategoriSarana::getDescription($item->kategori),
                 $item->keterangan,
             ];
         });

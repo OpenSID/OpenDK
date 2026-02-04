@@ -18,52 +18,27 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <form id="filter-form" class="form-inline">
-                <div class="form-group">
-                    <select name="desa_id" id="desa_id" class="form-control">
-                        <option value="">-- Semua Desa --</option>
-                        @foreach($desaSelect as $desa)
-                            <option value="{{ $desa->id }}" {{ request('desa_id') == $desa->id ? 'selected' : '' }}>
-                                {{ $desa->nama }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+                @include('layouts.fragments.select-desa')
 
                 <div class="form-group">
                     <select name="kategori" id="kategori" class="form-control">
                         <option value="">-- Semua Kategori --</option>
-                        <optgroup label="Sarana Kesehatan">
-                            <option value="puskesmas">Puskesmas</option>
-                            <option value="puskesmas_pembantu">Puskesmas Pembantu</option>
-                            <option value="posyandu">Posyandu</option>
-                            <option value="pondok_bersalin">Pondok Bersalin</option>
-                        </optgroup>
-                        <optgroup label="Sarana Pendidikan">
-                            <option value="paud">PAUD/Sederajat</option>
-                            <option value="sd">SD/Sederajat</option>
-                            <option value="smp">SMP/Sederajat</option>
-                            <option value="sma">SMA/Sederajat</option>
-                        </optgroup>
-                        <optgroup label="Sarana Umum">
-                            <option value="masjid_besar">Masjid Besar</option>
-                            <option value="mushola">Mushola</option>
-                            <option value="gereja">Gereja</option>
-                            <option value="pasar">Pasar</option>
-                            <option value="balai_pertemuan">Balai Pertemuan</option>
-                        </optgroup>
+                        @foreach(\App\Enums\KategoriSarana::getGroupedOptions() as $group => $options)
+                            <optgroup label="{{ $group }}">
+                                @foreach($options as $value => $label)
+                                    <option value="{{ $value }}">{{ $label }}</option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
                     </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-filter"></i> Filter
-                </button>
+                </div>                
 
                 <a href="{{ route('data.data-sarana.import') }}" class="btn btn-success">
                     <i class="fa fa-upload"></i> Import
                 </a>
-                <a href="{{ route('data.data-sarana.export') }}" class="btn btn-success">
+                <button id="export-btn" class="btn btn-success" data-href="{{ route('data.data-sarana.getdata') }}">
                     <i class="glyphicon glyphicon-download-alt"></i> Export
-                </a>
+                </button>
                 <a href="{{ route('data.data-sarana.create') }}" class="btn btn-success">
                     <i class="fa fa-plus"></i> Tambah
                 </a>
@@ -88,7 +63,7 @@
     </div>
 </section>
 @endsection
-
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
@@ -100,8 +75,8 @@ $(function () {
         ajax: {
             url: "{{ route('data.data-sarana.getdata') }}",
             data: function (d) {
-                d.desa_id = $('#desa_id').val();
-                d.kategori = $('#kategori').val();
+                d.desa_id = $('#list_desa').val(),
+                d.kategori = $('#kategori').val()
             }
         },
         columns: [
@@ -109,14 +84,40 @@ $(function () {
             { data: 'nama', name: 'nama' },
             { data: 'jumlah', name: 'jumlah' },
             { data: 'kategori', name: 'kategori' },
-            { data: 'desa', name: 'desa.nama' },
+            { data: 'desa', name: 'desa_id' },
         ],
         order: [[1, 'asc']]
     });
 
-    $('#filter-form').on('submit', function(e) {
+    $('#kategori, #list_desa').change(function(e) {
         e.preventDefault();
-        table.ajax.reload();
+        table.draw();
+    });    
+
+    $('#list_desa>option[value=Semua]').val('')
+
+    // Export button functionality
+    $('#export-btn').click(function(e) {
+        e.preventDefault();
+        const _href = $(this).data('href');
+        
+        // Get datatable parameters
+        var dtParams = $('#datasarana-table').DataTable().ajax.params();
+        
+        // Add current filter values to the parameters
+        var kategori = $('#kategori').val();
+        var desaId = $('#list_desa').val();
+        
+        if (kategori) {
+            dtParams.columns[3].search.value = kategori;
+        }
+        
+        if (desaId) {
+            dtParams.columns[4].search.value = desaId;
+        }
+        
+        window.location.href = _href + '?action=excel&params=' + JSON.stringify(dtParams);
+        return;
     });
 });
 </script>

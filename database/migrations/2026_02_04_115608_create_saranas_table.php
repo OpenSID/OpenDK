@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('das_data_sarana', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            
-            $table->unsignedInteger('desa_id');
-            $table->foreign('desa_id')->references('id')->on('das_data_desa')->onDelete('cascade');
-
+            $table->bigIncrements('id');            
+            $table->char('desa_id', 13);            
             $table->string('kategori', 191);
             $table->string('nama', 191)->nullable();
             $table->integer('jumlah')->default(0);

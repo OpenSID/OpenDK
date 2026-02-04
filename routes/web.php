@@ -538,8 +538,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::post('store', ['as' => 'data.data-sarana.store', 'uses' => 'DataSaranaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-sarana.edit', 'uses' => 'DataSaranaController@edit']);
                     Route::put('update/{id}', ['as' => 'data.data-sarana.update', 'uses' => 'DataSaranaController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.data-sarana.destroy', 'uses' => 'DataSaranaController@destroy']);
-                    Route::get('export', ['as' => 'data.data-sarana.export', 'uses' => 'DataSaranaController@export']);
+                    Route::delete('destroy/{id}', ['as' => 'data.data-sarana.destroy', 'uses' => 'DataSaranaController@destroy']);                    
                     Route::get('import', ['as' => 'data.data-sarana.import', 'uses' => 'DataSaranaController@import']);
                     Route::post('import-excel', ['as' => 'data.data-sarana.import-excel', 'uses' => 'DataSaranaController@importExcel']);
                 });

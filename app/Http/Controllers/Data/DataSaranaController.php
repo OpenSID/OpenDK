@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Enums\KategoriSarana;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DataSaranaRequest;
+use App\Http\Requests\DataSaranaImportRequest;
 use App\Models\DataDesa;
 use App\Models\DataSarana;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportDataSarana;
 use App\Imports\ImportDataSarana;
-use Illuminate\Support\Facades\DB;
+use App\Services\DesaService;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class DataSaranaController extends Controller
@@ -19,34 +23,36 @@ class DataSaranaController extends Controller
         $page_title = 'Data Sarana';
         $page_description = 'Daftar Sarana Desa';
 
-        $desaSelect = DataDesa::all();
+        $desaSelect = (new DesaService())->listDesa();
 
         return view('data.data_sarana.index', compact('page_title', 'page_description', 'desaSelect'));
     }
 
     public function getData(Request $request)
     {
-        $query = DataSarana::with('desa');
-
-        if ($request->desa_id) {
-            $query->where('desa_id', $request->desa_id);
+        $isExcel = $request->action == 'excel' ? true : false;
+        if ($isExcel) {
+            $paramDatatable = json_decode($request->get('params'), 1);
+            $request->merge($paramDatatable);
+            $request->merge(['params' => null]);
+        }        
+        $desaId = $request->desa_id;
+        $kategori = $request->kategori;
+        $query = DataTables::of(DataSarana::with('desa')->when($desaId, static fn($q) => $q->whereDesaId($desaId))->when($kategori, static fn($q) => $q->whereKategori($kategori)));
+        if ($isExcel){ 
+            $query->filtering();
+            return Excel::download(new ExportDataSarana($query->results()), 'Data-sarana.xlsx');
         }
-        if ($request->kategori) {
-            $query->where('kategori', $request->kategori);
-        }
+        return $query->addColumn('desa', function ($row) {
+            return $row->desa ? $row->desa->nama : '-';
+        })->editColumn('kategori', function ($row) {
+            return KategoriSarana::getDescription($row->kategori);
+        })->addColumn('aksi', function ($row) {
+            $editUrl = route('data.data-sarana.edit', $row->id);
+            $deleteUrl = route('data.data-sarana.destroy', $row->id);
 
-        return datatables()->of($query)
-            ->addColumn('desa', function ($row) {
-                return $row->desa ? $row->desa->nama : '-';
-            })
-            ->addColumn('aksi', function ($row) {
-                $editUrl = route('data.data-sarana.edit', $row->id);
-                $deleteUrl = route('data.data-sarana.destroy', $row->id);
-
-                return view('data.data_sarana.partials.action', compact('editUrl', 'deleteUrl'))->render();
-            })
-            ->rawColumns(['aksi'])
-            ->make(true);
+            return view('data.data_sarana.partials.action', compact('editUrl', 'deleteUrl'))->render();
+        })->rawColumns(['aksi'])->make(true);
     }
 
 
@@ -55,21 +61,14 @@ class DataSaranaController extends Controller
         $page_title = "Tambah Sarana";
         $page_description = "Form tambah data sarana";
 
-        $desas = DataDesa::all();
+        $desas = (new DesaService())->listDesa();
         return view('data.data_sarana.create', compact('page_title', 'page_description', 'desas'));
     }
 
-    public function store(Request $request)
+    public function store(DataSaranaRequest $request)
     {
         try {
-            $request->validate([
-                'desa_id' => 'required|integer:desa_id',
-                'nama' => 'required|string|max:255',
-                'jumlah' => 'required|integer|min:0',
-                'kategori' => 'required|string|max:100',
-                'keterangan' => 'required|string:max:255',
-            ]);
-            DataSarana::create($request->all());
+            DataSarana::create($request->validated());
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Sarana gagal disimpan!');
@@ -83,23 +82,16 @@ class DataSaranaController extends Controller
         $page_description = 'Ubah informasi sarana desa';
 
         $sarana = DataSarana::findOrFail($id);
-        $desas = DataDesa::all();
+        $desas = (new DesaService())->listDesa();
 
         return view('data.data_sarana.edit', compact('page_title', 'page_description', 'sarana', 'desas'));
     }
 
-    public function update(Request $request, $id)
+    public function update(DataSaranaRequest $request, $id)
     {
         try {
-            $request->validate([
-                'desa_id' => 'required|integer:desa_id',
-                'nama' => 'required|string|max:255',
-                'jumlah' => 'required|integer|min:0',
-                'kategori' => 'required|string|max:100',
-                'keterangan' => 'required|string:max:255',
-            ]);
             $sarana = DataSarana::findOrFail($id);
-            $sarana->update($request->all());
+            $sarana->update($request->validated());
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Sarana gagal diperbarui');
@@ -119,51 +111,22 @@ class DataSaranaController extends Controller
         return redirect()->route('data.data-sarana.index')->with('success', 'Data Sarana berhasil dihapus');
     }
 
-    public function export()
-    {
-        try {
-            $search     = request('search');
-            $kategori   = request('kategori');
-            $startDate  = request('start_date');
-            $endDate    = request('end_date');
-    
-            $data = \App\Models\DataSarana::with('desa')
-                ->when($search, fn($q) => $q->where('nama', 'like', "%$search%"))
-                ->when($kategori, fn($q) => $q->where('kategori', $kategori))
-                ->when($startDate, fn($q) => $q->whereDate('created_at', '>=', $startDate))
-                ->when($endDate, fn($q) => $q->whereDate('created_at', '<=', $endDate))
-                ->latest('id')
-                ->get();
-    
-            return Excel::download(new ExportDataSarana($data, 'Admin Desa'), 'data_sarana.xlsx');
-        } catch (\Exception $e) {
-            report($e);
-            return back()->withInput()->with('error', 'Data Sarana gagal dihapus');
-        }
-    }
-
     public function import()
     {
         $page_title = "Import Sarana";
-        $page_description = "Upload data sarana";
+        $page_description = "Upload data sarana";        
 
-        $desas = DataDesa::all();
-
-        return view('data.data_sarana.import', compact('page_title', 'page_description', 'desas'));
+        return view('data.data_sarana.import', compact('page_title', 'page_description'));
     }
 
-    public function importExcel(Request $request)
+    public function importExcel(DataSaranaImportRequest $request)
     {
-        try {
-            $request->validate([
-                'file' => 'required|mimes:xlsx,xls,csv'
-            ]);
-            Excel::import(new ImportDataSarana, $request->file('file'));
+        try {            
+            Excel::import(new ImportDataSarana($this->isDatabaseGabungan() ? 'local' : 'gabungan'), $request->file('file'));
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Sarana gagal diimport');
         }
         return redirect()->route('data.data-sarana.index')->with('success', 'Data Sarana berhasil diimport');
     }
-
 }

@@ -48,7 +48,7 @@ class DasDataUmumTableSeeder extends Seeder
         DB::table('das_data_umum')->insert([
             'id' => 1,
             'profil_id' => 1,
-            'sejarah' => null,
+            'sejarah' => 'not null',
             'ketinggian' => 1,
             'luas_wilayah' => 2.0,
             'bts_wil_utara' => null,

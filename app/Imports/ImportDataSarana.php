@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class ImportDataSarana implements ToModel, WithHeadingRow
 {
-    public function __construct(protected String $type) {}
+    public function __construct(public String $type) {}
     /**
      * @param array $row
      *

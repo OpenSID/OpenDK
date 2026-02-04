@@ -92,6 +92,8 @@ class DataSaranaController extends Controller
         try {
             $sarana = DataSarana::findOrFail($id);
             $sarana->update($request->validated());
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw $e;
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Sarana gagal diperbarui');
@@ -104,6 +106,8 @@ class DataSaranaController extends Controller
         try {
             $sarana = DataSarana::findOrFail($id);
             $sarana->delete();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            throw $e;
         } catch (\Exception $e) {
             report($e);
             return back()->withInput()->with('error', 'Data Sarana gagal dihapus');

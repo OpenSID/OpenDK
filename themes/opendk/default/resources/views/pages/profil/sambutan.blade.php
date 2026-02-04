@@ -8,16 +8,35 @@
                     {{ strtoupper($sebutan_kepala_wilayah) }} {{ strtoupper($profil->nama_kecamatan) }}</h3>
             </div>
             <div class="box-body">
-                <div class="pad text-bold bg-white" style="text-align:center;">
-                    <img class="img-circle" style="display:block;margin:auto"
-                        src="@if (isset($camat->foto)) {{ asset($camat->foto) }} @else {{ asset('img/no-profile.png') }} @endif">
-                    <h4 class="box-title text-bold text-center">{{ $camat->namaGelar }}</h4>
-                    <h5 class="box-title text-bold text-center">{{ $sebutan_kepala_wilayah }} {{ $profil->nama_kecamatan }}
-                    </h5>
+                <div class="pad text-bold bg-white" id="camat-container" style="text-align:center;">
+                    
                 </div>
                 <hr>
-                <p> {!! $profil->sambutan !!}</p>
+                <p id="sambutan-container"></p>
             </div>
         </div>
     </div>
 @endsection
+@push('scripts')
+<script>
+    $(function(){
+        $(document).on('websiteDataLoaded', function(event, websiteData) {
+            var profile = null;  
+            let sambutan = null, camatHtml;          
+            if (websiteData.profile) {
+                profile = websiteData.profile;                    
+                sambutan = profile.sambutan;
+            }      
+                        
+            let fotoCamat = profile.file_struktur_organisasi_path;
+            camatHtml = `<img class="img-circle" style="display:block;margin:auto"
+                        src="${fotoCamat}">
+                    <h4 class="box-title text-bold text-center">${profile.nama_camat}</h4>
+                    <h5 class="box-title text-bold text-center">{{ config('profil.sebutan_kepala_wilayah') }} ${profile.nama_kecamatan}
+                    </h5>`
+            $('#sambutan-container').html(sambutan);
+            $('#camat-container').html(camatHtml);
+        });
+    })
+</script>
+@endpush

@@ -29,108 +29,84 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
-
 use App\Models\DataDesa;
 use App\Models\ToiletSanitasi;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Tests\TestCase;
 
-class ToiletSanitasiExportTest extends TestCase
-{
-    use DatabaseTransactions, WithoutMiddleware;
+uses(DatabaseTransactions::class);
 
-    protected $user;
-    protected $desa;
+beforeEach(function () {
+    $this->withoutMiddleware();
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+    // Buat user untuk testing
+    $this->user = User::factory()->create();
 
-        // Buat user untuk testing
-        $this->user = User::factory()->create();
+    // Buat desa untuk testing
+    $this->desa = DataDesa::factory()->create();
+});
 
-        // Buat desa untuk testing  
-        $this->desa = DataDesa::factory()->create();
-    }
+afterEach(function () {
+    // Bersihkan data test
+    ToiletSanitasi::query()->delete();
+    DataDesa::query()->delete();
+    User::query()->delete();
+});
 
-    protected function tearDown(): void
-    {
-        // Bersihkan data test
-        ToiletSanitasi::query()->delete();
-        DataDesa::query()->delete();
-        User::query()->delete();
+test('dapat mengakses halaman export toilet sanitasi', function () {
+    $this->actingAs($this->user);
 
-        parent::tearDown();
-    }
+    $response = $this->get(route('data.toilet-sanitasi.export-excel'));
 
-    /** @test */
-    public function dapat_mengakses_halaman_export_toilet_sanitasi()
-    {
-        $this->actingAs($this->user);
+    $response->assertSuccessful();
+    expect($response->headers->get('Content-Type'))->toBe('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+});
 
-        $response = $this->get(route('data.toilet-sanitasi.export-excel'));
+test('dapat export data toilet sanitasi kosong', function () {
+    $this->actingAs($this->user);
 
-        $response->assertSuccessful();
-        $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
-    }
+    $response = $this->get(route('data.toilet-sanitasi.export-excel'));
 
-    /** @test */
-    public function dapat_export_data_toilet_sanitasi_kosong()
-    {
-        $this->actingAs($this->user);
+    $response->assertSuccessful();
+    expect($response->headers->get('Content-Type'))->toBe('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+});
 
-        $response = $this->get(route('data.toilet-sanitasi.export-excel'));
+test('dapat export data toilet sanitasi dengan data', function () {
+    $this->actingAs($this->user);
 
-        $response->assertSuccessful();
-        $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
-    }
+    // Buat data toilet sanitasi untuk testing
+    ToiletSanitasi::factory()->count(3)->create([
+        'desa_id' => $this->desa->desa_id
+    ]);
 
-    /** @test */
-    public function dapat_export_data_toilet_sanitasi_dengan_data()
-    {
-        $this->actingAs($this->user);
+    $response = $this->get(route('data.toilet-sanitasi.export-excel'));
 
-        // Buat data toilet sanitasi untuk testing
-        ToiletSanitasi::factory()->count(3)->create([
-            'desa_id' => $this->desa->desa_id
-        ]);
+    $response->assertSuccessful();
+    expect($response->headers->get('Content-Type'))->toBe('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+});
 
-        $response = $this->get(route('data.toilet-sanitasi.export-excel'));
+test('export toilet sanitasi menghasilkan filename dengan timestamp', function () {
+    $this->actingAs($this->user);
 
-        $response->assertSuccessful();
-        $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
-    }
+    $response = $this->get(route('data.toilet-sanitasi.export-excel'));
 
-    /** @test */
-    public function export_toilet_sanitasi_menghasilkan_filename_dengan_timestamp()
-    {
-        $this->actingAs($this->user);
+    $response->assertSuccessful();
 
-        $response = $this->get(route('data.toilet-sanitasi.export-excel'));
+    $disposition = $response->headers->get('Content-Disposition');
+    expect($disposition)->toContain('data-toilet-sanitasi-')
+        ->and($disposition)->toContain('.xlsx');
+});
 
-        $response->assertSuccessful();
+test('export toilet sanitasi memiliki header yang benar', function () {
+    $this->actingAs($this->user);
 
-        $disposition = $response->headers->get('Content-Disposition');
-        $this->assertStringContainsString('data-toilet-sanitasi-', $disposition);
-        $this->assertStringContainsString('.xlsx', $disposition);
-    }
+    // Buat data untuk memastikan ada konten
+    ToiletSanitasi::factory()->create([
+        'desa_id' => $this->desa->desa_id
+    ]);
 
-    /** @test */
-    public function export_toilet_sanitasi_memiliki_header_yang_benar()
-    {
-        $this->actingAs($this->user);
+    $response = $this->get(route('data.toilet-sanitasi.export-excel'));
 
-        // Buat data untuk memastikan ada konten
-        ToiletSanitasi::factory()->create([
-            'desa_id' => $this->desa->desa_id
-        ]);
-
-        $response = $this->get(route('data.toilet-sanitasi.export-excel'));
-
-        $response->assertSuccessful();
-        $this->assertEquals('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', $response->headers->get('Content-Type'));
-    }
-}
+    $response->assertSuccessful();
+    expect($response->headers->get('Content-Type'))->toBe('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+});

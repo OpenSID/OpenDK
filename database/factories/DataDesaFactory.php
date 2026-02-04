@@ -12,7 +12,7 @@ class DataDesaFactory extends Factory
     public function definition()
     {
         return [
-            'desa_id' => $this->faker->unique()->numberBetween(1, 99999),
+            'desa_id' => $this->faker->unique()->numerify('##########'), // 10 digit kode desa
             'nama' => $this->faker->city,
             'sebutan_desa' => $this->faker->randomElement(['Desa', 'Kelurahan']),
             'website' => $this->faker->url,

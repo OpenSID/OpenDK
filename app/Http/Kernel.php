@@ -85,7 +85,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        // 'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         // 'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
@@ -97,13 +96,15 @@ class Kernel extends HttpKernel
         // 'check_role' => \App\Http\Middleware\CheckRole::class,
         'installed' => \App\Http\Middleware\KDInstalled::class,
         'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
-        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
-        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
-        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'xss_sanitization' => \App\Http\Middleware\XssSanitization::class,
         'complete_profile' => \App\Http\Middleware\CompleteProfile::class,
         'token.registered' => \App\Http\Middleware\TokenRegistered::class,
         'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
+        'otp.enabled' => \App\Http\Middleware\CheckOtpEnabled::class,        
+        'theme.api' => \App\Http\Middleware\ThemeApiMiddleware::class,
     ];
 
     /**

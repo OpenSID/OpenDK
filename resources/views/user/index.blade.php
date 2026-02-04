@@ -26,8 +26,9 @@
                             <tr>
                                 <th sytle="width: 100px;">Aksi</th>
                                 <th>Nama</th>
-                                <th>Alamat</th>
+                                <th>Email</th>
                                 <th>Telepon</th>
+                                <th>Telegram ID</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -63,6 +64,10 @@
                     {
                         data: 'phone',
                         name: 'phone'
+                    },
+                    {
+                        data: 'telegram_id',
+                        name: 'telegram_id'
                     },
                     {
                         data: 'status',

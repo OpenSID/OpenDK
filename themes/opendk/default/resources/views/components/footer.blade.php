@@ -1,41 +1,23 @@
 <section class="footer-top">
     <div class="container no-padding">
         <div class="col-md-2">
-            @if (isset($profil->socialmedia))
+            <div id="social-media-container">
                 <h5 class="text-bold">IKUTI KAMI</h5>
                 <ul class="social-icon list-inline m-0">
-                    @foreach (json_decode($profil->socialmedia) as $sosmed)
-                        <li><a target="_BLANK" href="{{ $sosmed->link ?? '' }}" class="site-button-link facebook hover"><i
-                                    class="{{ $sosmed->icon ?? '' }}"></i></a></li>
-                    @endforeach
+                    <li><i class="fa fa-spinner fa-spin"></i> Loading...</li>
                 </ul>
-            @endif
+            </div>
         </div>
         <div class="col-md-6">
             <h5 class="text-bold">{{ config('setting.sebutan_desa') }}</h5>
-            @foreach ($navdesa->chunk(2) as $desa)
-                @foreach ($desa as $d)
-                    <ul class="no-padding">
-                        <li class="col-12 col-xs-6 no-padding"><a class="footer-link"
-                                href="{{ route('desa.show', ['slug' => str_slug(strtolower($d->nama))]) }}"><i
-                                    class="fa  fa-chevron-circle-right"></i>
-                                {{ ucwords($d->sebutan_desa . ' ' . $d->nama) }}</a></li>
-                    </ul>
-                @endforeach
-            @endforeach
+            <div id="desa-list-container">
+                <ul class="no-padding">
+                    <li><i class="fa fa-spinner fa-spin"></i> Loading...</li>
+                </ul>
+            </div>
         </div>
-        <div class="col-md-4 col-xs-12">
-            <h5 class="text-bold">Kantor {{ $sebutan_wilayah }} {{ $profil->nama_kecamatan }}</h5>
-            <ul class="no-padding">
-                <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i>
-                        {{ $profil->alamat }}</small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-fax"></i>
-                        {{ $profil->kode_pos }}</small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><a href="mailto:{{ $profil->email }}"
-                            target="_blank"><i class="fa fa-envelope"></i> {{ $profil->email }}</a></small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i>
-                        {{ $profil->telepon }}</small></li>
-            </ul>
+        <div class="col-md-4 col-xs-12" id="desa-profil-container">
+            <i class="fa fa-spinner">Loading ...</i>
         </div>
     </div>
 </section>

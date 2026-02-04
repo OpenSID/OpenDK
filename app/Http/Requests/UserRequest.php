@@ -31,7 +31,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -58,13 +57,19 @@ class UserRequest extends FormRequest
             $password = '';
         } else {
             $id = '';
-            $password = ['required', 'min:8', 'max:32', new Password()];
+            $password = [
+                'required',
+                'min:8',
+                'max:32',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+            ];
         }
 
         return [
             'name' => 'required|regex:/^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$/u|max:255',
             'email' => 'required|email|unique:users,email'.$id,
             'phone' => 'nullable|numeric|digits_between:10,13',
+            'telegram_id' => 'nullable|string|max:100',
             'password' => $password,
             'address' => 'required',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',

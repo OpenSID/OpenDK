@@ -29,18 +29,25 @@ class WidgetController extends Component
     public $form = false;
     public $editMode = false;
     
-    public Widget $widget;
+    // Widget properties untuk Livewire 3 compatibility
+    public $widget_id = null;
+    public $widget = [
+        'judul' => '',
+        'isi' => '',
+        'form_admin' => '',
+        'jenis_widget' => '',
+        'foto' => '',
+        'enabled' => 1
+    ];
     public $foto;
 
     public $selectedItems = [];
     public $selectAll = false; 
     public $list_widget;
 
-    public function mount(Widget $widget)
+    public function mount()
     {
-        $this->widget = $widget;
         $this->updateListWidget();
-
         Artisan::call('widgets:sync');
     }
 
@@ -50,8 +57,8 @@ class WidgetController extends Component
             return str_replace('.blade.php', '', basename($isi));
         })->toArray();
 
-        $currentWidgetName = $this->editMode && $this->widget && $this->widget->isi
-            ? str_replace('.blade.php', '', basename($this->widget->isi))
+        $currentWidgetName = $this->editMode && isset($this->widget['isi']) && $this->widget['isi']
+            ? str_replace('.blade.php', '', basename($this->widget['isi']))
             : null;
 
         $list_widget = Widget::listWidgetBaru();
@@ -77,7 +84,7 @@ class WidgetController extends Component
     public function rules(){
 
         return [
-            'widget.judul' => 'required|unique:widgets,judul,'. $this->widget->id,
+            'widget.judul' => 'required|unique:widgets,judul,'. ($this->widget_id ?? 'NULL'),
             'widget.isi' => 'required',
             'widget.form_admin' => 'nullable',
             'widget.jenis_widget' => 'required',
@@ -88,6 +95,11 @@ class WidgetController extends Component
 
     public function updated($propertyName)
     {
+        // Skip validation untuk jenis_widget agar tidak error saat switch
+        if ($propertyName === 'widget.jenis_widget') {
+            $this->updateListWidget();
+            return;
+        }
         $this->validateOnly($propertyName);
     }
 
@@ -142,16 +154,23 @@ class WidgetController extends Component
         try {
             $this->cek_tidy();
 
+            $widgetModel = new Widget();
+            $widgetModel->judul = $this->widget['judul'];
+            $widgetModel->form_admin = $this->widget['form_admin'] ?? null;
+            $widgetModel->jenis_widget = $this->widget['jenis_widget'];
+            $widgetModel->enabled = 1;
+
             if(!empty($this->foto)){
                 $name_foto = time().'.'.$this->foto->guessExtension();
                 $this->foto->storeAs('public/widget', $name_foto);
-                $this->widget->foto = $name_foto;
+                $widgetModel->foto = $name_foto;
             }
 
-            $this->widget->enabled = 1;
-            $this->widget->isi = $this->widget->jenis_widget == 2 ? basename(bersihkan_xss($this->widget->isi)) : $this->bersihkan_html($this->widget->isi);
+            $widgetModel->isi = $this->widget['jenis_widget'] == 2 
+                ? basename(bersihkan_xss($this->widget['isi'])) 
+                : $this->bersihkan_html($this->widget['isi']);
 
-            $this->widget->save();
+            $widgetModel->save();
 	    	$this->clear();
             session()->flash('success', 'Data berhasil simpan!');
     	} catch (\Exception $e) {
@@ -192,11 +211,19 @@ class WidgetController extends Component
     {
     	try {
             $this->clear();
-            $model = $this->widget->findOrFail($id);
+            $model = Widget::findOrFail($id);
     		$this->page_description = 'Edit Widget';
             $this->form = true;
             $this->editMode = true;
-            $this->widget = $model;
+            $this->widget_id = $model->id;
+            $this->widget = [
+                'judul' => $model->judul,
+                'isi' => $model->isi,
+                'form_admin' => $model->form_admin,
+                'jenis_widget' => $model->jenis_widget,
+                'foto' => $model->foto,
+                'enabled' => $model->enabled
+            ];
             $this->updateListWidget();
 
             $this->foto = $model->foto ? asset('storage/widget/'.$model->foto) : null;
@@ -208,21 +235,34 @@ class WidgetController extends Component
 
     public function update()
     {
+        // Pastikan widget_id ada untuk update
+        if (!$this->widget_id) {
+            session()->flash('error', 'ID Widget tidak ditemukan. Silakan coba lagi.');
+            return;
+        }
+
         $this->validate();
 
         try {
-
             $this->cek_tidy();
 
-            if($this->foto !== $this->widget->foto)
+            $widgetModel = Widget::findOrFail($this->widget_id);
+            $widgetModel->judul = $this->widget['judul'];
+            $widgetModel->form_admin = $this->widget['form_admin'] ?? null;
+            $widgetModel->jenis_widget = $this->widget['jenis_widget'];
+
+            if($this->foto && !is_string($this->foto))
             {
                 $name_foto = time().'.'.$this->foto->guessExtension();
                 $this->foto->storeAs('public/widget', $name_foto);
-                $this->widget->foto = $name_foto;
+                $widgetModel->foto = $name_foto;
             }
 
-            $this->widget->isi = $this->widget->jenis_widget == 2 ? basename(bersihkan_xss($this->widget->isi)) : $this->bersihkan_html($this->widget->isi);
-            $this->widget->save();
+            $widgetModel->isi = $this->widget['jenis_widget'] == 2 
+                ? basename(bersihkan_xss($this->widget['isi'])) 
+                : $this->bersihkan_html($this->widget['isi']);
+            
+            $widgetModel->save();
             $this->clear();
             session()->flash('success', 'Data berhasil diperbarui!');
 
@@ -253,14 +293,33 @@ class WidgetController extends Component
     public function clear()
     {
         $this->resetErrorBag();
-    	$this->resetExcept('widget', 'list_widget');
-        $this->widget = new Widget();
+    	$this->resetExcept('list_widget');
+        $this->widget_id = null;
+        $this->widget = [
+            'judul' => '',
+            'isi' => '',
+            'form_admin' => '',
+            'jenis_widget' => '',
+            'foto' => '',
+            'enabled' => 1
+        ];
+        $this->foto = null;
+        $this->form = false;
+        $this->editMode = false;
+        $this->page_description = 'Daftar Widget';
     }
 
     public function resetForm()
     {
         $this->resetErrorBag();
-        $this->reset('widget', 'foto');
-        $this->widget = new Widget();
+        $this->widget = [
+            'judul' => '',
+            'isi' => '',
+            'form_admin' => '',
+            'jenis_widget' => '',
+            'foto' => '',
+            'enabled' => 1
+        ];
+        $this->foto = null;
     }
 }

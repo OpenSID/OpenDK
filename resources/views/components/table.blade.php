@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <div class="pull-left">
             <label style="display: inline-block; vertical-align: middle;">Tampilkan</label>
-            <x-select wire:model="perPage" style="width: 80px; display: inline-block; vertical-align: middle;">
+            <x-select wire:model.live="perPage" style="width: 80px; display: inline-block; vertical-align: middle;">
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
@@ -14,7 +14,8 @@
         </div>
         <div class="pull-right">
             <label style="display: inline-block; vertical-align: middle;">Cari:</label>
-            <x-input type="search" wire:model.debounce.500ms="search" placeholder="Search..." style="width: 200px; display: inline-block; vertical-align: middle;" />
+            <x-input type="search" wire:model.live.debounce.500ms="search" placeholder="Search..."
+                style="width: 200px; display: inline-block; vertical-align: middle;" />
         </div>
     </div>
 </div>

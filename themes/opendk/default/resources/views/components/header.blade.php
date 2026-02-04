@@ -80,91 +80,16 @@
                 </button>
             </div>
             <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-                <ul class="nav navbar-nav">
-                    @foreach ($navmenus as $nav)
-                    <li class="{{ $nav['children']->count() > 0 ? 'dropdown' : '' }}">
-                        <a 
-                        href="{{ $nav['url'] ? url($nav['url']) : '#' }}" 
-                        target="{{ $nav['target'] }}" 
-                        class="{{ $nav['children']->count() > 0 ? 'dropdown-toggle' : '' }}" 
-                        data-toggle="{{ $nav['children']->count() > 0 ? 'dropdown' : '' }}" 
-                        role="button" 
-                        aria-haspopup="true" 
-                        aria-expanded="false"
-                        >
-                        {{ $nav['name'] }} 
-                        @if ($nav['children']->count() > 0)
-                            <span class="caret"></span>
-                        @endif
-                    </a>
-                    @if ($nav['children']->count() > 0)
-                        <ul class="dropdown-menu">
-                            @foreach ($nav['children'] as $child)
-                            @if ($nav['children']->count() > 0)
-                            <li class="dropdown-submenu">
-                                <a 
-                                href="{{ $child['url'] ? url($child['url']) : '#' }}" 
-                                target="{{ $child['target'] }}"
-                                tabindex="-1" class="dropdown-submenu-toggle"
-                                >
-                                    {{ $child['name'] }}
-                                    @if ($child['children']->count() > 0)
-                                        <span class="caret"></span>
-                                    @endif
-                                </a>
-
-                                @if ($child['children']->count() > 0)
-                                <ul class="dropdown-menu">
-                                    @foreach ($child['children'] as $child1)
-                                    @if ($child1['children']->count() > 0)
-                                    <li class="dropdown-submenu">
-                                    <a 
-                                    href="{{ $child1['url'] ? url($child1['url']) : '#' }}" 
-                                    target="{{ $child1['target'] }}"
-                                    tabindex="-1" class="dropdown-submenu-toggle"
-                                    >
-                                        {{ $child1['name'] ? $child1['name'] : '#' }}
-
-                                        @if ($child1['children']->count() > 0)
-                                            <span class="caret"></span>
-                                        @endif
-                                    </a>
-                                    </li>
-                                    @else
-                                    <li class="dropdown-submenu"><a href="{{ url($child1['url']) }}" target="{{ $child1['target'] }}">{{ $child1['name'] }}<span class="sr-only">(current)</span></a></li>
-                                    @endif
-                                    @endforeach
-                                </ul>
-
-                                @endif
-                            </li>
-                            @else
-                            <li class="dropdown-submenu"><a href="{{ url($nav['url']) }}" target="{{ $nav['target'] }}">{{ $nav['name'] }}<span class="sr-only">(current)</span></a></li>
-                            @endif
-                            @endforeach
-                        </ul>
-                        @endif
-                    </li>
-                    @endforeach
-
-                    @if (auth()->guest())
-                        <li><a href="{{ route('login') }}">LogIn<span class="sr-only">(current)</span></a></li>
-                    @else
-                        <li><a href="{{ route('dashboard') }}">Admin</a></li>
-                        <li><a id="loggout" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">LogOut<span class="sr-only">(current)</span></a></li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    @endif
+                <ul class="nav navbar-nav" id="main-nav-menu">
+                    <!-- Navigation will be populated by JavaScript from API -->
+                    <li><a href="#"><i class="fa fa-spinner fa-spin"></i> Loading...</a></li>
                 </ul>
-                
             </div>
     </nav>
 </header>
 
 <link href="https://unpkg.com/minibarjs@latest/dist/minibar.min.css" rel="stylesheet" type="text/css">
 <script src="https://unpkg.com/minibarjs@latest/dist/minibar.min.js" type="text/javascript"></script>
-
 
 <script>
     $(document).ready(function () {

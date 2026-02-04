@@ -111,6 +111,8 @@
     <!-- Swiper JS -->
     <script src="{{ asset('js/swiper.min.js') }}"></script>
     <script src="{{ asset('/js/custom.js') }}"></script>
+    @includeWhen(config('setting.dukungan_disabilitas'), 'partials.sienna_accessibility')
+    @include( 'components.website-data')
     @stack('scripts')
 </body>
 

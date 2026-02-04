@@ -14,17 +14,12 @@
     </section>
     <section class="content container-fluid">
 
-        {!! Form::model($galeri, [
-            'route' => ['publikasi.galeri.update', $galeri->id],
-            'method' => 'put',
-            'id' => 'form-galeri',
-            'files' => true,
-        ]) !!}
+        {!! html()->form('PUT', route('publikasi.galeri.update', $galeri->id))->acceptsFiles()->open() !!}
 
         @include('flash::message')
         @include('publikasi.galeri._form')
 
-        {!! Form::close() !!}
+        {!! html()->form()->close() !!}
 
     </section>
 @endsection

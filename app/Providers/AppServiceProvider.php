@@ -34,6 +34,7 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
+use App\Services\CacheService;
 use App\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -46,7 +47,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use MichaelDzjap\TwoFactorAuth\Providers\EmailTwoFactorProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -55,7 +55,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {}
+    public function register()
+    {
+        $this->app->singleton(CacheService::class, function () {
+            return new CacheService();
+        });
+    }
 
     /**
      * Bootstrap any application services.
@@ -77,15 +82,8 @@ class AppServiceProvider extends ServiceProvider
             $this->file();
         }
 
-        if (!Type::hasType('tinyinteger')) {
-            Type::addType('tinyinteger', 'Doctrine\DBAL\Types\SmallIntType');
-            $platform = Schema::getConnection()->getDoctrineSchemaManager()->getDatabasePlatform();
-            $platform->markDoctrineTypeCommented(Type::getType('tinyinteger'));
-        }
-
-        resolve(\MichaelDzjap\TwoFactorAuth\TwoFactorAuthManager::class)->extend('email', function ($app) {
-            return new \App\Providers\EmailTwoFactorProvider();
-        });       
+        // Note: Doctrine DBAL tinyinteger type removed for Laravel 11 compatibility
+        // If needed, consider using native MySQL migrations instead
         
         // bypass validasi captcha saat unit testing
         if (app()->environment('testing') || app()->environment('local')) {
@@ -125,23 +123,21 @@ class AppServiceProvider extends ServiceProvider
         // });
 
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();
+            $query = DB::table('das_penduduk')
+            ->where('nik', $value)
+            ->where('tanggal_lahir', $parameters[0])
+            ->exists();
 
-            if ($query) {
-                return true;
-            }
-
-            return false;
+            return $query;
         });
 
         Validator::extend('password_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('tanggal_lahir', $value)->whereRaw("nik = '" . $parameters[0] . "'")->exists();
+            $query = DB::table('das_penduduk')
+            ->where('tanggal_lahir', $value)
+            ->where('nik', $parameters[0])
+            ->exists();
 
-            if ($query) {
-                return true;
-            }
-
-            return false;
+            return $query;
         });
 
         Validator::extend('unique_key', function ($attribute, $value, $parameters) {

@@ -33,44 +33,31 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
-use App\Models\Album;
-use App\Models\Galeri;
-use Illuminate\Support\Facades\DB;
 
 class PublikasiController extends FrontEndController
 {
     public function album()
     {
         Counter::count('publik.publikasi.album');
-
-        $albums     = Album::status()->with(['galeris'])->paginate(9);
+        
         $page_title = 'Galeri';
 
-        return view('pages.publikasi.album', compact('page_title', 'albums'));
+        return view('pages.publikasi.album', compact('page_title'));
     }
 
     public function galeri($slug)
     {
-        Counter::count('publik.publikasi.album');
-
-        $galeris = Galeri::status()->whereRelation('album', 'slug', $slug)->paginate(9);
-        // $album = Album::with(['galeris'])->where('slug', $slug)->first();
-
+        Counter::count('publik.publikasi.album');        
         $page_title = 'Galeri';
 
-
-        return view('pages.publikasi.galeri', compact('page_title', 'galeris'));
+        return view('pages.publikasi.galeri', compact('page_title', 'slug'));
     }
 
     public function galeri_detail($slug)
     {
-        Counter::count('publik.publikasi.album');
-
-        $galeri = Galeri::where('slug', $slug)->first();
-
+        Counter::count('publik.publikasi.album');        
         $page_title = 'Galeri';
 
-
-        return view('pages.publikasi.galeri_detail', compact('page_title', 'galeri'));
+        return view('pages.publikasi.galeri_detail', compact('page_title', 'slug'));
     }
 }

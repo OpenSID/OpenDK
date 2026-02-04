@@ -4,22 +4,8 @@
             @php
                 $namaWidget = $widget['isi'];
                 $bolehTampil = true;
-
-                if ($namaWidget == 'sinergi_program' && (!isset($sinergi) || count($sinergi) == 0)) {
-                    $bolehTampil = false;
-                }
-
-                if ($namaWidget == 'pengurus' && (!isset($pengurus) || count($pengurus) == 0)) {
-                    $bolehTampil = false;
-                }
-
-                if ($namaWidget == 'media_sosial' && (!isset($medsos) || count($medsos) == 0)) {
-                    $bolehTampil = false;
-                }
-
-                if ($namaWidget == 'media_terkait' && (!isset($media_terkait) || count($media_terkait) == 0)) {
-                    $bolehTampil = false;
-                }
+                // With API-based loading, we show all widgets and let the API populate them
+                // The loading placeholders will be replaced with actual data via JavaScript
             @endphp
 
             @if ($bolehTampil)

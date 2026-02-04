@@ -43,7 +43,7 @@ class AlterDasarPembentukanTableDasProfil extends Migration
     public function up()
     {
         Schema::table('das_profil', function (Blueprint $table) {
-            $table->string('dasar_pembentukan', 50)->change();
+            $table->string('dasar_pembentukan', 50)->nullable()->change();
         });
     }
 

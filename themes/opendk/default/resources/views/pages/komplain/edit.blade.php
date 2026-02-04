@@ -3,15 +3,33 @@
 @section('content')
 
     <!-- Content Header (Page header) -->
-    <section class="content-header">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ $page_title }}</li>
-        </ol>
+    <div class="col-md-8 col-sm-8 col-xs-12">
+        {!! Html::textarea('laporan', old(
+        'laporan',
+        $komplain->laporan
+    ))->placeholder('Laporan')->class('form-control')->rows(4)->required() !!}
+        @if ($errors->has('laporan'))
+            <span class="help-block">
+                <strong>{{ $errors->first('laporan') }}</strong>
+            </span>
+        @endif
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        {!! Html::text('judul', old('judul', $komplain->judul))->placeholder('Judul')->class('form-control')->required() !!}
+        @if ($errors->has('judul'))
+            <span class="help-block">
+                <strong>{{ $errors->first('judul') }}</strong>
+            </span>
+        @endif
+    </div>
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
+    </ol>
     </section>
 
     <section class="content container-fluid">
@@ -28,7 +46,11 @@
             </div>
             <div class="col-md-9">
                 <!-- kirim komplain form -->
-                {!! Form::model($komplain, ['route' => ['sistem-komplain.update', $komplain->id], 'method' => 'put', 'id' => 'form-komplain', 'class' => 'form-horizontal form-label-left', 'files' => true]) !!}
+                {!! Html::form('PUT', route(
+        'sistem-komplain.update',
+        $komplain->id
+    ))->model($komplain)->id('form-komplain')->class('form-horizontal
+                form-label-left')->acceptsFiles()->open() !!}
                 <div class="box box-primary">
                     <div class="box-header">
                         <i class="fa fa-paper-plane"></i>
@@ -51,12 +73,17 @@
 
                         <div class="row">
                             <div class="col-md-12">
-                                {{ csrf_field() }}
+                                @csrf
                                 <div class="form-group{{ $errors->has('nik') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span
+                                            class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!! Form::text('nik', null, ['placeholder' => 'NIK', 'class' => 'form-control', 'required', 'readonly' => true]) !!}
+                                        {!! Html::text('nik', old(
+        'nik',
+        $komplain->nik
+    ))->placeholder('NIK')->class('form-control')->required()->isReadonly()
+                                        !!}
                                         @if ($errors->has('nik'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('nik') }}</strong>
@@ -65,10 +92,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('nama') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span
+                                            class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!! Form::text('nama', null, ['placeholder' => 'Nama', 'class' => 'form-control', 'required', 'readonly' => true]) !!}
+                                        {!! Html::text('nama', old(
+        'nama',
+        $komplain->nama
+    ))->placeholder('Nama')->class('form-control')->required()->isReadonly()
+                                        !!}
                                         @if ($errors->has('nama'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('nama') }}</strong>
@@ -78,10 +110,18 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('kategori') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span
+                                            class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!! Form::select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id'), null, ['class' => 'form-control', 'id' => 'kategori', 'required']) !!}
+                                        {!! Html::select(
+        'kategori',
+        \App\Models\KategoriKomplain::pluck('nama', 'id'),
+        old(
+            'kategori',
+            $komplain->kategori_id
+        )
+    )->class('form-control')->id('kategori')->required() !!}
                                         @if ($errors->has('kategori'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('kategori') }}</strong>
@@ -91,10 +131,14 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('judul') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span
+                                            class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        {!! Form::text('judul', null, ['placeholder' => 'Judul', 'class' => 'form-control', 'required']) !!}
+                                        {!! Html::text('judul', old(
+        'judul',
+        $komplain->judul
+    ))->placeholder('Judul')->class('form-control')->required() !!}
                                         @if ($errors->has('judul'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('judul') }}</strong>
@@ -104,10 +148,14 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('laporan') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span
+                                            class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        {!! Form::textArea('laporan', null, ['placeholder' => 'Laporan', 'class' => 'form-control', 'required']) !!}
+                                        {!! Html::textarea('laporan', old(
+        'laporan',
+        $komplain->laporan
+    ))->placeholder('Laporan')->class('form-control')->required() !!}
                                         @if ($errors->has('laporan'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('laporan') }}</strong>
@@ -126,7 +174,8 @@
                                                 <label for="lampiran1"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview1" style="background-image: url(@if (!$komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview1"
+                                                    style="background-image: url(@if (!$komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
@@ -137,7 +186,8 @@
                                                 <label for="lampiran2"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview2" style="background-image: url(@if (!$komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview2"
+                                                    style="background-image: url(@if (!$komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +198,8 @@
                                                 <label for="lampiran3"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview3" style="background-image: url(@if (!$komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview3"
+                                                    style="background-image: url(@if (!$komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
@@ -159,7 +210,8 @@
                                                 <label for="lampiran4"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview4" style="background-image: url(@if (!$komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview4"
+                                                    style="background-image: url(@if (!$komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
@@ -170,7 +222,16 @@
                                     <label class="control-label col-md-2 col-sm-3 col-xs-12">Status</label>
 
                                     <div class="col-md-2 col-sm-2 col-xs-12">
-                                        {!! Form::select('status', ['BELUM' => 'Belum', 'PROSES' => 'Proses', 'SELESAI' => 'Selesai'], null, ['class' => 'form-control']) !!}
+                                        {!! Html::select(
+        'status',
+        [
+            'BELUM' => 'Belum',
+            'PROSES' => 'Proses',
+            'SELESAI' =>
+                'Selesai'
+        ],
+        old('status', $komplain->status)
+    )->class('form-control') !!}
                                         @if ($errors->has('status'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('status') }}</strong>
@@ -186,7 +247,7 @@
                         @include('partials.button_reset_submit')
                     </div>
                 </div>
-                {!! Form::close() !!}
+                {!! Html::form()->close() !!}
             </div>
         </div>
     </section>
@@ -196,11 +257,11 @@
 
 @push('scripts')
     <script type="text/javascript">
-        $(".btn-refresh").click(function() {
+        $(".btn-refresh").click(function () {
             $.ajax({
                 type: 'GET',
                 url: '/refresh-captcha',
-                success: function(data) {
+                success: function (data) {
                     $(".captcha span").html(data.captcha);
                 }
             });

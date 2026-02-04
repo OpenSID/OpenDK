@@ -35,6 +35,7 @@ use App\Enums\LogVerifikasiSurat;
 use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
+use App\Models\DataDesa;
 use App\Models\LogTte;
 use App\Models\Surat;
 use GuzzleHttp\Exception\ClientException;
@@ -48,6 +49,7 @@ class PermohonanController extends Controller
 {
     public function index()
     {
+        // dd(!$this->isDatabaseGabungan(), DataDesa::pluck('desa_id'));
         $page_title = 'Permohonan Surat';
         $page_description = 'Daftar Permohonan Surat';
 
@@ -56,15 +58,27 @@ class PermohonanController extends Controller
 
     public function getData()
     {
-        return DataTables::of(Surat::permohonan())
+        $desa = request('kode_desa');
+
+        // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
+        return DataTables::of(Surat::permohonan()
+        ->when(!$this->isDatabaseGabungan(), function ($query) {
+            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
+        })
+        ->when($desa, function ($query) use ($desa) {
+            return $desa === 'Semua'
+                ? $query
+                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+        }))
             ->addColumn('aksi', function ($row) {
                 $user = auth()->user()->pengurus_id;
+                
                 $isAllow = false;
                 if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
                     $isAllow = true;
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
                     $isAllow = true;
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat->id) {
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat?->id) {
                     $isAllow = true;
                 }
 
@@ -78,10 +92,19 @@ class PermohonanController extends Controller
 
                 $data['download_url'] = route('surat.permohonan.download', $row->id);
 
+                $pathSurat = asset('storage/surat/' . $row->file);
+                $data['preview_url'] = $pathSurat;
+
                 return view('forms.aksi', $data);
             })
             ->editColumn('nama', function ($row) {
                 return "Surat {$row->nama}";
+            })
+            ->editColumn('nama_penduduk', function ($row) {
+                if (isset($row->penduduk) && !empty($row->penduduk->nama)) {
+                    return $row->penduduk->nama;
+                }
+                return $row->nama_penduduk;
             })
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
@@ -266,16 +289,27 @@ class PermohonanController extends Controller
 
     public function getDataDitolak()
     {
-        return DataTables::of(Surat::ditolak())
-            ->editColumn('nama', function ($row) {
-                return "Surat {$row->nama}";
-            })
+        $desa = request('kode_desa');
+        $surat = Surat::ditolak()->when(!$this->isDatabaseGabungan(), function ($query) {
+            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
+        })
+        ->when($desa, function ($query) use ($desa) {
+            return $desa === 'Semua'
+                ? $query
+                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+        });
+        
+        // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
+        return DataTables::of($surat)
+            // ->editColumn('nama', function ($row) {
+            //     return "Surat {$row->nama}";
+            // })
             ->editColumn('log_verifikasi', function () {
                 return "<span class='label label-danger'>Ditolak</span>";
             })
             ->editColumn('tanggal', function ($row) {
                 return format_date($row->tanggal);
             })
-            ->rawColumns(['nama', 'log_verifikasi'])->make();
+            ->rawColumns(['log_verifikasi'])->make();
     }
 }

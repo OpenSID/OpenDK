@@ -29,95 +29,77 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests\Feature;
-
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
-class WebsiteFooterTest extends TestCase
-{
-    use DatabaseTransactions;
+uses(DatabaseTransactions::class);
 
-    /** @test */
-    public function homepage_footer_contains_sebutan_desa_config()
-    {
-        // Set config untuk testing
-        config(['setting.sebutan_desa' => 'Desa']);
+test('homepage footer contains sebutan desa config', function () {
+    // Set config untuk testing
+    config(['setting.sebutan_desa' => 'Desa']);
+
+    $response = $this->get('/');
+
+    $response->assertStatus(200);
+
+    // Pastikan footer mengandung sebutan desa
+    $response->assertSee('Desa', false); // false = case insensitive
+
+    // Atau bisa lebih spesifik dengan selector CSS
+    $response->assertSeeInOrder(['footer', 'Desa'], false);
+});
+
+test('berita desa page footer contains sebutan desa config', function () {
+    config(['setting.sebutan_desa' => 'Kelurahan']);
+
+    $response = $this->get('/berita-desa');
+
+    $response->assertStatus(200);
+    $response->assertSee('Kelurahan', false);
+});
+
+test('profil page footer contains sebutan desa config', function () {
+    config(['setting.sebutan_desa' => 'Kampung']);
+
+    $response = $this->get('/profil/visi-dan-misi');
+
+    $response->assertStatus(200);
+    $response->assertSee('Kampung', false);
+});
+
+test('statistik page footer contains sebutan desa config', function () {
+    config(['setting.sebutan_desa' => 'Nagari']);
+
+    $response = $this->get('/statistik/kependudukan');
+
+    $response->assertStatus(200);
+    $response->assertSee('Nagari', false);
+});
+
+test('faq page footer contains sebutan desa config', function () {
+    config(['setting.sebutan_desa' => 'Gampong']);
+
+    $response = $this->get('/faq');
+
+    $response->assertStatus(200);
+    $response->assertSee('Gampong', false);
+});
+
+test('footer contains sebutan desa with different values', function () {
+    $sebutanDesaValues = [
+        'Desa',
+        'Kelurahan',
+        'Kampung',
+        'Nagari',
+        'Gampong',
+        'Pekon'
+    ];
+
+    foreach ($sebutanDesaValues as $sebutan) {
+        config(['setting.sebutan_desa' => $sebutan]);
 
         $response = $this->get('/');
 
         $response->assertStatus(200);
-
-        // Pastikan footer mengandung sebutan desa
-        $response->assertSee('Desa', false); // false = case insensitive
-
-        // Atau bisa lebih spesifik dengan selector CSS
-        $response->assertSeeInOrder(['footer', 'Desa'], false);
+        $response->assertSee($sebutan, false);
     }
-
-    /** @test */
-    public function berita_desa_page_footer_contains_sebutan_desa_config()
-    {
-        config(['setting.sebutan_desa' => 'Kelurahan']);
-
-        $response = $this->get('/berita-desa');
-
-        $response->assertStatus(200);
-        $response->assertSee('Kelurahan', false);
-    }
-
-    /** @test */
-    public function profil_page_footer_contains_sebutan_desa_config()
-    {
-        config(['setting.sebutan_desa' => 'Kampung']);
-
-        $response = $this->get('/profil/visi-dan-misi');
-
-        $response->assertStatus(200);
-        $response->assertSee('Kampung', false);
-    }
-
-    /** @test */
-    public function statistik_page_footer_contains_sebutan_desa_config()
-    {
-        config(['setting.sebutan_desa' => 'Nagari']);
-
-        $response = $this->get('/statistik/kependudukan');
-
-        $response->assertStatus(200);
-        $response->assertSee('Nagari', false);
-    }
-
-    /** @test */
-    public function faq_page_footer_contains_sebutan_desa_config()
-    {
-        config(['setting.sebutan_desa' => 'Gampong']);
-
-        $response = $this->get('/faq');
-
-        $response->assertStatus(200);
-        $response->assertSee('Gampong', false);
-    }
-
-    /** @test */
-    public function footer_contains_sebutan_desa_with_different_values()
-    {
-        $sebutanDesaValues = [
-            'Desa',
-            'Kelurahan',
-            'Kampung',
-            'Nagari',
-            'Gampong',
-            'Pekon'
-        ];
-
-        foreach ($sebutanDesaValues as $sebutan) {
-            config(['setting.sebutan_desa' => $sebutan]);
-
-            $response = $this->get('/');
-
-            $response->assertStatus(200);
-            $response->assertSee($sebutan, false);
-        }
-    }
-}
+});

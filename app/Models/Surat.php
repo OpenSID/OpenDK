@@ -45,6 +45,7 @@ class Surat extends Model
         'desa_id',
         'nik',
         'pengurus_id',
+        'nama_penduduk',
         'tanggal',
         'nomor',
         'nama',

@@ -75,14 +75,26 @@
                                 </p>
                             </li>
 
+                            <!-- Menu Body-->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-6 text-center">
+                                        <a href="{{ route('setting.user.edit', Auth::id()) }}" class="link-black">
+                                            <i class="fa fa-user margin-r-5"></i> Profile
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-6 text-center">
+                                        <a href="{{ route('profile.password') }}" class="link-black">
+                                            <i class="fa fa-lock margin-r-5"></i> Ganti Password
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    {{-- <a href="#" class="btn btn-default btn-flat">Profile</a> --}}
-                                </div>
                                 <div class="pull-right">
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                                         {{ csrf_field() }}
                                         <button class="btn btn-default btn-flat" type="submit">
                                             Logout

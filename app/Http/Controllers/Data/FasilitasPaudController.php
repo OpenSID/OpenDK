@@ -31,11 +31,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Exports\ExportFasilitasPaud;
 use App\Http\Controllers\Controller;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class FasilitasPaudController extends Controller
@@ -165,5 +167,20 @@ class FasilitasPaudController extends Controller
         }
 
         return redirect()->route('data.fasilitas-paud.index')->with('success', 'Data sukses dihapus!');
+    }
+
+    /**
+     * Export Excel data Fasilitas PAUD.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function exportExcel(Request $request)
+    {
+        // Ekspor semua data Fasilitas PAUD tanpa filter
+        $timestamp = date('Y-m-d-H-i-s');
+        $filename = "data-fasilitas-paud-{$timestamp}.xlsx";
+
+        return Excel::download(new ExportFasilitasPaud(), $filename);
     }
 }

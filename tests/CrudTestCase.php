@@ -35,8 +35,8 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\SettingAplikasi;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
 class CrudTestCase extends TestCase
 {
@@ -48,13 +48,14 @@ class CrudTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->withViewErrors([]);
         $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
         // disabled database gabungan for testing
         SettingAplikasi::updateOrCreate(
             ['key' => 'sinkronisasi_database_gabungan'],
             ['value' => '0']
-        );    
+        );
     }
 
     // Additional methods for CRUD tests can be added here

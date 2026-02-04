@@ -32,7 +32,7 @@
 namespace App\Services;
 
 use App\Models\Penduduk;
-use BeyondCode\QueryDetector\Outputs\Log;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 
@@ -66,8 +66,8 @@ class StatistikChartPendudukService extends BaseApiService
                     $data[] = ['year' => $key, 'value_lk' => $queryResultLaki, 'value_pr' => $queryResultPerempuan];
                 }
                 
-            } catch (\Exception $e) {                
-                \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
+            } catch (\Exception $e) {
+                Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }

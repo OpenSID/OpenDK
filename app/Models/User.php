@@ -42,7 +42,6 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use MichaelDzjap\TwoFactorAuth\TwoFactorAuthenticable;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -51,7 +50,6 @@ class User extends Authenticatable implements JWTSubject
     use HasRoles;
     use Notifiable;
     use HandlesResourceDeletion;
-    use TwoFactorAuthenticable;
 
     /**
      * Default password.
@@ -71,10 +69,15 @@ class User extends Authenticatable implements JWTSubject
         'image',
         'address',
         'phone',
+        'telegram_id',
         'gender',
         'status',
         'last_login',
         'pengurus_id',
+        'otp_enabled',
+        'two_fa_enabled',
+        'otp_channel',
+        'otp_verified',
     ];
 
     /**
@@ -101,6 +104,8 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'otp_enabled' => 'boolean',
+        'two_fa_enabled' => 'boolean',
     ];
 
     /**
@@ -112,7 +117,7 @@ class User extends Authenticatable implements JWTSubject
 
     public static function datatables()
     {
-        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone');
+        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone', 'telegram_id', 'otp_channel', 'otp_verified');
     }
 
     public function getFotoAttribute()
@@ -156,10 +161,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(Pengurus::class, 'id', 'pengurus_id');
     }
 
-    public function setTwoFactorAuthIdExpired(string $id): void
-    {        
-        $this->setTwoFactorAuthId($id);
-        $attributes = ['expired_at' => now()->addMinutes(config('twofactor-auth.expiry', 2))];
-        $this->twoFactorAuth()->update($attributes);
+    /**
+     * Get the OTP tokens for the user.
+     */
+    public function otpTokens()
+    {
+        return $this->hasMany(OtpToken::class);
     }
 }

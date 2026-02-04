@@ -27,6 +27,24 @@
 @push('scripts')
     <script>
         $(function() {
+            // Reset form ketika modal ditutup
+            $('#modal-form').on('hidden.bs.modal', function() {
+                var form = $(this).find('form');
+                form[0].reset();
+                form.find('input[name="id"]').val('');
+                form.attr('action', '{{ route('setting.tipe-regulasi.store') }}');
+                $(this).find('.modal-title').text('Tambah Tipe Regulasi');
+            });
+
+            // Reset form ketika tombol Tambah diklik (sebelum modal terbuka)
+            $('[data-target="#modal-form"]').on('click', function() {
+                var form = $('#modal-form form');
+                form[0].reset();
+                form.find('input[name="id"]').val('');
+                form.attr('action', '{{ route('setting.tipe-regulasi.store') }}');
+                $('#modal-form .modal-title').text('Tambah Tipe Regulasi');
+            });
+
             $('#modal-form').on('click', 'button[type="submit"]', function(e) {
                 e.preventDefault();
                 var form = $(this).closest('form');

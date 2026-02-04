@@ -27,9 +27,10 @@
         @include('surat.permohonan.widget')
 
         <div class="box box-primary">
-
+            
             @include('partials.flash_message')
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
@@ -50,33 +51,55 @@
 @endsection
 
 @include('partials.asset_datatables')
+@include('partials.asset_select2')
 
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#list_desa').select2();
+
             var data = $('#pengurus-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! route('surat.permohonan.getdataditolak') !!}"
+                    url: "{!! route('surat.permohonan.getdataditolak') !!}",
+                    data: function(row) {
+                        var selectedDesa = $('#list_desa').val();
+                        var searchValue = row.search.value;
+
+                        return {
+                            "page[size]": row.length,
+                            "page[number]": (row.start / row.length) + 1,
+                            "filter[search]": searchValue,
+                            "kode_desa": selectedDesa == 'Semua' ? '' : selectedDesa,
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
+                                    ?.column]
+                                ?.name,
+                        };
+                    },
                 },
                 columns: [{
                         data: 'desa.nama',
-                        name: 'desa.nama'
+                        name: 'desa.nama',
+                        defaultContent: '-',
+                        searchable: true
                     },
                     {
                         data: 'nama',
-                        name: 'nama'
+                        name: 'nama',
+                        searchable: true
                     },
                     {
-                        data: 'penduduk.nama',
-                        name: 'penduduk.nama',
-                        orderable: false
+                        data: 'nama_penduduk',
+                        name: 'nama_penduduk',
+                        orderable: false,
+                        searchable: true
                     },
                     {
                         data: 'pengurus.nama',
                         name: 'pengurus.nama',
-                        orderable: false
+                        orderable: false,
+                        searchable: true
                     },
                     {
                         data: 'tanggal',
@@ -87,6 +110,10 @@
                         name: 'log_verifikasi'
                     },
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
             });
         });
     </script>

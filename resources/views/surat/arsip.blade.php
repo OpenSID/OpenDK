@@ -27,11 +27,13 @@
         @include('partials.flash_message')
         <div class="box box-primary">
             <div class="box-body">
+                @include('layouts.fragments.list-desa')
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="pengurus-table">
                         <thead>
                             <tr>
                                 <th style="min-width: 110px;">Aksi</th>
+                                <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama Surat</th>
                                 <th>Nama Penduduk</th>
                                 <th>Ditandatangani oleh</th>
@@ -46,15 +48,32 @@
 @endsection
 
 @include('partials.asset_datatables')
+@include('partials.asset_select2')
 
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#list_desa').select2();
+
             var data = $('#pengurus-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! route('surat.arsip.getdata') !!}"
+                    url: "{!! route('surat.arsip.getdata') !!}",
+                    data: function(row) {
+                        var selectedDesa = $('#list_desa').val();
+                        var searchValue = row.search.value;
+
+                        return {
+                            "page[size]": row.length,
+                            "page[number]": (row.start / row.length) + 1,
+                            "filter[search]": searchValue,
+                            "kode_desa": selectedDesa == 'Semua' ? '' : selectedDesa,
+                            "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
+                                    ?.column]
+                                ?.name,
+                        };
+                    },
                 },
                 columns: [{
                         data: 'aksi',
@@ -64,12 +83,17 @@
                         orderable: false
                     },
                     {
+                        data: 'desa.nama',
+                        name: 'desa.nama',
+                        defaultContent: '-'
+                    },
+                    {
                         data: 'nama',
                         name: 'nama'
                     },
                     {
-                        data: 'penduduk.nama',
-                        name: 'penduduk.nama',
+                        data: 'nama_penduduk',
+                        name: 'nama_penduduk',
                         orderable: false
                     },
                     {
@@ -83,7 +107,22 @@
                     },
                 ]
             });
-        });
+
+            // Event untuk tombol pratinjau
+            $(document).on('click', '.btn-preview-surat', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                $('#modalPreviewSurat .modal-body').html('<iframe src="'+url+'" width="100%" height="500px" style="border:none;"></iframe>');
+                $('#modalPreviewSurat').modal('show');
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
+            });
+    });
+
     </script>
+
+    @include('components.modal-preview-surat')
     @include('forms.datatable-vertical')
 @endpush

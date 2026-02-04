@@ -37,10 +37,9 @@ use App\Models\Faq;
 class WebFaqController extends FrontEndController
 {
     public function index()
-    {
-        $faq = Faq::where('status', 1)->latest()->paginate(10);
+    {        
         $page_title = 'Pertanyaan Yang Sering Diajukan';
 
-        return view('pages.faq.index', compact('page_title', 'faq'));
+        return view('pages.faq.index', compact('page_title'));
     }
 }

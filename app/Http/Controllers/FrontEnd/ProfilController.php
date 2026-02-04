@@ -50,26 +50,22 @@ class ProfilController extends FrontEndController
     {
         Counter::count('profil.tipologi');
 
-        $profil = Profil::with(['dataUmum'])->first();
         $page_title = 'Tipologi';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
 
-        return view('pages.profil.tipologi', compact('page_title', 'page_description', 'profil'));
+        $page_description = $this->browser_title;
+
+        return view('pages.profil.tipologi', compact('page_title', 'page_description'));
     }
 
     public function sejarah()
     {
         Counter::count('profil.sejarah');
 
-        $profil = Profil::with(['dataUmum'])->first();
         $page_title = 'Sejarah';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
 
-        return view('pages.profil.sejarah', compact('page_title', 'page_description', 'profil'));
+        $page_description = $this->browser_title;
+
+        return view('pages.profil.sejarah', compact('page_title', 'page_description'));
     }
 
     /**
@@ -79,44 +75,35 @@ class ProfilController extends FrontEndController
     {
         Counter::count('profil.letak-geografis');
 
-        $profil = Profil::with(['dataDesa'])->first();
         $wilayah_desa = (new DesaService())->listPathDesa();
-        $data_umum = DataUmum::first();
         $page_title = 'Letak Geografis';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
+
+        $page_description = $this->browser_title;
 
         $view = $this->isDatabaseGabungan() ? 'pages.profil.gabungan.letakgeografis' : 'pages.profil.letakgeografis';
 
-        return view($view, compact('page_title', 'page_description', 'profil', 'wilayah_desa', 'data_umum'));
+        return view($view, compact('page_title', 'page_description', 'wilayah_desa'));
     }
 
     public function StrukturPemerintahan()
     {
         Counter::count('profil.struktur-pemerintahan');
 
-        $profil = $this->profil;
-        $pengurus = Pengurus::status()->get()->sortBy('jabatan.jenis');
         $page_title = 'Struktur Pemerintahan';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
+        $page_description = $this->browser_title;
 
-        return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description', 'profil', 'pengurus'));
+
+        return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description'));
     }
 
     public function VisiMisi()
     {
         Counter::count('profil.visi-misi');
 
-        $profil = $this->profil;
         $page_title = 'Visi dan Misi';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
+        $page_description = $this->browser_title;
 
-        return view('pages.profil.visimisi', compact('page_title', 'page_description', 'profil'));
+        return view('pages.profil.visimisi', compact('page_title', 'page_description'));
     }
 
     public function Kependudukan()
@@ -139,9 +126,8 @@ class ProfilController extends FrontEndController
         $dokumen = DB::table('das_form_dokumen')->take(5)->get();
 
         $page_title = 'Profil';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
+
+        $page_description = $this->browser_title;
 
         return view('pages.profil.show_profil', compact('page_title', 'page_description', 'profil', 'dokumen'));
     }
@@ -150,13 +136,10 @@ class ProfilController extends FrontEndController
     {
         Counter::count('profil.sambutan');
 
-        $profil = $this->profil;
         $page_title = 'Sambutan';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
+        $page_description = $this->browser_title;
 
-        return view('pages.profil.sambutan', compact('page_title', 'page_description', 'profil'));
+        return view('pages.profil.sambutan', compact('page_title', 'page_description'));
     }
 
     public function StrukturOrganisasi(Request $request)
@@ -164,13 +147,11 @@ class ProfilController extends FrontEndController
         Counter::count('profil.struktur-organisasi');
 
         $profil = $this->profil;
-        $pengurus = Pengurus::status()->get()->sortBy('jabatan.jenis');
         $page_title = 'Struktur Organisasi';
-        if (isset($profil)) {
-            $page_description = $this->browser_title;
-        }
 
-        return view('pages.profil.struktur-organisasi', compact('page_title', 'page_description', 'profil', 'pengurus',));
+        $page_description = $this->browser_title;
+
+        return view('pages.profil.struktur-organisasi', compact('page_title', 'page_description'));
     }
 
     public function ajaxBaganPublic()

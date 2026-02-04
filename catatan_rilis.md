@@ -1,31 +1,16 @@
-Di rilis versi v2509.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2602.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
-Terima kasih pada @Madeersani telah ikut berkontribusi
 
 #### FITUR
 
-1. [#1285](https://github.com/OpenSID/OpenDK/issues/1285) Penambahan fungsi expor pada halaman data desa.
-2. [#1305](https://github.com/OpenSID/OpenDK/issues/1305) Penambahan pengaturan untuk penyebutan desa/kelurahan atau yang lainnya.
-3. [#1286](https://github.com/OpenSID/OpenDK/issues/1286) Penambahan fungsi expor pada halaman data suplemen.
-4. [#1287](https://github.com/OpenSID/OpenDK/issues/1287) Penambahan fungsi expor pada halaman laporan penduduk.
-5. [#1288](https://github.com/OpenSID/OpenDK/issues/1288) Penambahan fungsi expor pada halaman AKI & AKB.
-6. [#1289](https://github.com/OpenSID/OpenDK/issues/1289) Penambahan fungsi expor pada halaman Imunisasi.
-7. [#1290](https://github.com/OpenSID/OpenDK/issues/1290) Penambahan fungsi expor pada halaman toilet & sanitasi.
-8. [#1291](https://github.com/OpenSID/OpenDK/issues/1291) Penambahan fungsi expor pada halaman epidemi penyakit.
-9. [#1292](https://github.com/OpenSID/OpenDK/issues/1292) Penambahan fungsi expor pada halaman tingkat pendidikan.
-10. [#1293](https://github.com/OpenSID/OpenDK/issues/1293) Penambahan fungsi expor pada halaman daftar siswa putus sekolah.
-11. [#1297](https://github.com/OpenSID/OpenDK/issues/1297) Penambahan fungsi expor excel pada halaman anggaran & realisasi.
-12. [#1284](https://github.com/OpenSID/OpenDK/issues/1284) Penambahan  fungsi expor excel pada halaman keluarga.
-13. [#1295](https://github.com/OpenSID/OpenDK/issues/1295) Penambahan fungsi expor excel pada halaman program bantuan.
-14. [#1300](https://github.com/OpenSID/OpenDK/issues/1300) Penambahan fungsi expor excel pada halaman data pembangunan.
-15. [#1299](https://github.com/OpenSID/OpenDK/issues/1299) Penambahan export di halaman laporan APBDes.
-16. [#1298](https://github.com/OpenSID/OpenDK/issues/1298) Penambahan fungsi expor excel pada halaman APBDes
+1. [#1386](https://github.com/OpenSID/OpenDK/issues/1386) Penambahan fitur untuk ganti password pengguna secara mandiri.
 
 #### BUG
 
-
+1. [#1397](https://github.com/OpenSID/OpenDK/issues/1397) Perbaikan  migrasi lama dengan terbaru.
+2. [#1400](https://github.com/OpenSID/OpenDK/issues/1400) Perbaikan error ketika melakukan install dengan perintah composer install --no-dev.
+3. [#1405](https://github.com/OpenSID/OpenDK/issues/1405) Perbaikan berita tidak bisa langsung tampil.
 
 #### TEKNIS
 
-1. [#1304](https://github.com/OpenSID/OpenDK/issues/1304) Penambahan test e2e testing.
-2. [#1323](https://github.com/OpenSID/OpenDK/issues/1323) Perbaikan Konsistensi bahasa baku silahkan menjadi silakan.
+1. [#1403](https://github.com/OpenSID/OpenDK/issues/1403) Perbaikan SQL Injection di AppServiceProvider.php.

@@ -18,12 +18,10 @@
                 <div class="box box-primary">
 
                     <!-- form start -->
-                    {!! Form::model($faq, [
-                        'route' => ['informasi.faq.update', $faq->id],
-                        'method' => 'post',
-                        'id' => 'form-faq',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
+                    {!! html()->form('POST', route('informasi.faq.update', $faq->id))
+        ->id('form-faq')
+        ->class('form-horizontal form-label-left')
+        ->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
@@ -36,7 +34,7 @@
                     <div class="box-footer">
                         @include('partials.button_reset_submit')
                     </div>
-                    {!! Form::close() !!}
+                    {!! html()->form()->close() !!}
                 </div>
             </div>
         </div>

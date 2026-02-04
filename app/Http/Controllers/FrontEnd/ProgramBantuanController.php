@@ -33,22 +33,10 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
-use App\Models\DataDesa;
-use App\Models\Program;
-use App\Services\DesaService;
-use App\Services\StatistikChartBantuanKeluargaService;
-use App\Services\StatistikChartBantuanPendudukService;
-use Illuminate\Support\Facades\DB;
+
 
 class ProgramBantuanController extends FrontEndController
-{
-    private $desaService;
-
-    public function __construct()
-    {       
-        $this->desaService = new DesaService();
-        parent::__construct();
-    }
+{    
     /**
      * Menampilkan Data Program Bantuan
      **/
@@ -57,24 +45,8 @@ class ProgramBantuanController extends FrontEndController
         Counter::count('statistik.program-bantuan');
 
         $page_title = 'Program Bantuan';
-        $page_description = 'Data Program Bantuan';
-        $year_list = years_list();
-        $list_desa = $this->desaService->listDesa();        
+        $page_description = 'Data Program Bantuan';            
 
-        return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description', 'year_list', 'list_desa'));
-    }
-
-    public function getChartBantuanPenduduk()
-    {
-        $did = request('did');
-        $year = request('y');
-        return (new StatistikChartBantuanPendudukService)->chart($did, $year);
-    }
-
-    public function getChartBantuanKeluarga()
-    {
-        $did = request('did');
-        $year = request('y');
-        return (new StatistikChartBantuanKeluargaService)->chart($did, $year);
-    }    
+        return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description'));
+    }        
 }

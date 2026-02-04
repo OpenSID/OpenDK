@@ -1,53 +1,48 @@
 @extends('layouts.dashboard_template')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li><a href="{{ route('data.fasilitas-paud.index') }}">Daftar Fasilitas PAUD</a></li>
-            <li class="active">{{ $page_description ?? '' }}</li>
-        </ol>
-    </section>
-    <section class="content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                @include('partials.flash_message')
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li><a href="{{ route('data.fasilitas-paud.index') }}">Daftar Fasilitas PAUD</a></li>
+        <li class="active">{{ $page_description ?? '' }}</li>
+    </ol>
+</section>
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            @include('partials.flash_message')
 
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <strong>Oops!</strong> Ada kesalahan pada inputan Anda..<br><br>
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+            @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <strong>Oops!</strong> Ada kesalahan pada inputan Anda..<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
-                <!-- form start -->
-                {!! Form::model($fasilitas, [
-                    'route' => ['data.fasilitas-paud.update', $fasilitas->id],
-                    'method' => 'put',
-                    'id' => 'form-siswa',
-                    'class' => 'form-horizontal form-label-left',
-                ]) !!}
+            <!-- form start -->
+            {!! html()->form()->open() !!}
 
-                <div class="box-body">
+            <div class="box-body">
 
-                    @include('data.fasilitas_paud.form_edit')
-
-                </div>
-                <!-- /.box-body -->
-                <div class="box-footer">
-                    @include('partials.button_reset_submit')
-                </div>
-                {!! Form::close() !!}
+                @include('data.fasilitas_paud.form_edit')
 
             </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                @include('partials.button_reset_submit')
+            </div>
+            {!! html()->form()->close() !!}
+
         </div>
-    </section>
+    </div>
+</section>
 @endsection

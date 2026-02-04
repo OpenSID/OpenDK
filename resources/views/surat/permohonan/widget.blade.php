@@ -1,8 +1,11 @@
+{{-- @dd($settings) --}}
 <div class="row">
     <div class="col-lg-6 col-xs-12">
         <div class="small-box bg-aqua">
             <div class="inner">
-                <h3>{{ App\Models\Surat::permohonan()->count() }}</h3>
+                <h3>{{ App\Models\Surat::permohonan()->when(!$settings['sinkronisasi_database_gabungan'], function ($query) {
+                        $query->whereIn('desa_id', App\Models\DataDesa::pluck('desa_id'));
+                    })->count() }}</h3>
                 <p>Permohonan</p>
             </div>
             <div class="icon">
@@ -17,7 +20,9 @@
     <div class="col-lg-6 col-xs-12">
         <div class="small-box bg-red">
             <div class="inner">
-                <h3>{{ App\Models\Surat::ditolak()->count() }}</h3>
+                <h3>{{ App\Models\Surat::ditolak()->when(!$settings['sinkronisasi_database_gabungan'], function ($query) {
+                        $query->whereIn('desa_id', App\Models\DataDesa::pluck('desa_id'));
+                    })->count() }}</h3>
                 <p>Ditolak</p>
             </div>
             <div class="icon">

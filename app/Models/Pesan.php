@@ -39,7 +39,7 @@ class Pesan extends Model
     use HasFactory;
     protected $table = 'das_pesan';
 
-    protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at'];
+    protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at','additional_info'];
 
     public const PESAN_MASUK = 'Pesan Masuk';
 
@@ -55,6 +55,9 @@ class Pesan extends Model
 
     public const PER_PAGE = 10;
 
+    protected $casts = [
+        'additional_info' => 'array',
+    ];
     public function detailPesan()
     {
         return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');
@@ -62,7 +65,7 @@ class Pesan extends Model
 
     public function dataDesa()
     {
-        return $this->hasOne(DataDesa::class, 'id', 'das_data_desa_id');
+        return $this->hasOne(DataDesa::class, 'desa_id', 'das_data_desa_id');
     }
 
     public function getCustomDateAttribute()

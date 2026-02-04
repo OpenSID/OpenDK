@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,7 +24,7 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
@@ -34,9 +34,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetPesanRequest;
 use App\Http\Requests\PesanRequest;
-use App\Models\DataDesa;
 use App\Models\Pesan;
 use App\Models\PesanDetail;
+use App\Services\DesaService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,7 +46,7 @@ class PesanController extends Controller
 {
     public function store(PesanRequest $request)
     {
-        $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
+        $desa = (new DesaService())->getDesaByKode($request->kode_desa);
         if ($desa == null) {
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar']);
         }
@@ -70,9 +70,10 @@ class PesanController extends Controller
             try {
                 DB::transaction(function () use ($request, $desa) {
                     $id = Pesan::create([
-                        'das_data_desa_id' => $desa->id,
+                        'das_data_desa_id' => $desa->desa_id,
                         'judul' => $request->get('judul'),
                         'jenis' => Pesan::PESAN_MASUK,
+                        'additional_info' => ['nama_desa' => $desa->nama],
                     ])->id;
 
                     PesanDetail::create([
@@ -95,7 +96,7 @@ class PesanController extends Controller
     public function getpesan(GetPesanRequest $request)
     {
         // cek desa
-        $desa = DataDesa::where('desa_id', '=', $request->kode_desa)->first();
+        $desa = (new DesaService())->getDesaByKode($request->kode_desa);
 
         if ($desa == null) {
             return response()->json(['status' => false, 'message' => 'Desa tidak terdaftar']);
@@ -107,7 +108,7 @@ class PesanController extends Controller
         ->with(['detailPesan' => function ($q) use ($request) {
             $q->where('id', '>', $request->id);
         }])
-        ->where('das_data_desa_id', $desa->id)
+        ->where('das_data_desa_id', $desa->desa_id)
         ->orWhere('diarsipkan', 1)
         ->get();
 

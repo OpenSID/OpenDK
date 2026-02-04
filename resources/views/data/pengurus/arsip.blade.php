@@ -1,92 +1,88 @@
 @extends('layouts.dashboard_template')
 
 @section('title')
-    {{ $page_title ?? 'Page Title' }}
+{{ $page_title ?? 'Page Title' }}
 @endsection
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ $page_title }}</li>
-        </ol>
-    </section>
-    <div class="box-header with-border clearfix">
-        <div class="pull-left">
-            @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
-            @include('forms.btn-social', [
-                'create_url' => route('data.pengurus.create.arsip', $pengurus_id),
-            ])
-        </div>
-
-        @if ($count_arsip > 0)
-            <div class="pull-right">
-                @include('forms.btn-social', [
-                    'download_zip' => route('data.pengurus.edit.download.arsip.zip', [
-                        'pengurus_id' => $pengurus_id,
-                    ]),
-                ])
-            </div>
-        @endif
+<section class="content-header block-breadcrumb">
+    <h1>
+        {{ $page_title ?? 'Page Title' }}
+        <small>{{ $page_description ?? '' }}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+        <li class="active">{{ $page_title }}</li>
+    </ol>
+</section>
+<div class="box-header with-border clearfix">
+    <div class="pull-left">
+        @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
+        @include('forms.btn-social', [
+        'create_url' => route('data.pengurus.create.arsip', $pengurus_id),
+        ])
     </div>
 
-    @include('partials.flash_message')
+    @if ($count_arsip > 0)
+    <div class="pull-right">
+        @include('forms.btn-social', [
+        'download_zip' => route('data.pengurus.edit.download.arsip.zip', [
+        'pengurus_id' => $pengurus_id,
+        ]),
+        ])
+    </div>
+    @endif
+</div>
 
-    <section class="content container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box box-primary">
+@include('partials.flash_message')
 
-                    {!! Form::open([
-                        'route' => 'data.pengurus.store',
-                        'method' => 'post',
-                        'files' => true,
-                        'id' => 'form-pengurus',
-                        'class' => 'form-horizontal form-label-left',
-                    ]) !!}
-                    @include('layouts.fragments.error_message')
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
 
-                    <div class="box-body">
+                {!!
+                html()->form()->route('data.pengurus.store')->method('POST')->acceptsFiles()->id('form-pengurus')->class('form-horizontal
+                form-label-left')->open() !!}
+                @include('layouts.fragments.error_message')
 
-                        @include('flash::message')
+                <div class="box-body">
 
-                        <div>
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th width="200px">Nama Pengurus</th>
-                                        <th width="10px">:</th>
-                                        <td>{{ $pengurus ? $pengurus->nama : 'Tidak Ada' }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>NIK</th>
-                                        <th>:</th>
-                                        <td>{{ $pengurus ? $pengurus->nik : 'Tidak Ada' }}</td>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
+                    @include('flash::message')
 
-                        <div class="box-footer">
-                            @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
-                        </div>
+                    <div>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th width="200px">Nama Pengurus</th>
+                                    <th width="10px">:</th>
+                                    <td>{{ $pengurus ? $pengurus->nama : 'Tidak Ada' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>NIK</th>
+                                    <th>:</th>
+                                    <td>{{ $pengurus ? $pengurus->nik : 'Tidak Ada' }}</td>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
-                    {!! Form::close() !!}
+
+                    <div class="box-footer">
+                        @include('data.pengurus.table_document', ['pengurus_id' => $pengurus_id])
+                    </div>
                 </div>
+                {!! html()->form()->close() !!}
             </div>
         </div>
-    </section>
+    </div>
+</section>
 @endsection
 
 @include('partials.asset_datatables')
 
 @push('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
+<script type="text/javascript">
+    $(document).ready(function() {
             var data = $('#pengurus-table').DataTable({
                 processing: true,
                 serverSide: true,
@@ -174,9 +170,9 @@
                 data.ajax.reload();
             });
         });
-    </script>
-    @include('forms.datatable-vertical')
-    @include('forms.delete-modal')
-    @include('forms.suspend-modal')
-    @include('forms.active-modal', ['title' => $page_title])
+</script>
+@include('forms.datatable-vertical')
+@include('forms.delete-modal')
+@include('forms.suspend-modal')
+@include('forms.active-modal', ['title' => $page_title])
 @endpush

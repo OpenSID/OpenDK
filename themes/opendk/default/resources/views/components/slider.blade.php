@@ -1,23 +1,21 @@
-@if (Route::currentRouteName() === 'beranda' && $slides->count() > 0)
+@if (Route::currentRouteName() === 'beranda')
     <!-- Slider -->
     <div id="swiper-slider" class="swiper">
-        <div class="swiper-wrapper">
-            @foreach ($slides as $slide)
-                <div class="swiper-slide">
-                    <div class="slider-class">
-                        <div class="legend"></div>
-                        <div class="content-slide">
-                            <div class="content-txt">
-                                <h1>{{ $slide->judul }}</h1>
-                                <h2>{{ $slide->deskripsi }}</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="{{ Str::contains($slide->gambar, 'storage') ? asset($slide->gambar) : $slide->gambar }}">
+        <div class="swiper-wrapper" id="slides-container">
+            <!-- Slides will be populated by JavaScript from API -->
+            <div class="swiper-slide">
+                <div class="slider-class">
+                    <div class="legend"></div>
+                    <div class="content-slide">
+                        <div class="content-txt">
+                            <h1><i class="fa fa-spinner fa-spin"></i> Loading...</h1>
                         </div>
                     </div>
+                    <div class="image">
+                        <img src="{{ asset('img/placeholder.jpg') }}" alt="Loading slides...">
+                    </div>
                 </div>
-            @endforeach
+            </div>
         </div>
         <!-- Add Arrows -->
         <div class="swiper-button-next"></div>

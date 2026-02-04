@@ -58,6 +58,11 @@ class SmtpServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Skip SMTP configuration during installation process
+        if (!file_exists(storage_path('installed')) || request()->is('install*')) {
+            return;
+        }
+
         //validasi table email smtp, apabila tidak ada
         try {
             //mengambil data smtp terakhir
@@ -76,7 +81,7 @@ class SmtpServiceProvider extends ServiceProvider
                 Config::set('mail.mailers.smtp', $config);
             }
         } catch (Exception $e) {
-            Log::error('Error in SmtpServiceProvider: '.$e->getMessage());
+            Log::error('Error in SmtpServiceProvider: ' . $e->getMessage());
         }
     }
 }

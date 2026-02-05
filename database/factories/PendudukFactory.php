@@ -11,14 +11,15 @@ class PendudukFactory extends Factory
 
     public function definition()
     {
-        return [            
+        return [
+            'id' => $this->faker->unique()->numberBetween(100000, 999999),
             'desa_id' => 1,
             'nama' => $this->faker->name,
             'nik' => $this->faker->unique()->numerify('################'),
             'no_kk' => $this->faker->numerify('################'),
             'alamat' => $this->faker->address,
             'pendidikan_kk_id' => 1,
-            'tanggal_lahir' => $this->faker->date(),            
+            'tanggal_lahir' => $this->faker->date(),
             'pekerjaan_id' => 1,
             'status_kawin' => 1,
             'sex' => 1,

@@ -139,9 +139,18 @@ class SuratController extends Controller
         }
 
         $file = $request->file('file');
-        $original_name = strtolower(trim($file->getClientOriginalName()));
-        $file_name = time().'_'.$original_name;
-        Storage::putFileAs('public/surat', $file, $file_name);
+        
+        // Use FileUploadService for secure file upload
+        $fileUploadService = new \App\Services\FileUploadService();
+        
+        // Define allowed MIME types for pdf files
+        $allowedMimes = ['application/pdf'];
+        
+        // Upload file securely to surat directory
+        $path = $fileUploadService->uploadSecure($file, 'surat', $allowedMimes, 2048); // 2MB max
+        
+        // Extract filename from path
+        $file_name = basename($path);
 
         $this->settings['pemeriksaan_camat'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif;
 

@@ -36,6 +36,7 @@ use App\Http\Requests\PendudukRequest;
 use App\Imports\SinkronPenduduk;
 use App\Jobs\PendudukQueueJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ZipArchive;
@@ -86,9 +87,11 @@ class PendudukController extends Controller
 
             // Proses impor excell
             (new SinkronPenduduk())
-                ->queue($extract.$excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $excellName = Str::replaceLast('zip', 'xlsx', $name));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Penduduk storedata failed', [
+                'error' => $e->getMessage(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -96,7 +99,7 @@ class PendudukController extends Controller
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('penduduk/foto/'.$excellName);
+        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
 
         return response()->json([
             'message' => 'Data Foto Telah Berhasil di Sinkronkan',

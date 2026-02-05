@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\FrontEndController;
 use App\Rules\ValidasiNikRule;
 use App\Services\PendudukService;
+use Illuminate\Support\Facades\Log;
 
 class SistemKomplainController extends FrontEndController
 {
@@ -90,11 +91,14 @@ class SistemKomplainController extends FrontEndController
             $komplain = Komplain::where('komplain_id', '=', $request->post('tracking_id'))->firstOrFail();
             return redirect()->route('sistem-komplain.komplain', $komplain->slug);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Komplain tracking failed', [
+                'error' => $e->getMessage(),
+                'tracking_id' => $request->post('tracking_id'),
+            ]);
 
             return back()->with('warning', 'Komplain tidak ditemukan!');
         }
-    }   
+    }
 
     public function store(Request $request)
     {
@@ -119,12 +123,12 @@ class SistemKomplainController extends FrontEndController
             }
             $komplain = new Komplain($request->all());
 
-            $penduduk = $this->isDatabaseGabungan() 
-            ? (new PendudukService)->cekPendudukNikTanggalLahir($request->input('nik'), $request->input('tanggal_lahir'))
-            : Penduduk::where('nik', $komplain->nik)->first();
+            $penduduk = $this->isDatabaseGabungan()
+                ? (new PendudukService)->cekPendudukNikTanggalLahir($request->input('nik'), $request->input('tanggal_lahir'))
+                : Penduduk::where('nik', $komplain->nik)->first();
 
             $komplain->komplain_id = Komplain::generateID();
-            $komplain->slug = str_slug($komplain->judul).'-'.$komplain->komplain_id;
+            $komplain->slug = str_slug($komplain->judul) . '-' . $komplain->komplain_id;
             $komplain->status = 'REVIEW';
             $komplain->dilihat = 0;
             $komplain->nama = $penduduk['nama'] ?? null;
@@ -136,38 +140,41 @@ class SistemKomplainController extends FrontEndController
             if ($request->hasFile('lampiran1')) {
                 $lampiran1 = $request->file('lampiran1');
                 $fileName1 = $lampiran1->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
+                $path = 'storage/komplain/' . $komplain->komplain_id . '/';
                 $request->file('lampiran1')->move($path, $fileName1);
-                $komplain->lampiran1 = $path.$fileName1;
+                $komplain->lampiran1 = $path . $fileName1;
             }
 
             if ($request->hasFile('lampiran2')) {
                 $lampiran2 = $request->file('lampiran2');
                 $fileName2 = $lampiran2->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
+                $path = 'storage/komplain/' . $komplain->komplain_id . '/';
                 $request->file('lampiran2')->move($path, $fileName2);
-                $komplain->lampiran2 = $path.$fileName2;
+                $komplain->lampiran2 = $path . $fileName2;
             }
 
             if ($request->hasFile('lampiran3')) {
                 $lampiran3 = $request->file('lampiran3');
                 $fileName3 = $lampiran3->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
+                $path = 'storage/komplain/' . $komplain->komplain_id . '/';
                 $request->file('lampiran3')->move($path, $fileName3);
-                $komplain->lampiran3 = $path.$fileName3;
+                $komplain->lampiran3 = $path . $fileName3;
             }
 
             if ($request->hasFile('lampiran4')) {
                 $lampiran4 = $request->file('lampiran4');
                 $fileName4 = $lampiran4->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
+                $path = 'storage/komplain/' . $komplain->komplain_id . '/';
                 $request->file('lampiran4')->move($path, $fileName4);
-                $komplain->lampiran4 = $path.$fileName4;
+                $komplain->lampiran4 = $path . $fileName4;
             }
 
             $komplain->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Komplain store failed', [
+                'error' => $e->getMessage(),
+                'nik' => $request->input('nik'),
+            ]);
 
             return back()->withInput()->with('error', 'Komplain gagal dikirim!');
         }
@@ -186,13 +193,16 @@ class SistemKomplainController extends FrontEndController
         try {
             $komplain = Komplain::where('slug', '=', $slug)->first();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Komplain show failed', [
+                'error' => $e->getMessage(),
+                'slug' => $slug,
+            ]);
 
             return back()->withInput()->with('error', $e);
         }
 
         $page_title = 'Laporan';
-        $page_description = 'Detail Laporan : '.$komplain->judul;
+        $page_description = 'Detail Laporan : ' . $komplain->judul;
 
         return view('pages.komplain.show', compact('page_title', 'page_description', 'komplain'));
     }
@@ -213,8 +223,8 @@ class SistemKomplainController extends FrontEndController
                 } else {
                     request()->validate([
                         'jawaban' => 'required',
-                        'nik' => 'required|numeric|nik_exists:'.$request->input('tanggal_lahir'),
-                        'tanggal_lahir' => 'password_exists:'.$request->input('nik'),
+                        'nik' => 'required|numeric|nik_exists:' . $request->input('tanggal_lahir'),
+                        'tanggal_lahir' => 'password_exists:' . $request->input('nik'),
                     ], [
                         'nik_exists' => 'NIK tidak ditemukan atau NIK dan Tanggal Lahir tidak sesuai.',
                         'password_exists' => 'NIK dan Tanggal Lahir tidak sesuai.',
@@ -234,7 +244,10 @@ class SistemKomplainController extends FrontEndController
 
                 return response()->json($response);
             } catch (\Exception $e) {
-                report($e);
+                Log::error('Komplain reply failed', [
+                    'error' => $e->getMessage(),
+                    'komplain_id' => $id,
+                ]);
                 $response = [
                     'status' => 'error',
                     'msg' => 'Jawaban  gagal disimpan!',

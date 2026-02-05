@@ -37,6 +37,7 @@ use App\Models\DataUmum;
 use App\Models\Profil;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class ProfilController extends Controller
 {
@@ -113,7 +114,11 @@ class ProfilController extends Controller
             // Clear cache setelah update data kecamatan
             $this->clearProfilCache();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Profil update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'profil_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }

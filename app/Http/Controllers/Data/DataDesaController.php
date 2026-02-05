@@ -38,6 +38,7 @@ use App\Models\DataDesa;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -59,7 +60,7 @@ class DataDesaController extends Controller
     public function index()
     {
         $page_title = config('setting.sebutan_desa');
-        $page_description = 'Daftar '.config('setting.sebutan_desa');
+        $page_description = 'Daftar ' . config('setting.sebutan_desa');
         $view = $this->isDatabaseGabungan() ? 'data.data_desa.gabungan.index' : 'data.data_desa.index';
         return view($view, compact('page_title', 'page_description'));
     }
@@ -122,7 +123,11 @@ class DataDesaController extends Controller
             $desa->profil_id = $this->profil->id;
             $desa->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Desa creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->all(),
+            ]);
 
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
@@ -166,7 +171,11 @@ class DataDesaController extends Controller
             $desa->profil_id = $this->profil->id;
             $desa->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Desa update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'desa_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data Desa gagal disimpan!');
         }
@@ -205,7 +214,11 @@ class DataDesaController extends Controller
         try {
             DataDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Desa deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'desa_id' => $id,
+            ]);
 
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal dihapus!');
         }
@@ -245,7 +258,10 @@ class DataDesaController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Desa sync from kecamatan failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
         }
@@ -296,7 +312,10 @@ class DataDesaController extends Controller
                 return Excel::download(new ExportDataDesa(false, $params), $fileName);
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Desa export failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Ekspor data gagal. ' . $e->getMessage());
         }

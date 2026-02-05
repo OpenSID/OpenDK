@@ -39,9 +39,28 @@ class Pembangunan extends Model
     use HasFactory;
     protected $table = 'das_pembangunan';
 
-    protected $fillable = [];
-
-    protected $guarded = [];
+    protected $fillable = [
+        'desa_id',
+        'lokasi',
+        'sumber_dana',
+        'judul',
+        'slug',
+        'keterangan',
+        'volume',
+        'tahun_anggaran',
+        'pelaksana_kegiatan',
+        'status',
+        'foto',
+        'anggaran',
+        'perubahan_anggaran',
+        'sumber_biaya_pemerintah',
+        'sumber_biaya_provinsi',
+        'sumber_biaya_kab_kota',
+        'sumber_biaya_swadaya',
+        'sumber_biaya_jumlah',
+        'manfaat',
+        'waktu',
+    ];
 
     public function dokumentasi()
     {

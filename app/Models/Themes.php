@@ -38,7 +38,17 @@ class Themes extends Model
 {
     protected $table = 'das_themes';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'vendor',
+        'version',
+        'description',
+        'path',
+        'screenshot',
+        'active',
+        'system',
+        'options',
+    ];
 
     // append slug attribute
     protected $appends = [
@@ -66,7 +76,7 @@ class Themes extends Model
 
     public function getSlugAttribute()
     {
-        return $this->vendor.'/'.$this->name;
+        return $this->vendor . '/' . $this->name;
     }
 
     public static function boot()
@@ -75,7 +85,7 @@ class Themes extends Model
 
         static::deleting(function ($themes) {
             if ($themes->system != 0) {
-                $path = base_path('themes/'.$themes->slug);
+                $path = base_path('themes/' . $themes->slug);
                 if (file_exists($path)) {
                     File::deleteDirectory($path);
                 }

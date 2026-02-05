@@ -38,6 +38,7 @@ use App\Models\Imunisasi;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -111,7 +112,10 @@ class ImunisasiController extends Controller
             (new ImporImunisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Imunisasi import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
@@ -149,7 +153,11 @@ class ImunisasiController extends Controller
         try {
             Imunisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Imunisasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'imunisasi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah! ' . $e->getMessage());
         }
@@ -168,7 +176,11 @@ class ImunisasiController extends Controller
         try {
             Imunisasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Imunisasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'imunisasi_id' => $id,
+            ]);
 
             return redirect()->route('data.imunisasi.index')->with('error', 'Data gagal dihapus!');
         }

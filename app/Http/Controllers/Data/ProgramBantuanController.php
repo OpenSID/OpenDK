@@ -39,6 +39,7 @@ use App\Models\DataDesa;
 use App\Models\PesertaProgram;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -127,7 +128,10 @@ class ProgramBantuanController extends Controller
             (new SinkronPesertaBantuan())
                 ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_' . $name));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Program Bantuan import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

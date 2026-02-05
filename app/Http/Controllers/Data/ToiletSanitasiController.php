@@ -38,6 +38,7 @@ use App\Models\ToiletSanitasi;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -110,7 +111,10 @@ class ToiletSanitasiController extends Controller
             (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Toilet Sanitasi import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -149,7 +153,11 @@ class ToiletSanitasiController extends Controller
         try {
             ToiletSanitasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Toilet Sanitasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'toilet_sanitasi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -168,7 +176,11 @@ class ToiletSanitasiController extends Controller
         try {
             ToiletSanitasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Toilet Sanitasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'toilet_sanitasi_id' => $id,
+            ]);
 
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }

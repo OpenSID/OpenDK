@@ -37,6 +37,7 @@ use App\Http\Requests\PengaturanSuratRequest;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\Surat;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
@@ -54,11 +55,11 @@ class SuratController extends Controller
     {
         $desa = request()->get('kode_desa');
         return DataTables::of(Surat::arsip()
-        ->when($desa, function ($query) use ($desa) {
-            return $desa === 'Semua'
-                ? $query
-                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
-        }))
+            ->when($desa, function ($query) use ($desa) {
+                return $desa === 'Semua'
+                    ? $query
+                    : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+            }))
             ->addColumn('aksi', function ($row) {
                 $data['download_url'] = route('surat.arsip.download', $row->id);
 
@@ -83,9 +84,13 @@ class SuratController extends Controller
         try {
             $surat = Surat::findOrFail($id);
 
-            return Storage::download('public/surat/'.$surat->file);
+            return Storage::download('public/surat/' . $surat->file);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Surat download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'surat_id' => $id,
+            ]);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
@@ -110,7 +115,10 @@ class SuratController extends Controller
                 SettingAplikasi::where('key', '=', $key)->update(['value' => $value]);
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengaturan Surat update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Pengaturan Surat gagal diubah!');
         }

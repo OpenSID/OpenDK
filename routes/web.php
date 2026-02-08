@@ -838,7 +838,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for PPID
          */
-        Route::namespace('\App\Http\Controllers\PPID')->group(function () {
+        Route::namespace('\App\Http\Controllers\Ppid')->group(function () {
 
             Route::group(['prefix' => 'ppid', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                 Route::group(['prefix' => 'jenis-dokumen'], function () {

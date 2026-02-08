@@ -32,8 +32,7 @@
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label">Warna Label</label>
-                    <input type="color" name="kode" value="{{ old('kode', $jenis->kode ?? '#000000') }}"
-                        class="form-control" style="height: 38px;">
+                    {!! html()->input('color', 'kode', old('kode', $jenis->kode ?? '#000000'))->class('form-control')->style('height: 38px;') !!}
                 </div>
 
                 <div class="form-group">

@@ -48,7 +48,10 @@ class PpidJenisDokumenSeeder extends Seeder
         foreach ($data as $item) {
             PpidJenisDokumen::updateOrCreate(
                 ['slug' => $item['slug']],
-                $item
+                array_merge($item, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ])
             );
         }
     }

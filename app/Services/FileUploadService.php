@@ -23,10 +23,13 @@ class FileUploadService
         // 2. Validate file size (KB)
         $this->validateFileSize($file, $maxSize);
         
-        // 3. Generate safe filename
+        // 3. Sanitize directory to prevent path traversal
+        $directory = $this->sanitizeDirectoryPath($directory);
+        
+        // 4. Generate safe filename
         $safeFileName = $this->generateSafeFileName($file);
         
-        // 4. Store file securely
+        // 5. Store file securely
         $path = $file->storeAs($directory, $safeFileName, 'public');
         
         return $path;
@@ -97,14 +100,52 @@ class FileUploadService
     }
 
     /**
+     * Sanitize directory path to prevent path traversal
+     */
+    protected function sanitizeDirectoryPath(string $directory): string
+    {
+        // Remove any path traversal attempts
+        $directory = str_replace(['../', '..\\', './', '.\\'], '', $directory);
+        
+        // Additional sanitization to prevent directory traversal
+        $directory = preg_replace('#/\.{2}/#', '/', $directory); // Prevent /../
+        $directory = preg_replace('#\\\\\.{2}\\\\#', '\\', $directory); // Prevent \..\
+        
+        return $directory;
+    }
+    
+    /**
+     * Sanitize file extension to prevent malicious extensions
+     */
+    protected function sanitizeExtension(string $extension): string
+    {
+        // Only allow alphanumeric characters and a few safe characters in extension
+        $sanitized = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
+        
+        // Return sanitized extension or empty string if invalid
+        return ctype_alnum($sanitized) ? $sanitized : 'tmp';
+    }
+    
+    /**
      * Generate safe filename
      */
     protected function generateSafeFileName(UploadedFile $file): string
     {
+        // Get original name and sanitize it to prevent path traversal
+        $originalName = $file->getClientOriginalName();
+        
+        // Check if original name contains path traversal characters
+        if (str_contains($originalName, '../') || str_contains($originalName, '..\\')) {
+            throw new \InvalidArgumentException("File name contains path traversal attempts");
+        }
+        
         // Generate unique hash-based filename
         $extension = $file->getClientOriginalExtension();
         $timestamp = time();
         $random = Str::random(16);
+        
+        // Make sure extension is safe too
+        $extension = $this->sanitizeExtension($extension);
         
         return "{$timestamp}_{$random}.{$extension}";
     }

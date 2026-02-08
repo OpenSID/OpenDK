@@ -150,12 +150,25 @@ class PengaturanDatabaseController extends Controller
 
         // Validasi tipe file
         $allowedExtensions = ['sql'];
-        $extension = $request->file('backupFile')->getClientOriginalExtension();
+        $file = $request->file('backupFile');
+        
+        // Validate file extension first using the original method
+        $extension = $file->getClientOriginalExtension();
         if (!in_array($extension, $allowedExtensions)) {
             return response()->json(['message' => 'File harus berupa .sql'], 422);
         }
-
-        $filename = $request->file('backupFile')->getClientOriginalName();
+        
+        // Use FileUploadService for secure file upload
+        $fileUploadService = new \App\Services\FileUploadService();
+        
+        // Define allowed MIME types for sql files
+        $allowedMimes = ['application/octet-stream', 'text/plain', 'application/sql'];
+        
+        // Upload file securely to temp directory
+        $path = $fileUploadService->uploadSecure($file, 'backup-temp', $allowedMimes, 102400); // 100MB max
+        
+        $filename = basename($path);
+        
         $allowedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-';
 
         if (!preg_match("/^[" . $allowedChars . "]+$/", $filename)) {
@@ -165,7 +178,8 @@ class PengaturanDatabaseController extends Controller
         // Simpan file ke direktori sementara
         $file = $request->file('backupFile');
         $setDir = 'backup-temp';
-        $path = $file->storeAs($setDir, $file->getClientOriginalName());
+        // The path is already handled by the FileUploadService above, so we don't need this line anymore
+        // The path variable is already set from the uploadSecure method
         
         try {
             Log::info('Starting restore process.');

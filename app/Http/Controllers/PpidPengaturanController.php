@@ -117,7 +117,8 @@ class PpidPengaturanController extends Controller
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
-                ->withInput();
+                ->withInput()
+                ->with('error', 'Terdapat kesalahan pada inputan. Silakan periksa kembali!');
         }
 
         try {
@@ -137,7 +138,7 @@ class PpidPengaturanController extends Controller
 
             return back()
                 ->withInput()
-                ->with('error', 'Pengaturan PPID gagal disimpan!');
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 

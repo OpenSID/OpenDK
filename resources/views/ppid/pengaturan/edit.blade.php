@@ -33,6 +33,34 @@
 
                 <div class="box-body">
 
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="icon fa fa-check"></i> {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="icon fa fa-ban"></i> {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if(session('warning'))
+                        <div class="alert alert-warning alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="icon fa fa-warning"></i> {{ session('warning') }}
+                        </div>
+                    @endif
+
+                    @if(session('info'))
+                        <div class="alert alert-info alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <i class="icon fa fa-info"></i> {{ session('info') }}
+                        </div>
+                    @endif
+
                     @include('flash::message')
                     @include('ppid.pengaturan._form')
 
@@ -45,51 +73,51 @@
             </div>
         </div>
     </div>
-</section>
-@endsection
 
-<!-- Modal Tambah Pertanyaan -->
-<div class="modal fade" id="modalTambahPertanyaan" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">
-                    <i class="fa fa-plus-circle"></i> Tambah Pertanyaan
-                </h4>
+    <!-- Modal Tambah Pertanyaan -->
+    <div class="modal fade" id="modalTambahPertanyaan" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <i class="fa fa-plus-circle"></i> Tambah Pertanyaan
+                    </h4>
+                </div>
+                <form id="formTambahPertanyaan">
+                    <div class="modal-body">
+                        <input type="hidden" name="ppid_tipe" id="inputPpidTipe" value="1">
+
+                        <div class="form-group">
+                            <label>Judul Pertanyaan <span class="required">*</span></label>
+                            <input type="text" name="ppid_judul" id="inputPpidJudul"
+                                class="form-control" placeholder="Masukkan judul pertanyaan" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Status <span class="required">*</span></label>
+                            <select name="ppid_status" id="inputPpidStatus" class="form-control" required>
+                                <option value="1">Aktif</option>
+                                <option value="0">Non-Aktif</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save"></i> Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
-            <form id="formTambahPertanyaan">
-                <div class="modal-body">
-                    <input type="hidden" name="ppid_tipe" id="inputPpidTipe" value="1">
-
-                    <div class="form-group">
-                        <label>Judul Pertanyaan <span class="required">*</span></label>
-                        <input type="text" name="ppid_judul" id="inputPpidJudul"
-                            class="form-control" placeholder="Masukkan judul pertanyaan" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Status <span class="required">*</span></label>
-                        <select name="ppid_status" id="inputPpidStatus" class="form-control" required>
-                            <option value="1">Aktif</option>
-                            <option value="0">Non-Aktif</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
-                        <i class="fa fa-times"></i> Batal
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fa fa-save"></i> Simpan
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
+</section>
+@endsection
 
 @push('scripts')
 <script>

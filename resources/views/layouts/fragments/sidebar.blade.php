@@ -421,6 +421,30 @@
                     </li>
                 @endif
 
+                @if ($user->hasrole(['super-admin', 'administrator-website', 'admin-kecamatan']))
+                    <li class="treeview {{ Request::is(['ppid*']) ? 'active' : '' }}">
+                        <a href="#" title="PPID"><i class="fa fa-file-text-o"></i> <span>PPID</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li {{ Request::is(['ppid/dokumen*']) ? 'class=active' : '' }}><a
+                                    href="{{ route('ppid.dokumen.index') }}"><i
+                                        class="fa fa-circle-o"></i>Daftar Dokumen</a></li>
+                            <li {{ Request::is(['ppid/permohonan*']) ? 'class=active' : '' }}><a
+                                    href="{{ route('ppid.permohonan.index') }}"><i
+                                        class="fa fa-circle-o"></i>Permohonan Informasi</a></li>
+                            <li {{ Request::is(['ppid/jenis-dokumen*']) ? 'class=active' : '' }}><a
+                                    href="{{ route('ppid.jenis-dokumen.index') }}"><i
+                                        class="fa fa-circle-o"></i>Jenis Dokumen</a></li>
+                            <li {{ Request::is(['ppid/pengaturan*']) ? 'class=active' : '' }}><a
+                                    href="{{ route('ppid.pengaturan.index') }}"><i
+                                        class="fa fa-circle-o"></i>Pengaturan</a></li>
+                        </ul>
+                    </li>
+                @endif
+
                 @if ($user->hasrole(['super-admin', 'administrator-website']))
                     <li
                         class="treeview {{ Request::is(['setting*', 'otp/*', '2fa/*', 'otp-2fa*']) ? 'active' : '' }}">

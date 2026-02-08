@@ -189,10 +189,13 @@ class SuratController extends Controller
 
         Log::debug("Kode desa {$request->desa_id} dan nomor surat {$request->nomor}");
 
-        // Model::whereRaw("REPLACE(kolom, ' ', '') = ?", ['227/IX/2025'])->get();
-
-        $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $request->nomor)->firstOrFail();
-        // $surat = Surat::where('desa_id', $request->desa_id)->whereRaw("REPLACE(nomor, ' ', '') = ?", [$request->nomor])->firstOrFail();
+        
+        
+        // Clean the nomor parameter to prevent SQL injection
+        $cleanNomor = preg_replace('/[^0-9A-Za-z\/\-\.]/', '', $request->nomor);
+        
+        $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $cleanNomor)->firstOrFail();
+        
 
         $file = public_path("storage/surat/{$surat->file}");
 

@@ -17,3 +17,4 @@ Di rilis versi v2602.0.0 di versi ini terdapat modul komentar pada artikel dan p
 6. [#1435](https://github.com/OpenSID/OpenDK/issues/1435) Penyesuaian CRITICAL SECURITY FIXES - Fix Mass Assignment.
 7. [#1446](https://github.com/OpenSID/OpenDK/issues/1446) COSMETIC: ICON IMPOR DAN EXPOR TERTUKAR.
 8. [#1433](https://github.com/OpenSID/OpenDK/issues/1433) CRITICAL SECURITY FIXES - Buat FileUploadService.
+9. [#1427](https://github.com/OpenSID/OpenDK/issues/1427) Sesuaikan kemananan xss.

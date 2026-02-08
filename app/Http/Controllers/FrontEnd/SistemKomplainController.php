@@ -135,34 +135,58 @@ class SistemKomplainController extends FrontEndController
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {
                 $lampiran1 = $request->file('lampiran1');
-                $fileName1 = $lampiran1->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $request->file('lampiran1')->move($path, $fileName1);
-                $komplain->lampiran1 = $path.$fileName1;
+                
+                // Use FileUploadService for secure file upload
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($lampiran1, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
+                $komplain->lampiran1 = 'storage/'.$path;
             }
 
             if ($request->hasFile('lampiran2')) {
                 $lampiran2 = $request->file('lampiran2');
-                $fileName2 = $lampiran2->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $request->file('lampiran2')->move($path, $fileName2);
-                $komplain->lampiran2 = $path.$fileName2;
+                
+                // Use FileUploadService for secure file upload
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($lampiran2, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
+                $komplain->lampiran2 = 'storage/'.$path;
             }
 
             if ($request->hasFile('lampiran3')) {
                 $lampiran3 = $request->file('lampiran3');
-                $fileName3 = $lampiran3->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $request->file('lampiran3')->move($path, $fileName3);
-                $komplain->lampiran3 = $path.$fileName3;
+                
+                // Use FileUploadService for secure file upload
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($lampiran3, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
+                $komplain->lampiran3 = 'storage/'.$path;
             }
 
             if ($request->hasFile('lampiran4')) {
                 $lampiran4 = $request->file('lampiran4');
-                $fileName4 = $lampiran4->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $request->file('lampiran4')->move($path, $fileName4);
-                $komplain->lampiran4 = $path.$fileName4;
+                
+                // Use FileUploadService for secure file upload
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($lampiran4, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
+                $komplain->lampiran4 = 'storage/'.$path;
             }
 
             $komplain->save();

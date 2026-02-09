@@ -29,9 +29,12 @@
     <server name="TELESCOPE_ENABLED" value="false"/>
     <server name="PLAYWRIGHT_TIMEOUT" value="30000"/>
     <server name="JWT_SECRET" value="test_secret_key_for_testing_only_do_not_use_in_production"/>
-    <!-- Database settings for testing -->
-    <server name="DB_CONNECTION" value="sqlite"/>
-    <server name="DB_DATABASE" value=":memory:"/>
+    <!-- Database settings for testing 
+    <server name="DB_CONNECTION" value="mysql"/>
+    <server name="DB_DATABASE" value="opendk_testing"/>
+    <server name="DB_USERNAME" value="root"/>
+    <server name="DB_PASSWORD" value="rahasia"/>
+    -->
   </php>
   <source>
     <include>

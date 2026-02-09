@@ -34,7 +34,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
 
     - uses: actions/checkout@v4
     - name: Copy .env

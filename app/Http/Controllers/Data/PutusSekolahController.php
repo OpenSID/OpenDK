@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportPutusSekolah;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportPutusSekolahRequest;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
 use Illuminate\Http\Request;
@@ -88,15 +89,8 @@ class PutusSekolahController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportPutusSekolahRequest $request)
     {
-        $this->validate($request, [
-            'desa_id' => 'required|unique:das_putus_sekolah,desa_id',
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun' => 'required|unique:das_putus_sekolah',
-            'semester' => 'required|unique:das_putus_sekolah',
-        ]);
-
         try {
             (new ImporPutusSekolah($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));

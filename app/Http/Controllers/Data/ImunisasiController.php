@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportImunisasi;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportImunisasiRequest;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
 use App\Services\DesaService;
@@ -100,14 +101,8 @@ class ImunisasiController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportImunisasiRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
             (new ImporImunisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));

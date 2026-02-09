@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportFasilitasPaud;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportFasilitasPaudRequest;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
 use Illuminate\Http\Request;
@@ -88,15 +89,8 @@ class FasilitasPaudController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportFasilitasPaudRequest $request)
     {
-        $this->validate($request, [
-            'desa_id' => 'required|unique:das_fasilitas_paud,desa_id',
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun' => 'required|unique:das_fasilitas_paud',
-            'semester' => 'required|unique:das_fasilitas_paud',
-        ]);
-
         try {
             (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));

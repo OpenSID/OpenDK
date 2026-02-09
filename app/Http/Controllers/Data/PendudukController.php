@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportPenduduk;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportPendudukRequest;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
@@ -157,12 +158,8 @@ class PendudukController extends Controller
      *
      * @return Response
      */
-    public function importExcel(Request $request)
+    public function importExcel(ImportPendudukRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'file|mimes:zip|max:51200',
-        ]);
-
         try {
             // Upload file zip temporary.
             $file = $request->file('file');

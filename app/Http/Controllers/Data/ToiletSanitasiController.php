@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportToiletSanitasi;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportToiletSanitasiRequest;
 use App\Imports\ImporToiletSanitasi;
 use App\Models\ToiletSanitasi;
 use App\Services\DesaService;
@@ -99,14 +100,8 @@ class ToiletSanitasiController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportToiletSanitasiRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_toilet_sanitasi',
-            'tahun' => 'required|unique:das_toilet_sanitasi',
-        ]);
-
         try {
             (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));

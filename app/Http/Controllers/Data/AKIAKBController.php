@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportAKIAKB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportAKIAKBRequest;
 use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use App\Services\DesaService;
@@ -99,14 +100,8 @@ class AKIAKBController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportAKIAKBRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
             (new ImporAKIAKB($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));

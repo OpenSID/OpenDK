@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportEpidemiPenyakit;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportEpidemiPenyakitRequest;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
@@ -102,14 +103,8 @@ class EpidemiPenyakitController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportEpidemiPenyakitRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
             (new ImporEpidemiPenyakit($request->only('penyakit_id', 'bulan', 'tahun')))
                 ->queue($request->file('file'));

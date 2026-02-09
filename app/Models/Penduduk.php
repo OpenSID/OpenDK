@@ -43,7 +43,6 @@ class Penduduk extends Model
     protected $table = 'das_penduduk';
 
     protected $fillable = [
-        'id',
         'nama',
         'nik',
         'id_kk',

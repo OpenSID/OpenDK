@@ -80,7 +80,7 @@ test('export excel suplemen terdata', function () {
 
     $desa = DataDesa::factory()->create();
     $pendudukId = 999999;
-    Penduduk::create([
+    Penduduk::forceCreate([
         'id' => $pendudukId,
         'nama' => 'Test Penduduk',
         'nik' => '1234567890123456',
@@ -118,7 +118,7 @@ test('export suplemen terdata with desa filter', function () {
     $pendudukId1 = 999998;
     $pendudukId2 = 999997;
 
-    Penduduk::create([
+    Penduduk::forceCreate([
         'id' => $pendudukId1,
         'nama' => 'Test Penduduk 1',
         'nik' => '1111567890123456',
@@ -130,7 +130,7 @@ test('export suplemen terdata with desa filter', function () {
         'tanggal_lahir' => '1990-01-01',
     ]);
 
-    Penduduk::create([
+    Penduduk::forceCreate([
         'id' => $pendudukId2,
         'nama' => 'Test Penduduk 2',
         'nik' => '2222567890123456',

@@ -18,9 +18,9 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <a href="#">
-                    <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
-                        <i class="fa fa-download"></i>Export Excel
-                    </button>
+                        <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
+                            <i class="fa fa-upload"></i>Export Excel
+                        </button>
                 </a>
             </div>
             <div class="box-body">
@@ -249,7 +249,7 @@
                 } finally {
                     // Reset button state
                     const $btnExcel = $('#export-excel-btn');
-                    $btnExcel.prop('disabled', false).html('<i class="fa fa-download"></i>Export Excel');
+                    $btnExcel.prop('disabled', false).html('<i class="fa fa-upload"></i>Export Excel');
                 }
             }
         });

@@ -67,6 +67,9 @@ class PermohonanController extends Controller
                 $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
             })
             ->when($desa, function ($query) use ($desa) {
+                if ($desa !== 'Semua') {
+                    $desa = preg_replace('/\D/', '', $desa);
+                }
                 return $desa === 'Semua'
                     ? $query
                     : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
@@ -77,7 +80,7 @@ class PermohonanController extends Controller
                 $isAllow = false;
                 if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
                     $isAllow = true;
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris?->id) {
                     $isAllow = true;
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat?->id) {
                     $isAllow = true;
@@ -307,10 +310,11 @@ class PermohonanController extends Controller
     public function getDataDitolak()
     {
         $desa = request('kode_desa');
-        $surat = Surat::ditolak()->when(!$this->isDatabaseGabungan(), function ($query) {
-            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
-        })
+        $surat = Surat::ditolak()
             ->when($desa, function ($query) use ($desa) {
+                if ($desa !== 'Semua') {
+                    $desa = preg_replace('/\D/', '', $desa);
+                }
                 return $desa === 'Semua'
                     ? $query
                     : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);

@@ -71,9 +71,20 @@ class PendudukController extends Controller
         ]);
 
         try {
-            // Upload file zip temporary.
+            // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 5120); // 5MB max
+            
+            // Extract filename from path
+            $name = basename($path);
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");

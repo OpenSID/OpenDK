@@ -127,8 +127,9 @@ Code coverage reports are generated to track testing completeness. Aim for:
 ### Database Testing
 - Use factories instead of fixtures
 - Clean up database records after tests when necessary
-- Consider using `RefreshDatabase` trait for integration tests
+- Use `DatabaseTransactions` trait for integration tests instead of `RefreshDatabase`
 - Use `DatabaseMigrations` for migration-related tests
+- Avoid using `RefreshDatabase` as it can change the essence of components being tested
 
 ### HTTP Testing
 - Use Laravel's fluent testing methods
@@ -143,10 +144,19 @@ Code coverage reports are generated to track testing completeness. Aim for:
 - Verify interactions with mocks appropriately
 
 ### Performance
-- Use `RefreshDatabase` instead of `DatabaseTransactions` when possible
+- Use `DatabaseTransactions` instead of `RefreshDatabase` for better performance
 - Consider using SQLite in-memory database for faster tests
 - Group related assertions in single tests when appropriate
 - Avoid unnecessary database operations in unit tests
+
+### Browser Testing Best Practices
+- Test actual component behavior, not just status codes
+- Verify the presence of specific elements and their attributes
+- Test responsive design across different viewport sizes
+- Ensure accessibility features are properly implemented
+- Test user interactions like form submissions and navigation
+- Use descriptive assertions that verify the essence of the component
+- Avoid tests that only check HTTP status codes without verifying content
 
 ## Common Pitfalls to Avoid
 

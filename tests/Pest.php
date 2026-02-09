@@ -26,12 +26,17 @@ pest()->group('unit')
 
 // Configure test groups for Browser tests
 pest()->group('browser')
-    ->extend(Tests\TestCase::class)
+    //->extend(Tests\BrowserTestCase::class)
     ->in('Browser')
     ->beforeEach(function () {
         // Set headless mode for faster execution
-        config(['app.url' => env('APP_URL', 'http://opendk.test')]);
+        // Note: config() is not available in browser tests,
+        // the URL will be set by the browser plugin automatically
     });
+
+// Configure browser settings
+pest()->browser()
+    ->timeout(30000); // Increase timeout to 30 seconds
 
 /*
 |--------------------------------------------------------------------------

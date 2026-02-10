@@ -31,7 +31,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -58,7 +57,12 @@ class UserRequest extends FormRequest
             $password = '';
         } else {
             $id = '';
-            $password = ['required', 'min:8', 'max:32', new Password()];
+            $password = [
+                'required',
+                'min:8',
+                'max:32',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+            ];
         }
 
         return [

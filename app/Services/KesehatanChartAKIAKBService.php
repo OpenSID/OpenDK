@@ -35,8 +35,9 @@ class KesehatanChartAKIAKBService
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
+                $quartalIds = explode(',', $this->getIdsQuartal($key));
                 $query = DB::table('das_akib')
-                    ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
+                    ->whereIn('bulan', $quartalIds)
                     ->where('tahun', $year);
                 if ($did != 'Semua') {
                     $query->where('desa_id', '=', $did);
@@ -59,8 +60,9 @@ class KesehatanChartAKIAKBService
             $data_tabel = [];
             // Quartal
             foreach (kuartal_bulan() as $key => $kuartal) {
+                $quartalIds = explode(',', $this->getIdsQuartal($key));
                 $query = DB::table('das_akib')
-                    ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
+                    ->whereIn('bulan', $quartalIds)
                     ->where('tahun', $year);
                 $data_tabel['quartal'][$key] = [
                     'aki' => $query->sum('aki'),
@@ -70,10 +72,11 @@ class KesehatanChartAKIAKBService
 
             // Detail Desa
             foreach (kuartal_bulan() as $key => $kuartal) {
+                $quartalIds = explode(',', $this->getIdsQuartal($key));
                 $query = DB::table('das_akib')
                     ->join('das_data_desa', 'das_akib.desa_id', '=', 'das_data_desa.desa_id')
                     ->selectRaw('das_data_desa.nama, sum(das_akib.aki) as aki, sum(das_akib.akb) as akb')
-                    ->whereRaw('das_akib.bulan in ('.$this->getIdsQuartal($key).')')
+                    ->whereIn('das_akib.bulan', $quartalIds)
                     ->where('das_akib.tahun', $year)
                     ->groupBy('das_data_desa.nama')->get();
                 $data_tabel['desa'][$key] = $query;
@@ -84,8 +87,9 @@ class KesehatanChartAKIAKBService
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
+                $quartalIds = explode(',', $this->getIdsQuartal($key));
                 $query = DB::table('das_akib')
-                    ->whereRaw('bulan in ('.$this->getIdsQuartal($key).')')
+                    ->whereIn('bulan', $quartalIds)
                     ->where('tahun', $year)
                     ->where('desa_id', $did);
                 $data_tabel['quartal'][$key] = [

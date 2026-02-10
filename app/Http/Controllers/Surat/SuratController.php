@@ -55,6 +55,9 @@ class SuratController extends Controller
         $desa = request()->get('kode_desa');
         return DataTables::of(Surat::arsip()
         ->when($desa, function ($query) use ($desa) {
+            if ($desa !== 'Semua'){ 
+                $desa = preg_replace('/\D/', '', $desa);                
+            }
             return $desa === 'Semua'
                 ? $query
                 : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);

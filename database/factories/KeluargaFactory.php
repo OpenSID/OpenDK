@@ -30,7 +30,9 @@ class KeluargaFactory extends Factory
             'dusun' => $this->faker->randomElement(['Dusun I', 'Dusun II', 'Dusun III']),
             'rt' => $this->faker->randomElement(['001', '002', '003', '004']),
             'rw' => $this->faker->randomElement(['01', '02', '03', '04']),
-            'desa_id' => $this->faker->numerify('##########'), // 10 digit desa ID
+            'desa_id' => function () {
+                return \App\Models\DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+            },
         ];
     }
 }

@@ -62,15 +62,21 @@ class PengurusFactory extends Factory
             'tempat_lahir' => $this->faker->city(),
             'tanggal_lahir' => $this->faker->date(),
             'sex' => $this->faker->randomElement([1, 2]),
-            'pendidikan_id' => $this->faker->randomElement(Pendidikan::pluck('id')->toArray()) ?? 1,
-            'agama_id' => $this->faker->randomElement(Agama::pluck('id')->toArray()),
+            'pendidikan_id' => function () {
+                return \App\Models\Pendidikan::firstOrCreate(['nama' => 'SD'], ['nama' => 'SD'])->id;
+            },
+            'agama_id' => function () {
+                return \App\Models\Agama::firstOrCreate(['nama' => 'Islam'], ['nama' => 'Islam'])->id;
+            },
             'no_sk' => null,
             'tanggal_sk' => $this->faker->date(),
             'masa_jabatan' => 5,
             'pangkat' => 'Camat',
             'no_henti' => null,
             'tanggal_henti' => null,
-            'jabatan_id' => JenisJabatan::Camat,
+            'jabatan_id' => function () {
+                return \App\Models\Jabatan::firstOrCreate(['nama' => 'Kepala Desa'], ['nama' => 'Kepala Desa'])->id;
+            },
         ];
     }
 }

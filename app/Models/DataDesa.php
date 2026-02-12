@@ -185,8 +185,34 @@ class DataDesa extends Model
         return $this->hasMany(Pembangunan::class, 'desa_id', 'desa_id');
     }
 
+    
+
+    /**
+     * Alias accessor for id_desa to map to desa_id column.
+     */
+    public function getIdDesaAttribute()
+    {
+        return $this->attributes['desa_id'] ?? null;
+    }
+
+    /**
+     * Alias mutator so setting id_desa writes to desa_id column.
+     */
+    public function setIdDesaAttribute($value)
+    {
+        $this->attributes['desa_id'] = $value;
+    }
+
+    /**
+     * Alias accessor/mutator for kode_desa to map to desa_id.
+     */
     public function getKodeDesaAttribute()
     {
-        return $this->desa_id;
+        return $this->attributes['desa_id'] ?? null;
+    }
+
+    public function setKodeDesaAttribute($value)
+    {
+        $this->attributes['desa_id'] = $value;
     }
 }

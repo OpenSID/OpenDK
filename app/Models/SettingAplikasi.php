@@ -39,9 +39,14 @@ class SettingAplikasi extends Model
 {
     use HasFactory;
     protected $table = 'das_setting';
-    
+
     protected $fillable = [
+        'key',
         'value',
+        'type',
+        'description',
+        'option',
+        'kategori',
     ];
 
     public $timestamps = false;

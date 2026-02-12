@@ -31,6 +31,7 @@
 
 namespace Tests;
 
+use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -52,5 +53,10 @@ abstract class TestCase extends BaseTestCase
             $user = \App\Models\User::factory()->create();
         }
         $this->actingAs($user);
+
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0']
+        );
     }
 }

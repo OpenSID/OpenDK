@@ -522,3 +522,34 @@ test('status menampilkan label html di datatables', function () {
     // Memastikan status di-render sebagai HTML label (bukan plain text)
     expect($data[0]['status'])->toContain('label');
 });
+
+test('datatables dapat melakukan global search berdasarkan nama', function () {
+
+    PpidJenisDokumen::create([
+        'nama' => 'Dokumen Keuangan',
+        'slug' => 'dokumen-keuangan',
+        'status' => 1,
+        'urut' => 1
+    ]);
+
+    PpidJenisDokumen::create([
+        'nama' => 'Dokumen SDM',
+        'slug' => 'dokumen-sdm',
+        'status' => 1,
+        'urut' => 2
+    ]);
+
+    $response = $this->actingAs($this->user)
+        ->get(route('ppid.jenis-dokumen.getdata', [
+            'search' => [
+                'value' => 'Keuangan'
+            ]
+        ]));
+
+    $response->assertStatus(200);
+
+    $data = $response->json();
+
+    expect($data['recordsFiltered'])->toBe(1);
+    expect($data['data'][0]['nama'])->toBe('Dokumen Keuangan');
+});

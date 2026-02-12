@@ -118,7 +118,9 @@
                     },
                     {
                         data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
+                        name: 'DT_RowIndex',
+                        orderable:false,
+                        searchable:false,
                     },
                     {
                         data: 'drag_handle',
@@ -231,7 +233,17 @@
                 });
             });
 
-            // --- Sorting & Drag-Drop ---
+            // --- Search, Sorting & Drag-Drop ---
+            table.on('search.dt', function() {
+                var searchVal = table.search();
+                
+                if (searchVal !== '') {
+                    // Ada keyword search — matikan drag & drop
+                    disableDragDrop();
+                    showSearchNotification(); // opsional
+                }
+            });
+
             table.on('order.dt', function() {
                 if (isInitialLoad) {
                     isInitialLoad = false;
@@ -262,6 +274,19 @@
                     Fitur <strong>Drag & Drop</strong> dimatikan. 
                     <a href="javascript:location.reload()" class="alert-link" style="text-decoration: underline;">Klik di sini</a> untuk reset.
                 </div>`;
+                    $(notification).hide().prependTo('.box-body').fadeIn('slow');
+                }
+            }
+
+            function showSearchNotification() {
+                if (!$('.search-notification').length) {
+                    var notification = `
+                    <div class="alert alert-warning alert-dismissible search-notification" style="border-left: 5px solid #e08e0b;">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <h4><i class="icon fa fa-search"></i> Mode Pencarian Aktif!</h4>
+                        Fitur <strong>Drag & Drop</strong> dimatikan saat pencarian. 
+                        <a href="javascript:location.reload()" class="alert-link" style="text-decoration: underline;">Klik di sini</a> untuk reset.
+                    </div>`;
                     $(notification).hide().prependTo('.box-body').fadeIn('slow');
                 }
             }

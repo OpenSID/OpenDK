@@ -84,20 +84,48 @@ class JenisDokumenPpidController extends Controller
             $query->where('status', $request->status);
         }
 
+        $searchValue = $request->input('search.value');
+        if (!empty($searchValue)) {
+            $query->where(function ($q) use ($searchValue) {
+                $q->where('nama', 'like', "%{$searchValue}%")
+                    ->orWhere('slug', 'like', "%{$searchValue}%")
+                    ->orWhere('deskripsi', 'like', "%{$searchValue}%");
+            });
+        }
+
         return DataTables::of($query)
             ->addIndexColumn()
             ->order(function ($query) use ($request) {
-                // Default sorting
+
+                $allowedColumns = [
+                    'id',
+                    'nama',
+                    'slug',
+                    'deskripsi',
+                    'kode',
+                    'icon',
+                    'urut',
+                    'status',
+                    'created_at',
+                    'updated_at'
+                ];
+
                 if ($request->has('order')) {
+
                     $columns = $request->get('columns');
                     $order = $request->get('order')[0];
-                    $columnName = $columns[$order['column']]['data'];
-                    $dir = $order['dir'];
 
-                    $query->orderBy($columnName, $dir);
-                } else {
-                    $query->orderBy('urut', 'asc');
+                    $columnName = $columns[$order['column']]['data'] ?? null;
+                    $dir = $order['dir'] === 'desc' ? 'desc' : 'asc';
+
+                    if ($columnName && in_array($columnName, $allowedColumns)) {
+                        $query->orderBy($columnName, $dir);
+                        return;
+                    }
                 }
+
+                // default paling aman
+                $query->orderBy('urut', 'asc');
             })
             ->addColumn('checkbox', function ($row) {
                 $protectedSlugs = ['secara-berkala', 'serta-merta', 'tersedia-setiap-saat'];

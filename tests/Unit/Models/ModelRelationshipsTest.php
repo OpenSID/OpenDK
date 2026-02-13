@@ -62,7 +62,7 @@ it('data desa has many keluarga', function () {
 // Penduduk Model Relationships
 it('penduduk belongs to data desa', function () {
     $dataDesa = DataDesa::factory()->create();
-    $penduduk = Penduduk::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $penduduk = Penduduk::factory()->create(['desa_id' => $dataDesa->desa_id]);
 
     expect($penduduk->desa)->not->toBeNull();
     expect($penduduk->desa->id)->toBe($dataDesa->id);
@@ -105,7 +105,7 @@ it('penduduk belongs to status kawin', function () {
 // Keluarga Model Relationships
 it('keluarga belongs to data desa', function () {
     $dataDesa = DataDesa::factory()->create();
-    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
 
     expect($keluarga->desa)->not->toBeNull();
     expect($keluarga->desa->id)->toBe($dataDesa->id);
@@ -127,9 +127,9 @@ it('keluarga has one kepala keluarga', function () {
 // Complex Relationship Testing
 it('can traverse complex relationships', function () {
     $dataDesa = DataDesa::factory()->create();
-    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
     $penduduk = Penduduk::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'no_kk' => $keluarga->no_kk
     ]);
 
@@ -154,9 +154,9 @@ it('handles null relationships gracefully', function () {
 
 it('eager loads relationships efficiently', function () {
     $dataDesa = DataDesa::factory()->create();
-    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
     $penduduk = Penduduk::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'no_kk' => $keluarga->no_kk
     ]);
 
@@ -169,8 +169,8 @@ it('eager loads relationships efficiently', function () {
 
 it('counts relationships correctly', function () {
     $dataDesa = DataDesa::factory()->create();
-    $keluarga1 = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
-    $keluarga2 = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $keluarga1 = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
+    $keluarga2 = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
 
     Penduduk::factory()->count(3)->create(['no_kk' => $keluarga1->no_kk]);
     Penduduk::factory()->count(2)->create(['no_kk' => $keluarga2->no_kk]);
@@ -181,7 +181,7 @@ it('counts relationships correctly', function () {
 
 it('queries relationships with constraints', function () {
     $dataDesa = DataDesa::factory()->create();
-    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
 
     $malePenduduk = Penduduk::factory()->create([
         'no_kk' => $keluarga->no_kk,
@@ -203,7 +203,7 @@ it('queries relationships with constraints', function () {
 
 it('handles relationship deletion', function () {
     $dataDesa = DataDesa::factory()->create();
-    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->id_desa]);
+    $keluarga = Keluarga::factory()->create(['desa_id' => $dataDesa->desa_id]);
     $penduduk = Penduduk::factory()->create(['no_kk' => $keluarga->no_kk]);
 
     // Refresh the model to load relationships

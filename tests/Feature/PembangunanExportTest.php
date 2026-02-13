@@ -7,17 +7,6 @@ use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Facades\Excel;
 
-uses(DatabaseTransactions::class);
-
-beforeEach(function () {
-    $this->withoutMiddleware();
-
-    // nonaktifkan database gabungan untuk testing
-    SettingAplikasi::updateOrCreate(
-        ['key' => 'sinkronisasi_database_gabungan'],
-        ['value' => '0']
-    );
-});
 
 test('export excel pembangunan', function () {
     // Arrange: Buat beberapa data test

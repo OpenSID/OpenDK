@@ -13,6 +13,12 @@ class PembangunanFactory extends Factory
     public function definition()
     {
         return [
+            'id' => function () {
+                // Get the maximum ID from existing records and add a random increment
+                // This ensures uniqueness while staying within integer range
+                $maxId = Pembangunan::max('id') ?? 0;
+                return $maxId + rand(1, 100);
+            },
             'desa_id' => function () {
                 return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
             },

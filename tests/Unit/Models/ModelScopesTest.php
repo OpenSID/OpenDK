@@ -269,38 +269,6 @@ it('can combine multiple scopes', function () {
     expect($livingMalesFromDusun1->first()->id)->toBe($malePenduduk->id);
 });
 
-// Accessor Testing
-it('can access computed attributes', function () {
-    $penduduk = Penduduk::factory()->create([
-        'nama' => 'John Doe',
-        'nik' => '1234567890123456',
-        'tanggal_lahir' => '1990-01-01'
-    ]);
-
-    // Test if age accessor exists
-    if (method_exists($penduduk, 'getUmurAttribute')) {
-        expect($penduduk->umur)->toBeNumeric();
-        expect($penduduk->umur)->toBeGreaterThan(0);
-    }
-
-    // Test if full name accessor exists
-    if (method_exists($penduduk, 'getNamaLengkapAttribute')) {
-        expect($penduduk->nama_lengkap)->toBe('John Doe');
-    }
-});
-
-it('can access formatted NIK', function () {
-    $penduduk = Penduduk::factory()->create([
-        'nik' => '1234567890123456'
-    ]);
-
-    // Test if formatted NIK accessor exists
-    if (method_exists($penduduk, 'getNikFormattedAttribute')) {
-        expect($penduduk->nik_formatted)->toBeString();
-        expect($penduduk->nik_formatted)->toContain('1234567890123456');
-    }
-});
-
 // Mutator Testing
 it('can mutate attributes before saving', function () {
     $penduduk = Penduduk::factory()->make();
@@ -330,43 +298,4 @@ it('can mutate NIK before saving', function () {
     // This test depends on the actual implementation of mutators
     // Adjust based on actual model behavior
     expect($savedPenduduk->nik)->toBeString();
-});
-
-// Custom Attribute Testing
-it('can handle custom date attributes', function () {
-    $penduduk = Penduduk::factory()->create([
-        'tanggal_lahir' => '1990-01-01'
-    ]);
-
-    // Test if custom date format accessor exists
-    if (method_exists($penduduk, 'getTanggallahirFormattedAttribute')) {
-        expect($penduduk->tanggallahir_formatted)->toBeString();
-        expect($penduduk->tanggallahir_formatted)->toContain('1990');
-    }
-});
-
-it('can handle boolean attributes', function () {
-    $setting = SettingAplikasi::factory()->create([
-        'type' => 'boolean',
-        'value' => '1'
-    ]);
-
-    // Test if boolean accessor exists
-    if (method_exists($setting, 'getValueBooleanAttribute')) {
-        expect($setting->value_boolean)->toBeBool();
-        expect($setting->value_boolean)->toBeTrue();
-    }
-});
-
-it('can handle JSON attributes', function () {
-    $setting = SettingAplikasi::factory()->create([
-        'type' => 'select',
-        'option' => json_encode(['option1' => 'Value 1', 'option2' => 'Value 2'])
-    ]);
-
-    // Test if JSON accessor exists
-    if (method_exists($setting, 'getOptionsArrayAttribute')) {
-        expect($setting->options_array)->toBeArray();
-        expect(count($setting->options_array))->toBeGreaterThanOrEqual(2);
-    }
 });

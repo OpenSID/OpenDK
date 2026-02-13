@@ -72,7 +72,7 @@ it('can get specific desa by slug when using database gabungan', function () {
             [
                 'id' => 1,
                 'attributes' => [
-                    'kode_desa' => $existingDesa->id_desa,
+                    'kode_desa' => $existingDesa->desa_id,
                     'nama_desa' => $existingDesa->nama,
                     'sebutan_desa' => 'Desa',
                     'website' => 'https://example.com',
@@ -96,14 +96,15 @@ it('can get specific desa by slug when using database gabungan', function () {
 });
 
 it('can get desa by kode', function () {
-    $existingDesa = DataDesa::factory()->create(['id_desa' => 'TEST001']);
+    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
+    $existingDesa = DataDesa::factory()->create(['desa_id' => 'TEST001']);
     
     $service = new DesaService();
     
     $desa = $service->getDesaByKode('TEST001');
     
     expect($desa)->not->toBeNull();
-    expect($desa->id_desa)->toBe('TEST001');
+    expect($desa->desa_id)->toBe('TEST001');
 });
 
 it('returns null when desa by kode not found', function () {

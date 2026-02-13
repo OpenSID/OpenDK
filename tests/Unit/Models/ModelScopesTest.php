@@ -103,11 +103,11 @@ it('can filter penduduk by age range', function () {
 it('can filter keluarga by dusun', function () {
     $dataDesa = DataDesa::factory()->create();
     $keluargaDusun1 = Keluarga::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'dusun' => 'Dusun 1'
     ]);
     $keluargaDusun2 = Keluarga::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'dusun' => 'Dusun 2'
     ]);
 
@@ -120,12 +120,12 @@ it('can filter keluarga by dusun', function () {
 it('can filter keluarga by RT and RW', function () {
     $dataDesa = DataDesa::factory()->create();
     $keluargaRT1 = Keluarga::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'rt' => '001',
         'rw' => '001'
     ]);
     $keluargaRT2 = Keluarga::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'rt' => '002',
         'rw' => '001'
     ]);
@@ -231,28 +231,28 @@ it('can filter OTP tokens by channel', function () {
 it('can combine multiple scopes', function () {
     $dataDesa = DataDesa::factory()->create();
     $keluarga = Keluarga::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'dusun' => 'Dusun 1',
         'rt' => '001',
         'rw' => '001'
     ]);
 
     $malePenduduk = Penduduk::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'no_kk' => $keluarga->no_kk,
         'sex' => 1, // Male
         'status_dasar' => 1 // Alive
     ]);
 
     $femalePenduduk = Penduduk::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'no_kk' => $keluarga->no_kk,
         'sex' => 2, // Female
         'status_dasar' => 1 // Alive
     ]);
 
     $deadPenduduk = Penduduk::factory()->create([
-        'desa_id' => $dataDesa->id_desa,
+        'desa_id' => $dataDesa->desa_id,
         'no_kk' => $keluarga->no_kk,
         'sex' => 1, // Male
         'status_dasar' => 0 // Dead

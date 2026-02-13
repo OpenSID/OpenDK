@@ -17,7 +17,7 @@ class ProgramFactory extends Factory
                 // Get the maximum ID from existing records and add a random increment
                 // This ensures uniqueness while staying within integer range
                 $maxId = Program::max('id') ?? 0;
-                return $maxId + rand(1, 100);
+                return $maxId + rand(1, 10000);
             },
             'nama' => $this->faker->words(3, true) . ' Program',
             'sasaran' => $this->faker->randomElement([1, 2]), // 1 = Penduduk/Perorangan, 2 = Keluarga-KK

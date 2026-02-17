@@ -377,6 +377,42 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::delete('destroy/{id}', ['as' => 'informasi.komentar-artikel.destroy', 'uses' => 'KomentarArtikelController@destroy']);
                 });
 
+                // PPID (Pejabat Pengelola Informasi dan Dokumentasi)
+                Route::group(['prefix' => 'ppid', 'middleware' => ['role:administrator-website|super-admin|admin-kecamatan']], function () {
+                    // Pengaturan PPID
+                    Route::group(['prefix' => 'pengaturan'], function () {
+                        Route::get('/', ['as' => 'ppid.pengaturan.index', 'uses' => 'PpidPengaturanController@index']);
+                        Route::post('/', ['as' => 'ppid.pengaturan.update', 'uses' => 'PpidPengaturanController@update']);
+                    });
+
+                    // Jenis Dokumen PPID
+                    Route::group(['prefix' => 'jenis-dokumen'], function () {
+                        Route::get('/', ['as' => 'ppid.jenis-dokumen.index', 'uses' => 'PpidJenisDokumenController@index']);
+                        Route::get('getdata', ['as' => 'ppid.jenis-dokumen.getdata', 'uses' => 'PpidJenisDokumenController@getData']);
+                        Route::get('create', ['as' => 'ppid.jenis-dokumen.create', 'uses' => 'PpidJenisDokumenController@create']);
+                        Route::post('store', ['as' => 'ppid.jenis-dokumen.store', 'uses' => 'PpidJenisDokumenController@store']);
+                        Route::get('show/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.show', 'uses' => 'PpidJenisDokumenController@show']);
+                        Route::get('edit/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.edit', 'uses' => 'PpidJenisDokumenController@edit']);
+                        Route::put('update/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.update', 'uses' => 'PpidJenisDokumenController@update']);
+                        Route::delete('destroy/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.destroy', 'uses' => 'PpidJenisDokumenController@destroy']);
+                        Route::post('toggle-kunci/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.toggle-kunci', 'uses' => 'PpidJenisDokumenController@toggleKunci']);
+                        Route::post('reorder', ['as' => 'ppid.jenis-dokumen.reorder', 'uses' => 'PpidJenisDokumenController@reorder']);
+                    });
+
+                    // Dokumen PPID
+                    Route::group(['prefix' => 'dokumen'], function () {
+                        Route::get('/', ['as' => 'ppid.dokumen.index', 'uses' => 'PpidDokumenController@index']);
+                        Route::get('getdata', ['as' => 'ppid.dokumen.getdata', 'uses' => 'PpidDokumenController@getData']);
+                        Route::get('create', ['as' => 'ppid.dokumen.create', 'uses' => 'PpidDokumenController@create']);
+                        Route::post('store', ['as' => 'ppid.dokumen.store', 'uses' => 'PpidDokumenController@store']);
+                        Route::get('show/{dokumen}', ['as' => 'ppid.dokumen.show', 'uses' => 'PpidDokumenController@show']);
+                        Route::get('edit/{dokumen}', ['as' => 'ppid.dokumen.edit', 'uses' => 'PpidDokumenController@edit']);
+                        Route::put('update/{dokumen}', ['as' => 'ppid.dokumen.update', 'uses' => 'PpidDokumenController@update']);
+                        Route::delete('destroy/{dokumen}', ['as' => 'ppid.dokumen.destroy', 'uses' => 'PpidDokumenController@destroy']);
+                        Route::get('download/{dokumen}', ['as' => 'ppid.dokumen.download', 'uses' => 'PpidDokumenController@download']);
+                    });
+                });
+
                 // Form Dokumen
                 Route::group(['prefix' => 'form-dokumen'], function () {
                     Route::get('/', ['as' => 'informasi.form-dokumen.index', 'uses' => 'FormDokumenController@index']);

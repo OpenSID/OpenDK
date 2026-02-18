@@ -31,20 +31,16 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-
-abstract class TestCase extends BaseTestCase
-{
-    use CreatesApplication, DatabaseTransactions;
-
+class BrowserAuthenticatedTestCase extends BrowserTestCase
+{    
+    
     /**
      * Set up the test environment.
      */
     protected function setUp(): void
     {
-        parent::setUp();        
-
+        parent::setUp();                        
+        
         // Authenticate a user for all tests to prevent 403 errors
         // This is necessary for Laravel 11 where authorization is stricter
         $user = \App\Models\User::first();
@@ -52,5 +48,5 @@ abstract class TestCase extends BaseTestCase
             $user = \App\Models\User::factory()->create();
         }
         $this->actingAs($user);
-    }
+    }        
 }

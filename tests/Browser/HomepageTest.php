@@ -1,35 +1,38 @@
 <?php
+use Tests\BrowserTestCase;
+
+uses(BrowserTestCase::class);
 
 test('should display homepage when website is enabled', function () {
-    $this->visit('/')
-        ->assertPresent('body')
+    visit('/')
+        ->assertPresent('meta[name="viewport"]')
         ->assertPresent('nav, .navbar, .menu');
 })->group('browser', 'homepage');
 
 test('should have responsive design on mobile', function () {
-    $this->visit('/')
+    visit('/')
         ->resize(375, 667)
-        ->assertPresent('body');
+        ->assertPresent('meta[name="viewport"]');
 })->group('browser', 'homepage', 'responsive');
 
 test('should have responsive design on tablet', function () {
-    $this->visit('/')
+    visit('/')
         ->resize(768, 1024)
-        ->assertPresent('body');
+        ->assertPresent('meta[name="viewport"]');
 })->group('browser', 'homepage', 'responsive');
 
 test('should have responsive design on desktop', function () {
-    $this->visit('/')
+    visit('/')
         ->resize(1280, 720)
-        ->assertPresent('body');
+        ->assertPresent('meta[name="viewport"]');
 })->group('browser', 'homepage', 'responsive');
 
 test('should load homepage without errors', function () {
-    $this->visit('/')
-        ->assertPresent('body');
+    visit('/')        
+        ->assertPresent('meta[name="viewport"]');
 })->group('browser', 'homepage');
 
 test('should have proper meta tags', function () {
-    $this->visit('/')
+    visit('/')
         ->assertPresent('meta[name="viewport"]');
 })->group('browser', 'homepage');

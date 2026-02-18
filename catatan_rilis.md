@@ -6,6 +6,7 @@ Di rilis versi v2602.0.0 di versi ini terdapat modul komentar pada artikel dan p
 
 #### BUG
 
+1. [#1449](https://github.com/OpenSID/OpenDK/issues/1449) Perbaikan teknis terkait unit testing Tests\Feature\SuplemenExportTest.
 
 #### TEKNIS
 

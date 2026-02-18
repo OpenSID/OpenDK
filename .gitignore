@@ -41,4 +41,5 @@ public/error_log
 # /tests/e2e-backup
 playwright-report/
 test-results/
+/build
 mcp.json

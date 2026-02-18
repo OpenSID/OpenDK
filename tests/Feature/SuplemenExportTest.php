@@ -80,7 +80,7 @@ test('export excel suplemen terdata', function () {
 
     $desa = DataDesa::factory()->create();
     $pendudukId = 999999;
-    Penduduk::forceCreate([
+    $penduduk = Penduduk::forceCreate([
         'id' => $pendudukId,
         'nama' => 'Test Penduduk',
         'nik' => '1234567890123456',
@@ -94,7 +94,7 @@ test('export excel suplemen terdata', function () {
 
     SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
-        'penduduk_id' => $pendudukId,
+        'penduduk_id' => $penduduk->id,
         'keterangan' => 'Test keterangan terdata'
     ]);
 
@@ -118,7 +118,7 @@ test('export suplemen terdata with desa filter', function () {
     $pendudukId1 = 999998;
     $pendudukId2 = 999997;
 
-    Penduduk::forceCreate([
+    $penduduk1 = Penduduk::forceCreate([
         'id' => $pendudukId1,
         'nama' => 'Test Penduduk 1',
         'nik' => '1111567890123456',
@@ -130,7 +130,7 @@ test('export suplemen terdata with desa filter', function () {
         'tanggal_lahir' => '1990-01-01',
     ]);
 
-    Penduduk::forceCreate([
+    $penduduk2 = Penduduk::forceCreate([
         'id' => $pendudukId2,
         'nama' => 'Test Penduduk 2',
         'nik' => '2222567890123456',
@@ -142,8 +142,8 @@ test('export suplemen terdata with desa filter', function () {
         'tanggal_lahir' => '1991-01-01',
     ]);
 
-    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $pendudukId1, 'keterangan' => 'Test terdata 1']);
-    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $pendudukId2, 'keterangan' => 'Test terdata 2']);
+    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $penduduk1->id, 'keterangan' => 'Test terdata 1']);
+    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $penduduk2->id, 'keterangan' => 'Test terdata 2']);
 
     Excel::fake();
     $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}?desa={$desa1->desa_id}");

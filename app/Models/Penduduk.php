@@ -36,9 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penduduk extends Model
 {
-    use HasFactory;
-
-    public $incrementing = false;
+    use HasFactory;    
 
     protected $table = 'das_penduduk';
 

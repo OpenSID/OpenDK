@@ -29,38 +29,45 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Tests\Feature\MasterData;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Penduduk;
+use Tests\CrudTestCase;
 
-class SettingAplikasi extends Model
-{
-    use HasFactory;
-    protected $table = 'das_setting';
-    
-    protected $fillable = [
-        'key',
-        'value',
-        'kategori',
-        'type',
-        'description',
-        'option',
-    ];
+beforeEach(function () {
+    // Test setup if needed
+});
 
-    public $timestamps = false;
+describe('Penduduk CRUD', function () {
+    test('index displays penduduk list view', function () {
+        $response = $this->get(route('data.penduduk.index'));
 
-    protected static function boot()
-    {
-        parent::boot();
+        $response->assertStatus(200);
+        $response->assertViewIs('data.penduduk.index');
+        $response->assertViewHas('page_title', 'Penduduk');
+    });
 
-        static::saved(function () {
-            Cache::forget('setting');
-        });
+    test('import displays import form', function () {
+        $response = $this->get(route('data.penduduk.import'));
 
-        static::updated(function () {
-            Cache::forget('setting');
-        });
-    }
-}
+        $response->assertStatus(200);
+        $response->assertViewIs('data.penduduk.import');
+        $response->assertViewHas('page_title', 'Impor');
+    });
+
+    test('show displays penduduk detail', function () {
+        $penduduk = Penduduk::factory()->create();
+
+        $response = $this->get(route('data.penduduk.show', $penduduk->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('data.penduduk.show');
+        $response->assertViewHas('penduduk', $penduduk);
+    });
+
+    test('export-excel displays export form', function () {
+        $response = $this->get(route('data.penduduk.export-excel'));
+
+        $response->assertStatus(200);
+    });
+});

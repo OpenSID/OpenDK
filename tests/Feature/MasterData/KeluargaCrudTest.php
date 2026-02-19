@@ -29,38 +29,37 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Tests\Feature\MasterData;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Keluarga;
+use Tests\CrudTestCase;
 
-class SettingAplikasi extends Model
-{
-    use HasFactory;
-    protected $table = 'das_setting';
-    
-    protected $fillable = [
-        'key',
-        'value',
-        'kategori',
-        'type',
-        'description',
-        'option',
-    ];
+beforeEach(function () {
+    // Test setup if needed
+});
 
-    public $timestamps = false;
+describe('Keluarga CRUD', function () {
+    test('index displays keluarga list view', function () {
+        $response = $this->get(route('data.keluarga.index'));
 
-    protected static function boot()
-    {
-        parent::boot();
+        $response->assertStatus(200);
+        $response->assertViewIs('data.keluarga.index');
+        $response->assertViewHas('page_title', 'Keluarga');
+    });
 
-        static::saved(function () {
-            Cache::forget('setting');
-        });
+    test('show displays keluarga detail', function () {
+        $keluarga = Keluarga::factory()->create();
 
-        static::updated(function () {
-            Cache::forget('setting');
-        });
-    }
-}
+        $response = $this->get(route('data.keluarga.show', $keluarga->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('data.keluarga.show');
+        $response->assertViewHas('keluarga', $keluarga);
+    });
+
+    test('export-excel displays export form', function () {
+        $response = $this->get(route('data.keluarga.export-excel'));
+
+        $response->assertStatus(200);
+    });
+});

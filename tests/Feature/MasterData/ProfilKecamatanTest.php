@@ -29,38 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace Tests\Feature\MasterData;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use App\Models\Profil;
+use Tests\CrudTestCase;
 
-class SettingAplikasi extends Model
-{
-    use HasFactory;
-    protected $table = 'das_setting';
-    
-    protected $fillable = [
-        'key',
-        'value',
-        'kategori',
-        'type',
-        'description',
-        'option',
-    ];
+beforeEach(function () {
+    // Create default profil for testing
+    Profil::firstOrCreate(
+        ['id' => 1],
+        [
+            'nama' => 'Kecamatan Test',
+            'kecamatan_id' => '330101',
+            'provinsi_id' => '33',
+            'kabupaten_id' => '3301',
+        ]
+    );
+});
 
-    public $timestamps = false;
+describe('Profil Kecamatan CRUD', function () {
+    test('index displays profil edit view', function () {
+        $response = $this->get(route('data.profil.index'));
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function () {
-            Cache::forget('setting');
-        });
-
-        static::updated(function () {
-            Cache::forget('setting');
-        });
-    }
-}
+        $response->assertStatus(200);
+        $response->assertViewIs('data.profil.edit');
+        $response->assertViewHas('page_title', 'Profil');
+        $response->assertViewHas('page_description', 'Data Profil');
+    });
+});

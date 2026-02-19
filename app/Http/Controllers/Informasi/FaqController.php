@@ -36,6 +36,7 @@ use App\Http\Requests\FaqRequest;
 use App\Models\Faq;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class FaqController extends Controller
@@ -61,7 +62,7 @@ class FaqController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('faq');
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('informasi.faq.edit', $row->id);
                         $data['delete_url'] = route('informasi.faq.destroy', $row->id);
                     }
@@ -108,7 +109,10 @@ class FaqController extends Controller
         try {
             Faq::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('FAQ creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'FAQ gagal ditambah!');
         }
@@ -142,7 +146,11 @@ class FaqController extends Controller
         try {
             Faq::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('FAQ update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'faq_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'FAQ gagal diubah!');
         }
@@ -161,7 +169,11 @@ class FaqController extends Controller
         try {
             Faq::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('FAQ deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'faq_id' => $id,
+            ]);
 
             return redirect()->route('informasi.faq.index')->with('error', 'FAQ gagal dihapus!');
         }

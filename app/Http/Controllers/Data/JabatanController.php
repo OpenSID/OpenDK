@@ -37,6 +37,7 @@ use App\Http\Requests\JabatanRequest;
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class JabatanController extends Controller
@@ -55,7 +56,7 @@ class JabatanController extends Controller
             return DataTables::of(Jabatan::all())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('data.jabatan.edit', $row->id);
                         if ($row->jenis == JenisJabatan::JabatanLainnya) {
                             $data['delete_url'] = route('data.jabatan.destroy', $row->id);
@@ -94,7 +95,11 @@ class JabatanController extends Controller
         try {
             Jabatan::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jabatan creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->all(),
+            ]);
 
             return back()->withInput()->with('error', 'Jabatan gagal ditambah!');
         }
@@ -112,7 +117,7 @@ class JabatanController extends Controller
     {
         $jabatan = Jabatan::findOrFail($id);
         $page_title = 'Jabatan';
-        $page_description = 'Ubah Jabatan : '.$jabatan->nama;
+        $page_description = 'Ubah Jabatan : ' . $jabatan->nama;
 
         return view('data.jabatan.edit', compact('page_title', 'page_description', 'jabatan'));
     }
@@ -128,7 +133,11 @@ class JabatanController extends Controller
         try {
             Jabatan::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jabatan update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'jabatan_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Jabatan gagal diubah!');
         }
@@ -147,7 +156,11 @@ class JabatanController extends Controller
         try {
             Jabatan::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jabatan deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'jabatan_id' => $id,
+            ]);
 
             return redirect()->route('data.jabatan.index')->with('error', 'Jabatan gagal dihapus!');
         }

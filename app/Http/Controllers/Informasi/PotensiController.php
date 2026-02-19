@@ -36,6 +36,7 @@ use App\Models\TipePotensi;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PotensiRequest;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class PotensiController extends Controller
@@ -46,7 +47,7 @@ class PotensiController extends Controller
     {
         $page_title = 'Potensi';
         $page_description = 'Daftar Potensi';
-        $kategoriPotensi  = TipePotensi::all();
+        $kategoriPotensi = TipePotensi::all();
 
         return view('informasi.potensi.index', compact('page_title', 'page_description', 'kategoriPotensi'));
     }
@@ -57,7 +58,7 @@ class PotensiController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('informasi.potensi.show', $row->id);
 
-                if (! auth()->guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url'] = route('informasi.potensi.edit', $row->id);
                     $data['delete_url'] = route('informasi.potensi.destroy', $row->id);
                 }
@@ -79,7 +80,7 @@ class PotensiController extends Controller
             $kategori = 'Semua';
         }
 
-        $page_description = 'Kategori Potensi : '.$kategori;
+        $page_description = 'Kategori Potensi : ' . $kategori;
 
         return view('informasi.potensi.index', compact('page_title', 'page_description', 'potensis'));
     }
@@ -101,7 +102,10 @@ class PotensiController extends Controller
 
             Potensi::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Potensi creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Simpan Event gagal!');
         }
@@ -134,7 +138,11 @@ class PotensiController extends Controller
 
             $potensi->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Potensi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'potensi_id' => $potensi->id,
+            ]);
 
             return back()->with('error', 'Data Potensi gagal disimpan!');
         }
@@ -146,10 +154,14 @@ class PotensiController extends Controller
     {
         try {
             if ($potensi->delete()) {
-                unlink(base_path('public/'.$potensi->file_gambar));
+                unlink(base_path('public/' . $potensi->file_gambar));
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Potensi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'potensi_id' => $potensi->id,
+            ]);
 
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Potensi gagal dihapus!');
         }

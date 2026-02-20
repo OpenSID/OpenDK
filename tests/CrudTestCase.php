@@ -51,11 +51,15 @@ class CrudTestCase extends TestCase
 
         $this->withViewErrors([]);
         $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
-        // disabled database gabungan for testing
+        
+        // Disable database gabungan for testing - ensure fresh setting
         SettingAplikasi::updateOrCreate(
             ['key' => 'sinkronisasi_database_gabungan'],
             ['value' => '0']
         );
+        
+        // Clear any cached settings to force reload on next request
+        \Illuminate\Support\Facades\Cache::forget('settings');
     }
 
     // Additional methods for CRUD tests can be added here

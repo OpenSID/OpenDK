@@ -75,7 +75,7 @@ describe('Validation Rules', function () {
     describe('Artikel Validation', function () {
         test('judul is required', function () {
             $response = $this->post(route('informasi.artikel.store'), [
-                'id_kategori' => 1,
+                'kategori_id' => 1,
                 'isi' => 'Test content',
             ]);
 
@@ -85,7 +85,7 @@ describe('Validation Rules', function () {
         test('isi is required', function () {
             $response = $this->post(route('informasi.artikel.store'), [
                 'judul' => 'Test Judul',
-                'id_kategori' => 1,
+                'kategori_id' => 1,
             ]);
 
             $response->assertSessionHasErrors('isi');

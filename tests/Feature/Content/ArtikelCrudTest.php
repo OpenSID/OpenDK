@@ -70,8 +70,7 @@ describe('Artikel CRUD', function () {
 
     test('store creates new artikel successfully', function () {
         $validData = [
-            'judul' => 'Judul Artikel Baru',
-            'id_kategori' => 1,
+            'judul' => 'Judul Artikel Baru',            
             'isi' => 'Isi artikel yang lengkap dan informatif.',
             'status' => 1,
         ];
@@ -112,8 +111,7 @@ describe('Artikel CRUD', function () {
         $artikel = Artikel::factory()->create();
 
         $updateData = [
-            'judul' => 'Updated Judul',
-            'id_kategori' => 1,
+            'judul' => 'Updated Judul',            
             'isi' => 'Updated isi artikel.',
             'status' => 0,
         ];

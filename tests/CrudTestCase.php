@@ -52,27 +52,13 @@ class CrudTestCase extends TestCase
         $this->withViewErrors([]);
         $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
         
-        // Disable database gabungan for testing - ensure setting is set to 0
-        $exists = \Illuminate\Support\Facades\DB::table('das_setting')
-            ->where('key', 'sinkronisasi_database_gabungan')
-            ->exists();
-        
-        if ($exists) {
-            \Illuminate\Support\Facades\DB::table('das_setting')
-                ->where('key', 'sinkronisasi_database_gabungan')
-                ->update(['value' => '0']);
-        } else {
-            \Illuminate\Support\Facades\DB::table('das_setting')->insert([
-                'key' => 'sinkronisasi_database_gabungan',
-                'value' => '0',
-                'type' => 'boolean',
-                'kategori' => 'sinkronisasi',
-            ]);
-        }
-        
-        // Clear any cached settings to force reload on next request
-        \Illuminate\Support\Facades\Cache::forget('settings');
-        \Illuminate\Support\Facades\Cache::forget('setting');
+        // Set sinkronisasi_database_gabungan to '0' to disable database synchronization
+        // This must be done AFTER parent::setUp() because DatabaseTransactions starts
+        // a transaction there, and we need to update within that transaction
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0']
+        );                
     }
 
     // Additional methods for CRUD tests can be added here

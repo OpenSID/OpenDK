@@ -32,10 +32,11 @@
 namespace Tests\Feature\Keuangan;
 
 use App\Models\AnggaranDesa;
-use Tests\CrudTestCase;
+use Tests\Traits\DisableDatabaseGabungan;
 
+uses(DisableDatabaseGabungan::class);
 beforeEach(function () {
-    // Test setup if needed
+    $this->disableDatabaseGabungan();
 });
 
 describe('Anggaran Desa CRUD', function () {

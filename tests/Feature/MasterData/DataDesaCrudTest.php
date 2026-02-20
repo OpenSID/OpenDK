@@ -34,7 +34,9 @@ namespace Tests\Feature\MasterData;
 use App\Models\DataDesa;
 use App\Models\Profil;
 use App\Models\Imunisasi;
-use Tests\CrudTestCase;
+use Tests\Traits\DisableDatabaseGabungan;
+
+uses(DisableDatabaseGabungan::class);
 
 beforeEach(function () {
     // Create profil kecamatan untuk requirement test
@@ -49,7 +51,7 @@ beforeEach(function () {
             'kabupaten_id' => '3301',
         ]
     );
-
+    $this->disableDatabaseGabungan();
     // Clear cache
     cache()->forget('profil');
 });

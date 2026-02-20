@@ -32,12 +32,12 @@
 namespace Tests\Feature\MasterData;
 
 use App\Models\Keluarga;
-use Tests\CrudTestCase;
+use Tests\Traits\DisableDatabaseGabungan;
 
+uses(DisableDatabaseGabungan::class);
 beforeEach(function () {
-    // Test setup if needed
+    $this->disableDatabaseGabungan();
 });
-
 describe('Keluarga CRUD', function () {
     test('index displays keluarga list view', function () {
         $response = $this->get(route('data.keluarga.index'));

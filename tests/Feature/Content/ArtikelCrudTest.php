@@ -33,18 +33,20 @@ namespace Tests\Feature\Content;
 
 use App\Models\Artikel;
 use App\Models\ArtikelKategori;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\CrudTestCase;
+use Tests\Traits\DisableDatabaseGabungan;
+
+uses(DisableDatabaseGabungan::class);
 
 beforeEach(function () {
     Storage::fake('public');
-
+    $this->disableDatabaseGabungan();
     // Create default kategori for testing using correct primary key
     ArtikelKategori::firstOrCreate(
         ['id_kategori' => 1],
         ['nama_kategori' => 'Berita Umum', 'slug' => 'berita-umum']
     );
+
 });
 
 describe('Artikel CRUD', function () {

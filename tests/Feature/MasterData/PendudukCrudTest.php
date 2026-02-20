@@ -32,10 +32,11 @@
 namespace Tests\Feature\MasterData;
 
 use App\Models\Penduduk;
-use Tests\CrudTestCase;
+use Tests\Traits\DisableDatabaseGabungan;
 
+uses(DisableDatabaseGabungan::class);
 beforeEach(function () {
-    // Test setup if needed
+    $this->disableDatabaseGabungan();
 });
 
 describe('Penduduk CRUD', function () {

@@ -39,7 +39,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class BrowserTestCase extends BaseTestCase
 {
-    use CreatesApplication, DatabaseTransactions;
+    use CreatesApplication;
 
     /**
      * Set up the test environment.
@@ -47,6 +47,13 @@ abstract class BrowserTestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // Match APP_URL to the virtual host for correct redirection logic
+        config(['app.url' => 'http://opendk.test/']);
+
+        // Clear cache to ensure settings are fresh
+        \Illuminate\Support\Facades\Cache::forget('setting');
+        \Illuminate\Support\Facades\Cache::forget('profil');
+
         // Create necessary data for the homepage to load properly
         $this->createTestData();
         $this->withViewErrors([]);
@@ -56,6 +63,11 @@ abstract class BrowserTestCase extends BaseTestCase
             ['key' => 'sinkronisasi_database_gabungan'],
             ['value' => '0']
         );
+        // enable accessibility support for testing
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'dukungan_disabilitas'],
+            ['value' => '1']
+        );
     }
 
     /**
@@ -63,26 +75,57 @@ abstract class BrowserTestCase extends BaseTestCase
      */
     protected function createTestData(): void
     {
-        // Create profil data if it doesn't exist
-        if (!\App\Models\Profil::count()) {
-            \App\Models\Profil::create([
+        // Force deterministic profil data
+        $profil = \App\Models\Profil::updateOrCreate(
+            ['kecamatan_id' => '110101'],
+            [
                 'nama_kecamatan' => 'Test Kecamatan',
                 'nama_kabupaten' => 'Test Kabupaten',
                 'nama_provinsi' => 'Test Provinsi',
+                'provinsi_id' => '11',
+                'kabupaten_id' => '1101',
                 'file_logo' => null,
                 'sebutan_wilayah' => 'Kecamatan',
                 'sebutan_kepala_wilayah' => 'Camat',
-            ]);
+            ]
+        );
+
+        // Force deterministic DataUmum
+        \App\Models\DataUmum::updateOrCreate(
+            ['profil_id' => $profil->id],
+            [
+                'bts_wil_utara' => 'North',
+                'bts_wil_timur' => 'East',
+                'bts_wil_selatan' => 'South',
+                'bts_wil_barat' => 'West',
+                'lat' => '0',
+                'lng' => '0',
+                'path' => '[[[0,0]]]',
+            ]
+        );
+
+        // Force deterministic Jabatans
+        \App\Models\Jabatan::updateOrCreate(['jenis' => \App\Enums\JenisJabatan::Camat], ['nama' => 'Camat']);
+        \App\Models\Jabatan::updateOrCreate(['jenis' => \App\Enums\JenisJabatan::Sekretaris], ['nama' => 'Sekretaris']);
+
+        // Force deterministic setting aplikasi data
+        $settings = [
+            'sinkronisasi_database_gabungan' => '0',
+            'dukungan_disabilitas' => '1',
+            'judul_aplikasi' => 'Test OpenDK',
+            'tte' => '0',
+        ];
+
+        foreach ($settings as $key => $value) {
+            \App\Models\SettingAplikasi::updateOrCreate(
+                ['key' => $key],
+                [
+                    'value' => $value,
+                    'type' => $key === 'dukungan_disabilitas' ? 'boolean' : 'text',
+                ]
+            );
         }
-        
-        // Create setting aplikasi data if needed
-        if (!\App\Models\SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->exists()) {
-            \App\Models\SettingAplikasi::create([
-                'key' => 'sinkronisasi_database_gabungan',
-                'value' => '0',
-            ]);
-        }
-        
+
         // Create theme data if it doesn't exist
         if (!\App\Models\Themes::count()) {
             \App\Models\Themes::create([
@@ -93,5 +136,8 @@ abstract class BrowserTestCase extends BaseTestCase
                 'system' => 1,
             ]);
         }
+
+        // Final cache clear to be absolutely sure
+        \Illuminate\Support\Facades\Artisan::call('cache:clear');
     }
 }

@@ -86,8 +86,8 @@ class UserController extends Controller
     {
         try {
             $status = !empty($request->status) ? 1 : 1;
-            $request->merge(['status' => $status]);
             $input = $request->validated();
+            $input['status'] = $status;
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user = User::create($input);
             $roles = $request->input('role') ? $request->input('role') : [];

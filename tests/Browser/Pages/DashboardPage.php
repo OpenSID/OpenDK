@@ -43,8 +43,8 @@ class DashboardPage
      */
     public function logout($browser): void
     {
-        $browser->click('.user-menu')
-            ->waitFor('#logout-form button', 5)
+        $browser->click('.user-menu .dropdown-toggle')
+            ->waitForText('Logout')
             ->click('#logout-form button');
     }
 }

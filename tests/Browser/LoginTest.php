@@ -39,7 +39,7 @@ test('should show error for invalid credentials', function () {
     $browser = visit($loginPage->url());
     $loginPage->login($browser, 'invalid@email.com', 'wrongpassword');
 
-    $browser->assertSee('Kredensial yang diberikan tidak cocok');
+    $browser->assertSee('Identitas tersebut tidak cocok dengan data kami.');
 })->group('browser', 'login');
 
 test('should validate required fields', function () {
@@ -51,18 +51,25 @@ test('should validate required fields', function () {
 
 test('should handle logout flow', function () {
     $user = \App\Models\User::factory()->create([
+        'email' => 'logout_test@example.com',
+        'password' => bcrypt('password123'),
         'status' => 1,
     ]);
+    $user->assignRole('super-admin');
 
     $loginPage = new LoginPage();
     $dashboardPage = new DashboardPage();
 
-    $this->actingAs($user);
+    // Login manually via UI to allow genuine logout
+    $browser = visit($loginPage->url());
+    $loginPage->login($browser, 'logout_test@example.com', 'password123');
 
-    $browser = visit($dashboardPage->url());
+    // Verify user is logged in
     $browser->assertSee('Dashboard');
 
+    // Use UI logout
     $dashboardPage->logout($browser);
 
-    $browser->assertSee('Login');
+    $browser->waitForText('Login')
+        ->assertSee('Login');
 })->group('browser', 'login');

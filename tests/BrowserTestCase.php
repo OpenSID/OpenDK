@@ -34,7 +34,6 @@ namespace Tests;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\SettingAplikasi;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class BrowserTestCase extends BaseTestCase
@@ -47,8 +46,9 @@ abstract class BrowserTestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // Match APP_URL to the virtual host for correct redirection logic
-        config(['app.url' => 'http://opendk.test/']);
+
+        // Note: Do NOT override app.url here - pest-plugin-browser's LaravelHttpServer
+        // sets app.url to its own dynamic port. Overriding it would break URL generation.
 
         // Clear cache to ensure settings are fresh
         \Illuminate\Support\Facades\Cache::forget('setting');
@@ -75,15 +75,35 @@ abstract class BrowserTestCase extends BaseTestCase
      */
     protected function createTestData(): void
     {
+        // Truncate tables to ensure deterministic behavior with persistent DB
+        \App\Models\User::query()->delete();
+        \App\Models\Profil::query()->delete();
+        \App\Models\DataUmum::query()->delete();
+        \App\Models\DataDesa::query()->delete();
+
+        // Create admin user for tests
+        $admin = \App\Models\User::create([
+            'email' => 'admin@mail.com',
+            'name' => 'Administrator',
+            'password' => bcrypt('Admin123!'),
+            'status' => 1,
+            'gender' => 'Male',
+            'address' => 'Jakarta',
+        ]);
+
+        // Ensure roles are seeded and assigned
+        (new \Database\Seeders\RoleSpatieSeeder())->run();
+        $admin->assignRole('super-admin');
+
         // Force deterministic profil data
         $profil = \App\Models\Profil::updateOrCreate(
-            ['kecamatan_id' => '110101'],
+            ['kecamatan_id' => '11.01.01'],
             [
                 'nama_kecamatan' => 'Test Kecamatan',
                 'nama_kabupaten' => 'Test Kabupaten',
                 'nama_provinsi' => 'Test Provinsi',
                 'provinsi_id' => '11',
-                'kabupaten_id' => '1101',
+                'kabupaten_id' => '11.01',
                 'file_logo' => null,
                 'sebutan_wilayah' => 'Kecamatan',
                 'sebutan_kepala_wilayah' => 'Camat',

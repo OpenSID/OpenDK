@@ -73,13 +73,15 @@ class StatistikChartPendudukGolDarahService extends BaseApiService
         foreach ($golonganDarah as $val) {
             $queryTotal = DB::table('das_penduduk')
                 //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
-                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
-                //->whereRaw('year(das_keluarga.tgl_daftar)= ?', $year)
-                ->whereRaw('YEAR(das_penduduk.created_at) <= ?', $year);
+                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')                
+                ->whereYear('das_penduduk.created_at', '<=', $year);
             if ($val->id != 13) {
                 $queryTotal->where('das_penduduk.golongan_darah_id', '=', $val->id);
             } else {
-                $queryTotal->whereRaw('das_penduduk.golongan_darah_id = 13 or das_penduduk.golongan_darah_id is null');
+                $queryTotal->where(function($q) {
+                    $q->where('das_penduduk.golongan_darah_id', 13)
+                      ->orWhereNull('das_penduduk.golongan_darah_id');
+                });
             }
 
             if ($did != 'Semua') {

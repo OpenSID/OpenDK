@@ -36,6 +36,7 @@ use App\Models\KategoriKomplain;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\KategoriKomplainRequest;
+use Illuminate\Support\Facades\Log;
 
 class KategoriKomplainController extends Controller
 {
@@ -80,7 +81,11 @@ class KategoriKomplainController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Komplain creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->validated(),
+            ]);
 
             session()->flash('error', 'Kategori Komplain gagal ditambahkan!');
 
@@ -109,7 +114,11 @@ class KategoriKomplainController extends Controller
                 'message' => session('success')
             ]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Komplain update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'kategori_komplain_id' => $id,
+            ]);
             session()->flash('error', 'Kategori Komplain gagal diupdate!');
 
             return response()->json([
@@ -124,7 +133,11 @@ class KategoriKomplainController extends Controller
         try {
             KategoriKomplain::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Komplain deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'kategori_komplain_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Kategori Komplain gagal dihapus!');
         }

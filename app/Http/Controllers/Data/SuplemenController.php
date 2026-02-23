@@ -39,6 +39,7 @@ use App\Models\Penduduk;
 use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -114,7 +115,11 @@ class SuplemenController extends Controller
         try {
             Suplemen::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Suplemen creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->except(['_token']),
+            ]);
 
             return back()->withInput()->with('error', 'Data Suplemen gagal ditambah!');
         }
@@ -154,7 +159,11 @@ class SuplemenController extends Controller
         try {
             Suplemen::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Suplemen update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'suplemen_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data Suplemen gagal diubah!');
         }
@@ -177,7 +186,11 @@ class SuplemenController extends Controller
         try {
             Suplemen::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Suplemen deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'suplemen_id' => $id,
+            ]);
 
             return redirect()->route('data.data-suplemen.index')->with('error', 'Data Suplemen gagal dihapus!');
         }
@@ -281,7 +294,11 @@ class SuplemenController extends Controller
         try {
             SuplemenTerdata::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Suplemen Terdata creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'suplemen_id' => $request['suplemen_id'],
+            ]);
 
             return back()->withInput()->with('error', 'Anggota Suplemen gagal ditambah!');
         }
@@ -319,7 +336,11 @@ class SuplemenController extends Controller
         try {
             SuplemenTerdata::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Suplemen Terdata update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'terdata_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Anggota Suplemen gagal diubah!');
         }
@@ -338,7 +359,12 @@ class SuplemenController extends Controller
         try {
             SuplemenTerdata::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Suplemen Terdata deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'terdata_id' => $id,
+                'suplemen_id' => $id_suplemen,
+            ]);
 
             return redirect()->route('data.data-suplemen.show', $id_suplemen)->with('error', 'Anggota Suplemen gagal dihapus!');
         }

@@ -30,6 +30,11 @@ jobs:
         extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, tidy
         coverage: none
 
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
     - uses: actions/checkout@v4
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -37,8 +42,14 @@ jobs:
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
+    - name: Install Node.js Dependencies
+      run: npm install
+
+    - name: Install Playwright Browsers
+      run: npx playwright install
+
     - name: Generate key
-      run: php artisan key:generate
+      run: php artisan key:generate && php artisan jwt:secret
 
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache

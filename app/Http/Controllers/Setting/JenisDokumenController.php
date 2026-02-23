@@ -38,13 +38,14 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JenisDokumenRequest;
 use App\Models\FormDokumen;
+use Illuminate\Support\Facades\Log;
 
 class JenisDokumenController extends Controller
 {
     public function index()
     {
         $page_title = 'Jenis Dokumen';
-        $page_description = 'Daftar '.'Jenis Dokumen';
+        $page_description = 'Daftar ' . 'Jenis Dokumen';
 
         return view('setting.jenis_dokumen.index', compact('page_title', 'page_description'));
     }
@@ -55,7 +56,7 @@ class JenisDokumenController extends Controller
         return DataTables::of(JenisDokumen::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url']  = route('setting.jenis-dokumen.destroy', $row->id);
+                $data['delete_url'] = route('setting.jenis-dokumen.destroy', $row->id);
                 return view('forms.aksi', $data);
             })
             ->make();
@@ -81,7 +82,11 @@ class JenisDokumenController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jenis Dokumen creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->validated(),
+            ]);
 
             session()->flash('error', 'Jenis Dokumen gagal ditambahkan!');
 
@@ -126,7 +131,11 @@ class JenisDokumenController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jenis Dokumen update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'jenis_dokumen_id' => $id,
+            ]);
             session()->flash('error', 'Jenis Dokumen gagal diupdate!');
 
             return response()->json([
@@ -151,13 +160,18 @@ class JenisDokumenController extends Controller
                 ->where('jenis_dokumen_id', $id)
                 ->exists();
 
-            if($isUsed) {
+            if ($isUsed) {
                 return back()->with('error', 'Jenis Dokumen tidak bisa dihapus karena sedang digunakan pada Form Dokumen.');
-            };
+            }
+            ;
 
             $jenisDokumen->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jenis Dokumen deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'jenis_dokumen_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Jenis Dokumen gagal dihapus!');
         }

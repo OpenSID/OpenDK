@@ -35,6 +35,7 @@ use App\Models\TipeRegulasi;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipeRegulasiRequest;
+use Illuminate\Support\Facades\Log;
 
 class TipeRegulasiController extends Controller
 {
@@ -77,7 +78,11 @@ class TipeRegulasiController extends Controller
                 'message' => session('success')
             ]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Tipe Regulasi creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->validated(),
+            ]);
             session()->flash('error', 'Tipe Regulasi gagal ditambahkan!');
 
             return response()->json([
@@ -119,7 +124,11 @@ class TipeRegulasiController extends Controller
                 'message' => session('success')
             ]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Tipe Regulasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'tipe_regulasi_id' => $id,
+            ]);
             session()->flash('error', 'Tipe Regulasi gagal diupdate!');
 
             return response()->json([
@@ -134,7 +143,11 @@ class TipeRegulasiController extends Controller
         try {
             TipeRegulasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Tipe Regulasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'tipe_regulasi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Tipe Regulasi gagal dihapus!');
         }

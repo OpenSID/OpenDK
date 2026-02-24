@@ -36,6 +36,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Requests\SlideRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class SlideController extends Controller
 {
@@ -80,7 +81,11 @@ class SlideController extends Controller
 
             Slide::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Slide creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->except(['gambar']),
+            ]);
 
             return back()->withInput()->with('error', 'Slide gagal ditambah!');
         }
@@ -111,7 +116,11 @@ class SlideController extends Controller
 
             $slide->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Slide update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'slide_id' => $slide->id,
+            ]);
 
             return back()->with('error', 'Data Slide gagal disimpan!');
         }
@@ -124,7 +133,11 @@ class SlideController extends Controller
         try {
             $slide->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Slide deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'slide_id' => $slide->id,
+            ]);
 
             return back()->withInput()->with('error', 'Slide gagal dihapus!');
         }

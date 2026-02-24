@@ -38,6 +38,7 @@ use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -104,7 +105,10 @@ class TingkatPendidikanController extends Controller
             (new ImporTingkatPendidikan($request->only(['desa_id', 'tahun', 'semester'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Tingkat Pendidikan import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Data gagal diimpor');
         }
@@ -123,7 +127,11 @@ class TingkatPendidikanController extends Controller
         try {
             TingkatPendidikan::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Tingkat Pendidikan deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'tingkat_pendidikan_id' => $id,
+            ]);
 
             return redirect()->route('data.tingkat-pendidikan.index')->with('error', 'Data gagal dihapus!');
         }

@@ -37,6 +37,7 @@ use App\Models\DataUmum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DataUmumController extends Controller
 {
@@ -72,7 +73,11 @@ class DataUmumController extends Controller
             $data = ($request->sumber_luas_wilayah == 1) ? $request->all() : $request->except('luas_wilayah');
             DataUmum::findOrFail($id)->update($data);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Umum update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'data_umum_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Update Data Umum gagal!');
         }
@@ -92,7 +97,11 @@ class DataUmumController extends Controller
         try {
             DataUmum::findOrFail($id)->update(['path' => null]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Data Umum resetPeta failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'data_umum_id' => $id,
+            ]);
         }
 
         return response()->json();

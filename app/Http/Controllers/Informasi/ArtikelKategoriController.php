@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Informasi;
 use App\Http\Controllers\Controller;
 use App\Models\ArtikelKategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class ArtikelKategoriController extends Controller
@@ -35,7 +36,7 @@ class ArtikelKategoriController extends Controller
                         $data['edit_url'] = route('informasi.artikel-kategori.edit', $row->id_kategori);
                         $data['delete_url'] = route('informasi.artikel-kategori.destroy', $row->id_kategori);
                     }
-                    
+
                     return view('forms.aksi', $data);
                 })
                 ->rawColumns(['aksi'])   //merender content column dalam bentuk html
@@ -47,17 +48,17 @@ class ArtikelKategoriController extends Controller
         if ($request->ajax()) {
             // Ambil status dari request
             $status = $request->input('status');
-    
+
             // Buat query dasar
             $query = ArtikelKategori::query();
-    
+
             // Jika status bukan 'All', tambahkan filter berdasarkan status
             if ($status && $status !== 'All') {
                 $query->where('status', $status);
             }
-    
+
             $data = $query->get();
-    
+
             return DataTables::of($data)
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
@@ -77,7 +78,7 @@ class ArtikelKategoriController extends Controller
                 ->make(true);
         }
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -101,14 +102,17 @@ class ArtikelKategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-           'nama_kategori' => "required|max:191",
-           'status' => 'required',
+            'nama_kategori' => "required|max:191",
+            'status' => 'required',
         ]);
 
         try {
             ArtikelKategori::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Artikel Kategori creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Kategori gagal ditambah!');
         }
@@ -126,7 +130,7 @@ class ArtikelKategoriController extends Controller
     {
         $kategori = ArtikelKategori::findOrFail($id);
         $page_title = $this->page_title;
-        $page_description = 'Ubah '. $this->page_title;
+        $page_description = 'Ubah ' . $this->page_title;
 
         return view('informasi.artikel_kategori.edit', compact('page_title', 'page_description', 'kategori'));
     }
@@ -143,7 +147,11 @@ class ArtikelKategoriController extends Controller
         try {
             ArtikelKategori::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Artikel Kategori update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'kategori_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Kategori gagal diubah!');
         }
@@ -162,7 +170,11 @@ class ArtikelKategoriController extends Controller
         try {
             ArtikelKategori::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Artikel Kategori deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'kategori_id' => $id,
+            ]);
 
             return redirect()->route('informasi.artikel-kategori.index')->with('error', 'Kategori gagal dihapus!');
         }

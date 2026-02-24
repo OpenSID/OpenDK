@@ -101,8 +101,11 @@ class DataDesa extends Model
     {
         // Ganti '-' dengan spasi dan hilangkan titik '.'
         $formattedValue = str_replace('-', ' ', $value);
+        
+        // Sanitize input to prevent SQL injection
+        $sanitizedValue = preg_replace('/[^a-zA-Z0-9\s]/', '', $formattedValue);
     
-        return $query->whereRaw("REPLACE(nama, '.', '') LIKE ?", ['%' . $formattedValue . '%']);
+        return $query->where('nama', 'LIKE', '%' . $sanitizedValue . '%');
     }
     
 

@@ -37,13 +37,14 @@ use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipePotensiRequest;
+use Illuminate\Support\Facades\Log;
 
 class TipePotensiController extends Controller
 {
     public function index()
     {
         $page_title = 'Kategori Potensi';
-        $page_description = 'Daftar '.'Kategori Potensi';
+        $page_description = 'Daftar ' . 'Kategori Potensi';
 
         return view('setting.tipe_potensi.index', compact('page_title', 'page_description'));
     }
@@ -54,7 +55,7 @@ class TipePotensiController extends Controller
         return DataTables::of(TipePotensi::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url']  = route('setting.tipe-potensi.destroy', $row->id);
+                $data['delete_url'] = route('setting.tipe-potensi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })
@@ -81,7 +82,11 @@ class TipePotensiController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Potensi creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->validated(),
+            ]);
 
             session()->flash('error', 'Kategori Potensi gagal ditambahkan!');
 
@@ -126,7 +131,11 @@ class TipePotensiController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Potensi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'tipe_potensi_id' => $id,
+            ]);
             session()->flash('error', 'Kategori Potensi gagal diupdate!');
 
             return response()->json([
@@ -147,7 +156,11 @@ class TipePotensiController extends Controller
         try {
             TipePotensi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Potensi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'tipe_potensi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Tipe Potensi gagal dihapus!');
         }

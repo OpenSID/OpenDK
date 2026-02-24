@@ -36,6 +36,7 @@ use App\Http\Requests\GaleriRequest;
 use App\Models\Album;
 use App\Models\Galeri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -60,8 +61,8 @@ class GaleriController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     // $data['show_web'] = route('berita.detail', $row->slug);
-
-                    if (! auth()->guest()) {
+    
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('publikasi.galeri.edit', $row->id);
                         $data['delete_url'] = route('publikasi.galeri.destroy', $row->id);
                         if ($row->status == 1) {
@@ -117,7 +118,10 @@ class GaleriController extends Controller
 
             return redirect()->route('publikasi.galeri.index', Session::get('album_id'))->with('success', 'Album berhasil disimpan!');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Galeri creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Simpan album gagal!');
         }
@@ -135,7 +139,11 @@ class GaleriController extends Controller
 
             return redirect()->route('publikasi.galeri.index', Session::get('album_id'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Galeri status change failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'galeri_id' => $galeri->id,
+            ]);
             flash()->success(trans('general.active-error'));
 
             return redirect()->route('publikasi.galeri.index', Session::get('album_id'));
@@ -165,11 +173,15 @@ class GaleriController extends Controller
                 $input['gambar'] = $imageNames;
             }
 
-            $input['link'] = $input['jenis'] == 'file' ?  null : $input['link'];
+            $input['link'] = $input['jenis'] == 'file' ? null : $input['link'];
 
             $galeri->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Galeri update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'galeri_id' => $galeri->id,
+            ]);
 
             return back()->withInput()->with('error', 'Galeri gagal dihapus!');
         }
@@ -182,7 +194,11 @@ class GaleriController extends Controller
         try {
             $galeri->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Galeri deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'galeri_id' => $galeri->id,
+            ]);
 
             return redirect()->route('publikasi.galeri.index', Session::get('album_id'))->with('error', 'Galeri gagal dihapus!');
         }

@@ -37,6 +37,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MediaSosialRequest;
+use Illuminate\Support\Facades\Log;
 
 class MediaSosialController extends Controller
 {
@@ -60,7 +61,7 @@ class MediaSosialController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('informasi.media-sosial.edit', $row->id);
                         $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
                     }
@@ -107,7 +108,10 @@ class MediaSosialController extends Controller
 
             MediaSosial::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Media Sosial creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Media Sosial gagal disimpan!');
         }
@@ -118,7 +122,7 @@ class MediaSosialController extends Controller
     public function edit(MediaSosial $medsos)
     {
         $page_title = 'Media Sosial';
-        $page_description = 'Ubah Media Sosial : '.$medsos->nama;
+        $page_description = 'Ubah Media Sosial : ' . $medsos->nama;
 
         return view('informasi.media_sosial.edit', compact('page_title', 'page_description', 'medsos'));
     }
@@ -139,7 +143,11 @@ class MediaSosialController extends Controller
 
             $medsos->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Media Sosial update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'medsos_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Media Sosial gagal diubah!');
         }
@@ -152,7 +160,11 @@ class MediaSosialController extends Controller
         try {
             $medsos->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Media Sosial deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'medsos_id' => $medsos->id,
+            ]);
 
             return redirect()->route('informasi.media-sosial.index')->with('error', 'Media Sosial gagal dihapus!');
         }

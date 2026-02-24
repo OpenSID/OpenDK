@@ -37,6 +37,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SinergiProgramRequest;
+use Illuminate\Support\Facades\Log;
 
 class SinergiProgramController extends Controller
 {
@@ -60,7 +61,7 @@ class SinergiProgramController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('informasi.sinergi-program.edit', $row->id);
                         $data['delete_url'] = route('informasi.sinergi-program.destroy', $row->id);
                         $data['naik'] = route('informasi.sinergi-program.urut', [$row->id, -1]);
@@ -111,7 +112,10 @@ class SinergiProgramController extends Controller
             $this->handleFileUpload($request, $input, 'gambar', 'sinergi/');
             SinergiProgram::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Sinergi Program creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Sinergi Program gagal disimpan!');
         }
@@ -135,7 +139,11 @@ class SinergiProgramController extends Controller
 
             $sinergi->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Sinergi Program update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'sinergi_id' => $sinergi->id,
+            ]);
 
             return back()->withInput()->with('error', 'Sinergi Program gagal diubah!');
         }
@@ -154,7 +162,11 @@ class SinergiProgramController extends Controller
         try {
             $sinergi->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Sinergi Program deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'sinergi_id' => $sinergi->id,
+            ]);
 
             return redirect()->route('informasi.sinergi-program.index')->with('error', 'Sinergi Program gagal dihapus!');
         }
@@ -175,7 +187,11 @@ class SinergiProgramController extends Controller
                 $sinergi->update(['urutan' => $perubahan]);
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Sinergi Program urutan change failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'sinergi_id' => $sinergi->id,
+            ]);
 
             return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program gagal diubah!');
         }

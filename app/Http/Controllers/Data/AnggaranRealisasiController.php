@@ -33,10 +33,12 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportAnggaranRealisasi;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportAnggaranRealisasiRequest;
 use App\Imports\ImporAnggaranRealisasi;
 use App\Models\AnggaranRealisasi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -89,19 +91,16 @@ class AnggaranRealisasiController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportAnggaranRealisasiRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_anggaran_realisasi',
-            'tahun' => 'required|unique:das_anggaran_realisasi',
-        ]);
-
         try {
             (new ImporAnggaranRealisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Anggaran Realisasi import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -146,7 +145,11 @@ class AnggaranRealisasiController extends Controller
         try {
             AnggaranRealisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Anggaran Realisasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'anggaran_realisasi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -165,7 +168,11 @@ class AnggaranRealisasiController extends Controller
         try {
             AnggaranRealisasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Anggaran Realisasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'anggaran_realisasi_id' => $id,
+            ]);
 
             return redirect()->route('data.anggaran-realisasi.index')->with('error', 'Data gagal dihapus!');
         }

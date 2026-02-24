@@ -37,6 +37,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
 use App\Http\Requests\RegulasiUpdateRequest;
 use App\Models\TipeRegulasi;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class RegulasiController extends Controller
@@ -58,7 +59,7 @@ class RegulasiController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('informasi.regulasi.show', $row->id);
 
-                if (! auth()->guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url'] = route('informasi.regulasi.edit', $row->id);
                     $data['delete_url'] = route('informasi.regulasi.destroy', $row->id);
                 }
@@ -72,7 +73,7 @@ class RegulasiController extends Controller
     public function create()
     {
         $page_title = 'Regulasi';
-        $page_description = 'Tambah Regulasi';        
+        $page_description = 'Tambah Regulasi';
 
         return view('informasi.regulasi.create', compact('page_title', 'page_description'));
     }
@@ -90,7 +91,10 @@ class RegulasiController extends Controller
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi berhasil disimpan!');
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Regulasi creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
@@ -120,7 +124,7 @@ class RegulasiController extends Controller
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
 
-            
+
             if ($request->hasFile('file_regulasi')) {
                 $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
             }
@@ -130,7 +134,11 @@ class RegulasiController extends Controller
             return redirect()->route('informasi.regulasi.show', $regulasi->id)->with('success', 'Regulasi berhasil disimpan!');
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Regulasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'regulasi_id' => $regulasi->id,
+            ]);
 
             return back()->withInput()->with('error', 'Regulasi gagal disimpan!!');
         }
@@ -145,7 +153,11 @@ class RegulasiController extends Controller
             return redirect()->route('informasi.regulasi.index')->with('success', 'Regulasi sukses dihapus!');
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Regulasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'regulasi_id' => $regulasi->id,
+            ]);
 
             return redirect()->route('informasi.regulasi.index')->with('error', 'Regulasi gagal dihapus!');
         }
@@ -157,7 +169,11 @@ class RegulasiController extends Controller
         try {
             return response()->download($regulasi->file_regulasi);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Regulasi download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'regulasi_id' => $regulasi->id,
+            ]);
 
             return back()->with('error', 'Dokumen regulasi tidak ditemukan');
         }

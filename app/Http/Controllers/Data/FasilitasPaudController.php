@@ -33,10 +33,12 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportFasilitasPaud;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportFasilitasPaudRequest;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -87,20 +89,16 @@ class FasilitasPaudController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportFasilitasPaudRequest $request)
     {
-        $this->validate($request, [
-            'desa_id' => 'required|unique:das_fasilitas_paud,desa_id',
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun' => 'required|unique:das_fasilitas_paud',
-            'semester' => 'required|unique:das_fasilitas_paud',
-        ]);
-
         try {
             (new ImporFasilitasPaud($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Fasilitas PAUD import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -118,7 +116,7 @@ class FasilitasPaudController extends Controller
     {
         $fasilitas = FasilitasPAUD::with(['desa'])->findOrFail($id);
         $page_title = 'Fasilitas PAUD';
-        $page_description = 'Ubah Fasilitas PAUD : Desa '.$fasilitas->desa->nama;
+        $page_description = 'Ubah Fasilitas PAUD : Desa ' . $fasilitas->desa->nama;
 
         return view('data.fasilitas_paud.edit', compact('page_title', 'page_description', 'fasilitas'));
     }
@@ -142,7 +140,11 @@ class FasilitasPaudController extends Controller
         try {
             FasilitasPAUD::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Fasilitas PAUD update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'fasilitas_paud_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -161,7 +163,11 @@ class FasilitasPaudController extends Controller
         try {
             FasilitasPAUD::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Fasilitas PAUD deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'fasilitas_paud_id' => $id,
+            ]);
 
             return redirect()->route('data.fasilitas-paud.index')->with('error', 'Data gagal dihapus!');
         }

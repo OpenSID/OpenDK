@@ -33,11 +33,13 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportAKIAKB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportAKIAKBRequest;
 use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -98,19 +100,16 @@ class AKIAKBController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportAKIAKBRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
             (new ImporAKIAKB($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('AKI AKB import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
@@ -149,7 +148,11 @@ class AKIAKBController extends Controller
         try {
             AkiAkb::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('AKI AKB update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'akiakb_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal disimpan!');
         }
@@ -168,7 +171,11 @@ class AKIAKBController extends Controller
         try {
             AkiAkb::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('AKI AKB deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'akiakb_id' => $id,
+            ]);
 
             return redirect()->route('data.aki-akb.index')->with('error', 'Data gagal dihapus!');
         }

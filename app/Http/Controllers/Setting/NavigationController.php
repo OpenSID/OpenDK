@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\NavigationRequest;
 use App\Models\Navigation;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
@@ -50,10 +51,10 @@ class NavigationController extends Controller
         $page_title = 'Navigasi';
         $page_description = 'Daftar Navigasi';
         $prev_parent = null;
-        
+
         if (!empty($parent_id)) {
             $navigation = Navigation::findOrFail($parent_id);
-            $page_description = 'Daftar Navigasi '. $navigation->name;
+            $page_description = 'Daftar Navigasi ' . $navigation->name;
             $prev_parent = $navigation->parent_id;
         }
 
@@ -69,7 +70,7 @@ class NavigationController extends Controller
 
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
-                if (! auth()->guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url'] = route('setting.navigation.edit', $row->id);
                     $data['delete_url'] = route('setting.navigation.destroy', $row->id);
                     $data['detail_url'] = route('setting.navigation.index', $row->id);
@@ -106,9 +107,9 @@ class NavigationController extends Controller
         $parent_id = $request->input('parent_id');
 
         try {
-            
+
             $data = $request->all();
-            
+
             // generate slug
             $parent = Navigation::where('id', $parent_id)->first();
             $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
@@ -118,7 +119,11 @@ class NavigationController extends Controller
             $navigation = new Navigation($data);
             $navigation->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Navigation creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->all(),
+            ]);
 
             return back()->withInput()->with('error', 'Navigasi gagal dikirim!');
         }
@@ -136,7 +141,7 @@ class NavigationController extends Controller
     {
         $navigation = Navigation::findOrFail($id);
         $page_title = 'Navigasi';
-        $page_description = 'Ubah  Navigasi : '.$navigation->name;
+        $page_description = 'Ubah  Navigasi : ' . $navigation->name;
         $parent_id = $navigation->parent_id;
 
         return view('setting.navigation.edit', compact('page_title', 'page_description', 'navigation', 'parent_id'));
@@ -151,19 +156,23 @@ class NavigationController extends Controller
     public function update(NavigationRequest $request, $id)
     {
         $parent_id = $request->input('parent_id');
-        
+
         try {
             $data = $request->all();
-            
+
             // generate slug
-            $parent = Navigation::where('id', $parent_id)->first();            
+            $parent = Navigation::where('id', $parent_id)->first();
             $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
 
             $navigation = Navigation::findOrFail($id);
             $navigation->fill($data);
             $navigation->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Navigation update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'navigation_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Navigasi gagal diupdate!');
         }
@@ -182,13 +191,17 @@ class NavigationController extends Controller
         try {
             // delete childs
             Navigation::where('parent_id', $id)->delete();
-            
+
             $navigation = Navigation::findOrFail($id);
             $navigation->delete();
 
             $parent_id = $navigation->parent_id;
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Navigation deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'navigation_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Navigasi gagal dihapus!');
         }
@@ -208,7 +221,7 @@ class NavigationController extends Controller
         try {
             $navigation = Navigation::findOrFail($id);
             $parent_id = $navigation->parent_id;
-            
+
             $current_order = $navigation->order;
             if ($direction === 'up') {
                 $new_order = $current_order - 1;
@@ -217,10 +230,10 @@ class NavigationController extends Controller
                 if (!empty($lower_navigation)) {
                     $lower_navigation->order = $current_order;
                     $lower_navigation->save();
-                    
+
                     $navigation->order = $new_order;
                     $navigation->save();
-                }                
+                }
             } else {
                 $new_order = $current_order + 1;
 
@@ -228,14 +241,19 @@ class NavigationController extends Controller
                 if (!empty($higher_navigation)) {
                     $higher_navigation->order = $current_order;
                     $higher_navigation->save();
-                    
+
                     $navigation->order = $new_order;
                     $navigation->save();
                 }
             }
 
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Navigation ordering failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'navigation_id' => $id,
+                'direction' => $direction,
+            ]);
 
             return back()->withInput()->with('error', 'Navigasi gagal diurutkan!');
         }

@@ -33,12 +33,14 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportPenduduk;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportPendudukRequest;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -56,7 +58,7 @@ class PendudukController extends Controller
         $page_description = 'Data Penduduk';
 
         $view = $this->isDatabaseGabungan() ? 'data.penduduk.gabungan.index' : 'data.penduduk.index';
-        
+
         return view($view, compact('page_title', 'page_description'));
     }
 
@@ -103,7 +105,7 @@ class PendudukController extends Controller
                     return view('forms.aksi', $data);
                 })
                 ->addColumn('foto', function ($row) {
-                    return '<img src="'.is_user($row->foto, $row->sex).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="' . is_user($row->foto, $row->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->addColumn('tanggal_lahir', function ($row) {
                     return convert_born_date_to_age($row->tanggal_lahir);
@@ -122,7 +124,7 @@ class PendudukController extends Controller
     {
         $penduduk = Penduduk::findOrFail($id);
         $page_title = 'Detail Penduduk';
-        $page_description = 'Detail Data Penduduk: '.ucwords(strtolower($penduduk->nama));
+        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
         return view('data.penduduk.show', compact('page_title', 'page_description', 'penduduk'));
     }
@@ -131,7 +133,7 @@ class PendudukController extends Controller
     {
         $penduduk = json_decode($request->data);
         $page_title = 'Detail Penduduk';
-        $page_description = 'Detail Data Penduduk: '.ucwords(strtolower($penduduk->nama));
+        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
         return view('data.penduduk.gabungan.show', compact('page_title', 'page_description', 'penduduk'));
     }
@@ -156,12 +158,8 @@ class PendudukController extends Controller
      *
      * @return Response
      */
-    public function importExcel(Request $request)
+    public function importExcel(ImportPendudukRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'file|mimes:zip|max:51200',
-        ]);
-
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
@@ -188,15 +186,18 @@ class PendudukController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            $fileExtracted = glob($extract.'*.xlsx');
+            $fileExtracted = glob($extract . '*.xlsx');
 
             // Proses impor excell
             (new ImporPendudukKeluarga())
-                ->queue($extract.basename($fileExtracted[0]));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Penduduk import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
-            return back()->with('error', 'Import data gagal. '.$e->getMessage());
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
@@ -218,9 +219,12 @@ class PendudukController extends Controller
                 return Excel::download(new ExportPenduduk(false, $params), 'data-penduduk.xlsx');
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Penduduk export failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
-            return back()->with('error', 'Ekspor data gagal. '.$e->getMessage());
+            return back()->with('error', 'Ekspor data gagal. ' . $e->getMessage());
         }
     }
 }

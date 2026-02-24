@@ -191,5 +191,10 @@ class DataDesa extends Model
     public function getKodeDesaAttribute()
     {
         return $this->desa_id;
-    }    
+    }
+
+     public function saranas()
+    {
+        return $this->hasMany(DataSarana::class, 'desa_id', 'desa_id');
+    }
 }

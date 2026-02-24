@@ -48,8 +48,6 @@ class LaporanApbdes extends Model
         'imported_at',
     ];
 
-    protected $guarded = [];
-
     /**
      * Relation Methods
      * */

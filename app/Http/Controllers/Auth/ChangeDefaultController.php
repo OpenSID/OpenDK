@@ -33,6 +33,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangeRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ChangeDefaultController extends Controller
 {
@@ -56,9 +58,17 @@ class ChangeDefaultController extends Controller
         return view('auth/change');
     }
 
+    /**
+     * Store new password.
+     *
+     * @param  \App\Http\Requests\ChangeRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(ChangeRequest $request)
     {
-        auth()->user()->update(['password' => $request->password]);
+        /** @var User $user */
+        $user = Auth::user();
+        $user->update(['password' => $request->password]);
 
         return redirect()->route('dashboard');
     }

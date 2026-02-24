@@ -34,9 +34,11 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Repositories\ArtikelApiRepository;
 use App\Transformers\ArtikelTransformer;
 use App\Http\Requests\Api\Frontend\StoreCommentRequest;
+use App\Services\CacheService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -59,11 +61,14 @@ use Spatie\Fractal\Fractal;
 class ArtikelController extends BaseController
 {
     protected ArtikelApiRepository $artikelApiRepository;
+    protected CacheService $cacheService;
 
     public function __construct(
-        ArtikelApiRepository $artikelApiRepository
+        ArtikelApiRepository $artikelApiRepository,
+        CacheService $cacheService
     ) {
         $this->artikelApiRepository = $artikelApiRepository;
+        $this->cacheService = $cacheService;
         $this->prefix = config('theme-api.artikel.cache_prefix', 'artikel:api');
     }
 
@@ -197,11 +202,11 @@ class ArtikelController extends BaseController
     {
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
-
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->artikelApiRepository->data(), new ArtikelTransformer());
-        });
-    }        
+        }, $this->prefix, 'artikel');
+    }
 
     /**
      * Store a new comment for an article.

@@ -39,6 +39,7 @@ use App\Models\LaporanPenduduk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -89,7 +90,7 @@ class LaporanPendudukController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['delete_url'] = route('data.laporan-penduduk.destroy', $row->id);
-                $data['download_url'] = asset('storage/laporan_penduduk/'.$row->nama_file);
+                $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -106,11 +107,15 @@ class LaporanPendudukController extends Controller
             $penduduk = LaporanPenduduk::findOrFail($id);
 
             // Hapus file penduduk
-            Storage::disk('public')->delete('laporan_penduduk/'.$penduduk->nama_file);
+            Storage::disk('public')->delete('laporan_penduduk/' . $penduduk->nama_file);
 
             $penduduk->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan Penduduk deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'laporan_id' => $id,
+            ]);
 
             return redirect()->route('data.laporan-penduduk.index')->with('error', 'Data gagal dihapus!');
         }
@@ -143,9 +148,20 @@ class LaporanPendudukController extends Controller
         ]);
 
         try {
-            // Upload file zip temporary.
+            // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
+            
+            // Extract filename from path
+            $name = basename($path);
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
@@ -157,13 +173,16 @@ class LaporanPendudukController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            $fileExtracted = glob($extract.'*.xlsx');
+            $fileExtracted = glob($extract . '*.xlsx');
 
             // Proses impor excell
             (new ImporLaporanPenduduk())
-                ->queue($extract.basename($fileExtracted[0]));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan Penduduk import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -180,7 +199,10 @@ class LaporanPendudukController extends Controller
                 return Excel::download(new LaporanPendudukExport(false), 'laporan-penduduk.xlsx');
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan Penduduk export failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
         }
     }
 
@@ -193,7 +215,11 @@ class LaporanPendudukController extends Controller
                 return Excel::download(new LaporanPendudukByIdExport(false, $data), 'laporan-penduduk.xlsx');
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan Penduduk export by ID failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'data' => $data,
+            ]);
         }
     }
 }

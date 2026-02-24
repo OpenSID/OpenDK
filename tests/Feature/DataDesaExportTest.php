@@ -143,7 +143,6 @@ test('export data desa with empty database', function () {
 });
 
 test('export data desa with special characters in nama', function () {
-    // Arrange: Clean data first
     
     
     // Buat data dengan karakter khusus
@@ -163,14 +162,13 @@ test('export data desa with special characters in nama', function () {
 });
 
 test('export data desa with null values', function () {
-    // Arrange: Clean data first
     
     
     // Buat data dengan nilai null
     DataDesa::factory()->create([
         'website' => null,
-        'luas_wilayah' => null,
-        'sebutan_desa' => null,
+        'sebutan_desa' => 'desa',
+        'luas_wilayah' => null,        
     ]);
 
     // Act: Buat instance export dan map data
@@ -184,7 +182,6 @@ test('export data desa with null values', function () {
 });
 
 test('export data desa with very long nama', function () {
-    // Arrange: Clean data first
     
     
     // Buat data dengan nama sangat panjang (max 255 chars untuk kolom nama)
@@ -203,7 +200,6 @@ test('export data desa with very long nama', function () {
 });
 
 test('export data desa with unicode characters', function () {
-    // Arrange: Clean data first
     
     
     // Buat data dengan karakter unicode
@@ -249,7 +245,6 @@ test('export data desa gabungan with empty api response', function () {
 });
 
 test('export data desa with large dataset performance', function () {
-    // Arrange: Clean data first
     
     
     // Buat data dalam jumlah besar

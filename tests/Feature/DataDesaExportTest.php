@@ -17,6 +17,7 @@ beforeEach(function () {
         ['value' => '0']
     );
     config(['setting.sebutan_desa' => 'Desa']);
+    DataDesa::query()->delete();
 });
 
 test('export excel data desa', function () {
@@ -130,8 +131,7 @@ test('export styles', function () {
 // =============================================================================
 
 test('export data desa with empty database', function () {
-    // Arrange: Pastikan tidak ada data
-    DataDesa::query()->delete();
+    // Arrange: Pastikan tidak ada data    
 
     // Act: Buat instance export
     $export = new ExportDataDesa(false, []);
@@ -144,7 +144,7 @@ test('export data desa with empty database', function () {
 
 test('export data desa with special characters in nama', function () {
     // Arrange: Clean data first
-    DataDesa::query()->delete();
+    
     
     // Buat data dengan karakter khusus
     DataDesa::factory()->create([
@@ -164,7 +164,7 @@ test('export data desa with special characters in nama', function () {
 
 test('export data desa with null values', function () {
     // Arrange: Clean data first
-    DataDesa::query()->delete();
+    
     
     // Buat data dengan nilai null
     DataDesa::factory()->create([
@@ -185,7 +185,7 @@ test('export data desa with null values', function () {
 
 test('export data desa with very long nama', function () {
     // Arrange: Clean data first
-    DataDesa::query()->delete();
+    
     
     // Buat data dengan nama sangat panjang (max 255 chars untuk kolom nama)
     $longName = str_repeat('Test ', 50); // 250 chars
@@ -204,7 +204,7 @@ test('export data desa with very long nama', function () {
 
 test('export data desa with unicode characters', function () {
     // Arrange: Clean data first
-    DataDesa::query()->delete();
+    
     
     // Buat data dengan karakter unicode
     DataDesa::factory()->create([
@@ -250,7 +250,7 @@ test('export data desa gabungan with empty api response', function () {
 
 test('export data desa with large dataset performance', function () {
     // Arrange: Clean data first
-    DataDesa::query()->delete();
+    
     
     // Buat data dalam jumlah besar
     $startTime = microtime(true);
@@ -286,7 +286,7 @@ test('export data desa mapping with dates', function () {
 test('export data desa with zero luas_wilayah', function () {
     // Arrange: Buat data dengan luas_wilayah = 0
     DataDesa::factory()->create([
-        'luas_wilayah' => 0,
+        'luas_wilayah' => 0.0,
     ]);
 
     // Act: Buat instance export
@@ -295,7 +295,7 @@ test('export data desa with zero luas_wilayah', function () {
     $mappedData = $export->map($collection->first());
 
     // Assert: Luas wilayah 0 harus tetap ter-export
-    expect($mappedData[5])->toBe(0);
+    expect($mappedData[5])->toBe(0.0);
 });
 
 test('export data desa styles returns correct structure', function () {

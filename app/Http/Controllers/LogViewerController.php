@@ -37,6 +37,7 @@ use App\Models\EmailSmtp;
 use App\Helpers\SystemRequirementsChecker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
@@ -219,7 +220,10 @@ class LogViewerController extends Controller
         try {
             Artisan::call('queue:work', ['--stop-when-empty' => null]); // this will do the command line job
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Queue listen failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return response()->json([
                 'error' => $e->getMessage(),
@@ -248,7 +252,10 @@ class LogViewerController extends Controller
         try {
             EmailSmtp::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Email SMTP store failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('tab', 'email_smtp')->with('error', 'SMTP gagal diubah!');
         }
@@ -262,7 +269,11 @@ class LogViewerController extends Controller
         try {
             Mail::to($email)->send(new SmtpTestEmail());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Test email SMTP failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'email' => $email,
+            ]);
 
             return response()->json([
                 'error' => $e->getMessage(),

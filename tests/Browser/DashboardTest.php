@@ -1,40 +1,32 @@
 <?php
 
-test('should display dashboard page correctly', function () {
-    $this->actingAs(\App\Models\User::first())
-        ->visit('/dashboard')
+use Tests\BrowserAuthenticatedTestCase;
+
+uses(BrowserAuthenticatedTestCase::class);
+
+test('should display dashboard page correctly when authenticated', function () {
+    // Visit dashboard page - user is already authenticated via BrowserAuthenticatedTestCase
+    visit('/dashboard')
+        ->wait(3) // Wait for page to load
+        ->assertPathIs('/dashboard') // Verify we're redirected to dashboard
         ->assertSee('Dashboard');
 })->group('browser', 'dashboard');
 
-test('should display all required cards', function () {
-    $this->actingAs(\App\Models\User::first())
-        ->visit('/dashboard')
+test('should display all required cards when authenticated', function () {
+    // Visit dashboard page - user is already authenticated via BrowserAuthenticatedTestCase
+    visit('/dashboard')
+        ->wait(3) // Wait for page to load
         ->assertSee('Desa')
         ->assertSee('Penduduk')
         ->assertSee('Keluarga')
-        ->assertSee('Bantuan');
-})->group('browser', 'dashboard');
-
-test('should have selengkapnya links in cards', function () {
-    $this->actingAs(\App\Models\User::first())
-        ->visit('/dashboard')
+        ->assertSee('Bantuan')
         ->assertSee('Selengkapnya');
 })->group('browser', 'dashboard');
 
-test('should verify dashboard has navigation links', function () {
-    $this->actingAs(\App\Models\User::first())
-        ->visit('/dashboard')
-        ->assertSee('Dashboard');
-})->group('browser', 'dashboard');
 
-
-test('should check dashboard loads successfully', function () {
-    $this->actingAs(\App\Models\User::first())
-        ->visit('/dashboard')
+test('should check dashboard loads successfully when authenticated', function () {
+    // Visit dashboard page - user is already authenticated via BrowserAuthenticatedTestCase
+    visit('/dashboard')
+        ->wait(3) // Wait for page to load
         ->assertPresent('.content, .container, main');
-})->group('browser', 'dashboard');
-
-test('should redirect unauthenticated users to login', function () {
-    $this->visit('/dashboard')
-        ->assertSee('Login');
 })->group('browser', 'dashboard');

@@ -137,6 +137,14 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
     });
 
+    // Profile Routes (User Profile Management)
+    Route::namespace('\App\Http\Controllers\Auth')->prefix('profile')->middleware('auth')->group(function () {
+        Route::get('password', 'ProfileController@password')->name('profile.password');
+        Route::post('password', 'ProfileController@updatePassword')
+            ->middleware('throttle:5,1')
+            ->name('profile.password.update');
+    });
+
     // 2FA Login Routes (guest access)
     Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
         Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');
@@ -520,6 +528,19 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('edit/{id}', ['as' => 'data.data-desa.edit', 'uses' => 'DataDesaController@edit']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-desa.destroy', 'uses' => 'DataDesaController@destroy']);
                     Route::get('export-excel', ['as' => 'data.data-desa.export-excel', 'uses' => 'DataDesaController@exportExcel']);
+                });
+
+                // Data Sarana
+                Route::group(['prefix' => 'data-sarana', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
+                    Route::get('/', ['as' => 'data.data-sarana.index', 'uses' => 'DataSaranaController@index']);
+                    Route::get('getdata', ['as' => 'data.data-sarana.getdata', 'uses' => 'DataSaranaController@getData']);
+                    Route::get('create', ['as' => 'data.data-sarana.create', 'uses' => 'DataSaranaController@create']);
+                    Route::post('store', ['as' => 'data.data-sarana.store', 'uses' => 'DataSaranaController@store']);
+                    Route::get('edit/{id}', ['as' => 'data.data-sarana.edit', 'uses' => 'DataSaranaController@edit']);
+                    Route::put('update/{id}', ['as' => 'data.data-sarana.update', 'uses' => 'DataSaranaController@update']);
+                    Route::delete('destroy/{id}', ['as' => 'data.data-sarana.destroy', 'uses' => 'DataSaranaController@destroy']);                    
+                    Route::get('import', ['as' => 'data.data-sarana.import', 'uses' => 'DataSaranaController@import']);
+                    Route::post('import-excel', ['as' => 'data.data-sarana.import-excel', 'uses' => 'DataSaranaController@importExcel']);
                 });
 
                 // Jabatan

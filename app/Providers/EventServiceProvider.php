@@ -31,12 +31,16 @@
 
 namespace App\Providers;
 
+use App\Events\ArtikelChanged;
+use App\Listeners\ClearArtikelCacheListener;
 use App\Models\Album;
+use App\Models\Artikel;
 use App\Models\Galeri;
 use App\Models\MediaSosial;
 use App\Models\MediaTerkait;
 use App\Models\Widget;
 use App\Observers\AlbumObserver;
+use App\Observers\ArtikelObserver;
 use App\Observers\GaleriObserver;
 use App\Observers\MediaSosialObserver;
 use App\Observers\MediaTerkaitObserver;
@@ -57,6 +61,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ArtikelChanged::class => [
+            ClearArtikelCacheListener::class,
+        ],
     ];
 
     /**
@@ -67,6 +74,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Album::observe(AlbumObserver::class);
+        Artikel::observe(ArtikelObserver::class);
         Galeri::observe(GaleriObserver::class);
         Widget::observe(WidgetObserver::class);
         MediaSosial::observe(MediaSosialObserver::class);

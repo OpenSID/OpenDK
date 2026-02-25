@@ -29,27 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests;
+use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use Tests\Traits\WithDatabaseSetup;
-use Tests\Traits\WithSettingAplikasi;
-use Tests\Traits\WithUserAuthentication;
+uses(DatabaseTransactions::class);
 
-class CrudTestCase extends TestCase
-{
-    use WithDatabaseSetup;
-    use WithUserAuthentication;
-    use WithSettingAplikasi;
+beforeEach(function () {
+    // Clear counter data before each test
+    \App\Models\Visitor::query()->delete();
+    \App\Models\CounterPage::query()->delete();
+});
 
-    /**
-     * Set up the test environment.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
+// =============================================================================
+// BASIC COUNTER EXPORT TESTS
+// =============================================================================
 
-        $this->setDefaultApplicationConfig();
-    }
+test('export counter excel is accessible', function () {
+    // Arrange: Buat user dan login (counter requires auth)
+    $user = \App\Models\User::factory()->create();
+    $this->actingAs($user);
 
-    // Additional methods for CRUD tests can be added here
-}
+    // Act: Akses route export
+    $response = $this->get(route('counter.export.excel'));
+
+    // Assert: Harus berhasil (meskipun data kosong)
+    $response->assertSuccessful()
+        ->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        ->assertHeader('Content-Disposition', 'attachment; filename="Cetak Statistik Pengunjung.xlsx"');
+});

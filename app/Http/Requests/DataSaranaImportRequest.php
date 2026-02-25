@@ -29,27 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Tests;
+namespace App\Http\Requests;
 
-use Tests\Traits\WithDatabaseSetup;
-use Tests\Traits\WithSettingAplikasi;
-use Tests\Traits\WithUserAuthentication;
+use Illuminate\Foundation\Http\FormRequest;
 
-class CrudTestCase extends TestCase
+class DataSaranaImportRequest extends FormRequest
 {
-    use WithDatabaseSetup;
-    use WithUserAuthentication;
-    use WithSettingAplikasi;
-
     /**
-     * Set up the test environment.
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
-    protected function setUp(): void
+    public function authorize()
     {
-        parent::setUp();
-
-        $this->setDefaultApplicationConfig();
+        return true;
     }
 
-    // Additional methods for CRUD tests can be added here
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'file' => 'required|mimes:xlsx,xls,csv'
+        ];
+    }
 }

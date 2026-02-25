@@ -14,11 +14,12 @@ describe('Mass Assignment Protection', function () {
             'nama' => 'Test User',
             'status_dasar' => 1,
             'id' => 999, // Should not be assignable
-            'created_at' => $createdAt
+            'created_at' => $createdAt,
+            'desa_id' => 1,
         ];
-        
+
         $penduduk = Penduduk::create($data);
-        
+
         expect($penduduk->id)->not->toBe(999);
         expect($penduduk->created_at->format('Y'))->toBe($createdAt->format('Y'));
     })->group('security', 'mass-assignment');

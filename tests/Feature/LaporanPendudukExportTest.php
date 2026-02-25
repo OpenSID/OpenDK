@@ -133,3 +133,30 @@ test('export laporan penduduk no data', function () {
     // Assert: Periksa bahwa collection kosong
     expect($collection)->toHaveCount(0);
 });
+
+// =============================================================================
+// PERFORMANCE TESTS
+// =============================================================================
+
+test('export laporan penduduk performance test', function () {
+    // Arrange: Buat data dalam jumlah besar
+    LaporanPenduduk::query()->delete();
+    
+    $desa = DataDesa::factory()->create();
+    $startTime = microtime(true);
+    
+    LaporanPenduduk::factory()->count(100)->create([
+        'desa_id' => $desa->desa_id,
+    ]);
+
+    // Act: Export dan monitor waktu
+    $export = new LaporanPendudukExport(false);
+    $collection = $export->collection();
+    
+    $endTime = microtime(true);
+    $executionTime = $endTime - $startTime;
+
+    // Assert: Export harus selesai dalam waktu yang wajar (< 2 detik)
+    expect($collection->count())->toBe(100)
+        ->and($executionTime)->toBeLessThan(2);
+});

@@ -31,16 +31,15 @@
 
 namespace Tests;
 
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CompleteProfile;
-use App\Http\Middleware\GlobalShareMiddleware;
-use App\Models\SettingAplikasi;
-use Spatie\Permission\Middleware\PermissionMiddleware;
-use Spatie\Permission\Middleware\RoleMiddleware;
+use Tests\Traits\WithDatabaseSetup;
+use Tests\Traits\WithSettingAplikasi;
+use Tests\Traits\WithUserAuthentication;
 
 class CrudTestCase extends TestCase
 {
-    use CreatesApplication;
+    use WithDatabaseSetup;
+    use WithUserAuthentication;
+    use WithSettingAplikasi;
 
     /**
      * Set up the test environment.
@@ -51,11 +50,15 @@ class CrudTestCase extends TestCase
 
         $this->withViewErrors([]);
         $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
-        // disabled database gabungan for testing
+        
+        // Set sinkronisasi_database_gabungan to '0' to disable database synchronization
+        // This must be done AFTER parent::setUp() because DatabaseTransactions starts
+        // a transaction there, and we need to update within that transaction
         SettingAplikasi::updateOrCreate(
             ['key' => 'sinkronisasi_database_gabungan'],
             ['value' => '0']
-        );
+        );                
+        $this->setDefaultApplicationConfig();
     }
 
     // Additional methods for CRUD tests can be added here

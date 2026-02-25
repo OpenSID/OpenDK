@@ -9,7 +9,7 @@ use App\Models\Agama;
 use App\Models\Cacat;
 use App\Models\Pekerjaan;
 use App\Models\Pendidikan;
-use App\Models\PendidikanKk;
+use App\Models\PendidikanKK;
 use App\Models\Kawin;
 use App\Models\GolonganDarah;
 use App\Models\Warganegara;
@@ -86,11 +86,11 @@ it('penduduk belongs to pekerjaan', function () {
 
 
 it('penduduk belongs to pendidikan kk', function () {
-    $pendidikanKk = PendidikanKk::factory()->create();
-    $penduduk = Penduduk::factory()->create(['pendidikan_kk_id' => $pendidikanKk->id]);
+    $pendidikanKK = PendidikanKK::factory()->create();
+    $penduduk = Penduduk::factory()->create(['pendidikan_kk_id' => $pendidikanKK->id]);
 
     expect($penduduk->pendidikan_kk)->not->toBeNull();
-    expect($penduduk->pendidikan_kk->id)->toBe($pendidikanKk->id);
+    expect($penduduk->pendidikan_kk->id)->toBe($pendidikanKK->id);
 });
 
 it('penduduk belongs to status kawin', function () {

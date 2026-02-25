@@ -31,16 +31,15 @@
 
 namespace Tests;
 
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CompleteProfile;
-use App\Http\Middleware\GlobalShareMiddleware;
-use App\Models\SettingAplikasi;
-use Spatie\Permission\Middleware\PermissionMiddleware;
-use Spatie\Permission\Middleware\RoleMiddleware;
+use Tests\Traits\WithDatabaseSetup;
+use Tests\Traits\WithSettingAplikasi;
+use Tests\Traits\WithUserAuthentication;
 
 class CrudTestCase extends TestCase
 {
-    use CreatesApplication;
+    use WithDatabaseSetup;
+    use WithUserAuthentication;
+    use WithSettingAplikasi;
 
     /**
      * Set up the test environment.
@@ -59,6 +58,7 @@ class CrudTestCase extends TestCase
             ['key' => 'sinkronisasi_database_gabungan'],
             ['value' => '0']
         );                
+        $this->setDefaultApplicationConfig();
     }
 
     // Additional methods for CRUD tests can be added here

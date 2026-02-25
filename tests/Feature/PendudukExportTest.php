@@ -190,10 +190,9 @@ test('export penduduk with null relationships', function () {
     // Arrange: Clean data first
     Penduduk::query()->delete();
     
-    // Buat data tanpa relasi lengkap
+    // Buat data tanpa relasi lengkap (hanya field opsional yang null)
     $penduduk = Penduduk::factory()->create([
         'nama' => 'Test Null Relations',
-        'desa_id' => null,
         'pendidikan_kk_id' => null,
         'pekerjaan_id' => null,
     ]);

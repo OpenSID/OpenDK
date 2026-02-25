@@ -48,6 +48,16 @@ class CrudTestCase extends TestCase
     {
         parent::setUp();
 
+        $this->withViewErrors([]);
+        $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
+        
+        // Set sinkronisasi_database_gabungan to '0' to disable database synchronization
+        // This must be done AFTER parent::setUp() because DatabaseTransactions starts
+        // a transaction there, and we need to update within that transaction
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0']
+        );                
         $this->setDefaultApplicationConfig();
     }
 

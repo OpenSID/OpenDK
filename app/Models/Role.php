@@ -31,36 +31,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
+use Spatie\Permission\Models\Role as ModelsRole;
 
-class SettingAplikasi extends Model
+class Role extends ModelsRole
 {
-    use HasFactory;
-    protected $table = 'das_setting';
     
-    protected $fillable = [
-        'key',
-        'value',
-        'kategori',
-        'type',
-        'description',
-        'option',
-    ];
-
-    public $timestamps = false;
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function () {
-            Cache::forget('setting');
-        });
-
-        static::updated(function () {
-            Cache::forget('setting');
-        });
-    }
 }

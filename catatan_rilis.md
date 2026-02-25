@@ -27,3 +27,4 @@ Di rilis versi v2602.0.0 di versi ini terdapat modul komentar pada artikel dan p
 14. [#1452](https://github.com/OpenSID/OpenDK/issues/1452) Refactor Base TestCase ke Arsitektur Berbasis Trait (Pest v4).
 15. [#1467](https://github.com/OpenSID/OpenDK/issues/1467) Standarisasi dan Ekspansi Tests untuk Export Excel Features.
 16. [#1470](https://github.com/OpenSID/OpenDK/issues/1470) Peningkatan Cakupan Pengujian API & Keamanan.
+17. [#1468](https://github.com/OpenSID/OpenDK/issues/1468) Implementasi Comprehensive CRUD Tests untuk Semua Module Data.

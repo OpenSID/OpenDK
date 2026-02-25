@@ -41,6 +41,7 @@ class DataUmum extends Model
     protected $table = 'das_data_umum';
 
     protected $fillable = [
+        'profil_id',
         'tipologi',
         'sejarah',
         'ketinggian',

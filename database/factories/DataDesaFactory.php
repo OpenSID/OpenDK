@@ -12,9 +12,10 @@ class DataDesaFactory extends Factory
     public function definition(): array
     {
         return [
-            'desa_id' => $this->faker->numerify('D%06d'),
-            'nama' => $this->faker->city(),
-            'website' => $this->faker->url(),
+            'desa_id' => '330101'.fake()->unique()->numerify('######'), // 13 digit: kecamatan_id + 7 digits
+            'nama' => $this->faker->city,
+            'sebutan_desa' => $this->faker->randomElement(['Desa', 'Kelurahan']),
+            'website' => $this->faker->url,
             'luas_wilayah' => $this->faker->randomFloat(2, 10, 1000),
         ];
     }

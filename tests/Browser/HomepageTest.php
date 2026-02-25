@@ -1,38 +1,39 @@
 <?php
+
+use Tests\Browser\Pages\HomepagePage;
 use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
 test('should display homepage when website is enabled', function () {
-    visit('/')
-        ->assertPresent('meta[name="viewport"]')
-        ->assertPresent('nav, .navbar, .menu');
+    $page = new HomepagePage();
+    visit($page->url())
+        ->assertSee('Selamat Datang')
+        ->assertPresent('.navbar-brand');
 })->group('browser', 'homepage');
 
-test('should have responsive design on mobile', function () {
-    visit('/')
-        ->resize(375, 667)
-        ->assertPresent('meta[name="viewport"]');
-})->group('browser', 'homepage', 'responsive');
+test('should have proper SEO and meta tags', function () {
+    $page = new HomepagePage();
+    visit($page->url())
+        ->assertTitleContains('Beranda')
+        ->assertTitleContains('Test OpenDK')
+        ->assertPresent('meta[name="description"]')
+        ->assertPresent('meta[property="og:title"]')
+        ->assertPresent('link[rel="canonical"]');
+})->group('browser', 'homepage', 'seo');
 
-test('should have responsive design on tablet', function () {
+test('should have proper heading structure', function () {
     visit('/')
-        ->resize(768, 1024)
-        ->assertPresent('meta[name="viewport"]');
-})->group('browser', 'homepage', 'responsive');
+        ->assertPresent('.navbar-brand')
+        ->assertSee('Berita Kecamatan');
+})->group('browser', 'homepage', 'seo');
 
-test('should have responsive design on desktop', function () {
+test('should have responsive design', function ($width, $height) {
     visit('/')
-        ->resize(1280, 720)
+        ->resize($width, $height)
         ->assertPresent('meta[name="viewport"]');
-})->group('browser', 'homepage', 'responsive');
-
-test('should load homepage without errors', function () {
-    visit('/')        
-        ->assertPresent('meta[name="viewport"]');
-})->group('browser', 'homepage');
-
-test('should have proper meta tags', function () {
-    visit('/')
-        ->assertPresent('meta[name="viewport"]');
-})->group('browser', 'homepage');
+})->with([
+            'mobile' => [375, 667],
+            'tablet' => [768, 1024],
+            'desktop' => [1440, 900],
+        ])->group('browser', 'homepage', 'responsive');

@@ -43,10 +43,10 @@ class SettingAplikasi extends Model
     protected $fillable = [
         'key',
         'value',
+        'kategori',
         'type',
         'description',
         'option',
-        'kategori',
     ];
 
     public $timestamps = false;

@@ -35,7 +35,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
 use App\Models\Role;
-use App\Models\RoleUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -190,14 +189,15 @@ class RoleController extends Controller
     public function destroy($id)
     {
         try {
-            if (RoleUser::where('role_id', $id)->first()) {
+            // Jika menggunakan paket Spatie, periksa apakah ada model yang terkait dengan role ini
+            $role = Role::findOrFail($id);
+            if ($role->users()->exists()) {
                 flash()->error(trans('general.destroy-error', [
                     'attribute' => trans('island.role'),
                 ]));
 
                 return back();
-            } else {
-                $role = Role::findOrFail($id);
+            }else {                
                 $role->delete();
                 flash()->success(trans('general.destroy-success'));
 

@@ -30,8 +30,6 @@ pest()->group('browser')
     ->in('Browser')
     ->beforeEach(function () {
         // Set headless mode for faster execution
-        // Note: config() is not available in browser tests,
-        // the URL will be set by the browser plugin automatically
     });
 
 // Configure browser settings
@@ -137,12 +135,12 @@ dataset('status_codes', [200, 201, 400, 401, 403, 404, 500]);
 function createAuthenticatedUser($role = 'admin')
 {
     $user = \App\Models\User::factory()->create();
-    
+
     if ($role === 'admin') {
         // Assign admin role if needed
         $user->assignRole('admin');
     }
-    
+
     return $user;
 }
 

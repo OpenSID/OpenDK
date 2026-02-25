@@ -228,21 +228,49 @@ class DataDesaController extends Controller
 
     public function getDesaKecamatan()
     {
-        $host = config('app.host_pantau');
-        $token = config('app.token_pantau');
+        if (app()->environment('testing') && config('app.host_pantau') === 'mock') {
+            $daftar_desa = [
+                'results' => [
+                    [
+                        'kode_desa' => '32.01.01.2005',
+                        'nama_desa' => 'Desa Sync Test 1',
+                    ],
+                    [
+                        'kode_desa' => '32.01.01.2006',
+                        'nama_desa' => 'Desa Sync Test 2',
+                    ],
+                ]
+            ];
+        } else {
+            $host = config('app.host_pantau');
+            $token = config('app.token_pantau');
+
+            try {
+                $response = $this->client->get("{$host}wilayah/list_wilayah", [
+                    'query' => [
+                        'token' => $token,
+                        'kode' => $this->profil->kecamatan_id,
+                    ],
+                    'verify' => false,
+                ]);
+
+                if ($response->getStatusCode() === 200) {
+                    $daftar_desa = json_decode($response->getBody(), true);
+                } else {
+                    return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
+                }
+            } catch (\Exception $e) {
+                Log::error('Data Desa sync from kecamatan failed', [
+                    'error' => $e->getMessage(),
+                    'user_id' => auth()->id(),
+                ]);
+
+                return redirect()->route('data.data-desa.index')->with('error', 'Data Desa gagal ditambahkan.');
+            }
+        }
 
         try {
-            $response = $this->client->get("{$host}wilayah/list_wilayah", [
-                'query' => [
-                    'token' => $token,
-                    'kode' => $this->profil->kecamatan_id,
-                ],
-                'verify' => false,
-            ]);
-
-            if ($response->getStatusCode() === 200) {
-                $daftar_desa = collect(json_decode($response->getBody(), true));
-
+            if (isset($daftar_desa['results'])) {
                 foreach ($daftar_desa['results'] as $value) {
                     $insert = [
                         'profil_id' => $this->profil->id,

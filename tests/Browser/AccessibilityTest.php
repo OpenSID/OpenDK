@@ -2,15 +2,17 @@
 
 use Tests\BrowserAuthenticatedTestCase;
 
-uses(BrowserAuthenticatedTestCase::class);
+uses(Tests\BrowserAuthenticatedTestCase::class);
 
-test('should access accessibility settings page', function () {
+test('should display accessibility settings page', function () {
+    // Accessibility settings list in a table
     visit('/setting/aplikasi')
         ->assertSee('Pengaturan Aplikasi')
         ->assertSee('Dukungan Disabilitas');
-})->group('browser', 'accessibility');
+})->group('browser', 'accessibility', 'admin');
 
-test('should display homepage for accessibility widget check', function () {
+test('should have accessibility widgets on homepage when enabled', function () {
+    // Check for sienna accessibility script on public homepage
     visit('/')
-        ->assertPresent('meta[name="viewport"]');
-})->group('browser', 'accessibility');
+        ->assertPresent('script[src*="sienna.min.js"]');
+})->group('browser', 'accessibility', 'public');

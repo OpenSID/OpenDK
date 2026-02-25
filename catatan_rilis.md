@@ -25,3 +25,4 @@ Di rilis versi v2602.0.0 di versi ini terdapat modul komentar pada artikel dan p
 12. [#43](https://github.com/OpenSID/wiki-keamanan/issues/43) update kerentanan package yg digunakan OpenDK.
 13. [#1454](https://github.com/OpenSID/OpenDK/issues/1454) Pengujian Fitur Autentikasi Komprehensif.
 14. [#1452](https://github.com/OpenSID/OpenDK/issues/1452) Refactor Base TestCase ke Arsitektur Berbasis Trait (Pest v4).
+15. [#1467](https://github.com/OpenSID/OpenDK/issues/1467) Standarisasi dan Ekspansi Tests untuk Export Excel Features.

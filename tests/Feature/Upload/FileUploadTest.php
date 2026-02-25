@@ -262,7 +262,7 @@ describe('File Upload Functionality', function () {
                 'file_struktur_organisasi' => $file,
             ];
 
-            $response = $this->put(route('data.profil.update', 1), $updateData);
+            $response = $this->put(route('data.profil.update', $profil->id), $updateData);
 
             $response->assertRedirect();
             $response->assertSessionHas('success');
@@ -312,7 +312,7 @@ describe('File Upload Functionality', function () {
                 'file_logo' => $file,
             ];
 
-            $response = $this->put(route('data.profil.update', 1), $updateData);
+            $response = $this->put(route('data.profil.update', $profil->id), $updateData);
 
             $response->assertRedirect();
             $response->assertSessionHas('success');

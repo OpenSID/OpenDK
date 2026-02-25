@@ -2,11 +2,7 @@
 
 use App\Services\PendudukService;
 use App\Models\Penduduk;
-use App\Models\Keluarga;
-use App\Models\DataDesa;
-
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 // PendudukService Testing
 it('can instantiate penduduk service', function () {

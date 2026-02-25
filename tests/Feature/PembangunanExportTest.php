@@ -3,10 +3,11 @@
 use App\Exports\ExportPembangunan;
 use App\Models\DataDesa;
 use App\Models\Pembangunan;
-use App\Models\SettingAplikasi;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Facades\Excel;
 
+beforeEach(function(){
+    Pembangunan::query()->delete();
+});
 
 test('export excel pembangunan', function () {
     // Arrange: Buat beberapa data test

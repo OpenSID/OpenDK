@@ -14,10 +14,11 @@ class ProgramFactory extends Factory
     {
         return [
             'id' => function () {
-                // Get the maximum ID from existing records and add a random increment
-                // This ensures uniqueness while staying within integer range
-                $maxId = Program::max('id') ?? 0;
-                return $maxId + rand(1, 10000);
+                // Generate unique ID by using microtime converted to an integer within safe range
+                $micro = microtime(true);
+                $id = intval(($micro - floor($micro)) * 1000000) + (time() % 1000000) * 100;
+                // Ensure it's within integer range and positive
+                return abs($id % 2000000000);
             },
             'nama' => $this->faker->words(3, true) . ' Program',
             'sasaran' => $this->faker->randomElement([1, 2]), // 1 = Penduduk/Perorangan, 2 = Keluarga-KK
@@ -25,7 +26,14 @@ class ProgramFactory extends Factory
             'end_date' => $this->faker->dateTimeBetween('+1 month', '+1 year')->format('Y-m-d'),
             'description' => $this->faker->sentence(),
             'desa_id' => function () {
-                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+                return DataDesa::firstOrCreate(
+                    ['nama' => 'Desa Contoh'],
+                    [
+                        'nama' => 'Desa Contoh',
+                        'website' => 'https://example.com',
+                        'luas_wilayah' => 10.5
+                    ]
+                )->desa_id;
             },
             'status' => $this->faker->randomElement([1, 0]), // 1 = aktif, 0 = tidak aktif
         ];

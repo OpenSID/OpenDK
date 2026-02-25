@@ -5,7 +5,9 @@ use App\Models\Pesan;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 uses(DatabaseTransactions::class);
-
+beforeEach(function(){
+    Pesan::query()->delete();
+});
 test('pesan can use kode desa instead of id', function () {
     // Create a DataDesa with specific desa_id (kode_desa)
     $dataDesa = DataDesa::factory()->create([
@@ -15,7 +17,7 @@ test('pesan can use kode desa instead of id', function () {
 
     // Create a Pesan using kode_desa
     $pesan = Pesan::factory()->create([
-        'das_data_desa_id' => '1234567890',
+        'das_data_desa_id' => $dataDesa->desa_id,
         'judul' => 'Test Pesan'
     ]);
 

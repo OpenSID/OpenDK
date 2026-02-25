@@ -88,6 +88,8 @@ beforeEach(function () {
         ]);
         $user->assignRole('super-admin');
     }
+    $user->password = 'password';
+    $user->save();
     $this->user = $user;
 
     // Login to get JWT
@@ -95,10 +97,6 @@ beforeEach(function () {
         'email' => 'admin@mail.com',
         'password' => 'password',
     ]);
-
-    if ($response->status() !== 200) {
-        dd('Login failed: ' . json_encode($response->json()));
-    }
 
     $this->token = $response->json('access_token');
 

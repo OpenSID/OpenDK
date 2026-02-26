@@ -74,4 +74,4 @@ jobs:
         DB_DATABASE: testing_db
         DB_USERNAME: root
         DB_PASSWORD: secret
-      run: php artisan migrate && php artisan test
+      run: php artisan migrate && php artisan scribe:generate && php artisan test

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 uses(DatabaseTransactions::class);
 beforeEach(function(){
     Pesan::query()->delete();
+    DataDesa::query()->delete();
 });
 test('pesan can use kode desa instead of id', function () {
     // Create a DataDesa with specific desa_id (kode_desa)

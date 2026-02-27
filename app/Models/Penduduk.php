@@ -40,7 +40,7 @@ class Penduduk extends Model
 
     protected $table = 'das_penduduk';
 
-    protected $fillable = [
+    protected $guarded = [
         'nama',
         'nik',
         'id_kk',

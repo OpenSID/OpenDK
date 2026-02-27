@@ -51,16 +51,35 @@ class ThemesController extends BackEndController
         try {
             $file = request()->file('file');
 
-            if ($file->getClientOriginalExtension() !== 'zip') {
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Validate file type
+            $fileMimeType = $file->getMimeType();
+            if (!in_array($fileMimeType, $allowedMimes)) {
                 return response()->json([
                     'status' => 'error',
                     'message' => 'File harus berformat .zip',
                 ]);
             }
 
-            $fileName = $file->getClientOriginalName();
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'framework/themes', $allowedMimes, 51200); // 50MB max
+            
+            // Extract filename from path
+            $fileName = basename($path);
+            
+            // Get the full file path for further processing
             $filePath = storage_path('framework/themes');
-            $file->move($filePath, $fileName);
 
             $zip = new \ZipArchive;
             if ($zip->open("$filePath/$fileName") === true) {

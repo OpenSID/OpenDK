@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\KategoriLembagaRequest;
 use App\Models\KategoriLembaga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class KategoriLembagaController extends Controller
@@ -33,7 +34,7 @@ class KategoriLembagaController extends Controller
             return DataTables::of($kategoris)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('data.kategori-lembaga.edit', $row->id);
                         $data['delete_url'] = route('data.kategori-lembaga.destroy', $row->id);
                     }
@@ -72,7 +73,11 @@ class KategoriLembagaController extends Controller
         try {
             KategoriLembaga::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Lembaga creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->all(),
+            ]);
 
             return back()->withInput()->with('error', 'Kategori Lembaga gagal ditambah!');
         }
@@ -90,7 +95,7 @@ class KategoriLembagaController extends Controller
     {
         $kategori_lembaga = KategoriLembaga::findOrFail($id);
         $page_title = $this->title;
-        $page_description = 'Ubah '. $this->title;
+        $page_description = 'Ubah ' . $this->title;
 
         return view('data.lembaga_kategori.edit', compact('page_title', 'page_description', 'kategori_lembaga'));
     }
@@ -107,7 +112,11 @@ class KategoriLembagaController extends Controller
         try {
             KategoriLembaga::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Lembaga update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'kategori_lembaga_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Kategori Lembaga gagal diubah!');
         }
@@ -126,7 +135,11 @@ class KategoriLembagaController extends Controller
         try {
             KategoriLembaga::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Kategori Lembaga deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'kategori_lembaga_id' => $id,
+            ]);
 
             return redirect()->route('data.kategori-lembaga.index')->with('error', 'Kategori Lembaga gagal dihapus!');
         }

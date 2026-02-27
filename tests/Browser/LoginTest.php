@@ -1,36 +1,75 @@
 <?php
 
+use Tests\BrowserTestCase;
+use Tests\Browser\Pages\LoginPage;
+use Tests\Browser\Pages\DashboardPage;
+
+uses(BrowserTestCase::class);
+
 test('should display login page correctly', function () {
-    $this->visit('/login')
+    $loginPage = new LoginPage();
+    visit($loginPage->url())
         ->assertSee('Login')
-        ->assertPresent('input[name="email"]')
-        ->assertPresent('input[name="password"]')
-        ->assertPresent('button[type="submit"]');
+        ->assertPresent('#email')
+        ->assertPresent('#password');
 })->group('browser', 'login');
 
 test('should login successfully with valid credentials', function () {
-    $this->visit('/login')
-        ->type('email', env('E2E_ADMIN_EMAIL', 'admin@example.com'))
-        ->type('password', env('E2E_ADMIN_PASSWORD', 'password'))
-        ->press('Sign In')
-        ->assertDontSee('Login');
-})->group('browser', 'login')->skip('Requires valid credentials in .env');
+    $user = \App\Models\User::factory()->create([
+        'email' => 'login_test@example.com',
+        'password' => bcrypt('password123'),
+        'status' => 1,
+    ]);
+    $user->assignRole('super-admin');
+
+    $loginPage = new LoginPage();
+    $dashboardPage = new DashboardPage();
+
+    $browser = visit($loginPage->url());
+    $loginPage->login($browser, 'login_test@example.com', 'password123');
+
+    // Debug: check if we see any error messages if login failed
+    $browser->assertDontSee('Kredensial yang diberikan tidak cocok')
+        ->assertDontSee('Captcha code diperlukan')
+        ->assertSee('Dashboard');
+})->group('browser', 'login');
 
 test('should show error for invalid credentials', function () {
-    $this->visit('/login')
-        ->type('email', 'invalid@email.com')
-        ->type('password', 'wrongpassword')
-        ->press('Sign In')
-        ->assertSee('Login');
+    $loginPage = new LoginPage();
+    $browser = visit($loginPage->url());
+    $loginPage->login($browser, 'invalid@email.com', 'wrongpassword');
+
+    $browser->assertSee('Identitas tersebut tidak cocok dengan data kami.');
 })->group('browser', 'login');
 
 test('should validate required fields', function () {
-    $this->visit('/login')
+    $loginPage = new LoginPage();
+    visit($loginPage->url())
         ->press('Sign In')
         ->assertSee('Login');
 })->group('browser', 'login');
 
-test('should handle remember me checkbox if present', function () {
-    $this->visit('/login')
-        ->assertPresent('input[name="email"]');
-})->group('browser', 'login')->skip('Remember me functionality requires full login flow');
+test('should handle logout flow', function () {
+    $user = \App\Models\User::factory()->create([
+        'email' => 'logout_test@example.com',
+        'password' => bcrypt('password123'),
+        'status' => 1,
+    ]);
+    $user->assignRole('super-admin');
+
+    $loginPage = new LoginPage();
+    $dashboardPage = new DashboardPage();
+
+    // Login manually via UI to allow genuine logout
+    $browser = visit($loginPage->url());
+    $loginPage->login($browser, 'logout_test@example.com', 'password123');
+
+    // Verify user is logged in
+    $browser->assertSee('Dashboard');
+
+    // Use UI logout
+    $dashboardPage->logout($browser);
+
+    $browser->waitForText('Login')
+        ->assertSee('Login');
+})->group('browser', 'login');

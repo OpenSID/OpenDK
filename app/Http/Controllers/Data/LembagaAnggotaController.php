@@ -11,6 +11,7 @@ use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLembagaAnggotaRequest;
 use App\Http\Requests\UpdateLembagaAnggotaRequest;
+use Illuminate\Support\Facades\Log;
 
 class LembagaAnggotaController extends Controller
 {
@@ -46,7 +47,7 @@ class LembagaAnggotaController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) use ($slug) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] =  route('data.lembaga_anggota.edit', ['slug' => $slug, 'id' => $row->id]);
+                        $data['edit_url'] = route('data.lembaga_anggota.edit', ['slug' => $slug, 'id' => $row->id]);
                         $data['delete_url'] = route('data.lembaga_anggota.destroy', ['slug' => $slug, 'id' => $row->id]);
                     }
 
@@ -63,7 +64,7 @@ class LembagaAnggotaController extends Controller
                 })
                 ->addColumn('tempat_tgl_lahir', function ($row) {
                     $tempat = $row->penduduk->tempat_lahir ?? '-';
-                    $tanggalLahir = $row->penduduk->tanggal_lahir 
+                    $tanggalLahir = $row->penduduk->tanggal_lahir
                         ? Carbon::parse($row->penduduk->tanggal_lahir)->translatedFormat('d F Y')
                         : '-';
                     return "$tempat / $tanggalLahir";
@@ -104,7 +105,7 @@ class LembagaAnggotaController extends Controller
                     return $row->no_sk_pengangkatan ?: '-';
                 })
                 ->addColumn('tgl_sk_pengangkatan', function ($row) {
-                    return $row->tgl_sk_pengangkatan 
+                    return $row->tgl_sk_pengangkatan
                         ? Carbon::parse($row->tgl_sk_pengangkatan)->format('d M Y')
                         : '-';
                 })
@@ -112,7 +113,7 @@ class LembagaAnggotaController extends Controller
                     return $row->no_sk_pemberhentian ?: '-';
                 })
                 ->addColumn('tgl_sk_pemberhentian', function ($row) {
-                    return $row->tgl_sk_pemberhentian 
+                    return $row->tgl_sk_pemberhentian
                         ? Carbon::parse($row->tgl_sk_pemberhentian)->format('d M Y')
                         : '-';
                 })
@@ -145,7 +146,7 @@ class LembagaAnggotaController extends Controller
         $pendudukList = Penduduk::whereNotIn('id', $existingAnggotaIds)->get()->mapWithKeys(function ($penduduk) {
             // Membuat string yang menggabungkan NIK, nama, dan alamat
             $optionText = "NIK: {$penduduk->nik} - {$penduduk->nama} - Dusun {$penduduk->dusun} RT {$penduduk->rt} / RW {$penduduk->rw}";
-            
+
             return [$penduduk->id => $optionText];
         });
 
@@ -179,7 +180,7 @@ class LembagaAnggotaController extends Controller
         }
 
         try {
-            
+
             $lembaga->lembagaAnggota()->create([
                 'penduduk_id' => $request->penduduk_id,
                 'no_anggota' => $request->no_anggota,
@@ -192,9 +193,15 @@ class LembagaAnggotaController extends Controller
                 'periode' => $request->periode,
                 'keterangan' => $request->keterangan,
             ]);
-            
+
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Lembaga Anggota creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'lembaga_slug' => $slug,
+                'penduduk_id' => $request->penduduk_id,
+            ]);
+
             return back()->withInput()->with('error', 'Anggota Lembaga gagal ditambah!');
         }
 
@@ -245,14 +252,14 @@ class LembagaAnggotaController extends Controller
     public function update(UpdateLembagaAnggotaRequest $request, $slug, $id)
     {
         try {
-        
+
             // Cari lembaga berdasarkan slug
             $lembaga = Lembaga::where('slug', $slug)->firstOrFail();
 
             // Cari anggota berdasarkan id dan pastikan anggota tersebut milik lembaga yang sesuai
             $anggota = LembagaAnggota::where('id', $id)
-                        ->where('lembaga_id', $lembaga->id)
-                        ->firstOrFail();
+                ->where('lembaga_id', $lembaga->id)
+                ->firstOrFail();
 
             // Cek apakah jabatan yang dipilih adalah Ketua (jabatan_id = 1)
             if ($request->jabatan_id == 1) {
@@ -279,8 +286,13 @@ class LembagaAnggotaController extends Controller
             ]);
 
         } catch (\Exception $e) {
+            Log::error('Lembaga Anggota update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'lembaga_slug' => $slug,
+                'anggota_id' => $id,
+            ]);
 
-            report($e);
             return back()->withInput()->with('error', 'Anggota Lembaga gagal diubah!');
         }
 
@@ -301,7 +313,12 @@ class LembagaAnggotaController extends Controller
 
             $lembagaAnggota->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Lembaga Anggota deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'lembaga_slug' => $slug,
+                'anggota_id' => $id,
+            ]);
 
             return redirect()->route('data.lembaga_anggota.index', $slug)->with('error', 'Anggota Lembaga gagal dihapus!');
         }

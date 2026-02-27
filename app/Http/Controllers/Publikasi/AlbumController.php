@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AlbumRequest;
 use App\Models\Album;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class AlbumController extends Controller
@@ -54,8 +55,8 @@ class AlbumController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     // $data['show_web'] = route('berita.detail', $row->slug);
-
-                    if (! auth()->guest()) {
+    
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('publikasi.album.edit', $row->id);
                         $data['delete_url'] = route('publikasi.album.destroy', $row->id);
                         if ($row->status == 1) {
@@ -112,7 +113,10 @@ class AlbumController extends Controller
 
             return redirect()->route('publikasi.album.index')->with('success', 'Album berhasil disimpan!');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Album creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Simpan album gagal!');
         }
@@ -129,7 +133,11 @@ class AlbumController extends Controller
 
             return redirect()->route('publikasi.album.index');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Album status change failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'album_id' => $album->id,
+            ]);
             flash()->success(trans('general.active-error'));
 
             return redirect()->route('publikasi.album.index');
@@ -156,7 +164,11 @@ class AlbumController extends Controller
 
             $album->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Album update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'album_id' => $album->id,
+            ]);
 
             return back()->withInput()->with('error', 'Album gagal dihapus!');
         }
@@ -169,7 +181,11 @@ class AlbumController extends Controller
         try {
             $album->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Album deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'album_id' => $album->id,
+            ]);
 
             return redirect()->route('publikasi.album.index')->with('error', 'Album gagal dihapus!');
         }

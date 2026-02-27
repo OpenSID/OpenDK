@@ -52,7 +52,9 @@ class ToiletSanitasiFactory extends Factory
         }
 
         return [
-            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
+            'desa_id' => function () {
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+            },
             'toilet' => $this->faker->numberBetween(10, 100),
             'sanitasi' => $this->faker->numberBetween(10, 100),
             'bulan' => $this->faker->numberBetween(1, 12),

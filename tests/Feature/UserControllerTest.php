@@ -34,6 +34,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Models\Pengurus;
 use Spatie\Permission\Models\Role;
+use Database\Seeders\RefAgamaTableSeeder;
+use Database\Seeders\RefPendidikanTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
@@ -47,12 +49,16 @@ class UserControllerTest extends CrudTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create test roles
         $this->createTestRoles();
-        
+
         // Create test users
         $this->createTestUsers();
+
+        // Seed required tables for Pengurus factory
+        $this->seed(RefAgamaTableSeeder::class);
+        $this->seed(RefPendidikanTableSeeder::class);
     }
 
     /**
@@ -63,7 +69,7 @@ class UserControllerTest extends CrudTestCase
     public function test_index_displays_user_list_view()
     {
         $user = User::first();
-        
+
         $response = $this->actingAs($user)->get(route('setting.user.index'));
 
         $response->assertStatus(200);
@@ -79,10 +85,10 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_create_displays_user_creation_form()
     {
-        $user = User::whereHas('roles', function($query) {
+        $user = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $response = $this->actingAs($user)->get(route('setting.user.create'));
 
         $response->assertStatus(200);
@@ -101,14 +107,14 @@ class UserControllerTest extends CrudTestCase
     public function test_store_creates_new_user_successfully()
     {
         Storage::fake('public');
-        
-        $user = User::whereHas('roles', function($query) {
+
+        $user = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $pengurus = Pengurus::factory()->create();
         $role = Role::where('name', 'administrator-website')->first();
-        
+
         $userData = [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
@@ -119,13 +125,14 @@ class UserControllerTest extends CrudTestCase
             'pengurus_id' => $pengurus->id,
             'role' => [$role->name],
             'status' => 1,
+            'agama_id' => 1
         ];
 
         $response = $this->actingAs($user)->post(route('setting.user.store'), $userData);
 
         $response->assertRedirect(route('setting.user.index'));
         $response->assertSessionHas('success');
-        
+
         $this->assertDatabaseHas('users', [
             'email' => $userData['email'],
             'name' => $userData['name'],
@@ -139,10 +146,10 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_store_fails_with_invalid_data()
     {
-        $user = User::whereHas('roles', function($query) {
+        $user = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $invalidData = [
             'name' => '',
             'email' => 'invalid-email',
@@ -153,7 +160,7 @@ class UserControllerTest extends CrudTestCase
         $response = $this->actingAs($user)->post(route('setting.user.store'), $invalidData);
 
         $response->assertSessionHasErrors(['name', 'email', 'password', 'address']);
-    }    
+    }
 
     /**
      * Test edit method displays edit form for super admin.
@@ -162,10 +169,10 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_edit_displays_form_for_super_admin()
     {
-        $superAdmin = User::whereHas('roles', function($query) {
+        $superAdmin = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
 
         $response = $this->actingAs($superAdmin)->get(route('setting.user.edit', $targetUser->id));
@@ -198,10 +205,10 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_update_updates_user_successfully_for_super_admin()
     {
-        $superAdmin = User::whereHas('roles', function($query) {
+        $superAdmin = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $role = Role::where('name', 'administrator-website')->first();
 
@@ -217,7 +224,7 @@ class UserControllerTest extends CrudTestCase
 
         $response->assertRedirect(route('setting.user.index'));
         $response->assertSessionHas('success');
-        
+
         $this->assertDatabaseHas('users', [
             'id' => $targetUser->id,
             'name' => 'Updated Name',
@@ -232,7 +239,7 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_update_updates_profile_and_redirects_to_dashboard_for_regular_user()
     {
-        $regularUser = User::whereHas('roles', function($query) {
+        $regularUser = User::whereHas('roles', function ($query) {
             $query->where('name', '!=', 'super-admin');
         })->first();
 
@@ -247,13 +254,13 @@ class UserControllerTest extends CrudTestCase
 
         $response->assertRedirect(route('dashboard'));
         $response->assertSessionHas('success');
-        
+
         $this->assertDatabaseHas('users', [
             'id' => $regularUser->id,
             'name' => 'Updated Profile Name',
         ]);
     }
-    
+
     /**
      * Test destroy method deactivates user successfully.
      *
@@ -261,18 +268,18 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_destroy_deactivates_user_successfully()
     {
-        $user = User::whereHas('roles', function($query) {
+        $user = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $targetUser = User::where('id', '!=', $user->id)->first();
         $targetUser->status = 1;
         $targetUser->save();
-        
+
         $response = $this->actingAs($user)->post(route('setting.user.destroy', $targetUser->id));
 
-        $response->assertRedirect(route('setting.user.index'));        
-        
+        $response->assertRedirect(route('setting.user.index'));
+
         $this->assertDatabaseHas('users', [
             'id' => $targetUser->id,
             'status' => 0,
@@ -286,18 +293,18 @@ class UserControllerTest extends CrudTestCase
      */
     public function test_active_activates_user_successfully()
     {
-        $user = User::whereHas('roles', function($query) {
+        $user = User::whereHas('roles', function ($query) {
             $query->where('name', 'super-admin');
         })->first();
-        
+
         $targetUser = User::where('id', '!=', $user->id)->first();
         $targetUser->status = 0;
         $targetUser->save();
 
         $response = $this->actingAs($user)->post(route('setting.user.active', $targetUser->id));
 
-        $response->assertRedirect(route('setting.user.index'));        
-        
+        $response->assertRedirect(route('setting.user.index'));
+
         $this->assertDatabaseHas('users', [
             'id' => $targetUser->id,
             'status' => 1,
@@ -312,7 +319,7 @@ class UserControllerTest extends CrudTestCase
     public function test_getDataUser_returns_json_response()
     {
         $user = User::first();
-        
+
         $response = $this->actingAs($user)->get(route('setting.user.getdata'));
 
         $response->assertStatus(200);

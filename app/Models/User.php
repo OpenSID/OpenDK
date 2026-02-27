@@ -135,12 +135,12 @@ class User extends Authenticatable implements JWTSubject
 
     public static function datatables()
     {
-        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone', 'telegram_id', 'otp_channel', 'otp_verified');
+        return static::select('users.name', 'users.address', 'users.status', 'users.id', 'users.email', 'users.created_at', 'users.phone', 'users.telegram_id', 'users.otp_channel', 'users.otp_verified');
     }
 
     public function getFotoAttribute()
     {
-        return $this->attributes['image'] ? Storage::url('user/'.$this->attributes['image']) : null;
+        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
     }
 
     public function scopeSuspend($query, $email)

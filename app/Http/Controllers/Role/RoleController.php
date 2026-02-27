@@ -35,9 +35,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
 use App\Models\Role;
-use App\Models\RoleUser;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class RoleController extends Controller
@@ -63,13 +63,13 @@ class RoleController extends Controller
     public function getData()
     {
         return DataTables::of(Role::datatables())
-        ->addColumn('aksi', function ($role) {
-            $data['edit_url'] = route('setting.role.edit', $role->id);
-            $data['delete_url'] = route('setting.role.destroy', $role->id);
+            ->addColumn('aksi', function ($role) {
+                $data['edit_url'] = route('setting.role.edit', $role->id);
+                $data['delete_url'] = route('setting.role.destroy', $role->id);
 
-            return view('forms.aksi', $data);
-        })
-        ->make(true);
+                return view('forms.aksi', $data);
+            })
+            ->make(true);
     }
 
     /**
@@ -96,7 +96,7 @@ class RoleController extends Controller
     {
         try {
             $temp = [];
-            if (! empty($request->permissions)) {
+            if (!empty($request->permissions)) {
                 foreach ($request->permissions as $key => $value) {
                     $temp[$key] = $value == 1 ? true : false;
                 }
@@ -106,12 +106,15 @@ class RoleController extends Controller
             $role = Role::create($request->all());
             flash()->success(trans('message.role.create-success', [
                 'attribute' => trans('island.role'),
-                'detail' => '#'.$role->id.' | '.$role->slug,
+                'detail' => '#' . $role->id . ' | ' . $role->slug,
             ]));
 
             return redirect()->route('setting.role.index');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Role creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
             ]));
@@ -156,7 +159,7 @@ class RoleController extends Controller
                 $role = Role::findOrFail($id);
                 flash()->success(trans('message.role.update-success', [
                     'attribute' => trans('island.role'),
-                    'detail' => '#'.$role->id.' | '.$role->slug,
+                    'detail' => '#' . $role->id . ' | ' . $role->slug,
                 ]));
             } else {
                 Role::findOrFail($id)->update(['name' => $request->name, 'permissions' => []]);
@@ -164,7 +167,11 @@ class RoleController extends Controller
 
             return redirect()->route('setting.role.index');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Role update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'role_id' => $id,
+            ]);
             flash()->error(trans('message.role.update-error', [
                 'attribute' => trans('island.role'),
             ]));
@@ -182,21 +189,26 @@ class RoleController extends Controller
     public function destroy($id)
     {
         try {
-            if (RoleUser::where('role_id', $id)->first()) {
+            // Jika menggunakan paket Spatie, periksa apakah ada model yang terkait dengan role ini
+            $role = Role::findOrFail($id);
+            if ($role->users()->exists()) {
                 flash()->error(trans('general.destroy-error', [
                     'attribute' => trans('island.role'),
                 ]));
 
                 return back();
-            } else {
-                $role = Role::findOrFail($id);
+            }else {                
                 $role->delete();
                 flash()->success(trans('general.destroy-success'));
 
                 return redirect()->route('setting.role.index');
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Role deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'role_id' => $id,
+            ]);
             flash()->error(trans('general.destroy-error', [
                 'attribute' => trans('island.role'),
             ]));

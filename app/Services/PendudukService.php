@@ -81,8 +81,8 @@ class PendudukService extends BaseApiService
             return [
                 'ID' => $item['id'],
                 'nama' => $item['attributes']['nama'] ?? '',
-                'nik' => '`' . $item['attributes']['nik'],
-                'no_kk' => '`' .$item['attributes']['keluarga']['no_kk'] ?? '',
+                'nik' => $item['attributes']['nik'] ?? '',
+                'no_kk' => $item['attributes']['keluarga']['no_kk'] ?? '',
                 'nama_desa' => $item['attributes']['config']['nama_desa'] ?? '',
                 'alamat' => $item['attributes']['alamat_sekarang'] ?? '',
                 'pendidikan' => $item['attributes']['pendidikan_k_k']['nama'] ?? '',
@@ -109,7 +109,8 @@ class PendudukService extends BaseApiService
             ]);
         
             if ($response->successful() && $response->json('data')) {
-                return new Penduduk($response->json('data'));
+                $pendudukData = $response->json('data');
+                return new Penduduk($pendudukData);
             }
         
             return null;

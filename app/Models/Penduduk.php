@@ -36,31 +36,62 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penduduk extends Model
 {
-    use HasFactory;
-
-    public $incrementing = false;
+    use HasFactory;    
 
     protected $table = 'das_penduduk';
 
-    /**
-     * Field yang dilindungi dari mass assignment.
-     *
-     * Field-field ini bersifat sensitif dan tidak boleh diubah sembarangan
-     * melalui mass assignment untuk keamanan data.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [
-        'id',
-        'nik',                  // Identitas unik penduduk
-        'no_kk',                // Nomor Kartu Keluarga
-        'status_dasar',         // Status dasar (hidup/matih/pindah)
-        'desa_id',              // Kode desa - mencegah pindah desa ilegal
-        'kecamatan_id',         // Kode kecamatan
-        'kabupaten_id',         // Kode kabupaten
-        'provinsi_id',          // Kode provinsi
-        'id_pend_desa',         // ID dari OpenSID desa
-        'imported_at',          // Timestamp import
+        'nama',
+        'nik',
+        'id_kk',
+        'kk_level',
+        'id_rtm',
+        'rtm_level',
+        'sex',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'agama_id',
+        'pendidikan_kk_id',
+        'pendidikan_id',
+        'pendidikan_sedang_id',
+        'pekerjaan_id',
+        'status_kawin',
+        'warga_negara_id',
+        'dokumen_pasport',
+        'dokumen_kitas',
+        'ayah_nik',
+        'ibu_nik',
+        'nama_ayah',
+        'nama_ibu',
+        'foto',
+        'golongan_darah_id',
+        'id_cluster',
+        'status',
+        'alamat_sebelumnya',
+        'alamat_sekarang',
+        'status_dasar',
+        'hamil',
+        'cacat_id',
+        'sakit_menahun_id',
+        'akta_lahir',
+        'akta_perkawinan',
+        'tanggal_perkawinan',
+        'akta_perceraian',
+        'tanggal_perceraian',
+        'cara_kb_id',
+        'telepon',
+        'tanggal_akhir_pasport',
+        'no_kk',
+        'no_kk_sebelumnya',
+        'desa_id',
+        'kecamatan_id',
+        'kabupaten_id',
+        'provinsi_id',
+        'tahun',
+        'created_at',
+        'updated_at',
+        'imported_at',
+        'id_pend_desa'
     ];
 
     /**
@@ -103,7 +134,6 @@ class Penduduk extends Model
     {
         return $this->hasOne(Keluarga::class, 'no_kk', 'no_kk');
     }
-
     public function suplemen_terdata()
     {
         return $this->hasMany(SuplemenTerdata::class, 'penduduk_id', 'id');

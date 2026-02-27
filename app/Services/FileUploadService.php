@@ -119,11 +119,24 @@ class FileUploadService
      */
     protected function sanitizeExtension(string $extension): string
     {
-        // Only allow alphanumeric characters and a few safe characters in extension
-        $sanitized = preg_replace('/[^a-zA-Z0-9]/', '', $extension);
-        
-        // Return sanitized extension or empty string if invalid
-        return ctype_alnum($sanitized) ? $sanitized : 'tmp';
+        // Normalize and lower case
+        $ext = strtolower($extension);
+
+        // If extension contains php anywhere, treat as unsafe
+        if (strpos($ext, 'php') !== false) {
+            return 'tmp';
+        }
+
+        // Block known executable / script extensions
+        $blacklist = ['php', 'php3', 'php4', 'php5', 'phtml', 'exe', 'sh', 'bat', 'pl', 'py'];
+        if (in_array($ext, $blacklist, true)) {
+            return 'tmp';
+        }
+
+        // Only allow alphanumeric characters in extension
+        $sanitized = preg_replace('/[^a-zA-Z0-9]/', '', $ext);
+
+        return $sanitized !== '' ? $sanitized : 'tmp';
     }
     
     /**
@@ -133,9 +146,8 @@ class FileUploadService
     {
         // Get original name and sanitize it to prevent path traversal
         $originalName = $file->getClientOriginalName();
-        
-        // Check if original name contains path traversal characters
-        if (str_contains($originalName, '../') || str_contains($originalName, '..\\')) {
+        // Reject if original name contains traversal or contains directory parts
+        if (str_contains($originalName, '..') || basename($originalName) !== $originalName || preg_match('/[\\\\\/]/', $originalName)) {
             throw new \InvalidArgumentException("File name contains path traversal attempts");
         }
         

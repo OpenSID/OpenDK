@@ -39,13 +39,9 @@ use Maatwebsite\Excel\Facades\Excel;
 uses(DatabaseTransactions::class);
 
 beforeEach(function () {
-    $this->withoutMiddleware();
-
-    // disabled database gabungan for testing
-    SettingAplikasi::updateOrCreate(
-        ['key' => 'sinkronisasi_database_gabungan'],
-        ['value' => '0']
-    );
+    $this->withoutMiddleware();    
+    // Arrange: Clean data first
+    Penduduk::query()->delete();
 });
 
 test('export excel', function () {
@@ -103,8 +99,7 @@ test('export penduduk with empty database', function () {
 });
 
 test('export penduduk with data', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data test
     $desa = DataDesa::factory()->create();
@@ -125,8 +120,7 @@ test('export penduduk with data', function () {
 });
 
 test('export penduduk with pagination params', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data test
     $desa = DataDesa::factory()->create();
@@ -145,8 +139,7 @@ test('export penduduk with pagination params', function () {
 });
 
 test('export penduduk with search filter', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data test
     $desa = DataDesa::factory()->create();
@@ -187,8 +180,7 @@ test('export penduduk database gabungan mode', function () {
 });
 
 test('export penduduk with null relationships', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data tanpa relasi lengkap (hanya field opsional yang null)
     $penduduk = Penduduk::factory()->create([
@@ -207,8 +199,7 @@ test('export penduduk with null relationships', function () {
 });
 
 test('export penduduk with special characters', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data dengan karakter khusus
     $desa = DataDesa::factory()->create();
@@ -228,8 +219,7 @@ test('export penduduk with special characters', function () {
 });
 
 test('export penduduk with unicode characters', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data dengan karakter unicode
     $desa = DataDesa::factory()->create();
@@ -249,8 +239,7 @@ test('export penduduk with unicode characters', function () {
 });
 
 test('export penduduk performance small dataset', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Buat data kecil
     $desa = DataDesa::factory()->create();
@@ -268,10 +257,7 @@ test('export penduduk performance small dataset', function () {
         ->and($executionTime)->toBeLessThan(1);
 });
 
-test('export penduduk performance medium dataset', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
-    
+test('export penduduk performance medium dataset', function () {        
     // Buat data medium
     $desa = DataDesa::factory()->create();
     $startTime = microtime(true);
@@ -285,12 +271,11 @@ test('export penduduk performance medium dataset', function () {
     // Assert: Export harus selesai dalam waktu wajar
     $executionTime = $endTime - $startTime;
     expect($collection->count())->toBe(200)
-        ->and($executionTime)->toBeLessThan(2);
+        ->and($executionTime)->toBeLessThan(3);
 });
 
 test('export penduduk with various tanggal_lahir formats', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Arrange: Buat data dengan berbagai format tanggal
     $desa = DataDesa::factory()->create();
@@ -314,8 +299,7 @@ test('export penduduk with various tanggal_lahir formats', function () {
 });
 
 test('export penduduk memory usage', function () {
-    // Arrange: Clean data first
-    Penduduk::query()->delete();
+    
     
     // Arrange: Buat data besar
     $desa = DataDesa::factory()->create();

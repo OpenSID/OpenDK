@@ -185,6 +185,9 @@ class DataDesa extends Model
         return $this->hasMany(Pembangunan::class, 'desa_id', 'desa_id');
     }
 
+    /**
+     * Alias accessor/mutator for kode_desa to map to desa_id.
+     */
     public function getKodeDesaAttribute()
     {
         return $this->desa_id;

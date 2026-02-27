@@ -9,7 +9,7 @@ class DataDesaFactory extends Factory
 {
     protected $model = DataDesa::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'desa_id' => '330101'.fake()->unique()->numerify('######'), // 13 digit: kecamatan_id + 7 digits
@@ -17,7 +17,6 @@ class DataDesaFactory extends Factory
             'sebutan_desa' => $this->faker->randomElement(['Desa', 'Kelurahan']),
             'website' => $this->faker->url,
             'luas_wilayah' => $this->faker->randomFloat(2, 10, 1000),
-            'path' => null,
         ];
     }
 }

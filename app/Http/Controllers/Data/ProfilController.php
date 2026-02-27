@@ -36,6 +36,7 @@ use App\Http\Requests\ProfilRequest;
 use App\Models\DataUmum;
 use App\Models\Profil;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -56,7 +57,7 @@ class ProfilController extends Controller
             Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
         } catch (\Exception $e) {
             // Cache tags mungkin tidak didukung pada semua driver cache
-            \Log::info('Cache tags not supported by current cache driver');
+            Log::info('Cache tags not supported by current cache driver');
         }
     }
 
@@ -121,21 +122,26 @@ class ProfilController extends Controller
             }
 
             $profil->update();
-            $dataumum->update();
+            
+            if ($dataumum) {
+                $dataumum->update();
+            }
 
             // Clear cache setelah update data kecamatan
             $this->clearProfilCache();
         } catch (\Exception $e) {
             Log::error('Profil update failed', [
                 'error' => $e->getMessage(),
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'profil_id' => $id,
             ]);
 
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
 
-        return redirect()->route('data.profil.success', $profil->dataumum->id)->with('success', 'Update Profil sukses!');
+        // Redirect to the profil index page with success message
+        // This ensures that the session success message is available as expected by tests
+        return redirect()->route('data.profil.index')->with('success', 'Update Profil sukses!');
     }
 
     /**

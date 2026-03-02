@@ -32,6 +32,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use voku\helper\AntiXSS;
 
 class XssSanitization
 {
@@ -46,7 +47,10 @@ class XssSanitization
         $input = $request->all();
 
         array_walk_recursive($input, function (&$input) {
-            $input = strip_tags($input);
+            if (is_string($input)) {
+                $antiXss = new AntiXSS();
+                $input = $antiXss->xss_clean($input);
+            }
         });
 
         $request->merge(array_filter($input));

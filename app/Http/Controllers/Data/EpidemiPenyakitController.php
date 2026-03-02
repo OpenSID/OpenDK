@@ -33,12 +33,14 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportEpidemiPenyakit;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportEpidemiPenyakitRequest;
 use App\Imports\ImporEpidemiPenyakit;
 use App\Models\EpidemiPenyakit;
 use App\Models\JenisPenyakit;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -101,19 +103,16 @@ class EpidemiPenyakitController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportEpidemiPenyakitRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
             (new ImporEpidemiPenyakit($request->only('penyakit_id', 'bulan', 'tahun')))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Epidemi Penyakit import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
@@ -155,7 +154,11 @@ class EpidemiPenyakitController extends Controller
         try {
             EpidemiPenyakit::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Epidemi Penyakit update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'epidemi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -174,7 +177,11 @@ class EpidemiPenyakitController extends Controller
         try {
             EpidemiPenyakit::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Epidemi Penyakit deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'epidemi_id' => $id,
+            ]);
 
             return redirect()->route('data.epidemi-penyakit.index')->with('error', 'Data gagal dihapus!');
         }

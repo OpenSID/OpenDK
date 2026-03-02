@@ -18,7 +18,7 @@ class LaporanApbdesFactory extends Factory
             'semester' => $this->faker->numberBetween(1, 2),
             'nama_file' => $this->faker->word . '.pdf',
             'desa_id' => function () {
-                return DataDesa::factory()->create()->desa_id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
             },
             'imported_at' => $this->faker->dateTime(),
         ];

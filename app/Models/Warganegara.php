@@ -32,10 +32,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Warganegara extends Model
 {
+    use HasFactory;
+    
+    public $timestamps = false;
     protected $table = 'ref_warganegara';
-
+    
     protected $fillable = ['nama'];
+    
+    public function penduduk()
+    {
+        return $this->hasMany(Penduduk::class);
+    }
 }

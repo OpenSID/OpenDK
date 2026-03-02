@@ -42,6 +42,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -84,17 +85,22 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $status = ! empty($request->status) ? 1 : 1;
-            $request->merge(['status' => $status]);
+            $status = !empty($request->status) ? 1 : 1;
             $input = $request->validated();
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user = User::create($input);
+            // 'status' is guarded to prevent privilege escalation,
+            // so we set it explicitly after creation
+            $user->forceFill(['status' => $status])->save();
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 
             return redirect()->route('setting.user.index')->with('success', 'User berhasil ditambahkan!');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('User creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -122,8 +128,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
-        if(!$user->roles->contains('name', 'super-admin')){
-            if($id != $user->id){
+        if (!$user->roles->contains('name', 'super-admin')) {
+            if ($id != $user->id) {
                 abort(403, 'Anda tidak berhak mengubah user tersebut');
             }
         }
@@ -150,17 +156,21 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user->update($input);
-            if (! empty($request->role)) {
+            if (!empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }
             $user = Auth::user();
-            if(!$user->roles->contains('name', 'super-admin')){
+            if (!$user->roles->contains('name', 'super-admin')) {
                 return redirect()->route('dashboard')->with('success', 'User berhasil diperbarui!');
             }
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('User update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'target_user_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', $e->getMessage());
         }
@@ -178,8 +188,7 @@ class UserController extends Controller
         try {
             $user_find = User::findOrFail($id);
 
-            $user = $user_find->update($request->all());
-            $user->update([
+            $user_find->update([
                 'password' => bcrypt($request->password),
             ]);
 
@@ -187,7 +196,11 @@ class UserController extends Controller
 
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('User password update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'target_user_id' => $id,
+            ]);
             flash()->error(trans('message.user.update-error'));
 
             return back()->withInput();
@@ -211,7 +224,11 @@ class UserController extends Controller
 
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('User suspension failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'target_user_id' => $id,
+            ]);
             flash()->success(trans('general.suspend-error'));
 
             return redirect()->route('setting.user.index');
@@ -235,7 +252,11 @@ class UserController extends Controller
 
             return redirect()->route('setting.user.index');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('User activation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'target_user_id' => $id,
+            ]);
             flash()->success(trans('general.active-error'));
 
             return redirect()->route('setting.user.index');
@@ -248,22 +269,22 @@ class UserController extends Controller
     public function getDataUser()
     {
         return DataTables::of(User::datatables())
-        ->editColumn('status', function ($user) {
-            return $user->status == 1 ? 'Active' : 'Not Active';
-        })
-        ->addColumn('aksi', function ($user) {
-            if ($user->id != 1) {
-                if ($user->status == 1) {
-                    $data['suspend_url'] = route('setting.user.destroy', $user->id);
-                } else {
-                    $data['active_url'] = route('setting.user.active', $user->id);
+            ->editColumn('status', function ($user) {
+                return $user->status == 1 ? 'Active' : 'Not Active';
+            })
+            ->addColumn('aksi', function ($user) {
+                if ($user->id != 1) {
+                    if ($user->status == 1) {
+                        $data['suspend_url'] = route('setting.user.destroy', $user->id);
+                    } else {
+                        $data['active_url'] = route('setting.user.active', $user->id);
+                    }
                 }
-            }
 
-            $data['edit_url'] = route('setting.user.edit', $user->id);
+                $data['edit_url'] = route('setting.user.edit', $user->id);
 
-            return view('forms.aksi', $data);
-        })
-        ->make(true);
+                return view('forms.aksi', $data);
+            })
+            ->make(true);
     }
 }

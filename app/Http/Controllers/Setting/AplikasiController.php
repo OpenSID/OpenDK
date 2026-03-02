@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Setting;
 use App\Http\Controllers\Controller;
 use App\Models\SettingAplikasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AplikasiController extends Controller
 {
@@ -67,7 +68,11 @@ class AplikasiController extends Controller
 
             $this->browser_title = $request->input('value');
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Aplikasi setting update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'setting_id' => $id,
+            ]);
 
             return back()->with('error', 'Pengaturan aplikasi gagal diubah!');
         }

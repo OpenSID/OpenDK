@@ -9,7 +9,7 @@
 @if (isset($import_url))
     <a href="{{ $import_url }}">
         <button type="button" class="btn btn-warning btn-sm btn-social" title="{{ $import_text ?? 'Impor' }}">
-            <i class="fa fa-upload"></i>{{ $import_text ?? 'Impor' }}
+            <i class="fa fa-download"></i>{{ $import_text ?? 'Impor' }}
         </button>
     </a>
 @endif
@@ -17,7 +17,7 @@
 @if (isset($export_url))
     <a href="{{ $export_url }}">
         <button type="button" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
-            <i class="fa fa-download"></i>{{ $export_text ?? 'Ekspor' }}
+            <i class="fa fa-upload"></i>{{ $export_text ?? 'Ekspor' }}
         </button>
     </a>
 @endif

@@ -52,7 +52,9 @@ class PutusSekolahFactory extends Factory
         }
 
         return [
-            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
+            'desa_id' => function () {
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+            },
             'siswa_paud' => $this->faker->numberBetween(0, 50),
             'anak_usia_paud' => $this->faker->numberBetween(0, 100),
             'siswa_sd' => $this->faker->numberBetween(0, 100),

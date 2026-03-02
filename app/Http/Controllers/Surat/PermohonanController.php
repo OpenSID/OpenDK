@@ -42,6 +42,7 @@ use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 
@@ -62,21 +63,24 @@ class PermohonanController extends Controller
 
         // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
         return DataTables::of(Surat::permohonan()
-        ->when(!$this->isDatabaseGabungan(), function ($query) {
-            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
-        })
-        ->when($desa, function ($query) use ($desa) {
-            return $desa === 'Semua'
-                ? $query
-                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
-        }))
+            ->when(!$this->isDatabaseGabungan(), function ($query) {
+                $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
+            })
+            ->when($desa, function ($query) use ($desa) {
+                if ($desa !== 'Semua') {
+                    $desa = preg_replace('/\D/', '', $desa);
+                }
+                return $desa === 'Semua'
+                    ? $query
+                    : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+            }))
             ->addColumn('aksi', function ($row) {
                 $user = auth()->user()->pengurus_id;
-                
+
                 $isAllow = false;
                 if ($row->log_verifikasi == LogVerifikasiSurat::Operator && $user == null) {
                     $isAllow = true;
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris->id) {
+                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris && $user == $this->akun_sekretaris?->id) {
                     $isAllow = true;
                 } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat && $user == $this->akun_camat?->id) {
                     $isAllow = true;
@@ -142,7 +146,7 @@ class PermohonanController extends Controller
             $isAllow = true;
         }
 
-        if (! $isAllow) {
+        if (!$isAllow) {
             return back()->with('error', 'Anda tidak memiliki akses');
         }
 
@@ -154,9 +158,13 @@ class PermohonanController extends Controller
         try {
             $surat = Surat::findOrFail($id);
 
-            return Storage::download('public/surat/'.$surat->file);
+            return Storage::download('public/surat/' . $surat->file);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Permohonan Surat download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'surat_id' => $id,
+            ]);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
@@ -182,7 +190,11 @@ class PermohonanController extends Controller
 
             $surat->update(['log_verifikasi' => $log_verifikasi]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Permohonan Surat approval failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'surat_id' => $id,
+            ]);
         }
 
         return response()->json();
@@ -197,7 +209,11 @@ class PermohonanController extends Controller
                 'keterangan' => $request['keterangan'],
             ]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Permohonan Surat rejection failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'surat_id' => $id,
+            ]);
         }
 
         return response()->json();
@@ -257,7 +273,11 @@ class PermohonanController extends Controller
                 'jenis' => 'success',
             ]);
         } catch (ClientException $e) {
-            report($e);
+            Log::error('Permohonan Surat TTE signing failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'surat_id' => $id,
+            ]);
 
             DB::rollback();
 
@@ -290,15 +310,16 @@ class PermohonanController extends Controller
     public function getDataDitolak()
     {
         $desa = request('kode_desa');
-        $surat = Surat::ditolak()->when(!$this->isDatabaseGabungan(), function ($query) {
-            $query->whereIn('desa_id', DataDesa::pluck('desa_id'));
-        })
-        ->when($desa, function ($query) use ($desa) {
-            return $desa === 'Semua'
-                ? $query
-                : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
-        });
-        
+        $surat = Surat::ditolak()
+            ->when($desa, function ($query) use ($desa) {
+                if ($desa !== 'Semua') {
+                    $desa = preg_replace('/\D/', '', $desa);
+                }
+                return $desa === 'Semua'
+                    ? $query
+                    : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
+            });
+
         // jika bukan database gabungan maka surat akan difilter berdasarkan desa yang tersimpan di DataDesa
         return DataTables::of($surat)
             // ->editColumn('nama', function ($row) {

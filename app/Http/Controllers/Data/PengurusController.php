@@ -44,6 +44,7 @@ use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
 use App\Traits\BaganTrait;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 class PengurusController extends Controller
@@ -66,7 +67,7 @@ class PengurusController extends Controller
             return DataTables::of(Pengurus::where('status', $status))
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['arsip_url'] = route('data.pengurus.arsip', ['pengurus_id' => $row->id]);
                         $data['edit_url'] = route('data.pengurus.edit', $row->id);
                         $data['delete_url'] = route('data.pengurus.destroy', $row->id);
@@ -146,11 +147,15 @@ class PengurusController extends Controller
     public function store(PengurusRequest $request)
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             Pengurus::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->except(['foto']),
+            ]);
 
             return back()->withInput()->with('error', 'Pengurus gagal ditambah!');
         }
@@ -196,11 +201,15 @@ class PengurusController extends Controller
         $pengurus = Pengurus::findOrFail($id);
 
         try {
-            $input = $request->all();
+            $input = $request->validated();
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             $pengurus->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'pengurus_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Pengurus gagal diubah!');
         }
@@ -214,7 +223,11 @@ class PengurusController extends Controller
         try {
             $penguru->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'pengurus_id' => $penguru->id,
+            ]);
 
             return redirect()->route('data.pengurus.index')->with('error', 'Pengurus gagal dihapus!');
         }
@@ -245,7 +258,12 @@ class PengurusController extends Controller
 
             $pengurus->update(['status' => $status]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus status update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'pengurus_id' => $id,
+                'status' => $status,
+            ]);
 
             return redirect()->route('data.pengurus.index')->with('error', 'Status Pengurus gagal diubah!');
         }

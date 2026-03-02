@@ -86,10 +86,13 @@ abstract class BrowserTestCase extends BaseTestCase
             'email' => 'admin@mail.com',
             'name' => 'Administrator',
             'password' => bcrypt('Admin123!'),
-            'status' => 1,
             'gender' => 'Male',
             'address' => 'Jakarta',
         ]);
+
+        // 'status' is guarded to prevent privilege escalation,
+        // so we set it explicitly after creation
+        $admin->forceFill(['status' => 1])->save();
 
         // Ensure roles are seeded and assigned
         (new \Database\Seeders\RoleSpatieSeeder())->run();

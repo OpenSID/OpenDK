@@ -36,7 +36,9 @@ use App\Http\Requests\ProfilRequest;
 use App\Models\DataUmum;
 use App\Models\Profil;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class ProfilController extends Controller
 {
@@ -55,7 +57,7 @@ class ProfilController extends Controller
             Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
         } catch (\Exception $e) {
             // Cache tags mungkin tidak didukung pada semua driver cache
-            \Log::info('Cache tags not supported by current cache driver');
+            Log::info('Cache tags not supported by current cache driver');
         }
     }
 
@@ -92,33 +94,54 @@ class ProfilController extends Controller
             if ($request->file('file_struktur_organisasi') == '') {
                 $profil->file_struktur_organisasi = $profil->file_struktur_organisasi;
             } else {
+                // Use FileUploadService for secure file upload
                 $file = $request->file('file_struktur_organisasi');
-                $fileName = $file->getClientOriginalName();
-                $request->file('file_struktur_organisasi')->move('storage/profil/struktur_organisasi/', $fileName);
-                $profil->file_struktur_organisasi = 'storage/profil/struktur_organisasi/' . $fileName;
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($file, 'profil/struktur_organisasi', $allowedMimes);
+                $profil->file_struktur_organisasi = 'storage/' . $path;
             }
 
             if ($request->file('file_logo') == '') {
                 $profil->file_logo = $profil->file_logo;
             } else {
+                // Use FileUploadService for secure file upload
                 $fileLogo = $request->file('file_logo');
-                $fileLogoName = $fileLogo->getClientOriginalName();
-                $request->file('file_logo')->move('storage/profil/file_logo/', $fileLogoName);
-                $profil->file_logo = 'storage/profil/file_logo/' . $fileLogoName;
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($fileLogo, 'profil/file_logo', $allowedMimes);
+                $profil->file_logo = 'storage/' . $path;
             }
 
             $profil->update();
-            $dataumum->update();
+            
+            if ($dataumum) {
+                $dataumum->update();
+            }
 
             // Clear cache setelah update data kecamatan
             $this->clearProfilCache();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Profil update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => Auth::id(),
+                'profil_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Update Profil gagal!');
         }
 
-        return redirect()->route('data.profil.success', $profil->dataumum->id)->with('success', 'Update Profil sukses!');
+        // Redirect to the profil index page with success message
+        // This ensures that the session success message is available as expected by tests
+        return redirect()->route('data.profil.index')->with('success', 'Update Profil sukses!');
     }
 
     /**

@@ -38,6 +38,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
@@ -51,7 +52,7 @@ class ArtikelController extends Controller
 
         $kategori = \App\Models\ArtikelKategori::get();
 
-        return view('informasi.artikel.index', compact('page_title', 'page_description','kategori'));
+        return view('informasi.artikel.index', compact('page_title', 'page_description', 'kategori'));
     }
 
     public function getDataArtikel(Request $request)
@@ -64,7 +65,7 @@ class ArtikelController extends Controller
                 ->addColumn('aksi', function ($row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
-                    if (! auth()->guest()) {
+                    if (!auth()->guest()) {
                         $data['edit_url'] = route('informasi.artikel.edit', $row->id);
                         $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }
@@ -108,7 +109,10 @@ class ArtikelController extends Controller
 
             Artikel::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Artikel creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Simpan artikel gagal!');
         }
@@ -134,7 +138,11 @@ class ArtikelController extends Controller
 
             $artikel->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Artikel update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'artikel_id' => $artikel->id,
+            ]);
 
             return back()->withInput()->with('error', 'Artikel gagal dihapus!');
         }
@@ -147,7 +155,11 @@ class ArtikelController extends Controller
         try {
             $artikel->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Artikel deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'artikel_id' => $artikel->id,
+            ]);
 
             return redirect()->route('informasi.artikel.index')->with('error', 'Artikel gagal dihapus!');
         }

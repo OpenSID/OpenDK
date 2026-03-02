@@ -35,6 +35,7 @@ use App\Models\JenisPenyakit;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JenisPenyakitRequest;
+use Illuminate\Support\Facades\Log;
 
 class JenisPenyakitController extends Controller
 {
@@ -77,7 +78,11 @@ class JenisPenyakitController extends Controller
                 'message' => session('success')
             ]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jenis Penyakit creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->validated(),
+            ]);
             session()->flash('error', 'Jenis Penyakit gagal ditambahkan!');
 
             return response()->json([
@@ -105,7 +110,11 @@ class JenisPenyakitController extends Controller
                 'message' => session('success')
             ]);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jenis Penyakit update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'jenis_penyakit_id' => $id,
+            ]);
             session()->flash('error', 'Jenis Penyakit gagal diupdate!');
 
             return response()->json([
@@ -120,7 +129,11 @@ class JenisPenyakitController extends Controller
         try {
             JenisPenyakit::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Jenis Penyakit deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'jenis_penyakit_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal dihapus!');
         }

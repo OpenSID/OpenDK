@@ -39,6 +39,7 @@ use App\Models\LaporanApbdes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -113,7 +114,11 @@ class LaporanApbdesController extends Controller
 
             $apbdes->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan APBDes deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'apbdes_id' => $id,
+            ]);
 
             return redirect()->route('data.laporan-apbdes.index')->with('error', 'Data gagal dihapus!');
         }
@@ -147,9 +152,20 @@ class LaporanApbdesController extends Controller
         ]);
 
         try {
-            // Upload file zip temporary.
+            // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
+            
+            // Extract filename from path
+            $name = basename($path);
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
@@ -167,7 +183,10 @@ class LaporanApbdesController extends Controller
             (new ImporLaporanApbdes())
                 ->queue($extract . basename($fileExtracted[0]));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan APBDes import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -188,7 +207,11 @@ class LaporanApbdesController extends Controller
 
             return Storage::download('public/apbdes/' . $getFile->nama_file);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Laporan APBDes download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'apbdes_id' => $id,
+            ]);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
         }

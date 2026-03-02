@@ -1,19 +1,18 @@
 <?php
 
-// Note: Accessibility widget tests are complex and require specific app state
-// These simplified tests verify basic functionality
+use Tests\BrowserAuthenticatedTestCase;
 
-test('should access accessibility settings page', function () {
-    $user = \App\Models\User::first();
-    
-    $this->actingAs($user)
-        ->visit('/setting/aplikasi')
+uses(Tests\BrowserAuthenticatedTestCase::class);
+
+test('should display accessibility settings page', function () {
+    // Accessibility settings list in a table
+    visit('/setting/aplikasi')
         ->assertSee('Pengaturan Aplikasi')
         ->assertSee('Dukungan Disabilitas');
-})->group('browser', 'accessibility');
+})->group('browser', 'accessibility', 'admin');
 
-test('should display homepage for accessibility widget check', function () {
-    $this->visit('/')
-        ->assertPresent('body');
-})->group('browser', 'accessibility');
-
+test('should have accessibility widgets on homepage when enabled', function () {
+    // Check for sienna accessibility script on public homepage
+    visit('/')
+        ->assertPresent('script[src*="sienna.min.js"]');
+})->group('browser', 'accessibility', 'public');

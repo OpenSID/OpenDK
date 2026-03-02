@@ -101,8 +101,11 @@ class DataDesa extends Model
     {
         // Ganti '-' dengan spasi dan hilangkan titik '.'
         $formattedValue = str_replace('-', ' ', $value);
+        
+        // Sanitize input to prevent SQL injection
+        $sanitizedValue = preg_replace('/[^a-zA-Z0-9\s]/', '', $formattedValue);
     
-        return $query->whereRaw("REPLACE(nama, '.', '') LIKE ?", ['%' . $formattedValue . '%']);
+        return $query->where('nama', 'LIKE', '%' . $sanitizedValue . '%');
     }
     
 
@@ -182,8 +185,16 @@ class DataDesa extends Model
         return $this->hasMany(Pembangunan::class, 'desa_id', 'desa_id');
     }
 
+    /**
+     * Alias accessor/mutator for kode_desa to map to desa_id.
+     */
     public function getKodeDesaAttribute()
     {
         return $this->desa_id;
+    }
+
+     public function saranas()
+    {
+        return $this->hasMany(DataSarana::class, 'desa_id', 'desa_id');
     }
 }

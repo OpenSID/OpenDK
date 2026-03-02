@@ -153,8 +153,7 @@
                         </a>
                         <ul class="treeview-menu">
                             @if ($user->hasrole(['super-admin', 'admin-kecamatan']))
-                                <li
-                                    class="treeview {{ Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/pengurus*', 'data/jabatan*']) ? 'active' : '' }}">
+                                <li class="treeview {{ Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/data-sarana*', 'data/pengurus*', 'data/jabatan*']) ? 'active' : '' }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                                         <span class="pull-right-container">
                                             <i class="fa fa-angle-left pull-right"></i>
@@ -175,8 +174,10 @@
                                                     class="fa fa-circle-o"></i>Data
                                                 {{ config('setting.sebutan_desa') }}</a>
                                         </li>
-                                        <li
-                                            class="treeview {{ Request::is(['data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
+                                        <li {{ Request::is(['data/data-sarana*']) ? 'class=active' : '' }}>
+                                            <a href="{{ route('data.data-sarana.index') }}"><i class="fa fa-circle-o"></i>Data Sarana</a>
+                                        </li>
+                                        <li class="treeview {{ Request::is(['data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
                                             <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan
                                                 <span class="pull-right-container">
                                                     <i class="fa fa-angle-left pull-right"></i>
@@ -499,6 +500,11 @@
                                         href="{{ route('setting.user.index') }}"><i
                                             class="fa fa-circle-o"></i>Pengguna</a></li>
                             @endif
+                            <li {{ Request::is(['profile/password']) ? 'class=active' : '' }}>
+                                <a href="{{ route('profile.password') }}">
+                                    <i class="fa fa-circle-o"></i> Ganti Password
+                                </a>
+                            </li>
                             <li {{ Request::is(['otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
                                 <a href="{{ route('otp2fa.index') }}">
                                     <i class="fa fa-circle-o"></i> OTP & 2FA
@@ -537,6 +543,11 @@
                         </ul>
                     </li>
                 @else
+                    <li {{ Request::is(['profile/password']) ? 'class=active' : '' }}>
+                        <a href="{{ route('profile.password') }}">
+                            <i class="fa fa-lock"></i> Ganti Password
+                        </a>
+                    </li>
                     <li {{ Request::is(['otp-2fa*', 'otp-2fa*', 'otp/*', '2fa/*']) ? 'class=active' : '' }}>
                         <a href="{{ route('otp2fa.index') }}">
                             <i class="fa fa-shield"></i> OTP & 2FA

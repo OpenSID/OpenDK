@@ -13,9 +13,15 @@ class PembangunanFactory extends Factory
     public function definition()
     {
         return [
-            'id' => $this->faker->unique()->numberBetween(1, 999999),
+            'id' => function () {
+                // Generate unique ID by using microtime converted to an integer within safe range
+                $micro = microtime(true);
+                $id = intval(($micro - floor($micro)) * 1000000) + (time() % 1000000) * 100;
+                // Ensure it's within integer range and positive
+                return abs($id % 2000000000);
+            },
             'desa_id' => function () {
-                return DataDesa::factory()->create()->desa_id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
             },
             'judul' => $this->faker->sentence(4),
             'sumber_dana' => $this->faker->randomElement(['APBD', 'APBN', 'Swadaya', 'Bantuan']),
@@ -25,7 +31,7 @@ class PembangunanFactory extends Factory
             'pelaksana_kegiatan' => $this->faker->company,
             'lokasi' => $this->faker->address,
             'keterangan' => $this->faker->sentence(),
-            'slug' => $this->faker->slug,
+            'slug' => $this->faker->slug(),
             'status' => $this->faker->randomElement([0, 1]),
             'foto' => $this->faker->word . '.jpg',
             'perubahan_anggaran' => $this->faker->randomFloat(2, 0, 50000000),

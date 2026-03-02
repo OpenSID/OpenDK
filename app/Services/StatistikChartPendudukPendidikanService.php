@@ -96,12 +96,12 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
 
         // DIPLOMA
         $totalDiploma = (clone $query_pendidikan)
-                ->whereRaw('(pendidikan_kk_id = 6 or pendidikan_kk_id = 7)')
+                ->whereIn('pendidikan_kk_id', [6, 7])
                 ->count();
 
         // SARJANA
         $totalSarjana = (clone $query_pendidikan)
-                ->whereRaw('(pendidikan_kk_id = 8 or pendidikan_kk_id = 9 or pendidikan_kk_id = 10)')
+                ->whereIn('pendidikan_kk_id', [8, 9, 10])
                 ->count();
 
         $data[] = [

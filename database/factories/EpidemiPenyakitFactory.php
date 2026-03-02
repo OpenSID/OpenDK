@@ -58,8 +58,12 @@ class EpidemiPenyakitFactory extends Factory
         }
 
         return [
-            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
-            'penyakit_id' => JenisPenyakit::inRandomOrder()->first()->id,
+            'desa_id' => function () {
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+            },
+            'penyakit_id' => function () {
+                return \App\Models\JenisPenyakit::firstOrCreate(['nama' => 'Demam Berdarah'], ['nama' => 'Demam Berdarah'])->id;
+            },
             'jumlah_penderita' => $this->faker->numberBetween(1, 50),
             'bulan' => $this->faker->numberBetween(1, 12),
             'tahun' => $this->faker->numberBetween(2020, 2024),

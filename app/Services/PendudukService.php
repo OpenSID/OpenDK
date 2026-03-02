@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PendudukService extends BaseApiService
-{    
+{
     /**
      * Get Unique Desa
      */
@@ -48,13 +48,13 @@ class PendudukService extends BaseApiService
         $data = $this->apiRequest('/api/v1/desa', $params);
 
         return collect($data)
-        ->map(function ($item) {
-            return (object)[
-                'id' => $item['id'],
-                'kode_desa' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
-                'nama_desa' => $item['attributes']['nama_desa'] ?? null, // Ambil nama desa
-            ];
-        });
+            ->map(function ($item) {
+                return (object) [
+                    'id' => $item['id'],
+                    'kode_desa' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
+                    'nama_desa' => $item['attributes']['nama_desa'] ?? null, // Ambil nama desa
+                ];
+            });
     }
 
     /**
@@ -101,18 +101,20 @@ class PendudukService extends BaseApiService
     {
         try {
             $baseUrl = $this->settings['api_server_database_gabungan'];
-        
+
             $response = Http::post($baseUrl . '/api/v1/opendk/penduduk-nik-tanggalahir', [
                 'kode_kecamatan' => str_replace('.', '', config('profil.kecamatan_id')),
                 'nik' => $nik,
                 'tanggallahir' => $tgl_lhr,
             ]);
-        
+
             if ($response->successful() && $response->json('data')) {
                 $pendudukData = $response->json('data');
-                return new Penduduk($pendudukData);
+                $penduduk = new Penduduk();
+                $penduduk->forceFill($pendudukData);
+                return $penduduk;
             }
-        
+
             return null;
         } catch (\Exception $e) {
             Log::error('Unexpected Error', ['message' => $e->getMessage()]);

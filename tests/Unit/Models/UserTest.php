@@ -36,13 +36,29 @@ it('has fillable attributes', function () {
     $user = User::factory()->make();
 
     $fillable = [
-        'email', 'password', 'permissions', 'name', 'image', 'address',
-        'phone', 'telegram_id', 'gender', 'status', 'last_login',
-        'pengurus_id', 'otp_enabled', 'two_fa_enabled', 'otp_channel', 'otp_verified'
+        'email',
+        'password',
+        'name',
+        'image',
+        'address',
+        'phone',
+        'telegram_id',
+        'gender',
+        'pengurus_id',
+        'otp_enabled',
+        'two_fa_enabled',
+        'otp_channel',
+        'otp_verified'
     ];
 
     foreach ($fillable as $field) {
-        expect(in_array($field, $user->getFillable()))->toBeTrue();
+        expect(in_array($field, $user->getFillable()))->toBeTrue("Field '{$field}' should be fillable");
+    }
+
+    // These fields should be guarded for security
+    $guarded = ['id', 'status', 'permissions', 'last_login', 'email_verified_at'];
+    foreach ($guarded as $field) {
+        expect(in_array($field, $user->getGuarded()))->toBeTrue("Field '{$field}' should be guarded");
     }
 });
 
@@ -94,13 +110,13 @@ it('can give permissions using spatie permission', function () {
 
 it('has pengurus relationship', function () {
     $user = User::factory()->create();
-    
+
     expect($user->pengurus())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
 it('has otp tokens relationship', function () {
     $user = User::factory()->create();
-    
+
     expect($user->otpTokens())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasMany::class);
 });
 

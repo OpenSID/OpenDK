@@ -29,22 +29,65 @@ it('can create a penduduk', function () {
     expect($penduduk->nama)->toBe('John Doe');
 });
 
-it('has fillable attributes', function () {
+it('has guarded attributes', function () {
     $penduduk = Penduduk::factory()->make();
 
-    $fillable = [
-        'nama', 'nik', 'id_kk', 'kk_level', 'id_rtm', 'rtm_level', 'sex', 'tempat_lahir',
-        'tanggal_lahir', 'agama_id', 'pendidikan_kk_id', 'pendidikan_id', 'pendidikan_sedang_id',
-        'pekerjaan_id', 'status_kawin', 'warga_negara_id', 'dokumen_pasport', 'dokumen_kitas',
-        'ayah_nik', 'ibu_nik', 'nama_ayah', 'nama_ibu', 'foto', 'golongan_darah_id', 'id_cluster',
-        'status', 'alamat_sebelumnya', 'alamat_sekarang', 'status_dasar', 'hamil', 'cacat_id',
-        'sakit_menahun_id', 'akta_lahir', 'akta_perkawinan', 'tanggal_perkawinan', 'akta_perceraian',
-        'tanggal_perceraian', 'cara_kb_id', 'telepon', 'tanggal_akhir_pasport', 'no_kk',
-        'no_kk_sebelumnya', 'desa_id', 'created_at', 'updated_at', 'imported_at', 'id_pend_desa'
+    $guarded = [
+        'nama',
+        'nik',
+        'id_kk',
+        'kk_level',
+        'id_rtm',
+        'rtm_level',
+        'sex',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'agama_id',
+        'pendidikan_kk_id',
+        'pendidikan_id',
+        'pendidikan_sedang_id',
+        'pekerjaan_id',
+        'status_kawin',
+        'warga_negara_id',
+        'dokumen_pasport',
+        'dokumen_kitas',
+        'ayah_nik',
+        'ibu_nik',
+        'nama_ayah',
+        'nama_ibu',
+        'foto',
+        'golongan_darah_id',
+        'id_cluster',
+        'status',
+        'alamat_sebelumnya',
+        'alamat_sekarang',
+        'status_dasar',
+        'hamil',
+        'cacat_id',
+        'sakit_menahun_id',
+        'akta_lahir',
+        'akta_perkawinan',
+        'tanggal_perkawinan',
+        'akta_perceraian',
+        'tanggal_perceraian',
+        'cara_kb_id',
+        'telepon',
+        'tanggal_akhir_pasport',
+        'no_kk',
+        'no_kk_sebelumnya',
+        'desa_id',
+        'kecamatan_id',
+        'kabupaten_id',
+        'provinsi_id',
+        'tahun',
+        'created_at',
+        'updated_at',
+        'imported_at',
+        'id_pend_desa'
     ];
 
-    foreach ($fillable as $field) {
-        expect(in_array($field, $penduduk->getFillable()))->toBeTrue();
+    foreach ($guarded as $field) {
+        expect(in_array($field, $penduduk->getGuarded()))->toBeTrue();
     }
 });
 
@@ -69,7 +112,7 @@ it('can get penduduk aktif with year filter', function () {
     $activePenduduk = $penduduk->getPendudukAktif('Semua', $currentYear)->get();
 
     expect($activePenduduk->count())->toBeGreaterThanOrEqual(1);
-    expect($activePenduduk->contains('id',$penduduk->id))->toBeTrue();
+    expect($activePenduduk->contains('id', $penduduk->id))->toBeTrue();
 });
 
 it('can get penduduk aktif with desa filter', function () {
@@ -85,30 +128,30 @@ it('can get penduduk aktif with desa filter', function () {
 });
 
 it('has hidup scope', function () {
-    $activePenduduk = Penduduk::factory()->create(['status_dasar' => 1]);    
+    $activePenduduk = Penduduk::factory()->create(['status_dasar' => 1]);
 
     $hidupPenduduk = Penduduk::hidup()->get();
 
-    expect($hidupPenduduk->count())->toBeGreaterThanOrEqual(1);    
+    expect($hidupPenduduk->count())->toBeGreaterThanOrEqual(1);
     expect($hidupPenduduk->contains('id', $activePenduduk->id))->toBeTrue();
 });
 
 it('has pekerjaan relationship', function () {
     $penduduk = Penduduk::factory()->create();
-    
+
     expect($penduduk->pekerjaan())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
 
 it('has pendidikan_kk relationship', function () {
     $penduduk = Penduduk::factory()->create();
-    
+
     expect($penduduk->pendidikan_kk())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
 it('has keluarga relationship', function () {
     $penduduk = Penduduk::factory()->create();
-    
+
     expect($penduduk->keluarga())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
@@ -142,7 +185,7 @@ it('has lembagaAnggota relationship', function () {
 
 it('has pendudukSex relationship', function () {
     $penduduk = Penduduk::factory()->create();
-    
+
     expect($penduduk->pendudukSex())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\BelongsTo::class);
 });
 

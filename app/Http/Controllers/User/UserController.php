@@ -87,9 +87,11 @@ class UserController extends Controller
         try {
             $status = !empty($request->status) ? 1 : 1;
             $input = $request->validated();
-            $input['status'] = $status;
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user = User::create($input);
+            // 'status' is guarded to prevent privilege escalation,
+            // so we set it explicitly after creation
+            $user->forceFill(['status' => $status])->save();
             $roles = $request->input('role') ? $request->input('role') : [];
             $user->assignRole($roles);
 

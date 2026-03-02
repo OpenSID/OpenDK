@@ -2,12 +2,29 @@
 
 use App\Services\PendudukService;
 use App\Models\Penduduk;
+use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Http;
+
+// Seed required settings for BaseApiService constructor
+beforeEach(function () {
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'api_server_database_gabungan'],
+        ['value' => 'http://localhost:8000']
+    );
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'api_key_database_gabungan'],
+        ['value' => 'test-api-key']
+    );
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '1']
+    );
+});
 
 // PendudukService Testing
 it('can instantiate penduduk service', function () {
     $service = new PendudukService();
-    
+
     expect($service)->toBeInstanceOf(PendudukService::class);
 });
 
@@ -24,7 +41,7 @@ it('can get jumlah penduduk from API', function () {
 
     $service = new PendudukService();
     $jumlah = $service->jumlahPenduduk();
-    
+
     expect($jumlah)->toBe(100);
 });
 
@@ -39,7 +56,7 @@ it('returns 0 when API response has no total', function () {
 
     $service = new PendudukService();
     $jumlah = $service->jumlahPenduduk();
-    
+
     expect($jumlah)->toBe(0);
 });
 
@@ -65,7 +82,7 @@ it('can get desa list from API', function () {
 
     $service = new PendudukService();
     $desaList = $service->desa();
-    
+
     expect($desaList)->toHaveCount(2);
     expect($desaList->first()->id)->toBe(1);
     expect($desaList->first()->kode_desa)->toBe('3201010001');
@@ -105,7 +122,7 @@ it('can export penduduk data from API', function () {
 
     $service = new PendudukService();
     $exportData = $service->exportPenduduk(10, 1, 'test');
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()['ID'])->toBe(1);
     expect($exportData->first()['nama'])->toBe('John Doe');
@@ -123,7 +140,7 @@ it('can export penduduk data from API', function () {
 it('can check penduduk by NIK and birth date', function () {
     Http::fake([
         '*/api/v1/opendk/penduduk-nik-tanggalahir' => Http::response([
-            'data' => [                
+            'data' => [
                 'nama' => 'John Doe',
                 'nik' => '1234567890123456'
             ]
@@ -132,8 +149,8 @@ it('can check penduduk by NIK and birth date', function () {
 
     $service = new PendudukService();
     $penduduk = $service->cekPendudukNikTanggalLahir('1234567890123456', '1990-01-01');
-    
-    expect($penduduk)->toBeInstanceOf(Penduduk::class);    
+
+    expect($penduduk)->toBeInstanceOf(Penduduk::class);
     expect($penduduk->nama)->toBe('John Doe');
     expect($penduduk->nik)->toBe('1234567890123456');
 });
@@ -147,7 +164,7 @@ it('returns null when penduduk not found by NIK', function () {
 
     $service = new PendudukService();
     $penduduk = $service->cekPendudukNikTanggalLahir('9999999999999999', '1990-01-01');
-    
+
     expect($penduduk)->toBeNull();
 });
 
@@ -158,7 +175,7 @@ it('returns null when API request fails', function () {
 
     $service = new PendudukService();
     $penduduk = $service->cekPendudukNikTanggalLahir('1234567890123456', '1990-01-01');
-    
+
     expect($penduduk)->toBeNull();
 });
 
@@ -169,7 +186,7 @@ it('handles exceptions gracefully', function () {
 
     $service = new PendudukService();
     $penduduk = $service->cekPendudukNikTanggalLahir('1234567890123456', '1990-01-01');
-    
+
     expect($penduduk)->toBeNull();
 });
 
@@ -186,7 +203,7 @@ it('can apply filters to jumlah penduduk', function () {
 
     $service = new PendudukService();
     $jumlah = $service->jumlahPenduduk(['filter[sex]' => '1']);
-    
+
     expect($jumlah)->toBe(50);
 });
 
@@ -205,7 +222,7 @@ it('can apply filters to desa list', function () {
 
     $service = new PendudukService();
     $desaList = $service->desa(['filter[nama]' => 'Filtered']);
-    
+
     expect($desaList)->toHaveCount(1);
     expect($desaList->first()->nama_desa)->toBe('Desa Filtered');
 });
@@ -232,7 +249,7 @@ it('can export penduduk with pagination', function () {
 
     $service = new PendudukService();
     $exportData = $service->exportPenduduk(2, 1, 'test');
-    
+
     expect($exportData)->toHaveCount(2);
     expect($exportData->first()['nama'])->toBe('John Doe');
     expect($exportData->last()['nama'])->toBe('Jane Doe');
@@ -253,7 +270,7 @@ it('can export penduduk with search term', function () {
 
     $service = new PendudukService();
     $exportData = $service->exportPenduduk(10, 1, 'Search');
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()['nama'])->toBe('John Search');
 });
@@ -273,7 +290,7 @@ it('handles missing attributes in export data', function () {
 
     $service = new PendudukService();
     $exportData = $service->exportPenduduk(10, 1, 'test');
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()['nama'])->toBe('John Doe');
     expect($exportData->first()['nik'])->toBe('');

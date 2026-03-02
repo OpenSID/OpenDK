@@ -91,11 +91,20 @@ Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Instal
 
 // Redirect if apps not installed
 Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
+    // Authentication routes dengan rate limiting untuk mencegah brute force
     Auth::routes([
         'register' => false,
     ]);
 
-    // OTP Routes
+    // Override default login route dengan rate limiter
+    // Route ini menggantikan /login POST dari Auth::routes()
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
+        Route::post('/login', 'LoginController@login')
+            ->middleware('throttle:login')
+            ->name('login.post');
+    });
+
+    // OTP Routes dengan rate limiting untuk mencegah OTP abuse
     Route::namespace('\App\Http\Controllers\Auth')->middleware('otp.enabled')->group(function () {
         // OTP Activation (requires auth)
         Route::middleware('auth')->group(function () {
@@ -107,16 +116,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::get('/otp/deactivate', 'OtpController@deactivate')->name('otp.deactivate');
         });
 
-        // OTP Login (guest only)
-        Route::middleware('guest')->group(function () {
+        // OTP Login (guest only) dengan rate limiting
+        Route::middleware(['guest', 'throttle:otp'])->group(function () {
             Route::get('/otp/login', 'OtpController@showLoginForm')->name('otp.login');
             Route::post('/otp/request-login', 'OtpController@requestLoginOtp')->name('otp.request-login');
             Route::get('/otp/verify-login', 'OtpController@showVerifyLoginForm')->name('otp.verify-login');
             Route::post('/otp/verify-login', 'OtpController@loginWithOtp');
         });
 
-        // OTP Resend (both auth and guest)
-        Route::post('/otp/resend', 'OtpController@resendOtp')->name('otp.resend');
+        // OTP Resend (both auth and guest) dengan rate limiting
+        Route::post('/otp/resend', 'OtpController@resendOtp')
+            ->middleware('throttle:otp')
+            ->name('otp.resend');
     });
 
     // 2FA Routes
@@ -137,8 +148,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::get('/2fa/deactivate', 'TwoFactorController@deactivate')->name('2fa.deactivate');
     });
 
-    // 2FA Login Routes (guest access)
-    Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
+    // 2FA Login Routes (guest access) dengan rate limiting
+    Route::namespace('\App\Http\Controllers\Auth')->middleware(['guest', 'throttle:login'])->group(function () {
         Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');
         Route::post('/2fa/verify-login', 'TwoFactorController@verifyLogin');
     });

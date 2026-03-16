@@ -33,10 +33,12 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportPutusSekolah;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportPutusSekolahRequest;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -87,20 +89,16 @@ class PutusSekolahController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportPutusSekolahRequest $request)
     {
-        $this->validate($request, [
-            'desa_id' => 'required|unique:das_putus_sekolah,desa_id',
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'tahun' => 'required|unique:das_putus_sekolah',
-            'semester' => 'required|unique:das_putus_sekolah',
-        ]);
-
         try {
             (new ImporPutusSekolah($request->only(['desa_id', 'semester', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Putus Sekolah import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -147,7 +145,11 @@ class PutusSekolahController extends Controller
         try {
             PutusSekolah::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Putus Sekolah update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'putus_sekolah_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -166,7 +168,11 @@ class PutusSekolahController extends Controller
         try {
             PutusSekolah::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Putus Sekolah deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'putus_sekolah_id' => $id,
+            ]);
 
             return redirect()->route('data.putus-sekolah.index')->with('error', 'Data gagal dihapus!');
         }

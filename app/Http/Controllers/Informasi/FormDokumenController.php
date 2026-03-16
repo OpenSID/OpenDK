@@ -41,6 +41,7 @@ use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DokumenRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FormDokumenController extends Controller
 {
@@ -50,7 +51,7 @@ class FormDokumenController extends Controller
     {
         $page_title = 'Dokumen';
         $page_description = 'Daftar Dokumen';
-        $jenis_dokumen  = JenisDokumen::all();
+        $jenis_dokumen = JenisDokumen::all();
 
         return view('informasi.form_dokumen.index', compact('page_title', 'page_description', 'jenis_dokumen'));
     }
@@ -71,13 +72,13 @@ class FormDokumenController extends Controller
 
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
-                if (! auth()->guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url'] = route('informasi.form-dokumen.edit', $row->id);
                     $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
                 }
 
                 $data['download_url'] = route('informasi.form-dokumen.download', $row->id);
-                
+
 
                 return view('forms.aksi', $data);
             })
@@ -123,10 +124,10 @@ class FormDokumenController extends Controller
                 $publishedAt = now();
                 $input['published_at'] = $publishedAt;
 
-                if($input['retention_days'] > 0){
+                if ($input['retention_days'] > 0) {
                     $retentionDays = intval($input['retention_days']);
                     $input['expired_at'] = $publishedAt->copy()->addDays($retentionDays);
-                }else{
+                } else {
                     $input['expired_at'] = null;
                 }
             } else {
@@ -138,7 +139,10 @@ class FormDokumenController extends Controller
 
             FormDokumen::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Form Dokumen creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('error', 'Dokumen gagal disimpan!');
         }
@@ -149,7 +153,7 @@ class FormDokumenController extends Controller
     public function edit(FormDokumen $dokumen)
     {
         $page_title = 'Dokumen';
-        $page_description = 'Ubah Dokumen '.$dokumen->nama_dokumen;
+        $page_description = 'Ubah Dokumen ' . $dokumen->nama_dokumen;
 
         $jumlah_waktu = 0;
         $tipe_waktu = TipeWaktuFormDokumen::Hari;
@@ -159,12 +163,12 @@ class FormDokumenController extends Controller
         $tipe_waktu_options = TipeWaktuFormDokumen::options();
 
         if ($dokumen->retention_days > 0) {
-            if ($dokumen->retention_days >= KonversiHariFormDokumen::Tahun ) {
+            if ($dokumen->retention_days >= KonversiHariFormDokumen::Tahun) {
                 $sisa_hari = $dokumen->retention_days % KonversiHariFormDokumen::Tahun;
-                if($sisa_hari == 0){
+                if ($sisa_hari == 0) {
                     $jumlah_waktu = $dokumen->retention_days / KonversiHariFormDokumen::Tahun;
                     $tipe_waktu = TipeWaktuFormDokumen::Tahun;
-                }else{
+                } else {
                     $jumlah_waktu = floor($dokumen->retention_days / KonversiHariFormDokumen::Bulan);
                     $tipe_waktu = TipeWaktuFormDokumen::Bulan;
                 }
@@ -176,9 +180,9 @@ class FormDokumenController extends Controller
                 $tipe_waktu = TipeWaktuFormDokumen::Hari;
             }
         }
-        if($dokumen->is_published){
+        if ($dokumen->is_published) {
             $status = StatusFormDokumen::Terbit;
-        }else{
+        } else {
             $status = StatusFormDokumen::Draft;
         }
 
@@ -201,10 +205,10 @@ class FormDokumenController extends Controller
                 $publishedAt = now();
                 $input['published_at'] = $publishedAt;
 
-                if($input['retention_days'] > 0){
+                if ($input['retention_days'] > 0) {
                     $retentionDays = intval($input['retention_days']);
                     $input['expired_at'] = $publishedAt->copy()->addDays($retentionDays);
-                }else{
+                } else {
                     $input['expired_at'] = null;
                 }
             } else {
@@ -216,7 +220,11 @@ class FormDokumenController extends Controller
 
             $dokumen->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Form Dokumen update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'dokumen_id' => $dokumen->id,
+            ]);
 
             return back()->withInput()->with('error', 'Dokumen gagal diubah!');
         }
@@ -229,7 +237,11 @@ class FormDokumenController extends Controller
         try {
             $dokumen->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Form Dokumen deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'dokumen_id' => $dokumen->id,
+            ]);
 
             return redirect()->route('informasi.form-dokumen.index')->with('error', 'Dokumen gagal dihapus!');
         }
@@ -242,7 +254,11 @@ class FormDokumenController extends Controller
         try {
             return response()->download($dokumen->file_dokumen);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Form Dokumen download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'dokumen_id' => $dokumen->id,
+            ]);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
         }

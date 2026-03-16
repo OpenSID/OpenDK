@@ -89,9 +89,14 @@ class AnggaranRealisasiChartService
             $belanja_tidak_langsung = 0;
 
             $query_result = DB::table('das_anggaran_realisasi')
-                ->selectRaw('sum(total_anggaran) as total_anggaran, sum(total_belanja) as total_belanja,
-                sum(belanja_pegawai) as belanja_pegawai, sum(belanja_barang_jasa) as belanja_barang_jasa,
-                sum(belanja_modal) as belanja_modal, sum(belanja_tidak_langsung) as belanja_tidak_langsung')
+                ->select(
+                    DB::raw('sum(total_anggaran) as total_anggaran'),
+                    DB::raw('sum(total_belanja) as total_belanja'),
+                    DB::raw('sum(belanja_pegawai) as belanja_pegawai'),
+                    DB::raw('sum(belanja_barang_jasa) as belanja_barang_jasa'),
+                    DB::raw('sum(belanja_modal) as belanja_modal'),
+                    DB::raw('sum(belanja_tidak_langsung) as belanja_tidak_langsung')
+                )
                 ->where('profil_id', '=', $profil_id);
 
             if ($mid != 'Semua') {

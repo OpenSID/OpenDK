@@ -34,6 +34,7 @@ namespace App\Providers;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Penduduk;
+use App\Services\CacheService;
 use App\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
@@ -54,7 +55,12 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {}
+    public function register()
+    {
+        $this->app->singleton(CacheService::class, function () {
+            return new CacheService();
+        });
+    }
 
     /**
      * Bootstrap any application services.
@@ -117,23 +123,21 @@ class AppServiceProvider extends ServiceProvider
         // });
 
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('nik', $value)->whereRaw("tanggal_lahir = '" . $parameters[0] . "'")->exists();
+            $query = DB::table('das_penduduk')
+            ->where('nik', $value)
+            ->where('tanggal_lahir', $parameters[0])
+            ->exists();
 
-            if ($query) {
-                return true;
-            }
-
-            return false;
+            return $query;
         });
 
         Validator::extend('password_exists', function ($attribute, $value, $parameters) {
-            $query = DB::table('das_penduduk')->where('tanggal_lahir', $value)->whereRaw("nik = '" . $parameters[0] . "'")->exists();
+            $query = DB::table('das_penduduk')
+            ->where('tanggal_lahir', $value)
+            ->where('nik', $parameters[0])
+            ->exists();
 
-            if ($query) {
-                return true;
-            }
-
-            return false;
+            return $query;
         });
 
         Validator::extend('unique_key', function ($attribute, $value, $parameters) {

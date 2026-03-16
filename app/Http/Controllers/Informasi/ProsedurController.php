@@ -36,6 +36,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProsedurRequest;
+use Illuminate\Support\Facades\Log;
 
 class ProsedurController extends Controller
 {
@@ -55,7 +56,7 @@ class ProsedurController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = route('informasi.prosedur.show', $row->id);
 
-                if (! auth()->guest()) {
+                if (!auth()->guest()) {
                     $data['edit_url'] = route('informasi.prosedur.edit', $row->id);
                     $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
                 }
@@ -87,7 +88,10 @@ class ProsedurController extends Controller
             $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
             Prosedur::create($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Prosedur creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Prosedur gagal disimpan!');
         }
@@ -98,7 +102,7 @@ class ProsedurController extends Controller
     public function show(Prosedur $prosedur)
     {
         $page_title = 'Prosedur';
-        $page_description = 'Detail Prosedur : '.$prosedur->judul_prosedur;
+        $page_description = 'Detail Prosedur : ' . $prosedur->judul_prosedur;
 
         return view('informasi.prosedur.show', compact('page_title', 'page_description', 'prosedur'));
     }
@@ -106,7 +110,7 @@ class ProsedurController extends Controller
     public function edit(Prosedur $prosedur)
     {
         $page_title = 'Prosedur';
-        $page_description = 'Ubah Prosedur : '.$prosedur->judul_prosedur;
+        $page_description = 'Ubah Prosedur : ' . $prosedur->judul_prosedur;
 
         return view('informasi.prosedur.edit', compact('page_title', 'page_description', 'prosedur'));
     }
@@ -120,10 +124,14 @@ class ProsedurController extends Controller
             if ($request->hasFile('file_prosedur')) {
                 $input['mime_type'] = $request->file('file_prosedur')->getClientMimeType();
             }
-            
+
             $prosedur->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Prosedur update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'prosedur_id' => $prosedur->id,
+            ]);
 
             return back()->with('error', 'Prosedur gagal disimpan!');
         }
@@ -136,7 +144,11 @@ class ProsedurController extends Controller
         try {
             $prosedur->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Prosedur deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'prosedur_id' => $prosedur->id,
+            ]);
 
             return back()->withInput()->with('error', 'Prosedur gagal dihapus!');
         }
@@ -149,7 +161,11 @@ class ProsedurController extends Controller
         try {
             return response()->download($prosedur->file_prosedur);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Prosedur download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'prosedur_id' => $prosedur->id,
+            ]);
 
             return back()->with('error', 'Dokumen prosedur tidak ditemukan');
         }

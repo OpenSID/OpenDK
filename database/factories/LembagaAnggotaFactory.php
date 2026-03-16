@@ -14,10 +14,16 @@ class LembagaAnggotaFactory extends Factory
     public function definition()
     {
         return [
-            'lembaga_id' => Lembaga::factory(),
-            'penduduk_id' => Penduduk::factory(),
+            'lembaga_id' => function () {
+                return Lembaga::factory()->create()->id;
+            },
+            'penduduk_id' => function () {
+                return Penduduk::factory()->create()->id;
+            },
             'no_anggota' => $this->faker->unique()->numerify('ANGG###'),
-            'jabatan' => $this->faker->numberBetween(1,5), // Assuming Jabatan factory exists
+            'jabatan' => function () {
+                return \App\Models\Jabatan::firstOrCreate(['nama' => 'Ketua'], ['nama' => 'Ketua'])->id;
+            },
             'no_sk_jabatan' => $this->faker->bothify('SKJ-####'),
             'no_sk_pengangkatan' => $this->faker->bothify('SKP-####'),
             'tgl_sk_pengangkatan' => $this->faker->date(),

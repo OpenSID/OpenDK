@@ -45,10 +45,22 @@ class Pengurus extends Model
 
     protected $table = 'das_pengurus';
 
+    /**
+     * Field yang dilindungi dari mass assignment.
+     *
+     * Field-field ini bersifat sensitif dan tidak boleh diubah sembarangan
+     * melalui mass assignment untuk keamanan data pengurus.
+     *
+     * @var array<int, string>
+     */
     protected $guarded = [
         'id',
+        'nik',                  // Identitas unik pengurus
+        'nip',                  // Nomor Induk Pegawai
+        'status',               // Status aktif/tidak - mencegah self-activation
+        'jabatan_id',           // ID jabatan - mencegah promosi ilegal
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**

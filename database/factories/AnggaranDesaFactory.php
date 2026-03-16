@@ -14,7 +14,7 @@ class AnggaranDesaFactory extends Factory
     {
         return [
             'desa_id' => function () {
-                return DataDesa::factory()->create()->desa_id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
             },
             'no_akun' => $this->faker->numerify('####.##.##'),
             'nama_akun' => $this->faker->words(3, true),

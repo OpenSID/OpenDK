@@ -103,7 +103,7 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
                 $desa->desa_id,
                 $desa->nama,
                 $desa->sebutan_desa ?? 'Desa',
-                $desa->website,
+                $desa->website ?? '',
                 $desa->luas_wilayah ?? 0,
                 $desa->created_at ? $desa->created_at->format('d/m/Y H:i:s') : '',
                 $desa->updated_at ? $desa->updated_at->format('d/m/Y H:i:s') : '',

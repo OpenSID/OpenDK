@@ -57,7 +57,8 @@ class StatistikPendudukService extends BaseApiService
                 }
                 return $tahun;
             }
-            return Penduduk::select(DB::raw('MIN(YEAR(created_at)) as min_year'))->value('min_year') ?? date('Y');
+            $minYear = Penduduk::min('created_at');
+            return  $minYear ? date('Y', strtotime($minYear)) : date('Y');
         });
     }
 
@@ -221,8 +222,10 @@ class StatistikPendudukService extends BaseApiService
         } else {
             // Get Data KTP Penduduk Terpenuhi
             $ktpWajib = (clone $queryTotalPendudukAktif)
-                ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 >= ? ', 17)
-                ->orWhere('status_kawin', '<>', 1) // Status Selain Belum Kawin
+                ->where(function($query) {
+                    $query->whereRaw('TIMESTAMPDIFF(YEAR, das_penduduk.tanggal_lahir, CURDATE()) >= ?', [17])
+                          ->orWhere('status_kawin', '<>', 1); // Status Selain Belum Kawin
+                })
                 ->count();
 
             $ktpTerpenuhi = (clone $queryTotalPendudukAktif)

@@ -59,25 +59,43 @@ class User extends Authenticatable implements JWTSubject
     public const DEFAULT_PASSWORD = '12345678';
 
     /**
-     * {@inheritDoc}
+     * Field yang diizinkan untuk mass assignment.
+     *
+     * Field-field sensitif seperti status, permissions, dll tidak diizinkan
+     * di sini untuk mencegah privilege escalation.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
         'email',
         'password',
-        'permissions',
         'name',
         'image',
         'address',
         'phone',
         'telegram_id',
         'gender',
-        'status',
-        'last_login',
         'pengurus_id',
         'otp_enabled',
         'two_fa_enabled',
         'otp_channel',
         'otp_verified',
+    ];
+
+    /**
+     * Field yang dilindungi dari mass assignment.
+     *
+     * Field-field ini bersifat sensitif dan tidak boleh diubah sembarangan
+     * untuk mencegah privilege escalation dan bypass keamanan.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = [
+        'id',
+        'status',           // Mencegah self-activation/admin promotion
+        'permissions',      // Mencegah permission bypass
+        'last_login',       // System managed field
+        'email_verified_at', // System managed field
     ];
 
     /**
@@ -117,12 +135,12 @@ class User extends Authenticatable implements JWTSubject
 
     public static function datatables()
     {
-        return static::select('name', 'address', 'status', 'id', 'email', 'created_at', 'phone', 'telegram_id', 'otp_channel', 'otp_verified');
+        return static::select('users.name', 'users.address', 'users.status', 'users.id', 'users.email', 'users.created_at', 'users.phone', 'users.telegram_id', 'users.otp_channel', 'users.otp_verified');
     }
 
     public function getFotoAttribute()
     {
-        return $this->attributes['image'] ? Storage::url('user/'.$this->attributes['image']) : null;
+        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
     }
 
     public function scopeSuspend($query, $email)

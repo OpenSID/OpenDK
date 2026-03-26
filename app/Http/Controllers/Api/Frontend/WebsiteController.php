@@ -69,7 +69,7 @@ class WebsiteController extends BaseController
             $websiteData = $this->websiteApiRepository->getAllWebsiteData();              
             return $this->fractal([
                 ['id' => 'profile',  (new ProfilTransformer())->transform(Profil::with(['dataUmum'])->first())],
-                ['id' => 'desa',  $this->desaApiRepository->getDataArray()],
+                ['id' => 'desa',  $this->desaApiRepository->data()],
                 ['id' => 'events',  $websiteData['events']],
                 ['id' => 'medsos',  $websiteData['medsos']],
                 ['id' => 'media_terkait',  $websiteData['media_terkait']],

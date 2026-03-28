@@ -29,290 +29,156 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Helpers\IpAddress;
 use App\Models\User;
+use App\Services\OtpService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 uses(DatabaseTransactions::class);
 
 beforeEach(function () {
-    // Logout any authenticated user
     auth()->logout();
+    Mail::fake();
 });
 
-// ============================================
-// IP Detection Tests
-// ============================================
+test('login is throttled after too many failed attempts for the same email', function () {
+    $user = User::factory()->create([
+        'email' => 'login-throttle@example.com',
+        'password' => Hash::make('password'),
+        'status' => 1,
+    ]);
 
-describe('IpAddress Helper - IP Detection', function () {
-    test('detects cloudflare connecting ip', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('CF-Connecting-IP', '1.2.3.4');
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->toBe('1.2.3.4');
-    })->group('security', 'ip-detection', 'cloudflare');
-
-    test('detects x-forwarded-for header', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('X-Forwarded-For', '5.6.7.8');
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->toBe('5.6.7.8');
-    })->group('security', 'ip-detection', 'proxy');
-
-    test('parses first ip from x-forwarded-for with multiple ips', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('X-Forwarded-For', '1.2.3.4, 10.0.0.1, 172.16.0.1');
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->toBe('1.2.3.4');
-    })->group('security', 'ip-detection', 'proxy');
-
-    test('detects x-real-ip header', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('X-Real-IP', '9.10.11.12');
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->toBe('9.10.11.12');
-    })->group('security', 'ip-detection', 'nginx');
-
-    test('falls back to request ip when no proxy headers', function () {
-        $request = Request::create('/login', 'POST', [], [], [], ['REMOTE_ADDR' => '192.168.1.100']);
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->toBe('192.168.1.100');
-    })->group('security', 'ip-detection');
-
-    test('rejects invalid ip format', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('X-Forwarded-For', '"><script>alert("xss")</script>');
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->not->toBe('"><script>alert("xss")</script>');
-    })->group('security', 'ip-validation', 'xss');
-
-    test('filters private ips when trustPrivateIp is false', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('X-Forwarded-For', '192.168.1.1');
-
-        $ip = IpAddress::getRealIp($request, trustPrivateIp: false);
-
-        // Should fall back to $request->ip() instead
-        expect($ip)->not->toBe('192.168.1.1');
-    })->group('security', 'ip-detection', 'private-ip');
-
-    test('accepts private ips when trustPrivateIp is true', function () {
-        $request = Request::create('/login', 'POST');
-        $request->server->set('REMOTE_ADDR', '192.168.1.100');
-
-        $ip = IpAddress::getRealIp($request, trustPrivateIp: true);
-
-        expect($ip)->toBe('192.168.1.100');
-    })->group('security', 'ip-detection', 'private-ip');
-});
-
-// ============================================
-// Rate Limit Key Generation Tests
-// ============================================
-
-describe('IpAddress Helper - Rate Limit Key', function () {
-    test('generates rate limit key with ip and email', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('CF-Connecting-IP', '1.2.3.4');
-        $request->merge(['email' => 'user@example.com']);
-
-        $key = IpAddress::getRateLimitKey($request, 'user@example.com');
-
-        expect($key)->toBe('1.2.3.4|user@example.com');
-    })->group('security', 'rate-limit', 'key-generation');
-
-    test('sanitizes email in rate limit key', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('CF-Connecting-IP', '1.2.3.4');
-
-        $key = IpAddress::getRateLimitKey($request, '  User@Example.COM  ');
-
-        expect($key)->toBe('1.2.3.4|user@example.com');
-    })->group('security', 'rate-limit', 'sanitization');
-
-    test('generates key with only ip when email is null', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('CF-Connecting-IP', '1.2.3.4');
-
-        $key = IpAddress::getRateLimitKey($request);
-
-        expect($key)->toBe('1.2.3.4');
-    })->group('security', 'rate-limit', 'key-generation');
-});
-
-// ============================================
-// Login Rate Limiting Tests
-// ============================================
-
-describe('Login Rate Limiting', function () {
-    test('allows login within rate limit', function () {
-        $user = User::factory()->create([
-            'password' => bcrypt('password'),
+    for ($attempt = 0; $attempt < 10; $attempt++) {
+        $response = $this->from(route('login'))->post(route('login'), [
+            'email' => $user->email,
+            'password' => 'wrong-password',
         ]);
 
-        // Attempt login 5 times (under the limit of 10)
-        for ($i = 0; $i < 5; $i++) {
-            $response = $this->post(route('login'), [
-                'email' => $user->email,
-                'password' => 'wrongpassword',
-            ]);
-            $this->assertNotEquals(429, $response->status());
-        }
-    })->group('security', 'rate-limit', 'login');
+        $response->assertRedirect(route('login'));
+    }
 
-    test('blocks login after rate limit exceeded', function () {
-        $user = User::factory()->create([
-            'password' => bcrypt('password'),
-        ]);
-
-        // Clear any existing rate limits
-        Cache::flush();
-
-        // Attempt login 11 times (exceeds limit of 10)
-        $statusCode = null;
-        for ($i = 0; $i < 12; $i++) {
-            $response = $this->post(route('login'), [
-                'email' => $user->email,
-                'password' => 'wrongpassword',
-            ]);
-            $statusCode = $response->status();
-        }
-
-        // Last request should be rate limited
-        expect($statusCode)->toBe(429);
-    })->group('security', 'rate-limit', 'login');
-
-    test('different email bypasses rate limit', function () {
-        $user1 = User::factory()->create(['email' => 'user1@example.com']);
-        $user2 = User::factory()->create(['email' => 'user2@example.com']);
-
-        // Exhaust rate limit for user1
-        for ($i = 0; $i < 11; $i++) {
-            $this->post(route('login'), [
-                'email' => 'user1@example.com',
-                'password' => 'wrong',
-            ]);
-        }
-
-        // user2 should still be able to attempt login
-        $response = $this->post(route('login'), [
-            'email' => 'user2@example.com',
-            'password' => 'wrong',
-        ]);
-
-        $this->assertNotEquals(429, $response->status());
-    })->group('security', 'rate-limit', 'login');
+    $this->post(route('login'), [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ])->assertStatus(429);
 });
 
-// ============================================
-// OTP Rate Limiting Tests
-// ============================================
+test('login rate limit keeps separate buckets for different emails on the same ip', function () {
+    $throttledUser = User::factory()->create([
+        'email' => 'login-throttle-a@example.com',
+        'password' => Hash::make('password'),
+        'status' => 1,
+    ]);
 
-describe('OTP Rate Limiting', function () {
-    test('allows otp request within rate limit', function () {
-        $user = User::factory()->create();
+    $otherUser = User::factory()->create([
+        'email' => 'login-throttle-b@example.com',
+        'password' => Hash::make('password'),
+        'status' => 1,
+    ]);
 
-        // Request OTP 2 times (under the limit of 3)
-        for ($i = 0; $i < 2; $i++) {
-            $response = $this->post(route('otp.request-login'), [
-                'email' => $user->email,
-            ]);
-            $this->assertNotEquals(429, $response->status());
-        }
-    })->group('security', 'rate-limit', 'otp');
+    for ($attempt = 0; $attempt < 10; $attempt++) {
+        $this->from(route('login'))->post(route('login'), [
+            'email' => $throttledUser->email,
+            'password' => 'wrong-password',
+        ])->assertRedirect(route('login'));
+    }
 
-    test('blocks otp request after rate limit exceeded', function () {
-        $user = User::factory()->create();
+    $this->post(route('login'), [
+        'email' => $throttledUser->email,
+        'password' => 'wrong-password',
+    ])->assertStatus(429);
 
-        // Clear any existing rate limits
-        Cache::flush();
-
-        // Request OTP 4 times (exceeds limit of 3)
-        $statusCode = null;
-        for ($i = 0; $i < 4; $i++) {
-            $response = $this->post(route('otp.request-login'), [
-                'email' => $user->email,
-            ]);
-            $statusCode = $response->status();
-        }
-
-        // Last request should be rate limited
-        expect($statusCode)->toBe(429);
-    })->group('security', 'rate-limit', 'otp');
+    $this->from(route('login'))->post(route('login'), [
+        'email' => $otherUser->email,
+        'password' => 'wrong-password',
+    ])->assertRedirect(route('login'));
 });
 
-// ============================================
-// Security Validation Tests
-// ============================================
+test('otp request is throttled after too many attempts for the same identifier', function () {
+    $user = User::factory()->create([
+        'email' => 'otp-throttle@example.com',
+        'name' => 'otp-throttle',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'otp_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
 
-describe('Security - Header Injection Prevention', function () {
-    test('rejects script injection in x-forwarded-for', function () {
-        $maliciousInputs = [
-            '"><script>alert(1)</script>',
-            'javascript:alert(1)',
-            '../../etc/passwd',
-            '\x00\x01\x02',
-            'very.long.ip.address.that.exceeds.maximum.length.for.ipv6.addresses.and.should.be.rejected.by.the.validator',
-        ];
+    for ($attempt = 0; $attempt < 3; $attempt++) {
+        $this->post(route('otp.request-login'), [
+            'identifier' => $user->email,
+        ])->assertRedirect(route('otp.verify-login'));
+    }
 
-        foreach ($maliciousInputs as $input) {
-            $request = Request::create('/login', 'POST');
-            $request->headers->set('X-Forwarded-For', $input);
-
-            $ip = IpAddress::getRealIp($request);
-
-            // Should not return the malicious input
-            expect($ip)->not->toBe($input);
-        }
-    })->group('security', 'validation', 'injection');
-
-    test('validates ipv4 format', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('CF-Connecting-IP', '256.256.256.256'); // Invalid IP
-
-        $ip = IpAddress::getRealIp($request);
-
-        expect($ip)->not->toBe('256.256.256.256');
-    })->group('security', 'validation', 'ipv4');
+    $this->post(route('otp.request-login'), [
+        'identifier' => $user->email,
+    ])->assertStatus(429);
 });
 
-// ============================================
-// Priority Tests
-// ============================================
+test('otp request rate limit keeps separate buckets for different identifiers on the same ip', function () {
+    $throttledUser = User::factory()->create([
+        'email' => 'otp-throttle-a@example.com',
+        'name' => 'otp-throttle-a',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'otp_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
 
-describe('IP Detection Priority Order', function () {
-    test('cf-connecting-ip has highest priority', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('CF-Connecting-IP', '1.2.3.4');
-        $request->headers->set('X-Forwarded-For', '5.6.7.8');
-        $request->headers->set('X-Real-IP', '9.10.11.12');
+    $otherUser = User::factory()->create([
+        'email' => 'otp-throttle-b@example.com',
+        'name' => 'otp-throttle-b',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'otp_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
 
-        $ip = IpAddress::getRealIp($request);
+    for ($attempt = 0; $attempt < 3; $attempt++) {
+        $this->post(route('otp.request-login'), [
+            'identifier' => $throttledUser->email,
+        ])->assertRedirect(route('otp.verify-login'));
+    }
 
-        expect($ip)->toBe('1.2.3.4'); // CF-Connecting-IP wins
-    })->group('security', 'ip-detection', 'priority');
+    $this->post(route('otp.request-login'), [
+        'identifier' => $throttledUser->email,
+    ])->assertStatus(429);
 
-    test('x-forwarded-for has priority over x-real-ip', function () {
-        $request = Request::create('/login', 'POST');
-        $request->headers->set('X-Forwarded-For', '5.6.7.8');
-        $request->headers->set('X-Real-IP', '9.10.11.12');
+    $this->post(route('otp.request-login'), [
+        'identifier' => $otherUser->email,
+    ])->assertRedirect(route('otp.verify-login'));
+});
 
-        $ip = IpAddress::getRealIp($request);
+test('2fa verification is throttled using the pending authentication session', function () {
+    $user = User::factory()->create([
+        'email' => '2fa-throttle@example.com',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'two_fa_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
 
-        expect($ip)->toBe('5.6.7.8'); // X-Forwarded-For wins
-    })->group('security', 'ip-detection', 'priority');
+    app(OtpService::class)->generateAndSave($user, 'email', $user->email, '2fa_login');
+
+    session([
+        'two-factor:auth' => [
+            'id' => $user->id,
+            'email' => $user->email,
+        ],
+    ]);
+
+    for ($attempt = 0; $attempt < 10; $attempt++) {
+        $this->from(route('2fa.verify-login'))->post(route('2fa.verify-login'), [
+            'otp' => '000000',
+        ])->assertRedirect();
+    }
+
+    $this->post(route('2fa.verify-login'), [
+        'otp' => '000000',
+    ])->assertStatus(429);
 });

@@ -60,7 +60,7 @@ test('komplain store with valid data', function () {
 
     // Mock ID agar direktori cocok
     $komplainId = 999123;
-    $path = public_path("storage/komplain/$komplainId");
+    $path = base_path("storage/komplain/$komplainId");
     File::ensureDirectoryExists($path); // Buat direktori agar move() tidak error
 
     // Buat file dummy
@@ -108,7 +108,7 @@ test('komplain store with valid data', function () {
     ]);
 
     // Hapus data
-    File::deleteDirectory(public_path("storage/komplain/$komplainId"));
+    File::deleteDirectory($path);
     Komplain::where('judul', $data['judul'])->delete();
 
     $this->assertDatabaseMissing($this->tableName, [

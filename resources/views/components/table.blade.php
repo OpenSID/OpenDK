@@ -14,8 +14,7 @@
         </div>
         <div class="pull-right">
             <label style="display: inline-block; vertical-align: middle;">Cari:</label>
-            <x-input type="search" wire:model.live.debounce.500ms="search" placeholder="Search..."
-                style="width: 200px; display: inline-block; vertical-align: middle;" />
+            <x-input type="search" wire:model.live.debounce.500ms="search" placeholder="Search..." style="width: 200px; display: inline-block; vertical-align: middle;" />
         </div>
     </div>
 </div>

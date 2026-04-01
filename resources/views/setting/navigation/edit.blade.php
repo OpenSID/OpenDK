@@ -17,9 +17,8 @@
         <div class="col-md-12">
             @include('partials.flash_message')
 
-            {!! html()->form(){{ $error }}</li>
-            @endforeach
-            </ul>
+            {!! html()->form()->id('form-navigation')->class('form-horizontal form-label-left')->open() !!}
+            @include('layouts.fragments.error_message')
         </div>
         @endif
 

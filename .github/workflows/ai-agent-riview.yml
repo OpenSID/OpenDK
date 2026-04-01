@@ -70,7 +70,7 @@ jobs:
           host:        ${{ secrets.CICD_SERVER_IP }}
           username:    ${{ secrets.CICD_SERVER_USER }}
           key:         ${{ secrets.CICD_SERVER_PRIVATE_KEY }}
-          port:        ${{ secrets.CICD_SERVER_PORT || 22 }}
+          port:        ${{ secrets.CICD_SERVER_IP_PORT || 22 }}
           timeout:     30s           # timeout koneksi SSH
           command_timeout: 2m        # cukup untuk spawn background process
           script: |
@@ -253,7 +253,7 @@ jobs:
           host:        ${{ secrets.CICD_SERVER_IP }}
           username:    ${{ secrets.CICD_SERVER_USER }}
           key:         ${{ secrets.CICD_SERVER_PRIVATE_KEY }}
-          port:        ${{ secrets.CICD_SERVER_PORT || 22 }}
+          port:        ${{ secrets.CICD_SERVER_IP_PORT || 22 }}
           timeout:     30s
           command_timeout: 2m
           script: |

@@ -1,4 +1,3 @@
-{{-- @dd($kategori_lembaga->id) --}}
 @extends('layouts.dashboard_template')
 
 @section('content')

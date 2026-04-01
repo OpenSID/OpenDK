@@ -18,9 +18,9 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <a href="#">
-                        <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
-                            <i class="fa fa-upload"></i>Export Excel
-                        </button>
+                    <button type="button" id="export-excel-btn" class="btn btn-primary btn-sm btn-social" title="Export Excel">
+                        <i class="fa fa-upload"></i>Export Excel
+                    </button>
                 </a>
             </div>
 

@@ -79,8 +79,7 @@
                         };
                     },
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center',
@@ -121,18 +120,18 @@
             $(document).on('click', '.btn-preview-surat', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
-                $('#modalPreviewSurat .modal-body').html('<iframe src="'+url+'" width="100%" height="500px" style="border:none;"></iframe>');
+                $('#modalPreviewSurat .modal-body').html('<iframe src="' + url + '" width="100%" height="500px" style="border:none;"></iframe>');
                 $('#modalPreviewSurat').modal('show');
-           
+
             });
 
-         $('#list_desa').on('select2:select', function(e) {
+            $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
             });
 
-    });
+        });
     </script>
-    
+
     @include('components.modal-preview-surat')
     @include('forms.datatable-vertical')
 @endpush

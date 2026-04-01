@@ -26,11 +26,12 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
                             @if ($pesan->diarsipkan === 0)
-                                {!! html()->form('POST', route('pesan.arsip.post'))->class('form-group
-                                inline')->id('form-arisp-pesan')->open() !!}
+                                {!! html()->form('POST', route('pesan.arsip.post'))->class(
+                                        'form-group
+                                                                inline',
+                                    )->id('form-arisp-pesan')->open() !!}
                                 {!! html()->hidden('id', $pesan->id) !!}
-                                <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
-                                        class="fa fa-archive"></i> Arsipkan </button>
+                                <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan </button>
                                 {!! html()->form()->close() !!}
                             @endif
                             {{ $pesan->detailPesan->sortBy('created_at')->paginate(20)->links('vendor.pagination.pesan') }}
@@ -73,15 +74,15 @@
                             </div>
                         @endforeach
                     </div>
-                    <div style="padding-right: 10px; padding-left: 10px"
-                        class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
-                        {!! html()->form('POST', route('pesan.reply.post'))->class('form-group
-                        inline')->id('form-reply-pesan')->open() !!}
+                    <div style="padding-right: 10px; padding-left: 10px" class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
+                        {!! html()->form('POST', route('pesan.reply.post'))->class(
+                                'form-group
+                                                inline',
+                            )->id('form-reply-pesan')->open() !!}
                         {!! html()->hidden('id', $pesan->id) !!}
                         {!! html()->textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
-                        #dddddd; padding: 10px;') !!}
-                        <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i
-                                class="fa fa-reply"></i> Balas</button>
+                                                #dddddd; padding: 10px;') !!}
+                        <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i class="fa fa-reply"></i> Balas</button>
                         {!! html()->form()->close() !!}
                     </div>
                 </div>

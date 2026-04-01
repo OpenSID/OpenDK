@@ -45,11 +45,19 @@
                             <!-- Password Saat Ini -->
                             <div class="form-group {{ $errors->has('current_password') ? 'has-error' : '' }}">
                                 <label for="current_password" class="col-sm-3 control-label">
-                                     Password Saat Ini
+                                    Password Saat Ini
                                 </label>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control" id="current_password"
-                                           name="current_password" placeholder="Masukkan password saat ini" required autofocus autocomplete="current-password">
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="current_password"
+                                        name="current_password"
+                                        placeholder="Masukkan password saat ini"
+                                        required
+                                        autofocus
+                                        autocomplete="current-password"
+                                    >
                                 </div>
                                 <div class="col-sm-1">
                                     <button type="button" class="btn btn-default btn-sm toggle-password" data-target="current_password">
@@ -66,8 +74,15 @@
                                     Password Baru
                                 </label>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control" id="password"
-                                           name="password" placeholder="Masukkan password baru (min. 8 karakter)" required autocomplete="new-password">
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="password"
+                                        name="password"
+                                        placeholder="Masukkan password baru (min. 8 karakter)"
+                                        required
+                                        autocomplete="new-password"
+                                    >
                                     <!-- Password Strength Indicator -->
                                     <div class="progress password-strength mt-5" style="height: 5px; display: none;">
                                         <div class="progress-bar progress-bar-danger" style="width: 0%"></div>
@@ -89,11 +104,18 @@
                             <!-- Konfirmasi Password Baru -->
                             <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
                                 <label for="password_confirmation" class="col-sm-3 control-label">
-                                     Konfirmasi Password
+                                    Konfirmasi Password
                                 </label>
                                 <div class="col-sm-6">
-                                    <input type="password" class="form-control" id="password_confirmation"
-                                           name="password_confirmation" placeholder="Ulangi password baru" required autocomplete="new-password">
+                                    <input
+                                        type="password"
+                                        class="form-control"
+                                        id="password_confirmation"
+                                        name="password_confirmation"
+                                        placeholder="Ulangi password baru"
+                                        required
+                                        autocomplete="new-password"
+                                    >
                                 </div>
                                 <div class="col-sm-1">
                                     <button type="button" class="btn btn-default btn-sm toggle-password" data-target="password_confirmation">
@@ -137,177 +159,177 @@
 @endsection
 
 @push('scripts')
-<script>
-(function() {
-    // Toggle password visibility
-    document.querySelectorAll('.toggle-password').forEach(function(button) {
-        button.addEventListener('click', function() {
-            var targetId = this.getAttribute('data-target');
-            var input = document.getElementById(targetId);
-            var icon = this.querySelector('i');
+    <script>
+        (function() {
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var targetId = this.getAttribute('data-target');
+                    var input = document.getElementById(targetId);
+                    var icon = this.querySelector('i');
 
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+
+            // Password strength checker
+            var passwordInput = document.getElementById('password');
+            var progressBar = document.querySelector('.password-strength');
+            var progress = document.querySelector('.password-strength .progress-bar');
+            var optionalHint = document.getElementById('password-optional');
+
+            if (passwordInput && progressBar && progress) {
+                passwordInput.addEventListener('input', function() {
+                    var password = this.value;
+
+                    // Show progress bar when typing
+                    if (password.length > 0) {
+                        progressBar.style.display = 'block';
+                    } else {
+                        progressBar.style.display = 'none';
+                        optionalHint.style.display = 'none';
+                        return;
+                    }
+
+                    // Calculate strength
+                    var strength = 0;
+
+                    // Length check (minimum 8)
+                    if (password.length >= 8) {
+                        strength += 40;
+                    } else if (password.length > 0) {
+                        strength += (password.length / 8) * 40;
+                    }
+
+                    // Has numbers (optional bonus)
+                    var hasNumber = /\d/.test(password);
+
+                    // Has special character (optional bonus)
+                    var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+                    // Has uppercase (optional bonus)
+                    var hasUpper = /[A-Z]/.test(password);
+
+                    // Has lowercase (optional bonus)
+                    var hasLower = /[a-z]/.test(password);
+
+                    // Add optional bonuses
+                    var optionalCount = 0;
+                    if (hasNumber) optionalCount++;
+                    if (hasSpecial) optionalCount++;
+                    if (hasUpper) optionalCount++;
+                    if (hasLower) optionalCount++;
+
+                    strength += (optionalCount / 4) * 60;
+
+                    // Update progress bar
+                    progress.style.width = Math.min(strength, 100) + '%';
+
+                    // Update color based on strength
+                    progress.classList.remove('progress-bar-danger', 'progress-bar-warning', 'progress-bar-success', 'progress-bar-primary');
+                    if (strength < 30) {
+                        progress.classList.add('progress-bar-danger');
+                    } else if (strength < 60) {
+                        progress.classList.add('progress-bar-warning');
+                    } else if (strength < 80) {
+                        progress.classList.add('progress-bar-primary');
+                    } else {
+                        progress.classList.add('progress-bar-success');
+                    }
+
+                    // Show optional hint when password is good
+                    if (password.length >= 8 && (hasNumber || hasSpecial || hasUpper)) {
+                        optionalHint.style.display = 'inline';
+                    } else {
+                        optionalHint.style.display = 'none';
+                    }
+                });
             }
-        });
-    });
 
-    // Password strength checker
-    var passwordInput = document.getElementById('password');
-    var progressBar = document.querySelector('.password-strength');
-    var progress = document.querySelector('.password-strength .progress-bar');
-    var optionalHint = document.getElementById('password-optional');
+            var confirm = document.getElementById('password_confirmation');
 
-    if (passwordInput && progressBar && progress) {
-        passwordInput.addEventListener('input', function() {
-            var password = this.value;
+            if (confirm && passwordInput) {
+                confirm.addEventListener('input', function() {
+                    if (this.value !== passwordInput.value) {
+                        this.setCustomValidity('Password tidak cocok');
+                    } else {
+                        this.setCustomValidity('');
+                    }
+                });
 
-            // Show progress bar when typing
-            if (password.length > 0) {
-                progressBar.style.display = 'block';
-            } else {
-                progressBar.style.display = 'none';
-                optionalHint.style.display = 'none';
-                return;
+                // Add listener to password field as well
+                passwordInput.addEventListener('input', function() {
+                    if (confirm.value && confirm.value !== this.value) {
+                        confirm.setCustomValidity('Password tidak cocok');
+                    } else {
+                        confirm.setCustomValidity('');
+                    }
+                });
             }
-
-            // Calculate strength
-            var strength = 0;
-
-            // Length check (minimum 8)
-            if (password.length >= 8) {
-                strength += 40;
-            } else if (password.length > 0) {
-                strength += (password.length / 8) * 40;
-            }
-
-            // Has numbers (optional bonus)
-            var hasNumber = /\d/.test(password);
-
-            // Has special character (optional bonus)
-            var hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-
-            // Has uppercase (optional bonus)
-            var hasUpper = /[A-Z]/.test(password);
-
-            // Has lowercase (optional bonus)
-            var hasLower = /[a-z]/.test(password);
-
-            // Add optional bonuses
-            var optionalCount = 0;
-            if (hasNumber) optionalCount++;
-            if (hasSpecial) optionalCount++;
-            if (hasUpper) optionalCount++;
-            if (hasLower) optionalCount++;
-
-            strength += (optionalCount / 4) * 60;
-
-            // Update progress bar
-            progress.style.width = Math.min(strength, 100) + '%';
-
-            // Update color based on strength
-            progress.classList.remove('progress-bar-danger', 'progress-bar-warning', 'progress-bar-success', 'progress-bar-primary');
-            if (strength < 30) {
-                progress.classList.add('progress-bar-danger');
-            } else if (strength < 60) {
-                progress.classList.add('progress-bar-warning');
-            } else if (strength < 80) {
-                progress.classList.add('progress-bar-primary');
-            } else {
-                progress.classList.add('progress-bar-success');
-            }
-
-            // Show optional hint when password is good
-            if (password.length >= 8 && (hasNumber || hasSpecial || hasUpper)) {
-                optionalHint.style.display = 'inline';
-            } else {
-                optionalHint.style.display = 'none';
-            }
-        });
-    }
-
-    var confirm = document.getElementById('password_confirmation');
-
-    if (confirm && passwordInput) {
-        confirm.addEventListener('input', function() {
-            if (this.value !== passwordInput.value) {
-                this.setCustomValidity('Password tidak cocok');
-            } else {
-                this.setCustomValidity('');
-            }
-        });
-
-        // Add listener to password field as well
-        passwordInput.addEventListener('input', function() {
-            if (confirm.value && confirm.value !== this.value) {
-                confirm.setCustomValidity('Password tidak cocok');
-            } else {
-                confirm.setCustomValidity('');
-            }
-        });
-    }
-})();
-</script>
+        })();
+    </script>
 @endpush
 
 @push('css')
-<style>
-.hr-line-dashed {
-    border-top: 1px dashed #e7eaec;
-    margin: 20px 0;
-}
+    <style>
+        .hr-line-dashed {
+            border-top: 1px dashed #e7eaec;
+            margin: 20px 0;
+        }
 
-.mt-5 {
-    margin-top: 5px;
-}
+        .mt-5 {
+            margin-top: 5px;
+        }
 
-.toggle-password {
-    padding: 6px 12px;
-}
+        .toggle-password {
+            padding: 6px 12px;
+        }
 
-.toggle-password:hover {
-    background-color: #e7eaec;
-}
+        .toggle-password:hover {
+            background-color: #e7eaec;
+        }
 
-.form-group.has-error .control-label {
-    color: #dd4b39;
-}
+        .form-group.has-error .control-label {
+            color: #dd4b39;
+        }
 
-.form-group.has-error .form-control {
-    border-color: #dd4b39;
-}
+        .form-group.has-error .form-control {
+            border-color: #dd4b39;
+        }
 
-.callout-collapsed {
-    padding: 15px;
-    margin-bottom: 0;
-    border-left: 4px solid #00a7d0;
-}
+        .callout-collapsed {
+            padding: 15px;
+            margin-bottom: 0;
+            border-left: 4px solid #00a7d0;
+        }
 
-.callout-collapsed h4 {
-    margin-top: 0;
-    margin-bottom: 10px;
-}
+        .callout-collapsed h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
 
-.callout-collapsed ul {
-    padding-left: 20px;
-}
+        .callout-collapsed ul {
+            padding-left: 20px;
+        }
 
-.no-margin {
-    margin: 0;
-}
+        .no-margin {
+            margin: 0;
+        }
 
-.btn-primary.btn-lg {
-    padding: 12px 24px;
-}
+        .btn-primary.btn-lg {
+            padding: 12px 24px;
+        }
 
-.btn-default.btn-lg {
-    padding: 12px 24px;
-}
-</style>
+        .btn-default.btn-lg {
+            padding: 12px 24px;
+        }
+    </style>
 @endpush

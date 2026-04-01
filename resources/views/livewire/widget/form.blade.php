@@ -21,9 +21,16 @@
                     <x-form-group name="foto">
                         <x-label for="foto">Gambar Widget</x-label>
                         <div class="col-sm-8">
-                            <x-filepond wire:model="foto" allowImagePreview imagePreviewMaxHeight="200"
-                                allowFileTypeValidation acceptedFileTypes="['image/png', 'image/jpg', 'image/jpeg']"
-                                allowFileSizeValidation maxFileSize="4mb" :existingFile="$foto" />
+                            <x-filepond
+                                wire:model="foto"
+                                allowImagePreview
+                                imagePreviewMaxHeight="200"
+                                allowFileTypeValidation
+                                acceptedFileTypes="['image/png', 'image/jpg', 'image/jpeg']"
+                                allowFileSizeValidation
+                                maxFileSize="4mb"
+                                :existingFile="$foto"
+                            />
                         </div>
                     </x-form-group>
 
@@ -52,8 +59,7 @@
                                             @php
                                                 $fileName = basename($list); // Ambil hanya nama file dari path
                                             @endphp
-                                            <option value="{{ $fileName }}"
-                                                {{ $widget['isi'] == $fileName ? 'selected' : '' }}>
+                                            <option value="{{ $fileName }}" {{ $widget['isi'] == $fileName ? 'selected' : '' }}>
                                                 {{ $list }}
                                             </option>
                                         @endforeach
@@ -84,8 +90,7 @@
                         <i class="fa fa-times"></i> Reset
                     </x-button>
 
-                    <x-button color="info" wire:click.prevent="{{ $editMode ? 'update' : 'store' }}"
-                        loading="{{ $editMode ? 'Update' : 'Simpan' }}...">
+                    <x-button color="info" wire:click.prevent="{{ $editMode ? 'update' : 'store' }}" loading="{{ $editMode ? 'Update' : 'Simpan' }}...">
                         <i class="fa fa-save"></i> {{ $editMode ? 'Update' : 'Simpan' }}
                     </x-button>
 

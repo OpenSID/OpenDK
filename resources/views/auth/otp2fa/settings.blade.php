@@ -51,16 +51,13 @@
                                 <label>Pilih Metode Verifikasi <span class="text-danger">*</span></label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="channel" value="email"
-                                            {{ old('channel', $user->otp_channel) == 'email' || (!old('channel') && !$user->otp_channel) ? 'checked' : '' }}
-                                            required>
+                                        <input type="radio" name="channel" value="email" {{ old('channel', $user->otp_channel) == 'email' || (!old('channel') && !$user->otp_channel) ? 'checked' : '' }} required>
                                         <i class="fa fa-envelope"></i> Email
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="channel" value="telegram"
-                                            {{ old('channel', $user->otp_channel) == 'telegram' ? 'checked' : '' }}>
+                                        <input type="radio" name="channel" value="telegram" {{ old('channel', $user->otp_channel) == 'telegram' ? 'checked' : '' }}>
                                         <i class="fa fa-telegram"></i> Telegram
                                     </label>
                                 </div>
@@ -72,9 +69,16 @@
                             <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}" id="email-group">
                                 <label for="email">Alamat Email <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        placeholder="email@example.com" value="{{ old('email', $user->email) }}" readonly
-                                        required>
+                                    <input
+                                        type="email"
+                                        class="form-control"
+                                        id="email"
+                                        name="email"
+                                        placeholder="email@example.com"
+                                        value="{{ old('email', $user->email) }}"
+                                        readonly
+                                        required
+                                    >
                                     <span class="input-group-addon bg-gray" style="cursor: not-allowed;">
                                         <i class="fa fa-lock"></i>
                                     </span>
@@ -91,13 +95,19 @@
                                 @endif
                             </div>
 
-                            <div class="form-group {{ $errors->has('telegram_id') ? 'has-error' : '' }}"
-                                id="telegram-group" style="display: none;">
+                            <div class="form-group {{ $errors->has('telegram_id') ? 'has-error' : '' }}" id="telegram-group" style="display: none;">
                                 <label for="telegram">Chat ID Telegram <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" id="telegram" name="telegram_id"
-                                        placeholder="123456789" value="{{ old('telegram_id', $user->telegram_id) }}"
-                                        readonly required>
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="telegram"
+                                        name="telegram_id"
+                                        placeholder="123456789"
+                                        value="{{ old('telegram_id', $user->telegram_id) }}"
+                                        readonly
+                                        required
+                                    >
                                     <span class="input-group-addon bg-gray" style="cursor: not-allowed;">
                                         <i class="fa fa-lock"></i>
                                     </span>

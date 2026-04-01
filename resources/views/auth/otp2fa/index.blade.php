@@ -76,8 +76,7 @@
                             @if ($otpEnabled)
                                 <a href="{{ route('otp.deactivate') }}" class="btn btn-warning">Nonaktifkan OTP</a>
                             @else
-                                <button type="submit" class="btn btn-primary"
-                                    {{ !$user->otp_verified ? 'disabled' : '' }}>
+                                <button type="submit" class="btn btn-primary" {{ !$user->otp_verified ? 'disabled' : '' }}>
                                     Aktifkan OTP
                                 </button>
                                 @if (!$user->otp_verified)
@@ -104,8 +103,7 @@
                             @if ($twoFaEnabled)
                                 <a href="{{ route('2fa.deactivate') }}" class="btn btn-warning">Nonaktifkan 2FA</a>
                             @else
-                                <button type="submit" class="btn btn-primary"
-                                    {{ !$user->otp_verified ? 'disabled' : '' }}>
+                                <button type="submit" class="btn btn-primary" {{ !$user->otp_verified ? 'disabled' : '' }}>
                                     Aktifkan 2FA
                                 </button>
                                 @if (!$user->otp_verified)

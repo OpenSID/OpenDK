@@ -14,10 +14,7 @@
     </section>
     <section class="content container-fluid">
 
-        {!! html()->form('POST', route(
-        'informasi.artikel.update',
-        $artikel->id
-    ))->id('form-artikel')->acceptsFiles()->open() !!}
+        {!! html()->form('POST', route('informasi.artikel.update', $artikel->id))->id('form-artikel')->acceptsFiles()->open() !!}
 
         @include('flash::message')
         @include('informasi.artikel._form')

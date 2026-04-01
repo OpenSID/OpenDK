@@ -50,7 +50,7 @@ class DesaApiRepository extends BaseApiRepository
         $collection = $desaService->listDesa();
         
         return $collection->map(function($item){
-            return $item instanceof DataDesa ? $item : new DataDesa($item);
+            return $item instanceof DataDesa ? $item : new DataDesa((array) $item);
         });
     }
 }

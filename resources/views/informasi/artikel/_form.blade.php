@@ -2,19 +2,15 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i
-                            class="fa fa-arrow-left"></i> Kembali</button></a>
+                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
                     <label class="control-label" for="judul">Judul Artikel</label>
 
-                    {!! html()->text('judul')
-                    ->class('form-control')
-                    ->placeholder('Judul Artikel')
-                    ->value(old('judul', isset($artikel) ? $artikel->judul : '')) !!}
+                    {!! html()->text('judul')->class('form-control')->placeholder('Judul Artikel')->value(old('judul', isset($artikel) ? $artikel->judul : '')) !!}
                     @if ($errors->has('judul'))
-                    <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
                     <!-- <span class="help-block"><code>Judul minimal 5 karakter dan maksimal 100 karakter</code></span> -->
                 </div>
@@ -22,14 +18,12 @@
                 <div class="form-group">
                     <label class="control-label" for="isi">Isi Artikel</label>
 
-                    {!! html()->textarea('isi')
-                    ->class('form-control my-editor')
-                    ->placeholder('Isi Artikel')
-                    ->style('width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
-                    padding:10px;')
-                    ->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
+                    {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style(
+                            'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
+                                                            padding:10px;',
+                        )->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
                     @if ($errors->has('isi'))
-                    <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
                     @endif
                 </div>
             </div>
@@ -42,17 +36,11 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Gambar</label>
 
-                    <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar"
-                        style="width:100%; max-height:250px; float:left;" />
+                    <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar" style="width:100%; max-height:250px; float:left;" />
 
-                    {!!
-                    html()->file('gambar')
-                    ->class('form-control')
-                    ->id('file-artikel')
-                    ->accept('.jpg,.jpeg,.png')
-                    !!}
+                    {!! html()->file('gambar')->class('form-control')->id('file-artikel')->accept('.jpg,.jpeg,.png') !!}
                     @if ($errors->has('gambar'))
-                    <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>
                     @endif
                 </div>
 
@@ -60,21 +48,17 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Kategori</label>
 
-                    {!! html()->select('id_kategori', $kategori)
-                    ->class('form-control')
-                    ->value(old('id_kategori', isset($artikel) ? $artikel->id_kategori : '')) !!}
+                    {!! html()->select('id_kategori', $kategori)->class('form-control')->value(old('id_kategori', isset($artikel) ? $artikel->id_kategori : '')) !!}
                     @if ($errors->has('id_kategori'))
-                    <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
                     @endif
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 
-                    {!! html()->select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])
-                    ->value(old('status', isset($artikel) ? $artikel->status : ''))
-                    ->class('form-control') !!}
+                    {!! html()->select('status', ['0' => 'Tidak Aktif', '1' => 'Aktif'])->value(old('status', isset($artikel) ? $artikel->status : ''))->class('form-control') !!}
                     @if ($errors->has('status'))
-                    <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
+                        <span class="help-block" style="color:red">{{ $errors->first('status') }}</span>
                     @endif
                 </div>
             </div>
@@ -87,9 +71,9 @@
 </div>
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-    $(function() {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        $(function() {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
@@ -157,5 +141,5 @@
         };
 
         tinymce.init(editor_config);
-</script>
+    </script>
 @endpush

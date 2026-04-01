@@ -1,10 +1,7 @@
 <!-- Name Field -->
 <div class="form-group">
     <div class="col-12">
-        {!! html()->text('text')
-        ->class('form-control item-menu')
-        ->id('text')
-        ->placeholder('Nama Menu') !!}
+        {!! html()->text('text')->class('form-control item-menu')->id('text')->placeholder('Nama Menu') !!}
         {!! html()->hidden('icon')->class('item-menu') !!}
     </div>
 </div>
@@ -13,34 +10,19 @@
 <div class="form-group">
     <div class="col-12">
         <label class="form-check-inline">
-            {!! html()->radio('source', true)
-            ->value('link')
-            ->class('form-check-input')
-            ->id('sourceLink') !!} Link
+            {!! html()->radio('source', true)->value('link')->class('form-check-input')->id('sourceLink') !!} Link
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', false)
-            ->value('Halaman')
-            ->class('form-check-input')
-            ->id('sourceHalaman') !!} Halaman
+            {!! html()->radio('source', false)->value('Halaman')->class('form-check-input')->id('sourceHalaman') !!} Halaman
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', false)
-            ->value('Kategori')
-            ->class('form-check-input')
-            ->id('sourceKategori') !!} Kategori
+            {!! html()->radio('source', false)->value('Kategori')->class('form-check-input')->id('sourceKategori') !!} Kategori
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', false)
-            ->value('Modul')
-            ->class('form-check-input')
-            ->id('sourceModul') !!} Modul
+            {!! html()->radio('source', false)->value('Modul')->class('form-check-input')->id('sourceModul') !!} Modul
         </label>
         <label class="form-check-inline">
-            {!! html()->radio('source', false)
-            ->value('Dokumen')
-            ->class('form-check-input')
-            ->id('sourceDokumen') !!} Dokumen
+            {!! html()->radio('source', false)->value('Dokumen')->class('form-check-input')->id('sourceDokumen') !!} Dokumen
         </label>
     </div>
 </div>
@@ -49,21 +31,18 @@
 <div class="form-group">
     <div class="col-12">
         {!! html()->select('sourcelist', $sourceItem)->class('form-control') !!}
-        {!! html()->text('href')
-        ->class('form-control item-menu')
-        ->placeholder('http://contoh.com') !!}
+        {!! html()->text('href')->class('form-control item-menu')->placeholder('http://contoh.com') !!}
     </div>
 </div>
 
 <div class="form-group">
     {!! html()->label('target', 'Target') !!}
-    {!! html()->select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'])
-    ->class('form-control item-menu') !!}
+    {!! html()->select('target', ['_self' => 'Self', '_blank' => 'Blank', '_top' => 'Top'])->class('form-control item-menu') !!}
 </div>
 
 @push('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
             // Tampilkan input[name=href] dan sembunyikan yang lainnya saat halaman dimuat
             document.querySelector('input[name=href]').style.display = 'block';
             document.querySelector('select[name=sourcelist]').style.display = 'none';
@@ -129,8 +108,8 @@
                 document.querySelector('input[name=href]').value = selectedValue;
             });
         });
-</script>
-<!-- <script>
+    </script>
+    <!-- <script>
         $(document).ready(function() {
             $('select[name=sourcelist]').hide()
             $(':radio[name=source]').change(function() {

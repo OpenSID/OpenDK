@@ -167,7 +167,7 @@
                 chunk.forEach(d => {
                     desaHtml += '<ul class="no-padding">' +
                         '<li class="col-12 col-xs-6 no-padding">' +
-                        '<a class="footer-link" href="/desa/' + (d.nama ? d.nama.toLowerCase().replace(/\s+/g, '-') : '') + '">' +
+                        '<a class="footer-link" href="/desa/desa-' + (d.nama ? d.nama.toLowerCase().replace(/\s+/g, '-') : '') + '">' +
                         '<i class="fa fa-chevron-circle-right"></i>' +
                         (d.sebutan_desa || '') + ' ' + (d.nama || '') +
                         '</a>' +

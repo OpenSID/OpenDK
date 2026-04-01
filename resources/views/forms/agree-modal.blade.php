@@ -3,24 +3,20 @@
         <div class="modal-content">
             {!! html()->form('PUT')->id('agree')->open() !!}
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Ubah Status Komplain</h4>
             </div>
             <div class="modal-body">
                 <p>Silakan pilih status di bawah ini?</p>
-                {!! html()->select('status')
-                ->options([
-                'DITOLAK' => 'Ditolak',
-                'REVIEW' => 'Review',
-                'PROSES' => 'Proses',
-                'SELESAI' => 'Selesai'
-                ])
-                ->class('form-control') !!}
+                {!! html()->select('status')->options([
+                        'DITOLAK' => 'Ditolak',
+                        'REVIEW' => 'Review',
+                        'PROSES' => 'Proses',
+                        'SELESAI' => 'Selesai',
+                    ])->class('form-control') !!}
             </div>
             <div class="modal-footer">
-                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
-                    data-dismiss="modal">Batal</a>
+                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
                 {!! html()->button('Simpan')->type('submit')->class('btn btn-warning waves-effect waves-light') !!}
             </div>
             {!! html()->form()->close() !!}

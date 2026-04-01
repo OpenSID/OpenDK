@@ -20,8 +20,6 @@
         <div class="col-md-12">
             <div class="box box-primary">
 
-                {{-- @dd($anggota) --}}
-
                 {!! html()->form('PUT', route('data.lembaga_anggota.update', [
                     'id' => $anggota->id,
                     'slug' => $lembaga->slug,

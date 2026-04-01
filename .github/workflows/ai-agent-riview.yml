@@ -1,0 +1,349 @@
+name: 🤖 PHP AI PR Review (SSH Mode)
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+    paths:
+      - "**.php"
+      - "**.js"
+      - "**.ts"
+      - "**.jsx"
+      - "**.tsx"
+      - "**.vue"
+      - "**.css"
+      - "**.scss"
+      - "**.sass"
+      - "**/tailwind.config.*"
+  issue_comment:
+    types: [created]
+
+concurrency:
+  # Per-PR: push baru ke PR yang sama → cancel run lama (hemat waktu)
+  # Antar PR berbeda: tetap jalan paralel karena group berbeda per PR number.
+  # pull_request event: gunakan pull_request.number
+  # issue_comment event: gunakan issue.number
+  group: pr-review-${{ github.repository }}-${{ github.event.pull_request.number || github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  ssh-review:
+    name: PHP Code Review via SSH
+    runs-on: ubuntu-latest
+    timeout-minutes: 5           # Cukup untuk launch background process di server
+    if: github.event_name == 'pull_request' && github.event.pull_request.draft == false  # Skip draft PR; handle saat ready_for_review
+
+    permissions:
+      pull-requests: write
+
+    steps:
+      # ── Step 1: Post komentar "sedang berjalan" ────────────────────────────
+      - name: Post "Review Running" Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            // Hapus komentar lama dari bot ini
+            for (const c of comments) {
+              if (c.body.includes('🔄 AI PR Review sedang antri') || c.body.includes('⏳ AI PR Review')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: c.id,
+                });
+              }
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `🔄 **AI PR Review sedang antri di server...**\n> Proses review akan segera dimulai di background — hasil akan muncul sebagai komentar setelah selesai.\n> Powered by CrewAI · PR #${{ github.event.pull_request.number }}`
+            });
+
+      # ── Step 2: SSH ke server & launch review di background ───────────────
+      - name: Launch Review in Background via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host:        ${{ secrets.CICD_SERVER_IP }}
+          username:    ${{ secrets.CICD_SERVER_USER }}
+          key:         ${{ secrets.CICD_SERVER_PRIVATE_KEY }}
+          port:        ${{ secrets.CICD_SERVER_PORT || 22 }}
+          timeout:     30s           # timeout koneksi SSH
+          command_timeout: 2m        # cukup untuk spawn background process
+          script: |
+            set -e
+
+            # Masuk ke folder proyek
+            cd /var/agentreview/
+
+            # Load environment variables dari .env
+            set -a; source .env; set +a
+
+            # Override dengan nilai dari GitHub Actions
+            export PR_NUMBER="${{ github.event.pull_request.number }}"
+            export REPO_NAME="${{ github.repository }}"
+            export BASE_REF="${{ github.event.pull_request.base.ref }}"
+            export GITHUB_TOKEN="${{ secrets.REVIEW_GITHUB_TOKEN }}"
+
+            # Siapkan direktori log
+            LOG_DIR="/opt/pr-review-logs"
+            mkdir -p "$LOG_DIR"
+            LOG_FILE="$LOG_DIR/pr_${PR_NUMBER}_$(date +%Y%m%d_%H%M%S).log"
+
+            echo "▶️  Meluncurkan review PR #$PR_NUMBER di $REPO_NAME (background)"
+            echo "📄 Log: $LOG_FILE"
+            echo "💰 Token budget: ${MAX_TOTAL_TOKENS:-300000}"
+
+            # Jalankan review di background — gunakan python dari venv langsung (tanpa source activate)
+            PYTHON="/var/agentreview/venv/bin/python"
+            nohup "$PYTHON" main.py > "$LOG_FILE" 2>&1 &
+            BG_PID=$!
+            disown $BG_PID
+
+            echo "✅ Review berjalan di background (PID: $BG_PID)"
+
+      # ── Step 3: Update komentar — review sudah diluncurkan ─────────────────
+      - name: Update Comment - Review Launched
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const runningComment = comments.find(c => c.body.includes('🔄 AI PR Review sedang antri'));
+            if (runningComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: runningComment.id,
+                body: `⏳ **AI PR Review sedang berjalan di server...**\n> Proses review berjalan di background — hasil akan muncul sebagai komentar inline & summary setelah selesai.\n> Powered by CrewAI · PR #${{ github.event.pull_request.number }}`
+              });
+            }
+
+      # ── Step 4: Handle gagal (SSH tidak bisa konek / error) ────────────────
+      - name: Handle Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            for (const c of comments) {
+              if (c.body.includes('🔄 AI PR Review sedang antri') || c.body.includes('⏳ AI PR Review')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: c.id,
+                });
+              }
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `❌ **AI PR Review gagal diluncurkan** (SSH ke server tidak berhasil). Cek [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) untuk detail.`
+            });
+
+  # ── Job: Trigger via /review comment ──────────────────────────────────────
+  review-on-comment:
+    name: PHP Code Review via /review Command
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Hanya jalan jika:
+    #   1. Event adalah issue_comment
+    #   2. Komentar ada di PR (bukan issue biasa)
+    #   3. Isi komentar mengandung /review (case-insensitive)
+    if: >-
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request != null &&
+      (contains(github.event.comment.body, '/review') || contains(github.event.comment.body, '/riview'))
+
+    permissions:
+      pull-requests: write
+      issues: write
+
+    steps:
+      # ── Step 0: Cek permission — hanya collaborator (write+) boleh trigger ─
+      - name: Check Commenter Permission
+        id: permission
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = context.payload.comment.user.login;
+
+            // Cek permission level — wrap try/catch untuk handle user bukan collaborator (404)
+            let permission = 'none';
+            try {
+              const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                username: commenter,
+              });
+              permission = data.permission;
+            } catch (e) {
+              if (e.status !== 404) throw e;
+              // 404 = bukan collaborator repo (misal: fork contributor) → permission tetap 'none'
+            }
+
+            // Hanya admin dan member yang bisa membuat branch (write/maintain/admin)
+            const canTrigger = ['write', 'maintain', 'admin'].includes(permission);
+            if (!canTrigger) {
+              core.setFailed(`⛔ @${commenter} tidak diizinkan trigger review (permission: ${permission}). Hanya admin dan member yang dapat membuat branch yang diperbolehkan.`);
+              return;
+            }
+
+            console.log(`✅ @${commenter} diizinkan — permission: ${permission}`);
+
+      # ── Step 1: React 👀 ke komentar sebagai acknowledgment ────────────────
+      - name: React to Comment
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'eyes',
+            });
+
+      # ── Step 2: Hapus komentar bot lama + post "sedang antri" ──────────────
+      - name: Post "Review Running" Comment
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            // Hapus komentar bot lama
+            for (const c of comments) {
+              if (c.body.includes('🔄 AI PR Review sedang antri') || c.body.includes('⏳ AI PR Review')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: c.id,
+                });
+              }
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `🔄 **AI PR Review sedang antri di server...**\n> Di-trigger oleh @${context.payload.comment.user.login} via \`/review\` command.\n> Hasil akan muncul sebagai komentar setelah selesai.\n> Powered by CrewAI · PR #${prNumber}`
+            });
+
+      # ── Step 3: SSH ke server & launch review di background ───────────────
+      - name: Launch Review in Background via SSH
+        if: success()
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host:        ${{ secrets.CICD_SERVER_IP }}
+          username:    ${{ secrets.CICD_SERVER_USER }}
+          key:         ${{ secrets.CICD_SERVER_PRIVATE_KEY }}
+          port:        ${{ secrets.CICD_SERVER_PORT || 22 }}
+          timeout:     30s
+          command_timeout: 2m
+          script: |
+            set -e
+
+            # Masuk ke folder proyek
+            cd /var/agentreview/
+
+            # Load environment variables dari .env
+            set -a; source .env; set +a
+
+            # Fetch BASE_REF dari GitHub API (issue_comment event tidak punya pull_request data)
+            PR_JSON=$(curl -s -H "Authorization: Bearer ${{ secrets.REVIEW_GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}")
+            API_BASE_REF=$(echo "$PR_JSON" | python3 -c "import sys,json; print(json.load(sys.stdin).get('base',{}).get('ref','main'))" 2>/dev/null || echo "main")
+
+            # Override dengan nilai dari GitHub Actions
+            export PR_NUMBER="${{ github.event.issue.number }}"
+            export REPO_NAME="${{ github.repository }}"
+            export BASE_REF="$API_BASE_REF"
+            export GITHUB_TOKEN="${{ secrets.REVIEW_GITHUB_TOKEN }}"
+
+            LOG_DIR="/opt/pr-review-logs"
+            mkdir -p "$LOG_DIR"
+            LOG_FILE="$LOG_DIR/pr_${PR_NUMBER}_$(date +%Y%m%d_%H%M%S)_manual.log"
+
+            echo "▶️  Meluncurkan review PR #$PR_NUMBER di $REPO_NAME (manual /review trigger)"
+            echo "📄 Log: $LOG_FILE"
+            echo "💰 Token budget: ${MAX_TOTAL_TOKENS:-300000}"
+
+            # Gunakan python dari venv langsung (tanpa source activate)
+            PYTHON="/var/agentreview/venv/bin/python"
+            nohup "$PYTHON" main.py > "$LOG_FILE" 2>&1 &
+            BG_PID=$!
+            disown $BG_PID
+            echo "✅ Review berjalan di background (PID: $BG_PID)"
+
+      # ── Step 4: Update komentar — review sudah diluncurkan ─────────────────
+      - name: Update Comment - Review Launched
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            const runningComment = comments.find(c => c.body.includes('🔄 AI PR Review sedang antri'));
+            if (runningComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: runningComment.id,
+                body: `⏳ **AI PR Review sedang berjalan di server...**\n> Di-trigger oleh @${context.payload.comment.user.login} via \`/review\` command.\n> Hasil akan muncul sebagai komentar inline & summary setelah selesai.\n> Powered by CrewAI · PR #${prNumber}`
+              });
+            }
+            // React ✅ ke komentar trigger sebagai konfirmasi selesai diluncurkan
+            await github.rest.reactions.createForIssueComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket',
+            });
+
+      # ── Step 5: Handle gagal ────────────────────────────────────────────────
+      - name: Handle Failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.issue.number;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+            });
+            for (const c of comments) {
+              if (c.body.includes('🔄 AI PR Review sedang antri') || c.body.includes('⏳ AI PR Review')) {
+                await github.rest.issues.deleteComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  comment_id: c.id,
+                });
+              }
+            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body: `❌ **AI PR Review gagal diluncurkan** (SSH ke server tidak berhasil). Cek [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) untuk detail.`
+            });

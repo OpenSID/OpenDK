@@ -22,7 +22,7 @@
 
                 {!! html()->form('POST', route('data.laporan-apbdes.do_import'))->id('form-import')->class(
                         'form-horizontal
-                            form-label-left',
+                                            form-label-left',
                     )->acceptsFiles()->open() !!}
 
                 <div class="box-body">

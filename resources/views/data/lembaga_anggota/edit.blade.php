@@ -19,10 +19,13 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                {!! html()->form('PUT', route('data.lembaga_anggota.update', [
-                    'id' => $anggota->id,
-                    'slug' => $lembaga->slug,
-                ]))->id('form-lembaga-anggota')->class('form-horizontal form-label-left')->open() !!}
+                    {!! html()->form(
+                            'PUT',
+                            route('data.lembaga_anggota.update', [
+                                'id' => $anggota->id,
+                                'slug' => $lembaga->slug,
+                            ]),
+                        )->id('form-lembaga-anggota')->class('form-horizontal form-label-left')->open() !!}
 
                     @include('layouts.fragments.error_message')
 

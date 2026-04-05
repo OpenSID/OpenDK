@@ -31,6 +31,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\IpAddress;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -85,16 +86,20 @@ class RouteServiceProvider extends ServiceProvider
             $maxAttempts = max(1, (int) env('RATE_LIMIT_LOGIN_MAX', 10));
             $decayMinutes = max(1, (int) env('RATE_LIMIT_LOGIN_DECAY', 1));
 
+            $identifier = $this->resolveRateLimitIdentifier($request);
+
             return Limit::perMinute($maxAttempts, $decayMinutes)
-                ->by($this->makeRateLimitKey($request, $this->resolveRateLimitIdentifier($request)));
+                ->by(IpAddress::getRateLimitKey($request, $identifier));
         });
 
         RateLimiter::for('otp', function (Request $request) {
             $maxAttempts = max(1, (int) env('RATE_LIMIT_OTP_MAX', 3));
             $decayMinutes = max(1, (int) env('RATE_LIMIT_OTP_DECAY', 1));
 
+            $identifier = $this->resolveRateLimitIdentifier($request);
+
             return Limit::perMinute($maxAttempts, $decayMinutes)
-                ->by($this->makeRateLimitKey($request, $this->resolveRateLimitIdentifier($request)));
+                ->by(IpAddress::getRateLimitKey($request, $identifier));
         });
     }
 
@@ -113,15 +118,8 @@ class RouteServiceProvider extends ServiceProvider
         }
 
         $identifier = mb_strtolower(trim((string) $identifier));
-        $identifier = preg_replace('/[^a-z0-9@._-]/', '', $identifier);
+        $result = preg_replace('/[^a-z0-9@._-]/', '', $identifier);
 
-        return $identifier !== '' ? $identifier : null;
-    }
-
-    protected function makeRateLimitKey(Request $request, ?string $identifier = null): string
-    {
-        $ipAddress = (string) $request->ip();
-
-        return $identifier ? "{$ipAddress}|{$identifier}" : $ipAddress;
+        return ($result !== null && $result !== '') ? $result : null;
     }
 }

@@ -40,6 +40,8 @@ use Illuminate\Http\Request;
  * Konfigurasi ini penting ketika aplikasi berada di belakang reverse proxy
  * seperti Nginx, Cloudflare, atau load balancer.
  *
+ * Secure by default: tidak mempercayai proxy apapun kecuali dikonfigurasi eksplisit.
+ *
  * @see https://laravel.com/docs/10.x/requests#configuring-trusted-proxies
  */
 class TrustProxies extends Middleware
@@ -47,12 +49,13 @@ class TrustProxies extends Middleware
     /**
      * The trusted proxies for this application.
      *
-     * Default tetap `*` agar perilaku lama tidak berubah.
-     * Untuk production, dapat dioverride lewat `TRUST_PROXIES`.
+     * Secure by default: null berarti tidak trust proxy manapun.
+     * Untuk production di belakang reverse proxy, set TRUST_PROXIES
+     * ke IP spesifik proxy (comma-separated) atau gunakan Cloudflare IP ranges.
      *
      * @var array<int, string>|string|null
      */
-    protected $proxies = '*';
+    protected $proxies;
 
     /**
      * The headers that should be used to detect proxies.

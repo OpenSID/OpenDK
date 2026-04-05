@@ -42,7 +42,7 @@ use Illuminate\Http\Request;
  * - X-Forwarded-For (standar)
  *
  * Keamanan:
- * - Hanya membaca header jika request berasal dari trusted proxy (divalidasi oleh TrustProxies middleware)
+ * - Hanya membaca header jika TrustProxies middleware dikonfigurasi dengan benar
  * - Sanitasi header untuk mencegah header injection
  * - Validasi format IPv4 dan IPv6
  * - Filter IP private/internal untuk rate limiting
@@ -90,9 +90,9 @@ class IpAddress
 
             // X-Forwarded-For bisa berisi multiple IP, ambil yang pertama (client IP)
             if ($header === 'X_FORWARDED_FOR') {
-                $firstIp = trim(explode(',', $headerValue)[0]);
+                $firstIp = self::parseFirstIp($headerValue);
 
-                if ($firstIp !== '') {
+                if ($firstIp !== null && $firstIp !== '') {
                     return $firstIp;
                 }
 
@@ -111,6 +111,21 @@ class IpAddress
     }
 
     /**
+     * Parse IP pertama dari daftar comma-separated (X-Forwarded-For).
+     */
+    private static function parseFirstIp(string $ipList): ?string
+    {
+        if (str_contains($ipList, ',')) {
+            $ips = explode(',', $ipList);
+            $first = trim($ips[0]);
+
+            return $first !== '' ? $first : null;
+        }
+
+        return trim($ipList);
+    }
+
+    /**
      * Validasi format alamat IP (IPv4 atau IPv6).
      */
     private static function isValidIpAddress(string $ip): bool
@@ -125,11 +140,12 @@ class IpAddress
      * - IPv4 dengan port (contoh: 192.168.1.1:8080)
      * - IPv6 dengan port (contoh: [::1]:8080)
      * - Header injection attempts (newline characters)
+     * - IPv4-mapped IPv6 addresses (contoh: ::ffff:192.168.1.1)
      */
     private static function cleanIpAddress(string $ip): string
     {
-        // Hapus karakter newline untuk mencegah header injection
-        $cleaned = preg_replace('/[\r\n\t]/', '', $ip);
+        // Hapus karakter newline dan control characters untuk mencegah header injection
+        $cleaned = preg_replace('/[\r\n\t\x00-\x1F\x7F]/', '', $ip);
 
         if ($cleaned === null) {
             return $ip;
@@ -147,22 +163,27 @@ class IpAddress
         }
 
         // Handle IPv4 dengan port: 192.168.1.1:8080
-        $colonPos = strrpos($cleaned, ':');
-
-        if ($colonPos !== false) {
+        // Hanya jika ada tepat satu colon dan valid IPv4
+        if (substr_count($cleaned, ':') === 1) {
+            $colonPos = strrpos($cleaned, ':');
             $possibleIp = substr($cleaned, 0, $colonPos);
 
-            // Pastikan bukan IPv6 (IPv6 mengandung multiple colon)
-            if (substr_count($cleaned, ':') === 1 && filter_var($possibleIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
+            if (filter_var($possibleIp, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false) {
                 return $possibleIp;
             }
+        }
+
+        // Handle IPv4-mapped IPv6: ::ffff:192.168.1.1
+        // Jangan split colon untuk pure IPv6 addresses
+        if (filter_var($cleaned, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+            return $cleaned;
         }
 
         return $cleaned;
     }
 
     /**
-     * Buat key untuk rate limiting berdasarkan IP dan identifier.
+     * Generate rate limit key dengan sanitasi ketat.
      *
      * Key format: "rate_limit:{ip}|{identifier}" atau "rate_limit:{ip}"
      */
@@ -171,9 +192,39 @@ class IpAddress
         $ip = self::getRealIp($request);
 
         if ($identifier !== null && $identifier !== '') {
+            // Sanitasi identifier - batasi panjang dan karakter
+            $identifier = self::sanitizeIdentifier($identifier);
+
             return "rate_limit:{$ip}|{$identifier}";
         }
 
         return "rate_limit:{$ip}";
+    }
+
+    /**
+     * Sanitasi identifier untuk rate limiting.
+     *
+     * - Hapus null bytes dan control characters
+     * - Batasi panjang maksimal 320 karakter (RFC 5321)
+     * - Hanya izinkan karakter alphanumeric dan @._-
+     */
+    private static function sanitizeIdentifier(string $identifier): string
+    {
+        // Batasi panjang maksimal
+        if (strlen($identifier) > 320) {
+            $identifier = substr($identifier, 0, 320);
+        }
+
+        // Hapus null bytes dan control characters
+        $sanitized = preg_replace('/[\x00-\x1F\x7F]/', '', $identifier);
+
+        if ($sanitized === null) {
+            return '';
+        }
+
+        // Hanya izinkan karakter yang aman
+        $sanitized = preg_replace('/[^a-z0-9@._-]/i', '', $sanitized);
+
+        return $sanitized !== null ? $sanitized : '';
     }
 }

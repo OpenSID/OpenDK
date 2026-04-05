@@ -74,20 +74,31 @@ class TrustProxies extends Middleware
     /**
      * Override untuk mendapatkan proxy dari environment variable
      *
+     * PENTING: TRUST_PROXIES=* TIDAK diizinkan karena risiko IP spoofing.
+     * Jika developer set '*' di environment, akan diabaikan dan return null.
+     *
      * @return array<int, string>|string|null
      */
     protected function proxies()
     {
         $envProxies = env('TRUST_PROXIES');
 
-        if ($envProxies === null || $envProxies === '') {
-            return parent::proxies();
+        if ($envProxies === null || $envProxies === '' || $envProxies === '*') {
+            // Return null: tidak trust proxy headers dari manapun
+            return null;
         }
 
-        if ($envProxies === '*') {
-            return '*';
+        // Validasi format IP/CIDR sebelum trust
+        $proxies = array_map('trim', explode(',', $envProxies));
+        $validProxies = [];
+
+        foreach ($proxies as $proxy) {
+            // Validasi IPv4, IPv6, atau CIDR range
+            if (filter_var($proxy, FILTER_VALIDATE_IP) || preg_match('/^[\da-fA-F.:]+\/\d+$/', $proxy)) {
+                $validProxies[] = $proxy;
+            }
         }
 
-        return array_values(array_filter(array_map('trim', explode(',', $envProxies))));
+        return empty($validProxies) ? null : array_values($validProxies);
     }
 }

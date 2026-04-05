@@ -86,7 +86,7 @@ class RouteServiceProvider extends ServiceProvider
             $maxAttempts = max(1, (int) env('RATE_LIMIT_LOGIN_MAX', 10));
             $decayMinutes = max(1, (int) env('RATE_LIMIT_LOGIN_DECAY', 1));
 
-            $identifier = $this->resolveRateLimitIdentifier($request);
+            $identifier = $this->extractAndValidateIdentifier($request);
 
             return Limit::perMinute($maxAttempts, $decayMinutes)
                 ->by(IpAddress::getRateLimitKey($request, $identifier));
@@ -96,14 +96,23 @@ class RouteServiceProvider extends ServiceProvider
             $maxAttempts = max(1, (int) env('RATE_LIMIT_OTP_MAX', 3));
             $decayMinutes = max(1, (int) env('RATE_LIMIT_OTP_DECAY', 1));
 
-            $identifier = $this->resolveRateLimitIdentifier($request);
+            $identifier = $this->extractAndValidateIdentifier($request);
 
             return Limit::perMinute($maxAttempts, $decayMinutes)
                 ->by(IpAddress::getRateLimitKey($request, $identifier));
         });
     }
 
-    protected function resolveRateLimitIdentifier(Request $request): ?string
+    /**
+     * Extract dan validasi identifier (email/username) dari request.
+     *
+     * Validasi:
+     * - Harus string, bukan array atau tipe lain
+     * - Batasi panjang maksimal 320 karakter (RFC 5321)
+     * - Hapus null bytes dan control characters
+     * - Validasi format email jika terdeteksi sebagai email
+     */
+    protected function extractAndValidateIdentifier(Request $request): ?string
     {
         $identifier = $request->input('email')
             ?? $request->input('username')
@@ -113,11 +122,31 @@ class RouteServiceProvider extends ServiceProvider
             ?? data_get($request->session()->get('two-factor:auth'), 'id')
             ?? data_get($request->session()->get('otp_login'), 'user_id');
 
+        // Return null jika tidak ada
         if ($identifier === null) {
             return null;
         }
 
-        $identifier = mb_strtolower(trim((string) $identifier));
+        // Validasi tipe data - harus string
+        if (! is_string($identifier)) {
+            return null;
+        }
+
+        // Batasi panjang maksimal (RFC 5321: 320 characters)
+        if (strlen($identifier) > 320) {
+            $identifier = substr($identifier, 0, 320);
+        }
+
+        // Hapus null bytes dan control characters
+        $identifier = preg_replace('/[\x00-\x1F\x7F]/', '', $identifier);
+
+        if ($identifier === null) {
+            return null;
+        }
+
+        $identifier = mb_strtolower(trim($identifier));
+
+        // Hanya izinkan karakter yang aman untuk rate limit key
         $result = preg_replace('/[^a-z0-9@._-]/', '', $identifier);
 
         return ($result !== null && $result !== '') ? $result : null;

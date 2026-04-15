@@ -38,22 +38,18 @@ use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Setting\AplikasiController;
 use App\Http\Controllers\Setting\COAController;
+use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\Setting\JenisPenyakitController;
 use App\Http\Controllers\Setting\KategoriKomplainController;
 use App\Http\Controllers\Setting\NavigationController;
 use App\Http\Controllers\Setting\NavMenuController;
+use App\Http\Controllers\Setting\PengaturanDatabaseController;
 use App\Http\Controllers\Setting\SlideController;
 use App\Http\Controllers\Setting\TipePotensiController;
 use App\Http\Controllers\Setting\TipeRegulasiController;
-use App\Http\Controllers\Setting\JenisDokumenController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
-use App\Http\Controllers\BackEnd\EventController;
-use App\Http\Controllers\Setting\PengaturanDatabaseController;
-use App\Http\Controllers\UploadTemporaryImage;
-use App\Http\Controllers\UploadTemporaryImageController;
-use Maatwebsite\Excel\Row;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
@@ -100,7 +96,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         // OTP Activation (requires auth)
         Route::middleware('auth')->group(function () {
             // Redirect old individual activate page to unified page
-            Route::get('/otp/activate', function () { return redirect()->route('otp2fa.index'); })->name('otp.activate');
+            Route::get('/otp/activate', function () {
+                return redirect()->route('otp2fa.index');
+            })->name('otp.activate');
             Route::post('/otp/request-activation', 'OtpController@requestActivation')->name('otp.request-activation');
             Route::get('/otp/verify-activation', 'OtpController@showVerifyActivationForm')->name('otp.verify-activation');
             Route::post('/otp/verify-activation', 'OtpController@verifyActivation');
@@ -129,7 +127,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::post('/otp-2fa/verify-settings', 'OtpController@verifySettings')->name('otp2fa.verify-settings.post');
 
         // Redirect old 2fa activate page to unified page
-        Route::get('/2fa/activate', function () { return redirect()->route('otp2fa.index'); })->name('2fa.activate');
+        Route::get('/2fa/activate', function () {
+            return redirect()->route('otp2fa.index');
+        })->name('2fa.activate');
 
         Route::post('/2fa/request-activation', 'TwoFactorController@requestActivation')->name('2fa.request-activation');
         Route::get('/2fa/verify-activation', 'TwoFactorController@showVerifyActivationForm')->name('2fa.verify-activation');
@@ -224,17 +224,17 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
             Route::group(['prefix' => 'statistik'], function () {
                 Route::get('kependudukan', 'KependudukanController@showKependudukan')->name('statistik.kependudukan');
-                Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');                
+                Route::get('show-kependudukan', 'KependudukanController@showKependudukanPartial')->name('statistik.show-kependudukan');
 
-                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');                
+                Route::get('pendidikan', 'PendidikanController@showPendidikan')->name('statistik.pendidikan');
 
-                Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');                
+                Route::get('program-dan-bantuan', 'ProgramBantuanController@showProgramBantuan')->name('statistik.program-bantuan');
 
-                Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');                
+                Route::get('anggaran-dan-realisasi', 'AnggaranRealisasiController@showAnggaranDanRealisasi')->name('statistik.anggaran-dan-realisasi');
 
-                Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');                
+                Route::get('anggaran-desa', 'AnggaranDesaController@showAnggaranDesa')->name('statistik.anggaran-desa');
 
-                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');                
+                Route::get('kesehatan', 'KesehatanController@showKesehatan')->name('statistik.kesehatan');
             });
 
             Route::group(['prefix' => 'unduhan'], function () {
@@ -242,7 +242,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 Route::group(['prefix' => 'prosedur'], function () {
                     Route::permanentRedirect('/', '/');
-                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');                                        
+                    Route::get('/', 'DownloadController@indexProsedur')->name('unduhan.prosedur');
                     Route::get('{file}/download', 'DownloadController@downloadProsedur')->name('unduhan.prosedur.download');
                 });
 
@@ -538,7 +538,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::post('store', ['as' => 'data.data-sarana.store', 'uses' => 'DataSaranaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-sarana.edit', 'uses' => 'DataSaranaController@edit']);
                     Route::put('update/{id}', ['as' => 'data.data-sarana.update', 'uses' => 'DataSaranaController@update']);
-                    Route::delete('destroy/{id}', ['as' => 'data.data-sarana.destroy', 'uses' => 'DataSaranaController@destroy']);                    
+                    Route::delete('destroy/{id}', ['as' => 'data.data-sarana.destroy', 'uses' => 'DataSaranaController@destroy']);
                     Route::get('import', ['as' => 'data.data-sarana.import', 'uses' => 'DataSaranaController@import']);
                     Route::post('import-excel', ['as' => 'data.data-sarana.import-excel', 'uses' => 'DataSaranaController@importExcel']);
                 });
@@ -546,13 +546,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Jabatan
                 Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
 
-                //Pengurus
+                // Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
                 Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
-                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajax-bagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
-                //Arsip
+                // Arsip
                 Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.arsip');
                 Route::get('pengurus/create/arsip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'create_arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.create.arsip');
                 Route::post('pengurus/store/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'storeArsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.store.arsip');
@@ -811,7 +811,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          * Group Routing for Pesan
          */
         Route::namespace('\App\Http\Controllers\Pesan')->group(function () {
-            //Routes Resource Pesan
+            // Routes Resource Pesan
             Route::group(['prefix' => 'pesan'], function () {
                 Route::get('/', ['as' => 'pesan.index', 'uses' => 'PesanController@index']);
                 Route::get('/keluar', ['as' => 'pesan.keluar', 'uses' => 'PesanController@loadPesanKeluar']);
@@ -831,7 +831,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
          */
         Route::namespace('\App\Http\Controllers\Surat')->group(function () {
             Route::group(['prefix' => 'surat', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
-                //permohonan
+                // permohonan
                 Route::group(['prefix' => 'permohonan'], function () {
                     Route::get('/', ['as' => 'surat.permohonan', 'uses' => 'PermohonanController@index']);
                     Route::get('getdata', ['as' => 'surat.permohonan.getdata', 'uses' => 'PermohonanController@getData']);
@@ -844,13 +844,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::post('passphrase/{surat}', ['as' => 'surat.permohonan.passphrase', 'uses' => 'PermohonanController@passphrase']);
                 });
 
-                //arsip
+                // arsip
                 Route::get('/arsip', ['as' => 'surat.arsip', 'uses' => 'SuratController@arsip']);
                 Route::get('/arsip/getdata', ['as' => 'surat.arsip.getdata', 'uses' => 'SuratController@getData']);
                 Route::get('/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
                 Route::get('/arsip/download/{surat}', ['as' => 'surat.arsip.download', 'uses' => 'SuratController@download']);
 
-                //pengaturan
+                // pengaturan
                 Route::get('/pengaturan', ['as' => 'surat.pengaturan', 'uses' => 'SuratController@pengaturan']);
                 Route::put('/pengaturan/update', ['as' => 'surat.pengaturan.update', 'uses' => 'SuratController@pengaturan_update']);
             });
@@ -865,16 +865,16 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
                 Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
-                Route::post('store', 'store')->name('setting.user.store');                
+                Route::post('store', 'store')->name('setting.user.store');
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
                 Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::post('destroy/{id}', 'destroy')->name('setting.user.destroy');
-                Route::post('active/{id}', 'active')->name('setting.user.active');                
+                Route::post('active/{id}', 'active')->name('setting.user.active');
             });
 
-            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {                
+            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.user.edit');
-                Route::put('update/{id}', 'update')->name('setting.user.update');                
+                Route::put('update/{id}', 'update')->name('setting.user.update');
                 Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
@@ -960,7 +960,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/', 'index')->name('setting.themes.index');
                 Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
                 Route::get('rescan', 'rescan')->name('setting.themes.rescan');
-                Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');                
+                Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');
                 // post to-upload
                 Route::post('upload', 'upload')->name('setting.themes.upload');
                 Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');

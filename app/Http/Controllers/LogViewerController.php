@@ -31,10 +31,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SystemRequirementsChecker;
 use App\Http\Requests\EmailSmtpRequest;
 use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
-use App\Helpers\SystemRequirementsChecker;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
@@ -65,7 +65,7 @@ class LogViewerController extends Controller
      */
     public function __construct(Controller $profil, SystemRequirementsChecker $checker)
     {
-        $this->log_viewer = new LaravelLogViewer();
+        $this->log_viewer = new LaravelLogViewer;
         $this->request = app('request');
         $this->profil = $profil;
         $this->requirements = $checker;
@@ -100,7 +100,6 @@ class LogViewerController extends Controller
             'files' => $this->log_viewer->getFiles(true),
             'current_file' => $this->log_viewer->getFileName(),
             'standardFormat' => true,
-            'structure' => $this->log_viewer->foldersAndFiles(),
             'storage_path' => $this->log_viewer->getStoragePath(),
 
         ];
@@ -111,7 +110,7 @@ class LogViewerController extends Controller
 
         if (is_array($data['logs']) && count($data['logs']) > 0) {
             $firstLog = reset($data['logs']);
-            if (!$firstLog['context'] && !$firstLog['level']) {
+            if (! $firstLog['context'] && ! $firstLog['level']) {
                 $data['standardFormat'] = false;
             }
         }
@@ -125,8 +124,8 @@ class LogViewerController extends Controller
 
         $page_title = 'Info Sistem';
 
-        //mengambil data smtp terakhir
-        $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp();
+        // mengambil data smtp terakhir
+        $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp;
 
         return app('view')->make($this->view_log, $data)
             ->with('requirements', $requirements)
@@ -263,11 +262,11 @@ class LogViewerController extends Controller
         return back()->with('tab', 'email_smtp')->with('success', 'Berhasil memperbaruhi SMTP');
     }
 
-    //function for testing email smtp
+    // function for testing email smtp
     public function sendTestEmailSmtp($email)
     {
         try {
-            Mail::to($email)->send(new SmtpTestEmail());
+            Mail::to($email)->send(new SmtpTestEmail);
         } catch (\Exception $e) {
             Log::error('Test email SMTP failed', [
                 'error' => $e->getMessage(),
@@ -283,5 +282,14 @@ class LogViewerController extends Controller
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
+    }
+
+    public function phpinfo()
+    {
+        ob_start();
+        phpinfo(-1);
+        $phpinfo = ob_get_clean();
+
+        return response($phpinfo);
     }
 }

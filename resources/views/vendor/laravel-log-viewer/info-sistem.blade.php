@@ -18,35 +18,41 @@
 </div>
 
 <style>
-#phpinfo-content {
-    max-height: 600px;
-    overflow-y: auto;
-}
-#phpinfo-content pre {
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    border: none;
-}
-#phpinfo-content table {
-    width: 100%;
-    border-collapse: collapse;
-}
-#phpinfo-content table td, 
-#phpinfo-content table th {
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-}
-#phpinfo-content .e {
-    background-color: #f0f0f0;
-    font-weight: bold;
-}
-#phpinfo-content .h {
-    background-color: #e8f0fe;
-}
-#phpinfo-content center {
-    display: none;
-}
+    #phpinfo-content {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+
+    #phpinfo-content pre {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+    }
+
+    #phpinfo-content table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #phpinfo-content table td,
+    #phpinfo-content table th {
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+    }
+
+    #phpinfo-content .e {
+        background-color: #f0f0f0;
+        font-weight: bold;
+    }
+
+    #phpinfo-content .h {
+        background-color: #e8f0fe;
+    }
+
+    #phpinfo-content center {
+        display: none;
+    }
 </style>
 
 @push('scripts')

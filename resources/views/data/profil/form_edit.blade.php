@@ -148,7 +148,7 @@
             <label class="control-label col-md-4 col-sm-3 col-xs-12">Sambutan {{ $sebutan_kepala_wilayah }}</label>
             <div class="col-md-8 col-sm-6 col-xs-12">
                 {!! html()->textarea('sambutan', old('sambutan', $profil->sambutan ?? null))->class('textarea my-editor')->placeholder('Sambutan ' . $sebutan_kepala_wilayah . ' ' . $profil->nama_kecamatan)->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
-                                                padding: 10px;') !!}
+                                                                padding: 10px;') !!}
             </div>
         </div>
     </div>
@@ -161,14 +161,14 @@
             <label class="control-label col-md-2 col-sm-3 col-xs-12">Visi</label>
             <div class="col-md-7 col-sm-6 col-xs-12">
                 {!! html()->textarea('visi', old('visi', $profil->visi ?? null))->class('textarea my-editor')->placeholder('Visi Kecamatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
-                                                padding: 10px;') !!}
+                                                                padding: 10px;') !!}
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-md-2 col-sm-3 col-xs-12">Misi</label>
             <div class="col-md-7 col-sm-6 col-xs-12">
                 {!! html()->textarea('misi', old('misi', $profil->misi ?? null))->class('textarea my-editor')->placeholder('Misi Kecamatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd;
-                                                padding: 10px;') !!}
+                                                                padding: 10px;') !!}
             </div>
         </div>
     </div>

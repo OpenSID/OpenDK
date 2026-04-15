@@ -56,40 +56,40 @@
 </style>
 
 @push('scripts')
-<script>
-$(document).on('click', '#load-phpinfo', function() {
-    var btn = $(this);
-    var container = $('#phpinfo-content');
-    
-    $.ajax({
-        url: '{{ route("setting.info-sistem.phpinfo") }}',
-        type: 'GET',
-        beforeSend: function() {
-            btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Memuat...');
-        },
-        success: function(response) {
-            container.show().html(response);
-            btn.hide();
-            
-            // Cache selector and batch DOM manipulation
-            var $tables = container.find('table');
-            $tables.addClass('table table-bordered');
-        },
-        error: function(xhr, status, error) {
-            btn.prop('disabled', false).html('<i class="fa fa-refresh"></i> Tampilkan Info Sistem');
-            
-            var errorMsg = 'Gagal memuat info sistem. ';
-            if (xhr.status === 403) {
-                errorMsg += 'Anda tidak memiliki akses.';
-            } else if (xhr.status === 500) {
-                errorMsg += 'Terjadi kesalahan server.';
-            } else {
-                errorMsg += 'Silakan coba lagi.';
-            }
-            
-            container.show().html('<div class="alert alert-danger">' + errorMsg + '</div>');
-        }
-    });
-});
-</script>
+    <script>
+        $(document).on('click', '#load-phpinfo', function() {
+            var btn = $(this);
+            var container = $('#phpinfo-content');
+
+            $.ajax({
+                url: '{{ route('setting.info-sistem.phpinfo') }}',
+                type: 'GET',
+                beforeSend: function() {
+                    btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Memuat...');
+                },
+                success: function(response) {
+                    container.show().html(response);
+                    btn.hide();
+
+                    // Cache selector and batch DOM manipulation
+                    var $tables = container.find('table');
+                    $tables.addClass('table table-bordered');
+                },
+                error: function(xhr, status, error) {
+                    btn.prop('disabled', false).html('<i class="fa fa-refresh"></i> Tampilkan Info Sistem');
+
+                    var errorMsg = 'Gagal memuat info sistem. ';
+                    if (xhr.status === 403) {
+                        errorMsg += 'Anda tidak memiliki akses.';
+                    } else if (xhr.status === 500) {
+                        errorMsg += 'Terjadi kesalahan server.';
+                    } else {
+                        errorMsg += 'Silakan coba lagi.';
+                    }
+
+                    container.show().html('<div class="alert alert-danger">' + errorMsg + '</div>');
+                }
+            });
+        });
+    </script>
 @endpush

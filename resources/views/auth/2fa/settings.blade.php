@@ -47,16 +47,13 @@
                                 <label>Pilih Metode Verifikasi <span class="text-danger">*</span></label>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="channel" value="email"
-                                            {{ old('channel', $user->otp_channel) == 'email' || (!old('channel') && !$user->otp_channel) ? 'checked' : '' }}
-                                            required>
+                                        <input type="radio" name="channel" value="email" {{ old('channel', $user->otp_channel) == 'email' || (!old('channel') && !$user->otp_channel) ? 'checked' : '' }} required>
                                         <i class="fa fa-envelope"></i> Email
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="channel" value="telegram"
-                                            {{ old('channel', $user->otp_channel) == 'telegram' ? 'checked' : '' }}>
+                                        <input type="radio" name="channel" value="telegram" {{ old('channel', $user->otp_channel) == 'telegram' ? 'checked' : '' }}>
                                         <i class="fa fa-telegram"></i> Telegram
                                     </label>
                                 </div>
@@ -67,22 +64,24 @@
 
                             <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}" id="email-group">
                                 <label for="email">Alamat Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="email" name="identifier"
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    id="email"
+                                    name="identifier"
                                     placeholder="email@example.com"
                                     value="{{ old('identifier', $user->otp_channel == 'email' ? $user->otp_identifier : $user->email) }}"
-                                    required>
+                                    required
+                                >
                                 <span class="help-block">Masukkan alamat email yang valid untuk menerima kode OTP.</span>
                                 @if ($errors->has('identifier'))
                                     <span class="help-block">{{ $errors->first('identifier') }}</span>
                                 @endif
                             </div>
 
-                            <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}" id="telegram-group"
-                                style="display: none;">
+                            <div class="form-group {{ $errors->has('identifier') ? 'has-error' : '' }}" id="telegram-group" style="display: none;">
                                 <label for="telegram">Chat ID Telegram <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="telegram" name="telegram_identifier"
-                                    placeholder="123456789"
-                                    value="{{ old('identifier', $user->otp_channel == 'telegram' ? $user->otp_identifier : '') }}">
+                                <input type="text" class="form-control" id="telegram" name="telegram_identifier" placeholder="123456789" value="{{ old('identifier', $user->otp_channel == 'telegram' ? $user->otp_identifier : '') }}">
                                 <span class="help-block">
                                     <strong>Cara mendapatkan Chat ID:</strong><br>
                                     1. Buka bot <a href="https://t.me/userinfobot" target="_blank">@userinfobot</a> di

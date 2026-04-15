@@ -1,29 +1,27 @@
 @include('partials.flash_message')
 @role('super-admin')
-<div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Pengurus</label>
+    <div class="form-group">
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Pengurus</label>
 
-    <div class="col-md-6 col-sm-6 col-xs-12">
-        <select name="pengurus_id" id="pengurus" class="form-control">
-            <option class="form-control" value="">Pilih Pengurus</option>
-            @foreach ($pengurus as $list)
-                @if (empty($user))
-                    <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
-                @else
-                    <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}"
-                        value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
-                @endif
-            @endforeach
-        </select>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <select name="pengurus_id" id="pengurus" class="form-control">
+                <option class="form-control" value="">Pilih Pengurus</option>
+                @foreach ($pengurus as $list)
+                    @if (empty($user))
+                        <option value="{{ $list['id'] }}" data-nama="{{ $list['nama'] }}">{{ $list['nama'] }}</option>
+                    @else
+                        <option {{ $user->pengurus_id == $list['id'] ? 'selected' : '' }} data-nama="{{ $list['nama'] }}" value="{{ $list['id'] }}">{{ $list['nama'] }}</option>
+                    @endif
+                @endforeach
+            </select>
+        </div>
     </div>
-</div>
 @endrole
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="text" name="name" value="{{ old('name', $user->name ?? null) }}" class="form-control"
-            placeholder="Nama" pattern="^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$">
+        <input type="text" name="name" value="{{ old('name', $user->name ?? null) }}" class="form-control" placeholder="Nama" pattern="^[A-Za-z\.\']+(?:\s[A-Za-z\.\']+)*$">
     </div>
 </div>
 <div class="form-group">
@@ -61,8 +59,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="image" id="foto" class="form-control" accept="jpg,jpeg,png">
         <br>
-        <img src="{{ is_img($user->foto ?? null) }}" id="showfoto"
-            style="max-width:400px;max-height:250px;float:left;" />
+        <img src="{{ is_img($user->foto ?? null) }}" id="showfoto" style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 
@@ -99,8 +96,7 @@
 @elseif(auth()->user()->id == 1)
     @if (isset($user) && $user->id != 1)
         <div class="form-group">
-            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span
-                    class="required">*</span></label>
+            <label class="col-md-3 col-sm-3 col-xs-12 control-label">Grup Pengguna <span class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->select('role', $item, old('role', isset($user) ? $user->getRoleNames()->first() : null))->class('form-control') !!}
@@ -134,7 +130,7 @@
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var extension = input.files[0].name.split('.').pop()
-                    .toLowerCase(), //file extension from input file
+                        .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes

@@ -1,7 +1,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="desa_id">Pilih Desa <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        @include('layouts.fragments.select-desa', ['selectAttributes' => ['required' => 'required', 'name' => 'desa_id'], 'selectedOption' => (isset($sarana) ? $sarana->desa_id : '') ])
+        @include('layouts.fragments.select-desa', ['selectAttributes' => ['required' => 'required', 'name' => 'desa_id'], 'selectedOption' => isset($sarana) ? $sarana->desa_id : ''])
     </div>
 </div>
 
@@ -24,10 +24,10 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <select name="kategori" id="kategori" class="form-control" required>
             <option value="">-- Pilih Kategori --</option>
-            @foreach(\App\Enums\KategoriSarana::getGroupedOptions() as $group => $options)
+            @foreach (\App\Enums\KategoriSarana::getGroupedOptions() as $group => $options)
                 <optgroup label="{{ $group }}">
-                    @foreach($options as $value => $label)
-                        <option value="{{ $value }}" {{ (isset($sarana) && $sarana->kategori == $value) ? 'selected' : '' }}>{{ $label }}</option>
+                    @foreach ($options as $value => $label)
+                        <option value="{{ $value }}" {{ isset($sarana) && $sarana->kategori == $value ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </optgroup>
             @endforeach

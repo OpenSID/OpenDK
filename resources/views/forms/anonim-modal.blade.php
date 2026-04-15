@@ -3,8 +3,7 @@
         <div class="modal-content">
             {!! html()->form('PUT')->id('anonim')->open() !!}
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Identitas Pelapor</h4>
             </div>
             <div class="modal-body">
@@ -12,8 +11,7 @@
                 {!! html()->select('anonim', [0 => 'Tampilkan', 1 => 'Sembunyikan'])->class('form-control') !!}
             </div>
             <div class="modal-footer">
-                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light"
-                    data-dismiss="modal">Batal</a>
+                <a id="active-modal-cancel" href="#" class="btn btn-default waves-effect waves-light" data-dismiss="modal">Batal</a>
                 {!! html()->submit('Simpan')->class('btn btn-warning waves-effect waves-light') !!}
             </div>
             {!! html()->form()->close() !!}

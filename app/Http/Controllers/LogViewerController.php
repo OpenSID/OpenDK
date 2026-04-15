@@ -36,6 +36,7 @@ use App\Http\Requests\EmailSmtpRequest;
 use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -284,11 +285,14 @@ class LogViewerController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function phpinfo()
+    public function phpinfo(): \Illuminate\Http\Response
     {
-        ob_start();
-        phpinfo(-1);
-        $phpinfo = ob_get_clean();
+        $phpinfo = Cache::remember('system_phpinfo', 300, function () {
+            ob_start();
+            phpinfo(-1);
+
+            return ob_get_clean();
+        });
 
         return response($phpinfo);
     }

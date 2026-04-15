@@ -15,7 +15,7 @@ $attrString = 'class="' . e($mergedClass) . '"' . ($attrParts ? ' ' . implode(' 
 ?>
 <select {!! $attrString !!} id="list_desa">
     <option value="Semua">Semua {{ config('setting.sebutan_desa') }}</option>
-    @foreach (new App\Services\DesaService()->listDesa()->pluck('nama', 'desa_id') as $key => $value)
+    @foreach ((new App\Services\DesaService())->listDesa()->pluck('nama', 'desa_id') as $key => $value)
         <option value="{{ $key }}" @selected($selectedOption == $key)>{{ $value }}</option>
     @endforeach
 </select>

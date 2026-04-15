@@ -221,8 +221,7 @@ class PengurusController extends Controller
     }
 
     public function destroy(Pengurus $penguru): RedirectResponse
-    {
-        // dd($penguru);
+    {        
         try {
             $penguru->delete();
         } catch (\Exception $e) {
@@ -244,7 +243,7 @@ class PengurusController extends Controller
     public function lock(int $id, int $status): RedirectResponse
     {
         try {
-            $pengurus = Pengurus::findOrFail($id);
+            $pengurus = Pengurus::with(['jabatan'])->findOrFail($id);
 
             if ($status == Status::Aktif) {
                 if ($pengurus->jabatan->jenis == JenisJabatan::Camat && Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->where('status', Status::Aktif)->exists()) {

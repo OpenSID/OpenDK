@@ -58,8 +58,10 @@ class Pengurus extends Model
      */
     protected $guarded = [
         'id',
+        'nik',                  // Identitas unik pengurus
         'nip',                  // Nomor Induk Pegawai
         'status',               // Status aktif/tidak - mencegah self-activation
+        'jabatan_id',           // ID jabatan - mencegah promosi ilegal
         'created_at',
         'updated_at',
     ];

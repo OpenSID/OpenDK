@@ -20,7 +20,7 @@
 
                 {!! html()->form()->route('setting.themes.do-upload')->method('POST')->id('form-import')->class(
                         'form-horizontal
-                                                                            form-label-left',
+                                                            form-label-left',
                     )->acceptsFiles() !!}
 
                 <div class="box-body">

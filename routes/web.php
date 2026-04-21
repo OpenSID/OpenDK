@@ -550,7 +550,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
                 Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
-                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajaxbagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajax-bagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
 
                 // Arsip
                 Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['role:super-admin|admin-kecamatan'])->name('data.pengurus.arsip');

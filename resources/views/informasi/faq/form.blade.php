@@ -10,7 +10,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {{ html()->textarea('answer')->value(old('answer', $faq->answer ?? ''))->class('textarea my-editor')->placeholder('Jawaban')->style(
                 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:
-                                10px;',
+                                        10px;',
             )->required() }}
     </div>
 </div>

@@ -28,7 +28,7 @@
             {!! html()->select('value', [
                     'OpenStreetMap' => 'OpenStreetMap',
                     'OpenStreetMap H.O.T.' => 'OpenStreetMap
-                                            H.O.T.',
+                                                        H.O.T.',
                     'Mapbox Streets' => 'Mapbox Streets',
                     'Mapbox Satellite' => 'Mapbox Satellite',
                     'Mapbox Satellite-Streets' => 'Mapbox Satellite-Streets',

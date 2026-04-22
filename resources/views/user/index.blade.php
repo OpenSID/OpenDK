@@ -83,4 +83,5 @@
     @include('forms.datatable-vertical')
     @include('forms.suspend-modal')
     @include('forms.active-modal', ['title' => $page_title])
+    @include('forms.delete-modal')
 @endpush

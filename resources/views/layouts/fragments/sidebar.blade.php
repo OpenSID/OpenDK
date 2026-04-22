@@ -425,11 +425,11 @@
                                     <a href="{{ route('setting.coa.index') }}"><i class="fa fa-circle-o"></i>COA</a>
                                 </li>
                             @endif
-                            {{-- @if ($user->hasrole('super-admin'))
-                    <li {{ (Request::is(['setting/hasrole/*', 'setting/hasrole' ])? 'class=active' : '' ) }}><a
-                            href="{{ route('setting.hasrole.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a>
-                    </li>
-                    @endif --}}
+                            @if ($user->hasrole(['super-admin', 'administrator-website']))
+                                <li {{ Request::is(['setting/role*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('setting.role.index') }}"><i class="fa fa-circle-o"></i>Grup Pengguna</a>
+                                </li>
+                            @endif
                             @if ($user->hasrole(['super-admin', 'administrator-website']))
                                 <li {{ Request::is(['setting/themes*']) ? 'class=active' : '' }}><a href="{{ route('setting.themes.index') }}"><i class="fa fa-circle-o"></i>Themes</a></li>
                             @endif

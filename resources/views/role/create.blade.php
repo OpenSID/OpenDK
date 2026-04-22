@@ -18,8 +18,8 @@
                 <h3 class="box-title">Roles</h3>
             </div>
             <div class="box-body">
+                @include('partials.flash_message')
                 {!! html()->form()->route('setting.role.store')->method('POST')->acceptsFiles()->id('form-role')->attribute('role', 'form')->open() !!}
-                @include('flash::message')
                 @include('role.form')
                 {!! html()->form()->close() !!}
             </div>

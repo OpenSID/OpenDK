@@ -891,6 +891,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.role.edit');
                 Route::put('update/{id}', 'update')->name('setting.role.update');
                 Route::delete('destroy/{id}', 'destroy')->name('setting.role.destroy');
+                Route::get('users/{id}', 'users')->name('setting.role.users');
+                Route::get('users/{id}/getdata', 'getDataUsersByRole')->name('setting.role.users.getdata');
             });
 
             // Komplain Kategori

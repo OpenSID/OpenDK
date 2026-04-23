@@ -4,7 +4,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id')->value(old('jenis_surat', isset($pengurus) ? $pengurus->jenis_surat : '')), null, [
             'placeholder' => 'Pilih
-                                        Jenis Dokumen',
+                                                Jenis Dokumen',
             'class' => 'form-control',
             'id' => 'jenis_dokumen_id',
             'required' => true,
@@ -19,7 +19,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->text('judul_document')->class('form-control')->required()->placeholder(
                 'Judul
-                                        Document',
+                                                Document',
             )->value(old('judul_document', isset($pengurus) ? $pengurus->judul_document : '')) !!}
     </div>
 </div>

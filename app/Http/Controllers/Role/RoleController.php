@@ -126,10 +126,7 @@ class RoleController extends Controller
                 }
             }
 
-            flash()->success(trans('message.role.create-success', [
-                'attribute' => trans('island.role'),
-                'detail' => '#' . $role->id . ' | ' . $role->slug,
-            ]));
+            session()->flash('success', 'Berhasil membuat role baru: ' . $role->name);
 
             return redirect()->route('setting.role.index');
         } catch (\Exception $e) {
@@ -137,9 +134,7 @@ class RoleController extends Controller
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
             ]);
-            flash()->error(trans('general.destroy-error', [
-                'attribute' => trans('island.role'),
-            ]));
+            session()->flash('error', 'Gagal membuat role baru: ' . $e->getMessage());
 
             return back()->withInput();
         }
@@ -189,10 +184,7 @@ class RoleController extends Controller
             
             $role->syncPermissions($permissions);
 
-            flash()->success(trans('message.role.update-success', [
-                'attribute' => trans('island.role'),
-                'detail' => '#' . $role->id . ' | ' . $role->slug,
-            ]));
+            session()->flash('success', 'Berhasil memperbarui role: ' . $role->name);
 
             return redirect()->route('setting.role.index');
         } catch (\Exception $e) {
@@ -201,9 +193,7 @@ class RoleController extends Controller
                 'user_id' => auth()->id(),
                 'role_id' => $id,
             ]);
-            flash()->error(trans('message.role.update-error', [
-                'attribute' => trans('island.role'),
-            ]));
+            session()->flash('error', 'Gagal memperbarui role: ' . $e->getMessage());
 
             return back()->withInput();
         }
@@ -221,14 +211,12 @@ class RoleController extends Controller
             // Jika menggunakan paket Spatie, periksa apakah ada model yang terkait dengan role ini
             $role = Role::findOrFail($id);
             if ($role->users()->exists()) {
-                flash()->error(trans('general.destroy-error', [
-                    'attribute' => trans('island.role'),
-                ]));
+                session()->flash('error', 'Role tidak bisa dihapus karena masih memiliki user');
 
                 return back();
             }else {                
                 $role->delete();
-                flash()->success(trans('general.destroy-success'));
+                session()->flash('success', 'Berhasil menghapus role: ' . $role->name);
 
                 return redirect()->route('setting.role.index');
             }
@@ -238,9 +226,7 @@ class RoleController extends Controller
                 'user_id' => auth()->id(),
                 'role_id' => $id,
             ]);
-            flash()->error(trans('general.destroy-error', [
-                'attribute' => trans('island.role'),
-            ]));
+            session()->flash('error', 'Gagal menghapus role: ' . $e->getMessage());
 
             return back();
         }

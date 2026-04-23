@@ -857,6 +857,27 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         });
 
         /**
+         * Group Routing for PPID
+         */
+        Route::namespace('\App\Http\Controllers\Ppid')->group(function () {
+
+            Route::group(['prefix' => 'ppid', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                Route::group(['prefix' => 'jenis-dokumen'], function () {
+                    Route::get('/', ['as' => 'ppid.jenis-dokumen.index', 'uses' => 'JenisDokumenPpidController@index']);
+                    Route::get('create', ['as' => 'ppid.jenis-dokumen.create', 'uses' => 'JenisDokumenPpidController@create']);
+                    Route::get('getdata', ['as' => 'ppid.jenis-dokumen.getdata', 'uses' => 'JenisDokumenPpidController@getData']);
+                    Route::post('store', ['as' => 'ppid.jenis-dokumen.store', 'uses' => 'JenisDokumenPpidController@store']);
+                    Route::get('edit/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.edit', 'uses' => 'JenisDokumenPpidController@edit']);
+                    Route::put('update/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.update', 'uses' => 'JenisDokumenPpidController@update']);
+                    Route::delete('destroy/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.destroy', 'uses' => 'JenisDokumenPpidController@destroy']);
+                    Route::post('/bulk-delete', ['as' => 'ppid.jenis-dokumen.bulk-delete', 'uses' => 'JenisDokumenPpidController@bulkDelete']);
+                    Route::put('status/{jenis_dokumen}', ['as' => 'ppid.jenis-dokumen.status', 'uses' => 'JenisDokumenPpidController@status']);
+                    Route::post('update-order', ['as' => 'ppid.jenis-dokumen.update-order', 'uses' => 'JenisDokumenPpidController@updateOrder']);
+                });
+            });
+        });
+
+        /**
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {

@@ -21,7 +21,7 @@
                         @php
                             $childs = $permission['children'] ?? [];
                             if (isset($role)) {
-                                $permission_val = permission_val($role->id, $permission['slug'] ?? $permission['name'] ?? '');
+                                $permission_val = permission_val($role->id, $permission['slug'] ?? ($permission['name'] ?? ''));
                             } else {
                                 $permission_val = 0;
                             }
@@ -30,9 +30,9 @@
                             <td class="text-center">{{ $no++ }}</td>
                             <td>
                                 <strong>{{ $permission['name'] ?? '-' }}</strong>
-                                @if(count($childs) > 0)
+                                @if (count($childs) > 0)
                                     <ul class="list-unstyled" style="margin-left: 15px; margin-top: 5px; margin-bottom: 5px;">
-                                        @foreach($childs as $child)
+                                        @foreach ($childs as $child)
                                             <li>
                                                 <small>{{ $child['name'] ?? '-' }}</small>
                                             </li>
@@ -41,9 +41,9 @@
                                 @endif
                             </td>
                             <td class="text-center" style="vertical-align: middle;">
-                                <input 
-                                    type="checkbox" 
-                                    name="permissions[{{ $permission['slug'] ?? $permission['name'] ?? '' }}]" 
+                                <input
+                                    type="checkbox"
+                                    name="permissions[{{ $permission['slug'] ?? ($permission['name'] ?? '') }}]"
                                     value="1"
                                     {{ $permission_val ? 'checked' : '' }}
                                     class="permission-checkbox"
@@ -68,9 +68,9 @@
 </div>
 
 @push('scripts')
-<script type="text/javascript">
-    $(document).on('change', '.permission-checkbox', function() {
-        // Optional: Add any additional functionality when checkbox changes
-    });
-</script>
+    <script type="text/javascript">
+        $(document).on('change', '.permission-checkbox', function() {
+            // Optional: Add any additional functionality when checkbox changes
+        });
+    </script>
 @endpush

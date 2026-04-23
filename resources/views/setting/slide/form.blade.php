@@ -9,7 +9,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->textarea('deskripsi')->class('textarea')->style(
                 'width: 100%; height: 200px; font-size: 14px;
-                                        line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+                                                line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
             )->placeholder('deskripsi')->value(old('deskripsi', isset($slide) ? $slide->deskripsi : '')) !!}
     </div>
 </div>

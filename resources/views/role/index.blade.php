@@ -56,7 +56,7 @@
                         class: 'text-center',
                         render: function(data, type, row) {
                             var count = parseInt(data) || 0;
-                            var url = '{{ route("setting.role.users", ["id" => "REPLACE"]) }}'.replace('REPLACE', row.id);
+                            var url = '{{ route('setting.role.users', ['id' => 'REPLACE']) }}'.replace('REPLACE', row.id);
                             if (count > 0) {
                                 return '<a href="' + url + '" class="btn btn-xs btn-primary" title="Lihat User">' + count + ' User</a>';
                             }

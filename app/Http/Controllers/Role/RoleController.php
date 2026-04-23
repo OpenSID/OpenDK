@@ -35,6 +35,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
 use App\Models\User;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -49,7 +51,7 @@ class RoleController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(): View
     {
         $page_title = 'Group Pengguna';
         $page_description = 'Daftar Data';
@@ -85,7 +87,7 @@ class RoleController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return View
      */
     public function create()
     {
@@ -238,7 +240,7 @@ class RoleController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function users($id)
+    public function users($id): View
     {
         $role = Role::findOrFail($id);
         $page_title = 'Group Pengguna';
@@ -253,20 +255,23 @@ class RoleController extends Controller
      * @param  int  $id
      * @return DataTables
      */
-    public function getDataUsersByRole($id)
+    public function getDataUsersByRole($id): JsonResponse
     {
         $role = Role::findOrFail($id);
         $users = $role->users()->select('users.id', 'users.name', 'users.email', 'users.status');
 
-        return DataTables::of($users)
-            ->editColumn('status', function ($user) {
-                return $user->status == 1 ? 'Active' : 'Not Active';
-            })
-            ->addColumn('aksi', function ($user) {
-                $data['edit_url'] = route('setting.user.edit', $user->id);
-
-                return view('forms.aksi', $data);
-            })
-            ->make(true);
+        
+        return datatables($users)
+        ->editColumn('status', function ($user) {
+            return $user->status === 1 
+                ? '<span class="badge badge-success">Aktif</span>' 
+                : '<span class="badge badge-danger">Nonaktif</span>';
+        })
+        ->addColumn('aksi', function ($user) {
+            $editUrl = e(route('setting.user.edit', $user->id));
+            return '<a href="' . $editUrl . '" class="btn btn-sm btn-primary">Edit</a>';
+        })
+        ->rawColumns(['status', 'aksi'])
+        ->make(true);
     }
 }

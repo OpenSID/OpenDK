@@ -30,6 +30,7 @@
  */
 
 namespace App\Models;
+use Illuminate\Database\Eloquent\Collection;
 
 use Spatie\Permission\Models\Role as ModelsRole;
 
@@ -40,12 +41,11 @@ class Role extends ModelsRole
         return static::select('roles.*');
     }
 
-    public static function getListPermission()
+    public static function getListPermission(): Collection
     {
         return Permission::where('parent_id', 0)
             ->with('children')
             ->orderBy('sort')
-            ->get()
-            ->toArray();
+            ->get();
     }
 }

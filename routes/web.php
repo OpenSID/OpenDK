@@ -265,6 +265,19 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
             Route::get('faq', 'WebFaqController@index')->name('faq');
 
+            // PPID Routes (Frontend - Public Access)
+            Route::group(['prefix' => 'ppid'], function () {
+                Route::get('/', ['as' => 'ppid.index', 'uses' => 'PpidPublicController@index']);
+                Route::get('dokumen', ['as' => 'ppid.dokumen', 'uses' => 'PpidPublicController@dokumen']);
+                Route::get('dokumen/jenis/{id}', ['as' => 'ppid.dokumen.jenis', 'uses' => 'PpidPublicController@dokumen']);
+                Route::get('dokumen/{id}', ['as' => 'ppid.dokumen.show', 'uses' => 'PpidPublicController@showDokumen']);
+                Route::get('download/{id}', ['as' => 'ppid.dokumen.download', 'uses' => 'PpidPublicController@downloadDokumen']);
+                Route::get('permohonan', ['as' => 'ppid.permohonan', 'uses' => 'PpidPublicController@permohonan']);
+                Route::post('permohonan', ['as' => 'ppid.permohonan.store', 'uses' => 'PpidPublicController@storePermohonan']);
+                Route::get('cek-permohonan', ['as' => 'ppid.cek-permohonan', 'uses' => 'PpidPublicController@cekPermohonan']);
+                Route::post('cek-permohonan', ['as' => 'ppid.cek-permohonan.post', 'uses' => 'PpidPublicController@cekPermohonan']);
+            });
+
             Route::group(['prefix' => 'sistem-komplain'], function () {
                 Route::get('/', ['as' => 'sistem-komplain.index', 'uses' => 'SistemKomplainController@index']);
                 Route::get('kirim', ['as' => 'sistem-komplain.kirim', 'uses' => 'SistemKomplainController@kirim']);
@@ -1025,6 +1038,57 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.jenis-dokumen.edit');
                 Route::put('update/{id}', 'update')->name('setting.jenis-dokumen.update');
                 Route::delete('destroy/{id}', 'destroy')->name('setting.jenis-dokumen.destroy');
+            });
+        });
+
+        /**
+         * Group Routing for PPID
+         */
+        Route::namespace('\App\Http\Controllers\Ppid')->group(function () {
+            Route::group(['prefix' => 'ppid', 'middleware' => ['role:super-admin|administrator-website|admin-kecamatan']], function () {
+                // Dokumen
+                Route::group(['prefix' => 'dokumen'], function () {
+                    Route::get('/', ['as' => 'ppid.dokumen.index', 'uses' => 'DokumenController@index']);
+                    Route::get('getdata', ['as' => 'ppid.dokumen.getdata', 'uses' => 'DokumenController@getDataDokumen']);
+                    Route::get('create', ['as' => 'ppid.dokumen.create', 'uses' => 'DokumenController@create']);
+                    Route::post('store', ['as' => 'ppid.dokumen.store', 'uses' => 'DokumenController@store']);
+                    Route::get('edit/{dokumen}', ['as' => 'ppid.dokumen.edit', 'uses' => 'DokumenController@edit']);
+                    Route::put('update/{dokumen}', ['as' => 'ppid.dokumen.update', 'uses' => 'DokumenController@update']);
+                    Route::delete('destroy/{dokumen}', ['as' => 'ppid.dokumen.destroy', 'uses' => 'DokumenController@destroy']);
+                    Route::get('download/{dokumen}', ['as' => 'ppid.dokumen.download', 'uses' => 'DokumenController@download']);
+                });
+
+                // Permohonan
+                Route::group(['prefix' => 'permohonan'], function () {
+                    Route::get('/', ['as' => 'ppid.permohonan.index', 'uses' => 'PermohonanController@index']);
+                    Route::get('getdata', ['as' => 'ppid.permohonan.getdata', 'uses' => 'PermohonanController@getDataPermohonan']);
+                    Route::get('create', ['as' => 'ppid.permohonan.create', 'uses' => 'PermohonanController@create']);
+                    Route::post('store', ['as' => 'ppid.permohonan.store', 'uses' => 'PermohonanController@store']);
+                    Route::get('show/{permohonan}', ['as' => 'ppid.permohonan.show', 'uses' => 'PermohonanController@show']);
+                    Route::get('edit/{permohonan}', ['as' => 'ppid.permohonan.edit', 'uses' => 'PermohonanController@edit']);
+                    Route::put('update/{permohonan}', ['as' => 'ppid.permohonan.update', 'uses' => 'PermohonanController@update']);
+                    Route::delete('destroy/{permohonan}', ['as' => 'ppid.permohonan.destroy', 'uses' => 'PermohonanController@destroy']);
+                    Route::put('proses/{permohonan}', ['as' => 'ppid.permohonan.proses', 'uses' => 'PermohonanController@proses']);
+                    Route::put('selesaikan/{permohonan}', ['as' => 'ppid.permohonan.selesaikan', 'uses' => 'PermohonanController@selesaikan']);
+                    Route::put('tolak/{permohonan}', ['as' => 'ppid.permohonan.tolak', 'uses' => 'PermohonanController@tolak']);
+                });
+
+                // Jenis Dokumen
+                Route::group(['prefix' => 'jenis-dokumen'], function () {
+                    Route::get('/', ['as' => 'ppid.jenis-dokumen.index', 'uses' => 'JenisDokumenController@index']);
+                    Route::get('getdata', ['as' => 'ppid.jenis-dokumen.getdata', 'uses' => 'JenisDokumenController@getDataJenisDokumen']);
+                    Route::get('create', ['as' => 'ppid.jenis-dokumen.create', 'uses' => 'JenisDokumenController@create']);
+                    Route::post('store', ['as' => 'ppid.jenis-dokumen.store', 'uses' => 'JenisDokumenController@store']);
+                    Route::get('edit/{jenisDokumen}', ['as' => 'ppid.jenis-dokumen.edit', 'uses' => 'JenisDokumenController@edit']);
+                    Route::put('update/{jenisDokumen}', ['as' => 'ppid.jenis-dokumen.update', 'uses' => 'JenisDokumenController@update']);
+                    Route::delete('destroy/{jenisDokumen}', ['as' => 'ppid.jenis-dokumen.destroy', 'uses' => 'JenisDokumenController@destroy']);
+                });
+
+                // Pengaturan
+                Route::group(['prefix' => 'pengaturan', 'middleware' => ['role:super-admin|administrator-website']], function () {
+                    Route::get('/', ['as' => 'ppid.pengaturan.index', 'uses' => 'PengaturanController@index']);
+                    Route::post('update', ['as' => 'ppid.pengaturan.update', 'uses' => 'PengaturanController@update']);
+                });
             });
         });
 

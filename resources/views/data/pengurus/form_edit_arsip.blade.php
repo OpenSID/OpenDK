@@ -23,7 +23,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->text('judul_document')->class('form-control')->required()->placeholder(
                 'Judul
-                                                Document',
+                                                        Document',
             )->value(old('judul_document', isset($pengurus) ? $pengurus->judul_document : '')) !!}
     </div>
 </div>

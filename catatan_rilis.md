@@ -5,6 +5,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### FITUR
 
+1. [#1497](https://github.com/OpenSID/OpenDK/issues/1497) Penambahan fitur hapus user dengan soft delete.
+
 
 #### BUG
 

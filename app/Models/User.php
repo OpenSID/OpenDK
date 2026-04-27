@@ -42,6 +42,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -50,6 +51,7 @@ class User extends Authenticatable implements JWTSubject
     use HasRoles;
     use Notifiable;
     use HandlesResourceDeletion;
+    use SoftDeletes;
 
     /**
      * Default password.

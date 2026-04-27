@@ -238,4 +238,31 @@ describe('User Management CRUD', function () {
 
         $response->assertSessionHasErrors('password');
     });
+
+    test('permanentDestroy soft deletes user successfully', function () {
+        $superAdmin = User::whereHas('roles', fn($q) => $q->where('name', 'super-admin'))->first();
+        $targetUser = User::where('id', '!=', $superAdmin->id)->first();
+
+        $response = $this->actingAs($superAdmin)->delete(
+            route('setting.user.permanent-destroy', $targetUser->id)
+        );
+
+        $response->assertRedirect(route('setting.user.index'));
+
+        $this->assertSoftDeleted('users', [
+            'id' => $targetUser->id,
+        ]);
+    });
+
+    test('soft deleted user does not appear in user list', function () {
+        $superAdmin = User::whereHas('roles', fn($q) => $q->where('name', 'super-admin'))->first();
+        $targetUser = User::where('id', '!=', $superAdmin->id)->first();
+
+        $targetUser->delete();
+
+        $response = $this->actingAs($superAdmin)->get(route('setting.user.getdata'));
+
+        $response->assertStatus(200);
+        $response->assertJsonMissing(['id' => $targetUser->id]);
+    });
 });

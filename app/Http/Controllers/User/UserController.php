@@ -236,6 +236,33 @@ class UserController extends Controller
     }
 
     /**
+     * Remove the specified resource permanently from storage.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function permanentDestroy($id)
+    {
+        try {
+            $user = User::withTrashed()->findOrFail($id);
+            $user->delete();
+
+            flash()->success(trans('general.delete-success'));
+
+            return redirect()->route('setting.user.index');
+        } catch (\Exception $e) {
+            Log::error('User permanent deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'target_user_id' => $id,
+            ]);
+            flash()->error(trans('general.delete-error'));
+
+            return redirect()->route('setting.user.index');
+        }
+    }
+
+    /**
      * Active User
      *
      * @param  int  $id
@@ -279,6 +306,7 @@ class UserController extends Controller
                     } else {
                         $data['active_url'] = route('setting.user.active', $user->id);
                     }
+                    $data['delete_url'] = route('setting.user.permanent-destroy', $user->id);
                 }
 
                 $data['edit_url'] = route('setting.user.edit', $user->id);

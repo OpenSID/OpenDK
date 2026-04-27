@@ -20,7 +20,7 @@
 
                 {!! html()->form('POST', route('data.data-sarana.import-excel'))->id('form-import')->class(
                         'form-horizontal
-                                                                                                            form-label-left',
+                                                                                            form-label-left',
                     )->acceptsFiles()->open() !!}
 
                 <div class="box-body">

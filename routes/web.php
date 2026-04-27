@@ -870,6 +870,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::post('destroy/{id}', 'destroy')->name('setting.user.destroy');
                 Route::post('active/{id}', 'active')->name('setting.user.active');
+                Route::delete('permanent-destroy/{id}', 'permanentDestroy')->name('setting.user.permanent-destroy');
             });
 
             Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {

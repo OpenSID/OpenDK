@@ -6,7 +6,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### FITUR
 
 1. [#1497](https://github.com/OpenSID/OpenDK/issues/1497) Penambahan fitur hapus user dengan soft delete.
-
+2. [#1499](https://github.com/OpenSID/OpenDK/issues/1499) Penambahan fitur kelola grup pengguna dengan jumlah user.
 
 #### BUG
 
@@ -16,3 +16,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 4. [#1504](https://github.com/OpenSID/OpenDK/issues/1504) Perbaikan error pada beberapa halaman seperti data penduduk dan sarana.
 
 #### TEKNIS
+

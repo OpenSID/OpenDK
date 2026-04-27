@@ -19,7 +19,7 @@
 
                     {!! html()->form('POST', route('data.data-suplemen.store'))->id('form-faq')->class(
                             'form-horizontal
-                                                                                                                    form-label-left',
+                                                                                                                                        form-label-left',
                         )->open() !!}
 
                     <div class="box-body">

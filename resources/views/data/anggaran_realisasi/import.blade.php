@@ -20,7 +20,7 @@
 
                 {!! html()->form()->route('data.anggaran-realisasi.do_import')->method('POST')->id('form-import')->class(
                         'form-horizontal
-                                                                                            form-label-left',
+                                                                                                            form-label-left',
                     )->acceptsFiles() !!}
 
                 <div class="box-body">

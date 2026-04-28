@@ -53,6 +53,46 @@
                                     <a href="{{ route('informasi.event.index') }}"><i class="fa fa-circle-o"></i>Event</a>
                                 </li>
                             @endcan
+                            @can('access.informasi.artikel')
+                                <li {{ Request::is(['informasi/artikel*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.artikel.index') }}"><i class="fa fa-circle-o"></i>Artikel</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.artikel_kategori')
+                                <li {{ Request::is(['informasi/kategori*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.artikel-kategori.index') }}"><i class="fa fa-circle-o"></i>Artikel Kategori</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.komentar_artikel')
+                                <li {{ Request::is(['informasi/komentar-artikel*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.komentar-artikel.index') }}"><i class="fa fa-circle-o"></i>Komentar Artikel</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.faq')
+                                <li {{ Request::is(['informasi/faq*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.faq.index') }}"><i class="fa fa-circle-o"></i>FAQ</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.form_dokumen')
+                                <li {{ Request::is(['informasi/form-dokumen*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.media_sosial')
+                                <li {{ Request::is(['informasi/media-sosial*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.media-sosial.index') }}"><i class="fa fa-circle-o"></i>Media Sosial</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.media_terkait')
+                                <li {{ Request::is(['informasi/media-terkait*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.media.terkait') }}"><i class="fa fa-circle-o"></i>Media Terkait</a>
+                                </li>
+                            @endcan
+                            @can('access.informasi.sinergi_program')
+                                <li {{ Request::is(['informasi/sinergi-program*']) ? 'class=active' : '' }}>
+                                    <a href="{{ route('informasi.sinergi-program.index') }}"><i class="fa fa-circle-o"></i>Sinergi Program</a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endcan
@@ -417,6 +457,7 @@
                     </li>
                 @endcan
             @endif
+            @can('access.counter')
             <li class="header">VISITOR COUNTER</li>
             <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
                 <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
@@ -426,6 +467,7 @@
                     </span>
                 </a>
             </li>
+            @endcan
 
         </ul>
         <!-- /.sidebar-menu -->

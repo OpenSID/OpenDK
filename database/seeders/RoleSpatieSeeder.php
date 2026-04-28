@@ -32,10 +32,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class RoleSpatieSeeder extends Seeder
 {
@@ -46,23 +45,108 @@ class RoleSpatieSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET foreign_key_checks=0');
-        DB::table('roles')->truncate();
-        DB::table('permissions')->truncate();
-        DB::table('role_has_permissions')->truncate();
-        DB::table('model_has_roles')->truncate();
-        DB::statement('SET foreign_key_checks=1');
-
-        // DB::table('roles')->truncate();
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'view', 'guard_name' => 'web']);
-        Permission::create(['name' => 'create', 'guard_name' => 'web']);
-        Permission::create(['name' => 'edit', 'guard_name' => 'web']);
-        Permission::create(['name' => 'delete', 'guard_name' => 'web']);
+        $permissions = [
+            'access.dashboard',
+            'access.counter',
+            'access.change_default',
+            'access.informasi',
+            'access.informasi.prosedur',
+            'access.informasi.regulasi',
+            'access.informasi.potensi',
+            'access.informasi.event',
+            'access.informasi.artikel',
+            'access.informasi.artikel_kategori',
+            'access.informasi.komentar_artikel',
+            'access.informasi.faq',
+            'access.informasi.form_dokumen',
+            'access.informasi.media_sosial',
+            'access.informasi.media_terkait',
+            'access.informasi.sinergi_program',
+            'access.publikasi',
+            'access.publikasi.album',
+            'access.publikasi.galeri',
+            'access.kerjasama',
+            'access.data',
+            'access.data.profil',
+            'access.data.data_umum',
+            'access.data.data_desa',
+            'access.data.data_sarana',
+            'access.data.jabatan',
+            'access.data.pengurus',
+            'access.data.penduduk',
+            'access.data.keluarga',
+            'access.data.data_suplemen',
+            'access.data.laporan_penduduk',
+            'access.data.aki_akb',
+            'access.data.imunisasi',
+            'access.data.epidemi_penyakit',
+            'access.data.toilet_sanitasi',
+            'access.data.tingkat_pendidikan',
+            'access.data.putus_sekolah',
+            'access.data.fasilitas_paud',
+            'access.data.program_bantuan',
+'access.data.anggaran_realisasi',
+            'access.data.anggaran_desa',
+            'access.data.laporan_apbdes',
+            'access.data.pembangunan',
+            'access.data.kategori_lembaga',
+            'access.data.lembaga',
+            'access.admin_komplain',
+            'access.pesan',
+            'access.surat',
+            'access.api',
+            'access.setting',
+            'access.setting.user',
+            'access.setting.role',
+            'access.setting.widget',
+            'access.setting.nav_menu',
+            'access.setting.navigation',
+            'access.setting.komplain_kategori',
+            'access.setting.tipe_regulasi',
+            'access.setting.jenis_penyakit',
+            'access.setting.tipe_potensi',
+            'access.setting.slide',
+            'access.setting.coa',
+            'access.setting.themes',
+            'access.setting.aplikasi',
+            'access.setting.info_sistem',
+            'access.setting.database',
+            'access.setting.jenis_dokumen',
+        ];
 
-        $role_admin = Role::create(['name' => 'super-admin', 'guard_name' => 'web'])->givePermissionTo(['view', 'create', 'edit', 'delete']);
+        $sort = 1;
+        foreach ($permissions as $name) {
+            Permission::updateOrCreate(['name' => $name, 'guard_name' => 'web'], [
+                'name' => $name,
+                'slug' => $name,
+                'parent_id' => 0,
+                'sort' => $sort++,
+                'guard_name' => 'web',
+            ]);
+        }
+
+$superAdmin = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
+        $adminKecamatan = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
+        $kontributorArtikel = Role::firstOrCreate(['name' => 'kontributor-artikel', 'guard_name' => 'web']);
+
+        $superAdmin->syncPermissions($permissions);
+
+        $adminKecamatanPermissions = array_values(array_filter($permissions, function ($permission) {
+            return !str_starts_with($permission, 'access.setting');
+        }));
+
+        $adminKecamatan->syncPermissions($adminKecamatanPermissions);
+
+        $kontributorArtikelPermissions = [
+            'access.informasi',
+            'access.informasi.artikel',
+            'access.informasi.artikel_kategori',
+            'access.informasi.komentar_artikel',
+        ];
+        $kontributorArtikel->syncPermissions($kontributorArtikelPermissions);
+
         // cek user admin
         $user = User::where('email', 'admin@mail.com')->first();
 
@@ -75,21 +159,9 @@ class RoleSpatieSeeder extends Seeder
                 'status' => 1,
                 'password' => bcrypt('password'),
             ]);
-            $admin->assignRole($role_admin);
+            $admin->assignRole($superAdmin);
         } else {
-            $user->assignRole($role_admin);
-        }
-
-        $role = [
-            ['name' => 'admin-desa', 'guard_name' => 'web'],
-            ['name' => 'admin-kecamatan', 'guard_name' => 'web'],
-            ['name' => 'admin-puskesmas', 'guard_name' => 'web'],
-            ['name' => 'admin-pendidikan', 'guard_name' => 'web'],
-            ['name' => 'admin-komplain', 'guard_name' => 'web'],
-            ['name' => 'administrator-website', 'guard_name' => 'web'],
-        ];
-        foreach ($role as $value) {
-            Role::create($value)->givePermissionTo(['view', 'create', 'edit', 'delete']);
+            $user->syncRoles([$superAdmin->name]);
         }
     }
 }

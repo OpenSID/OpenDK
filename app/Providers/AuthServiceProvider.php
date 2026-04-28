@@ -31,7 +31,7 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -54,6 +54,17 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        \Gate::before(function ($user, $ability) {
+            if ($user && $user->hasRole('super-admin')) {
+                return true;
+            }
+        });
+
+        $permissions = \App\Models\Permission::where('guard_name', 'web')->get();
+        foreach ($permissions as $permission) {
+            \Gate::define($permission->name, function ($user) use ($permission) {
+                return $user->hasPermissionTo($permission);
+            });
+        }
     }
 }

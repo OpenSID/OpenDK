@@ -79,11 +79,12 @@ function define_child($parent_id)
  */
 function permission_val($id, $permission)
 {
-    $role = Role::findOrFail($id);
-    $format = json_decode(json_encode($role), true);
-    $result = (isset($format['permissions'][$permission]) && $format['permissions'][$permission] != '' ? 1 : 0);
-
-    return $result;
+    try {
+        $role = \App\Models\Role::findOrFail($id);
+        return $role->hasPermissionTo($permission) ? 1 : 0;
+    } catch (\Exception $e) {
+        return 0;
+    }
 }
 
 /**

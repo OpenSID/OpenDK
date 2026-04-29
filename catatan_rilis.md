@@ -1,16 +1,19 @@
-Di rilis versi v2604.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2605.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
 
 #### FITUR
 
+1. [#1497](https://github.com/OpenSID/OpenDK/issues/1497) Penambahan fitur hapus user dengan soft delete.
+2. [#1499](https://github.com/OpenSID/OpenDK/issues/1499) Penambahan fitur kelola grup pengguna dengan jumlah user.
 
 #### BUG
 
-1. [#1483](https://github.com/OpenSID/OpenDK/issues/1483) Perbaikan Gagal sinkronisasi penduduk dari OpenSID.
-2. [#1481](https://github.com/OpenSID/OpenDK/issues/1481) Perbaikan Link desa pada footer ketika diklik menuju halaman 404.
-
-
+1. [#1490](https://github.com/OpenSID/OpenDK/issues/1490) Perbaikan error load themes.
+2. [#1491](https://github.com/OpenSID/OpenDK/issues/1491) Perbaikan info sistem mengalami timeout.
+3. [#1492](https://github.com/OpenSID/OpenDK/issues/1492) Perbaikan tidak bisa tambah pengurus.
+4. [#1504](https://github.com/OpenSID/OpenDK/issues/1504) Perbaikan error pada beberapa halaman seperti data penduduk dan sarana.
 
 #### TEKNIS
+

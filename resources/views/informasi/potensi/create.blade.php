@@ -21,7 +21,7 @@
                         <!-- form start -->
                         {!! html()->form('POST', route('informasi.potensi.store'))->acceptsFiles()->id('form-potensi')->class(
                                 'form-horizontal
-                                                                    form-label-left',
+                                                                                                                                                                                            form-label-left',
                             )->open() !!}
 
                         @if (count($errors) > 0)

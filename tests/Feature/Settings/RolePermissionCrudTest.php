@@ -123,4 +123,42 @@ describe('Role and Permission CRUD', function () {
             'role_id' => $role->id,
         ]);
     });
+
+    test('users page displays users by role', function () {
+        $role = Role::create([
+            'name' => 'test-role-users',
+            'display_name' => 'Test Role Users',
+            'description' => 'Test Description',
+        ]);
+
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $response = $this->get(route('setting.role.users', $role->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('role.users');
+        $response->assertViewHas('role', $role);
+    });
+
+    test('getDataUsersByRole returns users data', function () {
+        $role = Role::create([
+            'name' => 'test-role-data',
+            'display_name' => 'Test Role Data',
+            'description' => 'Test Description',
+        ]);
+
+        $user = User::factory()->create();
+        $user->assignRole($role);
+
+        $response = $this->get(route('setting.role.users.getdata', $role->id));
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'draw',
+            'recordsTotal',
+            'recordsFiltered',
+            'data',
+        ]);
+    });
 });

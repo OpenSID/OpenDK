@@ -8,7 +8,8 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ $page_title }}</li>
+            <li><a href="{{ route('setting.role.index') }}">Group Pengguna</a></li>
+            <li class="active">{{ $role->name }}</li>
         </ol>
     </section>
     <section class="content container-fluid">
@@ -17,9 +18,9 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('setting.role.create') }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
-                        Tambah</button>
+                <a href="{{ route('setting.role.index') }}">
+                    <button type="button" class="btn btn-default btn-sm" title="Kembali"><i class="fa fa-arrow-left"></i>
+                        Kembali</button>
                 </a>
             </div>
             <div class="box-body">
@@ -28,7 +29,8 @@
                         <thead>
                             <tr>
                                 <th>Nama</th>
-                                <th>Jumlah User</th>
+                                <th>Email</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -45,23 +47,19 @@
             var data = $('#user-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('setting.role.getdata') !!}",
+                ajax: "{!! route('setting.role.users.getdata', $role->id) !!}",
                 columns: [{
                         data: 'name',
                         name: 'name'
                     },
                     {
-                        data: 'users_count',
-                        name: 'users_count',
-                        class: 'text-center',
-                        render: function(data, type, row) {
-                            var count = parseInt(data) || 0;
-                            var url = '{{ route('setting.role.users', ['id' => 'REPLACE']) }}'.replace('REPLACE', row.id);
-                            if (count > 0) {
-                                return '<a href="' + url + '" class="btn btn-xs btn-primary" title="Lihat User">' + count + ' User</a>';
-                            }
-                            return count + ' User';
-                        }
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        class: 'text-center'
                     },
                     {
                         data: 'aksi',
@@ -75,5 +73,4 @@
         });
     </script>
     @include('forms.datatable-vertical')
-    @include('forms.delete-modal')
 @endpush

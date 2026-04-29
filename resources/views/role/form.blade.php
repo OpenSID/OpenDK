@@ -29,12 +29,12 @@
                         <tr>
                             <td class="text-center">{{ $no++ }}</td>
                             <td>
-                                <strong>{{ $permission['name'] ?? '-' }}</strong>
+                                <strong>{{ permission_name($permission['name'] ?? '-') }}</strong>
                                 @if (count($childs) > 0)
                                     <ul class="list-unstyled" style="margin-left: 15px; margin-top: 5px; margin-bottom: 5px;">
                                         @foreach ($childs as $child)
                                             <li>
-                                                <small>{{ $child['name'] ?? '-' }}</small>
+                                                <small>{{ permission_name($child['name'] ?? '-') }}</small>
                                             </li>
                                         @endforeach
                                     </ul>

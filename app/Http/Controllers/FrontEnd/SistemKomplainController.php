@@ -238,7 +238,7 @@ class SistemKomplainController extends FrontEndController
                 $jawab = new JawabKomplain();
                 $user = auth()->user();
 
-                if (isset($user) && $user->hasrole(['super-admin', 'admin-kecamatan', 'admin-komplain'])) {
+                if (isset($user) && $user->can('access.admin_komplain')) {
                     request()->validate([
                         'jawaban' => 'required',
                     ]);

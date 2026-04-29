@@ -95,7 +95,6 @@ class User extends Authenticatable implements JWTSubject
     protected $guarded = [
         'id',
         'status',           // Mencegah self-activation/admin promotion
-        'permissions',      // Mencegah permission bypass
         'last_login',       // System managed field
         'email_verified_at', // System managed field
     ];

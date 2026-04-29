@@ -39,11 +39,17 @@ use Tests\CrudTestCase;
 beforeEach(function () {
     // Clear existing roles and permissions for clean test
     Role::whereNotIn('name', ['super-admin'])->delete();
-    Permission::whereNotIn('name', ['super-admin'])->delete();
+    Permission::whereNotIn('name', ['access.setting.role'])->delete();
+    
+    // Create permission for testing
+    Permission::firstOrCreate(['name' => 'access.setting.role', 'guard_name' => 'web']);
 });
 
 describe('Role and Permission CRUD', function () {
     test('index displays role list view', function () {
+        $user = User::first() ?? User::factory()->create();
+        $user->givePermissionTo('access.setting.role');
+        $this->actingAs($user);
         $response = $this->get(route('setting.role.index'));
 
         $response->assertStatus(200);
@@ -53,6 +59,9 @@ describe('Role and Permission CRUD', function () {
     });    
 
     test('store creates new role successfully', function () {
+        $user = User::first() ?? User::factory()->create();
+        $user->givePermissionTo('access.setting.role');
+        $this->actingAs($user);
         $validData = [
             'name' => 'test-role',
             'display_name' => 'Test Role',
@@ -69,6 +78,9 @@ describe('Role and Permission CRUD', function () {
     });
     
     test('update updates role successfully', function () {
+        $user = User::first() ?? User::factory()->create();
+        $user->givePermissionTo('access.setting.role');
+        $this->actingAs($user);
         $role = Role::create([
             'name' => 'test-role-update',
             'display_name' => 'Test Role Update',
@@ -92,6 +104,9 @@ describe('Role and Permission CRUD', function () {
     });
 
     test('destroy deletes role successfully', function () {
+        $user = User::first() ?? User::factory()->create();
+        $user->givePermissionTo('access.setting.role');
+        $this->actingAs($user);
         $role = Role::create([
             'name' => 'test-role-delete',
             'display_name' => 'Test Role Delete',
@@ -125,6 +140,9 @@ describe('Role and Permission CRUD', function () {
     });
 
     test('users page displays users by role', function () {
+        $user = User::first() ?? User::factory()->create();
+        $user->givePermissionTo('access.setting.role');
+        $this->actingAs($user);
         $role = Role::create([
             'name' => 'test-role-users',
             'display_name' => 'Test Role Users',
@@ -142,6 +160,9 @@ describe('Role and Permission CRUD', function () {
     });
 
     test('getDataUsersByRole returns users data', function () {
+        $user = User::first() ?? User::factory()->create();
+        $user->givePermissionTo('access.setting.role');
+        $this->actingAs($user);
         $role = Role::create([
             'name' => 'test-role-data',
             'display_name' => 'Test Role Data',

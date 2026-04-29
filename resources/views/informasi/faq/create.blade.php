@@ -19,7 +19,7 @@
 
                     {!! html()->form('POST', route('informasi.faq.store'))->id('form-faq')->class(
                             'form-horizontal
-                                                                                                                                        form-label-left',
+                                                                                                                                                            form-label-left',
                         )->open() !!}
                     @include('layouts.fragments.error_message')
 

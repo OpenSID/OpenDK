@@ -30,7 +30,7 @@
 
                     {!! html()->form()->route('data.pengurus.store.arsip')->method('POST')->acceptsFiles()->id('form-pengurus')->class(
                             'form-horizontal
-                                                                                                                                        form-label-left',
+                                                                                                                                                            form-label-left',
                         )->open() !!}
                     @include('layouts.fragments.error_message')
 

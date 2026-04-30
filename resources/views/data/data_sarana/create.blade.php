@@ -19,7 +19,7 @@
 
                     {!! html()->form('POST', route('data.data-sarana.store'))->id('form-sarana')->class(
                             'form-horizontal
-                                                        form-label-left',
+                                                                                                                                                            form-label-left',
                         )->open() !!}
 
                     <div class="box-body">

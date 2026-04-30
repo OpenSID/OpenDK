@@ -50,7 +50,7 @@
             loader.style.display = 'block';
             contentBox.style.display = 'none';
 
-            fetch('{{ route('data.pengurus.ajaxbagan') }}')
+            fetch('{{ route('data.pengurus.ajax-bagan') }}')
                 .then(response => response.json())
                 .then(result => {
                     /// Setelah data diterima, tampilkan konten & sembunyikan loader

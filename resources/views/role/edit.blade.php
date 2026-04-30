@@ -18,7 +18,9 @@
                 <h3 class="box-title">Roles</h3>
             </div>
             <div class="box-body">
-                {!! html()->form('PUT', route('setting.role.update', $role->id))->attributes(['autocomplete' => 'off', 'id' => 'form-role'])->model($role)->open() !!}
+                @include('partials.flash_message')
+                {!! html()->form()->method('POST')->route('setting.role.update', $role->id)->attributes(['autocomplete' => 'off', 'id' => 'form-role'])->open() !!}
+                <input type="hidden" name="_method" value="PUT">
                 @include('role.form')
                 {!! html()->form()->close() !!}
             </div>

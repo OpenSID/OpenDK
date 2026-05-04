@@ -19,7 +19,7 @@
 
                     {!! html()->form('POST', route('informasi.media-sosial.store'))->acceptsFiles()->id('form-media-sosial')->class(
                             'form-horizontal
-                                                                                                                                        form-label-left',
+                                                                                                                                                            form-label-left',
                         )->open() !!}
 
                     <div class="box-body">

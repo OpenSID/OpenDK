@@ -21,7 +21,7 @@
                         <!-- form start -->
                         {!! html()->form('POST', route('informasi.prosedur.store'))->acceptsFiles()->id('form-prosedur')->class(
                                 'form-horizontal
-                                                                                                                                                                    form-label-left',
+                                                                                                                                                                                            form-label-left',
                             )->open() !!}
 
                         @if (count($errors) > 0)

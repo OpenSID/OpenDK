@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('visitors', function (Blueprint $table) {
-            // change column user_agent to varchar 250
+            // change column url to text
             $table->text('url')->change();
         });
     }

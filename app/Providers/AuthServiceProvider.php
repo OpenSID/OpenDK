@@ -60,11 +60,15 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        $permissions = \App\Models\Permission::where('guard_name', 'web')->get();
-        foreach ($permissions as $permission) {
-            \Gate::define($permission->name, function ($user) use ($permission) {
-                return $user->hasPermissionTo($permission);
-            });
+        try {
+            $permissions = \App\Models\Permission::where('guard_name', 'web')->get();
+            foreach ($permissions as $permission) {
+                \Gate::define($permission->name, function ($user) use ($permission) {
+                    return $user->hasPermissionTo($permission);
+                });
+            }
+        } catch (\Exception $e) {
+            // Abaikan error jika tabel permissions belum ada (misal saat migrate awal)
         }
     }
 }

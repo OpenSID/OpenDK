@@ -87,7 +87,7 @@ class RoleSpatieSeeder extends Seeder
             'access.data.putus_sekolah',
             'access.data.fasilitas_paud',
             'access.data.program_bantuan',
-'access.data.anggaran_realisasi',
+            'access.data.anggaran_realisasi',
             'access.data.anggaran_desa',
             'access.data.laporan_apbdes',
             'access.data.pembangunan',
@@ -113,7 +113,7 @@ class RoleSpatieSeeder extends Seeder
             'access.setting.aplikasi',
             'access.setting.info_sistem',
             'access.setting.database',
-            'access.setting.jenis_dokumen',
+            'access.setting.jenis_dokumen'
         ];
 
         $sort = 1;
@@ -127,7 +127,7 @@ class RoleSpatieSeeder extends Seeder
             ]);
         }
 
-$superAdmin = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
+        $superAdmin = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
         $adminKecamatan = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
         $kontributorArtikel = Role::firstOrCreate(['name' => 'kontributor-artikel', 'guard_name' => 'web']);
 

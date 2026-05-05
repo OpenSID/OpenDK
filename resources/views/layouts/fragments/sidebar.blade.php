@@ -7,8 +7,7 @@
     <section class="sidebar">
         <center>
             <!-- <div class="user-panel"> -->
-            <img class="user-image" src="{{ is_logo($profil->file_logo) }}" alt="OpenDK" width="42px"
-                style="margin: 5px;">
+            <img class="user-image" src="{{ is_logo($profil->file_logo) }}" alt="OpenDK" width="42px" style="margin: 5px;">
             <p class="sidebar-kabupaten" style="font-size: 12px; color:white">
                 {{ strtoupper('Pemerintah Kab. ' . $profil->nama_kabupaten) }}<br>
                 {{ strtoupper('Kecamatan ' . $profil->nama_kecamatan) }}<br>
@@ -44,8 +43,7 @@
                             </li>
                         @endcan
                         @can('access.informasi.potensi')
-                            <li {{ Request::is(['informasi/potensi*']) ? 'class=active' : '' }}><a
-                                    href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a>
+                            <li {{ Request::is(['informasi/potensi*']) ? 'class=active' : '' }}><a href="{{ route('informasi.potensi.index') }}"><i class="fa fa-circle-o"></i>Potensi</a>
                             </li>
                         @endcan
                         @can('access.informasi.event')
@@ -60,13 +58,11 @@
                         @endcan
                         @can('access.informasi.artikel_kategori')
                             <li {{ Request::is(['informasi/kategori*']) ? 'class=active' : '' }}>
-                                <a href="{{ route('informasi.artikel-kategori.index') }}"><i
-                                        class="fa fa-circle-o"></i>Artikel
+                                <a href="{{ route('informasi.artikel-kategori.index') }}"><i class="fa fa-circle-o"></i>Artikel
                                     Kategori</a>
                             </li>
                             <li {{ Request::is(['informasi/komentar-artikel*']) ? 'class=active' : '' }}>
-                                <a href="{{ route('informasi.komentar-artikel.index') }}"><i
-                                        class="fa fa-circle-o"></i>Komentar
+                                <a href="{{ route('informasi.komentar-artikel.index') }}"><i class="fa fa-circle-o"></i>Komentar
                                     Artikel</a>
                             </li>
                         @endcan
@@ -77,8 +73,7 @@
                         @endcan
                         @can('access.informasi.form_dokumen')
                             <li {{ Request::is(['informasi/form-dokumen*']) ? 'class=active' : '' }}>
-                                <a href="{{ route('informasi.form-dokumen.index') }}"><i
-                                        class="fa fa-circle-o"></i>Dokumen</a>
+                                <a href="{{ route('informasi.form-dokumen.index') }}"><i class="fa fa-circle-o"></i>Dokumen</a>
                             </li>
                         @endcan
                         @can('access.informasi.media_sosial')
@@ -95,14 +90,12 @@
                         @endcan
                         @can('access.informasi.sinergi_program')
                             <li {{ Request::is(['informasi/sinergi-program*']) ? 'class=active' : '' }}>
-                                <a href="{{ route('informasi.sinergi-program.index') }}"><i
-                                        class="fa fa-circle-o"></i>Sinergi
+                                <a href="{{ route('informasi.sinergi-program.index') }}"><i class="fa fa-circle-o"></i>Sinergi
                                     Program</a>
                             </li>
                         @endcan
                     </ul>
                 </li>
-
 
                 @can('access.publikasi')
                     <li class="treeview {{ Request::is(['admin/publikasi/*']) ? 'active' : '' }}">
@@ -130,8 +123,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li {{ Request::is(['kerjasama/pendaftaran-kerjasama*']) ? 'class=active' : '' }}>
-                                <a href="{{ route('kerjasama.pendaftaran.kerjasama') }}"><i
-                                        class="fa fa-circle-o"></i>Pendaftaran Kerja Sama</a>
+                                <a href="{{ route('kerjasama.pendaftaran.kerjasama') }}"><i class="fa fa-circle-o"></i>Pendaftaran Kerja Sama</a>
                             </li>
                         </ul>
                     </li>
@@ -139,8 +131,7 @@
 
                 @can('access.data')
                     <li class="treeview {{ Request::is(['data/*']) ? 'active' : '' }}">
-                        <a href="#"><i class="fa fa-database"></i> <span>Data</span><span
-                                class="pull-right-container">
+                        <a href="#"><i class="fa fa-database"></i> <span>Data</span><span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i></span>
                         </a>
                         <ul class="treeview-menu">
@@ -167,8 +158,7 @@
                                             <a href="{{ route('data.data-sarana.index') }}"><i class="fa fa-circle-o"></i>Data
                                                 Sarana</a>
                                         </li>
-                                        <li
-                                            class="treeview {{ Request::is(['data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
+                                        <li class="treeview {{ Request::is(['data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
                                             <a href="#"><i class="fa fa-circle-o"></i>Perangkat Kecamatan
                                                 <span class="pull-right-container">
                                                     <i class="fa fa-angle-left pull-right"></i>
@@ -176,12 +166,10 @@
                                             </a>
                                             <ul class="treeview-menu">
                                                 <li {{ Request::is(['data/pengurus*']) ? 'class=active' : '' }}>
-                                                    <a href="{{ route('data.pengurus.index') }}"><i
-                                                            class="fa fa-circle-o"></i>Pengurus</a>
+                                                    <a href="{{ route('data.pengurus.index') }}"><i class="fa fa-circle-o"></i>Pengurus</a>
                                                 </li>
                                                 <li {{ Request::is(['data/jabatan*']) ? 'class=active' : '' }}>
-                                                    <a href="{{ route('data.jabatan.index') }}"><i
-                                                            class="fa fa-circle-o"></i>Jabatan</a>
+                                                    <a href="{{ route('data.jabatan.index') }}"><i class="fa fa-circle-o"></i>Jabatan</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -189,8 +177,7 @@
                                 </li>
                     @endif
                     @can('access.data.keluarga')
-                        <li
-                            class="treeview {{ Request::is(['data/penduduk*', 'data/keluarga*', 'data/data-suplemen*']) ? 'active' : '' }}">
+                        <li class="treeview {{ Request::is(['data/penduduk*', 'data/keluarga*', 'data/data-suplemen*']) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -224,8 +211,7 @@
                     @endcan
 
                     @can('access.data.imunisasi')
-                        <li
-                            class="treeview {{ Request::is(['data/aki-akb*', 'data/imunisasi*', 'data/epidemi-penyakit*', 'data/toilet-sanitasi*']) ? 'active' : '' }}">
+                        <li class="treeview {{ Request::is(['data/aki-akb*', 'data/imunisasi*', 'data/epidemi-penyakit*', 'data/toilet-sanitasi*']) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Kesehatan
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -259,8 +245,7 @@
                     @endcan
 
                     @can('access.data.putus_sekolah')
-                        <li
-                            class="treeview {{ Request::is(['data/tingkat-pendidikan*', 'data/putus-sekolah*', 'data/fasilitas-paud*']) ? 'active' : '' }}">
+                        <li class="treeview {{ Request::is(['data/tingkat-pendidikan*', 'data/putus-sekolah*', 'data/fasilitas-paud*']) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Pendidikan
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -297,8 +282,7 @@
                     @endcan
 
                     @can('access.data.anggaran_realisasi')
-                        <li
-                            class="treeview {{ Request::is(['data/anggaran-realisasi*', 'data/anggaran-desa*', 'data/laporan-apbdes*']) ? 'active' : '' }}">
+                        <li class="treeview {{ Request::is(['data/anggaran-realisasi*', 'data/anggaran-desa*', 'data/laporan-apbdes*']) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Finansial
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
@@ -357,18 +341,15 @@
                     </li>
                     @endif
                     @can('access.admin_komplain')
-                        <li class="treeview {{ Request::is(['admin-komplain*']) ? 'active' : '' }}"><a href="#"><i
-                                    class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
+                        <li class="treeview {{ Request::is(['admin-komplain*']) ? 'active' : '' }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                                 <span class="pull-right-container">
                                     <i class="fa fa-angle-left pull-right"></i>
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li {{ Request::is(['admin-komplain*']) ? 'class=active' : '' }}><a
-                                        href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar
+                                <li {{ Request::is(['admin-komplain*']) ? 'class=active' : '' }}><a href="{{ route('admin-komplain.index') }}"><i class="fa fa-circle-o"></i>Daftar
                                         Keluhan</a></li>
-                                <li {{ Request::is(['admin-komplain/statistik*']) ? 'class=active' : '' }}><a
-                                        href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a>
+                                <li {{ Request::is(['admin-komplain/statistik*']) ? 'class=active' : '' }}><a href="{{ route('admin-komplain.statistik') }}"><i class="fa fa-circle-o"></i>Statistik</a>
                                 </li>
                             </ul>
                         </li>
@@ -382,14 +363,11 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li {{ Request::is(['pesan', 'pesan/masuk']) ? 'class=active' : '' }}><a
-                                        href="{{ route('pesan.index') }}"><i class="fa fa-envelope-o"></i>Pesan Masuk</a>
+                                <li {{ Request::is(['pesan', 'pesan/masuk']) ? 'class=active' : '' }}><a href="{{ route('pesan.index') }}"><i class="fa fa-envelope-o"></i>Pesan Masuk</a>
                                 </li>
-                                <li {{ Request::is(['pesan/keluar']) ? 'class=active' : '' }}><a
-                                        href="{{ route('pesan.keluar') }}"><i class="fa fa-envelope-open"></i>Pesan
+                                <li {{ Request::is(['pesan/keluar']) ? 'class=active' : '' }}><a href="{{ route('pesan.keluar') }}"><i class="fa fa-envelope-open"></i>Pesan
                                         Keluar</a></li>
-                                <li {{ Request::is(['pesan/arsip']) ? 'class=active' : '' }}><a
-                                        href="{{ route('pesan.arsip') }}"><i class="fa fa-archive"></i>Arsip</a></li>
+                                <li {{ Request::is(['pesan/arsip']) ? 'class=active' : '' }}><a href="{{ route('pesan.arsip') }}"><i class="fa fa-archive"></i>Arsip</a></li>
                             </ul>
                         </li>
                     @endcan
@@ -403,14 +381,11 @@
                                 </span>
                             </a>
                             <ul class="treeview-menu">
-                                <li {{ Request::is(['surat/permohonan*']) ? 'class=active' : '' }}><a
-                                        href="{{ route('surat.permohonan') }}"><i class="fa fa-files-o"></i>Permohonan</a>
+                                <li {{ Request::is(['surat/permohonan*']) ? 'class=active' : '' }}><a href="{{ route('surat.permohonan') }}"><i class="fa fa-files-o"></i>Permohonan</a>
                                 </li>
-                                <li {{ Request::is(['surat/arsip*']) ? 'class=active' : '' }}><a
-                                        href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a>
+                                <li {{ Request::is(['surat/arsip*']) ? 'class=active' : '' }}><a href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a>
                                 </li>
-                                <li {{ Request::is(['surat/pengaturan*']) ? 'class=active' : '' }}><a
-                                        href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a>
+                                <li {{ Request::is(['surat/pengaturan*']) ? 'class=active' : '' }}><a href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a>
                                 </li>
                             </ul>
                         </li>
@@ -481,13 +456,11 @@
                                     </li>
                                 @endcan
                                 @can('access.setting.themes')
-                                    <li {{ Request::is(['setting/themes*']) ? 'class=active' : '' }}><a
-                                            href="{{ route('setting.themes.index') }}"><i class="fa fa-circle-o"></i>Themes</a>
+                                    <li {{ Request::is(['setting/themes*']) ? 'class=active' : '' }}><a href="{{ route('setting.themes.index') }}"><i class="fa fa-circle-o"></i>Themes</a>
                                     </li>
                                 @endcan
                                 @can('access.setting.user')
-                                    <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a
-                                            href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a>
+                                    <li {{ Request::is(['setting/user*']) ? 'class=active' : '' }}><a href="{{ route('setting.user.index') }}"><i class="fa fa-circle-o"></i>Pengguna</a>
                                     </li>
                                 @endcan
                                 <li {{ Request::is(['profile/password']) ? 'class=active' : '' }}>
@@ -501,18 +474,15 @@
                                     </a>
                                 </li>
                                 @can('access.setting.aplikasi')
-                                    <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a
-                                            href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
+                                    <li {{ Request::is(['setting/aplikasi*']) ? 'class=active' : '' }}><a href="{{ route('setting.aplikasi.index') }}"><i class="fa fa-circle-o"></i>Aplikasi</a></li>
                                 @endcan
                                 @can('access.setting.info_sistem')
-                                    <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a
-                                            href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info
+                                    <li {{ Request::is(['setting/info-sistem*']) ? 'class=active' : '' }}><a href="{{ route('setting.info-sistem') }}"><i class="fa fa-circle-o"></i>Info
                                             Sistem</a></li>
                                 @endcan
                                 @can('access.setting.database')
                                     <li {{ Request::is(['setting/backup-database', 'setting/restore-database']) ? 'class=active' : '' }}>
-                                        <a href="{{ route('setting.pengaturan-database.backup') }}"><i
-                                                class="fa fa-circle-o"></i>Pengaturan Database</a>
+                                        <a href="{{ route('setting.pengaturan-database.backup') }}"><i class="fa fa-circle-o"></i>Pengaturan Database</a>
                                     </li>
                                 @endcan
 
@@ -523,8 +493,7 @@
                     @can('access.counter')
                         <li class="header">VISITOR COUNTER</li>
                         <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
-                            <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif"
-                                title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
+                            <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                                 <span class="pull-right-container">
                                     {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
                                     <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>

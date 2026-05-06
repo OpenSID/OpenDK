@@ -11,11 +11,20 @@
                 <tr>
                     <th width="50" class="text-center">No</th>
                     <th>Nama Permission</th>
-                    <th width="100" class="text-center">Aktif</th>
+                    <th width="100" class="text-center">Akses Modul</th>
+                    <th width="80" class="text-center">View</th>
+                    <th width="80" class="text-center">Create</th>
+                    <th width="80" class="text-center">Edit</th>
+                    <th width="80" class="text-center">Delete</th>
+                    <th width="80" class="text-center">Export</th>
+                    <th width="80" class="text-center">Import</th>
                 </tr>
             </thead>
             <tbody>
-                @php $no = 1; @endphp
+                @php 
+                    $no = 1; 
+                    $actions = ['view', 'create', 'edit', 'delete', 'export', 'import'];
+                @endphp
                 @foreach ($permissions as $key => $permission)
                     @if (isset($permission['parent_id']) && $permission['parent_id'] == 0)
                         @php
@@ -30,15 +39,6 @@
                             <td class="text-center">{{ $no++ }}</td>
                             <td>
                                 <strong>{{ permission_name($permission['name'] ?? '-') }}</strong>
-                                @if (count($childs) > 0)
-                                    <ul class="list-unstyled" style="margin-left: 15px; margin-top: 5px; margin-bottom: 5px;">
-                                        @foreach ($childs as $child)
-                                            <li>
-                                                <small>{{ permission_name($child['name'] ?? '-') }}</small>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif
                             </td>
                             <td class="text-center" style="vertical-align: middle;">
                                 <input
@@ -46,11 +46,40 @@
                                     name="permissions[{{ $permission['slug'] ?? ($permission['name'] ?? '') }}]"
                                     value="1"
                                     {{ $permission_val ? 'checked' : '' }}
-                                    class="permission-checkbox"
+                                    class="permission-checkbox module-check"
                                     data-name="{{ $permission['name'] ?? '' }}"
                                     style="width: 18px; height: 18px; cursor: pointer;"
                                 >
                             </td>
+                            @foreach ($actions as $action)
+                                @php
+                                    $actionChild = null;
+                                    foreach ($childs as $c) {
+                                        if (($c['name'] ?? '') === ($permission['name'] ?? '') . '.' . $action) {
+                                            $actionChild = $c;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    $actionChecked = 0;
+                                    if ($actionChild && isset($role)) {
+                                        $actionChecked = permission_val($role->id, $actionChild['slug'] ?? $actionChild['name']);
+                                    }
+                                @endphp
+                                <td class="text-center" style="vertical-align: middle;">
+                                    @if ($actionChild)
+                                        <input
+                                            type="checkbox"
+                                            name="permissions[{{ $actionChild['slug'] ?? $actionChild['name'] }}]"
+                                            value="1"
+                                            {{ $actionChecked ? 'checked' : '' }}
+                                            class="permission-checkbox action-check"
+                                            data-parent="{{ $permission['name'] ?? '' }}"
+                                            style="width: 18px; height: 18px; cursor: pointer;"
+                                        >
+                                    @endif
+                                </td>
+                            @endforeach
                         </tr>
                     @endif
                 @endforeach
@@ -69,8 +98,22 @@
 
 @push('scripts')
     <script type="text/javascript">
-        $(document).on('change', '.permission-checkbox', function() {
-            // Optional: Add any additional functionality when checkbox changes
+        $(function() {
+            // Jika checkbox action di-klik, pastikan checkbox modul utama juga terceklis
+            $('.action-check').on('change', function() {
+                if ($(this).is(':checked')) {
+                    var parentRow = $(this).closest('tr');
+                    parentRow.find('.module-check').prop('checked', true);
+                }
+            });
+
+            // Jika checkbox modul utama di-uncheck, uncheck semua action di baris yang sama
+            $('.module-check').on('change', function() {
+                if (!$(this).is(':checked')) {
+                    var parentRow = $(this).closest('tr');
+                    parentRow.find('.action-check').prop('checked', false);
+                }
+            });
         });
     </script>
 @endpush

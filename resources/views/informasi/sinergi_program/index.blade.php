@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('informasi.sinergi-program.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.sinergi-program.create') ? route('informasi.sinergi-program.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

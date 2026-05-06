@@ -72,8 +72,8 @@ class PengurusController extends Controller
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
                         $data['arsip_url'] = route('data.pengurus.arsip', ['pengurus_id' => $row->id]);
-                        $data['edit_url'] = route('data.pengurus.edit', $row->id);
-                        $data['delete_url'] = route('data.pengurus.destroy', $row->id);
+                        $data['edit_url'] = auth()->user()->can('access.data.pengurus.edit') ? route('data.pengurus.edit', $row->id) : null;
+                        $data['delete_url'] = auth()->user()->can('access.data.pengurus.delete') ? route('data.pengurus.destroy', $row->id) : null;
                         if ($row->status == Status::Aktif) {
                             $data['suspend_url'] = route('data.pengurus.lock', [$row->id, Status::TidakAktif]);
                         } else {

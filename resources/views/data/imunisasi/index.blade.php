@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => route('data.imunisasi.import')])
-                @include('forms.btn-social', ['export_url' => route('data.imunisasi.export-excel')])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.imunisasi.import') ? route('data.imunisasi.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.imunisasi.export') ? route('data.imunisasi.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

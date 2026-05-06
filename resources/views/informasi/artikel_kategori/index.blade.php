@@ -17,7 +17,9 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
+                @can('access.informasi.artikel_kategori.create')
                 <a href="{{ route('informasi.artikel-kategori.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @endcan
             </div>
             <div class="box-body">
                 <!-- Filter Dropdown -->

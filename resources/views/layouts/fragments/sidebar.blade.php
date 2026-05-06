@@ -175,7 +175,7 @@
                                         </li>
                                     </ul>
                                 </li>
-                    @endif
+                    @endcan
                     @can('access.data.keluarga')
                         <li class="treeview {{ Request::is(['data/penduduk*', 'data/keluarga*', 'data/data-suplemen*']) ? 'active' : '' }}">
                             <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
@@ -335,11 +335,11 @@
                                 </li>
                             </ul>
                         </li>
-                        @endif
+                        @endcan
 
                     </ul>
                     </li>
-                    @endif
+                    @endcan
                     @can('access.admin_komplain')
                         <li class="treeview {{ Request::is(['admin-komplain*']) ? 'active' : '' }}"><a href="#"><i class="fa fa-comments-o"></i> <span>Admin SIKEMA</span>
                                 <span class="pull-right-container">

@@ -21,8 +21,8 @@
                 </tr>
             </thead>
             <tbody>
-                @php 
-                    $no = 1; 
+                @php
+                    $no = 1;
                     $actions = ['view', 'create', 'edit', 'delete', 'export', 'import'];
                 @endphp
                 @foreach ($permissions as $key => $permission)
@@ -60,7 +60,7 @@
                                             break;
                                         }
                                     }
-                                    
+
                                     $actionChecked = 0;
                                     if ($actionChild && isset($role)) {
                                         $actionChecked = permission_val($role->id, $actionChild['slug'] ?? $actionChild['name']);

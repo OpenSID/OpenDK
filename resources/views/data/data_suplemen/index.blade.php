@@ -52,7 +52,13 @@
             var data = $('#suplemen-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.data-suplemen.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.data-suplemen.getdata') !!}",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

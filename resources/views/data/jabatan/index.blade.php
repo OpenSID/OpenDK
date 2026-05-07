@@ -49,7 +49,13 @@
             var data = $('#jabatan-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.jabatan.index') !!}",
+                ajax: {
+                    url: "{!! route('data.jabatan.getdata.post') !!}",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

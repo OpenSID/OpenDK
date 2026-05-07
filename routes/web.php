@@ -519,7 +519,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'data-desa', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
                     Route::put('update/{id}', ['as' => 'data.data-desa.update', 'uses' => 'DataDesaController@update']);
                     Route::get('/', ['as' => 'data.data-desa.index', 'uses' => 'DataDesaController@index']);
-                    Route::get('getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.data-desa.getdata', 'uses' => 'DataDesaController@getDataDesa']);
                     Route::get('getdata/ajax', ['as' => 'data.data-desa.getdataajax', 'uses' => 'DataDesaController@getDataDesaAjax']);
                     Route::post('getdesa', ['as' => 'data.data-desa.getdesa', 'uses' => 'DataDesaController@getDesaKecamatan']);
                     Route::get('peta/{id}', ['as' => 'data.data-desa.peta', 'uses' => 'DataDesaController@peta']);
@@ -533,7 +533,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Data Sarana
                 Route::group(['prefix' => 'data-sarana', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|data-kecamatan']], function () {
                     Route::get('/', ['as' => 'data.data-sarana.index', 'uses' => 'DataSaranaController@index']);
-                    Route::get('getdata', ['as' => 'data.data-sarana.getdata', 'uses' => 'DataSaranaController@getData']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.data-sarana.getdata', 'uses' => 'DataSaranaController@getData']);
                     Route::get('create', ['as' => 'data.data-sarana.create', 'uses' => 'DataSaranaController@create']);
                     Route::post('store', ['as' => 'data.data-sarana.store', 'uses' => 'DataSaranaController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-sarana.edit', 'uses' => 'DataSaranaController@edit']);
@@ -545,9 +545,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 // Jabatan
                 Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
+                // Route POST tambahan untuk DataTables (antisipasi WAF blocking GET URL panjang)
+                Route::post('jabatan', ['as' => 'data.jabatan.getdata.post', 'uses' => 'JabatanController@index'])->middleware(['role:super-admin|admin-kecamatan']);
 
                 // Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
+                // Route POST tambahan untuk DataTables (antisipasi WAF blocking GET URL panjang)
+                Route::post('pengurus/getdata', ['as' => 'data.pengurus.getdata.post', 'uses' => 'PengurusController@index'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
                 Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
                 Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajax-bagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);

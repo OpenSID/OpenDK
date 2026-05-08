@@ -11,3 +11,5 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### TEKNIS
 
+1. [#1505](https://github.com/OpenSID/OpenDK/issues/1505) Penyesuaian Permission Access
+

@@ -63,8 +63,8 @@ class FaqController extends Controller
                     $data['show_web'] = route('faq');
 
                     if (!auth()->guest()) {
-                        $data['edit_url'] = route('informasi.faq.edit', $row->id);
-                        $data['delete_url'] = route('informasi.faq.destroy', $row->id);
+                        $data['edit_url'] = auth()->user()->can('access.informasi.faq.edit') ? route('informasi.faq.edit', $row->id) : null;
+                        $data['delete_url'] = auth()->user()->can('access.informasi.faq.delete') ? route('informasi.faq.destroy', $row->id) : null;
                     }
 
                     return view('forms.aksi', $data);

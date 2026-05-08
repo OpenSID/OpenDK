@@ -87,6 +87,12 @@ function permission_val($id, $permission)
     }
 }
 
+function permission_name($name)
+{
+    $translated = trans("permissions.{$name}");
+    return $translated !== "permissions.{$name}" ? $translated : $name;
+}
+
 /**
  * Generate Password
  *

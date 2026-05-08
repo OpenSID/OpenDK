@@ -184,6 +184,11 @@ class RoleSpatieSeeder extends Seeder
             'access.setting.info_sistem',
             'access.setting.database',
             'access.setting.jenis_dokumen',
+            // old permissions, to be removed in the future
+            'view',
+            'create',
+            'edit',
+            'delete',
         ];
 
         $sort = 1;

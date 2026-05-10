@@ -17,7 +17,7 @@
         @if ($kategoriPotensi->count() > 0)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    @include('forms.btn-social', ['create_url' => route('informasi.potensi.create')])
+                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.potensi.create') ? route('informasi.potensi.create') : null])
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

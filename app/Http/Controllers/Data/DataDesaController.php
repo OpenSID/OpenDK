@@ -70,10 +70,10 @@ class DataDesaController extends Controller
         return DataTables::of(DataDesa::get())
             ->addColumn('aksi', function ($row) {
                 if ($this->profil->kecamatan_id) {
-                    $data['edit_url'] = route('data.data-desa.edit', $row->id);
+                    $data['edit_url'] = auth()->user()->can('access.data.data_desa.edit') ? route('data.data-desa.edit', $row->id) : null;
                 }
                 $data['peta'] = route('data.data-desa.peta', $row->id);
-                $data['delete_url'] = route('data.data-desa.destroy', $row->id);
+                $data['delete_url'] = auth()->user()->can('access.data.data_desa.delete') ? route('data.data-desa.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })

@@ -47,6 +47,7 @@ beforeEach(function () {
 test('export counter excel is accessible', function () {
     // Arrange: Buat user dan login (counter requires auth)
     $user = \App\Models\User::factory()->create();
+    $user->givePermissionTo('access.counter');
     $this->actingAs($user);
 
     // Act: Akses route export

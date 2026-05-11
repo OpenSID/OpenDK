@@ -18,7 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', [
-                    'export_url' => route('data.data-desa.export-excel'),
+                    'export_url' => auth()->user()->can('access.data.data-desa.export') ? route('data.data-desa.export-excel') : null,
                     'export_text' => 'Export Excel',
                 ])
             </div>

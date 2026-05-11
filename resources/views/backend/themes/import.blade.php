@@ -19,9 +19,7 @@
             <div class="col-md-12">
 
                 {!! html()->form()->route('setting.themes.do-upload')->method('POST')->id('form-import')->class(
-                        'form-horizontal
-                                                                                                                                            form-label-left',
-                    )->acceptsFiles() !!}
+                        'form-horizontal form-label-left')->acceptsFiles() !!}
 
                 <div class="box-body">
                     <div class="row">

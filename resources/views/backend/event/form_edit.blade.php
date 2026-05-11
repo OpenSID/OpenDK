@@ -14,9 +14,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
         {!! html()->textarea('description', old('description', $event->description))->class('textarea my-editor')->placeholder('Deskripsi kegiatan')->style(
-                'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:
-                                                                        10px;',
-            )->required() !!}
+                'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;')->required() !!}
     </div>
 </div>
 <div class="form-group">

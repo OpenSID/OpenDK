@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['export_url' => route('data.pembangunan.export-excel')])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.pembangunan.export') ? route('data.pembangunan.export-excel') : null])
             </div>
             <div class="box-body">
                 <div class="row">

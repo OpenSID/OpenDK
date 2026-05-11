@@ -19,9 +19,9 @@
 
                     <!-- form start -->
                     {!! html()->form('POST', route('data.pengurus.update', $pengurus->id))->acceptsFiles()->id('form-pengurus')->class(
-                            'form-horizontal
-                                                                                                                                                                                form-label-left',
-                        )->open() !!}
+        'form-horizontal
+                                                                                                                                                                                    form-label-left',
+    )->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">
@@ -44,7 +44,7 @@
 
 @push('scripts')
     <script>
-        $(function() {
+        $(function () {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
@@ -56,7 +56,7 @@
 
                     if (isSuccess) { //yes
                         var reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
 
                             $('#showfoto').attr('src', e.target.result);
                             $('#showfoto').removeClass('hide');
@@ -71,7 +71,7 @@
                 }
             }
 
-            $("#foto").change(function() {
+            $("#foto").change(function () {
                 readURL(this);
             });
         });

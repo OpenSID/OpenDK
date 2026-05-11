@@ -18,8 +18,7 @@
                 <div class="box box-primary">
 
                     {!! html()->form('POST', route('informasi.event.store'))->id('form-event')->class(
-                            'form-horizontal
-                                                                                                                                                                                form-label-left',
+                            'form-horizontal',
                         )->open() !!}
                     @include('layouts.fragments.error_message')
 

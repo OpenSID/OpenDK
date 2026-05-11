@@ -30,8 +30,10 @@
                                     {!! html()->form()->close() !!}
                                 </div>
                                 <div class="col-md-6">
-                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control" placeholder="Cari Pesan">
-                                    <span style="padding-right: 25px" class="glyphicon glyphicon-search form-control-feedback"></span>
+                                    <input id="cari-pesan" value="{{ $search_query }}" type="text" class="form-control"
+                                        placeholder="Cari Pesan">
+                                    <span style="padding-right: 25px"
+                                        class="glyphicon glyphicon-search form-control-feedback"></span>
                                 </div>
 
                             </div>
@@ -42,22 +44,25 @@
                     <div class="box-body no-padding">
                         <div class="mailbox-controls">
                             <!-- Check all button -->
-                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i
+                                    class="fa fa-square-o"></i>
                             </button>
                             {!! html()->form('POST', route('pesan.arsip.multiple'))->class(
-                                    'form-group
-                                                                                                                                                                                                                                                        inline',
-                                )->id('form-multiple-arsip-pesan')->open() !!}
-                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
+        'form-group
+                                                                                                                                                                                                                                                            inline',
+    )->id('form-multiple-arsip-pesan')->open() !!}
+                            <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i
+                                    class="fa fa-archive"></i> Arsipkan</button>
                             {!! html()->hidden('array_id')->id('array_multiple_id_arsip') !!}
                             {!! html()->form()->close() !!}
 
                             {!! html()->form('POST', route('pesan.read.multiple'))->class(
-                                    'form-group
-                                                                                                                                                                                                                                                        inline',
-                                )->id('form-multiple-read-pesan')->open() !!}
+        'form-group
+                                                                                                                                                                                                                                                            inline',
+    )->id('form-multiple-read-pesan')->open() !!}
                             {!! html()->hidden('array_id')->id('array_multiple_id') !!}
-                            <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
+                            <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i
+                                    class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
                             {!! html()->form()->close() !!}
                             {{ $list_pesan->links('vendor.pagination.pesan') }}
                         </div>
@@ -67,9 +72,11 @@
                                     @foreach ($list_pesan as $pesan)
                                         <tr class="{{ $pesan->sudah_dibaca == 1 ? '' : 'unread' }}">
                                             <td style="width: 5%">
-                                                <input data-read="{{ $pesan->sudah_dibaca }}" data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
+                                                <input data-read="{{ $pesan->sudah_dibaca }}" data-id="{{ $pesan->id }}"
+                                                    type="checkbox" style="position: absolute; opacity: 0;">
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->additional_info['nama_desa'] ?? '-' }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a
+                                                    href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->additional_info['nama_desa'] ?? '-' }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>
@@ -88,7 +95,8 @@
                                                 </div>
                                             </td>
                                             <td style="width: 20%" class="mailbox-date text-right">
-                                                {{ $pesan->custom_date }}</td>
+                                                {{ $pesan->custom_date }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -107,13 +115,13 @@
 @include('partials.asset_select2')
 @push('scripts')
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#list_desa').select2({
                 placeholder: "Pilih {{ config('setting.sebutan_desa') }}",
                 allowClear: true
             });
 
-            $('#prev-links').click(function() {
+            $('#prev-links').click(function () {
                 let page = $(this).data('currentPage');
                 let desa_id = $('#list_desa').val();
                 let q = $('#cari-pesan').val();
@@ -131,7 +139,7 @@
                 }
             })
 
-            $('#next-links').click(function() {
+            $('#next-links').click(function () {
                 let last = $(this).data('lastPage');
                 let page = $(this).data('currentPage');
                 let q = $('#cari-pesan').val();
@@ -150,7 +158,7 @@
                 }
             })
 
-            $('#list_desa').on('select2:select', function(e) {
+            $('#list_desa').on('select2:select', function (e) {
                 let page = $('#next-links').data('currentPage');
                 let q = $('#cari-pesan').val();
                 window.location = window.location.origin +
@@ -161,7 +169,7 @@
                     })
             });
 
-            $('#list_desa').on('select2:unselect', function(e) {
+            $('#list_desa').on('select2:unselect', function (e) {
                 let page = $('#next-links').data('currentPage');
                 let q = $('#cari-pesan').val();
                 window.location = window.location.origin +
@@ -171,7 +179,7 @@
                     })
             });
 
-            $('#cari-pesan').keypress(function(e) {
+            $('#cari-pesan').keypress(function (e) {
                 var key = e.which;
                 let desa_id = $('#list_desa').val();
                 let sudahdibaca = $('input[name="sudahdibaca"]').val();
@@ -186,7 +194,7 @@
                             sudahdibaca
                         })
                 }
-            }).focusout(function() {
+            }).focusout(function () {
                 let page = $('#next-links').data('currentPage');
                 let desa_id = $('#list_desa').val();
                 let sudahdibaca = $('input[name="sudahdibaca"]').val();
@@ -201,7 +209,7 @@
 
             });
 
-            $(function() {
+            $(function () {
                 //Enable iCheck plugin for checkboxes
                 //iCheck for checkbox and radio inputs
                 $('.mailbox-messages input[type="checkbox"]').iCheck({
@@ -210,7 +218,7 @@
                 });
 
                 //Enable check and uncheck all functionality
-                $(".checkbox-toggle").click(function() {
+                $(".checkbox-toggle").click(function () {
                     var clicks = $(this).data('clicks');
                     if (clicks) {
                         //Uncheck all checkboxes
@@ -224,11 +232,11 @@
                     $(this).data("clicks", !clicks);
                 });
 
-                $("#read-multiple-action").click(function(e) {
+                $("#read-multiple-action").click(function (e) {
                     e.preventDefault();
                     let data = $.map($('.mailbox-messages input[type="checkbox"]:checked')
                         .toArray(),
-                        function(el, index) {
+                        function (el, index) {
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;
@@ -238,11 +246,11 @@
                     $('#form-multiple-read-pesan').submit()
                 })
 
-                $("#arsip-action").click(function(e) {
+                $("#arsip-action").click(function (e) {
                     e.preventDefault()
                     let data = $.map($('.mailbox-messages input[type="checkbox"]:checked')
                         .toArray(),
-                        function(el, index) {
+                        function (el, index) {
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;

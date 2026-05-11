@@ -61,8 +61,8 @@ class AnggaranRealisasiController extends Controller
     {
         return DataTables::of(AnggaranRealisasi::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.anggaran-realisasi.edit', $row->id);
-                $data['delete_url'] = route('data.anggaran-realisasi.destroy', $row->id);
+                $data['edit_url'] = auth()->user()->can('access.data.anggaran-realisasi.edit') ? route('data.anggaran-realisasi.edit', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.anggaran-realisasi.delete') ? route('data.anggaran-realisasi.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })->editColumn('bulan', function ($row) {

@@ -75,9 +75,6 @@
                 ajax: {
                     url: "{{ route('data.data-sarana.getdata') }}",
                     type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     data: function(d) {
                         d.desa_id = $('#list_desa').val(),
                             d.kategori = $('#kategori').val()

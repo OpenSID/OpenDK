@@ -57,15 +57,15 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keuangan/apbdes?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keuangan/apbdes-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "text/json; charset=utf-8",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
+                    method: 'POST',
                     data: function(row) {
                         return {
                             "page[size]": row.length,

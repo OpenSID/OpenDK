@@ -1,5 +1,5 @@
 @include('partials.flash_message')
-@role('super-admin')
+@can('access.setting.user')
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pengurus_id">Pengurus</label>
 
@@ -16,7 +16,7 @@
             </select>
         </div>
     </div>
-@endrole
+@endcan
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 

@@ -98,6 +98,7 @@ class Kernel extends HttpKernel
         'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'action_permission' => \App\Http\Middleware\CheckActionPermission::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'xss_sanitization' => \App\Http\Middleware\XssSanitization::class,
         'complete_profile' => \App\Http\Middleware\CompleteProfile::class,

@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('informasi.artikel.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.artikel.create') ? route('informasi.artikel.create') : null])
             </div>
             <div class="box-body">
                 <!-- Filter Dropdown -->

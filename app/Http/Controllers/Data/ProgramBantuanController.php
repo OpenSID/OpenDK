@@ -60,7 +60,7 @@ class ProgramBantuanController extends Controller
     {
         return DataTables::of(Program::when(!empty($request->input('desa')), fn($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
-                $data['detail_url'] = route('data.program-bantuan.show', [$row->id, $row->desa_id]);
+                $data['detail_url'] = auth()->user()->can('access.data.program-bantuan.view') ? route('data.program-bantuan.show', [$row->id, $row->desa_id]) : null;
 
                 return view('forms.aksi', $data);
             })

@@ -1,7 +1,6 @@
 <?php
 
 use Tests\BrowserTestCase;
-use Tests\Browser\Pages\LoginPage;
 use Tests\Browser\Pages\DashboardPage;
 use Tests\Browser\Pages\UserPage;
 
@@ -24,7 +23,7 @@ test('admin can create a new user and assign roles', function () {
         'email' => 'test_journey_' . time() . '@example.com',
         'password' => 'Password123!',
         'address' => 'Jl. Testing No. 123',
-        'role' => 'admin-desa',
+        'role' => 'admin-kecamatan',
     ];
 
     // 1. Initial State: Login as Admin
@@ -51,7 +50,7 @@ test('admin can create a new user and assign roles', function () {
 
     // Authenticate as new user
     $this->actingAs($newUser);
-    $browser->page()->goto(rtrim(config('app.url'), '/') . $dashboardPage->url());
+    $browser = visit($dashboardPage->url());
 
     // 5. Final Verification: New User Dashboard Access
     $browser->waitForText('Dashboard')

@@ -18,9 +18,9 @@
                 <div class="box box-primary">
 
                     {!! html()->form('POST', route('informasi.sinergi-program.store'))->acceptsFiles()->id('form-sinergi-program')->class(
-                            'form-horizontal
-                                                                                                                                                                                form-label-left',
-                        )->open() !!}
+        'form-horizontal
+                                                                                                                                                                                    form-label-left',
+    )->open() !!}
 
                     <div class="box-body">
 
@@ -51,7 +51,7 @@
 
 @push('scripts')
     <script>
-        $(function() {
+        $(function () {
 
             var fileTypes = ['jpg', 'jpeg', 'png']; //acceptable file types
 
@@ -63,7 +63,7 @@
 
                     if (isSuccess) { //yes
                         var reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
 
                             $('#showgambar').attr('src', e.target.result);
                             $('#showgambar').removeClass('hide');
@@ -78,7 +78,7 @@
                 }
             }
 
-            $("#gambar").change(function() {
+            $("#gambar").change(function () {
                 readURL(this);
             });
         });

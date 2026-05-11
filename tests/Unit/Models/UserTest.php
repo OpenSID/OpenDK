@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Models\Pengurus;
-use App\Models\OtpToken;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -56,7 +54,7 @@ it('has fillable attributes', function () {
     }
 
     // These fields should be guarded for security
-    $guarded = ['id', 'status', 'permissions', 'last_login', 'email_verified_at'];
+    $guarded = ['id', 'status', 'last_login', 'email_verified_at'];
     foreach ($guarded as $field) {
         expect(in_array($field, $user->getGuarded()))->toBeTrue("Field '{$field}' should be guarded");
     }

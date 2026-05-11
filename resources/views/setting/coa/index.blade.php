@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('setting.coa.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.setting.coa.create') ? route('setting.coa.create') : null])
             </div>
             <div class="box-body">
                 <div class="box-group" id="accordion">

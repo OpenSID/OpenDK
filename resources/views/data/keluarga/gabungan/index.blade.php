@@ -68,7 +68,6 @@
                         ]) }}`,
                     headers: {
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                         "Accept": "application/ld+json",
                         "Content-Type": "text/json; charset=utf-8",
                     },

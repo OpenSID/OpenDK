@@ -67,9 +67,6 @@
                 ajax: {
                     url: "{!! route('data.laporan-penduduk.getdata') !!}",
                     type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

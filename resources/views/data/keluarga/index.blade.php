@@ -67,9 +67,6 @@
                 ajax: {
                     url: "{!! route('data.keluarga.getdata') !!}",
                     type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

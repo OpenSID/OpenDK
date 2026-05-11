@@ -55,16 +55,16 @@
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "text/json; charset=utf-8",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    method: 'get',
+                    method: 'POST',
                     data: function(row) {
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
+                            "search": row.search.value,
                             "fields[config]": "id,kode_desa,nama_desa,website,path",
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]

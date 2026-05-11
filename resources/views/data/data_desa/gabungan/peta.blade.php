@@ -89,10 +89,10 @@
                     }
                 }
                 fetch(`{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/desa' }}?filter[id]={{ $id }}&page[size]=1&fields[config]=id,path,nama_desa`, {
+                        method: 'POST',
                         headers: {
-                            "Accept": "application/ld+json",
-                            "Content-Type": "text/json; charset=utf-8",
-                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     }).then(response => response.json())
                     .then(data => {

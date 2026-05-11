@@ -62,8 +62,7 @@
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'POST',
                     data: function(row) {

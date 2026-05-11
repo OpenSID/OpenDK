@@ -18,9 +18,9 @@
                 @include('partials.flash_message')
 
                 {!! html()->form()->route('data.data-desa.store')->method('POST')->id('form-datadesa')->class(
-        'form-horizontal
-                                                                                                                                                form-label-left',
-    )->open() !!}
+                        'form-horizontal
+                                                                                                                                                                form-label-left',
+                    )->open() !!}
 
                 <div class="box-body">
 
@@ -56,9 +56,9 @@
     <script>
         $('#desa_id').inputmask('99.99.99.9999');
 
-        $(function () {
+        $(function() {
 
-            $('#list_desa').change(function () {
+            $('#list_desa').change(function() {
                 $("#desa_id").val($('#list_desa').val());
                 $("#nama").val($('#list_desa option:selected').text());
             });

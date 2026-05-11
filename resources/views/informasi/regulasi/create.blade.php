@@ -18,9 +18,9 @@
                 <div class="box box-primary">
 
                     {!! html()->form('POST', route('informasi.regulasi.store'))->id('form-regulasi')->class(
-        'form-horizontal
-                                                                                                                                                                                    form-label-left',
-    )->acceptsFiles()->open() !!}
+                            'form-horizontal
+                                                                                                                                                                                                        form-label-left',
+                        )->acceptsFiles()->open() !!}
                     <div class="box-body">
 
                         @if (count($errors) > 0)

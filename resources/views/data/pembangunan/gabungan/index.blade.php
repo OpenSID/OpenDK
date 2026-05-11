@@ -67,7 +67,6 @@
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
                         $('#list_desa').empty().append(
@@ -98,8 +97,7 @@
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "application/json; charset=utf-8",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'POST',
                     data: function(row) {

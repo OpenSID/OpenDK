@@ -61,12 +61,13 @@
         $(document).ready(function() {
             function loadDesa() {
                 $.ajax({
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/desa/{{ str_replace('.', '', $profil->kecamatan_id) }}`,
-                    method: "GET",
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/desa-datatable/{{ str_replace('.', '', $profil->kecamatan_id) }}`,
+                    method: "POST",
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(response) {
                         $('#list_desa').empty().append(
@@ -90,16 +91,17 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "application/json; charset=utf-8",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    method: 'GET',
+                    method: 'POST',
                     data: function(row) {
                         const desaId = $('#list_desa').val();
                         return {

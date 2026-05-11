@@ -82,9 +82,6 @@
                 ajax: {
                     url: "{!! route('data.pengurus.getdata.post') !!}",
                     type: "POST",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
                     data: function(d) {
                         d.status = $('#status').val();
                     }

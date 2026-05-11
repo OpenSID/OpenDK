@@ -544,17 +544,15 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // Jabatan
-                Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
-                // Route POST tambahan untuk DataTables (antisipasi WAF blocking GET URL panjang)
-                Route::post('jabatan', ['as' => 'data.jabatan.getdata.post', 'uses' => 'JabatanController@index'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['action_permission:access.data.jabatan'])->except(['show']);
+                Route::post('jabatan', ['as' => 'data.jabatan.getdata.post', 'uses' => 'JabatanController@index'])->middleware(['action_permission:access.data.jabatan']);
 
                 // Pengurus
-                Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['role:super-admin|admin-kecamatan']);
-                // Route POST tambahan untuk DataTables (antisipasi WAF blocking GET URL panjang)
-                Route::post('pengurus/getdata', ['as' => 'data.pengurus.getdata.post', 'uses' => 'PengurusController@index'])->middleware(['role:super-admin|admin-kecamatan']);
-                Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['role:super-admin|admin-kecamatan'])->except(['show']);
-                Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['role:super-admin|admin-kecamatan']);
-                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajax-bagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['role:super-admin|admin-kecamatan']);
+                Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['action_permission:access.data.pengurus']);
+                Route::post('pengurus/getdata', ['as' => 'data.pengurus.getdata.post', 'uses' => 'PengurusController@index'])->middleware(['action_permission:access.data.pengurus']);
+                Route::resource('pengurus', 'PengurusController', ['as' => 'data'])->middleware(['action_permission:access.data.pengurus'])->except(['show']);
+                Route::get('pengurus/bagan', ['as' => 'data.pengurus.bagan', 'uses' => 'PengurusController@bagan'])->middleware(['action_permission:access.data.pengurus']);
+                Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajax-bagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['action_permission:access.data.pengurus']);
 
                 // Arsip
                 Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.arsip');

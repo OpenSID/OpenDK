@@ -19,9 +19,9 @@
             <div class="col-md-12">
 
                 {!! html()->form('POST', route('data.data-sarana.import-excel'))->id('form-import')->class(
-        'form-horizontal
-                                                                                                                                                form-label-left',
-    )->acceptsFiles()->open() !!}
+                        'form-horizontal
+                                                                                                                                                                form-label-left',
+                    )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
 
@@ -43,16 +43,14 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Sarana</label>
 
                                 <div class="col-md-8">
-                                    <input type="file" id="data_file" name="file" class="form-control" required
-                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silakan download template upload data di sini: <a
-                                        href="{{ asset('storage/template_upload/Format_Upload_Data_Sarana.xlsx') }}">Download</a>
+                                <p>Silakan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Data_Sarana.xlsx') }}">Download</a>
                                 </p>
                             </div>
                         </div>
@@ -71,13 +69,13 @@
 @include('partials.asset_datetimepicker')
 @push('scripts')
     <script>
-        $(function () {
+        $(function() {
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         $('#showgambar').attr('src', e.target.result);
                     }
 
@@ -85,12 +83,12 @@
                 }
             }
 
-            $("#foto").change(function () {
+            $("#foto").change(function() {
                 readURL(this);
             });
 
             //Datetimepicker
-            $('.datepicker').each(function () {
+            $('.datepicker').each(function() {
                 var $this = $(this);
                 $this.datetimepicker({
                     format: 'YYYY-MM-D'

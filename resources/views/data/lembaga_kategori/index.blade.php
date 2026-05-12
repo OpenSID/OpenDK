@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.kategori-lembaga.create') ? route('data.kategori-lembaga.create') : null])
+                @include('forms.btn-social', ['create_url' => route('data.kategori-lembaga.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

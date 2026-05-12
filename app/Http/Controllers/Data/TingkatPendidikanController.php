@@ -70,7 +70,7 @@ class TingkatPendidikanController extends Controller
                     ->get()
             )
                 ->addColumn('aksi', function ($row) {
-                    $data['delete_url'] = auth()->user()->can('access.data.tingkat-pendidikan.delete') ? route('data.tingkat-pendidikan.destroy', $row->id) : null;
+                    $data['delete_url'] = route('data.tingkat-pendidikan.destroy', $row->id);
 
                     return view('forms.aksi', $data);
                 })

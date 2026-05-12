@@ -21,7 +21,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.pengurus.create') ? route('data.pengurus.create') : null])
+                @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
 
                 {{-- button bagan --}}
                 <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">

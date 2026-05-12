@@ -61,8 +61,8 @@ class PutusSekolahController extends Controller
     {
         return DataTables::of(PutusSekolah::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = auth()->user()->can('access.data.putus-sekolah.edit') ? route('data.putus-sekolah.edit', $row->id) : null;
-                $data['delete_url'] = auth()->user()->can('access.data.putus-sekolah.delete') ? route('data.putus-sekolah.destroy', $row->id) : null;
+                $data['edit_url'] = route('data.putus-sekolah.edit', $row->id);
+                $data['delete_url'] = route('data.putus-sekolah.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })

@@ -56,11 +56,11 @@ class PotensiController extends Controller
     {
         return DataTables::of(Potensi::query())
             ->addColumn('aksi', function ($row) {
-                $data['show_url'] = auth()->user()->can('access.informasi.potensi.view') ? route('informasi.potensi.show', $row->id) : null;
+                $data['show_url'] = route('informasi.potensi.show', $row->id);
 
                 if (!auth()->guest()) {
-                    $data['edit_url'] = auth()->user()->can('access.informasi.potensi.edit') ? route('informasi.potensi.edit', $row->id) : null;
-                    $data['delete_url'] = auth()->user()->can('access.informasi.potensi.delete') ? route('informasi.potensi.destroy', $row->id) : null;
+                    $data['edit_url'] = route('informasi.potensi.edit', $row->id);
+                    $data['delete_url'] = route('informasi.potensi.destroy', $row->id);
                 }
 
                 return view('forms.aksi', $data);

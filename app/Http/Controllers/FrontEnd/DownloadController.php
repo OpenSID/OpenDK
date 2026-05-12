@@ -97,7 +97,7 @@ class DownloadController extends FrontEndController
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = asset($row->file_dokumen);
-                $data['download_url'] = auth()->user()->can('access.unduhan.form-dokumen.export') ? route('unduhan.form-dokumen.download', $row->id) : null;
+                $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();
@@ -128,7 +128,7 @@ class DownloadController extends FrontEndController
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = asset($row->file_dokumen);
-                $data['download_url'] = auth()->user()->can('access.unduhan.form-dokumen.export') ? route('unduhan.form-dokumen.download', $row->id) : null;
+                $data['download_url'] = route('unduhan.form-dokumen.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();

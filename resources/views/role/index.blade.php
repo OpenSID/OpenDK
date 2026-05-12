@@ -17,12 +17,10 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @can('access.setting.role.create')
-                    <a href="{{ route('setting.role.create') }}">
-                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
-                            Tambah</button>
-                    </a>
-                @endcan
+                <a href="{{ route('setting.role.create') }}">
+                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
+                        Tambah</button>
+                </a>
             </div>
             <div class="box-body">
                 <div class="table-responsive">

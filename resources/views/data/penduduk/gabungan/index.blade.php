@@ -18,7 +18,7 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                {{-- @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.penduduk.export') ? route('data.penduduk.export-excel') : null]) --}}
+                {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
                 <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
                     <i class="fa fa-upload"></i>{{ $export_text ?? 'Ekspor' }}
                 </button>

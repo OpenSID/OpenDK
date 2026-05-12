@@ -67,13 +67,13 @@ class EventController extends BackEndController
                     $data['show_url'] = route('event.detail', $row->slug);
 
                     if (! auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.informasi.event.edit') ? route('informasi.event.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.informasi.event.delete') ? route('informasi.event.destroy', $row->id) : null;
+                        $data['edit_url'] = route('informasi.event.edit', $row->id);
+                        $data['delete_url'] = route('informasi.event.destroy', $row->id);
                     }
                 }
                 
                 if ($row->status == 'CLOSED' && $row->attachment != null) {
-                    $data['download_url'] = auth()->user()->can('access.informasi.event.export') ? route('informasi.event.download', $row->id) : null;
+                    $data['download_url'] = route('informasi.event.download', $row->id);
                 }
 
                 return view('forms.aksi', $data);

@@ -62,8 +62,8 @@ class MediaSosialController extends Controller
                     $data['show_web'] = $row->url;
 
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.informasi.media-sosial.edit') ? route('informasi.media-sosial.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.informasi.media-sosial.delete') ? route('informasi.media-sosial.destroy', $row->id) : null;
+                        $data['edit_url'] = route('informasi.media-sosial.edit', $row->id);
+                        $data['delete_url'] = route('informasi.media-sosial.destroy', $row->id);
                     }
 
                     return view('forms.aksi', $data);

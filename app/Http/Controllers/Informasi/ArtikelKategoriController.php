@@ -33,8 +33,8 @@ class ArtikelKategoriController extends Controller
             return DataTables::of($data)
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.informasi.artikel-kategori.edit') ? route('informasi.artikel-kategori.edit', $row->id_kategori) : null;
-                        $data['delete_url'] = auth()->user()->can('access.informasi.artikel-kategori.delete') ? route('informasi.artikel-kategori.destroy', $row->id_kategori) : null;
+                        $data['edit_url'] = route('informasi.artikel-kategori.edit', $row->id_kategori);
+                        $data['delete_url'] = route('informasi.artikel-kategori.destroy', $row->id_kategori);
                     }
 
                     return view('forms.aksi', $data);
@@ -62,8 +62,8 @@ class ArtikelKategoriController extends Controller
             return DataTables::of($data)
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.informasi.artikel-kategori.edit') ? route('informasi.artikel-kategori.edit', $row->id_kategori) : null;
-                        $data['delete_url'] = auth()->user()->can('access.informasi.artikel-kategori.delete') ? route('informasi.artikel-kategori.destroy', $row->id_kategori) : null;
+                        $data['edit_url'] = route('informasi.artikel-kategori.edit', $row->id_kategori);
+                        $data['delete_url'] = route('informasi.artikel-kategori.destroy', $row->id_kategori);
                     }
                     return view('forms.aksi', $data);
                 })

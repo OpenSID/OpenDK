@@ -66,8 +66,8 @@ class ArtikelController extends Controller
                     $data['show_web'] = route('berita.detail', $row->slug);
 
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.informasi.artikel.edit') ? route('informasi.artikel.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.informasi.artikel.delete') ? route('informasi.artikel.destroy', $row->id) : null;
+                        $data['edit_url'] = route('informasi.artikel.edit', $row->id);
+                        $data['delete_url'] = route('informasi.artikel.destroy', $row->id);
                     }
 
                     return view('forms.aksi', $data);

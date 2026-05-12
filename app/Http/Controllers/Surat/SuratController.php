@@ -64,7 +64,7 @@ class SuratController extends Controller
                     : $query->whereRaw("REPLACE(desa_id, '.', '') = ?", [$desa]);
             }))
             ->addColumn('aksi', function ($row) {
-                $data['download_url'] = auth()->user()->can('access.surat.arsip.export') ? route('surat.arsip.download', $row->id) : null;
+                $data['download_url'] = route('surat.arsip.download', $row->id);
 
                 $pathSurat = asset('storage/surat/' . $row->file);
                 $data['preview_url'] = $pathSurat;

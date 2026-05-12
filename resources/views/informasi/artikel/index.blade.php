@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('informasi.artikel.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.artikel.create') ? route('informasi.artikel.create') : null])
             </div>
             <div class="box-body">
                 <!-- Filter Dropdown -->
@@ -35,7 +35,7 @@
                     <table class="table table-striped table-bordered" id="artikel-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th class="text-center text-nowrap" style="max-width: 150px;">Aksi</th>
                                 <th>Judul</th>
                                 <th>Kategori</th>
                                 <th style="max-width: 100px;">Status</th>
@@ -48,6 +48,18 @@
         </div>
     </section>
 @endsection
+@push('css')
+    <style>
+        #artikel-table .artikel-title-cell {
+            display: inline-block;
+            max-width: 320px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+    </style>
+@endpush
 
 @include('partials.asset_datatables')
 
@@ -61,13 +73,13 @@
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
-                        class: 'text-center',
+                        class: 'text-center text-nowrap',
                         searchable: false,
                         orderable: false
                     },
                     {
                         data: 'judul',
-                        name: 'judul'
+                        name: 'judul',
                     },
                     {
                         data: 'kategori',
@@ -85,7 +97,7 @@
                         name: 'dibuat',
                         class: 'text-center',
                         searchable: false,
-                        orderData: 4,
+                        orderData: 5,
                     },
                     {
                         data: 'created_at',

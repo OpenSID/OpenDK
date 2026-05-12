@@ -18,8 +18,8 @@
         @if ($jenisPenyakit->count() > 0)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    @include('forms.btn-social', ['import_url' => route('data.epidemi-penyakit.import')])
-                    @include('forms.btn-social', ['export_url' => route('data.epidemi-penyakit.export-excel')])
+                    @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.epidemi-penyakit.import') ? route('data.epidemi-penyakit.import') : null])
+                    @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.epidemi-penyakit.export') ? route('data.epidemi-penyakit.export-excel') : null])
                 </div>
                 <div class="box-body">
                     <div class="table-responsive">

@@ -18,7 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', [
-                    'create_url' => route('setting.navigation.create', $parent_id),
+                    'create_url' => auth()->user()->can('access.setting.navigation.create') ? route('setting.navigation.create', $parent_id) : null,
                 ])
                 @if (!empty($parent_id))
                     @include('forms.btn-social', [

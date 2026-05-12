@@ -56,7 +56,7 @@ class JenisDokumenController extends Controller
         return DataTables::of(JenisDokumen::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url'] = route('setting.jenis-dokumen.destroy', $row->id);
+                $data['delete_url'] = auth()->user()->can('access.setting.jenis-dokumen.delete') ? route('setting.jenis-dokumen.destroy', $row->id) : null;
                 return view('forms.aksi', $data);
             })
             ->make();

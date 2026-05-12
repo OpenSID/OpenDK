@@ -68,8 +68,8 @@ class AKIAKBController extends Controller
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(AkiAkb::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.aki-akb.edit', $row->id);
-                $data['delete_url'] = route('data.aki-akb.destroy', $row->id);
+                $data['edit_url'] = auth()->user()->can('access.data.aki-akb.edit') ? route('data.aki-akb.edit', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.aki-akb.delete') ? route('data.aki-akb.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })->addColumn('nama_desa', function ($row) use ($listDesa) {

@@ -54,14 +54,14 @@ class ProsedurController extends Controller
     {
         return DataTables::of(Prosedur::select('id', 'judul_prosedur'))
             ->addColumn('aksi', function ($row) {
-                $data['show_url'] = route('informasi.prosedur.show', $row->id);
+                $data['show_url'] = auth()->user()->can('access.informasi.prosedur.view') ? route('informasi.prosedur.show', $row->id) : null;
 
                 if (!auth()->guest()) {
-                    $data['edit_url'] = route('informasi.prosedur.edit', $row->id);
-                    $data['delete_url'] = route('informasi.prosedur.destroy', $row->id);
+                    $data['edit_url'] = auth()->user()->can('access.informasi.prosedur.edit') ? route('informasi.prosedur.edit', $row->id) : null;
+                    $data['delete_url'] = auth()->user()->can('access.informasi.prosedur.delete') ? route('informasi.prosedur.destroy', $row->id) : null;
                 }
 
-                $data['download_url'] = route('informasi.prosedur.download', $row->id);
+                $data['download_url'] = auth()->user()->can('access.informasi.prosedur.export') ? route('informasi.prosedur.download', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })

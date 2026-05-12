@@ -73,11 +73,11 @@ class FormDokumenController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 if (!auth()->guest()) {
-                    $data['edit_url'] = route('informasi.form-dokumen.edit', $row->id);
-                    $data['delete_url'] = route('informasi.form-dokumen.destroy', $row->id);
+                    $data['edit_url'] = auth()->user()->can('access.informasi.form-dokumen.edit') ? route('informasi.form-dokumen.edit', $row->id) : null;
+                    $data['delete_url'] = auth()->user()->can('access.informasi.form-dokumen.delete') ? route('informasi.form-dokumen.destroy', $row->id) : null;
                 }
 
-                $data['download_url'] = route('informasi.form-dokumen.download', $row->id);
+                $data['download_url'] = auth()->user()->can('access.informasi.form-dokumen.export') ? route('informasi.form-dokumen.download', $row->id) : null;
 
 
                 return view('forms.aksi', $data);

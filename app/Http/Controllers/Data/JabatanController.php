@@ -57,9 +57,9 @@ class JabatanController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] = route('data.jabatan.edit', $row->id);
+                        $data['edit_url'] = auth()->user()->can('access.data.jabatan.edit') ? route('data.jabatan.edit', $row->id) : null;
                         if ($row->jenis == JenisJabatan::JabatanLainnya) {
-                            $data['delete_url'] = route('data.jabatan.destroy', $row->id);
+                            $data['delete_url'] = auth()->user()->can('access.data.jabatan.delete') ? route('data.jabatan.destroy', $row->id) : null;
                         }
                     }
 

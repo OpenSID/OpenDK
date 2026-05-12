@@ -89,7 +89,7 @@ class LaporanPendudukController extends Controller
 
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = route('data.laporan-penduduk.destroy', $row->id);
+                $data['delete_url'] = auth()->user()->can('access.data.laporan-penduduk.delete') ? route('data.laporan-penduduk.destroy', $row->id) : null;
                 $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
 
                 return view('forms.aksi', $data);

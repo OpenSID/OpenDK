@@ -302,15 +302,14 @@ class UserController extends Controller
             ->addColumn('aksi', function ($user) {
                 if ($user->id != 1) {
                     if ($user->status == 1) {
-                        $data['suspend_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.destroy', $user->id) : null;
+                        $data['suspend_url'] = route('setting.user.destroy', $user->id);
                     } else {
-                        $data['active_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.active', $user->id) : null;
+                        $data['active_url'] = route('setting.user.active', $user->id);
                     }
-
-                    $data['delete_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.permanent-destroy', $user->id) : null;
+                    $data['delete_url'] = route('setting.user.permanent-destroy', $user->id);
                 }
 
-                $data['edit_url'] = auth()->user()->can('access.setting.user.edit') ? route('setting.user.edit', $user->id) : null;
+                $data['edit_url'] = route('setting.user.edit', $user->id);
 
                 return view('forms.aksi', $data);
             })

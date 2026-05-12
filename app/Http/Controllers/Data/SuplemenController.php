@@ -68,11 +68,11 @@ class SuplemenController extends Controller
             return DataTables::of(Suplemen::withCount('terdata')->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    $data['detail_url'] = auth()->user()->can('access.data.data-suplemen.view') ? route('data.data-suplemen.show', $row->id) : null;
+                    $data['detail_url'] = route('data.data-suplemen.show', $row->id);
 
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.data.data-suplemen.edit') ? route('data.data-suplemen.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.data.data-suplemen.delete') ? route('data.data-suplemen.destroy', $row->id) : null;
+                        $data['edit_url'] = route('data.data-suplemen.edit', $row->id);
+                        $data['delete_url'] = route('data.data-suplemen.destroy', $row->id);
                     }
 
                     return view('forms.aksi', $data);

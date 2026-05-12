@@ -16,7 +16,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.prosedur.create') ? route('informasi.prosedur.create') : null])
+                @include('forms.btn-social', ['create_url' => route('informasi.prosedur.create')])
             </div>
             <!-- /.box-header -->
             <div class="box-body">

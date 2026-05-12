@@ -243,8 +243,6 @@ class UserControllerTest extends CrudTestCase
             $query->where('name', '!=', 'super-admin');
         })->first();
 
-        $regularUser->givePermissionTo('access.setting');
-
         $updateData = [
             'name' => 'Updated Profile Name',
             'email' => $regularUser->email, // Same email to avoid unique constraint

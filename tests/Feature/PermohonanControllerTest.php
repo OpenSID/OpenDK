@@ -89,8 +89,6 @@ test('show menampilkan detail permohonan surat', function () {
         return $controller;
     });
 
-    $user->assignRole('super-admin');
-
     $this->get(route('surat.permohonan.show', $surat->id))
         ->assertStatus(200)
         ->assertViewIs('surat.permohonan.show');
@@ -107,9 +105,6 @@ test('tolak memperbarui status surat ke ditolak', function () {
     $this->actingAs($user);
 
     $data = ['keterangan' => 'Alasan penolakan surat ini'];
-
-    $user->givePermissionTo('access.setting');
-    $user->givePermissionTo('access.surat');
 
     $this->postJson(route('surat.permohonan.tolak', $surat->id), $data)
         ->assertStatus(200);

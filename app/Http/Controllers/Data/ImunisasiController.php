@@ -68,8 +68,8 @@ class ImunisasiController extends Controller
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(Imunisasi::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = auth()->user()->can('access.data.imunisasi.edit') ? route('data.imunisasi.edit', $row->id) : null;
-                $data['delete_url'] = auth()->user()->can('access.data.imunisasi.delete') ? route('data.imunisasi.destroy', $row->id) : null;
+                $data['edit_url'] = route('data.imunisasi.edit', $row->id);
+                $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })->addColumn('nama_desa', function ($row) use ($listDesa) {

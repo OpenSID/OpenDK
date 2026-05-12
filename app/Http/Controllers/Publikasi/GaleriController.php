@@ -63,8 +63,8 @@ class GaleriController extends Controller
                     // $data['show_web'] = route('berita.detail', $row->slug);
     
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.publikasi.galeri.edit') ? route('publikasi.galeri.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.publikasi.galeri.delete') ? route('publikasi.galeri.destroy', $row->id) : null;
+                        $data['edit_url'] = route('publikasi.galeri.edit', $row->id);
+                        $data['delete_url'] = route('publikasi.galeri.destroy', $row->id);
                         if ($row->status == 1) {
                             $data['unlock_url'] = route('publikasi.galeri.status', $row->id);
                         } else {

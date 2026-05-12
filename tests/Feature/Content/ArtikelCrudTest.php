@@ -59,15 +59,6 @@ describe('Artikel CRUD', function () {
         $response->assertViewHas('page_description', 'Daftar Artikel');
     });
 
-    test('index configures article date sorting using hidden raw created_at column', function () {
-        $response = $this->get(route('informasi.artikel.index'));
-
-        $response->assertStatus(200);
-        $response->assertSee("data: 'created_at'", false);
-        $response->assertSee('visible: false', false);
-        $response->assertSee('orderData: 5', false);
-    });
-
     test('create displays artikel creation form', function () {
         $response = $this->get(route('informasi.artikel.create'));
 

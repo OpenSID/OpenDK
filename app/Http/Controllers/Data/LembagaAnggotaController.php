@@ -47,8 +47,8 @@ class LembagaAnggotaController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) use ($slug) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.data.lembaga_anggota.edit') ? route('data.lembaga_anggota.edit', ['slug' => $slug, 'id' => $row->id]) : null;
-                        $data['delete_url'] = auth()->user()->can('access.data.lembaga_anggota.delete') ? route('data.lembaga_anggota.destroy', ['slug' => $slug, 'id' => $row->id]) : null;
+                        $data['edit_url'] = route('data.lembaga_anggota.edit', ['slug' => $slug, 'id' => $row->id]);
+                        $data['delete_url'] = route('data.lembaga_anggota.destroy', ['slug' => $slug, 'id' => $row->id]);
                     }
 
                     return view('forms.aksi', $data);

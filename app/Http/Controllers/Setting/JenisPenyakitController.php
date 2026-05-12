@@ -53,7 +53,7 @@ class JenisPenyakitController extends Controller
         return DataTables::of(JenisPenyakit::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url'] = auth()->user()->can('access.setting.jenis-penyakit.delete') ? route('setting.jenis-penyakit.destroy', $row->id) : null;
+                $data['delete_url'] = route('setting.jenis-penyakit.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })

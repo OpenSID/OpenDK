@@ -57,14 +57,14 @@ class AlbumController extends Controller
                     // $data['show_web'] = route('berita.detail', $row->slug);
     
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.publikasi.album.edit') ? route('publikasi.album.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.publikasi.album.delete') ? route('publikasi.album.destroy', $row->id) : null;
+                        $data['edit_url'] = route('publikasi.album.edit', $row->id);
+                        $data['delete_url'] = route('publikasi.album.destroy', $row->id);
                         if ($row->status == 1) {
                             $data['unlock_url'] = route('publikasi.album.status', $row->id);
                         } else {
                             $data['lock_url'] = route('publikasi.album.status', $row->id);
                         }
-                        $data['detail_url'] = auth()->user()->can('access.publikasi.galeri.view') ? route('publikasi.galeri.index', $row->id) : null;
+                        $data['detail_url'] = route('publikasi.galeri.index', $row->id);
                     }
 
                     return view('forms.aksi', $data);

@@ -44,7 +44,7 @@ class Role extends ModelsRole
     public static function getListPermission(): Collection
     {
         return Permission::where('parent_id', 0)
-            ->with('children.children')
+            ->with('children')
             ->orderBy('sort')
             ->get();
     }

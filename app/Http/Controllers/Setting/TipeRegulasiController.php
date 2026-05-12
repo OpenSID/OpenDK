@@ -53,7 +53,7 @@ class TipeRegulasiController extends Controller
         return DataTables::of(TipeRegulasi::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url'] = auth()->user()->can('access.setting.tipe-regulasi.delete') ? route('setting.tipe-regulasi.destroy', $row->id) : null;
+                $data['delete_url'] = route('setting.tipe-regulasi.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })

@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.setting.user.create') ? route('setting.user.create') : null])
+                @include('forms.btn-social', ['create_url' => route('setting.user.create')])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

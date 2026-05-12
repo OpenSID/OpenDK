@@ -57,14 +57,14 @@ class RegulasiController extends Controller
     {
         return DataTables::of(Regulasi::query())
             ->addColumn('aksi', function ($row) {
-                $data['show_url'] = auth()->user()->can('access.informasi.regulasi.view') ? route('informasi.regulasi.show', $row->id) : null;
+                $data['show_url'] = route('informasi.regulasi.show', $row->id);
 
                 if (!auth()->guest()) {
-                    $data['edit_url'] = auth()->user()->can('access.informasi.regulasi.edit') ? route('informasi.regulasi.edit', $row->id) : null;
-                    $data['delete_url'] = auth()->user()->can('access.informasi.regulasi.delete') ? route('informasi.regulasi.destroy', $row->id) : null;
+                    $data['edit_url'] = route('informasi.regulasi.edit', $row->id);
+                    $data['delete_url'] = route('informasi.regulasi.destroy', $row->id);
                 }
 
-                $data['download_url'] = auth()->user()->can('access.informasi.regulasi.export') ? route('informasi.regulasi.download', $row->id) : null;
+                $data['download_url'] = route('informasi.regulasi.download', $row->id);
 
                 return view('forms.aksi', $data);
             })->make();

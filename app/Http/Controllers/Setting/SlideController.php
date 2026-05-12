@@ -54,8 +54,8 @@ class SlideController extends Controller
     {
         return DataTables::of(Slide::all())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = auth()->user()->can('access.setting.slide.edit') ? route('setting.slide.edit', $row->id) : null;
-                $data['delete_url'] = auth()->user()->can('access.setting.slide.delete') ? route('setting.slide.destroy', $row->id) : null;
+                $data['edit_url'] = route('setting.slide.edit', $row->id);
+                $data['delete_url'] = route('setting.slide.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })

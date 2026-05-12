@@ -65,7 +65,7 @@ class AnggaranDesaController extends Controller
                     ->get()
             )
                 ->addColumn('aksi', function ($row) {
-                    $data['delete_url'] = auth()->user()->can('access.data.anggaran-desa.delete') ? route('data.anggaran-desa.destroy', $row->id) : null;
+                    $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
 
                     return view('forms.aksi', $data);
                 })->editColumn('bulan', function ($row) {

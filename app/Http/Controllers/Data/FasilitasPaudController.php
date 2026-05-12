@@ -61,8 +61,8 @@ class FasilitasPaudController extends Controller
     {
         return DataTables::of(FasilitasPAUD::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = auth()->user()->can('access.data.fasilitas-paud.edit') ? route('data.fasilitas-paud.edit', $row->id) : null;
-                $data['delete_url'] = auth()->user()->can('access.data.fasilitas-paud.delete') ? route('data.fasilitas-paud.destroy', $row->id) : null;
+                $data['edit_url'] = route('data.fasilitas-paud.edit', $row->id);
+                $data['delete_url'] = route('data.fasilitas-paud.destroy', $row->id);
 
                 return view('forms.aksi', $data);
             })

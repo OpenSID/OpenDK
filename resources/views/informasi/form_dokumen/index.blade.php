@@ -18,7 +18,7 @@
         @if ($jenis_dokumen->count() > 0)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.form-dokumen.create') ? route('informasi.form-dokumen.create') : null])
+                    @include('forms.btn-social', ['create_url' => route('informasi.form-dokumen.create')])
                 </div>
 
                 <div class="box-body">

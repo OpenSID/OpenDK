@@ -87,14 +87,14 @@ class PermohonanController extends Controller
                 }
 
                 if ($isAllow) {
-                    $data['show_url'] = auth()->user()->can('access.surat.permohonan.view') ? route('surat.permohonan.show', $row->id) : null;
+                    $data['show_url'] = route('surat.permohonan.show', $row->id);
                 }
 
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE && $user == $this->akun_camat->id) {
-                    $data['passphrase'] = auth()->user()->can('access.surat.permohonan.view') ? route('surat.permohonan.show', $row->id) : null;
+                    $data['passphrase'] = route('surat.permohonan.show', $row->id);
                 }
 
-                $data['download_url'] = auth()->user()->can('access.surat.permohonan.export') ? route('surat.permohonan.download', $row->id) : null;
+                $data['download_url'] = route('surat.permohonan.download', $row->id);
 
                 $pathSurat = asset('storage/surat/' . $row->file);
                 $data['preview_url'] = $pathSurat;

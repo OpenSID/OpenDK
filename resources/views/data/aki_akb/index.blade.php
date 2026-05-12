@@ -53,6 +53,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.aki-akb.getdata') !!}",
+                    type: 'POST',
                     data: function(d) {
                         d.desa_id = $('#list_desa').val();
                     }

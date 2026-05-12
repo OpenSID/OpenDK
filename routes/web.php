@@ -621,7 +621,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // AKI & AKB
                 Route::group(['prefix' => 'aki-akb', 'middleware' => ['action_permission:access.data.aki_akb']], function () {
                     Route::get('/', ['as' => 'data.aki-akb.index', 'uses' => 'AKIAKBController@index']);
-                    Route::get('getdata', ['as' => 'data.aki-akb.getdata', 'uses' => 'AKIAKBController@getDataAKIAKB']);
+                    Route::post('getdata', ['as' => 'data.aki-akb.getdata', 'uses' => 'AKIAKBController@getDataAKIAKB']);
                     Route::get('edit/{id}', ['as' => 'data.aki-akb.edit', 'uses' => 'AKIAKBController@edit']);
                     Route::put('update/{id}', ['as' => 'data.aki-akb.update', 'uses' => 'AKIAKBController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.aki-akb.destroy', 'uses' => 'AKIAKBController@destroy']);
@@ -633,7 +633,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Imunisasi
                 Route::group(['prefix' => 'imunisasi', 'middleware' => ['action_permission:access.data.imunisasi']], function () {
                     Route::get('/', ['as' => 'data.imunisasi.index', 'uses' => 'ImunisasiController@index']);
-                    Route::get('getdata', ['as' => 'data.imunisasi.getdata', 'uses' => 'ImunisasiController@getDataAKIAKB']);
+                    Route::post('getdata', ['as' => 'data.imunisasi.getdata', 'uses' => 'ImunisasiController@getDataAKIAKB']);
                     Route::get('edit/{id}', ['as' => 'data.imunisasi.edit', 'uses' => 'ImunisasiController@edit']);
                     Route::put('update/{id}', ['as' => 'data.imunisasi.update', 'uses' => 'ImunisasiController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.imunisasi.destroy', 'uses' => 'ImunisasiController@destroy']);
@@ -645,7 +645,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Epidemi Penyakit
                 Route::group(['prefix' => 'epidemi-penyakit', 'middleware' => ['action_permission:access.data.epidemi_penyakit']], function () {
                     Route::get('/', ['as' => 'data.epidemi-penyakit.index', 'uses' => 'EpidemiPenyakitController@index']);
-                    Route::get('getdata', ['as' => 'data.epidemi-penyakit.getdata', 'uses' => 'EpidemiPenyakitController@getDataAKIAKB']);
+                    Route::post('getdata', ['as' => 'data.epidemi-penyakit.getdata', 'uses' => 'EpidemiPenyakitController@getDataAKIAKB']);
                     Route::get('edit/{id}', ['as' => 'data.epidemi-penyakit.edit', 'uses' => 'EpidemiPenyakitController@edit']);
                     Route::put('update/{id}', ['as' => 'data.epidemi-penyakit.update', 'uses' => 'EpidemiPenyakitController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.epidemi-penyakit.destroy', 'uses' => 'EpidemiPenyakitController@destroy']);

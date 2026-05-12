@@ -97,7 +97,7 @@
                         name: 'dibuat',
                         class: 'text-center',
                         searchable: false,
-                        orderData: 4,
+                        orderData: 5,
                     },
                     {
                         data: 'created_at',

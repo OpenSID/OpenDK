@@ -21,9 +21,9 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     {!! html()->form('POST', route('data.laporan-penduduk.do_import'))->id('form-import')->class(
-                            'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                                    form-label-left',
-                        )->acceptsFiles()->open() !!}
+        'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                    form-label-left',
+    )->acceptsFiles()->open() !!}
 
                     <div class="box-body">
 
@@ -45,14 +45,16 @@
                                         Penduduk <span class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-6 col-xs-12">
-                                        <input type="file" id="data_file" name="file" class="form-control" required accept=".zip, application/zip" />
+                                        <input type="file" id="data_file" name="file" class="form-control" required
+                                            accept=".zip, application/zip" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="well">
                                     <p>Instruksi Unggah Data:</p>
-                                    <p>Silakan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/laporan_penduduk_22_12_2020_opendk.zip') }}">Unduh</a>
+                                    <p>Silakan unduh template unggah data di sini: <a
+                                            href="{{ asset('storage/template_upload/laporan_penduduk_22_12_2020_opendk.zip') }}">Unduh</a>
                                     </p>
                                 </div>
                             </div>

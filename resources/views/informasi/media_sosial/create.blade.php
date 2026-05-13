@@ -18,9 +18,9 @@
                 <div class="box box-primary">
 
                     {!! html()->form('POST', route('informasi.media-sosial.store'))->acceptsFiles()->id('form-media-sosial')->class(
-                            'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                                    form-label-left',
-                        )->open() !!}
+        'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                    form-label-left',
+    )->open() !!}
 
                     <div class="box-body">
 
@@ -51,7 +51,7 @@
 
 @push('scripts')
     <script>
-        $(function() {
+        $(function () {
 
             var fileTypes = ['jpg', 'jpeg', 'png', 'jpg']; //acceptable file types
 
@@ -63,7 +63,7 @@
 
                     if (isSuccess) { //yes
                         var reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
 
                             $('#showgambar').attr('src', e.target.result);
                             $('#showgambar').removeClass('hide');
@@ -78,7 +78,7 @@
                 }
             }
 
-            $("#logo").change(function() {
+            $("#logo").change(function () {
                 readURL(this);
             });
         });

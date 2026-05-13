@@ -57,11 +57,11 @@
 
             function add_atachment() {
                 $('#attachment_input').html(`
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                            <input id="attachment" name="attachment" class="form-control" type="file" required>
-                        </div>
-                    `);
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <input id="attachment" name="attachment" class="form-control" type="file" required>
+                    </div>
+                `);
             };
 
             //Datetimepicker

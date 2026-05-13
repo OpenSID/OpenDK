@@ -17,7 +17,10 @@
             <div class="col-md-12">
                 <div class="box box-primary">
 
-                    {!! html()->form('POST', route('informasi.event.store'))->id('form-event')->class('form-horizontal')->open() !!}
+                    {!! html()->form('POST', route('informasi.event.store'))->id('form-event')->class(
+        'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                    form-label-left',
+    )->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

@@ -25,14 +25,14 @@
         @elseif ($aplikasi->type == 'boolean')
             {!! html()->select('value', ['1' => 'Aktif', '0' => 'Tidak Aktif'])->value(old('value', $aplikasi->value))->class('form-control') !!}
         @elseif ($aplikasi->type == 'boolean_peta')
-            {!! html()->select('value', [
-                    'OpenStreetMap' => 'OpenStreetMap',
-                    'OpenStreetMap H.O.T.' => 'OpenStreetMap
-                                                                                                                                                                H.O.T.',
-                    'Mapbox Streets' => 'Mapbox Streets',
-                    'Mapbox Satellite' => 'Mapbox Satellite',
-                    'Mapbox Satellite-Streets' => 'Mapbox Satellite-Streets',
-                ])->value(old('value', $aplikasi->value))->class('form-control') !!}
+                {!! html()->select('value', [
+                'OpenStreetMap' => 'OpenStreetMap',
+                'OpenStreetMap H.O.T.' => 'OpenStreetMap
+                                                                                                                                                                                                                H.O.T.',
+                'Mapbox Streets' => 'Mapbox Streets',
+                'Mapbox Satellite' => 'Mapbox Satellite',
+                'Mapbox Satellite-Streets' => 'Mapbox Satellite-Streets',
+            ])->value(old('value', $aplikasi->value))->class('form-control') !!}
         @else
             {!! html()->text('value')->value(old('value', $aplikasi->value))->class('form-control')->required()->id('value') !!}
         @endif

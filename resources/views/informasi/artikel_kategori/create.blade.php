@@ -19,9 +19,9 @@
                 <div class="box box-primary">
 
                     {!! html()->form('POST', route('informasi.artikel-kategori.store'))->id('form-artikel-kategori')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                    form-label-left',
-    )->open() !!}
+                            'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                                        form-label-left',
+                        )->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

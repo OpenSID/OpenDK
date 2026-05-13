@@ -10,6 +10,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### BUG
 
 1. [#1512](https://github.com/OpenSID/OpenDK/issues/1512) Perbaikan error ketika membuka artikel yang memiliki judul sangat panjang (lebih dari 191 karakter)
+2. [#1519](https://github.com/OpenSID/OpenDK/issues/1519) Perbaikan Tampilan Kolom aksi di artikel berubah ketika ada artikel dengan judul yang panjang (191 karakter)
+3. [#1520](https://github.com/OpenSID/OpenDK/issues/1520) Perbaikan Sorting tanggal terbit artikel tidak berjalan dengan semestinya
 
 #### TEKNIS
 

@@ -10,7 +10,8 @@
                     @if ($anggota == null)
                         <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @else
-                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }}
+                            value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @endif
                 @endforeach
             </select>
@@ -27,7 +28,8 @@
                         <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
                     @else
                         <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">
-                            {{ $penduduk['nama'] }}</option>
+                            {{ $penduduk['nama'] }}
+                        </option>
                     @endif
                 @endforeach
             </select>
@@ -45,18 +47,18 @@
                     @if ($anggota == null)
                         <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @else
-                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }}
+                            value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @endif
                 @endforeach
             </select>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12"
-            for="penduduk_id">{{ $suplemen->sasaran == 2
-                ? 'Nama Kepala
-                                                                                                                                Keluarga'
-                : 'Nama Penduduk' }}</label>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">{{ $suplemen->sasaran == 2
+            ? 'Nama Kepala
+                                                                                                                                                                                        Keluarga'
+            : 'Nama Penduduk' }}</label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
             <select name="penduduk_id" id="penduduk" class="form-control" disabled>
@@ -66,7 +68,8 @@
                         <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
                     @else
                         <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">
-                            {{ $penduduk['nama'] }}</option>
+                            {{ $penduduk['nama'] }}
+                        </option>
                     @endif
                 @endforeach
             </select>

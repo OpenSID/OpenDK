@@ -13,7 +13,10 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Deskripsi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-8 col-xs-12">
-        {!! html()->textarea('description', old('description', $event->description))->class('textarea my-editor')->placeholder('Deskripsi kegiatan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;')->required() !!}
+        {!! html()->textarea('description', old('description', $event->description))->class('textarea my-editor')->placeholder('Deskripsi kegiatan')->style(
+    'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:
+                                                                                                                                        10px;',
+)->required() !!}
     </div>
 </div>
 <div class="form-group">
@@ -54,11 +57,11 @@
 
             function add_atachment() {
                 $('#attachment_input').html(`
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <input id="attachment" name="attachment" class="form-control" type="file" required>
-                    </div>
-                `);
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Attachment <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input id="attachment" name="attachment" class="form-control" type="file" required>
+                        </div>
+                    `);
             };
 
             //Datetimepicker

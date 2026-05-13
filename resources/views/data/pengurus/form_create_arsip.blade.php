@@ -3,12 +3,12 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->select('jenis_surat', \App\Models\JenisSurat::pluck('nama', 'id')->value(old('jenis_surat', isset($pengurus) ? $pengurus->jenis_surat : '')), null, [
-            'placeholder' => 'Pilih
-                                                                                                Jenis Dokumen',
-            'class' => 'form-control',
-            'id' => 'jenis_dokumen_id',
-            'required' => true,
-        ]) !!}
+    'placeholder' => 'Pilih
+                                                                                                                                        Jenis Dokumen',
+    'class' => 'form-control',
+    'id' => 'jenis_dokumen_id',
+    'required' => true,
+]) !!}
     </div>
 
 </div>
@@ -18,9 +18,9 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->text('judul_document')->class('form-control')->required()->placeholder(
-                'Judul
-                                                                                                Document',
-            )->value(old('judul_document', isset($pengurus) ? $pengurus->judul_document : '')) !!}
+    'Judul
+                                                                                                                                        Document',
+)->value(old('judul_document', isset($pengurus) ? $pengurus->judul_document : '')) !!}
     </div>
 </div>
 
@@ -28,7 +28,8 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Dokumen <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input type="file" name="path_document" class="form-control" required="false" accept=".pdf,.doc,.docx,.xls,.xlsx">
+        <input type="file" name="path_document" class="form-control" required="false"
+            accept=".pdf,.doc,.docx,.xls,.xlsx">
         <small class="text-danger">
             Batas maksimal pengunggahan file: 80MB. Hanya mendukung format: .pdf, .doc, .docx, .xls, .xlsx
         </small>
@@ -48,8 +49,8 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("#pengurus_id").on('change', function() {
+        $(document).ready(function () {
+            $("#pengurus_id").on('change', function () {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
                     let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
@@ -57,7 +58,7 @@
                         url: url,
                         type: 'GET',
                         dataType: 'json',
-                        success: function(response) {
+                        success: function (response) {
                             let tempat_lahir = response.tempat_lahir
                             let tanggal_lahir = response.tanggal_lahir
                             let alamat = response.alamat
@@ -71,7 +72,7 @@
                             $("input[name='pendidikan']").val(pendidikan);
                             $("input[name='warga_negara_agama']").val(warga_negara_agama);
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error(error);
                             alert("Terjadi kesalahan saat mengambil data.");
                         }

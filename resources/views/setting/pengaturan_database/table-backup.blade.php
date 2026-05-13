@@ -34,7 +34,10 @@
             var data = $('#data-backup-database').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('setting.pengaturan-database.getdata') !!}",
+                ajax: {
+                    url: "{!! route('setting.pengaturan-database.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'DT_RowIndex',
                         class: 'padat',

@@ -47,7 +47,10 @@
             var data = $('#user-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('setting.role.getdata') !!}",
+                ajax: {
+                    url: "{!! route('setting.role.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'name',
                         name: 'name'

@@ -19,9 +19,9 @@
             <div class="col-md-12">
 
                 {!! html()->form('POST', route('data.program-bantuan.do_import'))->id('form-import')->class(
-                        'form-horizontal
-                                                                                                                                                                                                                form-label-left',
-                    )->acceptsFiles()->open() !!}
+        'form-horizontal
+                                                                                                                                                                                                                                                                                form-label-left',
+    )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
 
@@ -43,14 +43,16 @@
                                     Bantuan <span class="required">*</span></label>
 
                                 <div class="col-md-8 col-sm-6 col-xs-12">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".zip, application/zip" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required
+                                        accept=".zip, application/zip" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Unggah Data:</p>
-                                <p>Silakan unduh template unggah data di sini: <a href="{{ asset('storage/template_upload/program_bantuan_31_05_2022_opendk.zip') }}">Unduh</a>
+                                <p>Silakan unduh template unggah data di sini: <a
+                                        href="{{ asset('storage/template_upload/program_bantuan_31_05_2022_opendk.zip') }}">Unduh</a>
                                 </p>
                             </div>
                         </div>
@@ -69,13 +71,13 @@
 @include('partials.asset_datetimepicker')
 @push('scripts')
     <script>
-        $(function() {
+        $(function () {
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         $('#showgambar').attr('src', e.target.result);
                     }
 
@@ -83,12 +85,12 @@
                 }
             }
 
-            $("#foto").change(function() {
+            $("#foto").change(function () {
                 readURL(this);
             });
 
             //Datetimepicker
-            $('.datepicker').each(function() {
+            $('.datepicker').each(function () {
                 var $this = $(this);
                 $this.datetimepicker({
                     format: 'YYYY-MM-D'

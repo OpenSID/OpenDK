@@ -66,6 +66,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.laporan-penduduk.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

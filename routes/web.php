@@ -568,7 +568,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['action_permission:access.data.penduduk']], function () {
                     Route::get('/', ['as' => 'data.penduduk.index', 'uses' => 'PendudukController@index']);
-                    Route::get('getdata', ['as' => 'data.penduduk.getdata', 'uses' => 'PendudukController@getPenduduk']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.penduduk.getdata', 'uses' => 'PendudukController@getPenduduk']);
                     Route::get('show/{id}', ['as' => 'data.penduduk.show', 'uses' => 'PendudukController@show']);
                     Route::get('import', ['as' => 'data.penduduk.import', 'uses' => 'PendudukController@import']);
                     Route::post('import-excel', ['as' => 'data.penduduk.import-excel', 'uses' => 'PendudukController@importExcel']);
@@ -579,7 +579,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Keluarga
                 Route::group(['prefix' => 'keluarga', 'middleware' => ['action_permission:access.data.keluarga']], function () {
                     Route::get('/', ['as' => 'data.keluarga.index', 'uses' => 'KeluargaController@index']);
-                    Route::get('getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.keluarga.getdata', 'uses' => 'KeluargaController@getKeluarga']);
                     Route::get('show/{id}', ['as' => 'data.keluarga.show', 'uses' => 'KeluargaController@show']);
                     Route::get('export-excel', ['as' => 'data.keluarga.export-excel', 'uses' => 'KeluargaController@exportExcel']);
                 });
@@ -587,15 +587,15 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Data Suplemen
                 Route::group(['prefix' => 'data-suplemen', 'middleware' => ['action_permission:access.data.data_suplemen']], function () {
                     Route::get('/', ['as' => 'data.data-suplemen.index', 'uses' => 'SuplemenController@index']);
-                    Route::get('getdata', ['as' => 'data.data-suplemen.getdata', 'uses' => 'SuplemenController@getDataSuplemen']);
-                    Route::get('getsuplementerdata', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.data-suplemen.getdata', 'uses' => 'SuplemenController@getDataSuplemen']);
+                    Route::match(['GET', 'POST'], 'getsuplementerdata', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
                     Route::get('show/{id}', ['as' => 'data.data-suplemen.show', 'uses' => 'SuplemenController@show']);
                     Route::get('create', ['as' => 'data.data-suplemen.create', 'uses' => 'SuplemenController@create']);
                     Route::post('store', ['as' => 'data.data-suplemen.store', 'uses' => 'SuplemenController@store']);
                     Route::get('edit/{id}', ['as' => 'data.data-suplemen.edit', 'uses' => 'SuplemenController@edit']);
                     Route::put('update/{id}', ['as' => 'data.data-suplemen.update', 'uses' => 'SuplemenController@update']);
                     Route::delete('destroy/{id}', ['as' => 'data.data-suplemen.destroy', 'uses' => 'SuplemenController@destroy']);
-                    Route::get('getsuplementerdata/{id_suplemen}', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    Route::match(['GET', 'POST'], 'getsuplementerdata/{id_suplemen}', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
                     Route::get('createdetail/{id_suplemen}', ['as' => 'data.data-suplemen.createdetail', 'uses' => 'SuplemenController@createDetail']);
                     Route::get('getpenduduk/{id_desa}/{id_suplemen}', ['as' => 'data.data-suplemen.getpenduduk', 'uses' => 'SuplemenController@getPenduduk']);
                     Route::post('storedetail', ['as' => 'data.data-suplemen.storedetail', 'uses' => 'SuplemenController@storeDetail']);
@@ -609,7 +609,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Laporan Penduduk
                 Route::group(['prefix' => 'laporan-penduduk', 'middleware' => ['action_permission:access.data.laporan_penduduk']], function () {
                     Route::get('/', ['as' => 'data.laporan-penduduk.index', 'uses' => 'LaporanPendudukController@index']);
-                    Route::get('getdata', ['as' => 'data.laporan-penduduk.getdata', 'uses' => 'LaporanPendudukController@getData']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.laporan-penduduk.getdata', 'uses' => 'LaporanPendudukController@getData']);
                     Route::delete('destroy/{id}', ['as' => 'data.laporan-penduduk.destroy', 'uses' => 'LaporanPendudukController@destroy']);
                     Route::get('download{id}', ['as' => 'data.laporan-penduduk.download', 'uses' => 'LaporanPendudukController@download']);
                     Route::get('import', ['as' => 'data.laporan-penduduk.import', 'uses' => 'LaporanPendudukController@import']);

@@ -17,3 +17,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 1. [#1505](https://github.com/OpenSID/OpenDK/issues/1505) Penyesuaian Permission Access
 2. [#1514](https://github.com/OpenSID/OpenDK/issues/1514) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data->Kecamatan
+3. [#1515](https://github.com/OpenSID/OpenDK/issues/1515) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kependudukan

@@ -68,8 +68,15 @@
         $(document).ready(function() {
             var data = $('#artikel-table').DataTable({
                 processing: true,
-                serverSide: false,
-                ajax: "{!! route('informasi.artikel.getdata') !!}",
+                serverSide: true,
+                ajax: {
+                    url: "{!! route('informasi.artikel.getdata') !!}",
+                    type: "POST",
+                    data: function(d) {
+                        d._token = "{{ csrf_token() }}";
+                        d.id_kategori = $('#filter-kategori').val();
+                    }
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',
@@ -93,19 +100,10 @@
                         orderable: false
                     },
                     {
-                        data: 'dibuat',
-                        name: 'dibuat',
+                        data: 'tanggal_terbit',
+                        name: 'tanggal_terbit',
                         class: 'text-center',
                         searchable: false,
-                        orderData: 5,
-                    },
-                    {
-                        data: 'created_at',
-                        name: 'created_at',
-                        class: 'text-center',
-                        searchable: false,
-                        orderable: false,
-                        visible: false
                     },
                 ],
                 order: [
@@ -113,16 +111,8 @@
                 ]
             });
 
-            // Event listener untuk tombol filter
             $('#filter-kategori').on('change', function() {
-                var filterValue = $(this).find(":selected").text();
-
-                // Filter DataTable berdasarkan kolom ke-3 (kolom "Kategori")
-                if (filterValue === 'Semua Kategori') {
-                    data.search('').columns().search('').draw();
-                } else {
-                    data.column(2).search(filterValue).draw();
-                }
+                data.draw();
             });
         });
     </script>

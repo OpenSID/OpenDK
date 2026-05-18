@@ -49,7 +49,10 @@
             var data = $('#jabatan-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.jabatan.index') !!}",
+                ajax: {
+                    url: "{!! route('data.jabatan.getdata.post') !!}",
+                    type: "POST",
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

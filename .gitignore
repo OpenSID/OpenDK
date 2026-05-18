@@ -48,3 +48,7 @@ test-results/
 mcp.json
 
 /template_ai
+
+/docs
+/.opencode
+/vendor-backup

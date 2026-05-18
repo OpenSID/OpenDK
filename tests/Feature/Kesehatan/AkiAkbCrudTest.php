@@ -35,9 +35,30 @@ use App\Models\AkiAkb;
 use App\Models\DataDesa;
 use Tests\CrudTestCase;
 
+const AJAX_HEADERS_AKI_AKB = ['X-Requested-With' => 'XMLHttpRequest'];
+
 beforeEach(function () {
     // Test setup if needed
 });
+
+function datatablePostPayloadAkiAkb(array $extra = []): array
+{
+    return array_merge([
+        'draw' => 1,
+        'start' => 0,
+        'length' => 10,
+        'search' => ['value' => '', 'regex' => 'false'],
+        'columns' => [
+            ['data' => 'aksi', 'name' => 'aksi', 'searchable' => 'false', 'orderable' => 'false', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'nama_desa', 'name' => 'desa_id', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'aki', 'name' => 'aki', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'akb', 'name' => 'akb', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'bulan', 'name' => 'bulan', 'searchable' => 'false', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'tahun', 'name' => 'tahun', 'searchable' => 'false', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+        ],
+        'order' => [['column' => 1, 'dir' => 'desc']],
+    ], $extra);
+}
 
 describe('AKI AKB CRUD', function () {
     test('index displays aki akb list view', function () {
@@ -121,7 +142,7 @@ describe('AKI AKB CRUD', function () {
         $desa = DataDesa::factory()->create();
         AkiAkb::factory()->count(3)->create(['desa_id' => $desa->desa_id]);
 
-        $response = $this->get(route('data.aki-akb.getdata'));
+        $response = $this->postJson(route('data.aki-akb.getdata'), datatablePostPayloadAkiAkb(), AJAX_HEADERS_AKI_AKB);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([

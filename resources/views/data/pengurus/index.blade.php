@@ -80,7 +80,8 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! route('data.pengurus.index') !!}",
+                    url: "{!! route('data.pengurus.getdata.post') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.status = $('#status').val();
                     }

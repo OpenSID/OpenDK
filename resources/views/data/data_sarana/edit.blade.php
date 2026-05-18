@@ -19,7 +19,7 @@
 
                     {!! html()->form('POST', route('data.data-sarana.update', $sarana->id))->id('form-sarana')->class(
                             'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                                    form-label-left',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            form-label-left',
                         )->open() !!}
                     @method('PUT')
 
@@ -42,7 +42,8 @@
                     </div>
                     <div class="box-footer">
                         <a href="{{ route('data.data-sarana.index') }}" class="btn btn-danger btn-sm"><i class="fa fa-times"></i> Batal</a>
-                        <button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i> Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i>
+                            Update</button>
                     </div>
                     {!! html()->form()->close() !!}
                 </div>

@@ -74,6 +74,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('data.data-sarana.getdata') }}",
+                    type: "POST",
                     data: function(d) {
                         d.desa_id = $('#list_desa').val(),
                             d.kategori = $('#kategori').val()

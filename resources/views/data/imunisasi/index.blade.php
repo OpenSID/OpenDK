@@ -52,6 +52,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.imunisasi.getdata') !!}",
+                    type: 'POST',
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

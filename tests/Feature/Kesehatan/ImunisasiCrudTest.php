@@ -35,9 +35,29 @@ use App\Models\DataDesa;
 use App\Models\Imunisasi;
 use Tests\CrudTestCase;
 
+const AJAX_HEADERS_IMUNISASI = ['X-Requested-With' => 'XMLHttpRequest'];
+
 beforeEach(function () {
     // Test setup if needed
 });
+
+function datatablePostPayloadImunisasi(array $extra = []): array
+{
+    return array_merge([
+        'draw' => 1,
+        'start' => 0,
+        'length' => 10,
+        'search' => ['value' => '', 'regex' => 'false'],
+        'columns' => [
+            ['data' => 'aksi', 'name' => 'aksi', 'searchable' => 'false', 'orderable' => 'false', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'nama_desa', 'name' => 'desa_id', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'cakupan_imunisasi', 'name' => 'cakupan_imunisasi', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'bulan', 'name' => 'bulan', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+            ['data' => 'tahun', 'name' => 'tahun', 'searchable' => 'true', 'orderable' => 'true', 'search' => ['value' => '', 'regex' => 'false']],
+        ],
+        'order' => [['column' => 1, 'dir' => 'asc']],
+    ], $extra);
+}
 
 describe('Imunisasi CRUD', function () {
     test('index displays imunisasi list view', function () {
@@ -59,7 +79,8 @@ describe('Imunisasi CRUD', function () {
     });
 
     test('edit displays edit form', function () {
-        $imunisasi = Imunisasi::factory()->create();
+        $desa = DataDesa::factory()->create();
+        $imunisasi = Imunisasi::factory()->create(['desa_id' => $desa->desa_id]);
 
         $response = $this->get(route('data.imunisasi.edit', $imunisasi->id));
 
@@ -70,7 +91,8 @@ describe('Imunisasi CRUD', function () {
     });
 
     test('update updates imunisasi successfully', function () {
-        $imunisasi = Imunisasi::factory()->create();
+        $desa = DataDesa::factory()->create();
+        $imunisasi = Imunisasi::factory()->create(['desa_id' => $desa->desa_id]);
 
         $updateData = [
             'cakupan_imunisasi' => 95,
@@ -90,7 +112,8 @@ describe('Imunisasi CRUD', function () {
     });
 
     test('update fails with invalid data', function () {
-        $imunisasi = Imunisasi::factory()->create();
+        $desa = DataDesa::factory()->create();
+        $imunisasi = Imunisasi::factory()->create(['desa_id' => $desa->desa_id]);
 
         $invalidData = [
             'cakupan_imunisasi' => '',
@@ -102,7 +125,8 @@ describe('Imunisasi CRUD', function () {
     });
 
     test('destroy deletes imunisasi successfully', function () {
-        $imunisasi = Imunisasi::factory()->create();
+        $desa = DataDesa::factory()->create();
+        $imunisasi = Imunisasi::factory()->create(['desa_id' => $desa->desa_id]);
 
         $response = $this->delete(route('data.imunisasi.destroy', $imunisasi->id));
 
@@ -118,7 +142,7 @@ describe('Imunisasi CRUD', function () {
         $desa = DataDesa::factory()->create();
         Imunisasi::factory()->count(3)->create(['desa_id' => $desa->desa_id]);
 
-        $response = $this->get(route('data.imunisasi.getdata'));
+        $response = $this->postJson(route('data.imunisasi.getdata'), datatablePostPayloadImunisasi(), AJAX_HEADERS_IMUNISASI);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([

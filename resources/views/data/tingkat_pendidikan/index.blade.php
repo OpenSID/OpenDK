@@ -57,6 +57,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.tingkat-pendidikan.getdata') !!}",
+                    type: 'POST',
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

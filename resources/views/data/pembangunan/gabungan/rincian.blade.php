@@ -80,7 +80,28 @@
                 success: function(response) {
                     if (response.data) {
                         $('#nama-kegiatan').text(response.data.attributes.judul);
-                        $('#sumber-dana').text(response.data.attributes.sumber_dana);
+
+                        // Format sumber_dana jika berupa JSON array
+                        var sumberDana = response.data.attributes.sumber_dana;
+                        if (sumberDana) {
+                            try {
+                                var parsed = JSON.parse(sumberDana);
+                                if (Array.isArray(parsed)) {
+                                    var html = '';
+                                    parsed.forEach(function(s) {
+                                        html += '<span class="label label-primary" style="margin-right:3px">' + s + '</span> ';
+                                    });
+                                    $('#sumber-dana').html(html);
+                                } else {
+                                    $('#sumber-dana').text(sumberDana);
+                                }
+                            } catch (e) {
+                                $('#sumber-dana').text(sumberDana);
+                            }
+                        } else {
+                            $('#sumber-dana').text('-');
+                        }
+
                         $('#lokasi-pembangunan').text(response.data.attributes.lokasi);
                         $('#keterangan').text(response.data.attributes.keterangan);
                     }

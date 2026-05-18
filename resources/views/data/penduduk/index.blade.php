@@ -69,6 +69,7 @@
                 ],
                 ajax: {
                     url: "{!! route('data.penduduk.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

@@ -49,7 +49,10 @@
             var data = $('#anggaran-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.anggaran-realisasi.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.anggaran-realisasi.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

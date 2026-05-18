@@ -58,7 +58,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keuangan/laporan_apbdes?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keuangan/laporan_apbdes-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
@@ -67,6 +67,7 @@
                         "Content-Type": "text/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
+                    method: 'POST',
                     data: function(row) {
                         return {
                             "page[size]": row.length,

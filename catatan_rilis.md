@@ -10,8 +10,14 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### BUG
 
 1. [#1512](https://github.com/OpenSID/OpenDK/issues/1512) Perbaikan error ketika membuka artikel yang memiliki judul sangat panjang (lebih dari 191 karakter)
+2. [#1519](https://github.com/OpenSID/OpenDK/issues/1519) Perbaikan Tampilan Kolom aksi di artikel berubah ketika ada artikel dengan judul yang panjang (191 karakter)
+3. [#1520](https://github.com/OpenSID/OpenDK/issues/1520) Perbaikan Sorting tanggal terbit artikel tidak berjalan dengan semestinya
 
 #### TEKNIS
 
 1. [#1505](https://github.com/OpenSID/OpenDK/issues/1505) Penyesuaian Permission Access
-
+2. [#1514](https://github.com/OpenSID/OpenDK/issues/1514) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data->Kecamatan
+3. [#1515](https://github.com/OpenSID/OpenDK/issues/1515) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kependudukan
+4. [#1523](https://github.com/OpenSID/OpenDK/issues/1523) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Program Bantuan dan Data -> Pembangunan
+5. [#1524](https://github.com/OpenSID/OpenDK/issues/1523) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Finansial
+6. [#1521](https://github.com/OpenSID/OpenDK/issues/1521) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kesehatan

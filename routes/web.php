@@ -703,7 +703,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Program Bantuan
                 Route::group(['prefix' => 'program-bantuan', 'middleware' => ['action_permission:access.data.program_bantuan']], function () {
                     Route::get('/', ['as' => 'data.program-bantuan.index', 'uses' => 'ProgramBantuanController@index']);
-                    Route::get('getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.program-bantuan.getdata', 'uses' => 'ProgramBantuanController@getaProgramBantuan']);
                     Route::get('show/{id}/{id_desa}/{nama?}', ['as' => 'data.program-bantuan.show', 'uses' => 'ProgramBantuanController@show']);
                     Route::get('import', ['as' => 'data.program-bantuan.import', 'uses' => 'ProgramBantuanController@import']);
                     Route::post('do_import', ['as' => 'data.program-bantuan.do_import', 'uses' => 'ProgramBantuanController@do_import']);
@@ -747,9 +747,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // Pembangunan
                 Route::group(['prefix' => 'pembangunan', 'middleware' => ['action_permission:access.data.pembangunan']], function () {
                     Route::get('/', ['as' => 'data.pembangunan.index', 'uses' => 'DataPembangunanController@index']);
-                    Route::get('getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
+                    Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.pembangunan.getdata', 'uses' => 'DataPembangunanController@getPembangunan']);
                     Route::get('rincian/{id}/{desa_id}', ['as' => 'data.pembangunan.rincian', 'uses' => 'DataPembangunanController@rincian']);
-                    Route::get('getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
+                    Route::match(['GET', 'POST'], 'getrinciandata/{id}/{desa_id}', ['as' => 'data.pembangunan.getrinciandata', 'uses' => 'DataPembangunanController@getrinciandata']);
                     Route::get('export-excel', ['as' => 'data.pembangunan.export-excel', 'uses' => 'DataPembangunanController@exportExcel']);
                 });
 

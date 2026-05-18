@@ -20,3 +20,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1515](https://github.com/OpenSID/OpenDK/issues/1515) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kependudukan
 4. [#1523](https://github.com/OpenSID/OpenDK/issues/1523) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Program Bantuan dan Data -> Pembangunan
 5. [#1524](https://github.com/OpenSID/OpenDK/issues/1523) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Finansial
+6. [#1521](https://github.com/OpenSID/OpenDK/issues/1521) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kesehatan

@@ -61,7 +61,10 @@
                 responsive: true,
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.data-desa.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.data-desa.getdata') !!}",
+                    type: "POST",
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

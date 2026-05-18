@@ -96,13 +96,13 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/pembangunan-rincian/${idPembangunan}/${kodeDesa}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/pembangunan-rincian-datatable/${idPembangunan}/${kodeDesa}`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "application/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
-                    method: 'GET',
+                    method: 'POST',
                     dataSrc: function(json) {
                         json.recordsTotal = json.meta.pagination.total;
                         json.recordsFiltered = json.meta.pagination.total;

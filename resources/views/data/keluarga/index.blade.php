@@ -66,6 +66,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.keluarga.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

@@ -2,7 +2,8 @@
     <div class="col-md-6">
         <legend>Info Wilayah</legend>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">{{ $sebutan_wilayah }} <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->text('kecamatan')->disabled()->class('form-control')->value(old('kecamatan', isset($data_umum) ? $data_umum->profil->nama_kecamatan : '')) !!}
@@ -15,7 +16,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->textarea('tipologi')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                my-editor',
+                                                                                                                                                                                                                                                                                                                                my-editor',
                     )->placeholder('Tipologi')->rows(2)->value(old('tipologi', isset($data_umum) ? $data_umum->tipologi : '')) !!}
             </div>
         </div>
@@ -26,34 +27,40 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->textarea('sejarah')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                my-editor',
+                                                                                                                                                                                                                                                                                                                                my-editor',
                     )->placeholder('Sejarah')->rows(2)->value(old('sejarah', isset($data_umum) ? $data_umum->sejarah : '')) !!}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Ketinggian (MDPL) <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Ketinggian (MDPL) <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('ketinggian')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('ketinggian', isset($data_umum) ? $data_umum->ketinggian : '')) !!}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Luas Wilayah (km<sup>2</sup>)<span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <div class="row">
                     <div class="col-md-5">
-                        {!! html()->select('sumber_luas_wilayah', ['1' => 'Manual', 2 => 'Dari Luas Desa'], old('sumber_luas_wilayah', $data_umum->sumber_luas_wilayah ?? null))->class('form-control sumber_luas_wilayah') !!}
+                        {!! html()->select(
+                                'sumber_luas_wilayah',
+                                ['1' => 'Manual', 2 => 'Dari Luas Desa'],
+                                old('sumber_luas_wilayah', $data_umum->sumber_luas_wilayah ?? null),
+                            )->class('form-control sumber_luas_wilayah') !!}
                     </div>
                     <div class="col-md-7">
                         {!! html()->number('luas_wilayah')->class(
                                 'form-control
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        luas_wilayah text-right',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                luas_wilayah text-right',
                             )->placeholder('0')->value(old('luas_wilayah', isset($data_umum) ? $data_umum->luas_wilayah : '')) !!}
                     </div>
                 </div>
@@ -68,7 +75,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->textarea('bts_wil_utara')->class('form-control')->placeholder(
                         'Batas
-                                                                                                                                                                                                                                                                                                                                                Utara',
+                                                                                                                                                                                                                                                                                                                                Utara',
                     )->rows(2)->value(old('bts_wil_utara', isset($data_umum) ? $data_umum->bts_wil_utara : '')) !!}
             </div>
         </div>
@@ -78,7 +85,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->textarea('bts_wil_timur')->class('form-control')->placeholder(
                         'Batas
-                                                                                                                                                                                                                                                                                                                                                Timur',
+                                                                                                                                                                                                                                                                                                                                Timur',
                     )->rows(2)->value(old('bts_wil_timur', isset($data_umum) ? $data_umum->bts_wil_timur : '')) !!}
             </div>
         </div>
@@ -88,7 +95,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->textarea('bts_wil_selatan')->class('form-control')->placeholder(
                         'Batas
-                                                                                                                                                                                                                                                                                                                                                Selatan',
+                                                                                                                                                                                                                                                                                                                                Selatan',
                     )->rows(2)->value(old('bts_wil_selatan', isset($data_umum) ? $data_umum->bts_wil_selatan : '')) !!}
             </div>
         </div>
@@ -98,7 +105,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->textarea('bts_wil_barat')->class('form-control')->placeholder(
                         'Batas
-                                                                                                                                                                                                                                                                                                                                                Barat',
+                                                                                                                                                                                                                                                                                                                                Barat',
                     )->rows(2)->value(old('bts_wil_barat', isset($data_umum) ? $data_umum->bts_wil_barat : '')) !!}
             </div>
         </div>
@@ -113,18 +120,19 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_puskesmas')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_puskesmas', isset($data_umum) ? $data_umum->jml_puskesmas : '')) !!}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Puskesmas Pembantu <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Puskesmas Pembantu <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_puskesmas_pembantu')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_puskesmas_pembantu', isset($data_umum) ? $data_umum->jml_puskesmas_pembantu : '')) !!}
             </div>
         </div>
@@ -135,18 +143,19 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_posyandu')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_posyandu', isset($data_umum) ? $data_umum->jml_posyandu : '')) !!}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Pondok Bersalin <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Pondok Bersalin <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_pondok_bersalin')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_pondok_bersalin', isset($data_umum) ? $data_umum->jml_pondok_bersalin : '')) !!}
             </div>
         </div>
@@ -154,18 +163,20 @@
         <br>
         <legend>Jumlah Sarana Pendidikan</legend>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">PAUD/Sederajat <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">PAUD/Sederajat <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_paud')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_paud', isset($data_umum) ? $data_umum->jml_paud : '')) !!}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">SD/Sederajat <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">SD/Sederajat <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_sd')->class('form-control text-right')->placeholder('0')->value(old('jml_sd', isset($data_umum) ? $data_umum->jml_sd : '')) !!}
@@ -173,7 +184,8 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">SMP/Sederajat <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">SMP/Sederajat <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_smp')->class('form-control text-right')->placeholder('0')->value(old('jml_smp', isset($data_umum) ? $data_umum->jml_smp : '')) !!}
@@ -181,7 +193,8 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">SMA/Sederajat <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">SMA/Sederajat <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_sma')->class('form-control text-right')->placeholder('0')->value(old('jml_sma', isset($data_umum) ? $data_umum->jml_sma : '')) !!}
@@ -191,12 +204,13 @@
         <br>
         <legend>Jumlah Sarana Umum</legend>
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Masjid Besar <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Masjid Besar <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_masjid_besar')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_masjid_besar', isset($data_umum) ? $data_umum->jml_masjid_besar : '')) !!}
             </div>
         </div>
@@ -207,7 +221,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_mushola')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_mushola', isset($data_umum) ? $data_umum->jml_mushola : '')) !!}
             </div>
         </div>
@@ -218,7 +232,7 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_gereja')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_gereja', isset($data_umum) ? $data_umum->jml_gereja : '')) !!}
             </div>
         </div>
@@ -229,18 +243,19 @@
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_pasar')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_pasar', isset($data_umum) ? $data_umum->jml_pasar : '')) !!}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-4 col-sm-3 col-xs-12">Balai Pertemuan <span class="required">*</span></label>
+            <label class="control-label col-md-4 col-sm-3 col-xs-12">Balai Pertemuan <span
+                    class="required">*</span></label>
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 {!! html()->number('jml_balai_pertemuan')->class(
                         'form-control
-                                                                                                                                                                                                                                                                                                                                                text-right',
+                                                                                                                                                                                                                                                                                                                                text-right',
                     )->placeholder('0')->value(old('jml_balai_pertemuan', isset($data_umum) ? $data_umum->jml_balai_pertemuan : '')) !!}
             </div>
         </div>

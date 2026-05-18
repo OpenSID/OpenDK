@@ -77,7 +77,10 @@
             var data = $('#suplemen-terdata-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.data-suplemen.getsuplementerdata', $suplemen->id) !!}",
+                ajax: {
+                    url: "{!! route('data.data-suplemen.getsuplementerdata', $suplemen->id) !!}",
+                    type: "POST",
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

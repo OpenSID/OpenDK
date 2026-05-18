@@ -16,7 +16,8 @@
         </ol>
     </section>
     <div class="box-header with-border">
-        <a href="{{ url()->previous() }}" class="btn btn-info btn-sm" judul="Kembali Ke Halaman Sebelumnya"><i class="fa fa-arrow-left"></i>&ensp;Kembali</a>
+        <a href="{{ url()->previous() }}" class="btn btn-info btn-sm" judul="Kembali Ke Halaman Sebelumnya"><i
+                class="fa fa-arrow-left"></i>&ensp;Kembali</a>
     </div>
 
     @include('partials.flash_message')
@@ -28,7 +29,7 @@
 
                     {!! html()->form('post')->route('data.pengurus.store.arsip')->acceptsFiles()->id('form-pengurus')->class(
                             'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                                                                                                form-label-left',
+                                                                                                                                                                                                                                                                                                                                                                                                            form-label-left',
                         )->open() !!}
                     @include('layouts.fragments.error_message')
                     <div class="box-body">

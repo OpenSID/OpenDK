@@ -10,7 +10,8 @@
                     @if ($anggota == null)
                         <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @else
-                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }}
+                            value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @endif
                 @endforeach
             </select>
@@ -26,7 +27,10 @@
                     @if ($anggota == null)
                         <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
                     @else
-                        <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
+                        <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }}
+                            value="{{ $penduduk['id'] }}">
+                            {{ $penduduk['nama'] }}
+                        </option>
                     @endif
                 @endforeach
             </select>
@@ -44,7 +48,8 @@
                     @if ($anggota == null)
                         <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @else
-                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
+                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }}
+                            value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                     @endif
                 @endforeach
             </select>
@@ -54,7 +59,7 @@
         <label class="control-label col-md-3 col-sm-3 col-xs-12"
             for="penduduk_id">{{ $suplemen->sasaran == 2
                 ? 'Nama Kepala
-                                                                                                                                                                                                                                    Keluarga'
+                                                                                                                                                                                                                            Keluarga'
                 : 'Nama Penduduk' }}</label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -64,7 +69,10 @@
                     @if ($anggota == null)
                         <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
                     @else
-                        <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
+                        <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }}
+                            value="{{ $penduduk['id'] }}">
+                            {{ $penduduk['nama'] }}
+                        </option>
                     @endif
                 @endforeach
             </select>
@@ -75,7 +83,9 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Keterangan</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->textarea('keterangan')->class('textarea')->placeholder('Keterangan')->value(old('keterangan', isset($suplemen) ? $suplemen->keterangan : ''))->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;') !!}
+        {!! html()->textarea('keterangan')->class('textarea')->placeholder('Keterangan')->value(old('keterangan', isset($suplemen) ? $suplemen->keterangan : ''))->style(
+                'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+            ) !!}
     </div>
 </div>
 <div class="ln_solid"></div>

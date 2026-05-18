@@ -21,7 +21,7 @@
                 <!-- form start -->
                 {!! html()->form('POST', route('data.fasilitas-paud.do_import'))->id('form-import')->class(
                         'form-horizontal
-                                                                                                                                                                                                                                                                                                                                            form-label-left',
+                                                                                                                                                                                                                                                                                                                                form-label-left',
                     )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
@@ -41,7 +41,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="list_desa" class="control-label col-md-4 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
+                                <label for="list_desa"
+                                    class="control-label col-md-4 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
                                 <div class="col-md-8">
                                     <select class="form-control" id="list_desa" name="desa_id">
                                         @foreach (\App\Models\DataDesa::all() as $desa)
@@ -76,14 +77,16 @@
                                 <label class="control-label col-md-4 col-sm-3 col-xs-12" for="data_file">Data Fasilitas
                                     PAUD</label>
                                 <div class="col-md-8">
-                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silakan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_Fasilitas_PAUD.xlsx') }}">Download</a>
+                                <p>Silakan download template upload data di sini: <a
+                                        href="{{ asset('storage/template_upload/Format_Upload_Fasilitas_PAUD.xlsx') }}">Download</a>
                                 </p>
                             </div>
                         </div>

@@ -865,7 +865,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             // User Management
             Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['action_permission:access.setting.user']], function () {
                 Route::get('/', 'index')->name('setting.user.index');
-                Route::get('getdata', 'getDataUser')->name('setting.user.getdata');
+                Route::match(['GET', 'POST'], 'getdata', 'getDataUser')->name('setting.user.getdata');
                 Route::get('create', 'create')->name('setting.user.create');
                 Route::post('store', 'store')->name('setting.user.store');
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
@@ -888,7 +888,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             // Role Management
             Route::group(['prefix' => 'role', 'controller' => RoleController::class, 'middleware' => ['action_permission:access.setting.role']], function () {
                 Route::get('/', 'index')->name('setting.role.index');
-                Route::get('getdata', 'getData')->name('setting.role.getdata');
+                Route::match(['GET', 'POST'], 'getdata', 'getData')->name('setting.role.getdata');
                 Route::get('create', 'create')->name('setting.role.create');
                 Route::post('store', 'store')->name('setting.role.store');
                 Route::get('edit/{id}', 'edit')->name('setting.role.edit');
@@ -911,7 +911,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             // Tipe Regulasi
             Route::group(['prefix' => 'tipe-regulasi', 'controller' => TipeRegulasiController::class, 'middleware' => ['action_permission:access.setting.tipe_regulasi']], function () {
                 Route::get('/', 'index')->name('setting.tipe-regulasi.index');
-                Route::get('getdata', 'getData')->name('setting.tipe-regulasi.getdata');
+                Route::match(['GET', 'POST'], 'getdata', 'getData')->name('setting.tipe-regulasi.getdata');
                 Route::post('store', 'store')->name('setting.tipe-regulasi.store');
                 Route::get('edit/{id}', 'edit')->name('setting.tipe-regulasi.edit');
                 Route::put('update/{id}', 'update')->name('setting.tipe-regulasi.update');
@@ -1009,7 +1009,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             // Pengaturan Database (Backup)
             Route::group(['prefix' => 'backup-database', 'controller' => PengaturanDatabaseController::class, 'middleware' => ['action_permission:access.setting.database']], function () {
                 Route::get('/', 'index')->name('setting.pengaturan-database.backup');
-                Route::get('/getdata', 'getDataBackup')->name('setting.pengaturan-database.getdata');
+                Route::match(['GET', 'POST'], '/getdata', 'getDataBackup')->name('setting.pengaturan-database.getdata');
                 Route::post('/backup-running', 'createBackup')->name('setting.pengaturan-database.runbackup');
                 Route::get('/backup-download/{file}', 'downloadBackup')->name('setting.pengaturan-database.download');
                 Route::get('/backup-delete/{file}', 'deleteBackup')->name('setting.pengaturan-database.delete');

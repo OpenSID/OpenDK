@@ -54,6 +54,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.fasilitas-paud.getdata') !!}",
+                    type: 'POST',
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

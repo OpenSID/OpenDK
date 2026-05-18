@@ -68,6 +68,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.pembangunan.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

@@ -53,6 +53,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.anggaran-desa.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

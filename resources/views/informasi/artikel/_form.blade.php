@@ -79,7 +79,8 @@
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
+                    var extension = input.files[0].name.split('.').pop()
+                        .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes
@@ -119,8 +120,10 @@
             relative_urls: false,
             image_caption: true,
             file_browser_callback: function(field_name, url, type, win) {
-                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-                var y = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+                var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName(
+                    'body')[0].clientWidth;
+                var y = window.innerHeight || document.documentElement.clientHeight || document
+                    .getElementsByTagName('body')[0].clientHeight;
                 var cmsURL = editor_config.path_absolute + 'filemanager?field_name=' + field_name;
 
                 if (type == 'image') {

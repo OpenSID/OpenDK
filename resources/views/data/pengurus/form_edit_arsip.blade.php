@@ -56,7 +56,8 @@
             $("#pengurus_id").on('change', function() {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
-                    let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
+                    let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id',
+                        pengurusId);
                     $.ajax({
                         url: url,
                         type: 'GET',

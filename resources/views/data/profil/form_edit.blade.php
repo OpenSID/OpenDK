@@ -48,7 +48,8 @@
                     <select class="form-control" id="list_kabupaten" name="kabupaten_id" style="width: 100%;">
                         <option selected value="" disabled>Pilih Kabupaten</option>
                         @if ($profil->kabupaten_id || $profil->nama_kabupaten)
-                            <option selected value="{{ $profil->kabupaten_id }}">{{ $profil->nama_kabupaten }}</option>
+                            <option selected value="{{ $profil->kabupaten_id }}">{{ $profil->nama_kabupaten }}
+                            </option>
                         @endif
                     </select>
                 @else
@@ -76,7 +77,8 @@
                     <select class="form-control" id="list_kecamatan" name="kecamatan_id" data-placeholder="Pilih kecamatan" style="width: 100%;">
                         <option selected value="" disabled>Pilih Kecamatan</option>
                         @if ($profil->kecamatan_id || $profil->nama_kecamatan)
-                            <option selected value="{{ $profil->kecamatan_id }}">{{ $profil->nama_kecamatan }}</option>
+                            <option selected value="{{ $profil->kecamatan_id }}">{{ $profil->nama_kecamatan }}
+                            </option>
                         @endif
                     </select>
                 @else

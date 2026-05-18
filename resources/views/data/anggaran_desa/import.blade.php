@@ -20,7 +20,7 @@
 
                 {!! html()->form()->route('data.anggaran-desa.do_import')->method('POST')->id('form-import')->class(
                         'form-horizontal
-                                                                                                                                                                                                                                                                                                                                form-label-left',
+                                                                                                                                                                                                                                                                                                                                                form-label-left',
                     )->acceptsFiles() !!}
 
                 <div class="box-body">
@@ -40,8 +40,7 @@
                     <div class="row">
                         <div class="col-md-7">
                             <div class="form-group">
-                                <label for="list_desa"
-                                    class="control-label col-md-5 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
+                                <label for="list_desa" class="control-label col-md-5 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
 
                                 <div class="col-md-7">
                                     <select class="form-control" id="list_desa" name="desa">
@@ -81,16 +80,14 @@
                                     {{ config('setting.sebutan_desa') }}</label>
 
                                 <div class="col-md-7">
-                                    <input type="file" id="data_file" name="file" class="form-control" required
-                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                    <input type="file" id="data_file" name="file" class="form-control" required accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
                             <div class="well">
                                 <p>Instruksi Upload Data:</p>
-                                <p>Silakan download template upload data di sini: <a
-                                        href="{{ asset('storage/template_upload/Format_Upload_APBDes.xlsx') }}">Download</a>
+                                <p>Silakan download template upload data di sini: <a href="{{ asset('storage/template_upload/Format_Upload_APBDes.xlsx') }}">Download</a>
                                 </p>
                             </div>
                         </div>

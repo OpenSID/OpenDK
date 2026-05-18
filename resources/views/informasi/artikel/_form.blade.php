@@ -2,8 +2,7 @@
     <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i
-                            class="fa fa-arrow-left"></i> Kembali</button></a>
+                <a href="{{ route('informasi.artikel.index') }}"><button type="button" class="btn btn-info btn-sm"><i class="fa fa-arrow-left"></i> Kembali</button></a>
             </div>
             <div class="box-body">
                 <div class="form-group">
@@ -21,7 +20,7 @@
 
                     {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style(
                             'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
-                                                                                                                                                                                                                                                                                                                                                                                                                padding:10px;',
+                                                                                                                                                                                                                                                                                                                                                                                                                                    padding:10px;',
                         )->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
                     @if ($errors->has('isi'))
                         <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
@@ -37,8 +36,7 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Gambar</label>
 
-                    <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar"
-                        style="width:100%; max-height:250px; float:left;" />
+                    <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar" style="width:100%; max-height:250px; float:left;" />
 
                     {!! html()->file('gambar')->class('form-control')->id('file-artikel')->accept('.jpg,.jpeg,.png') !!}
                     @if ($errors->has('gambar'))
@@ -82,7 +80,7 @@
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var extension = input.files[0].name.split('.').pop()
-                    .toLowerCase(), //file extension from input file
+                        .toLowerCase(), //file extension from input file
                         isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
 
                     if (isSuccess) { //yes

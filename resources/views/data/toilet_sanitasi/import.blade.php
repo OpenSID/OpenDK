@@ -32,9 +32,9 @@
 
                 <!-- form start -->
                 {!! html()->form('POST', route('data.toilet-sanitasi.do_import'))->id('form-import')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                form-label-left',
-    )->acceptsFiles()->open() !!}
+                        'form-horizontal
+                                                                                                                                                                                                                                                                                                                form-label-left',
+                    )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
                     <div class="row">

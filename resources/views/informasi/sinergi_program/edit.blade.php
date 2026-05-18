@@ -31,9 +31,9 @@
 
                     <!-- form start -->
                     {!! html()->form('PUT', route('informasi.sinergi-program.update', $sinergi->id))->id('form-sinergi-program')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                    form-label-left',
-    )->acceptsFiles()->open() !!}
+                            'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                                                            form-label-left',
+                        )->acceptsFiles()->open() !!}
 
                     <div class="box-body">
 

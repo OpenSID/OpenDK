@@ -21,9 +21,9 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     {!! html()->form('POST', route('data.laporan-penduduk.do_import'))->id('form-import')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                    form-label-left',
-    )->acceptsFiles()->open() !!}
+                            'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                                                            form-label-left',
+                        )->acceptsFiles()->open() !!}
 
                     <div class="box-body">
 

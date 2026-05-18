@@ -18,9 +18,9 @@
                 <div class="box box-primary">
 
                     {!! html()->form('POST', route('data.data-suplemen.store'))->id('form-faq')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                    form-label-left',
-    )->open() !!}
+                            'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                                                            form-label-left',
+                        )->open() !!}
 
                     <div class="box-body">
 

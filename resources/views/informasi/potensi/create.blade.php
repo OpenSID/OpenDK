@@ -20,9 +20,9 @@
                     <div class="box-body">
                         <!-- form start -->
                         {!! html()->form('POST', route('informasi.potensi.store'))->acceptsFiles()->id('form-potensi')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                                                                                        form-label-left',
-    )->open() !!}
+                                'form-horizontal
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                        form-label-left',
+                            )->open() !!}
 
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">

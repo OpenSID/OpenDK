@@ -12,9 +12,9 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <div style="display: flex; flex-direction: column;">
             {!! html()->select('penduduk_id', $pendudukList)->value(old('penduduk_id', isset($anggota) ? $anggota->penduduk_id : (isset($lembaga) ? $lembaga->penduduk_id : '')))->class(
-    'form-control
-                                                                                                                                                                                                                                    select2',
-)->placeholder('Pilih Nama Anggota')->required()->style('width:100%;') !!}
+                    'form-control
+                                                                                                                                                                                                                                                            select2',
+                )->placeholder('Pilih Nama Anggota')->required()->style('width:100%;') !!}
         </div>
     </div>
 </div>
@@ -66,9 +66,9 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->date('tgl_sk_pengangkatan', old('tgl_sk_pengangkatan'))->placeholder(
-    'Tanggal SK
-                                                                                                                                                        Pengangkatan',
-)->class('form-control') !!}
+                'Tanggal SK
+                                                                                                                                                                        Pengangkatan',
+            )->class('form-control') !!}
     </div>
 </div>
 

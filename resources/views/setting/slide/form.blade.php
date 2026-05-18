@@ -8,9 +8,9 @@
     <label for="nama" class="control-label col-md-4 col-sm-3 col-xs-12">Deskripsi<span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->textarea('deskripsi')->class('textarea')->style(
-    'width: 100%; height: 200px; font-size: 14px;
-                                                                                                                                        line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
-)->placeholder('deskripsi')->value(old('deskripsi', isset($slide) ? $slide->deskripsi : '')) !!}
+                'width: 100%; height: 200px; font-size: 14px;
+                                                                                                                                                        line-height: 18px; border: 1px solid #dddddd; padding: 10px;',
+            )->placeholder('deskripsi')->value(old('deskripsi', isset($slide) ? $slide->deskripsi : '')) !!}
     </div>
 </div>
 <div class="form-group">

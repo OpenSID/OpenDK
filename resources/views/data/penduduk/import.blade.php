@@ -19,9 +19,9 @@
             <div class="col-md-12">
 
                 {!! html()->form()->route('data.penduduk.import-excel')->method('POST')->id('form-import')->class(
-        'form-horizontal
-                                                                                                                                                                                                                                                                                form-label-left',
-    )->acceptsFiles()->open() !!}
+                        'form-horizontal
+                                                                                                                                                                                                                                                                                                                form-label-left',
+                    )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
 

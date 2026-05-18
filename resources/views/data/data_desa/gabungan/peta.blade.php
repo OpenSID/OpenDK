@@ -92,7 +92,6 @@
                         method: 'POST',
                         headers: {
                             "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     }).then(response => response.json())
                     .then(data => {

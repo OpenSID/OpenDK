@@ -48,3 +48,11 @@ test-results/
 mcp.json
 
 /template_ai
+
+/docs
+/.opencode
+nul
+pull_request.md
+
+/vendor-backup
+composer.lock

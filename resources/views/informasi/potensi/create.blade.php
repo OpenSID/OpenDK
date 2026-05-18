@@ -21,7 +21,7 @@
                         <!-- form start -->
                         {!! html()->form('POST', route('informasi.potensi.store'))->acceptsFiles()->id('form-potensi')->class(
                                 'form-horizontal
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        form-label-left',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                form-label-left',
                             )->open() !!}
 
                         @if (count($errors) > 0)
@@ -51,13 +51,13 @@
 
 @push('scripts')
     <script>
-        $(function () {
+        $(function() {
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                         $('#showgambar').attr('src', e.target.result);
                     }
 
@@ -65,7 +65,7 @@
                 }
             }
 
-            $("#file_gambar").change(function () {
+            $("#file_gambar").change(function() {
                 readURL(this);
             });
         });

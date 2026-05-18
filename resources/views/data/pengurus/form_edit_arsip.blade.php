@@ -3,16 +3,16 @@
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->select(
-    'jenis_surat',
-    ['' => 'Pilih Jenis Dokumen'] +
-    \App\Models\JenisSurat::pluck('nama', 'id')->toArray()->value(old('jenis_surat', isset($pengurus) ? $pengurus->jenis_surat : '')),
-    isset($document) ? $document->jenis_surat : null,
-    [
-        'class' => 'form-control',
-        'id' => 'jenis_surat',
-        'required' => true,
-    ],
-) !!}
+            'jenis_surat',
+            ['' => 'Pilih Jenis Dokumen'] +
+                \App\Models\JenisSurat::pluck('nama', 'id')->toArray()->value(old('jenis_surat', isset($pengurus) ? $pengurus->jenis_surat : '')),
+            isset($document) ? $document->jenis_surat : null,
+            [
+                'class' => 'form-control',
+                'id' => 'jenis_surat',
+                'required' => true,
+            ],
+        ) !!}
     </div>
 
 </div>
@@ -23,7 +23,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->text('judul_document')->class('form-control')->required()->placeholder(
                 'Judul
-                                                                                                                                                        Document',
+                                                                                                                                                Document',
             )->value(old('judul_document', isset($pengurus) ? $pengurus->judul_document : '')) !!}
     </div>
 </div>
@@ -52,8 +52,8 @@
 
 @push('scripts')
     <script>
-        $(document).ready(function () {
-            $("#pengurus_id").on('change', function () {
+        $(document).ready(function() {
+            $("#pengurus_id").on('change', function() {
                 let pengurusId = $(this).val(); // Ambil nilai yang dipilih
                 if (pengurusId) {
                     let url = "{{ route('data.pengurus.penduduk.arsip', ':id') }}".replace(':id', pengurusId);
@@ -61,7 +61,7 @@
                         url: url,
                         type: 'GET',
                         dataType: 'json',
-                        success: function (response) {
+                        success: function(response) {
                             let tempat_lahir = response.tempat_lahir
                             let tanggal_lahir = response.tanggal_lahir
                             let alamat = response.alamat
@@ -75,7 +75,7 @@
                             $("input[name='pendidikan']").val(pendidikan);
                             $("input[name='warga_negara_agama']").val(warga_negara_agama);
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             console.error(error);
                             alert("Terjadi kesalahan saat mengambil data.");
                         }

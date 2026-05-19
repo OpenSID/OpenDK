@@ -81,9 +81,9 @@
                         };
                     },
                     dataSrc: function(json) {
-                        json.recordsTotal = json.meta.pagination.total
-                        json.recordsFiltered = json.meta.pagination.total
-                        return json.data
+                        json.recordsTotal = json.meta.pagination.total;
+                        json.recordsFiltered = json.meta.pagination.total;
+                        return json.data;
                     },
                 },
                 columns: [
@@ -104,7 +104,18 @@
                         data: 'attributes.sumber_dana',
                         name: 'sumber_dana',
                         render: function(data) {
-                            return data || 'N/A';
+                            if (!data || data === 'N/A') return '-';
+                            try {
+                                const parsed = JSON.parse(data);
+                                if (Array.isArray(parsed)) {
+                                    return parsed.map(function(s) {
+                                        return '<span class="label label-primary" style="margin-right:3px">' + s + '</span>';
+                                    }).join(' ');
+                                }
+                            } catch (e) {
+                                // Not JSON, return as-is
+                            }
+                            return data;
                         }
                     },
                     {

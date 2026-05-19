@@ -29,7 +29,16 @@
                             <tr>
                                 <td>Sumber Dana</td>
                                 <td> : </td>
-                                <td>{{ $pembangunan->sumber_dana }}</td>
+                                <td>
+                                    @php
+                                        $sumberDanaList = $pembangunan->sumber_dana_list;
+                                    @endphp
+                                    @forelse ($sumberDanaList as $sumber)
+                                        <span class="label label-primary">{{ $sumber }}</span>
+                                    @empty
+                                        <span class="text-muted">-</span>
+                                    @endforelse
+                                </td>
                             </tr>
                             <tr>
                                 <td>Lokasi Pembangunan</td>

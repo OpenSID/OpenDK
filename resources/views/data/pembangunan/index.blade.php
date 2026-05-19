@@ -87,7 +87,7 @@
                         orderable: true
                     },
                     {
-                        data: 'sumber_dana',
+                        data: 'sumber_dana_formatted',
                         name: 'sumber_dana',
                         searchable: false,
                         orderable: true

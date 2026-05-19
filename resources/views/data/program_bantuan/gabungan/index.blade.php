@@ -85,8 +85,7 @@
                         return json.data;
                     },
                 },
-                columns: [
-                    {
+                columns: [{
                         data: function(data) {
                             return `<a href="{{ url('data/program-bantuan/show') }}/${data.id}/${data.attributes.kode_desa}/${data.attributes.nama}" class="btn btn-primary btn-sm">Detail</a>`;
                         },

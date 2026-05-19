@@ -86,8 +86,7 @@
                         return json.data;
                     },
                 },
-                columns: [
-                    {
+                columns: [{
                         data: function(data) {
                             return `<a href="{{ url('data/pembangunan/rincian') }}/${data.id}/${data.attributes.config.kode_desa}" class="btn btn-primary btn-sm">Detail</a>`;
                         },

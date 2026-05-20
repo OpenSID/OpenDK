@@ -22,8 +22,7 @@ test('should login successfully with valid credentials', function () {
     ]);
     $user->assignRole('super-admin');
 
-    $loginPage = new LoginPage();
-    $dashboardPage = new DashboardPage();
+    $loginPage = new LoginPage();    
 
     $browser = visit($loginPage->url());
     $loginPage->login($browser, 'login_test@example.com', 'password123');

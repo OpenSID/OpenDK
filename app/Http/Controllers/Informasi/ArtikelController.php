@@ -33,19 +33,20 @@ namespace App\Http\Controllers\Informasi;
 
 use App\Models\Artikel;
 use App\Models\ArtikelKategori;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class ArtikelController extends Controller
 {
     use HandlesFileUpload;
 
-    public function index()
+    public function index(): View
     {
         $page_title = 'Artikel';
         $page_description = 'Daftar Artikel';
@@ -55,14 +56,18 @@ class ArtikelController extends Controller
         return view('informasi.artikel.index', compact('page_title', 'page_description', 'kategori'));
     }
 
-    public function getDataArtikel(Request $request)
+    public function getDataArtikel(Request $request): \Illuminate\Http\JsonResponse
     {
         if ($request->ajax()) {
-            // Mengambil data artikel beserta kategori
-            $data = Artikel::with('kategori')->get();
-            return DataTables::of($data)
+            $query = Artikel::with('kategori');
+
+            if ($request->has('id_kategori') && $request->id_kategori != '') {
+                $query->where('id_kategori', $request->id_kategori);
+            }
+
+            return DataTables::of($query)
                 ->addIndexColumn()
-                ->addColumn('aksi', function ($row) {
+                ->addColumn('aksi', function (Artikel $row) {
                     $data['show_web'] = route('berita.detail', $row->slug);
 
                     if (!auth()->guest()) {
@@ -72,39 +77,41 @@ class ArtikelController extends Controller
 
                     return view('forms.aksi', $data);
                 })
-                ->addColumn('kategori', function ($row) {
-                    // Cek apakah artikel memiliki kategori
+                ->addColumn('kategori', function (Artikel $row): string {
                     return $row->kategori ? $row->kategori->nama_kategori : '-';
                 })
-                ->editColumn('status', function ($row) {
+                ->editColumn('status', function (Artikel $row): string {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
                     } else {
                         return '<span class="label label-success">Aktif</span>';
                     }
                 })
-                ->editColumn('dibuat', function ($row) {
-                    return format_datetime($row->created_at);
+                ->editColumn('tanggal_terbit', function (Artikel $row): string {
+                    return $row->tanggal_terbit ? format_date($row->tanggal_terbit) : '-';
                 })
                 ->rawColumns(['status'])
                 ->make(true);
         }
+
+        return response()->json(['error' => 'Method not allowed'], 405);
     }
 
-    public function create()
+    public function create(): View
     {
         $page_title = 'Artikel';
         $page_description = 'Tambah Artikel';
 
-        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori'); // Mengambil nama kategori dan ID
+        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori');
 
         return view('informasi.artikel.create', compact('page_title', 'page_description', 'kategori'));
     }
 
-    public function store(ArtikelRequest $request)
+    public function store(ArtikelRequest $request): RedirectResponse
     {
         try {
             $input = $request->all();
+            $input['tanggal_terbit'] = $request->tanggal_terbit;
             $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             Artikel::create($input);
@@ -120,20 +127,21 @@ class ArtikelController extends Controller
         return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil disimpan!');
     }
 
-    public function edit(Artikel $artikel)
+    public function edit(Artikel $artikel): View
     {
         $page_title = 'Artikel';
         $page_description = 'Ubah Artikel';
 
-        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori'); // Mengambil nama kategori dan ID
+        $kategori = ArtikelKategori::where('status', 'Ya')->pluck('nama_kategori', 'id_kategori');
 
         return view('informasi.artikel.edit', compact('artikel', 'page_title', 'page_description', 'kategori'));
     }
 
-    public function update(ArtikelRequest $request, Artikel $artikel)
+    public function update(ArtikelRequest $request, Artikel $artikel): RedirectResponse
     {
         try {
             $input = $request->all();
+            $input['tanggal_terbit'] = $request->tanggal_terbit;
             $this->handleFileUpload($request, $input, 'gambar', 'artikel', false);
 
             $artikel->update($input);
@@ -150,7 +158,7 @@ class ArtikelController extends Controller
         return redirect()->route('informasi.artikel.index')->with('success', 'Artikel berhasil diubah!');
     }
 
-    public function destroy(Artikel $artikel)
+    public function destroy(Artikel $artikel): RedirectResponse
     {
         try {
             $artikel->delete();

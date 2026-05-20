@@ -32,6 +32,8 @@
 namespace App\Transformers;
 
 use App\Models\Artikel;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
 
 class ArtikelTransformer extends TransformerAbstract
@@ -54,7 +56,7 @@ class ArtikelTransformer extends TransformerAbstract
      */
     public function transform(Artikel $artikel): array
     {
-        $artikel->tanggal = format_date($artikel->getRawOriginal('created_at'));
+        $artikel->tanggal = format_date($artikel->getRawOriginal('tanggal_terbit'));
         $artikel->link = $artikel->link;
         $artikel->gambar_src = is_img($artikel->gambar);        
         return $artikel->toArray();
@@ -62,16 +64,13 @@ class ArtikelTransformer extends TransformerAbstract
 
     /**
      * Include Kategori
-     *
-     * @param Artikel $artikel
-     * @return \League\Fractal\Resource\Item|null
      */
-    public function includeKategori(Artikel $artikel)
+    public function includeKategori(Artikel $artikel): ?Item
     {
         $kategori = $artikel->kategori;
-        
-        if ($kategori) {            
-            return $this->item($kategori, new ArtikelKategoriTransformer(),'kategori');
+
+        if ($kategori) {
+            return $this->item($kategori, new ArtikelKategoriTransformer(), 'kategori');
         }
 
         return null;
@@ -79,16 +78,13 @@ class ArtikelTransformer extends TransformerAbstract
 
     /**
      * Include Comments
-     *
-     * @param Artikel $artikel
-     * @return \League\Fractal\Resource\Collection|null
      */
-    public function includeComments(Artikel $artikel)
+    public function includeComments(Artikel $artikel): ?Collection
     {
         $comments = $artikel->comments;
-        
+
         if ($comments) {
-            return $this->collection($comments, new CommentTransformer(),'comments');
+            return $this->collection($comments, new CommentTransformer(), 'comments');
         }
 
         return null;

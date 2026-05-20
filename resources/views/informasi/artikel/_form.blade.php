@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label class="control-label" for="judul">Judul Artikel</label>
 
-                    {!! html()->text('judul')->class('form-control')->placeholder('Judul Artikel')->value(old('judul', isset($artikel) ? $artikel->judul : '')) !!}
+                    {!! html()->text('judul')->class('form-control')->placeholder('Judul Artikel')->value(old('judul', isset($artikel) ? $artikel->judul : ''))->required() !!}
                     @if ($errors->has('judul'))
                         <span class="help-block" style="color:red">{{ $errors->first('judul') }}</span>
                     @endif
@@ -19,8 +19,7 @@
                     <label class="control-label" for="isi">Isi Artikel</label>
 
                     {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style(
-                            'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    padding:10px;',
+                            'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        padding:10px;',
                         )->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
                     @if ($errors->has('isi'))
                         <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
@@ -53,6 +52,16 @@
                         <span class="help-block" style="color:red">{{ $errors->first('id_kategori') }}</span>
                     @endif
                 </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="tanggal_terbit">Tanggal Terbit</label>
+
+                    {!! html()->date('tanggal_terbit')->class('form-control')->value(old('tanggal_terbit', isset($artikel) ? $artikel->tanggal_terbit->format('Y-m-d') : ''))->required() !!}
+                    @if ($errors->has('tanggal_terbit'))
+                        <span class="help-block" style="color:red">{{ $errors->first('tanggal_terbit') }}</span>
+                    @endif
+                </div>
+
                 <div class="form-group">
                     <label class="control-label" for="gambar">Status</label>
 

@@ -68,6 +68,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.pembangunan.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }
@@ -86,7 +87,7 @@
                         orderable: true
                     },
                     {
-                        data: 'sumber_dana',
+                        data: 'sumber_dana_formatted',
                         name: 'sumber_dana',
                         searchable: false,
                         orderable: true

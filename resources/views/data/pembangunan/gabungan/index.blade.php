@@ -61,12 +61,12 @@
         $(document).ready(function() {
             function loadDesa() {
                 $.ajax({
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/desa/{{ str_replace('.', '', $profil->kecamatan_id) }}`,
-                    method: "GET",
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/desa-datatable/{{ str_replace('.', '', $profil->kecamatan_id) }}`,
+                    method: "POST",
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
                     },
                     success: function(response) {
                         $('#list_desa').empty().append(
@@ -90,7 +90,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
@@ -99,7 +99,7 @@
                         "Content-Type": "application/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
-                    method: 'GET',
+                    method: 'POST',
                     data: function(row) {
                         const desaId = $('#list_desa').val();
                         return {
@@ -116,16 +116,39 @@
                         json.recordsTotal = json.meta.pagination.total;
                         json.recordsFiltered = json.meta.pagination.total;
 
-                        return json.data.map(item => ({
-                            aksi: `<a href="{{ url('data/pembangunan/rincian') }}/${item.id}/${item.attributes.config.kode_desa}" class="btn btn-primary btn-sm">Detail</a>`,
-                            judul: item.attributes.judul,
-                            sumber_dana: item.attributes.sumber_dana || 'N/A',
-                            anggaran: item.attributes.anggaran || 'N/A',
-                            volume: item.attributes.volume || '-',
-                            tahun_anggaran: item.attributes.tahun_anggaran || '-',
-                            pelaksana_kegiatan: item.attributes.pelaksana_kegiatan || '-',
-                            lokasi: item.attributes.lokasi || '-'
-                        }));
+                        /**
+                         * Format sumber_dana: jika berupa JSON array string,
+                         * decode dan gabung dengan koma. Jika >1 item, tampilkan sebagai badge.
+                         */
+                        function formatSumberDana(value) {
+                            if (!value || value === 'N/A') return '-';
+                            try {
+                                const parsed = JSON.parse(value);
+                                if (Array.isArray(parsed)) {
+                                    return parsed.map(function(s) {
+                                        return '<span class="label label-primary" style="margin-right:3px">' + s + '</span>';
+                                    }).join(' ');
+                                }
+                            } catch (e) {
+                                // Not JSON, return as-is
+                            }
+                            return value;
+                        }
+
+                        return json.data.map(item => {
+                            const sumberDanaFormatted = formatSumberDana(item.attributes.sumber_dana);
+
+                            return {
+                                aksi: `<a href="{{ url('data/pembangunan/rincian') }}/${item.id}/${item.attributes.config.kode_desa}" class="btn btn-primary btn-sm">Detail</a>`,
+                                judul: item.attributes.judul,
+                                sumber_dana: sumberDanaFormatted,
+                                anggaran: item.attributes.anggaran || 'N/A',
+                                volume: item.attributes.volume || '-',
+                                tahun_anggaran: item.attributes.tahun_anggaran || '-',
+                                pelaksana_kegiatan: item.attributes.pelaksana_kegiatan || '-',
+                                lokasi: item.attributes.lokasi || '-'
+                            };
+                        });
                     },
                 },
                 columns: [{

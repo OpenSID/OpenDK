@@ -14,6 +14,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1519](https://github.com/OpenSID/OpenDK/issues/1519) Perbaikan Tampilan Kolom aksi di artikel berubah ketika ada artikel dengan judul yang panjang (191 karakter)
 3. [#1520](https://github.com/OpenSID/OpenDK/issues/1520) Perbaikan Sorting tanggal terbit artikel tidak berjalan dengan semestinya
 4. [#1542](https://github.com/OpenSID/OpenDK/issues/1542) Perbaikan tampilan sumber dana di pembagunan
+5. [#1545](https://github.com/OpenSID/OpenDK/issues/1545) Perbaikan Sort, search , pagination, dan filter desa tidak berfungsi di menu data -> pembangunan
 
 #### TEKNIS
 

@@ -61,7 +61,7 @@ class PageController extends FrontEndController
             'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
                 'filter[status]' => 1,
                 'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
-                'sort' => '-created_at',
+                'sort' => '-tanggal_terbit',
                 'include' => 'kategori'
             ]))
         ]);

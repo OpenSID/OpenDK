@@ -56,6 +56,7 @@ function createTestArtikel(): void
         'id_kategori' => $kategori->id_kategori,
         'gambar' => '/storage/test/image1.jpg',
         'status' => 1,
+        'tanggal_terbit' => now()->toDateString(),
     ]);
 
     Artikel::create([
@@ -65,6 +66,7 @@ function createTestArtikel(): void
         'id_kategori' => $kategori->id_kategori,
         'gambar' => '/storage/test/image2.jpg',
         'status' => 1,
+        'tanggal_terbit' => now()->toDateString(),
     ]);
 
     Artikel::create([
@@ -73,7 +75,8 @@ function createTestArtikel(): void
         'isi' => 'Ini adalah konten test artikel 3',
         'id_kategori' => null,
         'gambar' => '/storage/test/image3.jpg',
-        'status' => 0, // draft
+        'status' => 0,
+        'tanggal_terbit' => now()->toDateString(),
     ]);
 }
 

@@ -1,4 +1,4 @@
-Di rilis versi v2605.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2606.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
@@ -25,3 +25,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 7. [#1522](https://github.com/OpenSID/OpenDK/issues/1522) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Pendidikan
 8. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Pengaturan
 9. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Admin SIKEMA -> Daftar Keluhan
+10. [#1485](https://github.com/OpenSID/OpenDK/issues/1485) Perbaikan Dependecy bot Security

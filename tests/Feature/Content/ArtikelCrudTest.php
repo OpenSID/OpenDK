@@ -59,13 +59,11 @@ describe('Artikel CRUD', function () {
         $response->assertViewHas('page_description', 'Daftar Artikel');
     });
 
-    test('index configures article date sorting using hidden raw created_at column', function () {
+    test('index configures article date sorting using tanggal_terbit column', function () {
         $response = $this->get(route('informasi.artikel.index'));
 
         $response->assertStatus(200);
-        $response->assertSee("data: 'created_at'", false);
-        $response->assertSee('visible: false', false);
-        $response->assertSee('orderData: 5', false);
+        $response->assertSee("data: 'tanggal_terbit'", false);
     });
 
     test('create displays artikel creation form', function () {
@@ -79,9 +77,10 @@ describe('Artikel CRUD', function () {
 
     test('store creates new artikel successfully', function () {
         $validData = [
-            'judul' => 'Judul Artikel Baru',            
+            'judul' => 'Judul Artikel Baru',
             'isi' => 'Isi artikel yang lengkap dan informatif.',
             'status' => 1,
+            'tanggal_terbit' => now()->toDateString(),
         ];
 
         $response = $this->post(route('informasi.artikel.store'), $validData);
@@ -98,11 +97,12 @@ describe('Artikel CRUD', function () {
         $invalidData = [
             'judul' => '',
             'isi' => '',
+            'status' => 1,
         ];
 
         $response = $this->post(route('informasi.artikel.store'), $invalidData);
 
-        $response->assertSessionHasErrors(['judul', 'isi']);
+        $response->assertSessionHasErrors(['judul', 'isi', 'tanggal_terbit']);
     });
 
     test('edit displays edit form', function () {
@@ -120,9 +120,10 @@ describe('Artikel CRUD', function () {
         $artikel = Artikel::factory()->create();
 
         $updateData = [
-            'judul' => 'Updated Judul',            
+            'judul' => 'Updated Judul',
             'isi' => 'Updated isi artikel.',
             'status' => 0,
+            'tanggal_terbit' => now()->toDateString(),
         ];
 
         $response = $this->post(route('informasi.artikel.update', $artikel->id), $updateData);
@@ -155,6 +156,8 @@ describe('Artikel CRUD', function () {
             'judul' => '',
             'id_kategori' => 1,
             'isi' => 'Some content',
+            'status' => 1,
+            'tanggal_terbit' => now()->toDateString(),
         ];
 
         $response = $this->post(route('informasi.artikel.store'), $invalidData);
@@ -167,6 +170,8 @@ describe('Artikel CRUD', function () {
             'judul' => 'Judul Artikel',
             'id_kategori' => 1,
             'isi' => '',
+            'status' => 1,
+            'tanggal_terbit' => now()->toDateString(),
         ];
 
         $response = $this->post(route('informasi.artikel.store'), $invalidData);

@@ -32,12 +32,15 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 class Artikel extends Model
 {
@@ -54,6 +57,11 @@ class Artikel extends Model
         'kategori_id',
         'isi',
         'status',
+        'tanggal_terbit'
+    ];
+
+    protected $casts = [
+        'tanggal_terbit' => 'date:Y-m-d'
     ];
 
     /**
@@ -77,35 +85,38 @@ class Artikel extends Model
         ];
     }
 
-    public function getGambarAttribute()
+    public function getGambarAttribute(): ?string
     {
         return $this->attributes['gambar'] ? Storage::url('artikel/' . $this->attributes['gambar']) : null;
     }
 
-    public function getIsiAttribute()
+    public function getIsiAttribute(): string
     {
         return str_replace('//storage', '/storage', $this->attributes['isi']);
     }
 
-    public function scopeStatus($query, $value = 1)
+    public function scopeStatus(Builder $query, int $value = 1): Builder
     {
         return $query->where('status', $value);
     }
 
-    // Relasi ke ArtikelKategori (Many-to-One)
-    public function kategori()
+    public function kategori(): BelongsTo
     {
         return $this->belongsTo(ArtikelKategori::class, 'id_kategori');
-
     }
-    // Relasi dengan model Comment
-    public function comments()
+
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class, 'das_artikel_id')->orderBy('created_at', 'desc');
     }
 
     public function getLinkAttribute(): string
     {
-        return  Str::replaceFirst(url('/'), '', route('berita.detail', ['slug' => $this->slug]));
+        return Str::replaceFirst(url('/'), '', route('berita.detail', ['slug' => $this->slug]));
+    }
+
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('tanggal_terbit', '<=', Carbon::today());
     }
 }

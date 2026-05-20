@@ -12,6 +12,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 1. [#1512](https://github.com/OpenSID/OpenDK/issues/1512) Perbaikan error ketika membuka artikel yang memiliki judul sangat panjang (lebih dari 191 karakter)
 2. [#1519](https://github.com/OpenSID/OpenDK/issues/1519) Perbaikan Tampilan Kolom aksi di artikel berubah ketika ada artikel dengan judul yang panjang (191 karakter)
 3. [#1520](https://github.com/OpenSID/OpenDK/issues/1520) Perbaikan Sorting tanggal terbit artikel tidak berjalan dengan semestinya
+4. [#1542](https://github.com/OpenSID/OpenDK/issues/1542) Perbaikan tampilan sumber dana di pembagunan
 
 #### TEKNIS
 
@@ -23,3 +24,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 6. [#1521](https://github.com/OpenSID/OpenDK/issues/1521) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kesehatan
 7. [#1522](https://github.com/OpenSID/OpenDK/issues/1522) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Pendidikan
 8. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Pengaturan
+9. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Admin SIKEMA -> Daftar Keluhan

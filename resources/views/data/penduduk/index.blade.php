@@ -23,15 +23,14 @@
             <div class="box-header with-border">
                 @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.penduduk.import') ? route('data.penduduk.import') : null])
 
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.penduduk.export') ? route('data.penduduk.export-excel') : null] )
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.penduduk.export') ? route('data.penduduk.export-excel') : null])
             </div>
 
             <div class="box-body">
-                @include('layouts.fragments.list-desa' )
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered"
-                     id="penduduk-table">
+                    <table class="table table-striped table-bordered" id="penduduk-table">
                         <thead>
                             <tr>
                                 <th width="80px">Aksi</th>

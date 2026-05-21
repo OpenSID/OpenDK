@@ -18,10 +18,7 @@
                 <div class="form-group">
                     <label class="control-label" for="isi">Isi Artikel</label>
 
-                    {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style(
-                            'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                padding:10px;',
-                        )->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
+                    {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style('width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd; padding:10px;')->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
                     @if ($errors->has('isi'))
                         <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
                     @endif

@@ -37,6 +37,7 @@ use App\Http\Requests\ImportPendudukRequest;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
+use App\Services\PendudukService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -131,7 +132,53 @@ class PendudukController extends Controller
 
     public function detail(Request $request)
     {
-        $penduduk = json_decode($request->data);
+        abort_if(!$request->filled('id'), 404);
+
+        $data = (new PendudukService())->detailPenduduk($request->id);
+
+        abort_if(empty($data), 404);
+
+        $penduduk = (object) [
+            'id' => data_get($data, 'id'),
+            'nama' => data_get($data, 'attributes.nama'),
+            'nik' => data_get($data, 'attributes.nik'),
+            'no_kk_sebelumnya' => data_get($data, 'attributes.no_kk_sebelumnya'),
+            'hubungan_dalam_keluarga' => data_get($data, 'attributes.penduduk_hubungan.nama'),
+            'jenis_kelamin' => data_get($data, 'attributes.jenis_kelamin.nama'),
+            'agama' => data_get($data, 'attributes.agama.nama'),
+            'status_penduduk' => data_get($data, 'attributes.penduduk_status.nama'),
+            'akta_lahir' => data_get($data, 'attributes.akta_lahir'),
+            'tempat_lahir' => data_get($data, 'attributes.tempatlahir'),
+            'tanggal_lahir' => data_get($data, 'attributes.tanggallahir'),
+            'wajib_ktp' => data_get($data, 'attributes.wajibKTP'),
+            'status_rekam' => data_get($data, 'attributes.status_rekam_ktp.nama'),
+            'elktp' => data_get($data, 'attributes.elKTP'),
+            'pendidikan_dalam_kk' => data_get($data, 'attributes.pendidikan_k_k.nama'),
+            'pendidikan_sedang_ditempuh' => data_get($data, 'attributes.pendidikan.nama'),
+            'pekerjaan' => data_get($data, 'attributes.pekerjaan.nama'),
+            'warga_negara' => data_get($data, 'attributes.warga_negara.nama'),
+            'nomor_passport' => data_get($data, 'attributes.dokumen_pasport'),
+            'tanggal_akhir_passport' => data_get($data, 'attributes.tanggal_akhir_paspor'),
+            'nomor_kitas' => data_get($data, 'attributes.dokumen_kitas'),
+            'nik_ayah' => data_get($data, 'attributes.ayah_nik'),
+            'nama_ayah' => data_get($data, 'attributes.nama_ayah'),
+            'nik_ibu' => data_get($data, 'attributes.ibu_nik'),
+            'nama_ibu' => data_get($data, 'attributes.nama_ibu'),
+            'nomor_telepon' => data_get($data, 'attributes.telepon'),
+            'alamat_sebelumnya' => data_get($data, 'attributes.alamat_sebelumnya'),
+            'alamat_sekarang' => data_get($data, 'attributes.alamat_sekarang'),
+            'status_kawin' => data_get($data, 'attributes.status_kawin.nama'),
+            'no_akta_nikah' => data_get($data, 'attributes.akta_perkawinan'),
+            'tanggal_nikah' => data_get($data, 'attributes.tanggalperkawinan'),
+            'akta_perceraian' => data_get($data, 'attributes.akta_perceraian'),
+            'tanggal_perceraian' => data_get($data, 'attributes.tanggalperceraian'),
+            'golongan_darah' => data_get($data, 'attributes.golongan_darah.nama'),
+            'cacat' => data_get($data, 'attributes.cacat.nama'),
+            'sakit_menahun' => data_get($data, 'attributes.sakit_menahun.nama'),
+            'cara_kb' => data_get($data, 'attributes.kb.nama'),
+            'status_kehamilan' => data_get($data, 'attributes.statusHamil'),
+        ];
+
         $page_title = 'Detail Penduduk';
         $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 

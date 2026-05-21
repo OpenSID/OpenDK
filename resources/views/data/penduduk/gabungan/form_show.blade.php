@@ -42,7 +42,7 @@
         </div>
         <div class="form-group">
             <label for="jenis_kelamin" class="control-label col-md-4 col-sm-3 col-xs-12">Jenis Kelamin</label>
-            <div class="input-group col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="text" class="form-control" value="{{ $penduduk->jenis_kelamin }}">
             </div>
         </div>
@@ -57,7 +57,7 @@
 
         <div class="form-group">
             <label for="status" class="control-label col-md-4 col-sm-3 col-xs-12">Status Penduduk</label>
-            <div class="input-group col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="text" class="form-control" value="{{ $penduduk->status_penduduk }}">
             </div>
         </div>
@@ -104,7 +104,7 @@
 
         <div class="form-group">
             <label for="ktp_el" class="control-label col-md-4 col-sm-3 col-xs-12">e-KTP</label>
-            <div class="input-group col-md-6 col-sm-6 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12">
                 <input type="text" class="form-control" value="{{ $penduduk->elktp }}">
             </div>
         </div>

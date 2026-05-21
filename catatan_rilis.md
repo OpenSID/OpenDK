@@ -14,6 +14,9 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1519](https://github.com/OpenSID/OpenDK/issues/1519) Perbaikan Tampilan Kolom aksi di artikel berubah ketika ada artikel dengan judul yang panjang (191 karakter)
 3. [#1520](https://github.com/OpenSID/OpenDK/issues/1520) Perbaikan Sorting tanggal terbit artikel tidak berjalan dengan semestinya
 4. [#1542](https://github.com/OpenSID/OpenDK/issues/1542) Perbaikan tampilan sumber dana di pembagunan
+5. [#1545](https://github.com/OpenSID/OpenDK/issues/1545) Perbaikan Sort, search , pagination, dan filter desa tidak berfungsi di menu data -> pembangunan
+6. [#1546](https://github.com/OpenSID/OpenDK/issues/1546) Perbaikan Sort, search , pagination, dan filter desa tidak berfungsi di menu data -> program bantuan
+7. [#1549](https://github.com/OpenSID/OpenDK/issues/1549) Perbaikan Tampilan detail penduduk di menu Data -> Kependudukan -> Penduduk -> Detail Penduduk tidak rapi
 
 #### TEKNIS
 
@@ -27,3 +30,5 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 8. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Pengaturan
 9. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Admin SIKEMA -> Daftar Keluhan
 10. [#1485](https://github.com/OpenSID/OpenDK/issues/1485) Perbaikan Dependecy bot Security
+11. [#1556](https://github.com/OpenSID/OpenDK/issues/1556) Perbaikan Blade Prettier
+12. [#1550](https://github.com/OpenSID/OpenDK/issues/1550) Sederhanakan Url detail penduduk di menu Data->Kependudukan->Penduduk->Detail

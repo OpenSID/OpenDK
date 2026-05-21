@@ -94,6 +94,20 @@ class PendudukService extends BaseApiService
         });
     }
 
+    public function detailPenduduk($id)
+    {
+        $data = $this->apiRequest('/api/v1/penduduk', [
+            'filter[id]' => $id,
+            'page[size]' => 1,
+        ]);
+
+        if (isset($data['attributes'])) {
+            return $data;
+        }
+
+        return $data[0] ?? null;
+    }
+
     /**
      * Export Data Penduduk
      */

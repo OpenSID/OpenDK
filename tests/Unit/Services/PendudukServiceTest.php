@@ -190,6 +190,76 @@ it('handles exceptions gracefully', function () {
     expect($penduduk)->toBeNull();
 });
 
+// detailPenduduk tests
+
+it('can get detail penduduk when API returns single object', function () {
+    Http::fake([
+        '*/api/v1/penduduk*' => Http::response([
+            'data' => [
+                'id' => 1,
+                'attributes' => [
+                    'nama' => 'John Doe',
+                    'nik' => '1234567890123456',
+                ]
+            ]
+        ], 200)
+    ]);
+
+    $service = new PendudukService();
+    $result = $service->detailPenduduk(1);
+
+    expect($result)->not->toBeNull();
+    expect($result['id'])->toBe(1);
+    expect($result['attributes']['nama'])->toBe('John Doe');
+});
+
+it('can get detail penduduk when API returns array', function () {
+    Http::fake([
+        '*/api/v1/penduduk*' => Http::response([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'nama' => 'Jane Doe',
+                        'nik' => '9876543210987654',
+                    ]
+                ]
+            ]
+        ], 200)
+    ]);
+
+    $service = new PendudukService();
+    $result = $service->detailPenduduk(1);
+
+    expect($result)->not->toBeNull();
+    expect($result['id'])->toBe(1);
+    expect($result['attributes']['nama'])->toBe('Jane Doe');
+});
+
+it('returns null when penduduk not found', function () {
+    Http::fake([
+        '*/api/v1/penduduk*' => Http::response([
+            'data' => []
+        ], 200)
+    ]);
+
+    $service = new PendudukService();
+    $result = $service->detailPenduduk(999);
+
+    expect($result)->toBeNull();
+});
+
+it('returns null when API returns empty', function () {
+    Http::fake([
+        '*/api/v1/penduduk*' => Http::response([], 200)
+    ]);
+
+    $service = new PendudukService();
+    $result = $service->detailPenduduk(1);
+
+    expect($result)->toBeNull();
+});
+
 it('can apply filters to jumlah penduduk', function () {
     Http::fake([
         '*/api/v1/opendk/sync-penduduk-opendk*' => Http::response([

@@ -17,6 +17,9 @@ class ThemesController extends BackEndController
     private const DANGEROUS_FUNCTIONS = [
         'system', 'exec', 'passthru', 'shell_exec', 'popen', 'proc_open',
         'pcntl_exec', 'assert', 'create_function', 'eval',
+        // BUG FIX: call_user_func / call_user_func_array bypass (Severity: Critical)
+        // These were missing and allowed bypassing the entire token-based validation.
+        'call_user_func', 'call_user_func_array',
         'file_put_contents', 'file_get_contents', 'fopen', 'fwrite', 'fputs',
         'unlink', 'mkdir', 'rmdir', 'rename', 'copy', 'chmod', 'chown',
         'symlink', 'link', 'tmpfile', 'move_uploaded_file',
@@ -51,8 +54,19 @@ class ThemesController extends BackEndController
         // Clear all theme API cache
         $this->clearThemeCache();
 
-        // Load theme hooks if exists
-        $this->loadThemeHooks($themes->name);
+        // OBS FIX: Wrap loadThemeHooks in try/catch so a bad hooks.php yields a
+        // user-friendly redirect with an error flash instead of an HTTP 500.
+        try {
+            $this->loadThemeHooks($themes->name);
+        } catch (\RuntimeException $e) {
+            Log::critical('Theme hooks rejected during activation', [
+                'theme' => $themes->name,
+                'reason' => $e->getMessage(),
+            ]);
+
+            return redirect()->route('setting.themes.index')
+                ->with('error', 'Tema diaktifkan tetapi hooks.php ditolak: ' . $e->getMessage());
+        }
 
         return redirect()->route('setting.themes.index')
             ->with('success', 'Tema berhasil diaktifkan. Cache API telah dibersihkan.');
@@ -99,51 +113,69 @@ class ThemesController extends BackEndController
             $filePath = storage_path('framework/themes');
 
             $zip = new \ZipArchive;
-            if ($zip->open("$filePath/$fileName") === true) {
-                // === PHASE 2: Scan ZIP for dangerous PHP files BEFORE extraction ===
-                $this->scanZipForPhp($zip);
 
-                $extractedPath = base_path('themes/extracted');
-                $zip->extractTo($extractedPath);
-                $zip->close();
+            // BUG FIX (Low): Wrap ZIP usage in try/finally so the handle is always
+            // closed even when scanZipForPhp() or validateThemeStructure() throws.
+            $zipOpened = false;
+            try {
+                if ($zip->open("$filePath/$fileName") === true) {
+                    $zipOpened = true;
 
-                $folderTheme = explode('.', $fileName)[0];
-                $composerPath = "$extractedPath/$folderTheme/composer.json";
+                    // === PHASE 2: Scan ZIP for dangerous PHP files BEFORE extraction ===
+                    $this->scanZipForPhp($zip);
 
-                if (file_exists($composerPath)) {
-                    $composerData = json_decode(file_get_contents($composerPath), true);
+                    // BUG FIX (High): Validate ZIP entries for path traversal sequences
+                    // before extraction to prevent writing files outside themes/extracted/.
+                    $this->validateZipEntryPaths($zip);
 
-                    // Validate theme structure
-                    $this->validateThemeStructure($extractedPath, $folderTheme);
+                    $extractedPath = base_path('themes/extracted');
+                    $zip->extractTo($extractedPath);
+                    $zip->close();
+                    $zipOpened = false;
 
-                    $newFolder = base_path('themes/' . $composerData['name']);
+                    $folderTheme = explode('.', $fileName)[0];
+                    $composerPath = "$extractedPath/$folderTheme/composer.json";
 
-                    if (File::move("$extractedPath/$folderTheme", $newFolder)) {
-                        File::deleteDirectory($extractedPath);
-                        File::deleteDirectory($filePath);
+                    if (file_exists($composerPath)) {
+                        $composerData = json_decode(file_get_contents($composerPath), true);
 
-                        scan_themes();
+                        // Validate theme structure
+                        $this->validateThemeStructure($extractedPath, $folderTheme);
 
-                        // === PHASE 1: REMOVED auto-execution of loadThemeHooks ===
-                        // Hooks are now only loaded manually via activate() by super-admin
-                        // after security review of hooks.php content.
-                        $themeName = $composerData['name'];
-                        $userId = auth()->id();
-                        $userEmail = auth()->user()?->email ?? 'unknown';
-                        Log::warning("Theme uploaded (hooks NOT auto-loaded): theme={$themeName}, user_id={$userId}, email={$userEmail}", [
-                            'action' => 'theme_upload',
-                            'theme' => $themeName,
-                            'user_id' => $userId,
-                        ]);
+                        $newFolder = base_path('themes/' . $composerData['name']);
 
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => 'Tema berhasil diunggah. Review hooks.php melalui menu aktivasi tema sebelum mengaktifkan.',
-                        ]);
-                    } else {
-                        File::deleteDirectory($extractedPath);
-                        File::deleteDirectory($filePath);
+                        if (File::move("$extractedPath/$folderTheme", $newFolder)) {
+                            File::deleteDirectory($extractedPath);
+                            File::deleteDirectory($filePath);
+
+                            scan_themes();
+
+                            // === PHASE 1: REMOVED auto-execution of loadThemeHooks ===
+                            // Hooks are now only loaded manually via activate() by super-admin
+                            // after security review of hooks.php content.
+                            $themeName = $composerData['name'];
+                            $userId = auth()->id();
+                            $userEmail = auth()->user()?->email ?? 'unknown';
+                            Log::warning("Theme uploaded (hooks NOT auto-loaded): theme={$themeName}, user_id={$userId}, email={$userEmail}", [
+                                'action' => 'theme_upload',
+                                'theme' => $themeName,
+                                'user_id' => $userId,
+                            ]);
+
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => 'Tema berhasil diunggah. Review hooks.php melalui menu aktivasi tema sebelum mengaktifkan.',
+                            ]);
+                        } else {
+                            File::deleteDirectory($extractedPath);
+                            File::deleteDirectory($filePath);
+                        }
                     }
+                }
+            } finally {
+                // BUG FIX (Low): Ensure the ZIP handle is always released.
+                if ($zipOpened) {
+                    $zip->close();
                 }
             }
         } catch (\Exception $e) {
@@ -152,9 +184,10 @@ class ThemesController extends BackEndController
                 'user_id' => auth()->id(),
                 'error' => $e->getMessage(),
             ]);
+            // BUG FIX (Medium): Return a generic message to the user; detail is logged above.
             return response()->json([
                 'status' => 'error',
-                'message' => 'Tema gagal diunggah: ' . $e->getMessage(),
+                'message' => 'Tema gagal diunggah. Silakan periksa log untuk detail.',
             ]);
         }
 
@@ -332,6 +365,23 @@ class ThemesController extends BackEndController
                     }
                 }
             }
+
+            // BUG FIX (High): Detect variable function calls, e.g. $f('id') or $obj->method().
+            // The token sequence is T_VARIABLE followed by '(' — the old scanner only checked
+            // T_STRING, so `$f = 'system'; $f('id');` would silently pass validation.
+            if ($tokens[$i][0] === T_VARIABLE) {
+                $nextIdx = $i + 1;
+                while ($nextIdx < $count && is_array($tokens[$nextIdx]) && $tokens[$nextIdx][0] === T_WHITESPACE) {
+                    $nextIdx++;
+                }
+
+                if ($nextIdx < $count && ! is_array($tokens[$nextIdx]) && $tokens[$nextIdx] === '(') {
+                    $dangerousCalls[] = [
+                        'function' => 'variable_function_call:' . $tokens[$i][1],
+                        'line' => $tokens[$i][2],
+                    ];
+                }
+            }
         }
 
         if ($hasBadCharacter) {
@@ -407,14 +457,60 @@ class ThemesController extends BackEndController
             }
         }
 
-        // Validate theme.json
-        $themeConfig = json_decode(file_get_contents("$path/$folder/theme.json"), true);
+        // OBS FIX: Add null-safety for file_get_contents and json_decode.
+        // file_get_contents() can return false on failure; json_decode() returns null
+        // for malformed JSON — both would cause silent failures without this check.
+        $themeJsonPath = "$path/$folder/theme.json";
+        $themeJsonRaw  = file_get_contents($themeJsonPath);
+        if ($themeJsonRaw === false) {
+            throw new \Exception("Tidak dapat membaca theme.json dari tema");
+        }
+
+        $themeConfig = json_decode($themeJsonRaw, true);
+        if (! is_array($themeConfig)) {
+            throw new \Exception("theme.json tidak mengandung JSON yang valid");
+        }
 
         if (!isset($themeConfig['api_version'])) {
             Log::warning("Tema tidak mendefinisikan api_version, gunakan v1 sebagai default");
         }
 
         return true;
+    }
+
+    /**
+     * Validate that no ZIP entry contains path traversal sequences.
+     * Must be called BEFORE extractTo().
+     *
+     * BUG FIX (High): scanZipForPhp() only checked file extensions. A crafted ZIP
+     * with entries like "../../../storage/framework/cache/data.txt" could overwrite
+     * arbitrary files outside themes/extracted/ upon extraction.
+     *
+     * @throws \RuntimeException if any entry contains ".." or starts with "/".
+     */
+    private function validateZipEntryPaths(\ZipArchive $zip): void
+    {
+        $traversalEntries = [];
+
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $filename = $zip->getNameIndex($i);
+
+            // Reject entries that start with '/' (absolute path)
+            // or contain '..' (directory traversal)
+            if (str_starts_with($filename, '/') || str_contains($filename, '..')) {
+                $traversalEntries[] = $filename;
+            }
+        }
+
+        if (! empty($traversalEntries)) {
+            $list = implode(', ', $traversalEntries);
+            Log::critical("Path traversal detected in theme ZIP: {$list}", [
+                'action'  => 'theme_zip_traversal_blocked',
+                'entries' => $traversalEntries,
+                'user_id' => auth()->id(),
+            ]);
+            throw new \RuntimeException("Arsip mengandung entri path traversal berbahaya: {$list}");
+        }
     }
 
     /**

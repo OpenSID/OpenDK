@@ -966,9 +966,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('activate/{themes}', 'activate')->name('setting.themes.activate');
                 Route::get('rescan', 'rescan')->name('setting.themes.rescan');
                 Route::post('clear-cache', 'clearCache')->name('setting.themes.clear-cache');
-                // post to-upload
-                Route::post('upload', 'upload')->name('setting.themes.upload');
                 Route::delete('destroy/{themes}', 'destroy')->name('setting.themes.destroy');
+            });
+
+            // Theme upload — restricted to super-admin only (CRITICAL security boundary)
+            Route::group(['prefix' => 'themes', 'controller' => ThemesController::class, 'middleware' => ['role:super-admin']], function () {
+                Route::post('upload', 'upload')->name('setting.themes.upload');
             });
 
             Route::group(['prefix' => 'aplikasi', 'controller' => AplikasiController::class, 'middleware' => ['action_permission:access.setting.aplikasi']], function () {

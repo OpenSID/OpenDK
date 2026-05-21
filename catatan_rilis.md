@@ -6,7 +6,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### FITUR
 
 1. [#1498](https://github.com/OpenSID/OpenDK/issues/1497) Halaman public setelah login mengarah ke halaman dashboard
-2. [#1539](https://github.com/OpenSID/OpenDK/issues/1539) Tambahkan tanggal terbit pada postingan artike
+2. [#1539](https://github.com/OpenSID/OpenDK/issues/1539) Tambahkan tanggal terbit pada postingan artikel
+3. [#1548](https://github.com/OpenSID/OpenDK/issues/1548) Tambahkan fungsi global untuk debounce search datatable
 
 #### BUG
 

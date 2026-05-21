@@ -18,7 +18,7 @@
             if (e.namespace !== 'dt') return;
 
             var table = new $.fn.dataTable.Api(settings);
-            var searchDelay = table.init().searchDelay || 1500;
+            var searchDelay = table.init().searchDelay || 500;
             var searchInput = $('div.dataTables_filter input', table.table().container());
             var debounceTimer = null;
             var previousSearch = null;

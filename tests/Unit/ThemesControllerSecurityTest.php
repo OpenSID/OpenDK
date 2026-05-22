@@ -1,18 +1,17 @@
 <?php
 
 /**
- * Unit tests for ThemesController security methods.
+ * Unit tests for ThemeHooksValidator security methods.
  *
  * Tests:
  *   - scanZipForPhp()   (Phase 2 — ZIP content scanning)
- *   - validateHooksSource() (Phase 3 — token-based hooks validation)
+ *   - validateSource() (Phase 3 — token-based hooks validation)
  */
 
-use App\Http\Controllers\BackEnd\ThemesController;
-use Tests\TestCase;
+use App\Services\ThemeHooksValidator;
 
 beforeEach(function () {
-    $this->controller = new ThemesController();
+    $this->validator = new ThemeHooksValidator();
 });
 
 // ── scanZipForPhp tests ──
@@ -27,10 +26,7 @@ test('scanZipForPhp rejects ZIP containing .php file', function () {
     $z = new ZipArchive();
     $z->open($zipPath);
 
-    $ref = new ReflectionClass($this->controller);
-    $m = $ref->getMethod('scanZipForPhp');
-
-    expect(fn () => $m->invoke($this->controller, $z))
+    expect(fn () => $this->validator->scanZipForPhp($z))
         ->toThrow(RuntimeException::class);
 
     $z->close();
@@ -48,9 +44,7 @@ test('scanZipForPhp allows clean ZIP without PHP files', function () {
     $z = new ZipArchive();
     $z->open($zipPath);
 
-    $ref = new ReflectionClass($this->controller);
-    $m = $ref->getMethod('scanZipForPhp');
-    $m->invoke($this->controller, $z);
+    $this->validator->scanZipForPhp($z);
 
     expect(true)->toBeTrue(); // no exception = pass
 
@@ -68,10 +62,7 @@ test('scanZipForPhp rejects PHP file in subfolder', function () {
     $z = new ZipArchive();
     $z->open($zipPath);
 
-    $ref = new ReflectionClass($this->controller);
-    $m = $ref->getMethod('scanZipForPhp');
-
-    expect(fn () => $m->invoke($this->controller, $z))
+    expect(fn () => $this->validator->scanZipForPhp($z))
         ->toThrow(RuntimeException::class);
 
     $z->close();
@@ -81,52 +72,41 @@ test('scanZipForPhp rejects PHP file in subfolder', function () {
 // ── validateHooksSource tests ──
 
 test('validateHooksSource rejects system() call', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php system("echo x");', 'evil']);
+    $r = $this->validator->validateSource('<?php system("echo x");', 'evil');
     expect($r['valid'])->toBeFalse();
 });
 
 test('validateHooksSource rejects exec() call', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php exec("echo x");', 'evil']);
+    $r = $this->validator->validateSource('<?php exec("echo x");', 'evil');
     expect($r['valid'])->toBeFalse();
 });
 
 test('validateHooksSource rejects eval() call', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php eval("echo 1;");', 'evil']);
+    $r = $this->validator->validateSource('<?php eval("echo 1;");', 'evil');
     expect($r['valid'])->toBeFalse();
 });
 
 test('validateHooksSource rejects file_put_contents() call', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php file_put_contents("/tmp/x","d");', 'evil']);
+    $r = $this->validator->validateSource('<?php file_put_contents("/tmp/x","d");', 'evil');
     expect($r['valid'])->toBeFalse();
 });
 
 test('validateHooksSource rejects shell_exec() call', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php shell_exec("ls");', 'evil']);
+    $r = $this->validator->validateSource('<?php shell_exec("ls");', 'evil');
     expect($r['valid'])->toBeFalse();
 });
 
 test('validateHooksSource allows harmless function declaration', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php function my_hook(): string { return "ok"; }', 'clean']);
+    $r = $this->validator->validateSource('<?php function my_hook(): string { return "ok"; }', 'clean');
     expect($r['valid'])->toBeTrue();
 });
 
 test('validateHooksSource allows array return', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php return ["a" => "b"];', 'clean']);
+    $r = $this->validator->validateSource('<?php return ["a" => "b"];', 'clean');
     expect($r['valid'])->toBeTrue();
 });
 
 test('validateHooksSource rejects inline HTML', function () {
-    $r = invokePrivate('validateHooksSource', ['<?php $x=1; ?><h1>x</h1><?php return $x;', 'evil']);
+    $r = $this->validator->validateSource('<?php $x=1; ?><h1>x</h1><?php return $x;', 'evil');
     expect($r['valid'])->toBeFalse();
 });
-
-// ── Helper ──
-
-function invokePrivate(string $method, array $args): mixed
-{
-    // Access via the controller stored in $this (Pest test closure binding)
-    $controller = test()->controller ?? new ThemesController();
-    $ref = new ReflectionClass($controller);
-    $m = $ref->getMethod($method);
-    return $m->invokeArgs($controller, $args);
-}

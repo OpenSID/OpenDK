@@ -74,6 +74,8 @@ class DatabaseSeeder extends Seeder
         $this->call(DasProfilTableSeeder::class);
         $this->call(DasDataUmumTableSeeder::class);
         $this->call(PendudukSexSeeder::class);
+        // PPID
+        $this->call(PpidSeeder::class);
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }

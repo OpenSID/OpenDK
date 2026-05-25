@@ -33,3 +33,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 10. [#1485](https://github.com/OpenSID/OpenDK/issues/1485) Perbaikan Dependecy bot Security
 11. [#1556](https://github.com/OpenSID/OpenDK/issues/1556) Perbaikan Blade Prettier
 12. [#1550](https://github.com/OpenSID/OpenDK/issues/1550) Sederhanakan Url detail penduduk di menu Data->Kependudukan->Penduduk->Detail
+13. [#1555](https://github.com/OpenSID/OpenDK/issues/1555) Security - Remote Code Execution - Theme Upload and Hook Loading

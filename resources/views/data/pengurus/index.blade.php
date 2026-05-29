@@ -21,7 +21,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.pengurus.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.pengurus.create') ? route('data.pengurus.create') : null])
 
                 {{-- button bagan --}}
                 <a href="{{ route('data.pengurus.bagan') }}" style="margin-left: 5px">
@@ -80,7 +80,8 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! route('data.pengurus.index') !!}",
+                    url: "{!! route('data.pengurus.getdata.post') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.status = $('#status').val();
                     }

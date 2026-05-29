@@ -21,8 +21,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                {{-- @include('forms.btn-social', ['import_url' => route('data.jabatan.import')]) --}}
-                @include('forms.btn-social', ['import_url' => route('data.jabatan.create')])
+                {{-- @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.jabatan.import') ? route('data.jabatan.import') : null]) --}}
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.jabatan.create') ? route('data.jabatan.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -49,7 +49,10 @@
             var data = $('#jabatan-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.jabatan.index') !!}",
+                ajax: {
+                    url: "{!! route('data.jabatan.getdata.post') !!}",
+                    type: "POST",
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

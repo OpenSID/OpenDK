@@ -17,10 +17,12 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('setting.role.create') }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
-                        Tambah</button>
-                </a>
+                @can('access.setting.role.create')
+                    <a href="{{ route('setting.role.create') }}">
+                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
+                            Tambah</button>
+                    </a>
+                @endcan
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -45,7 +47,10 @@
             var data = $('#user-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('setting.role.getdata') !!}",
+                ajax: {
+                    url: "{!! route('setting.role.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'name',
                         name: 'name'

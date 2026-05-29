@@ -53,6 +53,7 @@ describe('File Upload Functionality', function () {
                 'kategori_id' => 1,
                 'isi' => 'Isi artikel dengan gambar.',
                 'status' => 1,
+                'tanggal_terbit' => now()->toDateString(),
                 'gambar' => $file,
             ];
 
@@ -75,6 +76,7 @@ describe('File Upload Functionality', function () {
                 'kategori_id' => 1,
                 'isi' => 'Isi artikel.',
                 'status' => 1,
+                'tanggal_terbit' => now()->toDateString(),
                 'gambar' => $file,
             ];
 
@@ -92,6 +94,7 @@ describe('File Upload Functionality', function () {
                 'kategori_id' => 1,
                 'isi' => 'Isi artikel.',
                 'status' => 1,
+                'tanggal_terbit' => now()->toDateString(),
                 'gambar' => $file,
             ];
 
@@ -111,6 +114,7 @@ describe('File Upload Functionality', function () {
                 'kategori_id' => 1,
                 'isi' => 'Updated content',
                 'status' => 1,
+                'tanggal_terbit' => now()->toDateString(),
                 'gambar' => $newFile,
             ];
 
@@ -347,6 +351,7 @@ describe('File Upload Functionality', function () {
                 'judul' => 'Artikel tanpa Gambar',
                 'kategori_id' => 1,
                 'isi' => 'Isi artikel tanpa gambar.',
+                'tanggal_terbit' => now()->toDateString(),
                 'status' => 1,
             ];
 

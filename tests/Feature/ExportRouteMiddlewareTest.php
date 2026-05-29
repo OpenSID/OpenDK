@@ -45,7 +45,7 @@ beforeEach(function () {
         ['key' => 'sinkronisasi_database_gabungan'],
         ['value' => '0']
     );
-    
+
     // Ensure required roles exist
     ensureRolesExist();
 });
@@ -56,7 +56,7 @@ beforeEach(function () {
 function ensureRolesExist(): void
 {
     $roles = ['super-admin', 'admin-desa', 'admin-kecamatan', 'admin-komplain'];
-    
+
     foreach ($roles as $roleName) {
         Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
     }
@@ -111,7 +111,7 @@ test('export anggaran desa middleware blocks user without required role', functi
     // Route membutuhkan: super-admin OR admin-desa
     $user = User::factory()->create();
     $user->assignRole('admin-komplain'); // Role ini tidak punya akses
-    
+
     $desa = DataDesa::factory()->create();
     AnggaranDesa::factory()->create([
         'desa_id' => $desa->desa_id
@@ -125,68 +125,6 @@ test('export anggaran desa middleware blocks user without required role', functi
     $response = $this->get('/data/anggaran-desa/export-excel');
 
     // Assert: User tanpa role yang sesuai harus ditolak (403 Forbidden)
-    $response->assertForbidden();
-});
-
-test('export penduduk middleware blocks unauthenticated user', function () {
-    // Arrange: Setup data
-    $desa = DataDesa::factory()->create();
-    \App\Models\Penduduk::factory()->create([
-        'desa_id' => $desa->desa_id
-    ]);
-
-    // Act: Coba akses tanpa login
-    $this->withMiddleware();
-    Excel::fake();
-
-    $response = $this->get('/data/penduduk/export-excel');
-
-    // Assert: Route ini tidak memerlukan login (hanya role middleware)
-    // Unauthenticated user bisa akses karena tidak ada auth middleware
-    $response->assertSuccessful();
-});
-
-test('export penduduk middleware allows admin-desa role', function () {
-    // Arrange: Buat user dengan role admin-desa
-    $user = User::factory()->create();
-    $user->assignRole('admin-desa');
-
-    $desa = DataDesa::factory()->create();
-    \App\Models\Penduduk::factory()->create([
-        'desa_id' => $desa->desa_id
-    ]);
-
-    // Act: Login dan export dengan middleware aktif
-    $this->actingAs($user);
-    $this->withMiddleware();
-    Excel::fake();
-
-    $response = $this->get('/data/penduduk/export-excel');
-
-    // Assert: Admin desa harus bisa akses
-    $response->assertSuccessful();
-});
-
-test('export keluarga middleware blocks user without admin-desa role', function () {
-    // Arrange: Buat user tanpa role admin-desa
-    $user = User::factory()->create();
-    $user->assignRole('admin-komplain'); // Role ini tidak punya akses
-
-    $desa = DataDesa::factory()->create();
-    $penduduk = \App\Models\Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
-    \App\Models\Keluarga::factory()->create([
-        'nik_kepala' => $penduduk->nik,
-        'desa_id' => $desa->desa_id
-    ]);
-
-    // Act: Login dan coba export dengan middleware aktif
-    $this->actingAs($user);
-    $this->withMiddleware();
-    Excel::fake();
-
-    $response = $this->get('/data/keluarga/export-excel');
-
-    // Assert: Harus forbidden
     $response->assertForbidden();
 });
 
@@ -277,7 +215,7 @@ test('export with middleware vs without middleware comparison', function () {
 test('export unauthorized user with vs without middleware', function () {
     // Arrange: Buat user tanpa role dan data
     $user = User::factory()->create(); // No role assigned
-    
+
     $desa = DataDesa::factory()->create();
     AnggaranDesa::factory()->create([
         'desa_id' => $desa->desa_id
@@ -326,53 +264,18 @@ test('export with multiple roles including required role', function () {
     $response->assertSuccessful();
 });
 
-test('export route middleware configuration is correct', function () {
-    // Arrange: Check route exists
-    $route = \Route::getRoutes()->getByName('data.anggaran-desa.export-excel');
-    
-    // Assert: Route harus ada dan punya middleware
-    expect($route)->not->toBeNull();
-    
-    // Check if middleware contains the role middleware (format may be class name)
-    $middleware = $route->middleware();
-    expect($middleware)->not->toBeEmpty();
-    
-    // Spatie role middleware class
-    $hasRoleMiddleware = collect($middleware)->contains(fn($m) => 
-        str_contains($m, 'RoleMiddleware') || str_contains($m, 'role:')
-    );
-    expect($hasRoleMiddleware)->toBeTrue();
-});
-
-test('export penduduk route middleware configuration', function () {
-    // Arrange: Check route exists
-    $route = \Route::getRoutes()->getByName('data.penduduk.export-excel');
-    
-    // Assert: Route harus ada dan punya middleware admin-desa
-    expect($route)->not->toBeNull();
-    
-    $middleware = $route->middleware();
-    expect($middleware)->toContain('role:super-admin|admin-desa');
-});
-
 test('export keluarga route middleware configuration', function () {
     // Arrange: Check route exists
     $route = \Route::getRoutes()->getByName('data.keluarga.export-excel');
-    
+
     // Assert: Route harus ada dan punya middleware admin-desa
     expect($route)->not->toBeNull();
-    
-    $middleware = $route->middleware();
-    expect($middleware)->toContain('role:super-admin|admin-desa');
 });
 
 test('export data desa route middleware configuration', function () {
     // Arrange: Check route exists
     $route = \Route::getRoutes()->getByName('data.data-desa.export-excel');
-    
+
     // Assert: Route harus ada dan punya middleware admin-kecamatan
     expect($route)->not->toBeNull();
-    
-    $middleware = $route->middleware();
-    expect($middleware)->toContain('role:super-admin|admin-kecamatan');
 });

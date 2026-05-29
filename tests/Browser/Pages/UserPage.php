@@ -18,9 +18,8 @@ class UserPage
     public function createUser($browser, array $userDetails): void
     {
         // Session is maintained in the browser instance
-        $browser->waitForText('Pengguna')
-            ->click('a[href$="/create"]')
-            ->waitForText('Tambah Data')
+        $browser->page()->goto(rtrim(config('app.url'), '/') . $this->url() . '/create');
+        $browser->waitForText('Tambah Data')
             ->type('name', $userDetails['name'])
             ->type('email', $userDetails['email'])
             ->type('password', $userDetails['password'])

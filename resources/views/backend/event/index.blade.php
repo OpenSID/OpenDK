@@ -16,7 +16,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('informasi.event.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.event.create') ? route('informasi.event.create') : null])
             </div>
             <!-- /.box-header -->
             <div class="box-body">

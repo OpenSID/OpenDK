@@ -42,9 +42,9 @@ class LembagaController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
-                        $data['detail_url'] = route('data.lembaga_anggota.index', $row->slug);
-                        $data['edit_url'] = route('data.lembaga.edit', $row->id);
-                        $data['delete_url'] = route('data.lembaga.destroy', $row->id);
+                        $data['detail_url'] = auth()->user()->can('access.data.lembaga_anggota.view') ? route('data.lembaga_anggota.index', $row->slug) : null;
+                        $data['edit_url'] = auth()->user()->can('access.data.lembaga.edit') ? route('data.lembaga.edit', $row->id) : null;
+                        $data['delete_url'] = auth()->user()->can('access.data.lembaga.delete') ? route('data.lembaga.destroy', $row->id) : null;
                     }
 
                     return view('forms.aksi', $data);

@@ -29,7 +29,16 @@
                             <tr>
                                 <td>Sumber Dana</td>
                                 <td> : </td>
-                                <td>{{ $pembangunan->sumber_dana }}</td>
+                                <td>
+                                    @php
+                                        $sumberDanaList = $pembangunan->sumber_dana_list;
+                                    @endphp
+                                    @forelse ($sumberDanaList as $sumber)
+                                        <span class="label label-primary">{{ $sumber }}</span>
+                                    @empty
+                                        <span class="text-muted">-</span>
+                                    @endforelse
+                                </td>
                             </tr>
                             <tr>
                                 <td>Lokasi Pembangunan</td>
@@ -72,7 +81,8 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: "{!! route('data.pembangunan.getrinciandata', ['id' => $pembangunan->id, 'desa_id' => $pembangunan->desa_id]) !!}"
+                    url: "{!! route('data.pembangunan.getrinciandata', ['id' => $pembangunan->id, 'desa_id' => $pembangunan->desa_id]) !!}",
+                    type: "POST"
                 },
                 columns: [{
                         data: 'DT_RowIndex',

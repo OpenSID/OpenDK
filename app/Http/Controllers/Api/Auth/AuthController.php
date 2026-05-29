@@ -71,7 +71,7 @@ class AuthController extends Controller
 
         $user = User::where('email', '=', $request->email)->first();
 
-        if (! $user->hasrole(['super-admin', 'admin-desa'])) {
+        if (! $user->hasAnyPermission(['access.data', 'access.api', 'access.setting'])) {
             return response()->json(['message' => 'Grup pengguna bukan admin-desa'], 422);
         }
 

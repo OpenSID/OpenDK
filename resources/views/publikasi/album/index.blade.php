@@ -17,7 +17,9 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('publikasi.album.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @can('access.publikasi.album.create')
+                    <a href="{{ route('publikasi.album.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                @endcan
             </div>
             <div class="box-body">
                 <div class="table-responsive">

@@ -161,7 +161,7 @@
 
                         {!! Html::text('tanggal_lahir')->placeholder('1990-01-01')->class(
                                 'form-control
-                                            datepicker',
+                                                                    datepicker',
                             )->required()->id('tanggal_lahir') !!}
                         @if ($errors->has('tanggal_lahir'))
                             <span class="help-block">

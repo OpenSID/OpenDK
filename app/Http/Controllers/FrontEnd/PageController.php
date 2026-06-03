@@ -69,7 +69,7 @@ class PageController extends FrontEndController
 
     public function beritaDesa()
     {
-        $this->data = (new DesaService())->getFeeds();
+        $this->data = $this->getFeeds();
 
         $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
 

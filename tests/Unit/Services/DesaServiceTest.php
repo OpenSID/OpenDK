@@ -422,7 +422,7 @@ it('can get path desa list when not using database gabungan', function () {
     SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
     
     // Create a desa with path
-    DataDesa::factory()->create(['path' => json_encode('/test/path')]);
+    DataDesa::factory()->create(['path' => json_encode('/test/path', JSON_UNESCAPED_SLASHES)]);
     DataDesa::factory()->create(['path' => null]);
     
     $service = new DesaService();

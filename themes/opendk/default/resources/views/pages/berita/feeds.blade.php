@@ -50,7 +50,7 @@
                 event.preventDefault();
             }
 
-            $('#list_desa').select2();
+            $('#list_desa').attr('name','desa')
             $("#list_desa").change(function() {
                 $("#form_filter").submit();
             });

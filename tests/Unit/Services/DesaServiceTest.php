@@ -9,15 +9,23 @@ use Illuminate\Support\Facades\Config;
 
 beforeEach(function () {
     // Clean up database before each test
-    DataDesa::query()->delete();    
-    
+    DataDesa::query()->delete();
+
     // Create some sample data desa for testing
     DataDesa::factory()->count(5)->create();
-    
+
     // Set up setting aplikasi to not use database gabungan by default
     SettingAplikasi::firstOrCreate([
         'key' => 'sinkronisasi_database_gabungan'
     ], ['value' => '0']);
+
+    // Reset config agar tidak ada sisa dari test sebelumnya
+    // dan pastikan tidak ada koneksi nyata ke localhost jika SettingAplikasi kosong di CI
+    config([
+        'sinkronisasi_database_gabungan' => '0',
+        'api_server_database_gabungan'   => null,
+        'api_key_database_gabungan'      => null,
+    ]);
 });
 
 it('can instantiate desa service', function () {
@@ -84,7 +92,8 @@ it('can get specific desa by slug when using database gabungan', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
     
     $service = new DesaService();
@@ -139,7 +148,8 @@ it('can call desa method with filters', function () {
     config(['api_key_database_gabungan' => 'test-key']);
     
     Http::fake([
-        'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200)
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200),
+        '*' => Http::response([], 200),
     ]);
 
     $service = new DesaService();
@@ -193,11 +203,12 @@ it('caches list desa when using database gabungan', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
-    
+
     $service = new DesaService();
-    
+
     // First call should hit the API
     $firstCall = $service->listDesa();
     
@@ -259,7 +270,8 @@ it('transforms API response correctly', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
     
     $service = new DesaService();
@@ -301,14 +313,15 @@ it('handles null values in API response', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
-    
+
     $service = new DesaService();
     $desaList = $service->desa();
-    
+
     expect($desaList)->toHaveCount(1);
-    
+
     $desa = $desaList->first();
     expect($desa->desa_id)->toBe('NULL001');
     expect($desa->kode_desa)->toBe('NULL001');
@@ -336,9 +349,10 @@ it('can get jumlah desa with filters', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
-    
+
     $service = new DesaService();
     $jumlah = $service->jumlahDesa(['filter[test]' => 'value']);
     
@@ -353,9 +367,10 @@ it('returns 0 when jumlah desa API fails', function () {
     
     // Mock API error response
     Http::fake([
-        'https://api.example.com/api/v1/desa*' => Http::response(['error' => 'API Error'], 500)
+        'https://api.example.com/api/v1/desa*' => Http::response(['error' => 'API Error'], 500),
+        '*' => Http::response([], 200),
     ]);
-    
+
     $service = new DesaService();
     $jumlah = $service->jumlahDesa();
     
@@ -375,9 +390,10 @@ it('handles malformed API response for jumlah desa', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
-    
+
     $service = new DesaService();
     $jumlah = $service->jumlahDesa();
     
@@ -411,9 +427,10 @@ it('can get path desa list when using database gabungan', function () {
     ];
     
     Http::fake([
-        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200)
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200),
+        '*' => Http::response([], 200),
     ]);
-    
+
     $service = new DesaService();
     $pathDesaList = $service->listPathDesa();
     

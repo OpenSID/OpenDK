@@ -110,6 +110,11 @@ class DesaService extends BaseApiService
      */
     public function jumlahDesa(array $filters = [])
     {
+        // Jika tidak menggunakan database gabungan, hitung dari database lokal
+        if (! $this->useDatabaseGabungan) {
+            return DataDesa::count();
+        }
+
         // Default parameter
         $defaultParams = [
             'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),

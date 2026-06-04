@@ -138,6 +138,10 @@ it('can call desa method with filters', function () {
     SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
     SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
     
+    Http::fake([
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200)
+    ]);
+
     $service = new DesaService();
     
     $filteredDesa = $service->desa(['test_filter' => 'test_value']);
@@ -151,6 +155,10 @@ it('handles empty results gracefully', function () {
     SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
     SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
     
+    Http::fake([
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200)
+    ]);
+
     $service = new DesaService();
     
     $emptyFilters = $service->desa([]);
@@ -418,7 +426,7 @@ it('can get path desa list when not using database gabungan', function () {
     SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
     
     // Create a desa with path
-    DataDesa::factory()->create(['path' => '/test/path']);
+    DataDesa::factory()->create(['path' => '[[[-6.2, 106.8]]]']);
     DataDesa::factory()->create(['path' => null]);
     
     $service = new DesaService();
@@ -426,5 +434,5 @@ it('can get path desa list when not using database gabungan', function () {
     
     expect($pathDesaList)->toBeIterable();
     expect($pathDesaList)->toHaveCount(1);
-    expect($pathDesaList->first()->path)->toBe('/test/path');
+    expect($pathDesaList->first()->path)->toBe('[[[-6.2, 106.8]]]');
 });

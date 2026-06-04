@@ -22,9 +22,9 @@ class BaseApiService
         $this->header = [
             'Accept' => 'application/ld+json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
+            'Authorization' => 'Bearer ' . ($this->settings['api_key_database_gabungan'] ?? ''),
         ];
-        $this->baseUrl = $this->settings['api_server_database_gabungan'];
+        $this->baseUrl = !empty($this->settings['api_server_database_gabungan']) ? $this->settings['api_server_database_gabungan'] : 'http://localhost';
         $this->kodeKecamatan = str_replace('.','',config('profil.kecamatan_id'));        
     }
 
@@ -51,6 +51,9 @@ class BaseApiService
             
             return $jsonResponse;
         } catch (\Exception $e) {
+            if (app()->environment('testing')) {
+                throw $e;
+            }
             session()->flash('error_api', 'Gagal mendapatkan data'. $e->getMessage());
             Log::error('Failed get data in '.__FILE__.' function '.__METHOD__.' '. $e->getMessage());
         }

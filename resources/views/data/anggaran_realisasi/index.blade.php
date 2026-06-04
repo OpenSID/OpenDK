@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => route('data.anggaran-realisasi.import')])
-                @include('forms.btn-social', ['export_url' => route('data.anggaran-realisasi.export-excel')])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.anggaran-realisasi.import') ? route('data.anggaran-realisasi.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.anggaran-realisasi.export') ? route('data.anggaran-realisasi.export-excel') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -49,7 +49,10 @@
             var data = $('#anggaran-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.anggaran-realisasi.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.anggaran-realisasi.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

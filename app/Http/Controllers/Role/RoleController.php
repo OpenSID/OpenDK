@@ -76,8 +76,8 @@ class RoleController extends Controller
                 return $count;
             })
             ->addColumn('aksi', function ($role) {
-                $data['edit_url'] = route('setting.role.edit', $role->id);
-                $data['delete_url'] = route('setting.role.destroy', $role->id);
+                $data['edit_url'] = auth()->user()->can('access.setting.role.edit') ? route('setting.role.edit', $role->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.setting.role.delete') ? route('setting.role.destroy', $role->id) : null;
 
                 return view('forms.aksi', $data);
             })

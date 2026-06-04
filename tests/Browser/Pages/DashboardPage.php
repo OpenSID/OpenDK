@@ -43,6 +43,6 @@ class DashboardPage
      */
     public function logout($browser): void
     {
-        $browser->script("document.getElementById('logout-form').submit()");
+        $browser->script('document.querySelector("#logout-form").submit();');
     }
 }

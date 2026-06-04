@@ -71,9 +71,9 @@ class NavigationController extends Controller
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
                 if (!auth()->guest()) {
-                    $data['edit_url'] = route('setting.navigation.edit', $row->id);
-                    $data['delete_url'] = route('setting.navigation.destroy', $row->id);
-                    $data['detail_url'] = route('setting.navigation.index', $row->id);
+                    $data['edit_url'] = auth()->user()->can('access.setting.navigation.edit') ? route('setting.navigation.edit', $row->id) : null;
+                    $data['delete_url'] = auth()->user()->can('access.setting.navigation.delete') ? route('setting.navigation.destroy', $row->id) : null;
+                    $data['detail_url'] = auth()->user()->can('access.setting.navigation.view') ? route('setting.navigation.index', $row->id) : null;
                     $data['naik'] = route('setting.navigation.order', [$row->id, 'up']);
                     $data['turun'] = route('setting.navigation.order', [$row->id, 'down']);
                 }

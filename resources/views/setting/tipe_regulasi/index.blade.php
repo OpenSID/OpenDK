@@ -45,7 +45,10 @@
             var data = $('#data-tipe-regulasi').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('setting.tipe-regulasi.getdata') !!}",
+                ajax: {
+                    url: "{!! route('setting.tipe-regulasi.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

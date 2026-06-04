@@ -23,14 +23,7 @@
                 </a>
             </div>
             <div class="box-body">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label>{{ config('setting.sebutan_desa') }}</label>
-                        <select class="form-control" id="list_desa">
-                            <option value="">Semua {{ config('setting.sebutan_desa') }}</option>
-                        </select>
-                    </div>
-                </div>
+                @include('layouts.fragments.list-desa')
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover dataTable" id="pembangunan-table">
@@ -59,119 +52,115 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            function loadDesa() {
-                $.ajax({
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/desa/{{ str_replace('.', '', $profil->kecamatan_id) }}`,
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
-                    },
-                    success: function(response) {
-                        $('#list_desa').empty().append(
-                            '<option value="">Semua {{ config('setting.sebutan_desa') }}</option>');
-                        response.data.forEach(desa => {
-                            $('#list_desa').append(
-                                `<option value="${desa.attributes.kode_desa}">${desa.attributes.nama_desa}</option>`
-                            );
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Gagal memuat daftar desa:", error);
-                    }
-                });
-            }
-
-            loadDesa();
             $('#list_desa').select2();
 
             var data = $('#pembangunan-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "application/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
-                    method: 'GET',
+                    method: 'POST',
                     data: function(row) {
-                        const desaId = $('#list_desa').val();
+                        var selectedDesa = $('#list_desa').val();
+                        var searchValue = row.search.value;
+
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[kode_desa]": desaId || '',
-                            "filter[search]": row.search.value,
-                            "fields[pembangunan]": "*",
+                            "filter[search]": searchValue,
+                            "filter[kode_desa]": selectedDesa == 'Semua' ? '' : selectedDesa,
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
-                                ?.column]?.name,
+                                    ?.column]
+                                ?.name,
                         };
                     },
                     dataSrc: function(json) {
                         json.recordsTotal = json.meta.pagination.total;
                         json.recordsFiltered = json.meta.pagination.total;
-
-                        return json.data.map(item => ({
-                            aksi: `<a href="{{ url('data/pembangunan/rincian') }}/${item.id}/${item.attributes.config.kode_desa}" class="btn btn-primary btn-sm">Detail</a>`,
-                            judul: item.attributes.judul,
-                            sumber_dana: item.attributes.sumber_dana || 'N/A',
-                            anggaran: item.attributes.anggaran || 'N/A',
-                            volume: item.attributes.volume || '-',
-                            tahun_anggaran: item.attributes.tahun_anggaran || '-',
-                            pelaksana_kegiatan: item.attributes.pelaksana_kegiatan || '-',
-                            lokasi: item.attributes.lokasi || '-'
-                        }));
+                        return json.data;
                     },
                 },
                 columns: [{
-                        data: 'aksi',
+                        data: function(data) {
+                            return `<a href="{{ url('data/pembangunan/rincian') }}/${data.id}/${data.attributes.config.kode_desa}" class="btn btn-primary btn-sm">Detail</a>`;
+                        },
                         name: 'aksi',
                         orderable: false,
                         searchable: false,
                         class: 'text-center'
                     },
                     {
-                        data: 'judul',
+                        data: 'attributes.judul',
                         name: 'judul'
                     },
                     {
-                        data: 'sumber_dana',
-                        name: 'sumber_dana'
+                        data: 'attributes.sumber_dana',
+                        name: 'sumber_dana',
+                        render: function(data) {
+                            if (!data || data === 'N/A') return '-';
+                            try {
+                                const parsed = JSON.parse(data);
+                                if (Array.isArray(parsed)) {
+                                    return parsed.map(function(s) {
+                                        return '<span class="label label-primary" style="margin-right:3px">' + s + '</span>';
+                                    }).join(' ');
+                                }
+                            } catch (e) {
+                                // Not JSON, return as-is
+                            }
+                            return data;
+                        }
                     },
                     {
-                        data: 'anggaran',
+                        data: 'attributes.anggaran',
                         name: 'anggaran',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        render: function(data) {
+                            return data || 'N/A';
+                        }
                     },
                     {
-                        data: 'volume',
+                        data: 'attributes.volume',
                         name: 'volume',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        render: function(data) {
+                            return data || '-';
+                        }
                     },
                     {
-                        data: 'tahun_anggaran',
+                        data: 'attributes.tahun_anggaran',
                         name: 'tahun_anggaran',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        render: function(data) {
+                            return data || '-';
+                        }
                     },
                     {
-                        data: 'pelaksana_kegiatan',
+                        data: 'attributes.pelaksana_kegiatan',
                         name: 'pelaksana_kegiatan',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        render: function(data) {
+                            return data || '-';
+                        }
                     },
                     {
-                        data: 'lokasi',
+                        data: 'attributes.lokasi',
                         name: 'lokasi',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        render: function(data) {
+                            return data || '-';
+                        }
                     },
                 ],
                 order: [
@@ -237,9 +226,9 @@
                     var kode_kecamatan = "{{ str_replace('.', '', config('profil.kecamatan_id')) }}";
                     urlParams.append('kode_kecamatan', kode_kecamatan);
 
-                    // kirim kode_desa dari list_desa
+                    // kirim kode_desa dari list_desa — handle sentinel 'Semua'
                     var kode_desa = $('#list_desa').val();
-                    urlParams.append('kode_desa', kode_desa);
+                    urlParams.append('kode_desa', kode_desa == 'Semua' ? '' : kode_desa);
 
                     // Make fetch request
                     const response = await fetch(downloadUrl, {
@@ -317,4 +306,5 @@
             }
         });
     </script>
+    @include('forms.datatable-vertical')
 @endpush

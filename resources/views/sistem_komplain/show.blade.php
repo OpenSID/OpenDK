@@ -126,7 +126,7 @@
                                 <div class="pull-right">
                                     <div class="control-group">
                                         @php $user = auth()->user(); @endphp
-                                        @if (isset($user) && $user->hasRole(['super-admin', 'admin-kecamatan', 'admin-komplain']))
+                                        @if (isset($user) && $user->can('access.admin_komplain'))
                                             @if ($komplain->status != 'SELESAI')
                                                 <a id="btn-reply-admin" data-href="{{ route('sistem-komplain.reply', $komplain->komplain_id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Jawab</a>
                                             @endif

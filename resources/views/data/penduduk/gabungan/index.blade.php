@@ -18,7 +18,7 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                {{-- @include('forms.btn-social', ['export_url' => route('data.penduduk.export-excel')]) --}}
+                {{-- @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.penduduk.export') ? route('data.penduduk.export-excel') : null]) --}}
                 <button type="button" id="export-btn" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
                     <i class="fa fa-upload"></i>{{ $export_text ?? 'Ekspor' }}
                 </button>
@@ -62,16 +62,14 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/sync-penduduk-opendk?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/sync-penduduk-opendk-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "text/json; charset=utf-8",
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
-                    method: 'get',
+                    method: 'POST',
                     data: function(row) {
 
                         var selectedDesa = $('#list_desa').val();
@@ -96,54 +94,9 @@
                 },
                 columns: [{
                         data: function(data) {
-                            let d = data.attributes
-                            let obj = {
-                                'id': data.id,
-                                'nama': d.nama,
-                                'nik': d.nik,
-                                'no_kk_sebelumnya': d.no_kk_sebelumnya,
-                                'hubungan_dalam_keluarga': d.penduduk_hubungan?.nama ?? null,
-                                'jenis_kelamin': d.jenis_kelamin?.nama ?? null,
-                                'agama': d.agama.nama,
-                                'status_penduduk': d.penduduk_status?.nama ?? null,
-                                'akta_lahir': d.akta_lahir,
-                                'tempat_lahir': d.tempatlahir,
-                                'tanggal_lahir': d.tanggallahir,
-                                'tanggal_lahir': d.tanggallahir,
-                                'wajib_ktp': d.wajibKTP,
-                                'status_rekam': d.status_rekam_ktp?.nama ?? null,
-                                'elktp': d.elKTP,
-                                'pendidikan_dalam_kk': d.pendidikan_k_k?.nama ?? null,
-                                'pendidikan_sedang_ditempuh': d.pendidikan?.nama ?? null,
-                                'pekerjaan': d.pekerjaan?.nama ?? null,
-                                'warga_negara': d.warga_negara?.nama ?? null,
-                                'nomor_passport': d.dokumen_pasport,
-                                'tanggal_akhir_passport': d.tanggal_akhir_paspor,
-                                'nomor_kitas': d.dokumen_kitas,
-                                'nik_ayah': d.ayah_nik,
-                                'nama_ayah': d.nama_ayah,
-                                'nik_ibu': d.ibu_nik,
-                                'nama_ibu': d.nama_ibu,
-                                'nomor_telepon': d.telepon,
-                                'alamat_sebelumnya': d.alamat_sebelumnya,
-                                'alamat_sekarang': d.alamat_sekarang,
-                                'status_kawin': d.status_kawin?.nama ?? null,
-                                'no_akta_nikah': d.akta_perkawinan,
-                                'tanggal_nikah': d.tanggalperkawinan,
-                                'akta_perceraian': d.akta_perceraian,
-                                'tanggal_perceraian': d.tanggalperceraian,
-                                'golongan_darah': d.golongan_darah?.nama ?? null,
-                                'cacat': d.cacat?.nama ?? null,
-                                'sakit_menahun': d.sakit_menahun?.nama ?? null,
-                                'cara_kb': d.kb?.nama ?? null,
-                                'status_kehamilan': d.statusHamil
-                            }
-
-                            let jsonData = encodeURIComponent(JSON.stringify(obj));
-
                             const _url = data.attributes.path === undefined ?
-                                "{{ route('data.penduduk.detail', ['data' => '__DATA__']) }}"
-                                .replace('__DATA__', jsonData) :
+                                "{{ route('data.penduduk.detail', ['id' => '__ID__']) }}"
+                                .replace('__ID__', encodeURIComponent(data.id)) :
                                 `{{ url('data/penduduk/show') }}/${data.id}`
                             return `<a href="${_url}" title="Lihat" data-button="show" target="_blank">
                                 <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>

@@ -32,7 +32,10 @@
 namespace App\Repositories;
 
 use App\Models\Artikel;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class ArtikelApiRepository extends BaseApiRepository
 {
@@ -42,28 +45,37 @@ class ArtikelApiRepository extends BaseApiRepository
     public function __construct(Artikel $model)
     {
         parent::__construct($model);
-        
-        // Initialize allowed filters, sorts, and includes
+
         $this->allowedFilters = [
-            'judul','slug',
+            'judul', 'slug',
             AllowedFilter::exact('id'),
             AllowedFilter::exact('status'),
             AllowedFilter::exact('kategori.slug'),
-            AllowedFilter::exact('id_kategori'),   
-            AllowedFilter::callback('search', function($query, $value){                
-                $query->where('judul', 'LIKE', '%'.$value.'%')
-                        ->orWhere('slug', 'LIKE', '%'.$value.'%');
+            AllowedFilter::exact('id_kategori'),
+            AllowedFilter::callback('search', function ($query, $value) {
+                $query->where('judul', 'LIKE', '%' . $value . '%')
+                    ->orWhere('slug', 'LIKE', '%' . $value . '%');
             }),
-            AllowedFilter::callback('kategori', function($query, $value){                
-                $query->whereIn('id_kategori', static fn($q) => $q->select('id_kategori')->from('das_artikel_kategori')->where('nama_kategori',$value));
+            AllowedFilter::callback('kategori', function ($query, $value) {
+                $query->whereIn('id_kategori', static fn ($q) => $q->select('id_kategori')->from('das_artikel_kategori')->where('nama_kategori', $value));
             }),
         ];
-        $this->allowedSorts = ['created_at', 'updated_at', 'judul', 'id'];
+        $this->allowedSorts = ['created_at', 'tanggal_terbit', 'updated_at', 'judul', 'id'];
         $this->allowedIncludes = ['kategori', 'comments'];
-        $this->defaultSort = '-created_at';
+        $this->defaultSort = '-tanggal_terbit';
     }
-    
-    public function data(){
+
+    /**
+     * Get query builder with Spatie Query Builder (if available)
+     * Laravel 11 compatibility: Ensure we pass a Builder instance
+     */
+    protected function getQueryBuilder()
+    {
+        $query = $this->model instanceof Builder ? $this->model : $this->model->newQuery();
+        return QueryBuilder::for($query->published());
+    }
+    public function data(): LengthAwarePaginator
+    {
         return $this->getFilteredApi()->jsonPaginate();
-    }        
+    }
 }

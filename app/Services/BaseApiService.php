@@ -18,6 +18,18 @@ class BaseApiService
     public function __construct()
     {
         $this->settings = SettingAplikasi::whereIn('key', ['api_server_database_gabungan', 'api_key_database_gabungan', 'sinkronisasi_database_gabungan'])->pluck('value', 'key');        
+        
+        // Allow mock via config for testing
+        if (config()->has('api_server_database_gabungan')) {
+            $this->settings['api_server_database_gabungan'] = config('api_server_database_gabungan');
+        }
+        if (config()->has('api_key_database_gabungan')) {
+            $this->settings['api_key_database_gabungan'] = config('api_key_database_gabungan');
+        }
+        if (config()->has('sinkronisasi_database_gabungan')) {
+            $this->settings['sinkronisasi_database_gabungan'] = config('sinkronisasi_database_gabungan');
+        }
+
         $this->useDatabaseGabungan = $this->useDatabaseGabungan();
         $this->header = [
             'Accept' => 'application/ld+json',

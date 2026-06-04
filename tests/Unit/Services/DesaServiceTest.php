@@ -62,9 +62,9 @@ it('can get specific desa by slug when using database gabungan', function () {
     $existingDesa = DataDesa::factory()->create(['nama' => 'Test Desa']);
     
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Mock API response
     $apiResponse = [
@@ -134,9 +134,9 @@ it('can get path desa list', function () {
 
 it('can call desa method with filters', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     Http::fake([
         'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200)
@@ -151,9 +151,9 @@ it('can call desa method with filters', function () {
 
 it('handles empty results gracefully', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     Http::fake([
         'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200)
@@ -168,9 +168,9 @@ it('handles empty results gracefully', function () {
 
 it('caches list desa when using database gabungan', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Clear cache first
     Cache::forget('listDesa');
@@ -209,9 +209,9 @@ it('caches list desa when using database gabungan', function () {
 
 it('returns cached list desa when available', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Set up cache with the correct structure
     $cachedData = collect([
@@ -237,9 +237,9 @@ it('returns cached list desa when available', function () {
 
 it('transforms API response correctly', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Mock API response
     $apiResponse = [
@@ -279,9 +279,9 @@ it('transforms API response correctly', function () {
 
 it('handles null values in API response', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Mock API response with null values
     $apiResponse = [
@@ -321,9 +321,9 @@ it('handles null values in API response', function () {
 
 it('can get jumlah desa with filters', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Mock API response for jumlah desa
     $apiResponse = [
@@ -347,9 +347,9 @@ it('can get jumlah desa with filters', function () {
 
 it('returns 0 when jumlah desa API fails', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Mock API error response
     Http::fake([
@@ -364,9 +364,9 @@ it('returns 0 when jumlah desa API fails', function () {
 
 it('handles malformed API response for jumlah desa', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Mock malformed API response
     $apiResponse = [
@@ -386,9 +386,9 @@ it('handles malformed API response for jumlah desa', function () {
 
 it('can get path desa list when using database gabungan', function () {
     // Set up setting aplikasi to use database gabungan
-    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
-    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
     
     // Clear cache first
     Cache::forget('listDesa');

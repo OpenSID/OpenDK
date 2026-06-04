@@ -45,8 +45,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -82,9 +81,7 @@ class AppServiceProvider extends ServiceProvider
             $this->file();
         }
 
-        // Note: Doctrine DBAL tinyinteger type removed for Laravel 11 compatibility
-        // If needed, consider using native MySQL migrations instead
-        
+
         // bypass validasi captcha saat unit testing
         if (app()->environment('testing') || app()->environment('local')) {
             Validator::extend('captcha', function () {

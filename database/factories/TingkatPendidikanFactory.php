@@ -53,7 +53,7 @@ class TingkatPendidikanFactory extends Factory
 
         return [
             'desa_id' => function () {
-                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['desa_id' => '3301011234567', 'nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->desa_id;
             },
             'tidak_tamat_sekolah' => $this->faker->numberBetween(0, 100),
             'tamat_sd' => $this->faker->numberBetween(0, 200),

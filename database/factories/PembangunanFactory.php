@@ -21,7 +21,7 @@ class PembangunanFactory extends Factory
                 return abs($id % 2000000000);
             },
             'desa_id' => function () {
-                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['desa_id' => '3301011234567', 'nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->desa_id;
             },
             'judul' => $this->faker->sentence(4),
             'sumber_dana' => $this->faker->randomElement(['APBD', 'APBN', 'Swadaya', 'Bantuan']),

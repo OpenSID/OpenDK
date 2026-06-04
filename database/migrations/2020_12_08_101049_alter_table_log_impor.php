@@ -29,8 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Doctrine\DBAL\Types\StringType;
-use Doctrine\DBAL\Types\Type;
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -44,7 +43,6 @@ class AlterTableLogImpor extends Migration
      */
     public function up()
     {
-        $this->charType();
         Schema::table('log_imports', function (Blueprint $table) {
             $table->char('desa_id', 13)->nullable()->change();
         });
@@ -57,22 +55,11 @@ class AlterTableLogImpor extends Migration
      */
     public function down()
     {
-        $this->charType();
         Schema::table('log_imports', function (Blueprint $table) {
             // sebelumnya bernilai 10, tapi bemasalah karena data yang ada kini bernilai 13
             $table->char('desa_id', 13)->nullable()->change();
         });
     }
 
-    /**
-     * Doctrine bug: [L5.1] Migrations - Cannot change an existing column to type char #9636.
-     *
-     * @see https://github.com/laravel/framework/issues/9636
-     */
-    protected function charType()
-    {
-        if (! Type::hasType('char')) {
-            Type::addType('char', StringType::class);
-        }
-    }
+
 }

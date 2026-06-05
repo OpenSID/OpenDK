@@ -31,30 +31,48 @@
 
 namespace App\Providers;
 
+use App\Events\ArtikelChanged;
+use App\Listeners\ClearArtikelCacheListener;
+use App\Models\Album;
+use App\Models\Artikel;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
+use App\Models\Galeri;
+use App\Models\MediaSosial;
+use App\Models\MediaTerkait;
 use App\Models\Penduduk;
+use App\Models\Widget;
+use App\Observers\AlbumObserver;
+use App\Observers\ArtikelObserver;
+use App\Observers\GaleriObserver;
+use App\Observers\MediaSosialObserver;
+use App\Observers\MediaTerkaitObserver;
+use App\Observers\WidgetObserver;
 use App\Services\CacheService;
 use App\Support\Collection;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(CacheService::class, function () {
             return new CacheService();
@@ -63,16 +81,26 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        // default lengt string
+        // Default string length untuk MySQL lama
         Schema::defaultStringLength(191);
 
         Paginator::useBootstrap();
         $this->paginate();
+
+        // Routing tambahan: API Frontend dengan middleware theme.api
+        $this->registerApiFrontendRoutes();
+
+        // Rate Limiter (sebelumnya di RouteServiceProvider)
+        $this->configureRateLimiting();
+
+        // Events & Listeners (sebelumnya di EventServiceProvider)
+        $this->registerEvents();
+
+        // Model Observers (sebelumnya di EventServiceProvider)
+        $this->registerObservers();
 
         if (sudahInstal()) {
             $this->penduduk();
@@ -81,43 +109,74 @@ class AppServiceProvider extends ServiceProvider
             $this->file();
         }
 
-
-        // bypass validasi captcha saat unit testing
+        // Bypass validasi captcha saat unit testing / local
         if (app()->environment('testing') || app()->environment('local')) {
             Validator::extend('captcha', function () {
-                return true; // selalu lolos di environment testing
+                return true;
             });
         }
     }
 
-    protected function penduduk()
+    /**
+     * Registrasi route API Frontend dengan middleware khusus.
+     * (Sebelumnya di RouteServiceProvider — route api-frontend tidak bisa diset di withRouting())
+     */
+    protected function registerApiFrontendRoutes(): void
+    {
+        Route::middleware('theme.api')
+            ->prefix('api/frontend')
+            ->group(base_path('routes/api-frontend.php'));
+    }
+
+    /**
+     * Konfigurasi rate limiter untuk API.
+     * (Sebelumnya di RouteServiceProvider::configureRateLimiting())
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+    }
+
+    /**
+     * Registrasi event dan listener.
+     * (Sebelumnya di EventServiceProvider::$listen)
+     */
+    protected function registerEvents(): void
+    {
+        Event::listen(
+            Registered::class,
+            SendEmailVerificationNotification::class
+        );
+
+        Event::listen(
+            ArtikelChanged::class,
+            ClearArtikelCacheListener::class
+        );
+    }
+
+    /**
+     * Registrasi model observer.
+     * (Sebelumnya di EventServiceProvider::boot())
+     */
+    protected function registerObservers(): void
+    {
+        Album::observe(AlbumObserver::class);
+        Artikel::observe(ArtikelObserver::class);
+        Galeri::observe(GaleriObserver::class);
+        Widget::observe(WidgetObserver::class);
+        MediaSosial::observe(MediaSosialObserver::class);
+        MediaTerkait::observe(MediaTerkaitObserver::class);
+    }
+
+    /**
+     * Konfigurasi custom validator untuk data penduduk.
+     */
+    protected function penduduk(): void
     {
         // kecamatan_id harus dihapus pada migrasi database/migrations/2021_10_12_081718_alter_table_das_data_umum.php
-        // jumlah_penduduk dll dihapus pada migrasi database/migrations/2021_01_02_055931_dropcolomn_data_umum_table.php           
-        // Penduduk::saved(function ($model) {
-        //     
-        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();            
-        //      
-        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-        //     $dataUmum->save();
-        // });
-
-        // Penduduk::deleted(function ($model) {
-        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
-
-        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-        //     $dataUmum->save();
-        // });
+        // jumlah_penduduk dll dihapus pada migrasi database/migrations/2021_01_02_055931_dropcolomn_data_umum_table.php
 
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
             $query = DB::table('das_penduduk')
@@ -162,7 +221,10 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function config()
+    /**
+     * Load konfigurasi aplikasi dari database ke dalam config().
+     */
+    protected function config(): void
     {
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
@@ -203,14 +265,20 @@ class AppServiceProvider extends ServiceProvider
         ]);
     }
 
-    protected function blade()
+    /**
+     * Registrasi Blade directive custom.
+     */
+    protected function blade(): void
     {
         Blade::directive('selected', function ($condition) {
             return "<?php if({$condition}): echo 'selected'; endif; ?>";
         });
     }
 
-    protected function file()
+    /**
+     * Validator untuk file upload (mencegah file berbahaya).
+     */
+    protected function file(): void
     {
         Validator::extend('valid_file', function ($attributes, $value, $parameters) {
             $contains = preg_match('/<\?php|<script|function|__halt_compiler|<html/i', File::get($value));
@@ -222,7 +290,10 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function paginate()
+    /**
+     * Tambahkan macro paginate() ke Collection.
+     */
+    protected function paginate(): void
     {
         /**
          * Paginate a standard Laravel Collection.
@@ -231,7 +302,6 @@ class AppServiceProvider extends ServiceProvider
          * @param  int  $total
          * @param  int  $page
          * @param  string  $pageName
-         * @return array
          */
         Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page'): LengthAwarePaginator {
             $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);

@@ -9,7 +9,7 @@
     ],
     "homepage": "https://opendk.my.id/",
     "require": {
-        "php": "^8.3",
+        "php": "^8.4",
         "bensampo/laravel-enum": "^6.0",
         "cocur/slugify": "4.6.0",
         "cviebrock/eloquent-sluggable": "^13.0",
@@ -80,7 +80,7 @@
             "symfony/thanks": true
         },
         "platform": {
-            "php": "8.3"
+            "php": "8.4"
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",

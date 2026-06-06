@@ -34,6 +34,7 @@ use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontEnd\PageController;
+use App\Http\Controllers\Installer\InstallerController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Setting\AplikasiController;
@@ -71,18 +72,19 @@ Route::get('/docs', function () {
     return view('swagger');
 })->name('swagger');
 // Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
-Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Installer'], function () {
-    Route::get('/', 'InstallerController@welcome')->name('installer.welcome');
-    Route::get('/requirements', 'InstallerController@requirements')->name('installer.requirements');
-    Route::get('/permissions', 'InstallerController@permissions')->name('installer.permissions');
-    Route::get('/environment', 'InstallerController@environment')->name('installer.environment');
-    Route::get('/environment/wizard', 'InstallerController@environmentWizard')->name('installer.environmentWizard');
-    Route::get('/environment/classic', 'InstallerController@environmentClassic')->name('installer.environmentClassic');
-    Route::post('/environment/saveWizard', 'InstallerController@environmentSaveWizard')->name('installer.environmentSaveWizard');
-    Route::post('/environment/saveClassic', 'InstallerController@environmentSaveClassic')->name('installer.environmentSaveClassic');
-    Route::get('/database', 'InstallerController@database')->name('installer.database');
-    Route::get('/final', 'InstallerController@final')->name('installer.final');
-    Route::post('/final', 'InstallerController@performInstallation')->name('installer.performInstallation');
+// Menggunakan sintaks modern Laravel 13 — namespace string sudah dihapus di L10+
+Route::prefix('install')->group(function () {
+    Route::get('/', [InstallerController::class, 'welcome'])->name('installer.welcome');
+    Route::get('/requirements', [InstallerController::class, 'requirements'])->name('installer.requirements');
+    Route::get('/permissions', [InstallerController::class, 'permissions'])->name('installer.permissions');
+    Route::get('/environment', [InstallerController::class, 'environment'])->name('installer.environment');
+    Route::get('/environment/wizard', [InstallerController::class, 'environmentWizard'])->name('installer.environmentWizard');
+    Route::get('/environment/classic', [InstallerController::class, 'environmentClassic'])->name('installer.environmentClassic');
+    Route::post('/environment/saveWizard', [InstallerController::class, 'environmentSaveWizard'])->name('installer.environmentSaveWizard');
+    Route::post('/environment/saveClassic', [InstallerController::class, 'environmentSaveClassic'])->name('installer.environmentSaveClassic');
+    Route::get('/database', [InstallerController::class, 'database'])->name('installer.database');
+    Route::get('/final', [InstallerController::class, 'final'])->name('installer.final');
+    Route::post('/final', [InstallerController::class, 'performInstallation'])->name('installer.performInstallation');
 });
 
 // Redirect if apps not installed

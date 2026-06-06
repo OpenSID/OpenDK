@@ -56,6 +56,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -77,6 +78,22 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CacheService::class, function () {
             return new CacheService();
         });
+
+        /*
+        |----------------------------------------------------------------------
+        | Class Aliases (pengganti aliases di config/app.php L10-style)
+        |----------------------------------------------------------------------
+        | Didaftarkan via AliasLoader karena ApplicationBuilder::withAliases()
+        | tidak tersedia di Laravel 13.x.
+        */
+        $loader = AliasLoader::getInstance();
+        $loader->alias('JWTAuth',    \Tymon\JWTAuth\Facades\JWTAuth::class);
+        $loader->alias('JWTFactory', \Tymon\JWTAuth\Facades\JWTFactory::class);
+        $loader->alias('Captcha',    \Mews\Captcha\Facades\Captcha::class);
+        $loader->alias('Counter',    \App\Facades\Counter::class);
+        $loader->alias('Html',       \Spatie\Html\Facades\Html::class);
+        $loader->alias('Excel',      \Maatwebsite\Excel\Facades\Excel::class);
+        $loader->alias('Debugbar',   \Barryvdh\Debugbar\Facades\Debugbar::class);
     }
 
     /**

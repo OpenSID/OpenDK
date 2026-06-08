@@ -65,7 +65,7 @@ class PageController extends FrontEndController
                 'include' => 'kategori'
             ]))
         ]);
-    }
+    }    
 
     public function beritaDesa()
     {
@@ -76,8 +76,7 @@ class PageController extends FrontEndController
         return view('pages.berita.desa', [
             'page_title' => 'Berita Desa',
             'cari' => null,
-            'cari_desa' => null,
-            'list_desa' => DataDesa::orderBy('desa_id')->get(),
+            'cari_desa' => null,            
             'feeds' => $feeds,
         ]);
     }
@@ -152,7 +151,7 @@ class PageController extends FrontEndController
         $html = view('pages.berita.feeds', [
             'page_title' => 'Beranda',
             'cari_desa' => null,
-            'list_desa' => DataDesa::orderBy('desa_id')->get(),
+            'list_desa' => (new DesaService())->listDesa(),
             'feeds' => $feeds,
         ])->render();
 

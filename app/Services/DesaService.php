@@ -32,11 +32,11 @@
 namespace App\Services;
 
 use App\Models\DataDesa;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Expr\Cast\Object_;
-use stdClass;
+use willvincent\Feeds\Facades\FeedsFacade;
 
 class DesaService extends BaseApiService
 {
@@ -78,23 +78,82 @@ class DesaService extends BaseApiService
     public function desa(array $filters = [])
     {
         // Panggil API dan ambil data
-        $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);        
+        $data = $this->apiRequest('/api/v1/wilayah/desa', $filters);
         if (! $data) {
             return collect([]);
         }
 
         return collect($data)->map(function ($item) {
             return (object) [
-                'desa_id' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
-                'kode_desa' => $item['attributes']['kode_desa'] ?? null, // Ambil kode desa
-                'nama' => $item['attributes']['nama_desa'] ?? null, // Ambil nama desa
-                'sebutan_desa' => $item['attributes']['sebutan_desa'] ?? null, // Ambil sebutan desa
-                'website' => $item['attributes']['website'] ?? null, // Ambil website
-                'luas_wilayah' => $item['attributes']['luas_wilayah'] ?? null, // Ambil luas wilayah
-                'path' => $item['attributes']['path'] ?? null, // Ambil path
+                'desa_id' => $item['attributes']['kode_desa'] ?? null,
+                'kode_desa' => $item['attributes']['kode_desa'] ?? null,
+                'nama' => $item['attributes']['nama_desa'] ?? null,
+                'sebutan_desa' => $item['attributes']['sebutan_desa'] ?? null,
+                'website' => $item['attributes']['website'] ?? null,
+                'luas_wilayah' => $item['attributes']['luas_wilayah'] ?? null,
+                'path' => $item['attributes']['path'] ?? null,
             ];
         });
     }
+
+    /**
+     * Get feeds for all desa
+     */
+    public function getFeeds(): array
+    {
+        // Cache feeds for 1 hour to improve performance
+        return Cache::remember('desa_feeds', 60 * 60, function () {
+            try {                
+                $allDesa = $this->listDesa()->map(function($item){
+                        return ($item instanceof DataDesa) ? $item : new DataDesa((array) $item);
+                    })->filter(static fn($q) => !empty($q->website));
+                $feeds = [];
+                foreach ($allDesa as $desa) {
+                    $feedItems = FeedsFacade::make($desa->website_url_feed['website'], 5, true);
+                    $items = $feedItems->get_items();
+
+                    // Handle case where no items returned
+                    if (empty($items)) {
+                        Log::warning('No items found for feed', [
+                            'desa_id' => $desa->desa_id,
+                            'website' => $desa->website
+                        ]);
+                        continue;
+                    }
+
+                    foreach ($items as $item) {
+                        try {
+                            $feeds[] = [
+                                'desa_id' => $desa->desa_id,
+                                'nama_desa' => $desa->nama,
+                                'feed_link' => $item->get_feed()->get_permalink(),
+                                'feed_title' => $item->get_feed()->get_title(),
+                                'link' => $item->get_link(),
+                                'date' => \Carbon\Carbon::createFromTimestamp((int) $item->get_date('U')),
+                                'author' => $item->get_author()->get_name() ?? 'Administrator',
+                                'title' => $item->get_title(),
+                                'image' => get_tag_image($item->get_description()),
+                                'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
+                                'content' => $item->get_content(),
+                            ];
+                        } catch (\Throwable $itemError) {
+                            Log::error('Error processing feed item', [
+                                'desa_id' => $desa->desa_id,
+                                'error' => $itemError->getMessage()
+                            ]);
+                            continue;
+                        }
+                    }
+                }
+                
+                Log::info('Total feeds collected', ['count' => count($feeds)]);
+                return $feeds;
+            } catch (Exception $e) {
+                Log::error('Error fetching desa feeds', ['message' => $e->getMessage()]);
+                return [];
+            }
+        });
+    }                       
 
     public function listPathDesa()
     {

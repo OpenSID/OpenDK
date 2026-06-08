@@ -3,9 +3,13 @@
 use App\Services\DesaService;
 use App\Models\DataDesa;
 use App\Models\SettingAplikasi;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
+use willvincent\Feeds\Facades\FeedsFacade;
+
+uses(DatabaseTransactions::class);
 
 beforeEach(function () {
     // Clean up database before each test
@@ -418,7 +422,7 @@ it('can get path desa list when not using database gabungan', function () {
     SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
     
     // Create a desa with path
-    DataDesa::factory()->create(['path' => '/test/path']);
+    DataDesa::factory()->create(['path' => json_encode('/test/path', JSON_UNESCAPED_SLASHES)]);
     DataDesa::factory()->create(['path' => null]);
     
     $service = new DesaService();
@@ -426,5 +430,220 @@ it('can get path desa list when not using database gabungan', function () {
     
     expect($pathDesaList)->toBeIterable();
     expect($pathDesaList)->toHaveCount(1);
-    expect($pathDesaList->first()->path)->toBe('/test/path');
+    expect($pathDesaList->first()->path)->toBe('"/test/path"');
+});
+
+it('returns empty array when getFeeds encounters exception', function () {
+    Cache::forget('desa_feeds');
+    DataDesa::factory()->create(['website' => 'https://test-desa.com']);
+
+    FeedsFacade::shouldReceive('make')
+        ->andThrow(new Exception('Feed error'));
+
+    $service = new DesaService();
+    $feeds = $service->getFeeds();
+
+    expect($feeds)->toBe([]);
+});
+
+it('skips desa with empty website when getting feeds', function () {
+    Cache::forget('desa_feeds');
+    Cache::forget('listDesa');
+    DataDesa::query()->delete();
+    DataDesa::factory()->create(['desa_id' => 'NOWEBSITE', 'website' => null, 'nama' => 'Tanpa Website']);
+    DataDesa::factory()->create(['desa_id' => 'HASWEBSIT', 'website' => 'https://desa-web.com', 'nama' => 'Dengan Website']);
+
+    $feedMetaMock = Mockery::mock('stdClass');
+    $feedMetaMock->shouldReceive('get_permalink')->andReturn('https://feed.com');
+    $feedMetaMock->shouldReceive('get_title')->andReturn('Feed Title');
+
+    $authorMock = Mockery::mock('stdClass');
+    $authorMock->shouldReceive('get_name')->andReturn('Admin');
+
+    $itemMock = Mockery::mock('stdClass');
+    $itemMock->shouldReceive('get_feed')->andReturn($feedMetaMock);
+    $itemMock->shouldReceive('get_link')->andReturn('https://feed.com/post');
+    $itemMock->shouldReceive('get_date')->with('U')->andReturn('1710000000');
+    $itemMock->shouldReceive('get_author')->andReturn($authorMock);
+    $itemMock->shouldReceive('get_title')->andReturn('Post');
+    $itemMock->shouldReceive('get_description')->andReturn('Description');
+    $itemMock->shouldReceive('get_content')->andReturn('Content');
+
+    $feedMock = Mockery::mock('stdClass');
+    $feedMock->shouldReceive('get_items')->andReturn([$itemMock]);
+
+    FeedsFacade::shouldReceive('make')
+        ->once()
+        ->andReturn($feedMock);
+
+    $service = new DesaService();
+    $feeds = $service->getFeeds();
+
+    expect($feeds)->toHaveCount(1);
+    expect($feeds[0]['nama_desa'])->toBe('Dengan Website');
+});
+
+it('handles empty feed items gracefully', function () {
+    Cache::forget('desa_feeds');
+    Cache::forget('listDesa');
+    DataDesa::query()->delete();
+    DataDesa::factory()->create(['desa_id' => 'TESTDESA1', 'website' => 'https://test-desa.com']);
+
+    $feedMock = Mockery::mock('stdClass');
+    $feedMock->shouldReceive('get_items')->andReturn([]);
+
+    FeedsFacade::shouldReceive('make')
+        ->once()
+        ->andReturn($feedMock);
+
+    $service = new DesaService();
+    $feeds = $service->getFeeds();
+
+    expect($feeds)->toBe([]);
+});
+
+it('transforms feed items correctly', function () {
+    Cache::forget('desa_feeds');
+    Cache::forget('listDesa');
+    DataDesa::query()->delete();
+    DataDesa::factory()->create([
+        'desa_id' => 'TRANSFORM10',
+        'nama' => 'Desa Transform',
+        'sebutan_desa' => 'Desa',
+        'website' => 'https://desa-transform.com',
+    ]);
+
+    $feedMetaMock = Mockery::mock('stdClass');
+    $feedMetaMock->shouldReceive('get_permalink')->andReturn('https://feed.example.com');
+    $feedMetaMock->shouldReceive('get_title')->andReturn('Feed Example');
+
+    $authorMock = Mockery::mock('stdClass');
+    $authorMock->shouldReceive('get_name')->andReturn('John Doe');
+
+    $itemMock = Mockery::mock('stdClass');
+    $itemMock->shouldReceive('get_feed')->andReturn($feedMetaMock);
+    $itemMock->shouldReceive('get_link')->andReturn('https://feed.example.com/artikel-1');
+    $itemMock->shouldReceive('get_date')->with('U')->andReturn('1715000000');
+    $itemMock->shouldReceive('get_author')->andReturn($authorMock);
+    $itemMock->shouldReceive('get_title')->andReturn('Artikel Pertama');
+    $itemMock->shouldReceive('get_description')->andReturn('<p>Deskripsi artikel dengan gambar <img src="https://example.com/gambar.jpg" /></p>');
+    $itemMock->shouldReceive('get_content')->andReturn('Konten lengkap artikel');
+
+    $feedMock = Mockery::mock('stdClass');
+    $feedMock->shouldReceive('get_items')->andReturn([$itemMock]);
+
+    FeedsFacade::shouldReceive('make')
+        ->once()
+        ->andReturn($feedMock);
+
+    $service = new DesaService();
+    $feeds = $service->getFeeds();
+
+    expect($feeds)->toHaveCount(1);
+
+    $feed = $feeds[0];
+    expect($feed['desa_id'])->toBe('TRANSFORM10');
+    expect($feed['nama_desa'])->toBe('Desa Transform');
+    expect($feed['feed_link'])->toBe('https://feed.example.com');
+    expect($feed['feed_title'])->toBe('Feed Example');
+    expect($feed['link'])->toBe('https://feed.example.com/artikel-1');
+    expect($feed['author'])->toBe('John Doe');
+    expect($feed['title'])->toBe('Artikel Pertama');
+    expect($feed['image'])->toBe('https://example.com/gambar.jpg');
+    expect($feed['content'])->toBe('Konten lengkap artikel');
+});
+
+it('caches feeds result', function () {
+    Cache::forget('desa_feeds');
+    Cache::forget('listDesa');
+    DataDesa::query()->delete();
+    DataDesa::factory()->create(['desa_id' => 'CACHEDFED', 'website' => 'https://test-desa.com']);
+
+    $feedMetaMock = Mockery::mock('stdClass');
+    $feedMetaMock->shouldReceive('get_permalink')->andReturn('https://feed.com');
+    $feedMetaMock->shouldReceive('get_title')->andReturn('Feed');
+
+    $authorMock = Mockery::mock('stdClass');
+    $authorMock->shouldReceive('get_name')->andReturn('Admin');
+
+    $itemMock = Mockery::mock('stdClass');
+    $itemMock->shouldReceive('get_feed')->andReturn($feedMetaMock);
+    $itemMock->shouldReceive('get_link')->andReturn('https://feed.com/post');
+    $itemMock->shouldReceive('get_date')->with('U')->andReturn('1710000000');
+    $itemMock->shouldReceive('get_author')->andReturn($authorMock);
+    $itemMock->shouldReceive('get_title')->andReturn('Post');
+    $itemMock->shouldReceive('get_description')->andReturn('Desc');
+    $itemMock->shouldReceive('get_content')->andReturn('Content');
+
+    $feedMock = Mockery::mock('stdClass');
+    $feedMock->shouldReceive('get_items')->andReturn([$itemMock]);
+
+    FeedsFacade::shouldReceive('make')
+        ->once()
+        ->andReturn($feedMock);
+
+    $service = new DesaService();
+    $firstCall = $service->getFeeds();
+    $secondCall = $service->getFeeds();
+
+    expect($firstCall)->toEqual($secondCall);
+});
+
+it('can get feeds when using database gabungan', function () {
+    Cache::forget('desa_feeds');
+    Cache::forget('listDesa');
+    DataDesa::query()->delete();
+    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '1']);
+    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
+    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-key']);
+
+    $apiResponse = [
+        'data' => [
+            [
+                'id' => 1,
+                'attributes' => [
+                    'kode_desa' => 'FEEDAPI01',
+                    'nama_desa' => 'Desa API',
+                    'sebutan_desa' => 'Desa',
+                    'website' => 'https://desa-api.com',
+                    'luas_wilayah' => '500',
+                    'path' => '/api/desa',
+                ],
+            ],
+        ],
+    ];
+
+    Http::fake([
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response($apiResponse, 200),
+    ]);
+
+    $feedMetaMock = Mockery::mock('stdClass');
+    $feedMetaMock->shouldReceive('get_permalink')->andReturn('https://feed-api.com');
+    $feedMetaMock->shouldReceive('get_title')->andReturn('Feed API');
+
+    $authorMock = Mockery::mock('stdClass');
+    $authorMock->shouldReceive('get_name')->andReturn('Admin API');
+
+    $itemMock = Mockery::mock('stdClass');
+    $itemMock->shouldReceive('get_feed')->andReturn($feedMetaMock);
+    $itemMock->shouldReceive('get_link')->andReturn('https://feed-api.com/post');
+    $itemMock->shouldReceive('get_date')->with('U')->andReturn('1710000000');
+    $itemMock->shouldReceive('get_author')->andReturn($authorMock);
+    $itemMock->shouldReceive('get_title')->andReturn('Post API');
+    $itemMock->shouldReceive('get_description')->andReturn('Desc API');
+    $itemMock->shouldReceive('get_content')->andReturn('Content API');
+
+    $feedMock = Mockery::mock('stdClass');
+    $feedMock->shouldReceive('get_items')->andReturn([$itemMock]);
+
+    FeedsFacade::shouldReceive('make')
+        ->once()
+        ->andReturn($feedMock);
+
+    $service = new DesaService();
+    $feeds = $service->getFeeds();
+
+    expect($feeds)->toHaveCount(1);
+    expect($feeds[0]['desa_id'])->toBe('FEEDAPI01');
+    expect($feeds[0]['nama_desa'])->toBe('Desa API');
 });

@@ -524,6 +524,10 @@ if (!function_exists('scan_themes')) {
 if (!function_exists('theme_active')) {
     function theme_active()
     {
+        if (!sudahInstal() || !Schema::hasTable('das_themes')) {
+            return null;
+        }
+
         $themeActive = \App\Models\Themes::where('active', 1)->first();
         if (!$themeActive) {
             $themeActive = \App\Models\Themes::where('system', 1)->first();

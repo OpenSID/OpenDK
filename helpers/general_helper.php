@@ -524,18 +524,39 @@ if (!function_exists('scan_themes')) {
 if (!function_exists('theme_active')) {
     function theme_active()
     {
-        if (!sudahInstal() || !Schema::hasTable('das_themes')) {
+        if (!sudahInstal()) {
             return null;
         }
 
-        $themeActive = \App\Models\Themes::where('active', 1)->first();
-        if (!$themeActive) {
-            $themeActive = \App\Models\Themes::where('system', 1)->first();
-            $themeActive->active = 1;
-            $themeActive->save();
+        // Cache hasil hasTable agar tidak SHOW TABLES setiap request
+        $tableExists = cache()->remember('das_themes_table_exists', 60 * 60, function () {
+            return Schema::hasTable('das_themes');
+        });
+
+        if (!$tableExists) {
+            return null;
         }
 
-        return \Hexadog\ThemesManager\Facades\ThemesManager::set($themeActive->slug);
+        // Cache slug tema aktif agar tidak SELECT + UPDATE setiap request
+        // Key 'active_theme' selaras dengan ThemeService::clearCache()
+        $slug = cache()->remember('active_theme', 60 * 60, function () {
+            $themeActive = \App\Models\Themes::where('active', 1)->first();
+            if (!$themeActive) {
+                $themeActive = \App\Models\Themes::where('system', 1)->first();
+                if ($themeActive) {
+                    $themeActive->active = 1;
+                    $themeActive->save();
+                }
+            }
+
+            return $themeActive?->slug;
+        });
+
+        if (!$slug) {
+            return null;
+        }
+
+        return \Hexadog\ThemesManager\Facades\ThemesManager::set($slug);
     }
 }
 

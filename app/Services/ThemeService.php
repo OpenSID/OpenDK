@@ -42,6 +42,7 @@ class ThemeService
     public function clearCache(): void
     {
         $this->cacheService->removeCacheByKey('active_theme');
+        \Illuminate\Support\Facades\Cache::forget('das_themes_table_exists');
         $store = \Illuminate\Support\Facades\Cache::getStore();
         if (method_exists($store, 'tags')) {
             \Illuminate\Support\Facades\Cache::tags(['theme_api'])->flush();

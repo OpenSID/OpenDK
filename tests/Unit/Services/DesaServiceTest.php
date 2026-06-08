@@ -3,9 +3,13 @@
 use App\Services\DesaService;
 use App\Models\DataDesa;
 use App\Models\SettingAplikasi;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
+use willvincent\Feeds\Facades\FeedsFacade;
+
+uses(DatabaseTransactions::class);
 
 beforeEach(function () {
     // Clean up database before each test

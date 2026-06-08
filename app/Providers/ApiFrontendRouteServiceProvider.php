@@ -29,18 +29,23 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Middleware;
+namespace App\Providers;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
-class VerifyCsrfToken extends Middleware
+class ApiFrontendRouteServiceProvider extends ServiceProvider
 {
     /**
-     * The URIs that should be excluded from CSRF verification.
+     * Define the routes for the API Frontend.
      *
-     * @var array<int, string>
+     * Route ini menggunakan middleware 'theme.api' dan prefix 'api/frontend'.
+     * Dipisahkan dari withRouting() karena memerlukan middleware khusus.
      */
-    protected $except = [
-        //
-    ];
+    public function map(): void
+    {
+        Route::middleware('theme.api')
+            ->prefix('api/frontend')
+            ->group(base_path('routes/api-frontend.php'));
+    }
 }

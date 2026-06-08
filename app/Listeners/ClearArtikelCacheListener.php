@@ -31,6 +31,7 @@
 
 namespace App\Listeners;
 
+use App\Events\ArtikelChanged;
 use App\Services\CacheService;
 use Illuminate\Support\Facades\Log;
 
@@ -39,10 +40,9 @@ class ClearArtikelCacheListener
     /**
      * Handle the event.
      *
-     * @param  object  $event
      * @return void
      */
-    public function handle($event)
+    public function handle(ArtikelChanged $event)
     {        
         try {
             // Ambil CacheService dari container (sudah didaftarkan di AppServiceProvider)

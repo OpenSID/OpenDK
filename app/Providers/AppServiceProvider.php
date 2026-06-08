@@ -31,39 +31,15 @@
 
 namespace App\Providers;
 
-use App\Events\ArtikelChanged;
-use App\Listeners\ClearArtikelCacheListener;
-use App\Models\Album;
-use App\Models\Artikel;
-use App\Models\DataDesa;
-use App\Models\DataUmum;
-use App\Models\Galeri;
-use App\Models\MediaSosial;
-use App\Models\MediaTerkait;
-use App\Models\Penduduk;
-use App\Models\Widget;
-use App\Observers\AlbumObserver;
-use App\Observers\ArtikelObserver;
-use App\Observers\GaleriObserver;
-use App\Observers\MediaSosialObserver;
-use App\Observers\MediaTerkaitObserver;
-use App\Observers\WidgetObserver;
 use App\Services\CacheService;
 use App\Support\Collection;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -107,18 +83,6 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
         $this->paginate();
 
-        // Routing tambahan: API Frontend dengan middleware theme.api
-        $this->registerApiFrontendRoutes();
-
-        // Rate Limiter (sebelumnya di RouteServiceProvider)
-        $this->configureRateLimiting();
-
-        // Events & Listeners (sebelumnya di EventServiceProvider)
-        $this->registerEvents();
-
-        // Model Observers (sebelumnya di EventServiceProvider)
-        $this->registerObservers();
-
         if (sudahInstal()) {
             $this->penduduk();
             $this->config();
@@ -132,59 +96,6 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             });
         }
-    }
-
-    /**
-     * Registrasi route API Frontend dengan middleware khusus.
-     * (Sebelumnya di RouteServiceProvider — route api-frontend tidak bisa diset di withRouting())
-     */
-    protected function registerApiFrontendRoutes(): void
-    {
-        Route::middleware('theme.api')
-            ->prefix('api/frontend')
-            ->group(base_path('routes/api-frontend.php'));
-    }
-
-    /**
-     * Konfigurasi rate limiter untuk API.
-     * (Sebelumnya di RouteServiceProvider::configureRateLimiting())
-     */
-    protected function configureRateLimiting(): void
-    {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
-    }
-
-    /**
-     * Registrasi event dan listener.
-     * (Sebelumnya di EventServiceProvider::$listen)
-     */
-    protected function registerEvents(): void
-    {
-        Event::listen(
-            Registered::class,
-            SendEmailVerificationNotification::class
-        );
-
-        Event::listen(
-            ArtikelChanged::class,
-            ClearArtikelCacheListener::class
-        );
-    }
-
-    /**
-     * Registrasi model observer.
-     * (Sebelumnya di EventServiceProvider::boot())
-     */
-    protected function registerObservers(): void
-    {
-        Album::observe(AlbumObserver::class);
-        Artikel::observe(ArtikelObserver::class);
-        Galeri::observe(GaleriObserver::class);
-        Widget::observe(WidgetObserver::class);
-        MediaSosial::observe(MediaSosialObserver::class);
-        MediaTerkait::observe(MediaTerkaitObserver::class);
     }
 
     /**

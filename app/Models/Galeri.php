@@ -6,10 +6,19 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Observers\GaleriObserver;
 
 class Galeri extends Model
 {
     use HasFactory, Sluggable;
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(GaleriObserver::class);
+    }
 
     protected $fillable = [
         'album_id',

@@ -40,6 +40,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         channels: __DIR__.'/../routes/channels.php',
     )
+    ->withProviders([
+        \App\Providers\ApiFrontendRouteServiceProvider::class,
+    ])
     ->withCommands([
         __DIR__.'/../app/Console/Commands',
     ])
@@ -110,6 +113,17 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Illuminate\Auth\Middleware\Authorize::class,
             \App\Http\Middleware\SecurityHeaders::class,
+        ]);
+
+        /*
+        |----------------------------------------------------------------------
+        | Rate Limiting — API
+        |----------------------------------------------------------------------
+        | Rate limiter untuk grup 'api': 60 request per menit per user/IP.
+        | (Sebelumnya di AppServiceProvider::configureRateLimiting())
+        */
+        $middleware->api(prepend: [
+            \Illuminate\Routing\Middleware\ThrottleRequests::class.':60',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

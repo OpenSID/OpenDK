@@ -4,10 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\MediaTerkaitObserver;
 
 class MediaTerkait extends Model
 {
     use HasFactory;
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(MediaTerkaitObserver::class);
+    }
 
     protected $fillable = [
         'logo',

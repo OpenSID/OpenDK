@@ -68,8 +68,8 @@ class ToiletSanitasiController extends Controller
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(ToiletSanitasi::with(['desa']))
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = auth()->user()->can('access.data.toilet-sanitasi.edit') ? route('data.toilet-sanitasi.edit', $row->id) : null;
-                $data['delete_url'] = auth()->user()->can('access.data.toilet-sanitasi.delete') ? route('data.toilet-sanitasi.destroy', $row->id) : null;
+                $data['edit_url'] = auth()->user()->can('access.data.toilet_sanitasi.edit') ? route('data.toilet-sanitasi.edit', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.toilet_sanitasi.delete') ? route('data.toilet-sanitasi.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })->addColumn('nama_desa', function ($row) use ($listDesa) {

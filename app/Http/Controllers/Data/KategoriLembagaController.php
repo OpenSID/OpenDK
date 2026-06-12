@@ -35,8 +35,8 @@ class KategoriLembagaController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.data.kategori-lembaga.edit') ? route('data.kategori-lembaga.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.data.kategori-lembaga.delete') ? route('data.kategori-lembaga.destroy', $row->id) : null;
+                        $data['edit_url'] = auth()->user()->can('access.data.kategori_lembaga.edit') ? route('data.kategori-lembaga.edit', $row->id) : null;
+                        $data['delete_url'] = auth()->user()->can('access.data.kategori_lembaga.delete') ? route('data.kategori-lembaga.destroy', $row->id) : null;
                     }
 
                     return view('forms.aksi', $data);

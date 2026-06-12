@@ -54,7 +54,7 @@ class KategoriKomplainController extends Controller
         return DataTables::of(KategoriKomplain::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url'] = auth()->user()->can('access.setting.komplain-kategori.delete') ? route('setting.komplain-kategori.destroy', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.setting.komplain_kategori.delete') ? route('setting.komplain-kategori.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })

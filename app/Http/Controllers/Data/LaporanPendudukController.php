@@ -89,7 +89,7 @@ class LaporanPendudukController extends Controller
 
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = auth()->user()->can('access.data.laporan-penduduk.delete') ? route('data.laporan-penduduk.destroy', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.laporan_penduduk.delete') ? route('data.laporan-penduduk.destroy', $row->id) : null;
                 $data['download_url'] = asset('storage/laporan_penduduk/' . $row->nama_file);
 
                 return view('forms.aksi', $data);
@@ -169,7 +169,10 @@ class LaporanPendudukController extends Controller
 
             // Ekstrak file
             $zip = new ZipArchive();
-            $zip->open($path);
+            $result = $zip->open($path);
+            if ($result !== true) {
+                throw new \RuntimeException("File ZIP tidak valid atau rusak. Kode error: {$result}");
+            }
             $zip->extractTo($extract);
             $zip->close();
 

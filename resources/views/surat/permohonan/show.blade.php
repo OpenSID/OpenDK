@@ -39,7 +39,10 @@
                 <div class="form-group">
                     <div class="text-center">
                         @if ($surat->log_verifikasi == 4)
-                            <button id="passphrase" class="btn btn-primary">Tandatangani</button>
+                            <button id="tandatangan-qr" class="btn btn-primary">Tandatangani dengan QR Code</button>
+                            @if ($settings['tte'] && $settings['tte_api'] !== 'demo')
+                                <button id="passphrase" class="btn btn-success">Tandatangani (TTE)</button>
+                            @endif
                         @else
                             <button id="setujui" class="btn btn-primary">Setujui</button>
                             <button id="tolak" class="btn btn-danger">Tolak</button>
@@ -150,6 +153,60 @@
                         'Surat gagal ditolak.',
                         'error'
                     )
+                }
+            })
+        });
+
+        $('#tandatangan-qr').on('click', function() {
+            Swal.fire({
+                title: 'Apakah anda yakin ingin menandatangani surat ini dengan QR Code?',
+                text: 'Tanda tangan QR Code akan disematkan pada halaman terakhir surat.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Tandatangani!',
+                cancelButtonText: 'Batal',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    return fetch(`{{ route('surat.permohonan.tandatangan_qr', $surat->id) }}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json',
+                            },
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(err => { throw new Error(err.pesan_error) });
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Request failed: ${error}`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let response = result.value
+                    if (response.status == false) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: response.pesan_error,
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Surat berhasil ditandatangani dengan QR Code',
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            return window.location.replace(`{{ route('surat.arsip') }}`);
+                        })
+                    }
                 }
             })
         });

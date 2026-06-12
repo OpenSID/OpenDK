@@ -38,6 +38,7 @@
                                 <th>Nama Penduduk</th>
                                 <th>Ditandatangani oleh</th>
                                 <th>Tanggal</th>
+                                <th>Hash</th>
                             </tr>
                         </thead>
                     </table>
@@ -104,6 +105,12 @@
                     {
                         data: 'tanggal',
                         name: 'tanggal'
+                    },
+                    {
+                        data: 'hash',
+                        name: 'hash',
+                        orderable: false,
+                        searchable: false
                     },
                 ]
             });

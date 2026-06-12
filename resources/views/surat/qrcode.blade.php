@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $page_title ?? config('app.name', 'Laravel') }} | {{ $browser_title }}</title>
-    <title>Document</title>
     <link rel="stylesheet" href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
 
@@ -72,7 +71,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td><?= 'a/n ' . $surat->penduduk->nama ?></td>
+                            <td><?= 'a/n ' . ($surat->penduduk->nama ?? $surat->nama_penduduk) ?></td>
                         </tr>
                         <tr>
                             <td colspan="3"><u><b>Ditandatangani oleh :</b></u></td>
@@ -87,15 +86,25 @@
                             <td>:</td>
                             <td>{{ $surat->pengurus->jabatan->nama }}</td>
                         </tr>
+                        @if ($surat->file_hash)
+                        <tr>
+                            <td>Hash File</td>
+                            <td>:</td>
+                            <td><code style="font-size: 11px;">{{ $surat->file_hash }}</code></td>
+                        </tr>
+                        @endif
                     </tbody>
                 </table>
                 <br />
                 <div class="callout callout-success row">
-                    <div class="col-md-8 no-float">
-                        <h5><b>Telah ditandatangani secara elektronik</b></h5>
-                    </div>
-                    <div class="col-md-4 no-float">
-                        <img src="{{ asset('img/bsre.png') }}" alt="logo bsre" width="120px" height="auto">
+                    <div class="col-md-12 no-float">
+                        <h5><b>Telah ditandatangani</b></h5>
+                        <p style="font-size: 12px;">
+                            Surat ini telah ditandatangani dan diverifikasi oleh Kecamatan {{ $profil->nama_kecamatan }}.
+                            @if ($surat->file_hash)
+                            Keaslian file dapat diverifikasi dengan mengunggah file pada halaman <a href="{{ route('surat.verifikasi') }}">Verifikasi Surat</a>.
+                            @endif
+                        </p>
                     </div>
                 </div>
             </center>

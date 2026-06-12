@@ -38,12 +38,18 @@ use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\LogTte;
 use App\Models\Surat;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use setasign\Fpdi\Fpdi;
 use Yajra\DataTables\DataTables;
 
 class PermohonanController extends Controller
@@ -285,6 +291,95 @@ class PermohonanController extends Controller
                 'status' => false,
                 'pesan_error' => $e->getMessage(),
                 'jenis' => 'ClientException',
+            ]);
+        }
+    }
+
+    public function tandatanganQr($id)
+    {
+        $surat = Surat::findOrFail($id);
+
+        if ($surat->log_verifikasi != LogVerifikasiSurat::ProsesTTE) {
+            return response()->json(['status' => false, 'pesan_error' => 'Surat tidak dalam tahap penandatanganan.'], 400);
+        }
+
+        $user = auth()->user()->pengurus_id;
+        if ($user != $this->akun_camat->id) {
+            return response()->json(['status' => false, 'pesan_error' => 'Hanya camat yang dapat menandatangani surat.'], 403);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $file_path = public_path("storage/surat/{$surat->file}");
+            $file_info = pathinfo($file_path);
+            $signed_path = public_path("storage/surat/{$file_info['filename']}_signed.pdf");
+
+            $verificationUrl = route('surat.arsip.qrcode', $surat->id);
+
+            $qrCode = Builder::create()
+                ->writer(new PngWriter())
+                ->data($verificationUrl)
+                ->encoding(new Encoding('UTF-8'))
+                ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+                ->size(200)
+                ->margin(10)
+                ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+                ->build();
+
+            $qrTempPath = public_path('storage/surat/qr_temp_' . $surat->id . '.png');
+            $qrCode->saveToFile($qrTempPath);
+
+            $pdf = new Fpdi();
+            $pageCount = $pdf->setSourceFile($file_path);
+
+            for ($i = 1; $i <= $pageCount; $i++) {
+                $templateId = $pdf->importPage($i);
+                $size = $pdf->getTemplateSize($templateId);
+                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                $pdf->useTemplate($templateId);
+
+                if ($i === $pageCount) {
+                    $qrSize = 40;
+                    $margin = 10;
+                    $pdf->Image($qrTempPath, $size['width'] - $qrSize - $margin, $size['height'] - $qrSize - $margin, $qrSize, $qrSize);
+                }
+            }
+
+            $pdf->Output('F', $signed_path);
+
+            @unlink($qrTempPath);
+
+            $fileHash = hash_file('sha256', $signed_path);
+
+            @unlink($file_path);
+            rename($signed_path, $file_path);
+
+            $surat->update([
+                'status' => StatusSurat::Arsip,
+                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
+                'file_hash' => $fileHash,
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'pesan_error' => 'success',
+                'jenis' => 'success',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error('QR Code signing failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'surat_id' => $id,
+            ]);
+
+            return response()->json([
+                'status' => false,
+                'pesan_error' => $e->getMessage(),
+                'jenis' => 'Exception',
             ]);
         }
     }

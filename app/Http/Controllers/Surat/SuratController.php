@@ -37,6 +37,7 @@ use App\Http\Requests\PengaturanSuratRequest;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\Surat;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
@@ -79,7 +80,13 @@ class SuratController extends Controller
                 }
                 return $row->nama_penduduk;
             })
-            ->rawColumns(['aksi'])->make();
+            ->addColumn('hash', function ($row) {
+                if ($row->file_hash) {
+                    return '<code style="font-size: 10px;">' . substr($row->file_hash, 0, 16) . '...</code>';
+                }
+                return '-';
+            })
+            ->rawColumns(['aksi', 'hash'])->make();
     }
 
     public function download($id)
@@ -135,5 +142,39 @@ class SuratController extends Controller
         $profil = Profil::first();
 
         return view('surat.qrcode', compact('surat', 'profil'));
+    }
+
+    public function verifikasi()
+    {
+        $page_title = 'Verifikasi Surat';
+        $page_description = 'Verifikasi keaslian surat digital';
+
+        return view('surat.verifikasi.index', compact('page_title', 'page_description'));
+    }
+
+    public function verifikasiStore(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:pdf|max:5120',
+        ]);
+
+        try {
+            $uploadedFile = $request->file('file');
+            $uploadedHash = hash_file('sha256', $uploadedFile->getRealPath());
+
+            $surat = Surat::where('file_hash', $uploadedHash)->where('status', StatusSurat::Arsip)->first();
+
+            if (!$surat) {
+                return back()->with('error', 'Surat tidak ditemukan atau file tidak sesuai dengan surat yang diterbitkan.');
+            }
+
+            return view('surat.verifikasi.hasil', compact('surat'));
+        } catch (\Exception $e) {
+            Log::error('Verifikasi surat failed', [
+                'error' => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'Terjadi kesalahan saat memverifikasi surat.');
+        }
     }
 }

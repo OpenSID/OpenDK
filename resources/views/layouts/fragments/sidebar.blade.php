@@ -385,6 +385,8 @@
                             </li>
                             <li {{ Request::is(['surat/arsip*']) ? 'class=active' : '' }}><a href="{{ route('surat.arsip') }}"><i class="fa fa-folder-open"></i>Arsip</a>
                             </li>
+                            <li {{ Request::is(['surat/verifikasi*']) ? 'class=active' : '' }}><a href="{{ route('surat.verifikasi') }}"><i class="fa fa-qrcode"></i>Verifikasi</a>
+                            </li>
                             <li {{ Request::is(['surat/pengaturan*']) ? 'class=active' : '' }}><a href="{{ route('surat.pengaturan') }}"><i class="fa fa-gear"></i>Pengaturan</a>
                             </li>
                         </ul>

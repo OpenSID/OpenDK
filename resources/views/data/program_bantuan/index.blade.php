@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.program-bantuan.import') ? route('data.program-bantuan.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.program-bantuan.export') ? route('data.program-bantuan.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.program_bantuan.import') ? route('data.program-bantuan.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.program_bantuan.export') ? route('data.program-bantuan.export-excel') : null])
             </div>
             <div class="box-body">
                 <div class="row">

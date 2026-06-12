@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.anggaran-desa.import') ? route('data.anggaran-desa.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.anggaran-desa.export') ? route('data.anggaran-desa.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.anggaran_desa.import') ? route('data.anggaran-desa.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.anggaran_desa.export') ? route('data.anggaran-desa.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')
@@ -102,4 +102,5 @@
         });
     </script>
     @include('forms.datatable-vertical')
+    @include('forms.delete-modal')
 @endpush

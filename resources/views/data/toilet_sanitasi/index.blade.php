@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.toilet-sanitasi.import') ? route('data.toilet-sanitasi.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.toilet-sanitasi.export') ? route('data.toilet-sanitasi.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.toilet_sanitasi.import') ? route('data.toilet-sanitasi.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.toilet_sanitasi.export') ? route('data.toilet-sanitasi.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

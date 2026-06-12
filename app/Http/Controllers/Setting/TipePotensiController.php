@@ -55,7 +55,7 @@ class TipePotensiController extends Controller
         return DataTables::of(TipePotensi::all())
             ->addColumn('aksi', function ($row) {
                 $data['modal_form'] = $row->id;
-                $data['delete_url'] = auth()->user()->can('access.setting.tipe-potensi.delete') ? route('setting.tipe-potensi.destroy', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.setting.tipe_potensi.delete') ? route('setting.tipe-potensi.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })

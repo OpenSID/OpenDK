@@ -33,8 +33,10 @@ use App\Http\Controllers\Api\TokenController;
 use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Data\ArsipController;
 use App\Http\Controllers\FrontEnd\PageController;
 use App\Http\Controllers\Installer\InstallerController;
+use App\Http\Controllers\Kerjasama\PendaftaranKerjasamaController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Setting\AplikasiController;
@@ -51,11 +53,14 @@ use App\Http\Controllers\Setting\TipeRegulasiController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestEmailController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Livewire\Kerjasama\PendaftaranKerjasama;
+use App\Http\Livewire\Widget\WidgetController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use UniSharp\LaravelFilemanager\Lfm;
 
 /*
 |--------------------------------------------------------------------------
@@ -154,7 +159,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     });
 
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'action_permission:access.setting']], function () {
-        \UniSharp\LaravelFilemanager\Lfm::routes();
+        Lfm::routes();
     });
 
     // Route::group(['middleware' => 'maintenance'], function () {
@@ -477,11 +482,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         });
 
         Route::group(['prefix' => 'kerjasama', 'middleware' => ['action_permission:access.kerjasama']], function () {
-            Route::get('/pendaftaran-kerjasama', \App\Http\Livewire\Kerjasama\PendaftaranKerjasama::class)->name('kerjasama.pendaftaran.kerjasama');
-            Route::get('/template', [\App\Http\Controllers\Kerjasama\PendaftaranKerjasamaController::class, 'dokumen_template'])->name('kerjasama.pendaftaran.kerjasama.template');
+            Route::get('/pendaftaran-kerjasama', PendaftaranKerjasama::class)->name('kerjasama.pendaftaran.kerjasama');
+            Route::get('/template', [PendaftaranKerjasamaController::class, 'dokumen_template'])->name('kerjasama.pendaftaran.kerjasama.template');
         });
 
-// Media Terkait (Livewire)
+        // Media Terkait (Livewire)
         Route::group(['prefix' => 'informasi', 'middleware' => ['action_permission:access.informasi.media_terkait']], function () {
             Route::get('/media-terkait', '\App\Http\Livewire\Informasi\MediaTerkaitController')->name('informasi.media.terkait');
         });
@@ -557,15 +562,15 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('pengurus/ajax-bagan', ['as' => 'data.pengurus.ajax-bagan', 'uses' => 'PengurusController@ajaxBagan'])->middleware(['action_permission:access.data.pengurus']);
 
                 // Arsip
-                Route::get('pengurus/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'arsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.arsip');
-                Route::get('pengurus/create/arsip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'create_arsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.create.arsip');
-                Route::post('pengurus/store/arsip', [\App\Http\Controllers\Data\ArsipController::class, 'storeArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.store.arsip');
-                Route::get('pengurus/penduduk/arsip/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.penduduk.arsip');
-                Route::delete('pengurus/penduduk/delete/{id}', [\App\Http\Controllers\Data\ArsipController::class, 'deleteDocument'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.delete.document');
-                Route::get('pengurus/penduduk/edit/{document_id}/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'editArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.edit.document');
-                Route::get('download-arsip-zip/{pengurus_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsipZip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.edit.download.arsip.zip');
-                Route::get('download-arsip/{document_id}', [\App\Http\Controllers\Data\ArsipController::class, 'downloadArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.edit.download.arsip');
-                Route::get('penduduk-select2', [\App\Http\Controllers\Data\ArsipController::class, 'pendudukSelect2'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.penduduk.select2');
+                Route::get('pengurus/arsip', [ArsipController::class, 'arsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.arsip');
+                Route::get('pengurus/create/arsip/{pengurus_id}', [ArsipController::class, 'create_arsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.create.arsip');
+                Route::post('pengurus/store/arsip', [ArsipController::class, 'storeArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.store.arsip');
+                Route::get('pengurus/penduduk/arsip/{id}', [ArsipController::class, 'pendudukArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.penduduk.arsip');
+                Route::delete('pengurus/penduduk/delete/{id}', [ArsipController::class, 'deleteDocument'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.delete.document');
+                Route::get('pengurus/penduduk/edit/{document_id}/{pengurus_id}', [ArsipController::class, 'editArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.edit.document');
+                Route::get('download-arsip-zip/{pengurus_id}', [ArsipController::class, 'downloadArsipZip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.edit.download.arsip.zip');
+                Route::get('download-arsip/{document_id}', [ArsipController::class, 'downloadArsip'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.edit.download.arsip');
+                Route::get('penduduk-select2', [ArsipController::class, 'pendudukSelect2'])->middleware(['action_permission:access.data.pengurus'])->name('data.pengurus.penduduk.select2');
 
                 // Penduduk
                 Route::group(['prefix' => 'penduduk', 'middleware' => ['action_permission:access.data.penduduk']], function () {
@@ -885,7 +890,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             // Widget
-            Route::get('/widget', \App\Http\Livewire\Widget\WidgetController::class)->middleware(['action_permission:access.setting'])->name('setting.widget');
+            Route::get('/widget', WidgetController::class)->middleware(['action_permission:access.setting'])->name('setting.widget');
 
             // Role Management
             Route::group(['prefix' => 'role', 'controller' => RoleController::class, 'middleware' => ['action_permission:access.setting.role']], function () {

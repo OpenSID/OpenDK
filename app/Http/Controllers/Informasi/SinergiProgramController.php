@@ -62,8 +62,8 @@ class SinergiProgramController extends Controller
                     $data['show_web'] = $row->url;
 
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.informasi.sinergi-program.edit') ? route('informasi.sinergi-program.edit', $row->id) : null;
-                        $data['delete_url'] = auth()->user()->can('access.informasi.sinergi-program.delete') ? route('informasi.sinergi-program.destroy', $row->id) : null;
+                        $data['edit_url'] = auth()->user()->can('access.informasi.sinergi_program.edit') ? route('informasi.sinergi-program.edit', $row->id) : null;
+                        $data['delete_url'] = auth()->user()->can('access.informasi.sinergi_program.delete') ? route('informasi.sinergi-program.destroy', $row->id) : null;
                         $data['naik'] = route('informasi.sinergi-program.urut', [$row->id, -1]);
                         $data['turun'] = route('informasi.sinergi-program.urut', [$row->id, 1]);
                     }

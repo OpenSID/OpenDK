@@ -18,13 +18,25 @@ class BaseApiService
     public function __construct()
     {
         $this->settings = SettingAplikasi::whereIn('key', ['api_server_database_gabungan', 'api_key_database_gabungan', 'sinkronisasi_database_gabungan'])->pluck('value', 'key');        
+        
+        // Allow mock via config for testing
+        if (config()->has('api_server_database_gabungan')) {
+            $this->settings['api_server_database_gabungan'] = config('api_server_database_gabungan');
+        }
+        if (config()->has('api_key_database_gabungan')) {
+            $this->settings['api_key_database_gabungan'] = config('api_key_database_gabungan');
+        }
+        if (config()->has('sinkronisasi_database_gabungan')) {
+            $this->settings['sinkronisasi_database_gabungan'] = config('sinkronisasi_database_gabungan');
+        }
+
         $this->useDatabaseGabungan = $this->useDatabaseGabungan();
         $this->header = [
             'Accept' => 'application/ld+json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
+            'Authorization' => 'Bearer ' . ($this->settings['api_key_database_gabungan'] ?? ''),
         ];
-        $this->baseUrl = $this->settings['api_server_database_gabungan'];
+        $this->baseUrl = !empty($this->settings['api_server_database_gabungan']) ? $this->settings['api_server_database_gabungan'] : 'http://localhost';
         $this->kodeKecamatan = str_replace('.','',config('profil.kecamatan_id'));        
     }
 
@@ -51,6 +63,9 @@ class BaseApiService
             
             return $jsonResponse;
         } catch (\Exception $e) {
+            if (app()->environment('testing')) {
+                throw $e;
+            }
             session()->flash('error_api', 'Gagal mendapatkan data'. $e->getMessage());
             Log::error('Failed get data in '.__FILE__.' function '.__METHOD__.' '. $e->getMessage());
         }

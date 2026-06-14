@@ -53,7 +53,7 @@ class ToiletSanitasiFactory extends Factory
 
         return [
             'desa_id' => function () {
-                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['desa_id' => '3301011234567', 'nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->desa_id;
             },
             'toilet' => $this->faker->numberBetween(10, 100),
             'sanitasi' => $this->faker->numberBetween(10, 100),

@@ -39,7 +39,7 @@ use App\Models\DataDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use willvincent\Feeds\Facades\FeedsFacade;
+use SimplePie;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Requests\SurveiRequest;
 use App\Models\Kategori;
@@ -82,8 +82,38 @@ class PageController extends FrontEndController
     }
 
     private function getFeeds()
-    {        
-        $feeds = (new DesaService())->getFeeds();
+    {
+        $all_desa = DataDesa::websiteUrl()->get()
+            ->map(function ($desa) {
+                return $desa->website_url_feed;
+            })->all();
+
+        $feeds = [];
+        foreach ($all_desa as $desa) {
+            $getFeeds = new SimplePie();
+            $getFeeds->set_feed_url($desa['website']);
+            $getFeeds->set_item_limit(5);
+            $getFeeds->force_fsockopen(true);
+            $getFeeds->set_cache_location(storage_path('framework/cache/simplepie'));
+            $getFeeds->init();
+            $getFeeds->handle_content_type();
+            foreach ($getFeeds->get_items() as $item) {
+                $feeds[] = [
+                    'desa_id' => $desa['desa_id'],
+                    'nama_desa' => $desa['nama'],
+                    'feed_link' => $item->get_feed()->get_permalink(),
+                    'feed_title' => $item->get_feed()->get_title(),
+                    'link' => $item->get_link(),
+                    'date' => \Carbon\Carbon::parse($item->get_date('U')),
+                    'author' => $item->get_author()->get_name() ?? 'Administrator',
+                    'title' => $item->get_title(),
+                    'image' => get_tag_image($item->get_description()),
+                    'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
+                    'content' => $item->get_content(),
+                ];
+            }
+        }
+
         return $feeds ?? null;
     }
 

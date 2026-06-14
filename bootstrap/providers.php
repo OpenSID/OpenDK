@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,35 +24,34 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\Auth;
-
-use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
-
-class ResetPasswordController extends Controller
-{
+return [
     /*
     |--------------------------------------------------------------------------
-    | Password Reset Controller
+    | Application Service Providers
     |--------------------------------------------------------------------------
     |
-    | This controller is responsible for handling password reset requests
-    | and uses a simple trait to include this behavior. You're free to
-    | explore this trait and override any methods you wish to tweak.
+    | Provider aplikasi yang didaftarkan secara eksplisit. Pada Laravel 11+,
+    | provider inti Illuminate sudah di-auto-register sehingga tidak perlu
+    | dicantumkan di sini. Hanya provider kustom & paket yang perlu didaftarkan.
     |
     */
 
-    use ResetsPasswords;
+    // Provider kustom aplikasi
+    App\Providers\AppServiceProvider::class,
+    App\Providers\KDServiceProvider::class,
+    App\Providers\SmtpServiceProvider::class,
 
-    /**
-     * Where to redirect users after resetting their password.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/dashboard';
-}
+    // Paket — hanya yang tidak auto-discover via composer atau perlu eksplisit
+    UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class,
+    Spatie\Html\HtmlServiceProvider::class,
+    Maatwebsite\Excel\ExcelServiceProvider::class,
+    Mews\Captcha\CaptchaServiceProvider::class,
+    Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+    Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+];

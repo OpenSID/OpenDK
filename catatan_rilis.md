@@ -12,3 +12,5 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### TEKNIS
 
+1. [#1571](https://github.com/OpenSID/OpenDK/issues/1571) Upgrade versi laravel ke versi 13
+

@@ -165,7 +165,7 @@ it('has suplemen_terdata relationship', function () {
 it('has desa relationship', function () {
     $penduduk = Penduduk::factory()->create();
 
-    expect($penduduk->desa)->toBeNull(); // Initially null since related record doesn't exist
+    expect($penduduk->desa)->toBeInstanceOf(DataDesa::class);
     expect($penduduk->desa())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 

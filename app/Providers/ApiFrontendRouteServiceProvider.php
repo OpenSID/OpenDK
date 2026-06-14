@@ -29,32 +29,23 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Console;
+namespace App\Providers;
 
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
-class Kernel extends ConsoleKernel
+class ApiFrontendRouteServiceProvider extends ServiceProvider
 {
     /**
-     * Define the application's command schedule.
+     * Define the routes for the API Frontend.
      *
-     * @return void
+     * Route ini menggunakan middleware 'theme.api' dan prefix 'api/frontend'.
+     * Dipisahkan dari withRouting() karena memerlukan middleware khusus.
      */
-    protected function schedule(Schedule $schedule)
+    public function map(): void
     {
-        // $schedule->command('inspire')->hourly();
-    }
-
-    /**
-     * Register the commands for the application.
-     *
-     * @return void
-     */
-    protected function commands()
-    {
-        $this->load(__DIR__.'/Commands');
-
-        require base_path('routes/console.php');
+        Route::middleware('theme.api')
+            ->prefix('api/frontend')
+            ->group(base_path('routes/api-frontend.php'));
     }
 }

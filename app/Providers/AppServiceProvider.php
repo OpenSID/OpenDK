@@ -31,13 +31,11 @@
 
 namespace App\Providers;
 
-use App\Models\DataDesa;
-use App\Models\DataUmum;
-use App\Models\Penduduk;
 use App\Services\CacheService;
 use App\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -45,31 +43,41 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(CacheService::class, function () {
             return new CacheService();
         });
+
+        /*
+        |----------------------------------------------------------------------
+        | Class Aliases (pengganti aliases di config/app.php L10-style)
+        |----------------------------------------------------------------------
+        | Didaftarkan via AliasLoader karena ApplicationBuilder::withAliases()
+        | tidak tersedia di Laravel 13.x.
+        */
+        $loader = AliasLoader::getInstance();
+        $loader->alias('JWTAuth',    \Tymon\JWTAuth\Facades\JWTAuth::class);
+        $loader->alias('JWTFactory', \Tymon\JWTAuth\Facades\JWTFactory::class);
+        $loader->alias('Captcha',    \Mews\Captcha\Facades\Captcha::class);
+        $loader->alias('Counter',    \App\Facades\Counter::class);
+        $loader->alias('Html',       \Spatie\Html\Facades\Html::class);
+        $loader->alias('Excel',      \Maatwebsite\Excel\Facades\Excel::class);
+        $loader->alias('Debugbar',   \Barryvdh\Debugbar\Facades\Debugbar::class);
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        // default lengt string
+        // Default string length untuk MySQL lama
         Schema::defaultStringLength(191);
 
         Paginator::useBootstrap();
@@ -82,45 +90,21 @@ class AppServiceProvider extends ServiceProvider
             $this->file();
         }
 
-        // Note: Doctrine DBAL tinyinteger type removed for Laravel 11 compatibility
-        // If needed, consider using native MySQL migrations instead
-        
-        // bypass validasi captcha saat unit testing
+        // Bypass validasi captcha saat unit testing / local
         if (app()->environment('testing') || app()->environment('local')) {
             Validator::extend('captcha', function () {
-                return true; // selalu lolos di environment testing
+                return true;
             });
         }
     }
 
-    protected function penduduk()
+    /**
+     * Konfigurasi custom validator untuk data penduduk.
+     */
+    protected function penduduk(): void
     {
         // kecamatan_id harus dihapus pada migrasi database/migrations/2021_10_12_081718_alter_table_das_data_umum.php
-        // jumlah_penduduk dll dihapus pada migrasi database/migrations/2021_01_02_055931_dropcolomn_data_umum_table.php           
-        // Penduduk::saved(function ($model) {
-        //     
-        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();            
-        //      
-        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-        //     $dataUmum->save();
-        // });
-
-        // Penduduk::deleted(function ($model) {
-        //     $dataUmum = DataUmum::where('kecamatan_id', $model->kecamatan_id)->first();
-
-        //     $dataUmum->jumlah_penduduk = $model->where('kecamatan_id', $model->kecamatan_id)->count();
-        //     $dataUmum->jml_laki_laki = $model->where('sex', 1)->count();
-        //     $dataUmum->jml_perempuan = $model->where('sex', 2)->count();
-        //     $dataUmum->luas_wilayah = DataDesa::where('kecamatan_id', $model->kecamatan_id)->sum('luas_wilayah');
-        //     $dataUmum->kepadatan_penduduk = $dataUmum->luas_wilayah == 0 ? 0 : $dataUmum->jumlah_penduduk / $dataUmum->luas_wilayah;
-
-        //     $dataUmum->save();
-        // });
+        // jumlah_penduduk dll dihapus pada migrasi database/migrations/2021_01_02_055931_dropcolomn_data_umum_table.php
 
         Validator::extend('nik_exists', function ($attribute, $value, $parameters) {
             $query = DB::table('das_penduduk')
@@ -165,7 +149,10 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function config()
+    /**
+     * Load konfigurasi aplikasi dari database ke dalam config().
+     */
+    protected function config(): void
     {
         config([
             'setting' => Cache::remember('setting', 24 * 60 * 60, function () {
@@ -206,14 +193,20 @@ class AppServiceProvider extends ServiceProvider
         ]);
     }
 
-    protected function blade()
+    /**
+     * Registrasi Blade directive custom.
+     */
+    protected function blade(): void
     {
         Blade::directive('selected', function ($condition) {
             return "<?php if({$condition}): echo 'selected'; endif; ?>";
         });
     }
 
-    protected function file()
+    /**
+     * Validator untuk file upload (mencegah file berbahaya).
+     */
+    protected function file(): void
     {
         Validator::extend('valid_file', function ($attributes, $value, $parameters) {
             $contains = preg_match('/<\?php|<script|function|__halt_compiler|<html/i', File::get($value));
@@ -225,7 +218,10 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    protected function paginate()
+    /**
+     * Tambahkan macro paginate() ke Collection.
+     */
+    protected function paginate(): void
     {
         /**
          * Paginate a standard Laravel Collection.
@@ -234,7 +230,6 @@ class AppServiceProvider extends ServiceProvider
          * @param  int  $total
          * @param  int  $page
          * @param  string  $pageName
-         * @return array
          */
         Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page'): LengthAwarePaginator {
             $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);

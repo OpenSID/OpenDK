@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 
 class Kategori extends Model
 {
@@ -13,7 +13,7 @@ class Kategori extends Model
 
     protected $fillable = [
         'nama',
-        'slug'
+        'slug',
     ];
 
     /**
@@ -35,6 +35,6 @@ class Kategori extends Model
 
     public function getLinkAttribute(): string
     {
-        return  Str::replaceFirst(url('/'), '', route('berita.kategori', ['slug' => $this->slug]));
+        return Str::replaceFirst(url('/'), '', route('berita.kategori', ['slug' => $this->slug]));
     }
 }

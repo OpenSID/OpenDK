@@ -31,26 +31,25 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
-use Spatie\Permission\Traits\HasRoles;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Support\Facades\Storage;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Traits\HasRoles;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use AuthenticableTrait;
+    use HandlesResourceDeletion;
     use HasFactory;
     use HasRoles;
     use Notifiable;
-    use HandlesResourceDeletion;
     use SoftDeletes;
 
     /**
@@ -141,7 +140,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getFotoAttribute()
     {
-        return $this->attributes['image'] ? Storage::url('user/' . $this->attributes['image']) : null;
+        return $this->attributes['image'] ? Storage::url('user/'.$this->attributes['image']) : null;
     }
 
     public function scopeSuspend($query, $email)

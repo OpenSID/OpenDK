@@ -547,7 +547,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
                 // Jabatan
                 Route::resource('jabatan', 'JabatanController', ['as' => 'data'])->middleware(['action_permission:access.data.jabatan'])->except(['show']);
-                Route::post('jabatan', ['as' => 'data.jabatan.getdata.post', 'uses' => 'JabatanController@index'])->middleware(['action_permission:access.data.jabatan']);
+                Route::post('jabatan/getdata', ['as' => 'data.jabatan.getdata.post', 'uses' => 'JabatanController@index'])->middleware(['action_permission:access.data.jabatan']);
 
                 // Pengurus
                 Route::post('pengurus/lock/{id}/{status}', ['as' => 'data.pengurus.lock', 'uses' => 'PengurusController@lock'])->middleware(['action_permission:access.data.pengurus']);
@@ -613,7 +613,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', ['as' => 'data.laporan-penduduk.index', 'uses' => 'LaporanPendudukController@index']);
                     Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.laporan-penduduk.getdata', 'uses' => 'LaporanPendudukController@getData']);
                     Route::delete('destroy/{id}', ['as' => 'data.laporan-penduduk.destroy', 'uses' => 'LaporanPendudukController@destroy']);
-                    Route::get('download{id}', ['as' => 'data.laporan-penduduk.download', 'uses' => 'LaporanPendudukController@download']);
+                    Route::get('download/{id}', ['as' => 'data.laporan-penduduk.download', 'uses' => 'LaporanPendudukController@download']);
                     Route::get('import', ['as' => 'data.laporan-penduduk.import', 'uses' => 'LaporanPendudukController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-penduduk.do_import', 'uses' => 'LaporanPendudukController@do_import']);
                     Route::get('export-excel', ['as' => 'data.laporan-penduduk.export-excel', 'uses' => 'LaporanPendudukController@exportExcel']);
@@ -739,7 +739,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('/', ['as' => 'data.laporan-apbdes.index', 'uses' => 'LaporanApbdesController@index']);
                     Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.laporan-apbdes.getdata', 'uses' => 'LaporanApbdesController@getApbdes']);
                     Route::delete('destroy/{id}', ['as' => 'data.laporan-apbdes.destroy', 'uses' => 'LaporanApbdesController@destroy']);
-                    Route::get('download{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);
                     Route::get('import', ['as' => 'data.laporan-apbdes.import', 'uses' => 'LaporanApbdesController@import']);
                     Route::post('do_import', ['as' => 'data.laporan-apbdes.do_import', 'uses' => 'LaporanApbdesController@do_import']);
                     Route::get('download/{id}', ['as' => 'data.laporan-apbdes.download', 'uses' => 'LaporanApbdesController@download']);

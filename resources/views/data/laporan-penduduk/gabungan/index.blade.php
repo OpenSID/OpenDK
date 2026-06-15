@@ -55,10 +55,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/laporan-penduduk-datatable?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/laporan-penduduk-datatable`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "text/json; charset=utf-8",
@@ -76,7 +73,8 @@
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch, // Gunakan filterSearch di sini
+                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]
                                 ?.name,

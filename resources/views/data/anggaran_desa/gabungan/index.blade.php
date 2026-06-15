@@ -57,10 +57,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keuangan/apbdes-datatable?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/keuangan/apbdes-datatable`,
                     headers: {
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
@@ -70,6 +67,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "filter[kode_desa]": $('#list_desa').val(),
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]?.column]?.name,
                         };

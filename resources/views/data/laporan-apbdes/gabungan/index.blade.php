@@ -58,10 +58,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keuangan/laporan_apbdes-datatable?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/keuangan/laporan_apbdes-datatable`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "text/json; charset=utf-8",
@@ -73,6 +70,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "filter[config_id]": $('#list_desa').val(),
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]

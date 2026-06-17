@@ -8,9 +8,7 @@ uses(BrowserTestCase::class);
 beforeEach(function () {
     // Kita jalankan test dengan mode gabungan / default,
     // Walaupun menu Informasi biasanya menggunakan data lokal.
-    $this->user = User::first();
-    // Bypass login via pest endpoint
-    $this->page = visit('/_pest/login/' . $this->user->id);
+    $this->user = \Tests\Browser\SessionState::loginAdminUser();
 });
 
 dataset('informasi_menus', [
@@ -53,13 +51,15 @@ it('smoke test menu informasi', function (string $menuName, string $url, array $
             $jenis = \App\Models\JenisDokumen::firstOrCreate(['nama' => 'Test Jenis']);
             \App\Models\FormDokumen::create(['nama_dokumen' => 'Test Dokumen', 'jenis_dokumen_id' => $jenis->id, 'is_published' => 1, 'file_dokumen' => 'test']);
         } else if ($menuName === 'Media Sosial' && \App\Models\MediaSosial::count() === 0) {
-            \App\Models\MediaSosial::factory()->create();
-        } else if ($menuName === 'Sinergi Program' && \App\Models\SinergiProgram::count() === 0) {
-            \App\Models\SinergiProgram::factory()->create();
+            \App\Models\MediaSosial::create(['nama' => 'Facebook', 'url' => 'http://facebook.com', 'logo' => 'fa-facebook', 'status' => 1]);
+        } else if ($menuName === 'Sinergi Program') {
+            \App\Models\SinergiProgram::query()->delete();
+            \App\Models\SinergiProgram::create(['nama' => 'Test Program', 'url' => 'http://127.0.0.1', 'gambar' => '/img/logo.png', 'status' => 1, 'urutan' => 1]);
         }
 
-    // 1. Kunjungi halaman menu
-    $this->page->navigate($url)->assertPathIs($url);
+    // 1. Kunjungi halaman menu menggunakan SessionState helper
+    $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, $url);
+    $this->page->assertPathIs($url);
 
     // 2. Verifikasi Tombol Tambah (Jika ada)
     if (in_array('btn-tambah', $buttons)) {
@@ -124,7 +124,8 @@ it('smoke test menu informasi - Media Terkait (Livewire)', function () {
         \App\Models\MediaTerkait::create(['nama' => 'Test Media', 'url' => 'http://test.com', 'logo' => 'test.png', 'status' => 1]);
     }
 
-    $this->page->navigate('/informasi/media-terkait')->assertPathIs('/informasi/media-terkait');
+    $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/informasi/media-terkait');
+    $this->page->assertPathIs('/informasi/media-terkait');
     
     // Tombol Tambah
     $this->page->assertVisible('button[wire\:click="create"]');

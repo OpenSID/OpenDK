@@ -15,10 +15,14 @@ class PendudukSexSeeder extends Seeder
      */
     public function run()
     {
-        // Insert data ke tabel das_penduduk_sex
+        // Truncate sebelum insert agar idempotent (aman jika dijalankan berulang)
+        // FK checks sudah dinonaktifkan oleh DatabaseSeeder
+        DB::table('das_penduduk_sex')->truncate();
+
         DB::table('das_penduduk_sex')->insert([
             ['id' => 1, 'nama' => 'Laki-laki'],
             ['id' => 2, 'nama' => 'Perempuan'],
         ]);
     }
 }
+

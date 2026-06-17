@@ -34,6 +34,7 @@ use App\Http\Controllers\BackEnd\ThemesController;
 use App\Http\Controllers\Counter\CounterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontEnd\PageController;
+use App\Http\Controllers\Installer\InstallerController;
 use App\Http\Controllers\LogViewerController;
 use App\Http\Controllers\Role\RoleController;
 use App\Http\Controllers\Setting\AplikasiController;
@@ -71,18 +72,19 @@ Route::get('/docs', function () {
     return view('swagger');
 })->name('swagger');
 // Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
-Route::group(['prefix' => 'install', 'namespace' => 'App\Http\Controllers\Installer'], function () {
-    Route::get('/', 'InstallerController@welcome')->name('installer.welcome');
-    Route::get('/requirements', 'InstallerController@requirements')->name('installer.requirements');
-    Route::get('/permissions', 'InstallerController@permissions')->name('installer.permissions');
-    Route::get('/environment', 'InstallerController@environment')->name('installer.environment');
-    Route::get('/environment/wizard', 'InstallerController@environmentWizard')->name('installer.environmentWizard');
-    Route::get('/environment/classic', 'InstallerController@environmentClassic')->name('installer.environmentClassic');
-    Route::post('/environment/saveWizard', 'InstallerController@environmentSaveWizard')->name('installer.environmentSaveWizard');
-    Route::post('/environment/saveClassic', 'InstallerController@environmentSaveClassic')->name('installer.environmentSaveClassic');
-    Route::get('/database', 'InstallerController@database')->name('installer.database');
-    Route::get('/final', 'InstallerController@final')->name('installer.final');
-    Route::post('/final', 'InstallerController@performInstallation')->name('installer.performInstallation');
+// Menggunakan sintaks modern Laravel 13 — namespace string sudah dihapus di L10+
+Route::prefix('install')->group(function () {
+    Route::get('/', [InstallerController::class, 'welcome'])->name('installer.welcome');
+    Route::get('/requirements', [InstallerController::class, 'requirements'])->name('installer.requirements');
+    Route::get('/permissions', [InstallerController::class, 'permissions'])->name('installer.permissions');
+    Route::get('/environment', [InstallerController::class, 'environment'])->name('installer.environment');
+    Route::get('/environment/wizard', [InstallerController::class, 'environmentWizard'])->name('installer.environmentWizard');
+    Route::get('/environment/classic', [InstallerController::class, 'environmentClassic'])->name('installer.environmentClassic');
+    Route::post('/environment/saveWizard', [InstallerController::class, 'environmentSaveWizard'])->name('installer.environmentSaveWizard');
+    Route::post('/environment/saveClassic', [InstallerController::class, 'environmentSaveClassic'])->name('installer.environmentSaveClassic');
+    Route::get('/database', [InstallerController::class, 'database'])->name('installer.database');
+    Route::get('/final', [InstallerController::class, 'final'])->name('installer.final');
+    Route::post('/final', [InstallerController::class, 'performInstallation'])->name('installer.performInstallation');
 });
 
 // Redirect if apps not installed
@@ -282,7 +284,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     /**
      * Group Routing for Halaman Dahsboard
      */
-    Route::group(['middleware' => ['auth:web']], function () {
+    Route::group(['middleware' => ['auth:web', 'complete_profile']], function () {
         // Route::get('logout', ['as' => 'logout', 'uses' => 'Auth\AuthController@logout']);
 
         Route::get('/dashboard', DashboardController::class)->middleware(['auth:web', 'action_permission:access.dashboard'])->name('dashboard');
@@ -344,7 +346,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // FAQ
-                Route::group(['prefix' => 'faq', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['action_permission:access.informasi.faq']], function () {
+                Route::prefix('faq')->middleware(['action_permission:access.informasi.faq'])->withoutMiddleware('xss_sanitization')->group(function () {
                     Route::get('/', ['as' => 'informasi.faq.index', 'uses' => 'FaqController@index']);
                     Route::get('getdata', ['as' => 'informasi.faq.getdata', 'uses' => 'FaqController@getDataFaq']);
                     Route::get('show/{id}', ['as' => 'informasi.faq.show', 'uses' => 'FaqController@show']);
@@ -356,7 +358,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // Artikel
-                Route::group(['prefix' => 'artikel', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['action_permission:access.informasi.artikel']], function () {
+                Route::prefix('artikel')->middleware(['action_permission:access.informasi.artikel'])->withoutMiddleware('xss_sanitization')->group(function () {
                     Route::get('/', ['as' => 'informasi.artikel.index', 'uses' => 'ArtikelController@index']);
                     Route::get('create', ['as' => 'informasi.artikel.create', 'uses' => 'ArtikelController@create']);
                     Route::post('store', ['as' => 'informasi.artikel.store', 'uses' => 'ArtikelController@store']);
@@ -378,7 +380,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // Komentar Artikel
-                Route::group(['prefix' => 'komentar-artikel', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['action_permission:access.informasi.komentar_artikel']], function () {
+                Route::prefix('komentar-artikel')->middleware(['action_permission:access.informasi.komentar_artikel'])->withoutMiddleware('xss_sanitization')->group(function () {
                     Route::get('/', ['as' => 'informasi.komentar-artikel.index', 'uses' => 'KomentarArtikelController@index']);
                     Route::get('getdata', ['as' => 'informasi.komentar-artikel.getdata', 'uses' => 'KomentarArtikelController@getDataKomentar']);
                     Route::post('update-status', ['as' => 'informasi.komentar-artikel.updateStatus', 'uses' => 'KomentarArtikelController@updateStatus']);
@@ -490,14 +492,14 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('\App\Http\Controllers\Data')->group(function () {
             Route::group(['prefix' => 'data', 'middleware' => ['action_permission:access.data']], function () {
                 // Profil
-                Route::group(['prefix' => 'profil', 'excluded_middleware' => ['complete_profile', 'xss_sanitization'], 'middleware' => ['action_permission:access.data.profil']], function () {
+                Route::prefix('profil')->middleware(['action_permission:access.data.profil'])->withoutMiddleware(['complete_profile', 'xss_sanitization'])->group(function () {
                     Route::get('/', ['as' => 'data.profil.index', 'uses' => 'ProfilController@index']);
                     Route::put('update/{id}', ['as' => 'data.profil.update', 'uses' => 'ProfilController@update']);
                     Route::get('success/{id}', ['as' => 'data.profil.success', 'uses' => 'ProfilController@success']);
                 });
 
                 // pendaftaran kerjasama
-                // Route::group(['prefix' => 'pendaftaran-kerjasama', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['role:super-admin|admin-kecamatan']], function () {
+                // Route::prefix('pendaftaran-kerjasama')->middleware(['role:super-admin|admin-kecamatan'])->withoutMiddleware('xss_sanitization')->group(function () {
 
                 //     Route::get('/', ['as' => 'data.pendaftaran.kerjasama', 'uses' => 'PendaftaranKerjasamaController@index']);
 
@@ -508,7 +510,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // });
 
                 // Data Umum
-                Route::group(['prefix' => 'data-umum', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['action_permission:access.data.data_umum']], function () {
+                Route::prefix('data-umum')->middleware(['action_permission:access.data.data_umum'])->withoutMiddleware('xss_sanitization')->group(function () {
                     Route::get('/', ['as' => 'data.data-umum.index', 'uses' => 'DataUmumController@index']);
                     Route::get('getdataajax', ['as' => 'data.data-umum.getdataajax', 'uses' => 'DataUmumController@getDataUmumAjax']);
                     Route::put('update/{id}', ['as' => 'data.data-umum.update', 'uses' => 'DataUmumController@update']);
@@ -531,7 +533,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
 
                 // Data Sarana
-                Route::group(['prefix' => 'data-sarana', 'excluded_middleware' => 'xss_sanitization', 'middleware' => ['action_permission:access.data.data_sarana']], function () {
+                Route::prefix('data-sarana')->middleware(['action_permission:access.data.data_sarana'])->withoutMiddleware('xss_sanitization')->group(function () {
                     Route::get('/', ['as' => 'data.data-sarana.index', 'uses' => 'DataSaranaController@index']);
                     Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.data-sarana.getdata', 'uses' => 'DataSaranaController@getData']);
                     Route::get('create', ['as' => 'data.data-sarana.create', 'uses' => 'DataSaranaController@create']);
@@ -588,7 +590,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'data-suplemen', 'middleware' => ['action_permission:access.data.data_suplemen']], function () {
                     Route::get('/', ['as' => 'data.data-suplemen.index', 'uses' => 'SuplemenController@index']);
                     Route::match(['GET', 'POST'], 'getdata', ['as' => 'data.data-suplemen.getdata', 'uses' => 'SuplemenController@getDataSuplemen']);
-                    Route::match(['GET', 'POST'], 'getsuplementerdata', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
+                    // Route::match(['GET', 'POST'], 'getsuplementerdata', ['as' => 'data.data-suplemen.getsuplementerdata', 'uses' => 'SuplemenController@getDataSuplemenTerdata']);
                     Route::get('show/{id}', ['as' => 'data.data-suplemen.show', 'uses' => 'SuplemenController@show']);
                     Route::get('create', ['as' => 'data.data-suplemen.create', 'uses' => 'SuplemenController@create']);
                     Route::post('store', ['as' => 'data.data-suplemen.store', 'uses' => 'SuplemenController@store']);

@@ -235,7 +235,7 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
 
     protected function getFilteredApi()
     {
-        return $this->getQueryBuilder()->allowedFilters($this->allowedFilters)->allowedSorts($this->allowedSorts)->allowedIncludes($this->allowedIncludes);
+        return $this->getQueryBuilder()->allowedFilters(...$this->allowedFilters)->allowedSorts(...$this->allowedSorts)->allowedIncludes(...$this->allowedIncludes);
     }
 
     public function getDataArray(){

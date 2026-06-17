@@ -4,6 +4,7 @@ use App\Exports\ExportDataDesa;
 use App\Models\DataDesa;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 uses(DatabaseTransactions::class);
@@ -47,11 +48,16 @@ test('export excel local database', function () {
 });
 
 test('export excel database gabungan active', function () {
-    // Arrange: Aktifkan database gabungan
-    SettingAplikasi::updateOrCreate(
-        ['key' => 'sinkronisasi_database_gabungan'],
-        ['value' => '1']
-    );
+    // Arrange: Aktifkan database gabungan dengan config mock dan Http::fake
+    config([
+        'sinkronisasi_database_gabungan' => '1',
+        'api_server_database_gabungan'   => 'https://api.example.com',
+        'api_key_database_gabungan'      => 'test-key',
+    ]);
+
+    Http::fake([
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200),
+    ]);
 
     // Buat beberapa data test lokal
     DataDesa::factory()->count(3)->create();
@@ -66,6 +72,17 @@ test('export excel database gabungan active', function () {
 });
 
 test('export data desa gabungan mode constructor', function () {
+    // Arrange: aktifkan mode gabungan via config + Http::fake
+    config([
+        'sinkronisasi_database_gabungan' => '1',
+        'api_server_database_gabungan'   => 'https://api.example.com',
+        'api_key_database_gabungan'      => 'test-key',
+    ]);
+
+    Http::fake([
+        'https://api.example.com/*' => Http::response(['data' => []], 200),
+    ]);
+
     // Act: Buat instance export dengan mode gabungan
     $export = new ExportDataDesa(true, []);
 
@@ -231,11 +248,16 @@ test('export data desa with custom sebutan_desa config', function () {
 });
 
 test('export data desa gabungan with empty api response', function () {
-    // Arrange: Aktifkan mode gabungan
-    SettingAplikasi::updateOrCreate(
-        ['key' => 'sinkronisasi_database_gabungan'],
-        ['value' => '1']
-    );
+    // Arrange: Aktifkan mode gabungan via config + Http::fake
+    config([
+        'sinkronisasi_database_gabungan' => '1',
+        'api_server_database_gabungan'   => 'https://api.example.com',
+        'api_key_database_gabungan'      => 'test-key',
+    ]);
+
+    Http::fake([
+        'https://api.example.com/*' => Http::response(['data' => []], 200),
+    ]);
 
     // Act: Buat instance export mode gabungan
     $export = new ExportDataDesa(true, []);

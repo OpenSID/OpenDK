@@ -116,10 +116,9 @@ beforeEach(function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): halaman dashboard berhasil dibuka', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         ->assertSee('Dashboard');
 })->group('smoke', 'smoke-gabungan', 'browser');
@@ -129,10 +128,9 @@ it('smoke (gabungan): halaman dashboard berhasil dibuka', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): kartu desa tampil', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         ->assertVisible('@card-desa')
         ->assertSee(config('setting.sebutan_desa', 'Desa'));
@@ -143,10 +141,9 @@ it('smoke (gabungan): kartu desa tampil', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): kartu penduduk tampil', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         ->assertVisible('@card-penduduk')
         ->assertSee('Penduduk');
@@ -157,10 +154,9 @@ it('smoke (gabungan): kartu penduduk tampil', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): kartu keluarga tampil', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         ->assertVisible('@card-keluarga')
         ->assertSee('Keluarga');
@@ -171,10 +167,9 @@ it('smoke (gabungan): kartu keluarga tampil', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): kartu program bantuan tampil', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         ->assertVisible('@card-program-bantuan')
         ->assertSee('Program Bantuan');
@@ -185,10 +180,9 @@ it('smoke (gabungan): kartu program bantuan tampil', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): tab top 10 halaman terpopuler tampil', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         // Tab link tampil
         ->assertVisible('@tab-top-pages')
@@ -205,10 +199,9 @@ it('smoke (gabungan): tab top 10 halaman terpopuler tampil', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): tab user agent tampil', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')
         ->assertVisible('@tab-user-agent')
         ->assertSee('User Agent');
@@ -223,10 +216,9 @@ it('smoke (gabungan): tab user agent tampil', function () {
 // ─────────────────────────────────────────────────────────────────────────────
 
 it('smoke (gabungan): chart user agent berhasil dirender', function () {
-    $user = \App\Models\User::first();
+    $user = \Tests\Browser\SessionState::loginAdminUser();
 
-    $page = visit('/_pest/login/' . $user->id)
-        ->navigate('/dashboard')
+    $page = \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard');
 
     // Klik tab User Agent untuk memicu render chart Highcharts

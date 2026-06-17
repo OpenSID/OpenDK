@@ -5,17 +5,17 @@ use Tests\BrowserAuthenticatedTestCase;
 uses(BrowserAuthenticatedTestCase::class);
 
 test('should display dashboard page correctly when authenticated', function () {
-    // Visit dashboard page - user is already authenticated via BrowserAuthenticatedTestCase
-    visit('/dashboard')
-        ->wait(3) // Wait for page to load
+    $user = \Tests\Browser\SessionState::loginAdminUser();
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
+        ->wait(1) // Wait for page to load
         ->assertPathIs('/dashboard') // Verify we're redirected to dashboard
         ->assertSee('Dashboard');
 })->group('browser', 'dashboard');
 
 test('should display all required cards when authenticated', function () {
-    // Visit dashboard page - user is already authenticated via BrowserAuthenticatedTestCase
-    visit('/dashboard')
-        ->wait(3) // Wait for page to load
+    $user = \Tests\Browser\SessionState::loginAdminUser();
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
+        ->wait(1) // Wait for page to load
         ->assertSee('Desa')
         ->assertSee('Penduduk')
         ->assertSee('Keluarga')
@@ -25,8 +25,8 @@ test('should display all required cards when authenticated', function () {
 
 
 test('should check dashboard loads successfully when authenticated', function () {
-    // Visit dashboard page - user is already authenticated via BrowserAuthenticatedTestCase
-    visit('/dashboard')
-        ->wait(3) // Wait for page to load
+    $user = \Tests\Browser\SessionState::loginAdminUser();
+    \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')
+        ->wait(1) // Wait for page to load
         ->assertPresent('.content, .container, main');
 })->group('browser', 'dashboard');

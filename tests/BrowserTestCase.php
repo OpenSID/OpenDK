@@ -163,4 +163,39 @@ abstract class BrowserTestCase extends BaseTestCase
         // Final cache clear to be absolutely sure
         \Illuminate\Support\Facades\Artisan::call('cache:clear');
     }
+
+    /**
+     * Aktifkan mode database gabungan untuk testing.
+     * Set SettingAplikasi dan config agar DashboardController
+     * menggunakan Services (DesaService, PendudukService, dst.)
+     * yang akan memanggil Http yang dapat di-fake.
+     */
+    protected function setModeGabungan(string $apiServer = 'https://api.example.com'): void
+    {
+        \App\Models\SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '1', 'type' => 'text']
+        );
+        config([
+            'sinkronisasi_database_gabungan' => '1',
+            'api_server_database_gabungan'   => $apiServer,
+            'api_key_database_gabungan'      => 'test-api-key',
+        ]);
+    }
+
+    /**
+     * Nonaktifkan mode database gabungan (kembali ke mode lokal).
+     */
+    protected function setModeLokal(): void
+    {
+        \App\Models\SettingAplikasi::updateOrCreate(
+            ['key' => 'sinkronisasi_database_gabungan'],
+            ['value' => '0', 'type' => 'text']
+        );
+        config([
+            'sinkronisasi_database_gabungan' => '0',
+            'api_server_database_gabungan'   => null,
+            'api_key_database_gabungan'      => null,
+        ]);
+    }
 }

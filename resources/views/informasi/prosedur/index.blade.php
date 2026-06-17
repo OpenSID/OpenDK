@@ -21,7 +21,7 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="prosedur-table">
+                    <table class="table table-striped table-bordered" id="prosedur-table" data-testid="table-informasi">
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>

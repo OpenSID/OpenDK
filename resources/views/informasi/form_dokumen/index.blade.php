@@ -18,7 +18,7 @@
         @if ($jenis_dokumen->count() > 0)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.form-dokumen.create') ? route('informasi.form-dokumen.create') : null])
+                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.form_dokumen.create') ? route('informasi.form-dokumen.create') : null])
                 </div>
 
                 <div class="box-body">
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="dokumen-table">
+                        <table class="table table-striped table-bordered" id="dokumen-table" data-testid="table-informasi">
                             <thead>
                                 <tr>
                                     <th class="text-center text-nowrap" style="max-width: 160px;">Aksi</th>

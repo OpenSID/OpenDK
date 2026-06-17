@@ -21,7 +21,7 @@
         </a>
     @endif
     @if (!empty($show_url))
-        <a href="{!! $show_url !!}" title="Lihat" data-button="show" target="_blank">
+        <a href="{!! $show_url !!}" title="Lihat" data-button="show" data-testid="btn-lihat" target="_blank">
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
         </a>
     @endif
@@ -41,7 +41,7 @@
         </a>
     @endif
     @if (!empty($edit_url))
-        <a href="{!! $edit_url !!}" title="Ubah" data-button="edit">
+        <a href="{!! $edit_url !!}" title="Ubah" data-button="edit" data-testid="btn-edit">
             <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
         </a>
     @endif
@@ -56,7 +56,7 @@
         </a>
     @endif
     @if (!empty($delete_url))
-        <a href="javascript:void(0)" title="Hapus" data-href="{!! $delete_url !!}" data-button="delete" id="deleteModal">
+        <a href="javascript:void(0)" title="Hapus" data-href="{!! $delete_url !!}" data-button="delete" data-testid="btn-hapus" id="deleteModal">
             <button type="button" class="btn btn-icon btn-danger btn-sm" style="width: 40px"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </a>
     @endif
@@ -82,7 +82,7 @@
         </button>
     @endif
     @if (!empty($download_url))
-        <a href="{!! $download_url !!}" title="Unduh" data-button="download">
+        <a href="{!! $download_url !!}" title="Unduh" data-button="download" data-testid="btn-download">
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-download"></i></button>
         </a>
     @endif

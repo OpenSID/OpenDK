@@ -42,8 +42,9 @@ return [
     |
     */
     'core' => [
-        'minPhpVersion' => '8.3.0',
+        'minPhpVersion' => '8.4.0',
     ],
+
     'final' => [
         'key' => true,
         'publish' => false,

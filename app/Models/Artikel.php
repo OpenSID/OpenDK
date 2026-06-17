@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Events\ArtikelChanged;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,6 +50,16 @@ class Artikel extends Model
     use HandlesResourceDeletion;
 
     protected $table = 'das_artikel';
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
+        static::updated(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
+        static::deleted(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
+    }
 
     protected $fillable = [
         'id_kategori',

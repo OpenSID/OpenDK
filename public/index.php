@@ -46,11 +46,6 @@ require __DIR__.'/../vendor/autoload.php';
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// https://laracasts.com/discuss/channels/general-discussion/where-do-you-set-public-directory-laravel-5
-$app->bind('path.public', function () {
-    return __DIR__;
-});
-
 $kernel = $app->make(Kernel::class);
 
 $response = $kernel->handle(

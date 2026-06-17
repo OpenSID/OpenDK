@@ -36,7 +36,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use willvincent\Feeds\Facades\FeedsFacade;
+use SimplePie;
 
 class DesaService extends BaseApiService
 {
@@ -109,8 +109,14 @@ class DesaService extends BaseApiService
                     })->filter(static fn($q) => !empty($q->website));
                 $feeds = [];
                 foreach ($allDesa as $desa) {
-                    $feedItems = FeedsFacade::make($desa->website_url_feed['website'], 5, true);
-                    $items = $feedItems->get_items();
+                    $feedReader = new SimplePie();
+                    $feedReader->set_feed_url($desa->website_url_feed['website']);
+                    $feedReader->set_item_limit(5);
+                    $feedReader->force_fsockopen(true);
+                    $feedReader->set_cache_location(storage_path('framework/cache/simplepie'));
+                    $feedReader->init();
+                    $feedReader->handle_content_type();
+                    $items = $feedReader->get_items();
 
                     // Handle case where no items returned
                     if (empty($items)) {
@@ -169,6 +175,11 @@ class DesaService extends BaseApiService
      */
     public function jumlahDesa(array $filters = [])
     {
+        // Jika tidak menggunakan database gabungan, hitung dari database lokal
+        if (! $this->useDatabaseGabungan) {
+            return DataDesa::count();
+        }
+
         // Default parameter
         $defaultParams = [
             'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),

@@ -7,10 +7,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
+use App\Observers\AlbumObserver;
 
 class Album extends Model
 {
     use HasFactory, Sluggable;
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(AlbumObserver::class);
+    }
 
     protected $fillable = [
         'judul',

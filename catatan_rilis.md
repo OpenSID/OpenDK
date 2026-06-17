@@ -10,6 +10,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 1. [#1569](https://github.com/OpenSID/OpenDK/issues/1569) Perbaikan Berita desa tidak tampil jika menggunakan database gabungan
 2. [#1574](https://github.com/OpenSID/OpenDK/issues/1574) Perbaikan Tidak ada tombol tambah dan tombol kelola data pada kolom aksi menu dokumen
+3. [#1577](https://github.com/OpenSID/OpenDK/issues/1577) Perbaikan Error csp di halaman /berita-desa
 
 #### TEKNIS
 

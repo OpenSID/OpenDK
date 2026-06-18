@@ -16,7 +16,7 @@
         </a>
     @endif
     @if (!empty($detail_url))
-        <a href="{!! $detail_url !!}" title="Selengkapnya" data-button="detail">
+        <a href="{!! $detail_url !!}" title="Selengkapnya" data-button="detail" data-testid="btn-lihat">
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-list fa-fw"></i></button>
         </a>
     @endif
@@ -31,12 +31,12 @@
         </a>
     @endif
     @if (!empty($lock_url))
-        <a href="javascript:void(0)" title="Tidak Aktif" data-href="{!! $lock_url !!}" data-button="delete" id="lockModal">
+        <a href="javascript:void(0)" title="Tidak Aktif" data-href="{!! $lock_url !!}" data-button="delete" id="lockModal" data-testid="btn-lock">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #252725; border-color: #252725;"><i class="fa fa-lock" aria-hidden="true"></i></button>
         </a>
     @endif
     @if (!empty($unlock_url))
-        <a href="javascript:void(0)" title="Aktif" data-href="{!! $unlock_url !!}" data-button="delete" id="unlockModal">
+        <a href="javascript:void(0)" title="Aktif" data-href="{!! $unlock_url !!}" data-button="delete" id="unlockModal" data-testid="btn-unlock">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-unlock" aria-hidden="true"></i></button>
         </a>
     @endif

@@ -82,7 +82,8 @@
                     },
                     {
                         data: 'desa.nama',
-                        name: 'desa'
+                        name: 'desa.nama',
+                        searchable: false
                     },
                     {
                         data: 'masa_berlaku',

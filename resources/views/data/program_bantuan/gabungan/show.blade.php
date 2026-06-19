@@ -110,9 +110,7 @@
                 serverSide: true,
                 ajax: {
                     url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/bantuan-peserta-datatable/${idProgram}/${kodeDesa}`,
-                    headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "application/json; charset=utf-8",
+                    headers: {                        
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'POST',

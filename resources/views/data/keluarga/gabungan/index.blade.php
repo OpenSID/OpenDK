@@ -64,9 +64,7 @@
                 ajax: {
                     url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/keluarga-datatable`,
                     headers: {
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                        "Accept": "application/ld+json",
-                        "Content-Type": "text/json; charset=utf-8",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'POST',
                     data: function(row) {

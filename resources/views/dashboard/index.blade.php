@@ -10,7 +10,7 @@
 
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-6" data-testid="card-desa">
                 <div class="small-box bg-aqua">
                     <div class="inner">
                         <h3>{{ number_format($data['desa'] ?? 0, 0, ',', '.') }}</h3>
@@ -25,7 +25,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-6" data-testid="card-penduduk">
                 <div class="small-box bg-green">
                     <div class="inner">
                         <h3>{{ number_format($data['penduduk'] ?? 0, 0, ',', '.') }}</h3>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-6" data-testid="card-keluarga">
                 <div class="small-box bg-yellow">
                     <div class="inner">
                         <h3>{{ number_format($data['keluarga'] ?? 0, 0, ',', '.') }}</h3>
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-xs-6">
+            <div class="col-lg-3 col-xs-6" data-testid="card-program-bantuan">
                 <div class="small-box bg-red">
                     <div class="inner">
                         <h3>{{ number_format($data['program_bantuan'] ?? 0, 0, ',', '.') }}</h3>
@@ -73,8 +73,8 @@
 
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs pull-right">
-                <li class=""><a href="#tab_1-1" data-toggle="tab">User Agent</a></li>
-                <li class="active"><a href="#tab_2-2" data-toggle="tab">Top 10 Halaman Terpopuler</a></li>
+                <li class=""><a href="#tab_1-1" data-toggle="tab" data-testid="tab-user-agent">User Agent</a></li>
+                <li class="active"><a href="#tab_2-2" data-toggle="tab" data-testid="tab-top-pages">Top 10 Halaman Terpopuler</a></li>
                 <li class="pull-left header">
                     <i class="fa fa-pie-chart"></i>
                     Statistik Pengunjung Website
@@ -83,32 +83,32 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane" id="tab_1-1">
+                <div class="tab-pane" id="tab_1-1" data-testid="pane-user-agent">
                     <div class="row">
                         <!-- Browser Chart -->
                         <div class="col-md-4">
                             <figure class="highcharts-figure">
-                                <div id="browser-chart"></div>
+                                <div id="browser-chart" data-testid="chart-browser"></div>
                             </figure>
                         </div>
 
                         <!-- Device Chart -->
                         <div class="col-md-4">
                             <figure class="highcharts-figure">
-                                <div id="device-chart"></div>
+                                <div id="device-chart" data-testid="chart-device"></div>
                             </figure>
                         </div>
 
                         <!-- Platform Chart -->
                         <div class="col-md-4">
                             <figure class="highcharts-figure">
-                                <div id="platform-chart"></div>
+                                <div id="platform-chart" data-testid="chart-platform"></div>
                             </figure>
                         </div>
                     </div>
                 </div>
                 <!-- /.tab-pane -->
-                <div class="tab-pane active" id="tab_2-2">
+                <div class="tab-pane active" id="tab_2-2" data-testid="pane-top-pages">
                     <table class="table table-bordered table-striped dataTable">
                         <thead>
                             <tr>
@@ -118,7 +118,7 @@
                                 <th>Bounce Rate</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-testid="table-top-pages">
                             @foreach ($top_pages_visited as $index => $page)
                                 <tr>
                                     <td>{{ $page->url }} <a href="{{ $page->url }}" target="_blank"><i class="fa fa-fw fa-link"></i></a> </td>

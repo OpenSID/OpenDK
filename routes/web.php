@@ -92,6 +92,15 @@ Route::prefix('install')->group(function () {
     Route::post('/final', [InstallerController::class, 'performInstallation'])->name('installer.performInstallation');
 });
 
+// Pest Browser Testing — Quick login route (hanya untuk environment testing)
+if (app()->environment('testing')) {
+    Route::get('/_pest/login/{userId}', function ($userId) {
+        $user = \App\Models\User::findOrFail($userId);
+        \Illuminate\Support\Facades\Auth::login($user);
+        return response('', 200);
+    })->middleware('web')->name('pest.login');
+}
+
 // Redirect if apps not installed
 Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     Auth::routes([

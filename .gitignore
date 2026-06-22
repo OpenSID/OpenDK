@@ -7,6 +7,7 @@
 /public/data/*
 /storage/*.key
 /vendor
+/vendor-13
 /.idea
 /.vagrant
 Homestead.json
@@ -41,6 +42,7 @@ public/error_log
 # Pest Browser Testing
 /tests/Browser/screenshots
 /tests/Browser/console
+/tests/Browser/.session_state.json
 # /tests/e2e-backup
 playwright-report/
 test-results/

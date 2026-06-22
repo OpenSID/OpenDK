@@ -92,7 +92,7 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="komentar-table" style="width: 100%">
+                    <table class="table table-striped table-bordered" id="komentar-table" style="width: 100%" data-testid="table-informasi">
                         <thead>
                             <tr>
                                 <th>Aksi</th>

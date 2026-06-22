@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered" id="dokumen-table">
+                        <table class="table table-striped table-bordered" id="dokumen-table" data-testid="table-informasi">
                             <thead>
                                 <tr>
                                     <th class="text-center text-nowrap" style="max-width: 160px;">Aksi</th>

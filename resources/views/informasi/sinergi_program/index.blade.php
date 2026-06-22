@@ -21,7 +21,7 @@
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="sinergi-program-table">
+                    <table class="table table-striped table-bordered" id="sinergi-program-table" data-testid="table-informasi">
                         <thead>
                             <tr>
                                 <th style="max-width: 250px;">Aksi</th>

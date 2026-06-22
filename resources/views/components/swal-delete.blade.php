@@ -1,4 +1,5 @@
-window.livewire.on('destroy', elemenId => {
+let livewireInstance = typeof window.livewire !== 'undefined' ? window.livewire : Livewire;
+livewireInstance.on('destroy', elemenId => {
 Swal.fire({
 title: 'Apakah anda yakin?',
 text: 'Data tidak bisa dikembalikan!',
@@ -15,7 +16,7 @@ if (result.value) {
 });
 });
 
-window.livewire.on('deleteSelected', elemenId => {
+livewireInstance.on('deleteSelected', elemenId => {
 Swal.fire({
 title: 'Apakah anda yakin?',
 text: 'Menghapus data yang terpilih!',

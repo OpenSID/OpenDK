@@ -62,14 +62,9 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/keluarga-datatable?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/keluarga-datatable`,
                     headers: {
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
-                        "Accept": "application/ld+json",
-                        "Content-Type": "text/json; charset=utf-8",
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'POST',
                     data: function(row) {
@@ -81,6 +76,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": searchValue,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "filter[kode_desa]": selectedDesa == 'Semua' ? '' : selectedDesa,
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]

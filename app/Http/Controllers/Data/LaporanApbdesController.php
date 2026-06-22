@@ -92,8 +92,8 @@ class LaporanApbdesController extends Controller
 
         return DataTables::of($query)
             ->addColumn('aksi', function ($row) {
-                $data['delete_url'] = auth()->user()->can('access.data.laporan-apbdes.delete') ? route('data.laporan-apbdes.destroy', $row->id) : null;
-                $data['download_url'] = auth()->user()->can('access.data.laporan-apbdes.export') ? route('data.laporan-apbdes.download', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.laporan_apbdes.delete') ? route('data.laporan-apbdes.destroy', $row->id) : null;
+                $data['download_url'] = auth()->user()->can('access.data.laporan_apbdes.export') ? route('data.laporan-apbdes.download', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })->make();

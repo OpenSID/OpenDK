@@ -109,13 +109,8 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/bantuan-peserta-datatable/${idProgram}/${kodeDesa}?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
-                    headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "application/json; charset=utf-8",
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/bantuan-peserta-datatable/${idProgram}/${kodeDesa}`,
+                    headers: {                        
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'POST',
@@ -124,6 +119,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "fields[program_peserta]": "*",
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                 ?.column]?.name,

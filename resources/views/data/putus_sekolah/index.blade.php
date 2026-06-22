@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.putus-sekolah.import') ? route('data.putus-sekolah.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.putus-sekolah.export') ? route('data.putus-sekolah.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.putus_sekolah.import') ? route('data.putus-sekolah.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.putus_sekolah.export') ? route('data.putus-sekolah.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

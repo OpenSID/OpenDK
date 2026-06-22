@@ -58,10 +58,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/pembangunan-datatable?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/pembangunan-datatable`,
                     headers: {
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
@@ -74,6 +71,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": searchValue,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "filter[kode_desa]": selectedDesa == 'Semua' ? '' : selectedDesa,
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]

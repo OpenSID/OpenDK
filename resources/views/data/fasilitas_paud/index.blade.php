@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.fasilitas-paud.import') ? route('data.fasilitas-paud.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.fasilitas-paud.export') ? route('data.fasilitas-paud.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.fasilitas_paud.import') ? route('data.fasilitas-paud.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.fasilitas_paud.export') ? route('data.fasilitas-paud.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

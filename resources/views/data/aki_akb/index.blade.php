@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.aki-akb.import') ? route('data.aki-akb.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.aki-akb.export') ? route('data.aki-akb.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.aki_akb.import') ? route('data.aki-akb.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.aki_akb.export') ? route('data.aki-akb.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

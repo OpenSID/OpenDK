@@ -19,5 +19,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 1. [#1571](https://github.com/OpenSID/OpenDK/issues/1571) Upgrade versi laravel ke versi 13
 2. [#1583](https://github.com/OpenSID/OpenDK/issues/1583) Smoke test untuk menu dashboard
 3. [#1584](https://github.com/OpenSID/OpenDK/issues/1584) Smoke test untuk menu informasi
+4. [#1588](https://github.com/OpenSID/OpenDK/issues/1588) Smoke test untuk menu Publikasi, Kerjasama, dan Admin SIKEMA
+
 
 

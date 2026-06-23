@@ -18,7 +18,7 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.laporan-penduduk.export') ? route('data.laporan-penduduk.export-excel') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.laporan_penduduk.export') ? route('data.laporan-penduduk.export-excel') : null])
             </div>
 
             <div class="box-body">
@@ -55,28 +55,21 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/laporan-penduduk-datatable?' .
-                        http_build_query([
-                            'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
-                        ]) }}`,
-                    headers: {
-                        "Accept": "application/ld+json",
-                        "Content-Type": "text/json; charset=utf-8",
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/laporan-penduduk-datatable`,
+                    headers: {                        
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
                     },
                     method: 'POST',
                     data: function(row) {
                         var selectedDesa = $('#list_desa').val(); // Ambil nilai kode_desa yang dipilih
-                        var searchValue = row.search.value; // Ambil nilai search dari DataTables
-
-                        // Jika searchValue dan selectedDesa kosong, ambil semua data
-                        var filterSearch = (searchValue || selectedDesa) ? (searchValue ||
-                            selectedDesa) : '';
+                        var searchValue = row.search.value; // Ambil nilai search dari DataTables                        
 
                         return {
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
-                            "filter[search]": filterSearch == 'Semua' ? searchValue : filterSearch, // Gunakan filterSearch di sini
+                            "filter[search]": searchValue,
+                            "filter[kode_desa]": selectedDesa == 'Semua' ? '' : selectedDesa,
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]
                                     ?.column]
                                 ?.name,

@@ -9,8 +9,18 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### BUG
 
 1. [#1569](https://github.com/OpenSID/OpenDK/issues/1569) Perbaikan Berita desa tidak tampil jika menggunakan database gabungan
+2. [#1574](https://github.com/OpenSID/OpenDK/issues/1574) Perbaikan Tidak ada tombol tambah dan tombol kelola data pada kolom aksi menu dokumen
+3. [#1577](https://github.com/OpenSID/OpenDK/issues/1577) Perbaikan Error csp di halaman /berita-desa
+4. [#1600](https://github.com/OpenSID/OpenDK/issues/1600) Perbaikan temuan pasca test manual
+4. [#1601](https://github.com/OpenSID/OpenDK/issues/1601) Perbaikan Filter Kode Kecamatan pada Semua Halaman DataTable Gabungan
 
 #### TEKNIS
 
 1. [#1571](https://github.com/OpenSID/OpenDK/issues/1571) Upgrade versi laravel ke versi 13
+2. [#1583](https://github.com/OpenSID/OpenDK/issues/1583) Smoke test untuk menu dashboard
+3. [#1584](https://github.com/OpenSID/OpenDK/issues/1584) Smoke test untuk menu informasi
+4. [#1588](https://github.com/OpenSID/OpenDK/issues/1588) Smoke test untuk menu Publikasi, Kerjasama, dan Admin SIKEMA
+5. [#1590](https://github.com/OpenSID/OpenDK/issues/1590) Smoke test untuk menu Pesan dan Layanan Surat
+
+
 

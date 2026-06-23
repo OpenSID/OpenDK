@@ -21,6 +21,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1584](https://github.com/OpenSID/OpenDK/issues/1584) Smoke test untuk menu informasi
 4. [#1588](https://github.com/OpenSID/OpenDK/issues/1588) Smoke test untuk menu Publikasi, Kerjasama, dan Admin SIKEMA
 5. [#1590](https://github.com/OpenSID/OpenDK/issues/1590) Smoke test untuk menu Pesan dan Layanan Surat
+6. [#1592](https://github.com/OpenSID/OpenDK/issues/1592) Smoke test untuk menu Data -> Kecamatan, Data -> Kependudukan, Data -> Kesehatan
+
 
 
 

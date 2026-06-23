@@ -102,4 +102,5 @@
         });
     </script>
     @include('forms.datatable-vertical')
+    @include('forms.delete-modal')
 @endpush

@@ -77,7 +77,7 @@ class FormDokumenController extends Controller
                     $data['delete_url'] = auth()->user()->can('access.informasi.form_dokumen.delete') ? route('informasi.form-dokumen.destroy', $row->id) : null;
                 }
 
-                $data['download_url'] = auth()->user()->can('access.informasi.form-dokumen.export') ? route('informasi.form-dokumen.download', $row->id) : null;
+                $data['download_url'] = auth()->user()->can('access.informasi.form_dokumen.export') ? route('informasi.form-dokumen.download', $row->id) : null;
 
 
                 return view('forms.aksi', $data);

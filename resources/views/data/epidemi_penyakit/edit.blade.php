@@ -30,7 +30,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! html()->form()->open() !!}
+                {!! html()->form()->route('data.epidemi-penyakit.update', $epidemi->id)->method('PUT')->open() !!}
 
                 <div class="box-body">
 

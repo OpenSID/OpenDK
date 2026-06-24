@@ -29,51 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Listeners;
 
 use App\Events\FormDokumenChanged;
-use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\CacheService;
+use Illuminate\Support\Facades\Log;
 
-class FormDokumen extends Model
+class ClearFormDokumenCacheListener
 {
-    use HandlesResourceDeletion;
-
-    protected $table = 'das_form_dokumen';
-
     /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::created(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-        static::updated(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-        static::deleted(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-    }
-
-    protected $fillable = [
-        'nama_dokumen',
-        'description',
-        'file_dokumen',
-        'jenis_dokumen_id',
-        'jenis_dokumen',
-        'is_published',
-        'published_at',
-        'retention_days',
-        'expired_at'
-    ];
-
-    /**
-     * Daftar field-file yang harus dihapus.
+     * Handle the event.
      *
-     * @var array
+     * @return void
      */
-    protected $resources = [
-        'file_dokumen',
-    ];
-
-    public function jenisDokumen()
+    public function handle(FormDokumenChanged $event)
     {
-        return $this->belongsTo(JenisDokumen::class, 'jenis_dokumen_id');
+        try {
+            $cacheService = app(CacheService::class);
+            $prefix = config('theme-api.form_dokumen.cache_prefix', 'form_dokumen:api');
+            $cacheService->removeCachePrefix($prefix);
+        } catch (\Exception $e) {
+            Log::error('Exception occurred while clearing form dokumen cache', [
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

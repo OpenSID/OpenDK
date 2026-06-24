@@ -30,6 +30,7 @@
                 serverSide: false,
                 ajax: {
                     url: '{!! $urlApi ?? url("/api/frontend/v1") !!}/faq',
+                    cache: false,
                     dataSrc: 'data',
                     data: function(d) {
                         // Convert DataTables parameters to API format (use safe defaults to avoid NaN)

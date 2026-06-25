@@ -32,7 +32,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\SettingAplikasi;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -42,7 +42,7 @@ class TokenController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -50,12 +50,6 @@ class TokenController extends Controller
         Config::set('jwt.ttl', 10 * 365 * 24 * 60);
         $user = Auth::user();
         $token = JWTAuth::fromUser($user);
-
-        // Simpan token ke das_setting agar middleware token.registered dapat memvalidasinya
-        SettingAplikasi::updateOrCreate(
-            ['key' => 'api_key_opendk'],
-            ['value' => $token]
-        );
 
         // Return the token in a response
         return response()->json(['token' => $token]);

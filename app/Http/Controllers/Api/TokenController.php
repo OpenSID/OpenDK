@@ -34,24 +34,41 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TokenController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Generate token sinkronisasi dengan masa berlaku 1 tahun.
+     *
+     * Token ini digunakan untuk keperluan sinkronisasi data antar sistem,
+     * bukan untuk sesi autentikasi umum.
      *
      * @return Response
      */
     public function index()
     {
-        // Set the token's expiration time, 10 tahun
-        Config::set('jwt.ttl', 10 * 365 * 24 * 60);
         $user = Auth::user();
-        $token = JWTAuth::fromUser($user);
 
-        // Return the token in a response
-        return response()->json(['token' => $token]);
+        // Gunakan customClaims untuk set expiry 1 tahun secara terisolasi,
+        // tanpa mengubah konfigurasi JWT global via Config::set().
+        // Ini memastikan TTL default untuk token lain tidak terpengaruh.
+        $expiresAt = now()->addYear()->timestamp;
+
+        $token = JWTAuth::customClaims(['exp' => $expiresAt])
+            ->fromUser($user);
+
+        Log::info('Token sinkronisasi digenerate', [
+            'user_id'    => $user->id,
+            'expires_at' => now()->addYear()->toDateTimeString(),
+            'ip'         => request()->ip(),
+        ]);
+
+        return response()->json([
+            'token'      => $token,
+            'expires_at' => now()->addYear()->toDateTimeString(),
+            'token_type' => 'Bearer',
+        ]);
     }
 }

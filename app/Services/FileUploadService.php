@@ -35,10 +35,18 @@ class FileUploadService
         // environment tertentu (seperti Laragon/Windows), $file->getRealPath()
         // me-return false untuk file di C:\Windows\Temp yang menyebabkan ValueError.
         $stream = fopen($file->getPathname(), 'r');
-        $path = trim($directory.'/'.$safeFileName, '/');
-        Storage::disk('public')->put($path, $stream);
-        if (is_resource($stream)) {
-            fclose($stream);
+        if ($stream === false) {
+            throw new \RuntimeException('Failed to open file: ' . $file->getPathname());
+        }
+
+        $path = trim($directory . '/' . $safeFileName, '/');
+
+        try {
+            Storage::disk('public')->put($path, $stream);
+        } finally {
+            if (is_resource($stream)) {
+                fclose($stream);
+            }
         }
 
         return $path;

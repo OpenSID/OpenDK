@@ -17,11 +17,11 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.media-sosial.create') ? route('informasi.media-sosial.create') : null])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.media_sosial.create') ? route('informasi.media-sosial.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="media-sosial-table">
+                    <table class="table table-striped table-bordered" id="media-sosial-table" data-testid="table-informasi">
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>

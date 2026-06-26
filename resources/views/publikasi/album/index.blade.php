@@ -18,12 +18,12 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @can('access.publikasi.album.create')
-                    <a href="{{ route('publikasi.album.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                    <a href="{{ route('publikasi.album.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data" data-testid="btn-tambah"><i class="fa fa-plus"></i>&ensp;Tambah</a>
                 @endcan
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="album-table">
+                    <table class="table table-striped table-bordered" id="album-table" data-testid="table-publikasi">
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>

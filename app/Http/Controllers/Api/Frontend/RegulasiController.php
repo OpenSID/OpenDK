@@ -32,10 +32,10 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\RegulasiApiRepository;
+use App\Services\CacheService;
 use App\Transformers\RegulasiTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -58,11 +58,14 @@ use Spatie\Fractal\Fractal;
 class RegulasiController extends BaseController
 {
     protected RegulasiApiRepository $regulasiApiRepository;
+    protected CacheService $cacheService;
 
     public function __construct(
-        RegulasiApiRepository $regulasiApiRepository
+        RegulasiApiRepository $regulasiApiRepository,
+        CacheService $cacheService
     ) {
         $this->regulasiApiRepository = $regulasiApiRepository;
+        $this->cacheService = $cacheService;
         $this->prefix = config('theme-api.regulasi.cache_prefix', 'regulasi:api');
     }
 
@@ -178,8 +181,8 @@ class RegulasiController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->regulasiApiRepository->data(), new RegulasiTransformer, 'regulasi');
-        });
+        }, $this->prefix, 'regulasi');
     }
 }

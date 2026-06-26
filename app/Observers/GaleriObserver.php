@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Galeri;
+use App\Services\CacheService;
 use Illuminate\Support\Facades\Storage;
 
 class GaleriObserver
@@ -15,7 +16,7 @@ class GaleriObserver
      */
     public function created(Galeri $galeri)
     {
-        //
+        $this->clearCache();
     }
 
     /**
@@ -41,6 +42,8 @@ class GaleriObserver
                 }
             }
         }
+
+        $this->clearCache();
     }
 
     /**
@@ -63,6 +66,8 @@ class GaleriObserver
                 }
             }
         }
+
+        $this->clearCache();
     }
 
     /**
@@ -85,5 +90,16 @@ class GaleriObserver
     public function forceDeleted(Galeri $galeri)
     {
         //
+    }
+
+    protected function clearCache(): void
+    {
+        try {
+            $cacheService = app(CacheService::class);
+            $prefix = config('theme-api.galeri.cache_prefix', 'galeri:api');
+            $cacheService->removeCachePrefix($prefix);
+        } catch (\Exception $e) {
+            //
+        }
     }
 }

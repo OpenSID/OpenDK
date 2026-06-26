@@ -52,7 +52,7 @@
                                                     <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
                                                 </div>
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama ?? ($pesan->additional_info['nama_desa'] ?? '-') }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>

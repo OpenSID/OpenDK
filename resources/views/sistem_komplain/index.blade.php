@@ -18,7 +18,7 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="komplain-table">
+                    <table class="table table-striped table-bordered" id="komplain-table" data-testid="table-sikema">
                         <thead>
                             <tr>
                                 <th style="max-width: 180px;">Aksi</th>

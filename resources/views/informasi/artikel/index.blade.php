@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="artikel-table">
+                    <table class="table table-striped table-bordered" id="artikel-table" data-testid="table-informasi">
                         <thead>
                             <tr>
                                 <th class="text-center text-nowrap" style="max-width: 150px;">Aksi</th>

@@ -57,7 +57,7 @@ class PotensiRequest extends FormRequest
             'nama_potensi' => 'required|string|max:200',
             'deskripsi' => 'required|string',
             'lokasi' => 'required|string|max:200',
-            'file_gambar' => 'file|mimes:bmp,jpg,jpeg,gif,png|max:1024|valid_file',
+            'file_gambar' => 'file|mimes:bmp,jpg,jpeg,gif,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '') . '|valid_file',
         ];
     }
 }

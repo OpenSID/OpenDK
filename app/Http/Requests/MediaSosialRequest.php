@@ -59,9 +59,9 @@ class MediaSosialRequest extends FormRequest
         ];
     
         if ($this->isMethod('post')) {
-            $rules['logo'] = 'required|file|mimes:jpg,jpeg,png|max:2048|valid_file';
+            $rules['logo'] = 'required|file|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file';
         } else {
-            $rules['logo'] = 'nullable|file|mimes:jpg,jpeg,png|max:2048|valid_file';
+            $rules['logo'] = 'nullable|file|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file';
         }
         return $rules;
     }

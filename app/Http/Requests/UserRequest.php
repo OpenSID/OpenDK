@@ -72,7 +72,7 @@ class UserRequest extends FormRequest
             'telegram_id' => 'nullable|string|max:100',
             'password' => $password,
             'address' => 'required',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file',
             'pengurus_id' => 'nullable|integer',
         ];
     }

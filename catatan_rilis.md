@@ -15,6 +15,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 5. [#1601](https://github.com/OpenSID/OpenDK/issues/1601) Perbaikan Filter Kode Kecamatan pada Semua Halaman DataTable Gabungan
 6. [#1605](https://github.com/OpenSID/OpenDK/issues/1605) Perbaikan Data dokumen yang ditambahkan/dihapus tidak tampil sesuai di halaman web
 7. [#1608](https://github.com/OpenSID/OpenDK/issues/1608) Perbaikan generate token sinkronisasi opensid
+8. [#1608](https://github.com/OpenSID/OpenDK/issues/1608) Perbaikan Error ketika melakukan pencarian pada fitur program bantuan
+
 
 #### TEKNIS
 

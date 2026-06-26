@@ -1,4 +1,4 @@
-Di rilis versi v2606.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2607.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
@@ -12,7 +12,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1574](https://github.com/OpenSID/OpenDK/issues/1574) Perbaikan Tidak ada tombol tambah dan tombol kelola data pada kolom aksi menu dokumen
 3. [#1577](https://github.com/OpenSID/OpenDK/issues/1577) Perbaikan Error csp di halaman /berita-desa
 4. [#1600](https://github.com/OpenSID/OpenDK/issues/1600) Perbaikan temuan pasca test manual
-4. [#1601](https://github.com/OpenSID/OpenDK/issues/1601) Perbaikan Filter Kode Kecamatan pada Semua Halaman DataTable Gabungan
+5. [#1601](https://github.com/OpenSID/OpenDK/issues/1601) Perbaikan Filter Kode Kecamatan pada Semua Halaman DataTable Gabungan
+6. [#1605](https://github.com/OpenSID/OpenDK/issues/1605) Perbaikan Data dokumen yang ditambahkan/dihapus tidak tampil sesuai di halaman web
 
 #### TEKNIS
 

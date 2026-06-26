@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Album;
+use App\Services\CacheService;
 use Illuminate\Support\Facades\Storage;
 
 class AlbumObserver
@@ -15,7 +16,7 @@ class AlbumObserver
      */
     public function created(Album $album)
     {
-        //
+        $this->clearCache();
     }
 
     /**
@@ -29,6 +30,8 @@ class AlbumObserver
         if ($album->isDirty('gambar')) {
             Storage::disk('public')->delete($album->getOriginal('gambar'));
         }
+
+        $this->clearCache();
     }
 
     /**
@@ -42,6 +45,8 @@ class AlbumObserver
         if (!is_null($album->gambar)) {
             Storage::disk('public')->delete($album->gambar);
         }
+
+        $this->clearCache();
     }
 
     /**
@@ -64,5 +69,16 @@ class AlbumObserver
     public function forceDeleted(Album $album)
     {
         //
+    }
+
+    protected function clearCache(): void
+    {
+        try {
+            $cacheService = app(CacheService::class);
+            $prefix = config('theme-api.album.cache_prefix', 'album:api');
+            $cacheService->removeCachePrefix($prefix);
+        } catch (\Exception $e) {
+            //
+        }
     }
 }

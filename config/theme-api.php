@@ -70,6 +70,15 @@ return [
         'default_order' => 'asc',
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Form Dokumen API Settings
+    |--------------------------------------------------------------------------
+    */
+    'form_dokumen' => [
+        'cache_prefix' => env('FORM_DOKUMEN_API_CACHE_PREFIX', 'form_dokumen:api'),
+    ],
+
     'desa' => [
         'default_per_page' => env('DESA_API_DEFAULT_PER_PAGE', 15),
         'max_per_page' => env('DESA_API_MAX_PER_PAGE', 100),
@@ -93,6 +102,42 @@ return [
         ],
         'default_sort' => 'created_at',
         'default_order' => 'desc',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Album API Settings
+    |--------------------------------------------------------------------------
+    */
+    'album' => [
+        'cache_prefix' => env('ALBUM_API_CACHE_PREFIX', 'album:api'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Potensi API Settings
+    |--------------------------------------------------------------------------
+    */
+    'potensi' => [
+        'cache_prefix' => env('POTENSI_API_CACHE_PREFIX', 'potensi:api'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Regulasi API Settings
+    |--------------------------------------------------------------------------
+    */
+    'regulasi' => [
+        'cache_prefix' => env('REGULASI_API_CACHE_PREFIX', 'regulasi:api'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Komplain API Settings
+    |--------------------------------------------------------------------------
+    */
+    'komplain' => [
+        'cache_prefix' => env('KOMPLAIN_API_CACHE_PREFIX', 'komplain:api'),
     ],
 
     /*

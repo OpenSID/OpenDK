@@ -55,4 +55,4 @@ mcp.json
 /.opencode
 /vendor-backup
 
-nul
+.env.testing

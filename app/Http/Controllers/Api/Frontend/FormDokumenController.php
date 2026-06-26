@@ -32,10 +32,10 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\FormDokumenApiRepository;
+use App\Services\CacheService;
 use App\Transformers\FormDokumenTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -58,11 +58,14 @@ use Spatie\Fractal\Fractal;
 class FormDokumenController extends BaseController
 {
     protected FormDokumenApiRepository $formDokumenApiRepository;
+    protected CacheService $cacheService;
 
     public function __construct(
-        FormDokumenApiRepository $formDokumenApiRepository
+        FormDokumenApiRepository $formDokumenApiRepository,
+        CacheService $cacheService
     ) {
         $this->formDokumenApiRepository = $formDokumenApiRepository;
+        $this->cacheService = $cacheService;
         $this->prefix = config('theme-api.form_dokumen.cache_prefix', 'form_dokumen:api');
     }
 
@@ -188,8 +191,8 @@ class FormDokumenController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->formDokumenApiRepository->data(), new FormDokumenTransformer, 'formdokumen');
-        });
+        }, $this->prefix, 'form_dokumen');
     }
 }

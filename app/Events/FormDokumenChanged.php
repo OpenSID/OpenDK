@@ -29,51 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Events;
 
-use App\Events\FormDokumenChanged;
-use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\FormDokumen;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class FormDokumen extends Model
+class FormDokumenChanged
 {
-    use HandlesResourceDeletion;
+    use Dispatchable;
+    use SerializesModels;
 
-    protected $table = 'das_form_dokumen';
-
-    /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::created(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-        static::updated(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-        static::deleted(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-    }
-
-    protected $fillable = [
-        'nama_dokumen',
-        'description',
-        'file_dokumen',
-        'jenis_dokumen_id',
-        'jenis_dokumen',
-        'is_published',
-        'published_at',
-        'retention_days',
-        'expired_at'
-    ];
+    public FormDokumen $formDokumen;
 
     /**
-     * Daftar field-file yang harus dihapus.
+     * Create a new event instance.
      *
-     * @var array
+     * @param  FormDokumen  $formDokumen
+     * @return void
      */
-    protected $resources = [
-        'file_dokumen',
-    ];
-
-    public function jenisDokumen()
+    public function __construct(FormDokumen $formDokumen)
     {
-        return $this->belongsTo(JenisDokumen::class, 'jenis_dokumen_id');
+        $this->formDokumen = $formDokumen;
     }
 }

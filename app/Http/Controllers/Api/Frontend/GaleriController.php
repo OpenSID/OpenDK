@@ -32,10 +32,10 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\GaleriApiRepository;
+use App\Services\CacheService;
 use App\Transformers\GaleriTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -58,11 +58,14 @@ use Spatie\Fractal\Fractal;
 class GaleriController extends BaseController
 {
     protected GaleriApiRepository $galeriApiRepository;
+    protected CacheService $cacheService;
 
     public function __construct(
-        GaleriApiRepository $galeriApiRepository
+        GaleriApiRepository $galeriApiRepository,
+        CacheService $cacheService
     ) {
         $this->galeriApiRepository = $galeriApiRepository;
+        $this->cacheService = $cacheService;
         $this->prefix = config('theme-api.galeri.cache_prefix', 'galeri:api');
     }
 
@@ -171,8 +174,8 @@ class GaleriController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
         
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->galeriApiRepository->data(), new GaleriTransformer, 'galeri');    
-        });
+        }, $this->prefix, 'galeri');
     }    
 }

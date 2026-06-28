@@ -104,9 +104,15 @@ class FileUploadService
 
     /**
      * Validate file size
+     * Validasi dilewati jika pengaturan 'upload_limit' dinonaktifkan oleh admin.
      */
     protected function validateFileSize(UploadedFile $file, int $maxSize): void
     {
+        // Jika limit dinonaktifkan via Pengaturan Aplikasi, lewati validasi ukuran
+        if (! static::isLimitEnabled()) {
+            return;
+        }
+
         $fileSizeInKB = $file->getSize() / 1024;
 
         if ($fileSizeInKB > $maxSize) {
@@ -194,5 +200,17 @@ class FileUploadService
             'archive' => ['application/zip', 'application/x-zip-compressed'],
             default => [],
         };
+    }
+
+    /**
+     * Cek apakah batas ukuran file upload aktif berdasarkan pengaturan aplikasi.
+     * Mengembalikan true jika limit berlaku, false jika limit dinonaktifkan.
+     */
+    public static function isLimitEnabled(): bool
+    {
+        $value = \App\Models\SettingAplikasi::where('key', 'upload_limit')->value('value');
+
+        // Default aktif (true) jika setting belum ada di database
+        return (bool) (int) ($value ?? 1);
     }
 }

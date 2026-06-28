@@ -29,40 +29,34 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Requests;
+use App\Models\SettingAplikasi;
+use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class MediaSosialRequest extends FormRequest
-{
+return new class () extends Migration {
     /**
-     * Determine if the user is authorized to make this request.
+     * Run the migrations.
      *
-     * @return bool
+     * @return void
      */
-    public function authorize()
+    public function up()
     {
-        return true;
+        SettingAplikasi::insert([
+            'key'         => 'upload_limit',
+            'value'       => '1',
+            'type'        => 'boolean',
+            'description' => 'Nonaktifkan untuk melepas batas ukuran file upload pada semua form.',
+            'kategori'    => 'sistem',
+            'option'      => '{}',
+        ]);
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Reverse the migrations.
      *
-     * @return array
+     * @return void
      */
-    public function rules()
+    public function down()
     {
-        $rules = [
-            'nama' => 'required|string|max:100',
-            'url' => 'required|url',
-            'status' => 'required',
-        ];
-    
-        if ($this->isMethod('post')) {
-            $rules['logo'] = 'required|file|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file';
-        } else {
-            $rules['logo'] = 'nullable|file|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file';
-        }
-        return $rules;
+        SettingAplikasi::where('key', 'upload_limit')->delete();
     }
-}
+};

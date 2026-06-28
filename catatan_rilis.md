@@ -4,7 +4,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 
 #### FITUR
-
+1. [#1609](https://github.com/OpenSID/OpenDK/issues/1609) Pengaturan untuk menonaktifkan limit upload file
 
 #### BUG
 

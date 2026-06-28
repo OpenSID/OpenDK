@@ -95,7 +95,7 @@ class SuratController extends Controller
             'tanggal' => 'required|date',
             'nomor' => 'required|string|unique:das_log_surat,nomor',
             'nama' => 'required|string',
-            'file' => 'required|file|mimes:pdf|max:2048',
+            'file' => 'required|file|mimes:pdf' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : ''),
         ]);
 
         if ($validator->fails()) {

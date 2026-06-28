@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SettingAplikasi;
 use App\Services\FileUploadService;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -35,7 +36,12 @@ describe('FileUploadService', function () {
         );
     })->throws(\InvalidArgumentException::class);
 
-    test('menolak file yang terlalu besar', function () {
+    test('menolak file yang terlalu besar ketika limit aktif', function () {
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'upload_limit'],
+            ['value' => '1', 'type' => 'boolean', 'kategori' => 'sistem', 'description' => 'test', 'option' => '{}']
+        );
+
         $file = UploadedFile::fake()->image('large.jpg')->size(5000); // 5MB
         
         $this->service->uploadSecure(
@@ -45,6 +51,56 @@ describe('FileUploadService', function () {
             1024 // Max 1MB
         );
     })->throws(\InvalidArgumentException::class);
+
+    test('mengizinkan file besar ketika limit dinonaktifkan', function () {
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'upload_limit'],
+            ['value' => '0', 'type' => 'boolean', 'kategori' => 'sistem', 'description' => 'test', 'option' => '{}']
+        );
+
+        $file = UploadedFile::fake()->image('large.jpg')->size(5000); // 5MB
+
+        $path = $this->service->uploadSecure(
+            $file,
+            'test-directory',
+            ['image/jpeg'],
+            1024 // Max 1MB — diabaikan karena limit off
+        );
+
+        expect($path)->toBeString();
+        Storage::disk('public')->assertExists($path);
+
+        // Bersihkan setting
+        SettingAplikasi::where('key', 'upload_limit')->delete();
+    });
+
+    test('isLimitEnabled mengembalikan true ketika setting aktif', function () {
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'upload_limit'],
+            ['value' => '1', 'type' => 'boolean', 'kategori' => 'sistem', 'description' => 'test', 'option' => '{}']
+        );
+
+        expect(FileUploadService::isLimitEnabled())->toBeTrue();
+
+        SettingAplikasi::where('key', 'upload_limit')->delete();
+    });
+
+    test('isLimitEnabled mengembalikan false ketika setting dinonaktifkan', function () {
+        SettingAplikasi::updateOrCreate(
+            ['key' => 'upload_limit'],
+            ['value' => '0', 'type' => 'boolean', 'kategori' => 'sistem', 'description' => 'test', 'option' => '{}']
+        );
+
+        expect(FileUploadService::isLimitEnabled())->toBeFalse();
+
+        SettingAplikasi::where('key', 'upload_limit')->delete();
+    });
+
+    test('isLimitEnabled default aktif ketika setting belum ada', function () {
+        SettingAplikasi::where('key', 'upload_limit')->delete();
+
+        expect(FileUploadService::isLimitEnabled())->toBeTrue();
+    });
 
     test('generate filename yang aman', function () {
         $file = UploadedFile::fake()->image('../../evil.jpg');
@@ -78,4 +134,4 @@ describe('FileUploadService', function () {
             Storage::disk('public')->assertExists($path);
         }
     });
-});
+});

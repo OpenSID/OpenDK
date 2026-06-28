@@ -56,3 +56,4 @@ mcp.json
 /vendor-backup
 
 .env.testing
+nul

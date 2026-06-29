@@ -28,6 +28,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 6. [#1592](https://github.com/OpenSID/OpenDK/issues/1592) Smoke test untuk menu Data -> Kecamatan, Data -> Kependudukan, Data -> Kesehatan
 7. [#1592](https://github.com/OpenSID/OpenDK/issues/1592) Smoke test untuk menu Data -> Pendidikan, Data -> Program Bantuan, Data -> Finansial, Data -> Pembangunan, Data -> Lembaga
 8. [#1592](https://github.com/OpenSID/OpenDK/issues/1592) Smoke test untuk menu Data -> Pendidikan, Data -> Program Bantuan, Data -> Finansial, Data -> Pembangunan, Data -> Lembaga
+9. [#1611](https://github.com/OpenSID/OpenDK/issues/1611) Sesuaikan Sinkronisasi OpenSID -> OpenDK
 
 
 

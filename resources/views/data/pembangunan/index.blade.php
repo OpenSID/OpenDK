@@ -90,7 +90,13 @@
                         data: 'sumber_dana_formatted',
                         name: 'sumber_dana',
                         searchable: false,
-                        orderable: true
+                        orderable: true,
+                        render: function(data, type, row) {
+                            if (!row.sumber_dana_list || row.sumber_dana_list.length === 0) return '-';
+                            return row.sumber_dana_list.map(function(s) {
+                                return '<span class="label label-primary" style="margin-right:3px">' + s + '</span>';
+                            }).join(' ');
+                        }
                     },
                     {
                         data: 'anggaran',

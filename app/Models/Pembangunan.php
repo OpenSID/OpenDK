@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class Pembangunan extends Model
 {
     use HasFactory;
+
     protected $table = 'das_pembangunan';
 
     protected $fillable = [
@@ -51,9 +52,11 @@ class Pembangunan extends Model
         'satuan',
         'biaya',
         'sumber_biaya',
+        'sumber_dana',
+        'anggaran',
         'pelaksana_kegiatan',
         'keterangan',
-        'desa_id'
+        'desa_id',
     ];
 
     /**

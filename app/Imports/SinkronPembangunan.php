@@ -53,7 +53,12 @@ class SinkronPembangunan implements ShouldQueue, ToCollection, WithChunkReading,
 
     public function collection(Collection $collection)
     {
+        // kirim log $collection lengkap
+        logger()->info('collection', $collection->toArray());
+
         foreach ($collection as $value) {
+            // logger()->info('sumber_dana', $value['sumber_dana']);
+            // logger($value['sumber_dana']);
             $insert = [
                 'desa_id' => $value['desa_id'],
                 'id' => $value['id'],

@@ -110,9 +110,10 @@
                                     }).join(' ');
                                 }
                             } catch (e) {
-                                // Not JSON, return as-is
+                                // Not JSON, wrap as single badge
+                                return '<span class="label label-primary" style="margin-right:3px">' + data + '</span>';
                             }
-                            return data;
+                            return '<span class="label label-primary" style="margin-right:3px">' + data + '</span>';
                         }
                     },
                     {

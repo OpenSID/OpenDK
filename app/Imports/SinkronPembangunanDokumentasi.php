@@ -39,7 +39,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class SinkronPembangunanDokumentasi implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class SinkronPembangunanDokumentasi implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 

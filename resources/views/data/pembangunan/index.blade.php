@@ -102,7 +102,11 @@
                         data: 'anggaran',
                         name: 'anggaran',
                         searchable: false,
-                        orderable: false
+                        orderable: false,
+                        render: function(data) {
+                            if (!data) return '-';
+                            return 'Rp ' + Number(data).toLocaleString('id-ID');
+                        }
                     },
                     {
                         data: 'volume',

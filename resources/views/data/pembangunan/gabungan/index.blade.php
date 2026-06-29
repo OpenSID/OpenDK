@@ -122,7 +122,8 @@
                         orderable: false,
                         searchable: false,
                         render: function(data) {
-                            return data || 'N/A';
+                            if (!data) return '-';
+                            return 'Rp ' + Number(data).toLocaleString('id-ID');
                         }
                     },
                     {

@@ -37,12 +37,14 @@ class PembangunanDokumentasi extends Model
 {
     protected $table = 'das_pembangunan_dokumentasi';
 
-    protected $fillable = [   
-        'id', // id didapatkan dari hasil sinkron opensid     
+    protected $fillable = [
+        'id', // id didapatkan dari hasil sinkron opensid
+        'desa_id',
         'id_pembangunan',
         'judul',
         'keterangan',
-        'gambar'        
+        'persentase',
+        'gambar',
     ];
 
     public function pembangunan()

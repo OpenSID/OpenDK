@@ -53,8 +53,7 @@
                         };
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         name: 'aksi',
                         class: 'text-center',
@@ -71,7 +70,7 @@
                         searchable: false,
                         orderable: false,
                         render: function(data, type, row) {
-                            var imagePath = row.attributes.file_gambar_path || '{{ asset("/img/no-image.png") }}';
+                            var imagePath = row.attributes.file_gambar_path || '{{ asset('/img/no-image.png') }}';
                             return '<img src="' + imagePath + '" alt="' + (row.attributes.nama_potensi || '') + '" style="max-width: 80px; max-height: 60px;">';
                         }
                     },
@@ -98,7 +97,7 @@
                     [2, 'asc']
                 ],
                 language: {
-                    url: '{{ asset("plugins/datatables/id.json") }}'
+                    url: '{{ asset('plugins/datatables/id.json') }}'
                 }
             });
         });
@@ -111,38 +110,38 @@
                 success: function(response) {
                     if (response.data && response.data.length > 0) {
                         var potensi = response.data[0].attributes;
-                        
+
                         // Create modal content
                         var modalHtml = '<div class="modal fade" id="potensiDetailModal" tabindex="-1" role="dialog">' +
                             '<div class="modal-dialog modal-lg" role="document">' +
-                                '<div class="modal-content">' +
-                                    '<div class="modal-header">' +
-                                        '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                                        '<h4 class="modal-title">' + (potensi.nama_potensi || '') + '</h4>' +
-                                    '</div>' +
-                                    '<div class="modal-body">' +
-                                        '<div class="row">' +
-                                            '<div class="col-md-12">' +
-                                                '<img src="' + (potensi.file_gambar_path || "{{ asset('/img/no-image.png') }}") + '" class="img-responsive" style="max-width: 100%; height: auto; margin-bottom: 15px;">' +
-                                            '</div>' +
-                                            '<div class="col-md-12">' +
-                                                '<h5>Deskripsi:</h5>' +
-                                                '<p>' + (potensi.deskripsi || '') + '</p>' +
-                                                '<h5>Lokasi:</h5>' +
-                                                '<p>' + (potensi.lokasi || '') + '</p>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                    '<div class="modal-footer">' +
-                                        '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>' +
-                                    '</div>' +
-                                '</div>' +
+                            '<div class="modal-content">' +
+                            '<div class="modal-header">' +
+                            '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
+                            '<h4 class="modal-title">' + (potensi.nama_potensi || '') + '</h4>' +
                             '</div>' +
-                        '</div>';
-                        
+                            '<div class="modal-body">' +
+                            '<div class="row">' +
+                            '<div class="col-md-12">' +
+                            '<img src="' + (potensi.file_gambar_path || "{{ asset('/img/no-image.png') }}") + '" class="img-responsive" style="max-width: 100%; height: auto; margin-bottom: 15px;">' +
+                            '</div>' +
+                            '<div class="col-md-12">' +
+                            '<h5>Deskripsi:</h5>' +
+                            '<p>' + (potensi.deskripsi || '') + '</p>' +
+                            '<h5>Lokasi:</h5>' +
+                            '<p>' + (potensi.lokasi || '') + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="modal-footer">' +
+                            '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
                         // Remove any existing modal
                         $('#potensiDetailModal').remove();
-                        
+
                         // Add modal to body and show it
                         $('body').append(modalHtml);
                         $('#potensiDetailModal').modal('show');

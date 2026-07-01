@@ -29,18 +29,29 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Middleware;
+namespace App\Listeners;
 
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use App\Events\FormDokumenChanged;
+use App\Services\CacheService;
+use Illuminate\Support\Facades\Log;
 
-class VerifyCsrfToken extends Middleware
+class ClearFormDokumenCacheListener
 {
     /**
-     * The URIs that should be excluded from CSRF verification.
+     * Handle the event.
      *
-     * @var array<int, string>
+     * @return void
      */
-    protected $except = [
-        //
-    ];
+    public function handle(FormDokumenChanged $event)
+    {
+        try {
+            $cacheService = app(CacheService::class);
+            $prefix = config('theme-api.form_dokumen.cache_prefix', 'form_dokumen:api');
+            $cacheService->removeCachePrefix($prefix);
+        } catch (\Exception $e) {
+            Log::error('Exception occurred while clearing form dokumen cache', [
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
 }

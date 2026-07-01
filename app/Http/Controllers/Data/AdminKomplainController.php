@@ -65,8 +65,8 @@ class AdminKomplainController extends Controller
             ->addColumn('aksi', function ($row) {
                 $data['anonim'] = route('admin-komplain.anonim', $row->id);
                 $data['agree_url'] = route('admin-komplain.setuju', $row->id);
-                $data['show_url'] = auth()->user()->can('access.admin-komplain.view') ? route('admin-komplain.show', $row->id) : null;
-                $data['delete_url'] = auth()->user()->can('access.admin-komplain.delete') ? route('admin-komplain.destroy', $row->id) : null;
+                $data['show_url'] = auth()->user()->can('access.admin_komplain.view') ? route('admin-komplain.show', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.admin_komplain.delete') ? route('admin-komplain.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })

@@ -39,7 +39,7 @@ use App\Models\DataDesa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use willvincent\Feeds\Facades\FeedsFacade;
+use SimplePie;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Requests\SurveiRequest;
 use App\Models\Kategori;
@@ -65,7 +65,7 @@ class PageController extends FrontEndController
                 'include' => 'kategori'
             ]))
         ]);
-    }
+    }    
 
     public function beritaDesa()
     {
@@ -76,8 +76,7 @@ class PageController extends FrontEndController
         return view('pages.berita.desa', [
             'page_title' => 'Berita Desa',
             'cari' => null,
-            'cari_desa' => null,
-            'list_desa' => DataDesa::orderBy('desa_id')->get(),
+            'cari_desa' => null,            
             'feeds' => $feeds,
         ]);
     }
@@ -91,7 +90,13 @@ class PageController extends FrontEndController
 
         $feeds = [];
         foreach ($all_desa as $desa) {
-            $getFeeds = FeedsFacade::make($desa['website'], 5, true);
+            $getFeeds = new SimplePie();
+            $getFeeds->set_feed_url($desa['website']);
+            $getFeeds->set_item_limit(5);
+            $getFeeds->force_fsockopen(true);
+            $getFeeds->set_cache_location(storage_path('framework/cache/simplepie'));
+            $getFeeds->init();
+            $getFeeds->handle_content_type();
             foreach ($getFeeds->get_items() as $item) {
                 $feeds[] = [
                     'desa_id' => $desa['desa_id'],
@@ -146,7 +151,7 @@ class PageController extends FrontEndController
         $html = view('pages.berita.feeds', [
             'page_title' => 'Beranda',
             'cari_desa' => null,
-            'list_desa' => DataDesa::orderBy('desa_id')->get(),
+            'list_desa' => (new DesaService())->listDesa(),
             'feeds' => $feeds,
         ])->render();
 

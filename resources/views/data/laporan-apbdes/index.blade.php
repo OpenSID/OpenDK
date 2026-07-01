@@ -18,8 +18,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.laporan-apbdes.import') ? route('data.laporan-apbdes.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.laporan-apbdes.export') ? route('data.laporan-apbdes.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.laporan_apbdes.import') ? route('data.laporan-apbdes.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.laporan_apbdes.export') ? route('data.laporan-apbdes.export-excel') : null])
             </div>
 
             <div class="box-body">

@@ -103,6 +103,7 @@ class SistemKomplainController extends FrontEndController
     public function store(Request $request)
     {
         try {
+            $maxRule = \App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '';
             $validator = Validator::make($request->all(), [
                 'nik' => ['required', 'numeric', new ValidasiNikRule($request->input('tanggal_lahir'))],
                 'judul' => 'required|string|max:255',
@@ -110,10 +111,10 @@ class SistemKomplainController extends FrontEndController
                 'laporan' => 'required|string',
                 'captcha' => 'required|captcha',
                 'tanggal_lahir' => 'required|date',
-                'lampiran1' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
-                'lampiran2' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
-                'lampiran3' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
-                'lampiran4' => 'file|mimes:jpeg,png,jpg,gif,svg|max:1024|valid_file',
+                'lampiran1' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
+                'lampiran2' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
+                'lampiran3' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
+                'lampiran4' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
             ], [
                 'captcha.captcha' => 'Invalid captcha code.',
             ]);

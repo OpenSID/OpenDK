@@ -83,12 +83,14 @@ class WidgetController extends Component
 
     public function rules(){
 
+        $maxRule = \App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '';
+
         return [
             'widget.judul' => 'required|unique:widgets,judul,'. ($this->widget_id ?? 'NULL'),
             'widget.isi' => 'required',
             'widget.form_admin' => 'nullable',
             'widget.jenis_widget' => 'required',
-            'foto' => 'nullable|mimes:jpg,png,jpeg,gif|max:1024',
+            'foto' => 'nullable|mimes:jpg,png,jpeg,gif' . $maxRule,
         ];
     
     }

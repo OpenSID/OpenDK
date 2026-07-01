@@ -36,12 +36,19 @@ use App\Http\Requests\PembangunanDokumentasiRequest;
 use App\Http\Requests\PembangunanRequest;
 use App\Imports\SinkronPembangunan;
 use App\Imports\SinkronPembangunanDokumentasi;
+use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use ZipArchive;
 
 class PembangunanController extends Controller
 {
+    /**
+     * Ekstensi file data yang didukung di dalam zip sinkronisasi.
+     * Daftar ini sengaja tidak dibatasi satu format saja, karena
+     * format yang dikirim OpenSID bisa berbeda antar versi/modul.
+     */
+    private const SUPPORTED_EXTENSIONS = ['csv', 'xlsx'];
+
     /**
      * Tambah Data Pembangunan Sesuai OpenSID
      *
@@ -50,35 +57,65 @@ class PembangunanController extends Controller
      */
     public function store(PembangunanRequest $request)
     {
+        $fileName = null;
+
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
-            $fileUploadService = new \App\Services\FileUploadService();
-            
+            $fileUploadService = new FileUploadService;
+
             // Define allowed MIME types for zip files
-            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+            $allowedMimes = FileUploadService::getAllowedMimes('archive');
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
 
-            // Temporary path file
-            $path = storage_path("app/temp/{$name}");
+            // FIX: FileUploadService::uploadSecure() menyimpan ke disk 'public'
+            // (lihat $file->storeAs($directory, $safeFileName, 'public')),
+            // sehingga lokasi file sebenarnya ada di app/public/temp/, bukan app/temp/
+            $path = storage_path("app/public/temp/{$name}");
             $extract = storage_path('app/public/pembangunan/');
 
             // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
+            $zip = new ZipArchive;
+            $openResult = $zip->open($path);
+
+            // FIX: jangan lanjut memakai object zip jika open() gagal —
+            // mencegah ValueError "Invalid or uninitialized Zip object"
+            if ($openResult !== true) {
+                throw new \RuntimeException(
+                    "Gagal membuka file zip (kode error ZipArchive: {$openResult}). Path: {$path}"
+                );
+            }
+
+            // FIX: cari nama file data yang SEBENARNYA ada di dalam zip,
+            // jangan tebak dari nama file zip. Nama file zip sudah diacak oleh
+            // FileUploadService::generateSafeFileName() dan tidak ada hubungan
+            // apa pun dengan nama file asli di dalamnya.
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $entryName = $zip->getNameIndex($i);
+                $extension = strtolower(pathinfo($entryName, PATHINFO_EXTENSION));
+
+                if (in_array($extension, self::SUPPORTED_EXTENSIONS, true)) {
+                    $fileName = $entryName;
+                    break;
+                }
+            }
+
             $zip->extractTo($extract);
             $zip->close();
 
+            if (! $fileName) {
+                throw new \RuntimeException('File data (csv/xlsx) tidak ditemukan di dalam zip yang diupload.');
+            }
+
             // Proses impor data pembangunan
-            (new SinkronPembangunan())
-                ->queue($extract.$filecsv = Str::replaceLast('zip', 'csv', $name));
+            (new SinkronPembangunan)->queue($extract.$fileName);
         } catch (\Exception $e) {
             report($e);
 
@@ -86,12 +123,16 @@ class PembangunanController extends Controller
                 'message' => 'Proses Sinkronisasi Data gagal. Error : '.$e->getMessage(),
                 'status' => 'danger',
             ]);
+        } finally {
+            // FIX: dipindah ke finally agar folder temp selalu dibersihkan,
+            // baik proses berhasil maupun gagal di tengah jalan
+            Storage::deleteDirectory('temp');
         }
 
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('pembangunan/'.$filecsv);
+        // FIX: tambahkan separator '/' sebelum nama file
+        if ($fileName) {
+            Storage::disk('public')->delete('pembangunan/'.$fileName);
+        }
 
         return response()->json([
             'message' => 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan',
@@ -101,45 +142,72 @@ class PembangunanController extends Controller
 
     public function storeDokumentasi(PembangunanDokumentasiRequest $request)
     {
+        $fileName = null;
+
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
-            $fileUploadService = new \App\Services\FileUploadService();
-            
+            $fileUploadService = new FileUploadService;
+
             // Define allowed MIME types for zip files
-            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+            $allowedMimes = FileUploadService::getAllowedMimes('archive');
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
 
-            // Temporary path file
-            $path = storage_path("app/temp/{$name}");
+            // FIX: sesuaikan dengan disk 'public' yang dipakai FileUploadService
+            $path = storage_path("app/public/temp/{$name}");
             $extract = storage_path('app/public/pembangunan/');
 
             // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
+            $zip = new ZipArchive;
+            $openResult = $zip->open($path);
+
+            if ($openResult !== true) {
+                throw new \RuntimeException(
+                    "Gagal membuka file zip (kode error ZipArchive: {$openResult}). Path: {$path}"
+                );
+            }
+
+            // FIX: cari nama file data yang sebenarnya di dalam zip
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $entryName = $zip->getNameIndex($i);
+                $extension = strtolower(pathinfo($entryName, PATHINFO_EXTENSION));
+
+                if (in_array($extension, self::SUPPORTED_EXTENSIONS, true)) {
+                    $fileName = $entryName;
+                    break;
+                }
+            }
+
             $zip->extractTo($extract);
             $zip->close();
 
+            if (! $fileName) {
+                throw new \RuntimeException('File data (csv/xlsx) tidak ditemukan di dalam zip yang diupload.');
+            }
+
             // Proses impor data dokumentasi pembangunan
-            (new SinkronPembangunanDokumentasi())
-            ->queue($extract.$filecsv = Str::replaceLast('zip', 'csv', $name));
+            (new SinkronPembangunanDokumentasi)->queue($extract.$fileName);
         } catch (\Exception $e) {
             report($e);
 
-            return back()->with('error', 'Import data gagal.');
+            return response()->json([
+                'message' => 'Proses Sinkronisasi Data gagal. Error : '.$e->getMessage(),
+                'status' => 'danger',
+            ]);
+        } finally {
+            Storage::deleteDirectory('temp');
         }
 
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('pembangunan/'.$filecsv);
+        if ($fileName) {
+            Storage::disk('public')->delete('pembangunan/'.$fileName);
+        }
 
         return response()->json([
             'message' => 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan',

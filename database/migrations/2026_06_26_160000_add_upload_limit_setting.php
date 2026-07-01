@@ -29,28 +29,34 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Providers;
+use App\Models\SettingAplikasi;
+use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-
-class AuthServiceProvider extends ServiceProvider
-{
+return new class () extends Migration {
     /**
-     * The model to policy mappings for the application.
-     *
-     * @var array<class-string, class-string>
-     */
-    protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-    ];
-
-    /**
-     * Register any authentication / authorization services.
+     * Run the migrations.
      *
      * @return void
      */
-    public function boot()
+    public function up()
     {
-        $this->registerPolicies();
+        SettingAplikasi::insert([
+            'key'         => 'upload_limit',
+            'value'       => '1',
+            'type'        => 'boolean',
+            'description' => 'Nonaktifkan untuk melepas batas ukuran file upload pada semua form.',
+            'kategori'    => 'sistem',
+            'option'      => '{}',
+        ]);
     }
-}
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        SettingAplikasi::where('key', 'upload_limit')->delete();
+    }
+};

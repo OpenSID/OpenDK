@@ -18,7 +18,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @can('access.informasi.artikel_kategori.create')
-                    <a href="{{ route('informasi.artikel-kategori.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                    <a href="{{ route('informasi.artikel-kategori.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data" data-testid="btn-tambah"><i class="fa fa-plus"></i>&ensp;Tambah</a>
                 @endcan
             </div>
             <div class="box-body">
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="datatable-artikel-kategori" style="width: 100%">
+                    <table class="table table-striped table-bordered" id="datatable-artikel-kategori" style="width: 100%" data-testid="table-informasi">
                         <thead>
                             <tr>
                                 <th style="max-width: 150px;">Aksi</th>

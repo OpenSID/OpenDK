@@ -29,10 +29,12 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Helpers\Parsedown;
 use App\Models\DataDesa;
 use App\Models\Menu;
 use App\Models\Role;
 use App\Models\Themes;
+use Hexadog\ThemesManager\Facades\ThemesManager;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -46,7 +48,7 @@ use willvincent\Feeds\Facades\FeedsFacade;
  * @param  string  $content
  * @return string
  */
-if (!function_exists('get_tag_image')) {
+if (! function_exists('get_tag_image')) {
     function get_tag_image(string $content)
     {
         if (preg_match('/<img.+?src="(.+?)"/', $content, $match)) {
@@ -61,7 +63,7 @@ if (!function_exists('get_tag_image')) {
  * { function_description }
  *
  * @param      <type>  $parent_id  The parent identifier
- * @return     <type>  ( description_of_the_return_value )
+ * @return <type>  ( description_of_the_return_value )
  */
 function define_child($parent_id)
 {
@@ -75,14 +77,15 @@ function define_child($parent_id)
  *
  * @param      <type>  $id          The identifier
  * @param      <type>  $permission  The permission
- * @return     <type>  ( description_of_the_return_value )
+ * @return <type>  ( description_of_the_return_value )
  */
 function permission_val($id, $permission)
 {
     try {
-        $role = \App\Models\Role::findOrFail($id);
+        $role = Role::findOrFail($id);
+
         return $role->hasPermissionTo($permission) ? 1 : 0;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return 0;
     }
 }
@@ -90,14 +93,15 @@ function permission_val($id, $permission)
 function permission_name($name)
 {
     $translated = trans("permissions.{$name}");
+
     return $translated !== "permissions.{$name}" ? $translated : $name;
 }
 
 /**
  * Generate Password
  *
- * @param  int  $length Length Character
- * @return     string   voucher
+ * @param  int  $length  Length Character
+ * @return string voucher
  */
 function generate_password($length = 6)
 {
@@ -141,7 +145,7 @@ function convert_xml_to_array($filename)
         $array = json_decode($json, true);
 
         return $array;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         \Log::info([
             'ERROR MESSAGE' => $e->getMessage(),
             'LINE' => $e->getLine(),
@@ -168,7 +172,7 @@ function random_color_part()
 
 function random_color()
 {
-    return random_color_part() . random_color_part() . random_color_part();
+    return random_color_part().random_color_part().random_color_part();
 }
 
 function years_list()
@@ -300,14 +304,14 @@ function is_wajib_ktp($umur, $status_kawin)
     if ($umur === null) {
         return null;
     }
-    $wajib_ktp = (($umur > 16) or (!empty($status_kawin) and $status_kawin != 1));
+    $wajib_ktp = (($umur > 16) or (! empty($status_kawin) and $status_kawin != 1));
 
     return $wajib_ktp;
 }
 
 function isThumbnail($url = null, $img = '/img/no-image.png')
 {
-    return !empty($url) && Storage::disk('public')->exists($url) ? Storage::disk('public')->url($url) : asset($img);
+    return ! empty($url) && Storage::disk('public')->exists($url) ? Storage::disk('public')->url($url) : asset($img);
 }
 
 function is_img($url = null, $img = '/img/no-image.png')
@@ -322,11 +326,11 @@ function is_logo($url = '', $file = '/img/logo.png')
 
 function is_user($url = null, $sex = 1, $pengurus = null)
 {
-    if ($url && !$pengurus) {
-        $url = 'storage/penduduk/foto/' . $url;
+    if ($url && ! $pengurus) {
+        $url = 'storage/penduduk/foto/'.$url;
     }
 
-    $default = 'img/pengguna/' . (($sex == 2) ? 'wuser.png' : 'kuser.png');
+    $default = 'img/pengguna/'.(($sex == 2) ? 'wuser.png' : 'kuser.png');
 
     return is_img($url, $default);
 }
@@ -334,7 +338,7 @@ function is_user($url = null, $sex = 1, $pengurus = null)
 function avatar($foto)
 {
     if ($foto) {
-        $foto = 'storage/user/' . $foto;
+        $foto = 'storage/user/'.$foto;
     }
 
     $default = 'bower_components/admin-lte/dist/img/user2-160x160.jpg';
@@ -342,14 +346,14 @@ function avatar($foto)
     return is_img($foto, $default);
 }
 
-if (!function_exists('divnum')) {
+if (! function_exists('divnum')) {
     function divnum($numerator, $denominator)
     {
         return $denominator == 0 ? 0 : ($numerator / $denominator);
     }
 }
 
-if (!function_exists('format_number_id')) {
+if (! function_exists('format_number_id')) {
     function format_number_id($inp = 0)
     {
         return number_format($inp, 2, ',', '.');
@@ -363,27 +367,27 @@ function terbilang($angka)
 
     $terbilang = '';
     if ($angka < 12) {
-        $terbilang = ' ' . $baca[$angka];
+        $terbilang = ' '.$baca[$angka];
     } elseif ($angka < 20) {
-        $terbilang = terbilang($angka - 10) . ' Belas';
+        $terbilang = terbilang($angka - 10).' Belas';
     } elseif ($angka < 100) {
-        $terbilang = terbilang($angka / 10) . ' Puluh' . terbilang($angka % 10);
+        $terbilang = terbilang($angka / 10).' Puluh'.terbilang($angka % 10);
     } elseif ($angka < 200) {
-        $terbilang = ' seratus' . terbilang($angka - 100);
+        $terbilang = ' seratus'.terbilang($angka - 100);
     } elseif ($angka < 1000) {
-        $terbilang = terbilang($angka / 100) . ' Ratus' . terbilang($angka % 100);
+        $terbilang = terbilang($angka / 100).' Ratus'.terbilang($angka % 100);
     } elseif ($angka < 2000) {
-        $terbilang = ' seribu' . terbilang($angka - 1000);
+        $terbilang = ' seribu'.terbilang($angka - 1000);
     } elseif ($angka < 1000000) {
-        $terbilang = terbilang($angka / 1000) . ' Ribu' . terbilang($angka % 1000);
+        $terbilang = terbilang($angka / 1000).' Ribu'.terbilang($angka % 1000);
     } elseif ($angka < 1000000000) {
-        $terbilang = terbilang($angka / 1000000) . ' Juta' . terbilang($angka % 1000000);
+        $terbilang = terbilang($angka / 1000000).' Juta'.terbilang($angka % 1000000);
     }
 
     return $terbilang;
 }
 
-if (!function_exists('sudahInstal')) {
+if (! function_exists('sudahInstal')) {
     /**
      * Cek apakah sudah install OpenDK atau belum
      *
@@ -391,7 +395,7 @@ if (!function_exists('sudahInstal')) {
      */
     function sudahInstal(): bool
     {
-        if (!file_exists(storage_path('installed'))) {
+        if (! file_exists(storage_path('installed'))) {
             return false;
         }
 
@@ -399,12 +403,11 @@ if (!function_exists('sudahInstal')) {
     }
 }
 
-if (!function_exists('isActive')) {
+if (! function_exists('isActive')) {
     /**
      * Helper function untuk installer views - cek apakah route aktif
      *
-     * @param string $routeName
-     * @return string
+     * @param  string  $routeName
      */
     function isActive($routeName): string
     {
@@ -432,7 +435,7 @@ if (!function_exists('isActive')) {
  * @param  string  $url
  * @return bool
  */
-if (!function_exists('checkWebsiteAccessibility')) {
+if (! function_exists('checkWebsiteAccessibility')) {
     function checkWebsiteAccessibility($url)
     {
         $options = [
@@ -459,10 +462,10 @@ if (!function_exists('checkWebsiteAccessibility')) {
     }
 }
 
-if (!function_exists('bersihkan_xss')) {
+if (! function_exists('bersihkan_xss')) {
     function bersihkan_xss($str)
     {
-        $antiXSS = new AntiXSS();
+        $antiXSS = new AntiXSS;
         $antiXSS->removeEvilHtmlTags(['iframe']);
         $antiXSS->addEvilAttributes(['http-equiv', 'content']);
 
@@ -470,12 +473,12 @@ if (!function_exists('bersihkan_xss')) {
     }
 }
 
-if (!function_exists('parsedown')) {
+if (! function_exists('parsedown')) {
     function parsedown($params = null)
     {
-        $parsedown = new \App\Http\Controllers\Helpers\Parsedown();
+        $parsedown = new Parsedown;
 
-        if (null !== $params) {
+        if ($params !== null) {
             return $parsedown->text(file_get_contents($params));
         }
 
@@ -483,7 +486,7 @@ if (!function_exists('parsedown')) {
     }
 }
 
-if (!function_exists('theme_new')) {
+if (! function_exists('theme_new')) {
     /**
      * Ambil model tema
      *
@@ -492,21 +495,21 @@ if (!function_exists('theme_new')) {
     function theme_new()
     {
         if (Schema::hasTable('das_themes')) {
-            return new Themes();
+            return new Themes;
         }
 
         return null;
     }
 }
 
-if (!function_exists('scan_themes')) {
+if (! function_exists('scan_themes')) {
     function scan_themes()
     {
-        $themes = \Hexadog\ThemesManager\Facades\ThemesManager::all();
+        $themes = ThemesManager::all();
         foreach ($themes as $theme) {
             // akse agar symlink dibuat
-            \Hexadog\ThemesManager\Facades\ThemesManager::set($theme->getVendor() . '/' . $theme->getName());
-            \App\Models\Themes::UpdateOrCreate([
+            ThemesManager::set($theme->getVendor().'/'.$theme->getName());
+            Themes::UpdateOrCreate([
                 'vendor' => $theme->getVendor(),
                 'name' => $theme->getName(),
             ], [
@@ -521,21 +524,25 @@ if (!function_exists('scan_themes')) {
     }
 }
 
-if (!function_exists('theme_active')) {
+if (! function_exists('theme_active')) {
     function theme_active()
     {
-        $themeActive = \App\Models\Themes::where('active', 1)->first();
-        if (!$themeActive) {
-            $themeActive = \App\Models\Themes::where('system', 1)->first();
+        if (! sudahInstal()) {
+            return null;
+        }
+
+        $themeActive = Themes::where('active', 1)->first();
+        if (! $themeActive) {
+            $themeActive = Themes::where('system', 1)->first();
             $themeActive->active = 1;
             $themeActive->save();
         }
 
-        return \Hexadog\ThemesManager\Facades\ThemesManager::set($themeActive->slug);
+        return ThemesManager::set($themeActive->slug);
     }
 }
 
-if (!function_exists('getFeeds')) {
+if (! function_exists('getFeeds')) {
     function getFeeds()
     {
         return cache()->remember('feeds_desa', 60 * 60, function () {
@@ -558,7 +565,7 @@ if (!function_exists('getFeeds')) {
                         'author' => $item->get_author()->get_name() ?? 'Administrator',
                         'title' => $item->get_title(),
                         'image' => get_tag_image($item->get_description()),
-                        'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
+                        'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250).'[...]'),
                         'content' => $item->get_content(),
                     ];
                 }
@@ -606,9 +613,9 @@ function nama($str): ?string
 function kode_wilayah($kode_wilayah): string
 {
     $kode_prov_kab_kec = str_split(substr($kode_wilayah, 0, 6), 2);
-    $kode_desa = (strlen($kode_wilayah) > 6) ? '.' . substr($kode_wilayah, 6) : '';
+    $kode_desa = (strlen($kode_wilayah) > 6) ? '.'.substr($kode_wilayah, 6) : '';
 
-    return implode('.', $kode_prov_kab_kec) . $kode_desa;
+    return implode('.', $kode_prov_kab_kec).$kode_desa;
 }
 
 function hari($tgl): string
@@ -635,9 +642,9 @@ function number_to_words($number, $nol_sen = true): string
 {
     $before_comma = trim(to_word($number));
     $after_comma = trim(comma($number));
-    $result = $before_comma . ($nol_sen ? '' : ' koma ' . $after_comma);
+    $result = $before_comma.($nol_sen ? '' : ' koma '.$after_comma);
 
-    return ucwords($result . ' Rupiah');
+    return ucwords($result.' Rupiah');
 }
 
 function to_word($number): string
@@ -665,22 +672,22 @@ function to_word($number): string
         $intPart = (int) $parts[0];
         $decimalPart = (int) $parts[1];
 
-        $words = to_word($intPart) . ' koma ' . to_word($decimalPart);
+        $words = to_word($intPart).' koma '.to_word($decimalPart);
     } else {
         $number = (int) str_replace('.', '', $number); // Ubah menjadi integer untuk memastikan hanya bilangan bulat yang diproses
 
         if ($number < 12) {
-            $words = ' ' . $arr_number[$number];
+            $words = ' '.$arr_number[$number];
         } elseif ($number < 20) {
-            $words = to_word($number - 10) . ' belas';
+            $words = to_word($number - 10).' belas';
         } elseif ($number < 100) {
-            $words = to_word(intdiv($number, 10)) . ' puluh' . to_word($number % 10);
+            $words = to_word(intdiv($number, 10)).' puluh'.to_word($number % 10);
         } elseif ($number < 200) {
-            $words = ' seratus' . to_word($number - 100);
+            $words = ' seratus'.to_word($number - 100);
         } elseif ($number < 1000) {
-            $words = to_word(intdiv($number, 100)) . ' ratus' . to_word($number % 100);
+            $words = to_word(intdiv($number, 100)).' ratus'.to_word($number % 100);
         } elseif ($number >= 1000 && $number < 2000) {
-            $words = ' seribu' . to_word($number - 1000);
+            $words = ' seribu'.to_word($number - 1000);
         } else {
             for ($i = count($unit) - 1; $i >= 0; $i--) {
                 $divider = 10 ** (3 * $i);
@@ -691,7 +698,7 @@ function to_word($number): string
                 $div = intdiv($number, $divider);
                 $mod = $number % $divider;
 
-                $words = to_word($div) . ' ' . $unit[$i] . to_word($mod);
+                $words = to_word($div).' '.$unit[$i].to_word($mod);
                 break;
             }
         }
@@ -722,7 +729,7 @@ function comma($number): string
 
     while ($i < $length) {
         $get = substr($after_comma, $i, 1);
-        $results .= ' ' . $arr_number[$get];
+        $results .= ' '.$arr_number[$get];
         $i++;
     }
 

@@ -138,79 +138,91 @@ class InstallerController extends Controller
      */
     public function environmentSaveWizard(Request $request)
     {
-        // dd($request->all());
         // Validasi input
         $request->validate([
-            'app_name' => 'required|string|max:255',
-            'app_environment' => 'required|string',
-            'app_debug' => 'required',
-            'app_url' => 'required|url',
+            'app_name'            => 'required|string|max:255',
+            'app_environment'     => 'required|string',
+            'app_debug'           => 'required',
+            'app_url'             => 'required|url',
             'database_connection' => 'required|string',
-            'database_hostname' => 'required|string',
-            'database_port' => 'required|numeric',
-            'database_name' => 'required|string',
-            'database_username' => 'required|string',
-            'database_password' => 'nullable|string',
+            'database_hostname'   => 'required|string',
+            'database_port'       => 'required|numeric',
+            'database_name'       => 'required|string',
+            'database_username'   => 'required|string',
+            'database_password'   => 'nullable|string',
         ]);
-        // dd($request->all());
-        // Ambil data dari form
+
+        // Cek writability file .env
+        $envPath = base_path('.env');
+        if (file_exists($envPath) && ! is_writable($envPath)) {
+            return back()->withErrors(['envConfig' => 'File .env tidak dapat ditulis. Periksa permission file.']);
+        }
+
+        // Bangun konten .env
+        // Catatan: key-key di bawah sesuai dengan Laravel 11+
+        //   - BROADCAST_CONNECTION  (bukan BROADCAST_DRIVER yang lama)
+        //   - CACHE_STORE           (bukan CACHE_DRIVER yang lama)
+        //   - QUEUE_CONNECTION      (tidak berubah)
         $envConfig = [
-            'APP_NAME' => '"' . $request->app_name . '"',
-            'APP_ENV' => $request->app_environment,
-            'APP_KEY' => 'base64:' . base64_encode(random_bytes(32)),
+            'APP_NAME'  => '"' . $request->app_name . '"',
+            'APP_ENV'   => $request->app_environment,
+            'APP_KEY'   => 'base64:' . base64_encode(random_bytes(32)),
             'APP_DEBUG' => $request->app_debug ? 'true' : 'false',
-            'APP_URL' => $request->app_url,
-            'LOG_CHANNEL' => 'stack',
-            'LOG_DEPRECATIONS_CHANNEL' => 'null',
-            'LOG_LEVEL' => 'debug',
+            'APP_URL'   => $request->app_url,
+
+            'LOG_CHANNEL'             => 'stack',
+            'LOG_DEPRECATIONS_CHANNEL'=> 'null',
+            'LOG_LEVEL'               => 'debug',
 
             'DB_CONNECTION' => $request->database_connection,
-            'DB_HOST' => $request->database_hostname,
-            'DB_PORT' => $request->database_port,
-            'DB_DATABASE' => $request->database_name,
-            'DB_USERNAME' => $request->database_username,
-            'DB_PASSWORD' => $request->database_password ?: '',
+            'DB_HOST'       => $request->database_hostname,
+            'DB_PORT'       => $request->database_port,
+            'DB_DATABASE'   => $request->database_name,
+            'DB_USERNAME'   => $request->database_username,
+            'DB_PASSWORD'   => $request->database_password ?: '',
 
-            'BROADCAST_DRIVER' => 'log',
-            'CACHE_DRIVER' => 'file',
-            'FILESYSTEM_DISK' => 'local',
-            'QUEUE_CONNECTION' => 'sync',
-            'SESSION_DRIVER' => 'file',
-            'SESSION_LIFETIME' => '120',
+            // Laravel 11+ menggunakan BROADCAST_CONNECTION (bukan BROADCAST_DRIVER)
+            'BROADCAST_CONNECTION' => $request->broadcast_connection ?? 'log',
+            // Laravel 11+ menggunakan CACHE_STORE (bukan CACHE_DRIVER)
+            'CACHE_STORE'          => $request->cache_store ?? 'file',
+            'FILESYSTEM_DISK'      => 'local',
+            'QUEUE_CONNECTION'     => $request->queue_connection ?? 'sync',
+            'SESSION_DRIVER'       => $request->session_driver ?? 'file',
+            'SESSION_LIFETIME'     => '120',
 
             'MEMCACHED_HOST' => '127.0.0.1',
 
-            'REDIS_HOST' => '127.0.0.1',
-            'REDIS_PASSWORD' => 'null',
-            'REDIS_PORT' => '6379',
+            'REDIS_HOST'     => $request->redis_hostname ?? '127.0.0.1',
+            'REDIS_PASSWORD' => $request->redis_password ?? 'null',
+            'REDIS_PORT'     => $request->redis_port ?? '6379',
 
-            'MAIL_MAILER' => 'smtp',
-            'MAIL_HOST' => 'mailpit',
-            'MAIL_PORT' => '1025',
-            'MAIL_USERNAME' => 'null',
-            'MAIL_PASSWORD' => 'null',
-            'MAIL_ENCRYPTION' => 'null',
+            'MAIL_MAILER'       => $request->mail_driver ?? 'smtp',
+            'MAIL_HOST'         => $request->mail_host ?? 'mailpit',
+            'MAIL_PORT'         => $request->mail_port ?? '1025',
+            'MAIL_USERNAME'     => $request->mail_username ?? 'null',
+            'MAIL_PASSWORD'     => $request->mail_password ?? 'null',
+            'MAIL_ENCRYPTION'   => $request->mail_encryption ?? 'null',
             'MAIL_FROM_ADDRESS' => '"hello@example.com"',
-            'MAIL_FROM_NAME' => '"${APP_NAME}"',
+            'MAIL_FROM_NAME'    => '"${APP_NAME}"',
 
-            'AWS_ACCESS_KEY_ID' => '',
-            'AWS_SECRET_ACCESS_KEY' => '',
-            'AWS_DEFAULT_REGION' => 'us-east-1',
-            'AWS_BUCKET' => '',
-            'AWS_USE_PATH_STYLE_ENDPOINT' => 'false',
+            'AWS_ACCESS_KEY_ID'          => '',
+            'AWS_SECRET_ACCESS_KEY'      => '',
+            'AWS_DEFAULT_REGION'         => 'us-east-1',
+            'AWS_BUCKET'                 => '',
+            'AWS_USE_PATH_STYLE_ENDPOINT'=> 'false',
 
-            'PUSHER_APP_ID' => '',
-            'PUSHER_APP_KEY' => '',
-            'PUSHER_APP_SECRET' => '',
-            'PUSHER_HOST' => '',
-            'PUSHER_PORT' => '443',
-            'PUSHER_SCHEME' => 'https',
+            'PUSHER_APP_ID'      => $request->pusher_app_id ?? '',
+            'PUSHER_APP_KEY'     => $request->pusher_app_key ?? '',
+            'PUSHER_APP_SECRET'  => $request->pusher_app_secret ?? '',
+            'PUSHER_HOST'        => '',
+            'PUSHER_PORT'        => '443',
+            'PUSHER_SCHEME'      => 'https',
             'PUSHER_APP_CLUSTER' => 'mt1',
 
-            'VITE_PUSHER_APP_KEY' => '"${PUSHER_APP_KEY}"',
-            'VITE_PUSHER_HOST' => '"${PUSHER_HOST}"',
-            'VITE_PUSHER_PORT' => '"${PUSHER_PORT}"',
-            'VITE_PUSHER_SCHEME' => '"${PUSHER_SCHEME}"',
+            'VITE_PUSHER_APP_KEY'     => '"${PUSHER_APP_KEY}"',
+            'VITE_PUSHER_HOST'        => '"${PUSHER_HOST}"',
+            'VITE_PUSHER_PORT'        => '"${PUSHER_PORT}"',
+            'VITE_PUSHER_SCHEME'      => '"${PUSHER_SCHEME}"',
             'VITE_PUSHER_APP_CLUSTER' => '"${PUSHER_APP_CLUSTER}"',
         ];
 
@@ -221,7 +233,15 @@ class InstallerController extends Controller
         }
 
         // Simpan ke file .env
-        file_put_contents(base_path('.env'), $envContent);
+        file_put_contents($envPath, $envContent);
+
+        // Reload config cache agar konfigurasi baru (terutama DB) langsung terbaca
+        try {
+            \Artisan::call('config:clear');
+            \Artisan::call('cache:clear');
+        } catch (\Exception $e) {
+            // Tidak fatal — lanjutkan meski cache:clear gagal
+        }
 
         return redirect()->route('installer.database')
             ->with('success', 'Konfigurasi environment berhasil disimpan');
@@ -237,15 +257,30 @@ class InstallerController extends Controller
             'envConfig' => 'required|string',
         ]);
 
+        // Cek writability file .env
+        $envPath = base_path('.env');
+        if (file_exists($envPath) && ! is_writable($envPath)) {
+            return back()->withErrors(['envConfig' => 'File .env tidak dapat ditulis. Periksa permission file.']);
+        }
+
         // Simpan content langsung dari textarea ke file .env
-        file_put_contents(base_path('.env'), $request->envConfig);
-        
+        file_put_contents($envPath, $request->envConfig);
+
+        // Reload config cache agar konfigurasi baru langsung terbaca
+        try {
+            \Artisan::call('config:clear');
+            \Artisan::call('cache:clear');
+        } catch (\Exception $e) {
+            // Tidak fatal — lanjutkan meski cache:clear gagal
+        }
+
         return redirect()->route('installer.database')
             ->with('success', 'Konfigurasi environment berhasil disimpan');
     }
 
     /**
      * Display the database page.
+     * Test koneksi DB menggunakan config yang sudah di-reload.
      */
     public function database()
     {
@@ -255,12 +290,15 @@ class InstallerController extends Controller
 
         // Test database connection
         $canConnect = false;
-        $message = '';
+        $message    = '';
 
         try {
+            // Paksa Laravel membaca ulang config DB dari .env yang baru disimpan
+            \DB::purge();
+            \DB::reconnect();
             \DB::connection()->getPdo();
             $canConnect = true;
-            $message = 'Koneksi database berhasil!';
+            $message    = 'Koneksi database berhasil!';
         } catch (\Exception $e) {
             $message = 'Koneksi database gagal: ' . $e->getMessage();
         }
@@ -290,29 +328,41 @@ class InstallerController extends Controller
         }
 
         try {
+            // Generate APP_KEY jika belum ada atau masih kosong
+            if (empty(config('app.key')) || config('app.key') === 'base64:') {
+                \Artisan::call('key:generate', ['--force' => true]);
+            }
+
             // Run migrations
             \Artisan::call('migrate', ['--force' => true]);
+            $migrationOutput = \Artisan::output();
 
-            // Run seeders if needed
+            // Run seeders
             \Artisan::call('db:seed', ['--force' => true]);
+            $migrationOutput .= \Artisan::output();
 
-            // Create installed file
+            // Buat symlink storage (biarkan jika sudah ada — tidak fatal)
+            try {
+                \Artisan::call('storage:link', ['--force' => true]);
+            } catch (\Exception $e) {
+                // Symlink mungkin sudah ada — tidak fatal, lanjutkan
+            }
+
+            // Buat file tanda instalasi selesai
             file_put_contents(
                 storage_path('installed'),
                 sprintf('%s berhasil DIPASANG pada %s', config('app.name', 'OpenDK'), now())
             );
 
-            $migrationOutput = \Artisan::output();
-
         } catch (\Exception $e) {
             return view('vendor.installer.finished', [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ]);
         }
 
         return view('vendor.installer.finished', [
-            'success' => true,
-            'migrationOutput' => $migrationOutput
+            'success'         => true,
+            'migrationOutput' => $migrationOutput,
         ]);
     }
 }

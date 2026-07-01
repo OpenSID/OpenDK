@@ -29,8 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Doctrine\DBAL\Types\StringType;
-use Doctrine\DBAL\Types\Type;
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -44,9 +43,6 @@ class AlterTableProfil extends Migration
      */
     public function up()
     {
-        if (! Type::hasType('char')) {
-            Type::addType('char', StringType::class);
-        }
         Schema::table('das_profil', function (Blueprint $table) {
             $table->string('alamat', 200)->nullable(true)->change();
             $table->char('kode_pos', 12)->nullable(true)->change();

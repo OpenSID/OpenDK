@@ -25,7 +25,7 @@
     <server name="CACHE_DRIVER" value="array"/>
     <server name="MAIL_MAILER" value="array"/>
     <server name="QUEUE_CONNECTION" value="sync"/>
-    <server name="SESSION_DRIVER" value="array"/>
+    <server name="SESSION_DRIVER" value="file"/>
     <server name="TELESCOPE_ENABLED" value="false"/>
     <server name="PLAYWRIGHT_TIMEOUT" value="30000"/>
     <server name="JWT_SECRET" value="test_secret_key_for_testing_only_do_not_use_in_production"/>

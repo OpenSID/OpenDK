@@ -33,10 +33,12 @@ class SecureFileUpload implements ValidationRule
             }
         }
 
-        // Check file size
-        $sizeInKB = $value->getSize() / 1024;
-        if ($sizeInKB > $this->maxSize) {
-            $fail("The {$attribute} may not be greater than {$this->maxSize} kilobytes.");
+        // Check file size — dilewati jika limit upload dinonaktifkan via Pengaturan Aplikasi
+        if (\App\Services\FileUploadService::isLimitEnabled()) {
+            $sizeInKB = $value->getSize() / 1024;
+            if ($sizeInKB > $this->maxSize) {
+                $fail("The {$attribute} may not be greater than {$this->maxSize} kilobytes.");
+            }
         }
 
         // Check for dangerous extensions

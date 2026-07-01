@@ -32,10 +32,10 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\PotensiApiRepository;
+use App\Services\CacheService;
 use App\Transformers\PotensiTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -58,11 +58,14 @@ use Spatie\Fractal\Fractal;
 class PotensiController extends BaseController
 {
     protected PotensiApiRepository $potensiApiRepository;
+    protected CacheService $cacheService;
 
     public function __construct(
-        PotensiApiRepository $potensiApiRepository
+        PotensiApiRepository $potensiApiRepository,
+        CacheService $cacheService
     ) {
         $this->potensiApiRepository = $potensiApiRepository;
+        $this->cacheService = $cacheService;
         $this->prefix = config('theme-api.potensi.cache_prefix', 'potensi:api');
     }
 
@@ -179,8 +182,8 @@ class PotensiController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->potensiApiRepository->data(), new PotensiTransformer, 'potensi');
-        });
+        }, $this->prefix, 'potensi');
     }
 }

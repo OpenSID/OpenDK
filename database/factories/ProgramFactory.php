@@ -29,6 +29,7 @@ class ProgramFactory extends Factory
                 return DataDesa::firstOrCreate(
                     ['nama' => 'Desa Contoh'],
                     [
+                        'desa_id' => '3301011234567',
                         'nama' => 'Desa Contoh',
                         'website' => 'https://example.com',
                         'luas_wilayah' => 10.5

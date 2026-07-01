@@ -52,11 +52,13 @@ class MediaTerkaitController extends Component
 
     public function rules()
     {
+        $maxRule = \App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '';
+
         return [
             'media_terkait.nama' => 'required|unique:media_terkaits,nama,' . ($this->media_terkait_id ?? 'NULL'),
             'media_terkait.url' => 'required',
             'media_terkait.status' => 'nullable|in:0,1',
-            'logo' => $this->editMode ? 'nullable|mimes:jpg,png,jpeg|max:1024' : 'required|mimes:jpg,png,jpeg|max:1024',
+            'logo' => ($this->editMode ? 'nullable' : 'required') . '|mimes:jpg,png,jpeg' . $maxRule,
         ];
     }
 

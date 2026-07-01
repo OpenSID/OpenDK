@@ -32,10 +32,10 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\AlbumApiRepository;
+use App\Services\CacheService;
 use App\Transformers\AlbumTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -58,11 +58,14 @@ use Spatie\Fractal\Fractal;
 class AlbumController extends BaseController
 {
     protected AlbumApiRepository $albumApiRepository;
+    protected CacheService $cacheService;
 
     public function __construct(
-        AlbumApiRepository $albumApiRepository
+        AlbumApiRepository $albumApiRepository,
+        CacheService $cacheService
     ) {
         $this->albumApiRepository = $albumApiRepository;
+        $this->cacheService = $cacheService;
         $this->prefix = config('theme-api.album.cache_prefix', 'album:api');
     }
 
@@ -161,8 +164,8 @@ class AlbumController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
         
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->albumApiRepository->data(), new AlbumTransformer, 'album');    
-        });
+        }, $this->prefix, 'album');
     }    
 }

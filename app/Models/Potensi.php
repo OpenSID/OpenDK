@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Events\PotensiChanged;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,6 +40,13 @@ class Potensi extends Model
     use HandlesResourceDeletion;
 
     protected $table = 'das_potensi';
+
+    protected static function booted(): void
+    {
+        static::created(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+        static::updated(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+        static::deleted(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+    }
 
     protected $fillable = [
         'kategori_id',

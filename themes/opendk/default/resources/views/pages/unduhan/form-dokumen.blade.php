@@ -34,6 +34,7 @@
                 serverSide: false,
                 ajax: {
                     url: '{!! $urlApi !!}/form-dokumen',
+                    cache: false,
                     dataSrc: 'data',
                     data: function(d) {                        
                         // Convert DataTables parameters to API format (use safe defaults to avoid NaN)

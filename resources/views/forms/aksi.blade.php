@@ -16,12 +16,12 @@
         </a>
     @endif
     @if (!empty($detail_url))
-        <a href="{!! $detail_url !!}" title="Selengkapnya" data-button="detail">
+        <a href="{!! $detail_url !!}" title="Selengkapnya" data-button="detail" data-testid="btn-lihat">
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-list fa-fw"></i></button>
         </a>
     @endif
     @if (!empty($show_url))
-        <a href="{!! $show_url !!}" title="Lihat" data-button="show" target="_blank">
+        <a href="{!! $show_url !!}" title="Lihat" data-button="show" data-testid="btn-lihat" target="_blank">
             <button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>
         </a>
     @endif
@@ -31,17 +31,17 @@
         </a>
     @endif
     @if (!empty($lock_url))
-        <a href="javascript:void(0)" title="Tidak Aktif" data-href="{!! $lock_url !!}" data-button="delete" id="lockModal">
+        <a href="javascript:void(0)" title="Tidak Aktif" data-href="{!! $lock_url !!}" data-button="delete" id="lockModal" data-testid="btn-lock">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #252725; border-color: #252725;"><i class="fa fa-lock" aria-hidden="true"></i></button>
         </a>
     @endif
     @if (!empty($unlock_url))
-        <a href="javascript:void(0)" title="Aktif" data-href="{!! $unlock_url !!}" data-button="delete" id="unlockModal">
+        <a href="javascript:void(0)" title="Aktif" data-href="{!! $unlock_url !!}" data-button="delete" id="unlockModal" data-testid="btn-unlock">
             <button type="button" class="btn btn-icon btn-info btn-sm" style="width: 40px; background-color: #1FF43E; border-color: #1FF43E;"><i class="fa fa-unlock" aria-hidden="true"></i></button>
         </a>
     @endif
     @if (!empty($edit_url))
-        <a href="{!! $edit_url !!}" title="Ubah" data-button="edit">
+        <a href="{!! $edit_url !!}" title="Ubah" data-button="edit" data-testid="btn-edit">
             <button type="button" class="btn btn-success btn-sm" style="width: 40px;"><i class="fa fa-edit" aria-hidden="true"></i></button>
         </a>
     @endif
@@ -56,7 +56,7 @@
         </a>
     @endif
     @if (!empty($delete_url))
-        <a href="javascript:void(0)" title="Hapus" data-href="{!! $delete_url !!}" data-button="delete" id="deleteModal">
+        <a href="javascript:void(0)" title="Hapus" data-href="{!! $delete_url !!}" data-button="delete" data-testid="btn-hapus" id="deleteModal">
             <button type="button" class="btn btn-icon btn-danger btn-sm" style="width: 40px"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </a>
     @endif
@@ -82,7 +82,7 @@
         </button>
     @endif
     @if (!empty($download_url))
-        <a href="{!! $download_url !!}" title="Unduh" data-button="download">
+        <a href="{!! $download_url !!}" title="Unduh" data-button="download" data-testid="btn-download">
             <button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-download"></i></button>
         </a>
     @endif

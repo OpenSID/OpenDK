@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.anggaran-realisasi.import') ? route('data.anggaran-realisasi.import') : null])
-                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.anggaran-realisasi.export') ? route('data.anggaran-realisasi.export-excel') : null])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.anggaran_realisasi.import') ? route('data.anggaran-realisasi.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.anggaran_realisasi.export') ? route('data.anggaran-realisasi.export-excel') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

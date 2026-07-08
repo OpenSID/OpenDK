@@ -29,32 +29,27 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Console;
+namespace App\Events;
 
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Models\FormDokumen;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class Kernel extends ConsoleKernel
+class FormDokumenChanged
 {
-    /**
-     * Define the application's command schedule.
-     *
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')->hourly();
-    }
+    use Dispatchable;
+    use SerializesModels;
+
+    public FormDokumen $formDokumen;
 
     /**
-     * Register the commands for the application.
+     * Create a new event instance.
      *
+     * @param  FormDokumen  $formDokumen
      * @return void
      */
-    protected function commands()
+    public function __construct(FormDokumen $formDokumen)
     {
-        $this->load(__DIR__.'/Commands');
-
-        require base_path('routes/console.php');
+        $this->formDokumen = $formDokumen;
     }
 }

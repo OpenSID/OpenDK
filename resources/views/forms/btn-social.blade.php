@@ -1,6 +1,6 @@
 @if (isset($create_url))
     <a href="{{ $create_url }}">
-        <button type="button" class="btn btn-success btn-sm btn-social" title="{{ $create_text ?? 'Tambah' }}">
+        <button type="button" class="btn btn-success btn-sm btn-social" title="{{ $create_text ?? 'Tambah' }}" data-testid="btn-tambah">
             <i class="fa fa-plus"></i>{{ $create_text ?? 'Tambah' }}
         </button>
     </a>

@@ -75,7 +75,7 @@ class DataPembangunanController extends Controller
                 ->addColumn('sumber_dana_list', function ($row) {
                     return $row->sumber_dana_list;
                 })
-                ->make();
+                ->make(true);
         }
     }
 

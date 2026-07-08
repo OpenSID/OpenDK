@@ -41,6 +41,11 @@ class FrontEndController extends Controller
     public function __construct()
     {
         parent::__construct();
+
+        if (!sudahInstal()) {
+            return;
+        }
+
         theme_active();
 
         $this->settings = SettingAplikasi::pluck('value', 'key');

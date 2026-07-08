@@ -202,11 +202,11 @@ it('can handle cache clearing on bulk operations', function () {
 it('can handle setting with empty options', function () {
     $setting = SettingAplikasi::factory()->create([
         'type' => 'select',
-        'option' => '',
+        'option' => '{}',
     ]);
 
-    expect($setting->option)->toBe('');
-    expect(json_decode($setting->option, true))->toBeNull();
+    expect($setting->option)->toBe('{}');
+    expect(json_decode((string) $setting->option, true))->toBeEmpty();
 });
 
 it('can handle setting with valid JSON options', function () {

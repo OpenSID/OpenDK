@@ -14,7 +14,7 @@ class ImunisasiFactory extends Factory
     {
         return [
             'desa_id' => function () {
-                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['desa_id' => '3301011234567', 'nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->desa_id;
             },
             'cakupan_imunisasi' => $this->faker->numberBetween(50, 100),
             'bulan' => $this->faker->numberBetween(1, 12),

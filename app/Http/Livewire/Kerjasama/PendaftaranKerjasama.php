@@ -82,13 +82,15 @@ class PendaftaranKerjasama extends Component
 
     public function rules()
     {
+        $maxRule = \App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '';
+
         return [
             'email' => 'required|email',
             'domain' => 'required',
             'kontak_nama' => 'required|min:5',
             'kontak_no_hp' => 'required',
             'kecamatan_id' => 'required',
-            'permohonan' => 'required:mimes:pdf|max:1024',
+            'permohonan' => 'required|mimes:pdf' . $maxRule,
         ];
     }
 

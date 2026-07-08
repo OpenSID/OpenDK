@@ -193,7 +193,8 @@ desired effect
                 $('#myModalCetakSemua').modal(event.detail.param);
             });
 
-            window.livewire.on('success', (message) => {
+            let livewireInstance = typeof window.livewire !== 'undefined' ? window.livewire : Livewire;
+            livewireInstance.on('success', (message) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'success',
@@ -204,7 +205,7 @@ desired effect
                 $('#myModal').modal('hide');
             });
 
-            window.livewire.on('error', (message) => {
+            livewireInstance.on('error', (message) => {
                 Swal.fire({
                     position: 'center',
                     icon: 'error',

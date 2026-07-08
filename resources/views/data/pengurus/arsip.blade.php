@@ -18,9 +18,11 @@
     <div class="box-header with-border clearfix">
         <div class="pull-left">
             @include('forms.btn-social', ['back_url' => route('data.pengurus.index')])
-            @include('forms.btn-social', [
-                'create_url' => route('data.pengurus.create.arsip', $pengurus_id),
-            ])
+            @if(!empty($pengurus_id))
+                @include('forms.btn-social', [
+                    'create_url' => route('data.pengurus.create.arsip', $pengurus_id),
+                ])
+            @endif
         </div>
 
         @if ($count_arsip > 0)

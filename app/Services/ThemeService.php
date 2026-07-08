@@ -6,6 +6,7 @@ use App\Models\Themes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ThemeService
 {
@@ -67,7 +68,7 @@ class ThemeService
         $path = $this->fileUploadService->uploadSecure($file, 'framework/themes', $allowedMimes, 51200);
         
         $fileName = basename($path);
-        $filePath = storage_path('framework/themes');
+        $filePath = Storage::disk('public')->path('framework/themes');
 
         $zip = new \ZipArchive;
         $zipOpened = false;
@@ -117,6 +118,14 @@ class ThemeService
                         File::deleteDirectory($extractedPath);
                         File::deleteDirectory($filePath);
                     }
+                } else {
+                    File::deleteDirectory($extractedPath);
+                    File::deleteDirectory($filePath);
+
+                    return [
+                        'status' => 'error',
+                        'message' => 'Tema gagal diunggah: file composer.json tidak ditemukan dalam arsip',
+                    ];
                 }
             }
         } finally {

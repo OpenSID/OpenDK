@@ -36,13 +36,17 @@ jobs:
           echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
       - name: Prettier Blade
+        shell: bash
         run: |
           CHANGED_FILES="${{ steps.changed-files.outputs.files }}"
-          if [ -n "$CHANGED_FILES" ]; then
-            echo "$CHANGED_FILES" | xargs npx prettier --write
-          else
-            echo "No Blade files to format"
-          fi
+
+          for file in $CHANGED_FILES; do
+            if [ -f "$file" ]; then
+              npx prettier --write "$file"
+            else
+              echo "Skip deleted file: $file"
+            fi
+          done
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4

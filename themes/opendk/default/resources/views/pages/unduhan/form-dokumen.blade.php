@@ -36,7 +36,7 @@
                     url: '{!! $urlApi !!}/form-dokumen',
                     cache: false,
                     dataSrc: 'data',
-                    data: function(d) {                        
+                    data: function(d) {
                         // Convert DataTables parameters to API format (use safe defaults to avoid NaN)
                         var start = (typeof d.start !== 'undefined' && d.start !== null) ? d.start : 0;
                         var length = (typeof d.length !== 'undefined' && d.length) ? d.length : (typeof d.pageLength !== 'undefined' ? d.pageLength : 10);
@@ -48,13 +48,12 @@
                         return {
                             'page[number]': pageNumber,
                             'page[size]': length,
-                            'filter[aktif]' : 1,
-                            'filter[is_published]' : 1                            
+                            'filter[aktif]': 1,
+                            'filter[is_published]': 1
                         };
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: null,
                         name: 'aksi',
                         class: 'text-center',
@@ -63,7 +62,7 @@
                         render: function(data, type, row) {
                             var viewBtn = '<a href="' + (row.attributes.file_dokumen_path || '#') + '" title="Lihat" target="_blank">' +
                                 '<button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>' +
-                                '</a>';                            
+                                '</a>';
                             return viewBtn;
                         }
                     },
@@ -90,8 +89,8 @@
                 ],
                 order: [
                     [1, 'desc']
-                ],              
+                ],
             });
         });
-    </script>    
+    </script>
 @endpush

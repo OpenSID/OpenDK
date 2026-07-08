@@ -18,9 +18,7 @@
         <div class="row">
             <div class="col-md-12">
 
-                {!! html()->form()->route('data.anggaran-realisasi.do_import')->method('POST')->id('form-import')->class(
-                        'form-horizontal form-label-left',
-                    )->acceptsFiles()->open() !!}
+                {!! html()->form()->route('data.anggaran-realisasi.do_import')->method('POST')->id('form-import')->class('form-horizontal form-label-left')->acceptsFiles()->open() !!}
 
                 <div class="box-body">
 

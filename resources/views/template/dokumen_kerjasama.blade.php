@@ -46,7 +46,7 @@
                 </p>
                 <p align="center">
                     <strong>
-                        PEMANFAATAN APLIKASI DAN LAYANAN OPENDEKA MENUJU DESA
+                        PEMANFAATAN APLIKASI DAN LAYANAN OPENDESA MENUJU DESA
                             CERDAS<em></em>
                     </strong>
                 </p>
@@ -97,7 +97,7 @@
                 <td width="31" valign="top"></td>
                 <td width="282" valign="top">
                     <p align="justify">
-                        <strong>LUSIANTO, S.Kom., M.Si</strong>
+                        <strong>AHMAD NGUDI PRANOTO</strong>
                     </p>
                 </td>
                 <td width="18" valign="top">
@@ -425,7 +425,7 @@
                 </td>
                 <td>
                     <p align="center">
-                        <strong>LUSIANTO, S.Kom., M.Si</strong>
+                        <strong>AHMAD NGUDI PRANOTO</strong>
                     </p>
                 </td>
             </tr>

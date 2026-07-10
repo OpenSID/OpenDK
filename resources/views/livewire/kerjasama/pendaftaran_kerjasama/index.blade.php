@@ -161,7 +161,7 @@
                                 <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="email">Email</label>
                                     <div class="col-sm-8">
-                                        <input id="email" class="form-control input-sm required" type="text" placeholder="Gunakan email yang valid" wire:model="email">
+                                        <input id="email" class="form-control input-sm required" type="text" placeholder="Gunakan email yang valid" wire:model="email" value="{{ $email }}">
                                         <span class="help-block" style="color: #737373;">Email digunakan untuk seluruh proses verifikasi dan pemberitahuan aktivasi.</span>
                                         @if ($errors->has('email'))
                                             <span class="help-block">{{ $errors->first('email') }}</span>
@@ -171,7 +171,7 @@
                                 <div class="form-group {{ $errors->has('status_registrasi') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label">Status Registrasi</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" wire:model="status_registrasi" readonly>
+                                        <input class="form-control input-sm" type="text" wire:model="status_registrasi" value="{{ $status_registrasi }}" readonly>
                                         @if ($errors->has('status_registrasi'))
                                             <span class="help-block">{{ $errors->first('status_registrasi') }}</span>
                                         @endif
@@ -180,7 +180,7 @@
                                 <div class="form-group {{ $errors->has('kecamatan_id') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="kecamatan_id">Kode Kecamatan</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" wire:model="kecamatan_id" readonly />
+                                        <input class="form-control input-sm" type="text" wire:model="kecamatan_id" value="{{ $kecamatan_id }}" readonly />
                                         @if ($errors->has('kecamatan_id'))
                                             <span class="help-block">{{ $errors->first('kecamatan_id') }}</span>
                                         @endif
@@ -189,7 +189,7 @@
                                 <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="domain">Domain</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" readonly wire:model="domain">
+                                        <input class="form-control input-sm" type="text" readonly wire:model="domain" value="{{ $domain }}">
                                         @if ($errors->has('domain'))
                                             <span class="help-block">{{ $errors->first('domain') }}</span>
                                         @endif
@@ -198,7 +198,7 @@
                                 <div class="form-group {{ $errors->has('kontak_nama') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="kontak_nama">Nama Kontak</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" wire:model="kontak_nama" />
+                                        <input class="form-control input-sm" type="text" wire:model="kontak_nama" value="{{ $kontak_nama }}" />
                                         <span class="help-block" style="color: #737373;">Diisi otomatis dari data Administrator. Dapat diubah apabila terjadi pergantian PIC.</span>
                                         @if ($errors->has('kontak_nama'))
                                             <span class="help-block">{{ $errors->first('kontak_nama') }}</span>
@@ -208,7 +208,7 @@
                                 <div class="form-group {{ $errors->has('kontak_no_hp') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="kontak_no_hp">Nomor HP</label>
                                     <div class="col-sm-8">
-                                        <input id="kontak_no_hp" class="form-control input-sm" type="number" wire:model="kontak_no_hp" />
+                                        <input id="kontak_no_hp" class="form-control input-sm" type="number" wire:model="kontak_no_hp" value="{{ $kontak_no_hp }}" />
                                         <span class="help-block" style="color: #737373;">Diisi otomatis dari profil akun. Dapat diperbarui apabila diperlukan.</span>
                                         @if ($errors->has('kontak_no_hp'))
                                             <span class="help-block">{{ $errors->first('kontak_no_hp') }}</span>
@@ -230,7 +230,10 @@
                             <div class="box-footer">
                                 <button type="reset" class="btn btn-social btn-danger btn-sm"><i class="fa fa-times"></i>
                                     Batal</button>
-                                <button type="button" class="simpan btn btn-social btn-info btn-sm pull-right" wire:click="register" @if (empty($permohonan)) disabled @endif><i class="fa fa-check"></i> Simpan</button>
+                                <button type="button" class="simpan btn btn-social btn-info btn-sm pull-right" wire:click="register" @if (empty($permohonan)) disabled @endif wire:loading.attr="disabled" wire:target="register">
+                                    <i class="fa fa-check"></i> Simpan
+                                    <i class="fa fa-spinner fa-spin" wire:loading wire:target="register" style="display:none"></i>
+                                </button>
                             </div>
                         </form>
                     </div>

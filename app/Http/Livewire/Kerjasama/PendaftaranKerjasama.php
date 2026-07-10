@@ -62,9 +62,9 @@ class PendaftaranKerjasama extends Component
     {
         $apiService = new ApiService();
         $response = $apiService->terdaftar($this->kecamatan_id);
-
+        
         if ($response['success']) {
-            $this->status_registrasi_id = $response['data']['data']['status_langgaan_id'];
+            $this->status_registrasi_id = $response['data']['data']['status_langganan_id'];
             $this->pesan_terdaftar = $response['data']['message'];
             $this->response = $response['data']['data'];
         } else {
@@ -119,7 +119,7 @@ class PendaftaranKerjasama extends Component
 
             $apiService = new ApiService();
             $response = $apiService->register($data);
-
+            
             if ($response['success']) {
                 SettingAplikasi::where('key', 'layanan_opendesa_token')->update([
                     'value' => $response['data']['data']['token'],
@@ -129,15 +129,15 @@ class PendaftaranKerjasama extends Component
                 $res_terdaftar = $apiService->terdaftar($this->kecamatan_id);
                 if ($res_terdaftar['success']) {
                     $this->response = $res_terdaftar;
-                    $this->emit('triggerAlert', $response['data']['message'], 'success');
+                    $this->dispatch('triggerAlert', $response['data']['message'], 'success');
                 } else {
-                    $this->emit('triggerAlert', $response['message'], 'success');
+                    $this->dispatch('triggerAlert', $response['message'], 'success');
                 }
             } else {
-                $this->emit('triggerAlert', $response['error']['message'], 'danger');
+                $this->dispatch('triggerAlert', $response['error']['message'], 'danger');
             }
         } catch (\Exception $e) {
-            $this->emit('triggerAlert', $e->getMessage(), 'danger');
+            $this->dispatch('triggerAlert', $e->getMessage(), 'danger');
         }
     }
 }

@@ -13,15 +13,13 @@ class PendaftaranKerjasama extends Component
 {
     use WithFileUploads;
 
-    // state
-    public string $page_title = 'Pendaftaran Kerjasama';
+    public string $page_title = 'Pengajuan Kerja Sama';
 
-    // state form
     public int $user_id = 0;
     public int $status_registrasi_id = 4;
     public string $pesan_terdaftar;
     public string $status_langganan = 'belum terdaftar';
-    public string $status_registrasi = 'belum terdaftar';
+    public string $status_registrasi = 'Belum Mengajukan';
     public string $email;
     public string $domain;
     public string $kontak_nama;
@@ -35,14 +33,19 @@ class PendaftaranKerjasama extends Component
 
     public function mount()
     {
-        $this->kecamatan_id = view()->shared('profil')->kecamatan_id;
+        $user = auth()->user();
+        $profil = view()->shared('profil');
+
+        $this->kecamatan_id = $profil->kecamatan_id;
 
         $this->domain = config('app.url');
 
-        // Ambil settings sebagai objek
+        $this->email = $user->email ?? '';
+        $this->kontak_nama = $user->name ?? '';
+        $this->kontak_no_hp = $user->phone ?? '';
+
         $setting = (object) SettingAplikasi::pluck('value', 'key')->toArray();
 
-        // Periksa apakah 'layanan_opendesa_token' tidak ada
         if (!property_exists($setting, 'layanan_opendesa_token')) {
             DB::table('das_setting')->insert([
                 'key' => 'layanan_opendesa_token',
@@ -61,13 +64,10 @@ class PendaftaranKerjasama extends Component
         $response = $apiService->terdaftar($this->kecamatan_id);
 
         if ($response['success']) {
-
             $this->status_registrasi_id = $response['data']['data']['status_langgaan_id'];
             $this->pesan_terdaftar = $response['data']['message'];
-
             $this->response = $response['data']['data'];
         } else {
-
             $apiService = new ApiService();
             $res_form = $apiService->getFormRegister();
 
@@ -82,15 +82,13 @@ class PendaftaranKerjasama extends Component
 
     public function rules()
     {
-        $maxRule = \App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '';
-
         return [
             'email' => 'required|email',
             'domain' => 'required',
             'kontak_nama' => 'required|min:5',
             'kontak_no_hp' => 'required',
             'kecamatan_id' => 'required',
-            'permohonan' => 'required|mimes:pdf' . $maxRule,
+            'permohonan' => 'required|mimes:pdf|max:10240',
         ];
     }
 
@@ -101,11 +99,9 @@ class PendaftaranKerjasama extends Component
 
     public function register()
     {
-
         $this->validate();
 
         try {
-
             $ext = $this->permohonan->guessExtension();
             $name = "dokumen-permohonan.{$ext}";
             $path = $this->permohonan->storeAs('public/kecamatan/upload/dokumen', $name);
@@ -118,19 +114,17 @@ class PendaftaranKerjasama extends Component
                 'kontak_no_hp' => $this->kontak_no_hp,
                 'kecamatan_id' => $this->kecamatan_id,
                 'status_langganan_id' => $this->status_registrasi_id,
-                'permohonan' => $path
+                'permohonan' => $path,
             ];
 
             $apiService = new ApiService();
             $response = $apiService->register($data);
 
             if ($response['success']) {
-
                 SettingAplikasi::where('key', 'layanan_opendesa_token')->update([
-                    'value' => $response['data']['data']['token']
+                    'value' => $response['data']['data']['token'],
                 ]);
 
-                // kalo sudah berhasil panggil service daftar
                 $apiService = new ApiService();
                 $res_terdaftar = $apiService->terdaftar($this->kecamatan_id);
                 if ($res_terdaftar['success']) {

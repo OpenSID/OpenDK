@@ -56,7 +56,16 @@ class DataDesaPage
     public function deleteDesa($browser, $recordId): void
     {
         $browser->page()->waitForSelector('#datadesa-table');
-        $browser->click("a#deleteModal[data-href*='/{$recordId}']");
+
+        $browser->script("
+            var link = document.querySelector('a[data-testid=\"btn-hapus\"][data-href*=\"/{$recordId}\"]');
+            if (link) {
+                link.closest('.btn-group').querySelector('.dropdown-toggle').click();
+            }
+        ");
+
+        $browser->page()->waitForSelector('a[data-testid="btn-hapus"][data-href*="/' . $recordId . '"]', ['state' => 'visible']);
+        $browser->click("a[data-testid='btn-hapus'][data-href*='/{$recordId}']");
         $browser->page()->waitForSelector('#delete-modal', ['state' => 'visible']);
         $browser->click("#delete-modal button[type='submit']");
     }

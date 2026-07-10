@@ -47,7 +47,7 @@
                 <p align="center">
                     <strong>
                         PEMANFAATAN APLIKASI DAN LAYANAN OPENDESA MENUJU DESA
-                            CERDAS<em></em>
+                        CERDAS<em></em>
                     </strong>
                 </p>
                 <p align="center">

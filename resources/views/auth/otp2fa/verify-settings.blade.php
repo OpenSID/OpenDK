@@ -191,7 +191,7 @@
                     if (expirySeconds <= 0) {
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
-                        alert('Kode verifikasi telah kadaluarsa. Silakan minta kode baru.');
+                        openAlert('Kode verifikasi telah kadaluarsa. Silakan minta kode baru.', 'Info');
                         window.location.href = '{{ route('otp2fa.index') }}';
                     }
                 }, 1000);
@@ -210,7 +210,7 @@
                             purpose: 'settings_verification'
                         },
                         success: function(response) {
-                            alert(response.message);
+                            openAlert(response.message, 'Info', 'success');
 
                             // Reset timer
                             expirySeconds = expiryMinutes * 60;
@@ -236,7 +236,7 @@
                             }, 1000);
                         },
                         error: function(xhr) {
-                            alert('Gagal mengirim ulang kode verifikasi');
+                            openAlert('Gagal mengirim ulang kode verifikasi', 'Error', 'danger');
                             $('#resend-btn').prop('disabled', false).html(
                                 '<i class="fa fa-refresh"></i> Kirim Ulang');
                         }

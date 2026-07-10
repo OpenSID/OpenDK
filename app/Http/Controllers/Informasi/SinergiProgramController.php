@@ -58,14 +58,19 @@ class SinergiProgramController extends Controller
         if ($request->ajax()) {
             return DataTables::of(SinergiProgram::all())
                 ->addIndexColumn()
-                ->addColumn('aksi', function ($row) {
+                ->addColumn('aksi', function ($row) {                    
                     $data['show_web'] = $row->url;
 
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.informasi.sinergi_program.edit') ? route('informasi.sinergi-program.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.informasi.sinergi_program.delete') ? route('informasi.sinergi-program.destroy', $row->id) : null;
                         $data['naik'] = route('informasi.sinergi-program.urut', [$row->id, -1]);
-                        $data['turun'] = route('informasi.sinergi-program.urut', [$row->id, 1]);
+                        $data['turun'] = route('informasi.sinergi-program.urut', [$row->id, 1]);                        
+                        if ($row->status == 0) {
+                            $data['unlock_url'] = route('informasi.sinergi-program.status', $row->id);
+                        } else {
+                            $data['lock_url'] = route('informasi.sinergi-program.status', $row->id);
+                        }
                     }
 
                     return view('forms.aksi', $data);
@@ -197,5 +202,27 @@ class SinergiProgramController extends Controller
         }
 
         return redirect()->route('informasi.sinergi-program.index')->with('success', 'Urutan Sinergi Program berhasil diubah!');
+    }
+
+    public function status(SinergiProgram $sinergi)
+    {
+        try {
+            $sinergi->update([
+                'status' => $sinergi->status == 1 ? 0 : 1,
+            ]);
+
+            flash()->success(trans('general.active-success'));
+
+            return redirect()->route('informasi.sinergi-program.index');
+        } catch (\Exception $e) {
+            Log::error('Sinergi Program status change failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'sinergi_program_id' => $sinergi->id,
+            ]);
+            flash()->success(trans('general.active-error'));
+
+            return redirect()->route('informasi.sinergi-program.index');
+        }
     }
 }

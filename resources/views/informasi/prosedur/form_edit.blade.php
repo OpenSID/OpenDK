@@ -28,9 +28,9 @@
                          style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;"
                          class="img-thumbnail">
                 @endif
-                <div>
-                    <span class="text-muted">{{ $fileName }}</span><br>
-                    <a href="{{ route('informasi.prosedur.download', $prosedur->id) }}" class="btn btn-xs btn-default">
+                <div style="overflow: hidden;">
+                    <span class="text-muted" style="word-break: break-all;">{{ $fileName }}</span><br>
+                    <a href="{{ route('informasi.prosedur.download', $prosedur->id) }}" class="btn btn-xs btn-default" style="margin-top: 4px;">
                         <i class="fa fa-download"></i> Unduh
                     </a>
                 </div>

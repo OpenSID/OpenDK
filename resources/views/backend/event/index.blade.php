@@ -24,12 +24,13 @@
                     <table class="table table-striped table-bordered" id="event-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th class="text-center" style="max-width: 150px;">Aksi</th>
+                                <th style="width: 40px;">No</th>
                                 <th>Kegiatan</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Selesai</th>
                                 <th>Dihadiri Oleh</th>
                                 <th>Status</th>
+                                <th class="text-center" style="max-width: 100px;">Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -48,10 +49,11 @@
                 processing: true,
                 serverSide: false,
                 ajax: "{!! route('informasi.event.getdata') !!}",
-                columns: [{
-                        data: 'aksi',
-                        name: 'aksi',
-                        class: 'text-nowrap',
+                columns: [
+                    {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        class: 'text-center',
                         searchable: false,
                         orderable: false
                     },
@@ -75,13 +77,29 @@
                         data: 'status',
                         name: 'status'
                     },
+                    {
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center text-nowrap',
+                        searchable: false,
+                        orderable: false
+                    }
                 ],
                 order: [
                     [2, 'asc']
                 ]
             });
+            // Event untuk tombol pratinjau
+            $(document).on('click', '.btn-preview', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                $('#modalPreviewSuratLabel').text('Pratinjau');
+                $('#modalPreviewSurat .modal-body').html('<iframe src="' + url + '" width="100%" height="500px" style="border:none;"></iframe>');
+                $('#modalPreviewSurat').modal('show');
+            });
         });
     </script>
+    @include('components.modal-preview-surat')
     @include('forms.datatable-vertical')
     @include('forms.delete-modal')
 @endpush

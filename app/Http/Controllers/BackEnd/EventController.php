@@ -54,6 +54,7 @@ class EventController extends BackEndController
     public function datatables()
     {
         return DataTables::of(Event::query())
+            ->addIndexColumn()
             ->editColumn('start', function ($row) {
                 return Carbon::parse($row->start)->format('d-m-Y H:i');
             })
@@ -64,7 +65,7 @@ class EventController extends BackEndController
                 $data = [];
 
                 if ($row->status == 'OPEN') {
-                    $data['show_url'] = route('event.detail', $row->slug);
+                    $data['show_web'] = route('event.detail', $row->slug);
 
                     if (! auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.informasi.event.edit') ? route('informasi.event.edit', $row->id) : null;
@@ -74,9 +75,10 @@ class EventController extends BackEndController
                 
                 if ($row->status == 'CLOSED' && $row->attachment != null) {
                     $data['download_url'] = auth()->user()->can('access.informasi.event.export') ? route('informasi.event.download', $row->id) : null;
+                    $data['preview_url'] = route('informasi.event.preview', $row->id);
                 }
 
-                return view('forms.aksi', $data);
+                return view('forms.aksi-grup', $data);
             })
             ->make();
     }
@@ -160,5 +162,25 @@ class EventController extends BackEndController
     public function download(Event $event)
     {
         return response()->download(base_path('public/'.$event->attachment));
+    }
+
+    public function preview(Event $event)
+    {
+        $path = $event->attachment;
+
+        if (file_exists(public_path($path))) {
+            return response()->file(public_path($path));
+        }
+
+        if (file_exists(base_path('public/' . $path))) {
+            return response()->file(base_path('public/' . $path));
+        }
+
+        $storagePath = storage_path('app/public/' . str_replace('storage/', '', $path));
+        if (file_exists($storagePath)) {
+            return response()->file($storagePath);
+        }
+
+        abort(404, 'File tidak ditemukan.');
     }
 }

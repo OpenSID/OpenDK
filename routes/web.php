@@ -325,6 +325,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
                     Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
                     Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
+                    Route::get('preview/{event}', ['as' => 'informasi.event.preview', 'uses' => 'EventController@preview']);
                 });
             });
         });

@@ -8,11 +8,7 @@
     <label class="control-label col-md-4 col-sm-3 col-xs-12">File Prosedur <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
         <input type="file" name="file_prosedur" id="file_prosedur" class="form-control" accept=".jpg,.jpeg,.png,.gif,.pdf" required>
-        <small class="help-block">
-            <i class="fa fa-info-circle"></i>
-            Format yang diizinkan: JPG, JPEG, PNG, GIF, PDF.
-            Ukuran maksimum: <strong>2 MB</strong>.
-        </small>
+        <x-upload-hint formats="JPG, JPEG, PNG, GIF, PDF" />
         <div class="clearfix"></div>
         <br>
         <img class="hide" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />

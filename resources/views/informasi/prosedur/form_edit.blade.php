@@ -8,11 +8,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">File Prosedur</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="file_prosedur" id="file_prosedur" class="form-control" accept=".jpg,.jpeg,.png,.gif,.pdf" />
-        <small class="help-block">
-            <i class="fa fa-info-circle"></i>
-            Format yang diizinkan: JPG, JPEG, PNG, GIF, PDF.
-            Ukuran maksimum: <strong>2 MB</strong>.
-        </small>
+        <x-upload-hint formats="JPG, JPEG, PNG, GIF, PDF" />
         <br />
 
         @if (isset($prosedur->file_prosedur))

@@ -52,15 +52,24 @@
     <script>
         $(function() {
 
+            var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
+
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+                    var extension = input.files[0].name.split('.').pop().toLowerCase();
+                    var isSuccess = fileTypes.indexOf(extension) > -1;
 
-                    reader.onload = function(e) {
-                        $('#showgambar').attr('src', e.target.result);
+                    if (isSuccess) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#showgambar').attr('src', e.target.result);
+                            $('#showgambar').removeClass('hide');
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    } else {
+                        $("#file_gambar").val('');
+                        alert('File tersebut tidak diperbolehkan.');
                     }
-
-                    reader.readAsDataURL(input.files[0]);
                 }
             }
 

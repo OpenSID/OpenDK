@@ -55,6 +55,7 @@ class PotensiController extends Controller
     public function getDataPotensi()
     {
         return DataTables::of(Potensi::query())
+            ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = auth()->user()->can('access.informasi.potensi.view') ? route('informasi.potensi.show', $row->id) : null;
 
@@ -63,7 +64,7 @@ class PotensiController extends Controller
                     $data['delete_url'] = auth()->user()->can('access.informasi.potensi.delete') ? route('informasi.potensi.destroy', $row->id) : null;
                 }
 
-                return view('forms.aksi', $data);
+                return view('forms.aksi-grup', $data);
             })
             ->make();
     }
@@ -96,9 +97,9 @@ class PotensiController extends Controller
     public function store(PotensiRequest $request)
     {
         try {
-            $input = $request->input();
+            $input = $request->all();
 
-            $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan/');
+            $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan');
 
             Potensi::create($input);
         } catch (\Exception $e) {
@@ -134,7 +135,7 @@ class PotensiController extends Controller
         try {
             $input = $request->all();
 
-            $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan/');
+            $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan');
 
             $potensi->update($input);
         } catch (\Exception $e) {

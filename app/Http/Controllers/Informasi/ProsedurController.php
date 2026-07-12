@@ -52,18 +52,53 @@ class ProsedurController extends Controller
 
     public function getDataProsedur()
     {
-        return DataTables::of(Prosedur::select('id', 'judul_prosedur'))
-            ->addColumn('aksi', function ($row) {
-                $data['show_url'] = auth()->user()->can('access.informasi.prosedur.view') ? route('informasi.prosedur.show', $row->id) : null;
+        return DataTables::of(Prosedur::select('id', 'judul_prosedur', 'file_prosedur', 'mime_type'))
+            ->addIndexColumn()
+            ->addColumn('jenis_file', function ($row) {
+                if ($row->file_prosedur) {
+                    $ext = strtolower(pathinfo($row->file_prosedur, PATHINFO_EXTENSION));
+                    return strtoupper($ext);
+                }
+                return '-';
+            })
+            ->addColumn('ukuran_file', function ($row) {
+                if ($row->file_prosedur) {
+                    $path = $row->file_prosedur;
+                    $filePath = null;
 
+                    if (file_exists(public_path($path))) {
+                        $filePath = public_path($path);
+                    } elseif (file_exists(base_path('public/' . $path))) {
+                        $filePath = base_path('public/' . $path);
+                    } else {
+                        $storagePath = storage_path('app/public/' . str_replace('storage/', '', $path));
+                        if (file_exists($storagePath)) {
+                            $filePath = $storagePath;
+                        }
+                    }
+
+                    if ($filePath && file_exists($filePath)) {
+                        $bytes = filesize($filePath);
+                        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+                        $bytes = max($bytes, 0);
+                        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+                        $pow = min($pow, count($units) - 1);
+                        $bytes /= pow(1024, $pow);
+                        return round($bytes, 2) . ' ' . $units[$pow];
+                    }
+                }
+                return '-';
+            })
+            ->addColumn('aksi', function ($row) {
                 if (!auth()->guest()) {
                     $data['edit_url'] = auth()->user()->can('access.informasi.prosedur.edit') ? route('informasi.prosedur.edit', $row->id) : null;
                     $data['delete_url'] = auth()->user()->can('access.informasi.prosedur.delete') ? route('informasi.prosedur.destroy', $row->id) : null;
                 }
 
                 $data['download_url'] = auth()->user()->can('access.informasi.prosedur.export') ? route('informasi.prosedur.download', $row->id) : null;
+                $data['preview_url'] = route('informasi.prosedur.preview', $row->id);
 
-                return view('forms.aksi', $data);
+                return view('forms.aksi-prosedur', $data);
             })
             ->editColumn('judul_prosedur', function ($row) {
                 return $row->judul_prosedur;
@@ -169,5 +204,25 @@ class ProsedurController extends Controller
 
             return back()->with('error', 'Dokumen prosedur tidak ditemukan');
         }
+    }
+
+    public function preview(Prosedur $prosedur)
+    {
+        $path = $prosedur->file_prosedur;
+
+        if (file_exists(public_path($path))) {
+            return response()->file(public_path($path));
+        }
+
+        if (file_exists(base_path('public/' . $path))) {
+            return response()->file(base_path('public/' . $path));
+        }
+
+        $storagePath = storage_path('app/public/' . str_replace('storage/', '', $path));
+        if (file_exists($storagePath)) {
+            return response()->file($storagePath);
+        }
+
+        abort(404, 'File tidak ditemukan.');
     }
 }

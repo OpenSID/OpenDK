@@ -7,12 +7,16 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">File Prosedur <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        <input type="file" name="file_prosedur" id="file_prosedur" class="form-control" accept="jpg, jpeg, png, bmp, pdf" required>
+        <input type="file" name="file_prosedur" id="file_prosedur" class="form-control" accept=".jpg,.jpeg,.png,.gif,.pdf" required>
+        <small class="help-block">
+            <i class="fa fa-info-circle"></i>
+            Format yang diizinkan: JPG, JPEG, PNG, GIF, PDF.
+            Ukuran maksimum: <strong>2 MB</strong>.
+        </small>
+        <div class="clearfix"></div>
         <br>
-
-        <img class="hide" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
-
-        <object data="" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
+        <img class="hide" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <iframe src="" class="showpdf hide" id="showpdf" style="width: 100%; height: 400px; border: none;"></iframe>
 
     </div>
 </div>

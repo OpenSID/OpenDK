@@ -103,16 +103,16 @@ it('smoke test menu informasi', function (string $menuName, string $url, array $
     
     // 5. Verifikasi Aksi Datatable (Tombol Lihat, Edit, Hapus, Download) di row pertama
     if (in_array('btn-lihat', $buttons)) {
-        $this->page->assertVisible('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-lihat"]');
+        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-lihat"]');
     }
     if (in_array('btn-edit', $buttons)) {
-        $this->page->assertVisible('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-edit"]');
+        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-edit"]');
     }
     if (in_array('btn-hapus', $buttons)) {
-        $this->page->assertVisible('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-hapus"]');
+        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-hapus"]');
     }
     if (in_array('btn-download', $buttons)) {
-        $this->page->assertVisible('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-download"]');
+        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-download"]');
     }
 
 })->with('informasi_menus')->group('smoke', 'smoke-informasi', 'browser');

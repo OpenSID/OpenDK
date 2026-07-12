@@ -10,6 +10,13 @@
             </a>
         </li>
         @endif
+        @if (!empty($show_url))
+        <li>
+            <a href="{!! $show_url !!}" data-testid="btn-lihat">
+                <i class="fa fa-eye text-info"></i> Lihat
+            </a>
+        </li>
+        @endif
         @if (!empty($edit_url))
         <li>
             <a href="{!! $edit_url !!}" data-testid="btn-edit">

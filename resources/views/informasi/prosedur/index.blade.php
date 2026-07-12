@@ -84,7 +84,7 @@
                 ]
             });
             // Event untuk tombol pratinjau
-            $(document).on('click', '.btn-preview-prosedur', function(e) {
+            $(document).on('click', '.btn-preview', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
                 $('#modalPreviewSuratLabel').text('Pratinjau');

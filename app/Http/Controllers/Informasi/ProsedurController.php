@@ -98,7 +98,7 @@ class ProsedurController extends Controller
                 $data['download_url'] = auth()->user()->can('access.informasi.prosedur.export') ? route('informasi.prosedur.download', $row->id) : null;
                 $data['preview_url'] = route('informasi.prosedur.preview', $row->id);
 
-                return view('forms.aksi-prosedur', $data);
+                return view('forms.aksi-grup', $data);
             })
             ->editColumn('judul_prosedur', function ($row) {
                 return $row->judul_prosedur;

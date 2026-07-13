@@ -31,6 +31,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use App\Rules\NotInPasswordHistory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserUpdateRequest extends FormRequest
@@ -54,14 +56,23 @@ class UserUpdateRequest extends FormRequest
     {
         $id = ','.$this->segment(4);
 
-        return [
+        $rules = [
             'password' => [
                 'nullable',
                 'min:8',
                 'max:32',
                 'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
             ],
         ];
+
+        if ($this->password) {
+            $targetUser = User::find($this->route('id'));
+            if ($targetUser) {
+                $rules['password'][] = new NotInPasswordHistory($targetUser);
+            }
+        }
+
+        return $rules;
     }
 }

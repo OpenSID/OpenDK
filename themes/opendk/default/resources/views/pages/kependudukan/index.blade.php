@@ -16,7 +16,7 @@
                         </tr>
                         @foreach ($regulasi as $item)
                             <tr>
-                                <td><a href="{{ route('unduhan.regulasi.show', ['nama_regulasi' => str_slug($item->judul)]) }}">{{ $item->judul }}</a></td>
+                                <td><a href="{{ route('unduhan.regulasi.download', ['file' => $item->id]) }}" target="_blank">{{ $item->judul }}</a></td>
                             </tr>
                         @endforeach
                     </table>

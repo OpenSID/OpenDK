@@ -49,6 +49,7 @@ use App\Http\Controllers\Api\Frontend\AnggaranRealisasiController;
 use App\Http\Controllers\Api\Frontend\AnggaranDesaController;
 use App\Http\Controllers\Api\Frontend\FaqController;
 use App\Http\Controllers\Api\Frontend\KependudukanController;
+use App\Http\Controllers\Api\Frontend\ProsedurController;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,6 +151,14 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
      */
     Route::group(['prefix' => 'regulasi', 'controller' => RegulasiController::class], function () {
         Route::get('/', 'index');                                    // GET /api/v1/regulasi
+        Route::delete('cache/{prefix?}', 'removeCachePrefix');
+    });
+
+    /**
+     * Prosedur API Routes
+     */
+    Route::group(['prefix' => 'prosedur', 'controller' => ProsedurController::class], function () {
+        Route::get('/', 'index');                                    // GET /api/v1/prosedur
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 

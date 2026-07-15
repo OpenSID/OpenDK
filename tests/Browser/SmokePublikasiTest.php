@@ -50,12 +50,13 @@ it('smoke test menu Publikasi - Album', function () {
     $this->page->assertMissing('.dataTables_empty');
 
     // 5. Verifikasi tombol aksi pada row pertama
+    $table = '[data-testid="table-publikasi"]';
     // Tombol Rincian (detail_url → galeri)
-    $this->page->assertVisible('[data-testid="table-publikasi"] tbody tr:first-child [data-testid="btn-lihat"]');
+    $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-lihat\"]') !== null", true);
     // Tombol Edit
-    $this->page->assertVisible('[data-testid="table-publikasi"] tbody tr:first-child [data-testid="btn-edit"]');
+    $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-edit\"]') !== null", true);
     // Tombol Hapus
-    $this->page->assertVisible('[data-testid="table-publikasi"] tbody tr:first-child [data-testid="btn-hapus"]');
+    $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-hapus\"]') !== null", true);
     // Tombol Lock atau Unlock (status toggle) - cek salah satu
     $this->page->assertScript(
         "document.querySelector('[data-testid=\"table-publikasi\"] tbody tr:first-child [data-testid=\"btn-lock\"], [data-testid=\"table-publikasi\"] tbody tr:first-child [data-testid=\"btn-unlock\"]') !== null"

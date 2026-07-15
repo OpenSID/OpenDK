@@ -89,3 +89,11 @@ body.sidebar-collapse .sidebar-kabupaten {
 .block-breadcrumb>ol {
 	text-align: right;	
 }
+
+/* Prevent dropdown clipping inside DataTable responsive wrapper */
+.box-body .table-responsive {
+	overflow: visible !important;
+}
+.box-body .table-responsive .dropdown-menu {
+	z-index: 1050;
+}

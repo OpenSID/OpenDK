@@ -38,43 +38,32 @@
             <div>
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Pendaftaran Kerjasama {{ $profil['nama_kecamatan'] }}</h3>
+                        <h3 class="box-title">Pengajuan Kerja Sama OpenDK Portal</h3>
                     </div>
                     <div class="box-body">
-                        <p>{{ $profil['nama_kecamatan'] }} (lembaga hukum dikukuhkan Keputusan Menteri Hukum dan Hak
-                            Asasi
-                            Manusia
-                            Nomor AHU-0001417.AH.01.08.Tahun 2021) menyediakan aplikasi dan layanan yang memerlukan
-                            kontribusi yang
-                            perlu dianggarkan Desa. Untuk memenuhi peraturan pengadaan yang berlaku, Desa perlu memiliki
-                            kerjasama
-                            pengadaan dengan {{ $profil['nama_kecamatan'] }} sebelum dapat menggunakan aplikasi dan
-                            layanan
-                            {{ $profil['nama_kecamatan'] }} berbayar tersebut.</p>
-                        <p>Gunakan fitur ini untuk mendaftarkan dan mengeksekusi kerjasama resmi dengan
-                            {{ $profil['nama_kecamatan'] }}. Setelah Kesepakatan Kerjasama antara Desa dan
-                            {{ $profil['nama_kecamatan'] }} berlaku, Desa akan
-                            terdaftar sebagai Desa Digital {{ $profil['nama_kecamatan'] }} dan
-                            berhak mengakses aplikasi dan layanan {{ $profil['nama_kecamatan'] }} berbayar dan
-                            program-program
-                            peningkatan desa digital lainnya.</p>
-                        <p>Cetak dokumen Kesepakatan Kerjasama menggunakan tombol yang disediakan. Langkah untuk
-                            melengkapi
-                            pendaftaran adalah sebagai berikut:</p>
-                        <p>
+                        <div class="callout callout-info">
+                            <h5><strong>Kecamatan : {{ $profil['nama_kecamatan'] }}</strong></h5>
+                        </div>
+                        <p>OpenDesa merupakan penyelenggara OpenDK Portal yang menyediakan aplikasi, layanan
+                            pendampingan, serta pengembangan ekosistem digital bagi pemerintah daerah sesuai ketentuan
+                            yang berlaku.</p>
+                        <p>Sebelum OpenDK Portal dapat digunakan, Kecamatan perlu memiliki dokumen kerja sama resmi
+                            dengan OpenDesa sebagai dasar pelaksanaan layanan.</p>
+                        <p>Setelah kerja sama disetujui, Kecamatan akan terdaftar sebagai mitra OpenDesa dan dapat
+                            menggunakan OpenDK Portal beserta layanan yang disediakan sesuai ruang lingkup kerja sama.</p>
+                        <p>Beberapa layanan OpenDesa dapat dikenakan biaya sesuai ketentuan yang berlaku. Pembiayaan
+                            menjadi tanggung jawab pihak yang mengajukan kerja sama sesuai kesepakatan dalam dokumen
+                            kerja sama.</p>
+                        <p>Langkah untuk melengkapi pendaftaran adalah sebagai berikut:</p>
                         <ol>
-                            <li>Cetak dokumen Kesepakatan Kerjasama (Pada pengaturan cetak, Option : Headers and Footers
-                                jangan di
-                                centang).</li>
-                            <li>Isi tanggal penandatanganan.</li>
-                            <li>Tandatangani oleh Kades sebagai PIHAK KESATU di atas meterai Rp10.000</li>
+                            <li>Unduh dokumen kerja sama.</li>
+                            <li>Lengkapi tanggal penandatanganan.</li>
+                            <li>Dokumen ditandatangani oleh Camat atau pejabat yang berwenang.</li>
                             <li>Scan dokumen yang telah ditandatangani.</li>
-                            <li>Unggah hasil scan menggunakan form pendaftaran.</li>
-                            <li>Simpan dokumen asli di arsip kantor desa.</li>
-                            <li>Cek email inbox/pesan yang Anda gunakan untuk memverifikasi.</li>
-                            <li>Setelah pendaftaran diverifikasi dan kerjasama diaktifkan oleh
-                                {{ $profil['nama_kecamatan'] }},
-                                email pemberitahuan akan dikirim ke alamat email terdaftar.</li>
+                            <li>Unggah dokumen melalui formulir.</li>
+                            <li>Simpan dokumen asli.</li>
+                            <li>Tunggu proses verifikasi OpenDesa.</li>
+                            <li>Email pemberitahuan akan dikirim setelah kerja sama disetujui.</li>
                         </ol>
                     </div>
                 </div>
@@ -87,38 +76,9 @@
                         </div>
                         <div class="box-body">
                             <div class="callout callout-info">
-                                <h5>Kami telah mengirim link verifikasi ke {{ $email }} <br> Silahkan cek email
-                                    Anda
-                                    untuk memverifikasi, atau kirim ulang pendaftaran kerjasama menggunakan email aktif
-                                    untuk menerima
-                                    link verifikasi baru.</h5>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <i class="icon fa fa-info"></i>
-                            <h3 class="box-title">Langkah-langkah melakukan pengecekan email untuk verifikasi
-                        </div>
-                        <div class="box-body">
-                            <div class="callout callout-info">
-                                <h5>1. Cek folder kotak masuk / inbox, jika ada, maka silakan klik pesan tersebut lalu
-                                    klik
-                                    tombol
-                                    verifikasi email. </h5>
-                                <h5>2. Cek folder spam, jika ada, maka:<br>
-                                    - Klik pesan lalu hapus label spam pada pesan tersebut.<br>
-                                    - Setelah label spam dihapus, pesan akan masuk ke folder inbox.<br>
-                                    - Selanjutnya cek folder inbox, dan silakan klik pesan dan klik tombol
-                                    verifikasi.<br>
-                                </h5>
-                                <h5>3. Jika Anda tidak menerima pesan pada folder inbox dan folder spam, silakan kirim
-                                    ulang
-                                    pendaftaran kerjasama menggunakan email aktif untuk menerima link verifikasi baru,
-                                    pastikan
-                                    email
-                                    sudah benar.</h5>
+                                <h5>Kami telah mengirim link verifikasi ke {{ $email }}. Silakan cek email
+                                    Anda untuk memverifikasi, atau kirim ulang pendaftaran kerja sama menggunakan email
+                                    aktif untuk menerima link verifikasi baru.</h5>
                             </div>
                         </div>
                     </div>
@@ -130,8 +90,7 @@
                         </div>
                         <div class="box-body">
                             <div class="callout callout-info">
-                                <h5>Dokumen permohonan kerjasama Desa anda sedang diperiksa oleh Pelaksana Layanan
-                                    {{ $profil['nama_kecamatan'] }}.</h5>
+                                <h5>Dokumen permohonan kerja sama Kecamatan {{ $profil['nama_kecamatan'] }} sedang diperiksa oleh OpenDesa.</h5>
                             </div>
                         </div>
                     </div>
@@ -160,12 +119,12 @@
                                             <td>{{ $response['status_langganan'] }}</td>
                                         </tr>
                                         <tr>
-                                            <td>KODE {{ strtoupper($profil['nama_kecamatan']) }}</td>
+                                            <td>Kode Kecamatan</td>
                                             <td> : </td>
                                             <td>{{ $response['kecamatan_id'] }}</td>
                                         </tr>
                                         <tr>
-                                            <td>{{ strtoupper($profil['nama_kecamatan']) }}</td>
+                                            <td>Kecamatan</td>
                                             <td> : </td>
                                             {{-- prettier-ignore-start --}}
                                             <td>{{ "Kecamatan {$profil['nama_kecamatan']}" }}
@@ -173,7 +132,7 @@
                                             {{-- prettier-ignore-end --}}
                                         </tr>
                                         <tr>
-                                            <td>Domain {{ config('setting.sebutan_desa') }}</td>
+                                            <td>Domain</td>
                                             <td> : </td>
                                             <td>{{ $response['domain'] }}</td>
                                         </tr>
@@ -192,18 +151,18 @@
 
                     <div class="box box-info">
                         <div class="box-header with-border clearfix">
-                            <h3 class="box-title pull-left">Form Pendaftaran Kerjasama</h3>
+                            <h3 class="box-title pull-left">Form Pengajuan Kerja Sama</h3>
                             <a target="_blank" href="{{ route('kerjasama.pendaftaran.kerjasama.template') }}" type="button" class="btn btn-success pull-right"><i class="fa fa-download"></i> Unduh
                                 Dokumen
-                                Kerjasama</a>
+                                Kerja Sama</a>
                         </div>
                         <form class="form-horizontal" enctype="multipart/form-data">
                             <div class="box-body">
                                 <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="email">Email</label>
                                     <div class="col-sm-8">
-                                        <input id="email" class="form-control input-sm required" type="text" placeholder="Gunakan email yang valid" wire:model="email">
-
+                                        <input id="email" class="form-control input-sm required" type="text" placeholder="Gunakan email yang valid" wire:model="email" value="{{ $email }}">
+                                        <span class="help-block" style="color: #737373;">Email digunakan untuk seluruh proses verifikasi dan pemberitahuan aktivasi.</span>
                                         @if ($errors->has('email'))
                                             <span class="help-block">{{ $errors->first('email') }}</span>
                                         @endif
@@ -212,27 +171,25 @@
                                 <div class="form-group {{ $errors->has('status_registrasi') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label">Status Registrasi</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" wire:model="status_registrasi" readonly>
+                                        <input class="form-control input-sm" type="text" wire:model="status_registrasi" value="{{ $status_registrasi }}" readonly>
                                         @if ($errors->has('status_registrasi'))
                                             <span class="help-block">{{ $errors->first('status_registrasi') }}</span>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="form-group {{ $errors->has('kecamatan_id') ? 'has-error' : '' }}">
-                                    <label class="col-sm-3 control-label" for="kecamatan_id">Kode Kecamatan
-                                        {{ ucfirst($profil['nama_kecamatan']) }}</label>
+                                    <label class="col-sm-3 control-label" for="kecamatan_id">Kode Kecamatan</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm bilangan_titik required" type="text" wire:model="kecamatan_id" />
+                                        <input class="form-control input-sm" type="text" wire:model="kecamatan_id" value="{{ $kecamatan_id }}" readonly />
                                         @if ($errors->has('kecamatan_id'))
                                             <span class="help-block">{{ $errors->first('kecamatan_id') }}</span>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="form-group {{ $errors->has('domain') ? 'has-error' : '' }}">
-                                    <label class="col-sm-3 control-label" for="domain">Domain Kecamatan
-                                        {{ ucfirst($profil['nama_kecamatan']) }}</label>
+                                    <label class="col-sm-3 control-label" for="domain">Domain</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" readonly wire:model="domain">
+                                        <input class="form-control input-sm" type="text" readonly wire:model="domain" value="{{ $domain }}">
                                         @if ($errors->has('domain'))
                                             <span class="help-block">{{ $errors->first('domain') }}</span>
                                         @endif
@@ -241,16 +198,18 @@
                                 <div class="form-group {{ $errors->has('kontak_nama') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="kontak_nama">Nama Kontak</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control input-sm" type="text" wire:model="kontak_nama" />
+                                        <input class="form-control input-sm" type="text" wire:model="kontak_nama" value="{{ $kontak_nama }}" />
+                                        <span class="help-block" style="color: #737373;">Diisi otomatis dari data Administrator. Dapat diubah apabila terjadi pergantian PIC.</span>
                                         @if ($errors->has('kontak_nama'))
                                             <span class="help-block">{{ $errors->first('kontak_nama') }}</span>
                                         @endif
                                     </div>
                                 </div>
                                 <div class="form-group {{ $errors->has('kontak_no_hp') ? 'has-error' : '' }}">
-                                    <label class="col-sm-3 control-label" for="kontak_no_hp">No HP. Kontak</label>
+                                    <label class="col-sm-3 control-label" for="kontak_no_hp">Nomor HP</label>
                                     <div class="col-sm-8">
-                                        <input id="kontak_no_hp" class="form-control input-sm" type="number" wire:model="kontak_no_hp" />
+                                        <input id="kontak_no_hp" class="form-control input-sm" type="number" wire:model="kontak_no_hp" value="{{ $kontak_no_hp }}" />
+                                        <span class="help-block" style="color: #737373;">Diisi otomatis dari profil akun. Dapat diperbarui apabila diperlukan.</span>
                                         @if ($errors->has('kontak_no_hp'))
                                             <span class="help-block">{{ $errors->first('kontak_no_hp') }}</span>
                                         @endif
@@ -259,7 +218,7 @@
                                 <div class="form-group {{ $errors->has('permohonan') ? 'has-error' : '' }}">
                                     <label class="col-sm-3 control-label" for="permohonan">Unggah Dokumen Yang Telah
                                         Ditandatangani
-                                        <code>(format .pdf)</code></label>
+                                        <code>(format .pdf, maks. 10 MB)</code></label>
                                     <div class="col-sm-8">
                                         <x-upload-file name="permohonan" iteration="{{ $iteration }}" />
                                         @if ($errors->has('permohonan'))
@@ -271,7 +230,10 @@
                             <div class="box-footer">
                                 <button type="reset" class="btn btn-social btn-danger btn-sm"><i class="fa fa-times"></i>
                                     Batal</button>
-                                <button type="button" class="simpan btn btn-social btn-info btn-sm pull-right" wire:click="register" @if (empty($permohonan)) disabled @endif><i class="fa fa-check"></i> Simpan</button>
+                                <button type="button" class="simpan btn btn-social btn-info btn-sm pull-right" wire:click="register" @if (empty($permohonan)) disabled @endif wire:loading.attr="disabled" wire:target="register">
+                                    <i class="fa fa-check"></i> Simpan
+                                    <i class="fa fa-spinner fa-spin" wire:loading wire:target="register" style="display:none"></i>
+                                </button>
                             </div>
                         </form>
                     </div>

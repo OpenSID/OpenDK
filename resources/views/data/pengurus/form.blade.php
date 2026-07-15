@@ -152,17 +152,7 @@
 @push('scripts')
     <script>
         //color picker with addon
-        $('.my-colorpicker2').colorpicker();
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const inputTingkat = document.getElementById("bagan_tingkat");
-
-            inputTingkat.addEventListener("input", function() {
-                if (this.value < 0) {
-                    this.value = 0; // Paksa angka negatif menjadi 0
-                }
-            });
-        });
+        $('.my-colorpicker2').colorpicker();        
     </script>
 @endpush
 

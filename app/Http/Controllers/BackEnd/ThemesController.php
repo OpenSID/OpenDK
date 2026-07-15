@@ -65,6 +65,13 @@ class ThemesController extends BackEndController
                 ]);
             }
 
+            if (!$file->isValid()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Upload file gagal: ' . $file->getErrorMessage(),
+                ]);
+            }
+
             $result = $this->themeService->installFromZip($file);
             
             return response()->json($result);

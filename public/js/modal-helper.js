@@ -1,20 +1,27 @@
 var confirmCallback = null;
 
-function openAlert(message, title, type) {
+function openAlert(message, title, type, onClose) {
     var modal = $('#modal-alert');
     modal.find('.modal-title').text(title || 'Pesan');
-    modal.find('.modal-body').html(message || '');
+    modal.find('.modal-body').text(message || '');
     modal.find('.modal-content').removeClass('modal-danger modal-success modal-warning modal-info');
+
     if (type) {
         modal.find('.modal-content').addClass('modal-' + type);
     }
+
+    modal.off('hidden.bs.modal.alertCallback');
+    if (typeof onClose === 'function') {
+        modal.one('hidden.bs.modal.alertCallback', onClose);
+    }
+
     modal.modal('show');
 }
 
 function openConfirm(message, title, callback, btnYesText) {
     var modal = $('#modal-confirm');
     modal.find('.modal-title').text(title || 'Konfirmasi');
-    modal.find('.modal-body').html(message || '');
+    modal.find('.modal-body').text(message || '');
     confirmCallback = callback;
     modal.find('#modal-confirm-yes').text(btnYesText || 'Ya');
     modal.modal('show');
@@ -37,7 +44,11 @@ $(document).on('click', '[data-confirm]', function (e) {
     var href = btn.attr('href');
     openConfirm(message, title, function () {
         if (form.length) {
-            form[0].submit();
+            if (form[0].requestSubmit) {
+                form[0].requestSubmit(btn[0]);
+            } else {
+                form.trigger('submit');
+            }
         } else if (href) {
             window.location.href = href;
         }

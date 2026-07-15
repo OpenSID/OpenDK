@@ -141,8 +141,12 @@
         </div>
     </div>
 
+    <x-modal-alert />
+    <x-modal-confirm />
+
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/js/modal-helper.js') }}"></script>
     <script>
         $(document).ready(function() {
             var expiryMinutes = {{ config('otp.expiry_minutes', 5) }};
@@ -237,8 +241,9 @@
                 if (expirySeconds <= 0) {
                     clearInterval(expiryInterval);
                     clearInterval(resendInterval);
-                    openAlert('Kode 2FA telah kadaluarsa. Silakan minta kode baru.', 'Info');
-                    window.location.href = '{{ route('login') }}';
+                    openAlert('Kode 2FA telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function () {
+                        window.location.href = '{{ route('login') }}';
+                    });
                 }
             }, 1000);
 

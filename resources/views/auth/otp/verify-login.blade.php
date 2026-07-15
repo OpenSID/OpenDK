@@ -140,6 +140,8 @@
             </div>
         </div>
     </div>
+    <x-modal-alert />
+    <x-modal-confirm />
 
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
@@ -237,8 +239,9 @@
                 if (expirySeconds <= 0) {
                     clearInterval(expiryInterval);
                     clearInterval(resendInterval);
-                    openAlert('Kode OTP telah kadaluarsa. Silakan minta kode baru.', 'Info');
-                    window.location.href = '{{ route('otp.login') }}';
+                    openAlert('Kode OTP telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function () {
+                        window.location.href = '{{ route('otp.login') }}';
+                    });
                 }
             }, 1000);
 

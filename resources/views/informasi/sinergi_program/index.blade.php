@@ -24,7 +24,7 @@
                     <table class="table table-striped table-bordered" id="sinergi-program-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="max-width: 250px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama</th>
                                 <th>URL</th>
                                 <th>Urutan</th>

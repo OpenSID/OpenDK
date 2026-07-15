@@ -31,6 +31,8 @@ public/error_log
 
 # Themes
 /themes/*
+!/themes/opendk/
+/themes/opendk/*
 !/themes/opendk/default/
 /storage/komplain
 

@@ -17,3 +17,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### TEKNIS
 
 1. [#1619](https://github.com/OpenSID/OpenDK/issues/1619) Perbaikan teknis terkait upload tema di OpenDK.
+2. [#1630](https://github.com/OpenSID/OpenDK/issues/1630) Sesuaikan perubahan tombol aksi agar konsisten.

@@ -52,7 +52,7 @@ class SinergiProgramRequest extends FormRequest
      */
     public function rules()
     {
-        $gambarRule = $this->id ? 'nullable|' : 'required|';
+        $gambarRule = $this->sinergi ? 'nullable|' : 'required|';
 
         return [
             'nama' => 'required|string|max:100',

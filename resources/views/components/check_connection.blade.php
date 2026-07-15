@@ -19,8 +19,8 @@ window.addEventListener('offline', () => {
         </div>
     </template>
 
-    <div x-if="isOnline">
+    <template x-if="isOnline">
         {{ $slot }}
-    </div>
+    </template>
 
 </div>

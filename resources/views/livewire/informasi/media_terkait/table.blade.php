@@ -35,9 +35,12 @@
                         <x-table-row :id="$item->id" sortable>
                             <x-table-cell>{{ $loop->iteration }}</x-table-cell>
                             <x-table-cell>
-                                <x-button-edit-table :param="$item->id" :name="$item->nama" />
-                                <x-button-status-table :param="$item->id" :name="$item->nama" :icon="$item->status == 1 ? 'unlock' : 'lock'" />
-                                <x-button-hapus-table :param="$item->id" :name="$item->nama" />
+                                <x-action-dropdown>
+                                    <li><a href="javascript:void(0)" wire:click="edit({{ $item->id }})" title="Ubah: {{ $item->nama }}"><i class="fa fa-pencil text-warning"></i> Ubah</a></li>
+                                    <li><a href="javascript:void(0)" wire:click="lock({{ $item->id }})" title="{{ $item->status == 1 ? 'Nonaktifkan' : 'Aktifkan' }}" class="{{ $item->status == 1 ? 'text-muted' : 'text-success' }}"><i class="fa fa-{{ $item->status == 1 ? 'lock' : 'unlock' }}"></i> {{ $item->status == 1 ? 'Nonaktifkan' : 'Aktifkan' }}</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="javascript:void(0)" wire:click="destroy({{ $item->id }})" title="Hapus: {{ $item->nama }}" style="color: #dd4b39;"><i class="fa fa-trash text-danger"></i> Hapus</a></li>
+                                </x-action-dropdown>
                             </x-table-cell>
                             <x-table-cell>{{ $item->nama }}</x-table-cell>
                             <x-table-cell>

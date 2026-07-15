@@ -122,9 +122,6 @@ desired effect
 
     <script src="{{ asset('js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
-    <!-- alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <!-- sortablejs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 

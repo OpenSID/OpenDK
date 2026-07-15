@@ -242,7 +242,7 @@
 
             // First set of items
             mediaTerkait.forEach(data => {
-                const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset("media_terkait/") }}' + data.logo) : '';
+                const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset("storage/media_terkait") }}/' + data.logo) : '';
                 mediaHtml += '<li>' +
                     '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                     '<img src="' + logoPath + '" alt="Logo">' +
@@ -328,7 +328,8 @@
                 '<div class="swiper-wrapper">';
 
             pengurus.forEach(item => {
-                const fotoPath = item.foto ? (item.foto.startsWith('http') ? item.foto : '{{ asset("") }}' + item.foto) : '{{ asset("img/no-profile.png") }}';
+                const fotoPath = item.foto ? item.foto : '{{ asset("img/no-profile.png") }}';
+                
                 const jabatanNama = item.jabatan && typeof item.jabatan === 'object' ? item.jabatan.nama : (item.jabatan_nama || '');
 
                 pengurusHtml += '<div class="swiper-slide">' +

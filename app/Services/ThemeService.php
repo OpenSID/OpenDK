@@ -6,6 +6,7 @@ use App\Models\Themes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ThemeService
 {
@@ -67,7 +68,7 @@ class ThemeService
         $path = $this->fileUploadService->uploadSecure($file, 'framework/themes', $allowedMimes, 51200);
         
         $fileName = basename($path);
-        $filePath = storage_path('framework/themes');
+        $filePath = Storage::disk('public')->path('framework/themes');
 
         $zip = new \ZipArchive;
         $zipOpened = false;
@@ -84,40 +85,48 @@ class ThemeService
                 $zip->close();
                 $zipOpened = false;
 
-                $folderTheme = explode('.', $fileName)[0];
-                $composerPath = "$extractedPath/$folderTheme/composer.json";
+                $composerPath = $this->findComposerJson($extractedPath);
 
-                if (file_exists($composerPath)) {
-                    $composerData = json_decode(file_get_contents($composerPath), true);
+                if ($composerPath === null) {
+                    File::deleteDirectory($extractedPath);
+                    File::deleteDirectory($filePath);
 
-                    $this->validateThemeStructure($extractedPath, $folderTheme);
-
-                    $newFolder = base_path('themes/' . $composerData['name']);
-
-                    if (File::move("$extractedPath/$folderTheme", $newFolder)) {
-                        File::deleteDirectory($extractedPath);
-                        File::deleteDirectory($filePath);
-
-                        scan_themes();
-
-                        $themeName = $composerData['name'];
-                        $userId = auth()->id();
-                        $userEmail = auth()->user()?->email ?? 'unknown';
-                        Log::warning("Theme uploaded (hooks NOT auto-loaded): theme={$themeName}, user_id={$userId}, email={$userEmail}", [
-                            'action' => 'theme_upload',
-                            'theme' => $themeName,
-                            'user_id' => $userId,
-                        ]);
-
-                        return [
-                            'status' => 'success',
-                            'message' => 'Tema berhasil diunggah. Review hooks.php melalui menu aktivasi tema sebelum mengaktifkan.',
-                        ];
-                    } else {
-                        File::deleteDirectory($extractedPath);
-                        File::deleteDirectory($filePath);
-                    }
+                    return [
+                        'status' => 'error',
+                        'message' => 'Tema gagal diunggah: file composer.json tidak ditemukan dalam arsip',
+                    ];
                 }
+
+                $folderTheme = substr(dirname($composerPath), strlen($extractedPath) + 1);
+                $composerData = json_decode(file_get_contents($composerPath), true);
+
+                $this->validateThemeStructure($extractedPath, $folderTheme);
+
+                $newFolder = base_path('themes/' . $composerData['name']);
+
+                if (File::move("$extractedPath/$folderTheme", $newFolder)) {
+                    File::deleteDirectory($extractedPath);
+                    File::deleteDirectory($filePath);
+
+                    scan_themes();
+
+                    $themeName = $composerData['name'];
+                    $userId = auth()->id();
+                    $userEmail = auth()->user()?->email ?? 'unknown';
+                    Log::warning("Theme uploaded (hooks NOT auto-loaded): theme={$themeName}, user_id={$userId}, email={$userEmail}", [
+                        'action' => 'theme_upload',
+                        'theme' => $themeName,
+                        'user_id' => $userId,
+                    ]);
+
+                    return [
+                        'status' => 'success',
+                        'message' => 'Tema berhasil diunggah. Review hooks.php melalui menu aktivasi tema sebelum mengaktifkan.',
+                    ];
+                }
+
+                File::deleteDirectory($extractedPath);
+                File::deleteDirectory($filePath);
             }
         } finally {
             if ($zipOpened) {
@@ -129,6 +138,20 @@ class ThemeService
             'status' => 'error',
             'message' => 'Tema gagal diunggah (struktur arsip tidak valid atau file hilang)',
         ];
+    }
+
+    private function findComposerJson(string $path): ?string
+    {
+        $directory = new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $iterator = new \RecursiveIteratorIterator($directory);
+
+        foreach ($iterator as $file) {
+            if ($file->getFilename() === 'composer.json') {
+                return $file->getPathname();
+            }
+        }
+
+        return null;
     }
 
     private function validateThemeStructure(string $path, string $folder): bool

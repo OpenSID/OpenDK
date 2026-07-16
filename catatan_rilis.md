@@ -12,6 +12,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1669](https://github.com/OpenSID/OpenDK/issues/1669) Perbaikan foto pengurus dan media terkait tidak tampil.
 3. [#1629](https://github.com/OpenSID/OpenDK/issues/1629) Perbaikan error pada statistik/anggaran-desa.
 4. [#1634](https://github.com/OpenSID/OpenDK/issues/1634) Perbaiki menu aktif harus terbuka dan terlihat pada sidebar.
+5. [#1622](https://github.com/OpenSID/OpenDK/issues/1622) Perbaiki tab agama pada statistik kependudukan tidak berfungsi.
 
 
 

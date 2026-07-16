@@ -449,6 +449,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{sinergi}', ['as' => 'informasi.sinergi-program.show', 'uses' => 'SinergiProgramController@show']);
                     Route::get('create', ['as' => 'informasi.sinergi-program.create', 'uses' => 'SinergiProgramController@create']);
                     Route::post('store', ['as' => 'informasi.sinergi-program.store', 'uses' => 'SinergiProgramController@store']);
+                    Route::put('status/{sinergi}', ['as' => 'informasi.sinergi-program.status', 'uses' => 'SinergiProgramController@status']);
                     Route::get('edit/{sinergi}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
                     Route::put('update/{sinergi}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
                     Route::delete('destroy/{sinergi}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);

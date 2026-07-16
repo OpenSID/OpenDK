@@ -78,7 +78,7 @@
                         },
                         error: function(xhr, status, error) {
                             console.error(error);
-                            alert("Terjadi kesalahan saat mengambil data.");
+                            openAlert("Terjadi kesalahan saat mengambil data.", "Error", "danger");
                         }
                     });
                 }

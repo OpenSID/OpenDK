@@ -24,7 +24,7 @@
                     <table class="table table-striped table-bordered" id="lembaga-table" style="width: 100%">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Kode Lembaga</th>
                                 <th>Nama Lembaga</th>
                                 <th>Kategori Lembaga</th>

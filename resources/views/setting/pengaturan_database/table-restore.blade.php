@@ -8,7 +8,7 @@
             <div class="callout callout-warning" style="margin-top: 10px;">
                 <p><strong>Informasi:</strong></p>
                 <ul style="margin-bottom: 0;">
-                    <li>Hanya file <strong>.zip</strong> dari backup system yang diterima</li>
+                    <li>Hanya file <strong>.zip</strong> dari sistem backup yang diterima</li>
                     <li>File <strong>.zip</strong> memulihkan <strong>database + file asset</strong> (foto, dokumen, dll) sekaligus</li>
                 </ul>
                 <p style="margin-top: 8px; margin-bottom: 0;"><strong>Peringatan:</strong> Restore akan menimpa database dan file yang ada di storage. Pastikan data penting sudah dicadangkan sebelum melanjutkan.</p>

@@ -10,7 +10,6 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1645](https://github.com/OpenSID/OpenDK/issues/1645) Penyesuaian artikel desa untuk sinkronisasi API Satu Data di ubah menggunakan API.
 
 
-
 #### BUG
 
 1. [#1668](https://github.com/OpenSID/OpenDK/issues/1668) Perbaikan feed untuk database gabungan yang tidak tampil.
@@ -28,3 +27,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1630](https://github.com/OpenSID/OpenDK/issues/1630) Sesuaikan perubahan tombol aksi agar konsisten.
 3. [#1632](https://github.com/OpenSID/OpenDK/issues/1632) Penyesuaian pendaftaran kerjasama.
 4. [#1635](https://github.com/OpenSID/OpenDK/issues/1635) Penyesuaian alert agar konsisten.
+5. [#1627](https://github.com/OpenSID/OpenDK/issues/1627) Penyesuaian UI/UX di modul event.

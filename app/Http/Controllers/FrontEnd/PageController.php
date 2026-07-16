@@ -32,16 +32,17 @@
 namespace App\Http\Controllers\FrontEnd;
 
 use App\Enums\SurveiEnum;
-use App\Models\Event;
-use App\Models\Artikel;
 use App\Facades\Counter;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\FrontEndController;
 use App\Http\Requests\SurveiRequest;
+use App\Models\Artikel;
+use App\Models\Comment;
+use App\Models\Event;
 use App\Models\Kategori;
 use App\Models\Survei;
 use App\Services\DesaService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Jenssegers\Agent\Agent;
 
 class PageController extends FrontEndController
@@ -54,26 +55,41 @@ class PageController extends FrontEndController
 
         return view('pages.index', [
             'page_title' => 'Beranda',
-            'cari' => null, 
-            'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
+            'cari' => null,
+            'apiBase' => url($this->urlApi.'/artikel?'.http_build_query([
                 'filter[status]' => 1,
-                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
+                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,
                 'sort' => '-tanggal_terbit',
-                'include' => 'kategori'
-            ]))
+                'include' => 'kategori',
+            ])),
         ]);
-    }    
+    }
 
     public function beritaDesa()
     {
-        $this->data = $this->getFeeds();
+        if ($this->isDatabaseGabungan()) {
+            $apiServer = $this->settings['api_server_database_gabungan'] ?? '';
+            $kodeKecamatan = str_replace('.', '', config('profil.kecamatan_id'));
 
+            return view('pages.berita.desa_api', [
+                'page_title' => 'Berita Desa',
+                'cari' => null,
+                'apiBase' => $apiServer.'/api/v1/artikel-kecamatan?'.http_build_query([
+                    'kode_kecamatan' => $kodeKecamatan,
+                    'filter[enabled]' => 1,
+                    'page[size]' => config('setting.artikel_desa_perhalaman') ?? 10,
+                    'sort' => '-tgl_upload',
+                ]),
+            ]);
+        }
+
+        $this->data = $this->getFeeds();
         $feeds = collect($this->data)->sortByDesc('date')->take(config('setting.jumlah_artikel_desa') ?? 30)->paginate(config('setting.artikel_desa_perhalaman') ?? 10);
 
         return view('pages.berita.desa', [
             'page_title' => 'Berita Desa',
             'cari' => null,
-            'cari_desa' => null,            
+            'cari_desa' => null,
             'feeds' => $feeds,
         ]);
     }
@@ -118,7 +134,7 @@ class PageController extends FrontEndController
         $html = view('pages.berita.feeds', [
             'page_title' => 'Beranda',
             'cari_desa' => null,
-            'list_desa' => (new DesaService())->listDesa(),
+            'list_desa' => (new DesaService)->listDesa(),
             'feeds' => $feeds,
         ])->render();
 
@@ -126,25 +142,25 @@ class PageController extends FrontEndController
     }
 
     public function PotensiByKategory($slug)
-    {        
+    {
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi';     
+        $page_description = 'Potensi-Potensi';
 
         return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug']));
     }
 
     public function PotensiShow($kategori, $slug)
-    {        
+    {
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi Kecamatan';     
+        $page_description = 'Potensi-Potensi Kecamatan';
 
         return view('pages.potensi.show', compact(['page_title', 'page_description', 'slug']));
     }
 
     public function DesaShow($slug)
     {
-        $desa = (new DesaService)->dataDesa($slug);        
-        $page_title = 'Desa ' . $desa->nama;
+        $desa = (new DesaService)->dataDesa($slug);
+        $page_title = 'Desa '.$desa->nama;
         $page_description = 'Data Desa';
 
         return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
@@ -159,6 +175,7 @@ class PageController extends FrontEndController
     {
         $kategori = Kategori::where('slug', $slug)->firstOrFail();
         $artikel = Artikel::whereRelation('kategori', 'slug', $slug)->paginate(9);
+
         return view('pages.berita.kategori', compact('artikel', 'kategori'));
     }
 
@@ -184,12 +201,11 @@ class PageController extends FrontEndController
                 }]);
         }])
             ->where('slug', $slug)
-            ->when(!auth()->check(), fn($query) => $query->status())
+            ->when(! auth()->check(), fn ($query) => $query->status())
             ->firstOrFail();
 
-
         $page_title = $artikel->judul;
-        $page_description = substr($artikel->isi, 0, 300) . ' ...';
+        $page_description = substr($artikel->isi, 0, 300).' ...';
         $page_image = $artikel->gambar;
 
         // Ambil komentar utama yang terkait dengan artikel ini
@@ -197,7 +213,6 @@ class PageController extends FrontEndController
 
         return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel', 'comments'));
     }
-
 
     public function kirimKomentar(Request $request)
     {
@@ -216,7 +231,7 @@ class PageController extends FrontEndController
             $ipAddress = $request->ip();
 
             // Mendeteksi device menggunakan jenssegers/agent
-            $agent = new Agent();
+            $agent = new Agent;
             $device = $agent->device() ?: 'Desktop';
             $platform = $agent->platform() ?: 'Unknown Platform';
             $browser = $agent->browser() ?: 'Unknown Browser';
@@ -225,7 +240,7 @@ class PageController extends FrontEndController
             $deviceInfo = "{$device} on {$platform} using {$browser}";
 
             // Simpan komentar baru
-            $comment = \App\Models\Comment::create([
+            $comment = Comment::create([
                 'nama' => $validated['nama'],
                 'email' => $validated['email'],
                 'body' => $validated['body'],
@@ -251,6 +266,7 @@ class PageController extends FrontEndController
     {
         $commentId = $request->input('comment_id');
         $artikelId = $request->input('artikel_id');
+
         return view('pages.berita.comment', compact('commentId', 'artikelId'));
     }
 
@@ -270,7 +286,7 @@ class PageController extends FrontEndController
             $ipAddress = $request->ip();
 
             // Mendeteksi device menggunakan jenssegers/agent
-            $agent = new Agent();
+            $agent = new Agent;
             $device = $agent->device() ?: 'Desktop';
             $platform = $agent->platform() ?: 'Unknown Platform';
             $browser = $agent->browser() ?: 'Unknown Browser';
@@ -278,7 +294,7 @@ class PageController extends FrontEndController
             // Format informasi device
             $deviceInfo = "{$device} on {$platform} using {$browser}";
 
-            $comment = \App\Models\Comment::create([
+            $comment = Comment::create([
                 'nama' => $request->nama,
                 'email' => $request->email,
                 'body' => $request->body,
@@ -286,7 +302,7 @@ class PageController extends FrontEndController
                 'das_artikel_id' => $request->das_artikel_id,
                 'comment_id' => $request->comment_id,
                 'ip_address' => $ipAddress,
-                'device' => $deviceInfo
+                'device' => $deviceInfo,
             ]);
 
             // Simpan comment_id ke dalam session agar user bisa melihat komentarnya sendiri
@@ -298,7 +314,6 @@ class PageController extends FrontEndController
         }
     }
 
-
     public function eventDetail($slug)
     {
         $event = Event::slug($slug)->firstOrFail();
@@ -309,19 +324,19 @@ class PageController extends FrontEndController
     }
 
     public function kategori($slug)
-    {        
-        return view('pages.berita.kategori', [                        
-            'apiBaseKategori' => url($this->urlApi.'/kategori?'.http_build_query([                
+    {
+        return view('pages.berita.kategori', [
+            'apiBaseKategori' => url($this->urlApi.'/kategori?'.http_build_query([
                 'filter[slug]' => $slug,
-                'page[size]' => 1, 
+                'page[size]' => 1,
             ])),
-            'apiBase' =>  url($this->urlApi.'/artikel?'.http_build_query([
+            'apiBase' => url($this->urlApi.'/artikel?'.http_build_query([
                 'filter[status]' => 1,
                 'filter[kategori.slug]' => $slug,
-                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,        
+                'page[size]' => config('setting.artikel_kecamatan_perhalaman') ?? 10,
                 'sort' => '-created_at',
-                'include' => 'kategori'
-            ]))
+                'include' => 'kategori',
+            ])),
         ]);
     }
 
@@ -331,7 +346,7 @@ class PageController extends FrontEndController
         $page_title = 'Index Kepuasan Masyarakat';
 
         // Ambil hasil survei untuk ditampilkan
-        $results = \App\Models\Survei::selectRaw('response, count(*) as count')
+        $results = Survei::selectRaw('response, count(*) as count')
             ->groupBy('response')
             ->pluck('count', 'response')
             ->toArray();
@@ -344,7 +359,7 @@ class PageController extends FrontEndController
 
         return view('pages.ikm.index', compact('page_title', 'results'));
     }
-    
+
     public function surveiSubmit(SurveiRequest $request)
     {
         // Cek ulang session untuk keamanan

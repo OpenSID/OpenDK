@@ -24,13 +24,12 @@
                     <table class="table table-striped table-bordered" id="event-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="width: 40px;">No</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Kegiatan</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Selesai</th>
                                 <th>Dihadiri Oleh</th>
                                 <th>Status</th>
-                                <th class="text-center" style="max-width: 100px;">Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -51,9 +50,9 @@
                 ajax: "{!! route('informasi.event.getdata') !!}",
                 columns: [
                     {
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        class: 'text-center',
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center text-nowrap',
                         searchable: false,
                         orderable: false
                     },
@@ -76,13 +75,6 @@
                     {
                         data: 'status',
                         name: 'status'
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi',
-                        class: 'text-center text-nowrap',
-                        searchable: false,
-                        orderable: false
                     }
                 ],
                 order: [
@@ -90,7 +82,7 @@
                 ]
             });
             // Event untuk tombol pratinjau
-            $(document).on('click', '.btn-preview', function(e) {
+            $(document).on('click', '.btn-preview-surat', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
                 $('#modalPreviewSuratLabel').text('Pratinjau');

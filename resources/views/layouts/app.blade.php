@@ -192,30 +192,21 @@ desired effect
 
             let livewireInstance = typeof window.livewire !== 'undefined' ? window.livewire : Livewire;
             livewireInstance.on('success', (message) => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: message,
-                    showConfirmButton: true,
-                    timer: 1500
-                })
+                openAlert(message, 'Sukses', 'success');
                 $('#myModal').modal('hide');
             });
 
             livewireInstance.on('error', (message) => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: message,
-                    showConfirmButton: true,
-                    timer: 1500
-                })
-
+                openAlert(message, 'Error', 'danger');
             });
         })
     </script>
 
     @livewireScripts
+
+    <x-modal-alert />
+    <x-modal-confirm />
+    <script src="{{ asset('/js/modal-helper.js') }}"></script>
 
 </body>
 

@@ -99,6 +99,9 @@ desired effect
     <!-- iCheck -->
     <script src="{{ asset('/bower_components/admin-lte/plugins/iCheck/icheck.min.js') }}"></script>
     <script src="{{ asset('/js/admin.js') }}"></script>
+    <x-modal-alert />
+    <x-modal-confirm />
+    <script src="{{ asset('/js/modal-helper.js') }}"></script>
     @stack('scripts')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.

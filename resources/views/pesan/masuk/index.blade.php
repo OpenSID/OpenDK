@@ -233,10 +233,10 @@
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;
-                    let response = window.confirm("Apakah Anda yakin akan menandai pesan?")
-                    if (!response) return;
-                    $("#array_multiple_id").val(JSON.stringify(data))
-                    $('#form-multiple-read-pesan').submit()
+                    openConfirm("Apakah Anda yakin akan menandai pesan?", 'Konfirmasi', function() {
+                        $("#array_multiple_id").val(JSON.stringify(data))
+                        $('#form-multiple-read-pesan').submit()
+                    });
                 })
 
                 $("#arsip-action").click(function(e) {
@@ -247,10 +247,10 @@
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;
-                    let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
-                    if (!response) return;
-                    $("#array_multiple_id_arsip").val(JSON.stringify(data))
-                    $('#form-multiple-arsip-pesan').submit()
+                    openConfirm("Apakah Anda yakin akan mengarsipkan pesan?", 'Konfirmasi', function() {
+                        $("#array_multiple_id_arsip").val(JSON.stringify(data))
+                        $('#form-multiple-arsip-pesan').submit()
+                    });
                 })
 
             });

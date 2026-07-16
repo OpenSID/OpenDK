@@ -17,6 +17,13 @@
             </a>
         </li>
         @endif
+        @if (!empty($show_web))
+        <li>
+            <a href="{!! $show_web !!}" target="_blank" data-testid="btn-lihat-web">
+                <i class="fa fa-external-link text-info"></i> Lihat
+            </a>
+        </li>
+        @endif
         @if (!empty($edit_url))
         <li>
             <a href="{!! $edit_url !!}" data-testid="btn-edit">

@@ -16,7 +16,7 @@ dataset('informasi_menus', [
     ['Prosedur', '/informasi/prosedur', ['btn-tambah', 'btn-lihat', 'btn-edit', 'btn-hapus', 'btn-download']],
     ['Regulasi', '/informasi/regulasi', ['btn-tambah', 'btn-lihat', 'btn-edit', 'btn-hapus', 'btn-download']],
     ['Potensi', '/informasi/potensi', ['btn-tambah', 'btn-lihat', 'btn-edit', 'btn-hapus']],
-    ['Event', '/informasi/event', ['btn-tambah', 'btn-lihat', 'btn-edit', 'btn-hapus']],
+    ['Event', '/informasi/event', ['btn-tambah', 'btn-lihat-web', 'btn-edit', 'btn-hapus']],
     ['Artikel', '/informasi/artikel', ['btn-tambah', 'btn-edit', 'btn-hapus']],
     ['Artikel Kategori', '/informasi/kategori', ['btn-tambah', 'btn-edit', 'btn-hapus']], // URL di menu adalah informasi/kategori*
     ['Komentar Artikel', '/informasi/komentar-artikel', ['btn-hapus']],
@@ -105,6 +105,9 @@ it('smoke test menu informasi', function (string $menuName, string $url, array $
     $table = '[data-testid="table-informasi"]';
     if (in_array('btn-lihat', $buttons)) {
         $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-lihat\"]') !== null", true);
+    }
+    if (in_array('btn-lihat-web', $buttons)) {
+        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-lihat-web"]');
     }
     if (in_array('btn-edit', $buttons)) {
         $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-edit\"]') !== null", true);

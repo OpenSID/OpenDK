@@ -13,7 +13,7 @@
                     <a class="btn btn-danger btn-sm" id="test-smtp"><i class="fa fa-envelope-o"></i> Tes
                         Email</a>
                 @endif
-                <button type="submit" id="store-smtp" class="btn btn-primary btn-sm" id><i class="fa fa-save"></i>
+                <button type="submit" id="store-smtp" class="btn btn-primary btn-sm" data-confirm="Yakin Untuk Mengganti SMTP?"><i class="fa fa-save"></i>
                     Simpan</button>
             </div>
             {!! html()->form()->close() !!}
@@ -23,9 +23,7 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#store-smtp').click(function() {
-                return confirm('Yakin Untuk Mengganti SMTP?');
-            });
+
             $('#test-smtp').click(function() {
                 //get testing email data
                 var email = $("#testing_mail").val();

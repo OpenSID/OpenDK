@@ -9,7 +9,7 @@
         <form action="{{ $deleteUrl ?? '#' }}" method="POST" style="display:inline;">
             @csrf
             @method('DELETE')
-            <button type="submit" class="btn btn-icon btn-danger btn-sm" style="width: 40px" onclick="return confirm('Yakin ingin menghapus data ini?')">
+            <button type="submit" class="btn btn-icon btn-danger btn-sm" style="width: 40px" data-confirm="Yakin ingin menghapus data ini?">
                 <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
         </form>

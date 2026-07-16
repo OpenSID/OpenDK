@@ -119,16 +119,15 @@
 
             $('#arsip-action').click(function (e) {
                 e.preventDefault();
-                let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
-                if (response) {
+                openConfirm("Apakah Anda yakin akan mengarsipkan pesan?", 'Konfirmasi', function() {
                     $('#form-arisp-pesan').submit()
-                }
+                });
             })
 
             $('#action-reply').click(function (e) {
                 e.preventDefault();
                 if ($('#reply_message').val() === '') {
-                    window.alert("Silakan isi pesan");
+                    openAlert("Silakan isi pesan");
                     return;
                 }
                 $('#form-reply-pesan').submit()

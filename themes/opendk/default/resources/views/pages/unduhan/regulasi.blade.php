@@ -126,7 +126,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Gagal memuat detail regulasi. Silakan coba lagi.');
+                    openAlert('Gagal memuat detail regulasi. Silakan coba lagi.', 'Error', 'danger');
                 }
             });
         }

@@ -331,7 +331,7 @@
                             try {
                                 _path.push(layerpeta._layers[i]._latlngs);
                             } catch (e) {
-                                alert("problem with " + e + layerpeta._layers[i]);
+                                openAlert("problem with " + e + layerpeta._layers[i], "Error", "danger");
                             }
                         }
                     }
@@ -438,7 +438,7 @@
                     }).addListener(input, "change", function() {
                         var input = document.getElementById("file");
                         if (!input.files[0]) {
-                            alert("Pilih file shapefile dalam format .zip");
+                            openAlert("Pilih file shapefile dalam format .zip", "Info");
                         } else {
                             file = input.files[0];
                             fr = new FileReader();

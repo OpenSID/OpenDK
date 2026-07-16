@@ -303,5 +303,5 @@ test('ajax bagan returns json data', function () {
     $response = $this->getJson(route('data.pengurus.ajax-bagan'));
 
     $response->assertStatus(200);
-    $response->assertJsonStructure(['data', 'nodes']);
+    $response->assertJsonStructure(['children']);
 });

@@ -57,6 +57,7 @@ use App\Http\Livewire\Kerjasama\PendaftaranKerjasama;
 use App\Http\Livewire\Widget\WidgetController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
@@ -95,8 +96,9 @@ Route::prefix('install')->group(function () {
 // Pest Browser Testing — Quick login route (hanya untuk environment testing)
 if (app()->environment('testing')) {
     Route::get('/_pest/login/{userId}', function ($userId) {
-        $user = \App\Models\User::findOrFail($userId);
-        \Illuminate\Support\Facades\Auth::login($user);
+        $user = User::findOrFail($userId);
+        Auth::login($user);
+
         return response('', 200);
     })->middleware('web')->name('pest.login');
 }
@@ -179,7 +181,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
-            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
+            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');            
 
             /* route kategori */
             // Redirect dari /kategori ke halaman home secara permanent
@@ -325,6 +327,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
                     Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
                     Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
+                    Route::get('preview/{event}', ['as' => 'informasi.event.preview', 'uses' => 'EventController@preview']);
                 });
             });
         });

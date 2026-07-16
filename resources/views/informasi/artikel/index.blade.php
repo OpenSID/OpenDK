@@ -77,7 +77,8 @@
                         d.id_kategori = $('#filter-kategori').val();
                     }
                 },
-                columns: [{
+                columns: [
+                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',
@@ -87,10 +88,18 @@
                     {
                         data: 'judul',
                         name: 'judul',
+                        class: 'artikel-title-cell',
+                        render: function(data, type, row) {
+                            var title = data;
+                            if (title && title.length > 50) {
+                                title = title.substr(0, 50) + '...';
+                            }
+                            return '<span title="' + (data ? data.replace(/"/g, '&quot;') : '') + '">' + title + '</span>';
+                        }
                     },
                     {
                         data: 'kategori',
-                        name: 'kategori',
+                        name: 'kategori.nama_kategori'
                     },
                     {
                         data: 'status',
@@ -103,8 +112,8 @@
                         data: 'tanggal_terbit',
                         name: 'tanggal_terbit',
                         class: 'text-center',
-                        searchable: false,
-                    },
+                        searchable: false
+                    }
                 ],
                 order: [
                     [4, 'desc']

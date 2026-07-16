@@ -1,6 +1,6 @@
 <x-action-dropdown>
     @if (!empty($show_web))
-        <li><a href="{!! $show_web !!}" target="_blank" title="Selengkapnya"><i class="fa fa-eye text-warning"></i> Selengkapnya</a></li>
+        <li><a href="{!! $show_web !!}" target="_blank" title="Selengkapnya" data-testid="btn-lihat-web"><i class="fa fa-eye text-warning"></i> Selengkapnya</a></li>
     @endif
     @if (!empty($detail_url))
         <li><a href="{!! $detail_url !!}" title="Selengkapnya" data-testid="btn-lihat"><i class="fa fa-list text-info"></i> Selengkapnya</a></li>

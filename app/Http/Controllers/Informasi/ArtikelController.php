@@ -75,7 +75,7 @@ class ArtikelController extends Controller
                         $data['delete_url'] = auth()->user()->can('access.informasi.artikel.delete') ? route('informasi.artikel.destroy', $row->id) : null;
                     }
 
-                    return view('forms.aksi-grup', $data);
+                    return view('forms.aksi', $data);
                 })
                 ->addColumn('kategori', function (Artikel $row): string {
                     return $row->kategori ? $row->kategori->nama_kategori : '-';

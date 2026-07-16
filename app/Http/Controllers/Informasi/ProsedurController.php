@@ -96,7 +96,7 @@ class ProsedurController extends Controller
                 }
 
                 $data['download_url'] = auth()->user()->can('access.informasi.prosedur.export') ? route('informasi.prosedur.download', $row->id) : null;
-                $data['preview_url'] = route('informasi.prosedur.preview', $row->id);
+                $data['preview_url'] = auth()->user()->can('access.informasi.prosedur.view') ? route('informasi.prosedur.preview', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })
@@ -209,6 +209,10 @@ class ProsedurController extends Controller
     public function preview(Prosedur $prosedur)
     {
         $path = $prosedur->file_prosedur;
+
+        if (empty($path)) {
+            abort(404, 'File tidak ditemukan.');
+        }
 
         if (file_exists(public_path($path))) {
             return response()->file(public_path($path));

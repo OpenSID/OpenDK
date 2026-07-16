@@ -12,7 +12,7 @@
         <li><a href="{!! $peta !!}" title="Peta" target="_blank"><i class="fa fa-map text-info"></i> Peta</a></li>
     @endif
     @if (!empty($preview_url))
-        <li><a href="javascript:void(0)" class="btn-preview-surat" data-url="{{ $preview_url }}" title="Pratinjau Surat"><i class="fa fa-file-pdf-o text-danger"></i> Pratinjau Surat</a></li>
+        <li><a href="javascript:void(0)" class="btn-preview-surat" data-url="{{ $preview_url }}" title="Pratinjau"><i class="fa fa-file-pdf-o text-danger"></i> Pratinjau</a></li>
     @endif
 
     @if (!empty($arsip_url))

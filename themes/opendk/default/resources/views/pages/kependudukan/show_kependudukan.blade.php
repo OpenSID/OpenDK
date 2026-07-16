@@ -152,10 +152,10 @@
                             <div id="chart_kawin"
                                 style="width:100%; height: 200px; overflow: visible; text-align: left; padding: 10px;;">
                             </div>
-                            <div class="tab-pane" id="agama">
-                                <div id="chart_agama"
-                                    style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
-                            </div>
+                        </div>
+                        <div class="tab-pane" id="agama">
+                            <div id="chart_agama"
+                                style="width:100%; overflow: visible; text-align: left; padding: 10px;;"></div>
                         </div>
                         <!-- /.nav-tabs-custom -->
                     </div>
@@ -220,15 +220,15 @@
 <script>
     $(function() {
         $(document).on('websiteDataLoaded', function(event, websiteData) {
-             if (websiteData.desa) {
-                        var desaSelect = $('#list_desa');                                                                        
-                        websiteData.desa.forEach(function(item) {
-                            desaSelect.append(`<option value='${item.desa_id}'>${item.nama}</option>`);
-                        });
-                        
-                        desaSelect.select2();
-                    }
-        });       
+            if (websiteData.desa) {
+                var desaSelect = $('#list_desa');
+                websiteData.desa.forEach(function(item) {
+                    desaSelect.append(`<option value='${item.desa_id}'>${item.nama}</option>`);
+                });
+
+                desaSelect.select2();
+            }
+        });
 
         // First, load the years list
         function loadYearsList() {
@@ -251,7 +251,7 @@
                         var yearList = response.data[0].attributes[0].tahun;
 
                         // Populate year list
-                        populateYearList(yearList, null);                                                
+                        populateYearList(yearList, null);
                     } else {
                         console.error('No years data received from API');
                     }
@@ -265,7 +265,7 @@
                 }
             });
         }
-        
+
         // Load years list on page load
         loadYearsList();
 
@@ -273,12 +273,12 @@
         $('#list_year, #list_desa').on('change', function(e) {
             loadStatistikPenduduk();
         });
-    });        
+    });
 
     function loadStatistikPenduduk() {
         let desa = $('#list_desa').val();
         let tahun = $('#list_year').val();
-        
+
         // Show loading state
         $('#total_penduduk').html('Loading...');
         $('#total_lakilaki').html('Loading...');
@@ -287,10 +287,10 @@
         $('#data_ktp').html('Loading...');
         $('#data_akta').html('Loading...');
         $('#data_nikah').html('Loading...');
-        
+
         // Make API call to get statistik-penduduk data
         $.ajax({
-            url: '{!! $urlApi !!}/statistik-penduduk?desa='+desa+'&tahun='+tahun,
+            url: '{!! $urlApi !!}/statistik-penduduk?desa=' + desa + '&tahun=' + tahun,
             method: 'GET',
             success: function(response) {
                 if (response.data && response.data.length > 0) {

@@ -18,7 +18,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 4. [#1634](https://github.com/OpenSID/OpenDK/issues/1634) Perbaiki menu aktif harus terbuka dan terlihat pada sidebar.
 5. [#1622](https://github.com/OpenSID/OpenDK/issues/1622) Perbaiki tab agama pada statistik kependudukan tidak berfungsi.
 6. [#1636](https://github.com/OpenSID/OpenDK/issues/1636) Perbaiki struktur organisasi.
-
+7. [#1652](https://github.com/OpenSID/OpenDK/issues/1652) Perbaiki prosedur halaman depan.
 
 
 #### TEKNIS

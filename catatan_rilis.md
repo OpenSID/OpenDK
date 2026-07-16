@@ -5,6 +5,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### FITUR
 
+1. [#1624](https://github.com/OpenSID/OpenDK/issues/1624) Penyesuaian tombol agar fitur tambah prosedur lebih jelas & informatif.
+
 
 #### BUG
 

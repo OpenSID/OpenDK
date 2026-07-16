@@ -107,7 +107,7 @@
                     } else { //no
                         //warning
                         $("#file-artikel").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

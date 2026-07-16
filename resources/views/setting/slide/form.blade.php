@@ -54,7 +54,7 @@
                     } else { //no
                         //warning
                         $("#gambar").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

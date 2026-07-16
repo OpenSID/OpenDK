@@ -57,6 +57,7 @@ use App\Http\Livewire\Kerjasama\PendaftaranKerjasama;
 use App\Http\Livewire\Widget\WidgetController;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
@@ -95,8 +96,9 @@ Route::prefix('install')->group(function () {
 // Pest Browser Testing — Quick login route (hanya untuk environment testing)
 if (app()->environment('testing')) {
     Route::get('/_pest/login/{userId}', function ($userId) {
-        $user = \App\Models\User::findOrFail($userId);
-        \Illuminate\Support\Facades\Auth::login($user);
+        $user = User::findOrFail($userId);
+        Auth::login($user);
+
         return response('', 200);
     })->middleware('web')->name('pest.login');
 }
@@ -179,7 +181,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
-            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
+            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');            
 
             /* route kategori */
             // Redirect dari /kategori ke halaman home secara permanent
@@ -325,6 +327,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{event}', ['as' => 'informasi.event.update', 'uses' => 'EventController@update']);
                     Route::delete('destroy/{event}', ['as' => 'informasi.event.destroy', 'uses' => 'EventController@destroy']);
                     Route::get('download/{event}', ['as' => 'informasi.event.download', 'uses' => 'EventController@download']);
+                    Route::get('preview/{event}', ['as' => 'informasi.event.preview', 'uses' => 'EventController@preview']);
                 });
             });
         });
@@ -344,6 +347,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{prosedur}', ['as' => 'informasi.prosedur.update', 'uses' => 'ProsedurController@update']);
                     Route::delete('destroy/{prosedur}', ['as' => 'informasi.prosedur.destroy', 'uses' => 'ProsedurController@destroy']);
                     Route::get('download/{prosedur}', ['as' => 'informasi.prosedur.download', 'uses' => 'ProsedurController@download']);
+                    Route::get('preview/{prosedur}', ['as' => 'informasi.prosedur.preview', 'uses' => 'ProsedurController@preview']);
                 });
 
                 // Regulasi
@@ -424,7 +428,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('edit/{potensi}', ['as' => 'informasi.potensi.edit', 'uses' => 'PotensiController@edit']);
                     Route::put('update/{potensi}', ['as' => 'informasi.potensi.update', 'uses' => 'PotensiController@update']);
                     Route::delete('destroy/{potensi}', ['as' => 'informasi.potensi.destroy', 'uses' => 'PotensiController@destroy']);
-                    Route::get('getdata', ['as' => 'informasi.potensi.getdata', 'uses' => 'PotensiController@getDataPotensi']);
+                    Route::get('download/{potensi}', ['as' => 'informasi.potensi.download', 'uses' => 'PotensiController@download']);
                     Route::get('kategori', ['as' => 'informasi.potensi.kategori', 'uses' => 'PotensiController@kategori']);
                 });
 
@@ -447,6 +451,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('show/{sinergi}', ['as' => 'informasi.sinergi-program.show', 'uses' => 'SinergiProgramController@show']);
                     Route::get('create', ['as' => 'informasi.sinergi-program.create', 'uses' => 'SinergiProgramController@create']);
                     Route::post('store', ['as' => 'informasi.sinergi-program.store', 'uses' => 'SinergiProgramController@store']);
+                    Route::put('status/{sinergi}', ['as' => 'informasi.sinergi-program.status', 'uses' => 'SinergiProgramController@status']);
                     Route::get('edit/{sinergi}', ['as' => 'informasi.sinergi-program.edit', 'uses' => 'SinergiProgramController@edit']);
                     Route::put('update/{sinergi}', ['as' => 'informasi.sinergi-program.update', 'uses' => 'SinergiProgramController@update']);
                     Route::delete('destroy/{sinergi}', ['as' => 'informasi.sinergi-program.destroy', 'uses' => 'SinergiProgramController@destroy']);

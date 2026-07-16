@@ -25,7 +25,7 @@
                         <table class="table table-striped table-bordered" id="potensi-table" data-testid="table-informasi">
                             <thead>
                                 <tr>
-                                    <th style="max-width: 150px;">Aksi</th>
+                                    <th style="max-width: 80px;">Aksi</th>
                                     <th>Potensi</th>
                                 </tr>
                             </thead>
@@ -51,7 +51,8 @@
                 processing: true,
                 serverSide: false,
                 ajax: "{!! route('informasi.potensi.getdata') !!}",
-                columns: [{
+                columns: [
+                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',
@@ -61,7 +62,7 @@
                     {
                         data: 'nama_potensi',
                         name: 'nama_potensi'
-                    },
+                    }
                 ],
                 order: [
                     [1, 'asc']

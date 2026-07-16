@@ -37,7 +37,7 @@
                     <table class="table table-bordered table-hover dataTable" id="program-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama Program</th>
                                 <th>Desa</th>
                                 <th>Masa Berlaku</th>

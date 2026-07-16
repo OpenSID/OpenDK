@@ -31,7 +31,7 @@
                 <table class="table table-striped table-bordered" id="data_navigation">
                     <thead>
                         <tr>
-                            <th style="max-width: 250px;">Aksi</th>
+                            <th style="max-width: 80px;">Aksi</th>
                             <th>Navigasi</th>
                             <th>Url</th>
                             <th>Active</th>

@@ -11,13 +11,7 @@ function errorValidation(response) {
     var errors = response.responseJSON?.errors;
 
     if (!errors) {
-        Swal.fire({
-            title: 'Gagal!',
-            text: response,
-            icon: 'error',
-            confirmButtonText: 'OK',
-            timer: 1500
-        });
+        openAlert(response, 'Gagal!', 'danger');
     } else {
         $.each(errors, function(key, value) {
             $('#' + key)

@@ -6,12 +6,12 @@
                 <h4 class="modal-title">Konfirmasi</h4>
             </div>
             <div class="modal-body">
-                <p>Anda yakin ingin mengaktifkan data ini?</p>
+                <p>Anda yakin ingin menonaktifkan data ini?</p>
             </div>
             <div class="modal-footer">
                 {!! html()->form('PUT')->id('lock')->open() !!}
                 <a id="active-modal-cancel" href="#" class="btn btn-danger pull-left" data-dismiss="modal">Batal</a>
-                {!! html()->submit('Aktif')->class('btn btn-success') !!}
+                {!! html()->submit('Nonaktifkan')->class('btn btn-success') !!}
                 {!! html()->form()->close() !!}
             </div>
         </div>

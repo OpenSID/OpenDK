@@ -29,3 +29,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 4. [#1635](https://github.com/OpenSID/OpenDK/issues/1635) Penyesuaian alert agar konsisten.
 5. [#1627](https://github.com/OpenSID/OpenDK/issues/1627) Penyesuaian UI/UX di modul event.
 6. [#1628](https://github.com/OpenSID/OpenDK/issues/1628) Penyesuaian UI/UX di modul artikel.
+7. [#1650](https://github.com/OpenSID/OpenDK/issues/1650) Penyesuaian menu seeder yang tidak memiliki sumber.

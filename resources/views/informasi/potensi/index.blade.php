@@ -25,7 +25,7 @@
                         <table class="table table-striped table-bordered" id="potensi-table" data-testid="table-informasi">
                             <thead>
                                 <tr>
-                                    <th style="width: 40px;">No</th>
+                                    <th style="max-width: 80px;">Aksi</th>
                                     <th>Potensi</th>
                                     <th class="text-center" style="max-width: 100px;">Aksi</th>
                                 </tr>

@@ -128,7 +128,7 @@
                             reader.readAsDataURL(file);
                         } else { // jika file tidak valid
                             $("#file-album").val(''); // reset input
-                            alert('File tersebut tidak diperbolehkan.');
+                            openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                         }
                     }
                 } else {

@@ -189,8 +189,9 @@
                     if (expirySeconds <= 0) {
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
-                        alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
-                        window.location.href = '{{ route('otp2fa.index') }}';
+                        openAlert('Kode OTP telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function () {
+                            window.location.href = '{{ route('otp2fa.index') }}';
+                        });
                     }
                 }, 1000);
 
@@ -222,12 +223,12 @@
                                 }
                             }, 1000);
 
-                            alert('Kode OTP baru telah dikirim.');
+                            openAlert('Kode OTP baru telah dikirim.', 'Info', 'success');
                         } else {
-                            alert(response.message || 'Gagal mengirim ulang kode OTP.');
+                            openAlert(response.message || 'Gagal mengirim ulang kode OTP.', 'Info', 'warning');
                         }
                     }).fail(function() {
-                        alert('Gagal mengirim ulang kode OTP.');
+                        openAlert('Gagal mengirim ulang kode OTP.', 'Error', 'danger');
                     });
                 });
             });

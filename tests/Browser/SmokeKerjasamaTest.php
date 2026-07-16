@@ -44,11 +44,11 @@ it('smoke test menu Kerjasama - Pendaftaran Kerjasama (Livewire)', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/kerjasama/pendaftaran-kerjasama');
     $this->page->assertPathIs('/kerjasama/pendaftaran-kerjasama');
 
-    // 1. Panel informasi pendaftaran kerjasama tampil (box pertama selalu ada)
-    $this->page->assertSee('Pendaftaran Kerjasama');
+    // 1. Panel informasi pengajuan kerja sama tampil (box pertama selalu ada)
+    $this->page->assertSee('Pengajuan Kerja Sama');
 
-    // 2. Panel Form Pendaftaran Kerjasama tampil
-    $this->page->assertSee('Form Pendaftaran Kerjasama');
+    // 2. Panel Form Pengajuan Kerja Sama tampil
+    $this->page->assertSee('Form Pengajuan Kerja Sama');
 
     // 3. Tombol Unduh Dokumen Kerjasama tampil
     $this->page->assertVisible('a[href*="template"]');

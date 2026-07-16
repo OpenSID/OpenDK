@@ -43,6 +43,12 @@ class ThemeHooksValidator
 
         for ($i = 0; $i < $zip->numFiles; $i++) {
             $filename = $zip->getNameIndex($i);
+
+            // Skip Blade template files — they are safe Laravel templates
+            if (str_ends_with($filename, '.blade.php')) {
+                continue;
+            }
+
             $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
             if (in_array($ext, self::DANGEROUS_EXTENSIONS, true)) {

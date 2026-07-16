@@ -35,7 +35,7 @@
                     <table class="table table-striped table-bordered" id="artikel-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="width: 40px;">No</th>
+                                <th class="text-center text-nowrap" style="max-width: 80px;">Aksi</th>
                                 <th>Judul</th>
                                 <th>Kategori</th>
                                 <th style="max-width: 100px;">Status</th>

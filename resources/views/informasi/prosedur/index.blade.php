@@ -24,11 +24,10 @@
                     <table class="table table-striped table-bordered" id="prosedur-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="width: 40px;">No</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Judul Prosedur </th>
                                 <th>Jenis File</th>
                                 <th>Ukuran File</th>
-                                <th class="text-center" style="max-width: 100px;">Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -49,9 +48,9 @@
                 ajax: "{!! route('informasi.prosedur.getdata') !!}",
                 columns: [
                     {
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        class: 'text-center',
+                        data: 'aksi',
+                        name: 'aksi',
+                        class: 'text-center text-nowrap',
                         searchable: false,
                         orderable: false
                     },
@@ -70,21 +69,14 @@
                         name: 'ukuran_file',
                         searchable: false,
                         orderable: false
-                    },
-                    {
-                        data: 'aksi',
-                        name: 'aksi',
-                        class: 'text-center text-nowrap',
-                        searchable: false,
-                        orderable: false
-                    },
+                    }
                 ],
                 order: [
                     [1, 'asc']
                 ]
             });
             // Event untuk tombol pratinjau
-            $(document).on('click', '.btn-preview', function(e) {
+            $(document).on('click', '.btn-preview-surat', function(e) {
                 e.preventDefault();
                 var url = $(this).data('url');
                 $('#modalPreviewSuratLabel').text('Pratinjau');

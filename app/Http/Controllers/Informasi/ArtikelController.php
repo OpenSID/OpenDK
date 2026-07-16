@@ -90,7 +90,7 @@ class ArtikelController extends Controller
                 ->editColumn('tanggal_terbit', function (Artikel $row): string {
                     return $row->tanggal_terbit ? format_date($row->tanggal_terbit) : '-';
                 })
-                ->rawColumns(['status'])
+                ->rawColumns(['status', 'aksi'])
                 ->make(true);
         }
 

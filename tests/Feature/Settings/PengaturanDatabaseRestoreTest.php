@@ -42,7 +42,23 @@ describe('restoreBackup - validasi ekstensi', function () {
         );
 
         $response->assertStatus(422);
-        $response->assertJson(['message' => 'File harus berupa .sql atau .zip']);
+        $response->assertJson(['message' => 'Hanya file .zip dari backup system yang diizinkan untuk restore.']);
+    });
+
+    test('menolak file .sql (tidak lagi didukung)', function () {
+        $file = UploadedFile::fake()->create('backup.sql', 100);
+
+        $response = $this->postJson(
+            route('setting.pengaturan-database.runrestore'),
+            ['backupFile' => $file],
+            ['X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $response->assertStatus(422);
+        $response->assertJson([
+            'success'  => false,
+            'message'  => 'Hanya file .zip dari backup system yang diizinkan untuk restore.',
+        ]);
     });
 
     test('menolak file dengan ekstensi tidak diizinkan (.exe)', function () {
@@ -55,6 +71,7 @@ describe('restoreBackup - validasi ekstensi', function () {
         );
 
         $response->assertStatus(422);
+        $response->assertJson(['success' => false]);
     });
 
     test('menolak request tanpa file', function () {
@@ -95,9 +112,7 @@ describe('restoreBackup - file ZIP corrupt', function () {
 });
 
 describe('restoreBackup - file SQL valid diterima', function () {
-    test('menerima file .sql dan memproses restore', function () {
-        // Buat file SQL sederhana — restore akan gagal karena mysql command,
-        // tapi kita hanya memverifikasi bahwa file diterima (tidak 422)
+    test('menolak file .sql dan mengembalikan 422', function () {
         $sqlContent = "-- Test SQL dump\n-- Nothing to execute\n";
         $tmpFile = tempnam(sys_get_temp_dir(), 'test_') . '.sql';
         file_put_contents($tmpFile, $sqlContent);
@@ -110,13 +125,77 @@ describe('restoreBackup - file SQL valid diterima', function () {
             ['X-Requested-With' => 'XMLHttpRequest']
         );
 
-        // Akan 500 karena mysql command tidak tersedia di test env,
-        // tapi yang penting bukan 422 (validasi ekstensi lolos)
-        expect($response->status())->not->toBe(422);
+        // .sql tidak lagi diterima
+        $response->assertStatus(422);
+        $response->assertJson([
+            'success' => false,
+            'message' => 'Hanya file .zip dari backup system yang diizinkan untuk restore.',
+        ]);
 
-        // Cleanup
         if (file_exists($tmpFile)) {
             unlink($tmpFile);
         }
     });
 });
+
+describe('restoreBackup - multiple db-dump entries dalam ZIP', function () {
+    test('mengembalikan error 500 jika ZIP mengandung lebih dari 1 db-dump', function () {
+        // Buat ZIP dengan 2 file di db-dumps/
+        $tmpZip = tempnam(sys_get_temp_dir(), 'test_') . '.zip';
+        $zip = new ZipArchive();
+        $zip->open($tmpZip, ZipArchive::CREATE);
+        $zip->addFromString('db-dumps/dump1.sql', '-- dump 1');
+        $zip->addFromString('db-dumps/dump2.sql', '-- dump 2');
+        $zip->close();
+
+        $file = new UploadedFile($tmpZip, 'multi-dump.zip', 'application/zip', null, true);
+
+        $response = $this->postJson(
+            route('setting.pengaturan-database.runrestore'),
+            ['backupFile' => $file],
+            ['X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $response->assertStatus(500);
+        $response->assertJsonPath('success', false);
+        expect($response->json('message'))->toContain('database dump');
+
+        if (file_exists($tmpZip)) {
+            unlink($tmpZip);
+        }
+    });
+});
+
+describe('restoreBackup - ZIP slip pada db-dumps/', function () {
+    test('entry db-dumps dengan path traversal dilewati, tidak error fatal', function () {
+        // ZIP berisi 1 entry db-dumps dengan traversal path
+        // Entry harus di-skip, tidak crash, dan tidak mengekstrak file di luar tempBase
+        $tmpZip = tempnam(sys_get_temp_dir(), 'test_') . '.zip';
+        $zip = new ZipArchive();
+        $zip->open($tmpZip, ZipArchive::CREATE);
+        $zip->addFromString('db-dumps/../../evil.sql', '-- traversal');
+        $zip->close();
+
+        $file = new UploadedFile($tmpZip, 'slip-test.zip', 'application/zip', null, true);
+
+        $response = $this->postJson(
+            route('setting.pengaturan-database.runrestore'),
+            ['backupFile' => $file],
+            ['X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        // Entry traversal di-skip → tidak ada dump valid → response 200 dengan 0 file
+        // Yang penting: tidak 422 (file ZIP diterima) dan evil.sql tidak ada di luar tempBase
+        $response->assertStatus(200);
+        $response->assertJsonPath('success', true);
+
+        // Pastikan file traversal tidak diekstrak ke luar direktori backup-temp
+        expect(file_exists(storage_path('evil.sql')))->toBeFalse();
+        expect(file_exists(storage_path('app/evil.sql')))->toBeFalse();
+
+        if (file_exists($tmpZip)) {
+            unlink($tmpZip);
+        }
+    });
+});
+

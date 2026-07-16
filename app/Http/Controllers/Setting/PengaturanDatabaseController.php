@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 
 use Exception;
-use App\Http\Controllers\Setting\ZipArchive;
 
 
 class PengaturanDatabaseController extends Controller
@@ -160,32 +159,31 @@ class PengaturanDatabaseController extends Controller
             'backupFile' => 'required|file',
         ]);
 
-        $allowedExtensions = ['sql', 'zip'];
         $file = $request->file('backupFile');
-
         $extension = strtolower($file->getClientOriginalExtension());
-        if (! in_array($extension, $allowedExtensions)) {
-            return response()->json(['message' => 'File harus berupa .sql atau .zip'], 422);
+
+        // Fix #4: Hanya terima .zip dari backup system — .sql tidak lagi didukung
+        if ($extension !== 'zip') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Hanya file .zip dari backup system yang diizinkan untuk restore.',
+            ], 422);
         }
 
         $fileUploadService = new \App\Services\FileUploadService();
-
-        if ($extension === 'zip') {
-            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            $maxSize = 512000; // 500MB
-        } else {
-            $allowedMimes = ['application/octet-stream', 'text/plain', 'application/sql'];
-            $maxSize = 102400; // 100MB
-        }
+        $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+        $maxSize = 512000; // 500MB
 
         $path = $fileUploadService->uploadSecure($file, 'backup-temp', $allowedMimes, $maxSize);
 
         $filename = basename($path);
-
         $allowedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-';
 
         if (! preg_match("/^[" . $allowedChars . "]+$/", $filename)) {
-            return response()->json(['message' => 'Nama file tidak valid, Hanya boleh mengandung huruf (a-z/A-Z), angka (0-9), titik (.), dan garis bawah (_)'], 422);
+            return response()->json([
+                'success' => false,
+                'message' => 'Nama file tidak valid. Hanya boleh mengandung huruf (a-z/A-Z), angka (0-9), titik (.), dan garis bawah (_).',
+            ], 422);
         }
 
         $setDir = 'backup-temp';
@@ -193,24 +191,35 @@ class PengaturanDatabaseController extends Controller
         try {
             Log::info('Starting restore process.');
 
-            $finalPath = Storage::disk('public')->path($path);
-
-            if ($extension === 'zip') {
-                Log::info('Restore from ZIP: ' . $finalPath);
-                $result = $this->restoreFromZip($finalPath);
-
-                return response()->json([
-                    'message' => "Restore berhasil. Database dan {$result['files_restored']} file asset telah dipulihkan.",
-                ], 200);
+            // Fix #3: Pre-restore backup otomatis (best-effort, tidak memblokir restore jika gagal)
+            try {
+                Log::info('Menjalankan pre-restore backup otomatis...');
+                $backupExit = Artisan::call('backup:run');
+                if ($backupExit !== 0) {
+                    Log::warning('Pre-restore backup gagal (exit code: ' . $backupExit . '). Restore tetap dilanjutkan.');
+                } else {
+                    Log::info('Pre-restore backup berhasil.');
+                }
+            } catch (\Exception $backupEx) {
+                Log::warning('Pre-restore backup exception: ' . $backupEx->getMessage() . '. Restore tetap dilanjutkan.');
             }
 
-            Log::info('Normalized SQL file path from upload: ' . $finalPath);
-            $this->runRestoreDatabase($finalPath);
+            $finalPath = Storage::disk('public')->path($path);
 
-            return response()->json(['message' => 'Database berhasil direstore.'], 200);
+            Log::info('Restore from ZIP: ' . $finalPath);
+            $result = $this->restoreFromZip($finalPath);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Restore berhasil. Database dan {$result['files_restored']} file asset telah dipulihkan.",
+            ], 200);
         } catch (\Exception $e) {
             Log::error('Restore error: ' . $e->getMessage());
-            return response()->json(['message' => $e->getMessage()], 500);
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         } finally {
             $this->deleteTemporaryDirectory(Storage::disk('public')->path($setDir));
             Log::info('Direktori sementara berhasil dihapus.');
@@ -232,16 +241,16 @@ class PengaturanDatabaseController extends Controller
             ? rtrim($binaryPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . 'mysql'
             : 'mysql';
 
-        // Buat command untuk restore database
+        // Fix #1: Tambahkan escapeshellarg pada $sqlFilePath untuk mencegah shell injection
         $command = sprintf(
-            '%s -h%s -P%s -u%s %s %s < "%s" 2>&1',
+            '%s -h%s -P%s -u%s %s %s < %s 2>&1',
             escapeshellarg($mysqlBinary),
             escapeshellarg($dbHost),
             escapeshellarg($dbPort),
             escapeshellarg($dbUser),
             $dbPass !== '' ? '--password=' . escapeshellarg($dbPass) : '',
             escapeshellarg($dbName),
-            $sqlFilePath
+            escapeshellarg($sqlFilePath)
         );
 
         exec($command, $output, $returnVar);
@@ -273,6 +282,18 @@ class PengaturanDatabaseController extends Controller
         $tempSqlPath = $tempBase . '/restore-dump.sql';
 
         try {
+            // Fix #6: Hitung jumlah db-dump entries sebelum proses — tolak jika > 1
+            $dbDumpCount = 0;
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $name = str_replace('\\', '/', $zip->getNameIndex($i));
+                if (str_starts_with($name, 'db-dumps/') && ! str_ends_with($name, '/')) {
+                    $dbDumpCount++;
+                }
+            }
+            if ($dbDumpCount > 1) {
+                throw new \Exception("File ZIP mengandung {$dbDumpCount} database dump. Hanya 1 yang diizinkan.");
+            }
+
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $entry = $zip->getNameIndex($i);
 
@@ -286,6 +307,13 @@ class PengaturanDatabaseController extends Controller
 
                 // Database dump — ekstrak ke file terpisah untuk restore via mysql
                 if (str_starts_with($normalized, 'db-dumps/')) {
+                    // Fix #2: Validasi path traversal dan subdirektori sebelum extractTo()
+                    $relativeToDbDumps = substr($normalized, strlen('db-dumps/'));
+                    if (str_contains($relativeToDbDumps, '..') || str_contains($relativeToDbDumps, '/')) {
+                        Log::warning('Skipping db-dumps entry with traversal or subdirectory: ' . $entry);
+                        continue;
+                    }
+
                     $zip->extractTo($tempBase, $entry);
                     $extractedPath = $tempBase . '/' . $entry;
                     if (file_exists($extractedPath)) {
@@ -390,6 +418,28 @@ class PengaturanDatabaseController extends Controller
 
     private function deleteTemporaryDirectory($path)
     {
+        // Fix #7: Tolak symlink dan path di luar storage/ untuk mencegah penghapusan file penting
+        if (is_link($path)) {
+            Log::warning('deleteTemporaryDirectory: path adalah symlink, dibatalkan: ' . $path);
+            return false;
+        }
+
+        $realPath = realpath($path);
+        $allowedBase = realpath(storage_path());
+
+        if ($realPath === false || $allowedBase === false) {
+            Log::warning('deleteTemporaryDirectory: path tidak dapat diresolve: ' . $path);
+            return false;
+        }
+
+        // Pastikan path berada di dalam storage/
+        $normalizedReal = str_replace('\\', '/', $realPath);
+        $normalizedBase = str_replace('\\', '/', $allowedBase);
+        if (! str_starts_with($normalizedReal, $normalizedBase)) {
+            Log::error('deleteTemporaryDirectory: path di luar storage/, dibatalkan: ' . $realPath);
+            return false;
+        }
+
         if (is_dir($path)) {
             $files = array_diff(scandir($path), ['.', '..']);
             foreach ($files as $file) {

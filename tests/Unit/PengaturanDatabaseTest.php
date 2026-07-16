@@ -94,3 +94,43 @@ describe('PengaturanDatabaseController - mapZipEntryToStoragePath', function () 
         expect($result)->toBe('public/artikel/2024/01/foto-artikel.jpg');
     });
 });
+
+describe('PengaturanDatabaseController - deleteTemporaryDirectory', function () {
+    beforeEach(function () {
+        $controller = app(App\Http\Controllers\Setting\PengaturanDatabaseController::class);
+        $this->method = new \ReflectionMethod($controller, 'deleteTemporaryDirectory');
+        $this->method->setAccessible(true);
+        $this->controller = $controller;
+    });
+
+    test('menolak path di luar storage/ dan mengembalikan false', function () {
+        // Path di luar storage (misal: direktori sistem)
+        $outsidePath = sys_get_temp_dir() . '/outside-storage-test';
+
+        $result = $this->method->invoke($this->controller, $outsidePath);
+
+        expect($result)->toBeFalse();
+    });
+
+    test('mengembalikan false untuk path yang tidak dapat diresolve', function () {
+        $nonExistentPath = storage_path('app/non-existent-dir-xyz123');
+
+        $result = $this->method->invoke($this->controller, $nonExistentPath);
+
+        // Path tidak ada → realpath() return false → method return false
+        expect($result)->toBeFalse();
+    });
+
+    test('berhasil menghapus direktori kosong di dalam storage/', function () {
+        // Buat direktori sementara di dalam storage/
+        $testDir = storage_path('app/test-delete-temp-' . uniqid());
+        mkdir($testDir, 0755, true);
+
+        expect(is_dir($testDir))->toBeTrue();
+
+        $result = $this->method->invoke($this->controller, $testDir);
+
+        expect($result)->not->toBeFalse();
+        expect(is_dir($testDir))->toBeFalse();
+    });
+});

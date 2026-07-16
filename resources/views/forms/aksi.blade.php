@@ -1,6 +1,6 @@
 <x-action-dropdown>
     @if (!empty($show_web))
-        <li><a href="{!! $show_web !!}" target="_blank" title="Selengkapnya"><i class="fa fa-eye text-warning"></i> Selengkapnya</a></li>
+        <li><a href="{!! $show_web !!}" target="_blank" title="Selengkapnya" data-testid="btn-lihat-web"><i class="fa fa-eye text-warning"></i> Selengkapnya</a></li>
     @endif
     @if (!empty($detail_url))
         <li><a href="{!! $detail_url !!}" title="Selengkapnya" data-testid="btn-lihat"><i class="fa fa-list text-info"></i> Selengkapnya</a></li>
@@ -12,7 +12,7 @@
         <li><a href="{!! $peta !!}" title="Peta" target="_blank"><i class="fa fa-map text-info"></i> Peta</a></li>
     @endif
     @if (!empty($preview_url))
-        <li><a href="javascript:void(0)" class="btn-preview-surat" data-url="{{ $preview_url }}" title="Pratinjau Surat"><i class="fa fa-file-pdf-o text-danger"></i> Pratinjau Surat</a></li>
+        <li><a href="javascript:void(0)" class="btn-preview-surat" data-url="{{ $preview_url }}" title="Pratinjau"><i class="fa fa-file-pdf-o text-danger"></i> Pratinjau</a></li>
     @endif
 
     @if (!empty($arsip_url))

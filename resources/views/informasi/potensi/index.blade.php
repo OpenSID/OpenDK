@@ -51,7 +51,8 @@
                 processing: true,
                 serverSide: false,
                 ajax: "{!! route('informasi.potensi.getdata') !!}",
-                columns: [{
+                columns: [
+                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',
@@ -61,7 +62,7 @@
                     {
                         data: 'nama_potensi',
                         name: 'nama_potensi'
-                    },
+                    }
                 ],
                 order: [
                     [1, 'asc']

@@ -74,7 +74,7 @@
 
             // runBackup
             runBackup = function() {
-                if (confirm('Apakah Anda yakin ingin mencadangkan database ini?')) {
+                openConfirm('Apakah Anda yakin ingin mencadangkan database ini?', 'Konfirmasi', function() {
 
                     let restoreMessage = $('#restoreMessage');
                     let btnBackup = $("#btnBackup");
@@ -108,16 +108,16 @@
                         }
                     });
 
-                }
+                });
 
                 return false;
             }
 
             // delete backup
             deleteBackup = function(url) {
-                if (confirm('Apakah Anda yakin ingin menghapus file backup ini?')) {
+                openConfirm('Apakah Anda yakin ingin menghapus file backup ini?', 'Konfirmasi', function() {
                     window.location.href = url;
-                }
+                });
             }
 
         });

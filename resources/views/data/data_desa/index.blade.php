@@ -19,17 +19,17 @@
 
             @if ($profil->kecamatan_id)
                 <div class="box-header with-border">
-                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.data-desa.create') ? route('data.data-desa.create') : null])
+                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.data_desa.create') ? route('data.data-desa.create') : null])
                     @include('forms.btn-social', ['desa_url' => route('data.data-desa.getdesa')])
                     @include('forms.btn-social', [
-                        'export_url' => auth()->user()->can('access.data.data-desa.export') ? route('data.data-desa.export-excel') : null,
+                        'export_url' => auth()->user()->can('access.data.data_desa.export') ? route('data.data-desa.export-excel') : null,
                         'export_text' => 'Export Excel',
                     ])
                 </div>
             @else
                 <div class="box-header with-border">
                     @include('forms.btn-social', [
-                        'export_url' => auth()->user()->can('access.data.data-desa.export') ? route('data.data-desa.export-excel') : null,
+                        'export_url' => auth()->user()->can('access.data.data_desa.export') ? route('data.data-desa.export-excel') : null,
                         'export_text' => 'Export Excel',
                     ])
                 </div>
@@ -40,7 +40,7 @@
                     <table class="table table-bordered table-hover" id="datadesa-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Kode {{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama {{ config('setting.sebutan_desa') }}</th>
                                 <th>Website</th>

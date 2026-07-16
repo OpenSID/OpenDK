@@ -33,6 +33,7 @@ namespace App\Imports;
 
 use App\Models\PesertaProgram;
 use App\Models\Program;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
@@ -40,7 +41,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class SinkronBantuan implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 
@@ -58,7 +59,6 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
             $desa_id[] = $data['desa_id'];
         }
 
-        // Hapus data peserta di database
         PesertaProgram::whereIn('desa_id', $desa_id)->delete();
         Program::whereIn('desa_id', $desa_id)->delete();
 
@@ -69,8 +69,8 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'nama' => $value['nama'],
                 'sasaran' => $value['sasaran'],
                 'status' => $value['status'],
-                'start_date' => $value['sdate'],
-                'end_date' => $value['edate'],
+                'start_date' => $this->parseTanggal($value['sdate']),
+                'end_date' => $this->parseTanggal($value['edate']),
                 'description' => $value['ndesc'],
             ];
 
@@ -78,6 +78,23 @@ class SinkronBantuan implements ToCollection, WithHeadingRow, WithChunkReading, 
                 'desa_id' => $insert['desa_id'],
                 'id' => $insert['id'],
             ], $insert);
+        }
+    }
+
+    /**
+     * Konversi berbagai format tanggal (termasuk ISO 8601 dari Excel)
+     * menjadi format MySQL DATETIME yang valid.
+     */
+    private function parseTanggal($value): ?string
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        try {
+            return Carbon::parse($value)->format('Y-m-d H:i:s');
+        } catch (\Exception $e) {
+            return null;
         }
     }
 }

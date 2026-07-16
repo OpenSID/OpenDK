@@ -13,6 +13,7 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
+use App\Http\Middleware\ThemeApiMiddleware;
 use App\Models\Komplain;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
@@ -35,6 +36,7 @@ beforeEach(function () {
         PermissionMiddleware::class,
         CompleteProfile::class,
         GlobalShareMiddleware::class,
+        ThemeApiMiddleware::class,  // bypass rate limiter — RateLimiter::tooManyAttempts() memanggil Cache::driver() yang tidak di-mock
     ]);
     SettingAplikasi::updateOrCreate(
         ['key' => 'sinkronisasi_database_gabungan'],
@@ -61,7 +63,7 @@ test('index returns paginated complaints', function () {
 
     Cache::shouldReceive('remember')
         ->once()
-        ->andReturnUsing(fn(...$args) => is_callable(end($args)) ? end($args)() : end($args));
+        ->andReturnUsing(fn (...$args) => is_callable(end($args)) ? end($args)() : end($args));
 
     $response = $this->getJson('/api/frontend/v1/komplain');
 
@@ -90,14 +92,14 @@ test('index returns paginated complaints', function () {
                     'created_at',
                     'updated_at',
                 ],
-            ]
-        ]
+            ],
+        ],
     ]);
 });
 
 test('index with filters', function () {
     $this->komplainRepository->shouldReceive('data')->once()->andReturn(collect());
-    Cache::shouldReceive('remember')->once()->andReturnUsing(fn(...$args) => is_callable(end($args)) ? end($args)() : end($args));
+    Cache::shouldReceive('remember')->once()->andReturnUsing(fn (...$args) => is_callable(end($args)) ? end($args)() : end($args));
 
     $response = $this->getJson('/api/frontend/v1/komplain?filter[status]=DITERIMA&filter[kategori]=1&search=jalan');
     $response->assertStatus(200);
@@ -105,7 +107,7 @@ test('index with filters', function () {
 
 test('index with pagination', function () {
     $this->komplainRepository->shouldReceive('data')->once()->andReturn(collect());
-    Cache::shouldReceive('remember')->once()->andReturnUsing(fn(...$args) => is_callable(end($args)) ? end($args)() : end($args));
+    Cache::shouldReceive('remember')->once()->andReturnUsing(fn (...$args) => is_callable(end($args)) ? end($args)() : end($args));
 
     $response = $this->getJson('/api/frontend/v1/komplain?page[number]=2&page[size]=10');
     $response->assertStatus(200);
@@ -148,7 +150,7 @@ test('store with valid data', function () {
     ];
 
     $response = $this->postJson('/api/frontend/v1/komplain', $data);
-    expect($response->getStatusCode())->toBeIn([201, 500, 422]);
+    expect($response->getStatusCode())->toBeIn([201, 422]);
 });
 
 test('store with invalid data', function () {
@@ -235,7 +237,7 @@ test('store with database gabungan enabled', function () {
 });
 
 test('store with exception', function () {
-    $this->komplainRepository->shouldReceive('create')->andThrow(new \Exception('Database error'));
+    $this->komplainRepository->shouldReceive('create')->andThrow(new Exception('Database error'));
 
     $data = [
         'nik' => '1234567890123456',
@@ -285,5 +287,5 @@ test('store with file attachments', function () {
     ];
 
     $response = $this->postJson('/api/frontend/v1/komplain', $data);
-    expect($response->getStatusCode())->toBeIn([201, 500]);
+    expect($response->getStatusCode())->toBeIn([201]);
 });

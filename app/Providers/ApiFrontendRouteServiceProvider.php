@@ -31,20 +31,21 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Broadcast;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
-class BroadcastServiceProvider extends ServiceProvider
+class ApiFrontendRouteServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Define the routes for the API Frontend.
      *
-     * @return void
+     * Route ini menggunakan middleware 'theme.api' dan prefix 'api/frontend'.
+     * Dipisahkan dari withRouting() karena memerlukan middleware khusus.
      */
-    public function boot()
+    public function map(): void
     {
-        Broadcast::routes();
-
-        require base_path('routes/channels.php');
+        Route::middleware('theme.api')
+            ->prefix('api/frontend')
+            ->group(base_path('routes/api-frontend.php'));
     }
 }

@@ -52,12 +52,12 @@ class SinergiProgramRequest extends FormRequest
      */
     public function rules()
     {
-        $gambarRule = $this->id ? 'nullable|' : 'required|';
+        $gambarRule = $this->sinergi ? 'nullable|' : 'required|';
 
         return [
             'nama' => 'required|string|max:100',
             'url' => 'required|url',
-            'gambar' => $gambarRule.'image|mimes:jpg,jpeg,png|max:2048|valid_file',
+            'gambar' => $gambarRule.'image|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file',
             'status' => 'required|integer',
         ];
     }

@@ -136,7 +136,7 @@
                         </a>
                         <ul class="treeview-menu">
                             @can('access.data.profil')
-                                <li class="treeview {{ Request::is(['data/profil*']) ? 'active' : '' }}">
+                                <li class="treeview {{ Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/data-sarana*', 'data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                                         <span class="pull-right-container">
                                             <i class="fa fa-angle-left pull-right"></i>
@@ -177,7 +177,7 @@
                                 </li>
                             @endcan
                             @can('access.data.keluarga')
-                                <li class="treeview {{ Request::is(['data/penduduk*', 'data/keluarga*', 'data/data-suplemen*']) ? 'active' : '' }}">
+                                <li class="treeview {{ Request::is(['data/penduduk*', 'data/keluarga*', 'data/data-suplemen*', 'data/laporan-penduduk*']) ? 'active' : '' }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>Kependudukan
                                         <span class="pull-right-container">
                                             <i class="fa fa-angle-left pull-right"></i>

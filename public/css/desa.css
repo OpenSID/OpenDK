@@ -14,6 +14,29 @@
     color: white;
 }
 
+.page-header-berita {
+    margin: 0;
+    padding: 0;
+}
+
+.page-header-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.page-header-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.page-header-left .select2-container,
+.page-header-left .form-control.select2 {
+    display: inline-block !important;
+    width: auto !important;
+}
+
 p {
     font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
     font-size: 14px;

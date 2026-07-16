@@ -29,7 +29,8 @@
                 processing: true,
                 serverSide: false,
                 ajax: {
-                    url: '{!! $urlApi ?? url("/api/frontend/v1") !!}/faq',
+                    url: '{!! $urlApi ?? url('/api/frontend/v1') !!}/faq',
+                    cache: false,
                     dataSrc: 'data',
                     data: function(d) {
                         // Convert DataTables parameters to API format (use safe defaults to avoid NaN)
@@ -46,8 +47,7 @@
                         };
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'attributes.question',
                         name: 'question',
                         render: function(data, type, row) {
@@ -81,8 +81,8 @@
                 ],
                 order: [
                     [0, 'asc']
-                ],                
+                ],
             });
         });
-    </script>    
+    </script>
 @endpush

@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Events\FormDokumenChanged;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,6 +40,16 @@ class FormDokumen extends Model
     use HandlesResourceDeletion;
 
     protected $table = 'das_form_dokumen';
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
+        static::updated(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
+        static::deleted(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
+    }
 
     protected $fillable = [
         'nama_dokumen',

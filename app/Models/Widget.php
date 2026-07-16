@@ -4,10 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\WidgetObserver;
 
 class Widget extends Model
 {
     use HasFactory;
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(WidgetObserver::class);
+    }
 
     public const WIDGET_SISTEM  = 1;
     public const WIDGET_STATIS  = 2;

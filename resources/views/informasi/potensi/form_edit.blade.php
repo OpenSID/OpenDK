@@ -25,9 +25,33 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Gambar</label>
     <div class="col-md-5 col-sm-6 col-xs-12">
-        <input type="file" name="file_gambar" id="file_gambar" class="form-control" accept="image/*">
+        <input type="file" name="file_gambar" id="file_gambar" class="form-control" accept=".jpg,.jpeg,.png,.bmp,.gif">
+        <x-upload-hint formats="JPG, JPEG, PNG, BMP, GIF" :limit-kb="1024" />
+        <br />
+
+        @if (isset($potensi->file_gambar) && $potensi->file_gambar)
+            @php
+                $fileName = basename($potensi->file_gambar);
+            @endphp
+            <div style="padding:8px; background:#f5f5f5; border-radius:4px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
+                <img src="{{ is_img(str_replace('//', '/', $potensi->file_gambar)) }}"
+                     style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;"
+                     class="img-thumbnail">
+                <div style="overflow: hidden;">
+                    <span class="text-muted" style="word-break: break-all;">{{ $fileName }}</span><br>
+                    <a href="{{ route('informasi.potensi.download', $potensi->id) }}" class="btn btn-xs btn-default" style="margin-top: 4px;">
+                        <i class="fa fa-download"></i> Unduh
+                    </a>
+                </div>
+            </div>
+            <small class="help-block text-muted">
+                Upload gambar baru di atas untuk menggantikan gambar yang ada.
+            </small>
+        @endif
+
+        <div class="clearfix"></div>
         <br>
-        <img src="@if (!$potensi->file_gambar == '') {{ asset($potensi->file_gambar) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img class="hide" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 

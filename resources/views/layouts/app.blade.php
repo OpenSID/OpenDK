@@ -122,9 +122,6 @@ desired effect
 
     <script src="{{ asset('js/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
-    <!-- alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <!-- sortablejs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
 
@@ -193,31 +190,23 @@ desired effect
                 $('#myModalCetakSemua').modal(event.detail.param);
             });
 
-            window.livewire.on('success', (message) => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'success',
-                    title: message,
-                    showConfirmButton: true,
-                    timer: 1500
-                })
+            let livewireInstance = typeof window.livewire !== 'undefined' ? window.livewire : Livewire;
+            livewireInstance.on('success', (message) => {
+                openAlert(message, 'Sukses', 'success');
                 $('#myModal').modal('hide');
             });
 
-            window.livewire.on('error', (message) => {
-                Swal.fire({
-                    position: 'center',
-                    icon: 'error',
-                    title: message,
-                    showConfirmButton: true,
-                    timer: 1500
-                })
-
+            livewireInstance.on('error', (message) => {
+                openAlert(message, 'Error', 'danger');
             });
         })
     </script>
 
     @livewireScripts
+
+    <x-modal-alert />
+    <x-modal-confirm />
+    <script src="{{ asset('/js/modal-helper.js') }}"></script>
 
 </body>
 

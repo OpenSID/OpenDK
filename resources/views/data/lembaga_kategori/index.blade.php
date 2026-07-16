@@ -17,14 +17,14 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.kategori-lembaga.create') ? route('data.kategori-lembaga.create') : null])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.kategori_lembaga.create') ? route('data.kategori-lembaga.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="kategori-lembaga-table" style="width: 100%">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Kategori Lembaga</th>
                                 <th>Deskripsi Lembaga</th>
                                 <th>Jumlah Lembaga</th>

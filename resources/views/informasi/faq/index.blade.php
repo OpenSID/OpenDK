@@ -21,10 +21,10 @@
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="faq-table">
+                    <table class="table table-striped table-bordered" id="faq-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Pertanyaan</th>
                                 <th style="max-width: 100px;">Status</th>
                             </tr>

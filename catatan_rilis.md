@@ -1,36 +1,32 @@
-Di rilis versi v2606.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2607.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
 
 #### FITUR
 
-1. [#1498](https://github.com/OpenSID/OpenDK/issues/1497) Halaman public setelah login mengarah ke halaman dashboard
-2. [#1539](https://github.com/OpenSID/OpenDK/issues/1539) Tambahkan tanggal terbit pada postingan artikel
-3. [#1548](https://github.com/OpenSID/OpenDK/issues/1548) Tambahkan fungsi global untuk debounce search datatable
+1. [#1624](https://github.com/OpenSID/OpenDK/issues/1624) Penyesuaian tombol agar fitur tambah prosedur lebih jelas & informatif.
+2. [#1626](https://github.com/OpenSID/OpenDK/issues/1626) Penyesuaian tombol agar fitur potensi lebih jelas & informatif.
+3. [#1645](https://github.com/OpenSID/OpenDK/issues/1645) Penyesuaian artikel desa untuk sinkronisasi API Satu Data di ubah menggunakan API.
+
 
 #### BUG
 
-1. [#1512](https://github.com/OpenSID/OpenDK/issues/1512) Perbaikan error ketika membuka artikel yang memiliki judul sangat panjang (lebih dari 191 karakter)
-2. [#1519](https://github.com/OpenSID/OpenDK/issues/1519) Perbaikan Tampilan Kolom aksi di artikel berubah ketika ada artikel dengan judul yang panjang (191 karakter)
-3. [#1520](https://github.com/OpenSID/OpenDK/issues/1520) Perbaikan Sorting tanggal terbit artikel tidak berjalan dengan semestinya
-4. [#1542](https://github.com/OpenSID/OpenDK/issues/1542) Perbaikan tampilan sumber dana di pembagunan
-5. [#1545](https://github.com/OpenSID/OpenDK/issues/1545) Perbaikan Sort, search , pagination, dan filter desa tidak berfungsi di menu data -> pembangunan
-6. [#1546](https://github.com/OpenSID/OpenDK/issues/1546) Perbaikan Sort, search , pagination, dan filter desa tidak berfungsi di menu data -> program bantuan
-7. [#1549](https://github.com/OpenSID/OpenDK/issues/1549) Perbaikan Tampilan detail penduduk di menu Data -> Kependudukan -> Penduduk -> Detail Penduduk tidak rapi
+1. [#1668](https://github.com/OpenSID/OpenDK/issues/1668) Perbaikan feed untuk database gabungan yang tidak tampil.
+2. [#1669](https://github.com/OpenSID/OpenDK/issues/1669) Perbaikan foto pengurus dan media terkait tidak tampil.
+3. [#1629](https://github.com/OpenSID/OpenDK/issues/1629) Perbaikan error pada statistik/anggaran-desa.
+4. [#1634](https://github.com/OpenSID/OpenDK/issues/1634) Perbaiki menu aktif harus terbuka dan terlihat pada sidebar.
+5. [#1622](https://github.com/OpenSID/OpenDK/issues/1622) Perbaiki tab agama pada statistik kependudukan tidak berfungsi.
+6. [#1636](https://github.com/OpenSID/OpenDK/issues/1636) Perbaiki struktur organisasi.
+
+
 
 #### TEKNIS
 
-1. [#1505](https://github.com/OpenSID/OpenDK/issues/1505) Penyesuaian Permission Access
-2. [#1514](https://github.com/OpenSID/OpenDK/issues/1514) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data->Kecamatan
-3. [#1515](https://github.com/OpenSID/OpenDK/issues/1515) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kependudukan
-4. [#1523](https://github.com/OpenSID/OpenDK/issues/1523) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Program Bantuan dan Data -> Pembangunan
-5. [#1524](https://github.com/OpenSID/OpenDK/issues/1523) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Finansial
-6. [#1521](https://github.com/OpenSID/OpenDK/issues/1521) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Kesehatan
-7. [#1522](https://github.com/OpenSID/OpenDK/issues/1522) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Data -> Pendidikan
-8. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Pengaturan
-9. [#1527](https://github.com/OpenSID/OpenDK/issues/1527) Fix WAF Blocking di datatables dengan ubah GET ke POST di Menu Admin SIKEMA -> Daftar Keluhan
-10. [#1485](https://github.com/OpenSID/OpenDK/issues/1485) Perbaikan Dependecy bot Security
-11. [#1556](https://github.com/OpenSID/OpenDK/issues/1556) Perbaikan Blade Prettier
-12. [#1550](https://github.com/OpenSID/OpenDK/issues/1550) Sederhanakan Url detail penduduk di menu Data->Kependudukan->Penduduk->Detail
-13. [#1555](https://github.com/OpenSID/OpenDK/issues/1555) Security - Remote Code Execution - Theme Upload and Hook Loading
+1. [#1619](https://github.com/OpenSID/OpenDK/issues/1619) Perbaikan teknis terkait upload tema di OpenDK.
+2. [#1630](https://github.com/OpenSID/OpenDK/issues/1630) Sesuaikan perubahan tombol aksi agar konsisten.
+3. [#1632](https://github.com/OpenSID/OpenDK/issues/1632) Penyesuaian pendaftaran kerjasama.
+4. [#1635](https://github.com/OpenSID/OpenDK/issues/1635) Penyesuaian alert agar konsisten.
+5. [#1627](https://github.com/OpenSID/OpenDK/issues/1627) Penyesuaian UI/UX di modul event.
+6. [#1628](https://github.com/OpenSID/OpenDK/issues/1628) Penyesuaian UI/UX di modul artikel.
+7. [#1650](https://github.com/OpenSID/OpenDK/issues/1650) Penyesuaian menu seeder yang tidak memiliki sumber.

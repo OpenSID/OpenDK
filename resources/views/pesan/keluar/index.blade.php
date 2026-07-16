@@ -59,7 +59,7 @@
                                             <td style="width: 5%">
                                                 <input data-id="{{ $pesan->id }}" type="checkbox" style="position: absolute; opacity: 0;">
                                             </td>
-                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama }}</a>
+                                            <td style="width: 10%" class="mailbox-name"><a href="{{ route('pesan.read', $pesan->id) }}">{{ $pesan->dataDesa->nama ?? ($pesan->additional_info['nama_desa'] ?? '-') }}</a>
                                             </td>
                                             <td style="width: 65%" class="mailbox-subject">
                                                 <div>
@@ -211,10 +211,10 @@
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;
-                    let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
-                    if (!response) return;
-                    $("#array_multiple_id_arsip").val(JSON.stringify(data))
-                    $('#form-multiple-arsip-pesan').submit()
+                    openConfirm("Apakah Anda yakin akan mengarsipkan pesan?", 'Konfirmasi', function() {
+                        $("#array_multiple_id_arsip").val(JSON.stringify(data))
+                        $('#form-multiple-arsip-pesan').submit()
+                    });
                 })
 
             })

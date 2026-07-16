@@ -17,14 +17,14 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.sinergi-program.create') ? route('informasi.sinergi-program.create') : null])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.sinergi_program.create') ? route('informasi.sinergi-program.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="sinergi-program-table">
+                    <table class="table table-striped table-bordered" id="sinergi-program-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="max-width: 250px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama</th>
                                 <th>URL</th>
                                 <th>Urutan</th>
@@ -93,4 +93,6 @@
     </script>
     @include('forms.datatable-vertical')
     @include('forms.delete-modal')
+    @include('forms.lock-modal')
+    @include('forms.unlock-modal')
 @endpush

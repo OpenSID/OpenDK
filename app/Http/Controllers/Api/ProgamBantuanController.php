@@ -35,42 +35,80 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProgramBantuanRequest;
 use App\Imports\SinkronBantuan;
 use App\Imports\SinkronPesertaBantuan;
+use App\Services\FileUploadService;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use ZipArchive;
 
 class ProgamBantuanController extends Controller
 {
+    /**
+     * Ekstensi file data yang didukung di dalam zip sinkronisasi.
+     * Daftar ini sengaja tidak dibatasi satu format saja, karena
+     * format yang dikirim OpenSID bisa berbeda antar versi/modul.
+     */
+    private const SUPPORTED_EXTENSIONS = ['csv', 'xlsx'];
+
     public function store(ProgramBantuanRequest $request)
     {
+        $fileName = null;
+
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
-            $fileUploadService = new \App\Services\FileUploadService();
-            
+            $fileUploadService = new FileUploadService;
+
             // Define allowed MIME types for zip files
-            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+            $allowedMimes = FileUploadService::getAllowedMimes('archive');
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
 
-            // Temporary path file
-            $path = storage_path("app/temp/{$name}");
+            // FIX: FileUploadService::uploadSecure() menyimpan ke disk 'public'
+            // (lihat $file->storeAs($directory, $safeFileName, 'public')),
+            // sehingga lokasi file sebenarnya ada di app/public/temp/, bukan app/temp/
+            $path = storage_path("app/public/temp/{$name}");
             $extract = storage_path('app/public/bantuan/');
 
             // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
+            $zip = new ZipArchive;
+            $openResult = $zip->open($path);
+
+            // FIX: jangan lanjut memakai object zip jika open() gagal —
+            // mencegah ValueError "Invalid or uninitialized Zip object"
+            if ($openResult !== true) {
+                throw new \RuntimeException(
+                    "Gagal membuka file zip (kode error ZipArchive: {$openResult}). Path: {$path}"
+                );
+            }
+
+            // FIX: cari nama file data yang SEBENARNYA ada di dalam zip,
+            // jangan tebak dari nama file zip. Nama file zip sudah diacak oleh
+            // FileUploadService::generateSafeFileName() dan tidak ada hubungan
+            // apa pun dengan nama file asli di dalamnya.
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $entryName = $zip->getNameIndex($i);
+                $extension = strtolower(pathinfo($entryName, PATHINFO_EXTENSION));
+
+                if (in_array($extension, self::SUPPORTED_EXTENSIONS, true)) {
+                    $fileName = $entryName;
+                    break;
+                }
+            }
+
             $zip->extractTo($extract);
             $zip->close();
 
-            (new SinkronBantuan())
-                ->queue($extract.$csvName = Str::replaceLast('zip', 'csv', $name));
+            if (! $fileName) {
+                throw new \RuntimeException('File data (csv/xlsx) tidak ditemukan di dalam zip yang diupload.');
+            }
+
+            // Proses impor data
+            (new SinkronBantuan)->queue($extract.$fileName);
         } catch (\Exception $e) {
             report($e);
 
@@ -78,12 +116,16 @@ class ProgamBantuanController extends Controller
                 'status' => 'danger',
                 'message' => $e->getMessage(),
             ]);
+        } finally {
+            // FIX: dipindah ke finally agar folder temp selalu dibersihkan,
+            // baik proses berhasil maupun gagal di tengah jalan
+            Storage::deleteDirectory('temp');
         }
 
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan'.$csvName);
+        // FIX: tambahkan separator '/' sebelum nama file
+        if ($fileName) {
+            Storage::disk('public')->delete('bantuan/'.$fileName);
+        }
 
         return response()->json([
             'message' => 'Data Bantuan Sedang di Sinkronkan',
@@ -93,32 +135,58 @@ class ProgamBantuanController extends Controller
 
     public function storePeserta(ProgramBantuanRequest $request)
     {
+        $fileName = null;
+
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
-            $fileUploadService = new \App\Services\FileUploadService();
-            
+            $fileUploadService = new FileUploadService;
+
             // Define allowed MIME types for zip files
-            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+            $allowedMimes = FileUploadService::getAllowedMimes('archive');
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
-            // Temporary path file
-            $path = storage_path("app/temp/{$name}");
+
+            // FIX: sesuaikan dengan disk 'public' yang dipakai FileUploadService
+            $path = storage_path("app/public/temp/{$name}");
             $extract = storage_path('app/public/bantuan/');
+
             // Ekstrak file
-            $zip = new ZipArchive();
-            $zip->open($path);
+            $zip = new ZipArchive;
+            $openResult = $zip->open($path);
+
+            if ($openResult !== true) {
+                throw new \RuntimeException(
+                    "Gagal membuka file zip (kode error ZipArchive: {$openResult}). Path: {$path}"
+                );
+            }
+
+            // FIX: cari nama file data yang sebenarnya di dalam zip
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $entryName = $zip->getNameIndex($i);
+                $extension = strtolower(pathinfo($entryName, PATHINFO_EXTENSION));
+
+                if (in_array($extension, self::SUPPORTED_EXTENSIONS, true)) {
+                    $fileName = $entryName;
+                    break;
+                }
+            }
+
             $zip->extractTo($extract);
             $zip->close();
-            // Proses impor excell
-            (new SinkronPesertaBantuan())
-                ->queue($extract.$csvName = Str::replaceLast('zip', 'csv', $name));
+
+            if (! $fileName) {
+                throw new \RuntimeException('File data (csv/xlsx) tidak ditemukan di dalam zip yang diupload.');
+            }
+
+            // Proses impor data
+            (new SinkronPesertaBantuan)->queue($extract.$fileName);
         } catch (\Exception $e) {
             report($e);
 
@@ -126,11 +194,13 @@ class ProgamBantuanController extends Controller
                 'status' => 'danger',
                 'message' => $e->getMessage(),
             ]);
+        } finally {
+            Storage::deleteDirectory('temp');
         }
-        // Hapus folder temp ketika sudah selesai
-        Storage::deleteDirectory('temp');
-        // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('bantuan/'.$csvName);
+
+        if ($fileName) {
+            Storage::disk('public')->delete('bantuan/'.$fileName);
+        }
 
         return response()->json([
             'status' => 'success',

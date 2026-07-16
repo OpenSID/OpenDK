@@ -74,7 +74,7 @@
                     } else { //no
                         //warning
                         $("#logo").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

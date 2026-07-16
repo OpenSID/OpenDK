@@ -141,8 +141,12 @@
         </div>
     </div>
 
+    <x-modal-alert />
+    <x-modal-confirm />
+
     <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('/js/modal-helper.js') }}"></script>
     <script>
         $(document).ready(function() {
             var expiryMinutes = {{ config('otp.expiry_minutes', 5) }};
@@ -237,8 +241,9 @@
                 if (expirySeconds <= 0) {
                     clearInterval(expiryInterval);
                     clearInterval(resendInterval);
-                    alert('Kode 2FA telah kadaluarsa. Silakan minta kode baru.');
-                    window.location.href = '{{ route('login') }}';
+                    openAlert('Kode 2FA telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function () {
+                        window.location.href = '{{ route('login') }}';
+                    });
                 }
             }, 1000);
 
@@ -256,7 +261,7 @@
                         purpose: '2fa_login'
                     },
                     success: function(response) {
-                        alert(response.message);
+                        openAlert(response.message, 'Info', 'success');
 
                         // Reset expiry timer
                         expirySeconds = expiryMinutes * 60;
@@ -282,7 +287,7 @@
                         }, 1000);
                     },
                     error: function(xhr) {
-                        alert('Gagal mengirim ulang kode 2FA');
+                        openAlert('Gagal mengirim ulang kode 2FA', 'Error', 'danger');
                         $('#resend-btn').prop('disabled', false).html(
                             '<i class="fa fa-refresh"></i> Kirim Ulang');
                     }

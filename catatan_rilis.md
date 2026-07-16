@@ -7,6 +7,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 1. [#1624](https://github.com/OpenSID/OpenDK/issues/1624) Penyesuaian tombol agar fitur tambah prosedur lebih jelas & informatif.
 2. [#1626](https://github.com/OpenSID/OpenDK/issues/1626) Penyesuaian tombol agar fitur potensi lebih jelas & informatif.
+3. [#1645](https://github.com/OpenSID/OpenDK/issues/1645) Penyesuaian artikel desa untuk sinkronisasi API Satu Data di ubah menggunakan API.
+
 
 
 #### BUG

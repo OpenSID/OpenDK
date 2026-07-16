@@ -28,7 +28,7 @@
                     <table class="table table-bordered table-hover" id="datadesa-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama</th>
                                 <th>Bulan</th>
@@ -56,7 +56,7 @@
                 serverSide: true,
                 ajax: {
                     url: `{{ $settings['api_server_database_gabungan'] ?? '' }}/api/v1/opendk/laporan-penduduk-datatable`,
-                    headers: {                        
+                    headers: {
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
                     },
                     method: 'POST',

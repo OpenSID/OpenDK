@@ -28,7 +28,7 @@
                     <table class="table table-bordered table-hover" id="datadesa-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Kode {{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama {{ config('setting.sebutan_desa') }}</th>
                                 <th>Website</th>
@@ -60,7 +60,7 @@
                             "page[size]": row.length,
                             "page[number]": (row.start / row.length) + 1,
                             "filter[search]": row.search.value,
-                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id)}},
+                            "filter[kode_kecamatan]": {{ str_replace('.', '', $profil->kecamatan_id) }},
                             "search": row.search.value,
                             "fields[config]": "id,kode_desa,nama_desa,website,path",
                             "sort": (row.order[0]?.dir === "asc" ? "" : "-") + row.columns[row.order[0]

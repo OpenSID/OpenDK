@@ -78,6 +78,7 @@ class EventController extends BackEndController
 
                 return view('forms.aksi', $data);
             })
+            ->rawColumns(['aksi'])
             ->make();
     }
 

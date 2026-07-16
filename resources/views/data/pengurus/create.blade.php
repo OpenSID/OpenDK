@@ -65,7 +65,7 @@
                     } else { //no
                         //warning
                         $("#foto").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

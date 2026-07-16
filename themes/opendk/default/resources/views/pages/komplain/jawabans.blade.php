@@ -19,7 +19,7 @@
                         <a id="btn-ubah-reply-admin" data-href="{{ route('admin-komplain.getkomentar', $jawab->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i> Ubah Jawaban</a>
 
                         {!! Html::form('DELETE', route('admin-komplain.deletekomentar', $jawab->id))->style('display:inline')->open() !!}
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Yakin akan menghapus data tersebut?')"><i class="fa fa-trash margin-r-5"></i> Hapus
+                        <button type="submit" class="btn btn-sm btn-danger" data-confirm="Yakin akan menghapus data tersebut?"><i class="fa fa-trash margin-r-5"></i> Hapus
                         </button>
                         {!! Html::form()->close() !!}
                     @endif

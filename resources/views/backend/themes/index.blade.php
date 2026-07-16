@@ -40,6 +40,7 @@
         </div>
 
         {{-- modal form unggah file .zip --}}
+        @if($showUnggahButton)
         <div class="modal fade" id="modal-upload" tabindex="-1" role="dialog" aria-labelledby="modal-upload-label">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -62,6 +63,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </section>
 @endsection
 @include('partials.asset_sweetalert')
@@ -100,6 +102,18 @@
                                 icon: 'error'
                             });
                         }
+                    },
+                    error: function(xhr) {
+                        $('#modal-upload').modal('hide');
+                        var message = 'Terjadi kesalahan saat mengunggah tema.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: message,
+                            icon: 'error'
+                        });
                     }
                 });
             });

@@ -16,8 +16,6 @@ class ThemesController extends BackEndController
     {
         parent::__construct();
         $this->themeService = $themeService;
-        // In Laravel, if parent has no constructor this is fine, if it does, 
-        // we might need parent::__construct(), but usually it's injected.
     }
 
     public function index(): View
@@ -25,7 +23,7 @@ class ThemesController extends BackEndController
         $page_title = 'Tema';
         $page_description = 'Daftar Tema';
         $themes = Themes::orderBy('active', 'desc')->get();
-        $showUnggahButton = $this->isDatabaseGabungan() ? false : true;
+        $showUnggahButton = ! $this->isDatabaseGabungan();
         
         return view('backend.themes.index', compact('page_title', 'page_description', 'themes', 'showUnggahButton'));
     }
@@ -62,7 +60,7 @@ class ThemesController extends BackEndController
             return response()->json([
                     'status' => 'error',
                     'message' => 'Unggah tema tidak diijinkan pada database gabungan',
-                ]);
+                ], 403);
         }
         try {
             $file = request()->file('file');
@@ -71,7 +69,7 @@ class ThemesController extends BackEndController
                 return response()->json([
                     'status' => 'error',
                     'message' => 'File tema tidak ditemukan',
-                ]);
+                ], 400);
             }
 
             if (!$file->isValid()) {

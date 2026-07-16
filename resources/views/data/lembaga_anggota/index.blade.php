@@ -67,7 +67,7 @@
                     <table class="table nowrap table-striped table-bordered" id="lembaga-anggota-table" style="width: 100%">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 {{-- <th>Foto</th> --}}
                                 <th>No. Anggota</th>
                                 <th>NIK</th>

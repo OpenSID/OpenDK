@@ -59,7 +59,7 @@ class AlbumController extends Controller
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.publikasi.album.edit') ? route('publikasi.album.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.publikasi.album.delete') ? route('publikasi.album.destroy', $row->id) : null;
-                        if ($row->status == 1) {
+                        if ($row->status == 0) {
                             $data['unlock_url'] = route('publikasi.album.status', $row->id);
                         } else {
                             $data['lock_url'] = route('publikasi.album.status', $row->id);

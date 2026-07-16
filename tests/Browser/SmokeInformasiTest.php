@@ -102,17 +102,18 @@ it('smoke test menu informasi', function (string $menuName, string $url, array $
     $this->page->assertMissing('.dataTables_empty');
     
     // 5. Verifikasi Aksi Datatable (Tombol Lihat, Edit, Hapus, Download) di row pertama
+    $table = '[data-testid="table-informasi"]';
     if (in_array('btn-lihat', $buttons)) {
-        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-lihat"]');
+        $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-lihat\"]') !== null", true);
     }
     if (in_array('btn-edit', $buttons)) {
-        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-edit"]');
+        $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-edit\"]') !== null", true);
     }
     if (in_array('btn-hapus', $buttons)) {
-        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-hapus"]');
+        $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-hapus\"]') !== null", true);
     }
     if (in_array('btn-download', $buttons)) {
-        $this->page->assertPresent('[data-testid="table-informasi"] tbody tr:first-child [data-testid="btn-download"]');
+        $this->page->assertScript("document.querySelector('{$table} tbody tr:first-child [data-testid=\"btn-download\"]') !== null", true);
     }
 
 })->with('informasi_menus')->group('smoke', 'smoke-informasi', 'browser');

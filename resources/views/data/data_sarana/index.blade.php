@@ -50,7 +50,7 @@
                     <table class="table table-bordered table-hover" id="datasarana-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama Sarana</th>
                                 <th>Jumlah</th>
                                 <th>Kategori</th>

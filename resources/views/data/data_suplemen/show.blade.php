@@ -50,7 +50,7 @@
                     <table class="table table-striped table-bordered" id="suplemen-terdata-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>{{ config('setting.sebutan_desa') }}</th>
                                 <th>No. KK</th>
                                 <th>NIK Penduduk</th>

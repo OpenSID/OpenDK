@@ -183,10 +183,28 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         return $this->dataTree->filter(function ($item) use ($parentId) {
             return $item['attributes']['parent_uuid'] === $parentId;
         })->map(function ($item) {
+            $children = $this->buildTree($item['attributes']['template_uuid']);
+
+            $attributes = $item['attributes'];
+
+            if (!empty($children)) {
+                $sumAnggaran = collect($children)->sum(function ($child) {
+                    return (float) $child['attributes']['anggaran'];
+                });
+                $sumRealisasi = collect($children)->sum(function ($child) {
+                    return (float) $child['attributes']['realisasi'];
+                });
+
+                $attributes['anggaran'] = (string) $sumAnggaran;
+                $attributes['realisasi'] = (string) $sumRealisasi;
+                $attributes['anggaran_local'] = 'Rp. ' . number_format($sumAnggaran, 2, ',', '.');
+                $attributes['realisasi_local'] = 'Rp. ' . number_format($sumRealisasi, 2, ',', '.');
+            }
+
             return [
                 'id' => $item['attributes']['template_uuid'],
-                'attributes' => $item['attributes'],
-                'children' => $this->buildTree($item['attributes']['template_uuid']),
+                'attributes' => $attributes,
+                'children' => $children,
             ];
         })->values()->all();
     }

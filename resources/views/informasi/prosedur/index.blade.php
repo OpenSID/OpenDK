@@ -24,7 +24,7 @@
                     <table class="table table-striped table-bordered" id="prosedur-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="width: 40px;">No</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Judul Prosedur </th>
                                 <th>Jenis File</th>
                                 <th>Ukuran File</th>

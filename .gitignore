@@ -30,7 +30,9 @@ public/error_log
 /.vscode
 
 # Themes
-# /themes/*
+/themes/*
+!/themes/opendk/
+/themes/opendk/*
 !/themes/opendk/default/
 /storage/komplain
 
@@ -57,3 +59,4 @@ mcp.json
 
 .env.testing
 nul
+graphify-out

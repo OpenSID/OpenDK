@@ -65,6 +65,7 @@ class PotensiController extends Controller
 
                 return view('forms.aksi', $data);
             })
+            ->rawColumns(['aksi'])
             ->make();
     }
 

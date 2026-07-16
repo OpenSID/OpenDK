@@ -36,7 +36,7 @@
                     <table class="table table-striped table-bordered" id="datatable-artikel-kategori" style="width: 100%" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama Kategori</th>
                                 <th>Slug</th>
                                 <th>Status</th>

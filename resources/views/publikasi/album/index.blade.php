@@ -26,7 +26,7 @@
                     <table class="table table-striped table-bordered" id="album-table" data-testid="table-publikasi">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama Album</th>
                                 <th style="max-width: 100px;">Aktif</th>
                                 <th>Dimuat pada</th>

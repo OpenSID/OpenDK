@@ -31,7 +31,7 @@
                     <table class="table table-bordered table-hover" id="datadesa-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Foto</th>
                                 <th>NIK</th>
                                 <th>Nama</th>

@@ -27,7 +27,6 @@
                                 <tr>
                                     <th style="max-width: 80px;">Aksi</th>
                                     <th>Potensi</th>
-                                    <th class="text-center" style="max-width: 100px;">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -54,23 +53,16 @@
                 ajax: "{!! route('informasi.potensi.getdata') !!}",
                 columns: [
                     {
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex',
-                        class: 'text-center',
-                        searchable: false,
-                        orderable: false
-                    },
-                    {
-                        data: 'nama_potensi',
-                        name: 'nama_potensi'
-                    },
-                    {
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',
                         searchable: false,
                         orderable: false
                     },
+                    {
+                        data: 'nama_potensi',
+                        name: 'nama_potensi'
+                    }
                 ],
                 order: [
                     [1, 'asc']

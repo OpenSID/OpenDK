@@ -58,13 +58,14 @@ class PotensiController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($row) {
                 $data['show_url'] = auth()->user()->can('access.informasi.potensi.view') ? route('informasi.potensi.show', $row->id) : null;
+                $data['download_url'] = auth()->user()->can('access.informasi.potensi.view') ? route('informasi.potensi.download', $row->id) : null;
 
                 if (!auth()->guest()) {
                     $data['edit_url'] = auth()->user()->can('access.informasi.potensi.edit') ? route('informasi.potensi.edit', $row->id) : null;
                     $data['delete_url'] = auth()->user()->can('access.informasi.potensi.delete') ? route('informasi.potensi.destroy', $row->id) : null;
                 }
 
-                return view('forms.aksi-grup', $data);
+                return view('forms.aksi', $data);
             })
             ->rawColumns(['aksi'])
             ->make();
@@ -169,5 +170,38 @@ class PotensiController extends Controller
         }
 
         return redirect()->route('informasi.potensi.index')->with('success', 'Potensi Berhasil dihapus!');
+    }
+
+    public function download(Potensi $potensi)
+    {
+        try {
+            $path = $potensi->file_gambar;
+            if (empty($path)) {
+                return back()->with('error', 'Dokumen potensi tidak ditemukan');
+            }
+
+            if (file_exists(public_path($path))) {
+                return response()->download(public_path($path));
+            }
+
+            if (file_exists(base_path('public/' . $path))) {
+                return response()->download(base_path('public/' . $path));
+            }
+
+            $storagePath = storage_path('app/public/' . str_replace('storage/', '', $path));
+            if (file_exists($storagePath)) {
+                return response()->download($storagePath);
+            }
+            
+            return back()->with('error', 'Dokumen potensi tidak ditemukan');
+        } catch (\Exception $e) {
+            Log::error('Potensi download failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'potensi_id' => $potensi->id,
+            ]);
+
+            return back()->with('error', 'Dokumen potensi gagal diunduh');
+        }
     }
 }

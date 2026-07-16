@@ -21,3 +21,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 1. [#1619](https://github.com/OpenSID/OpenDK/issues/1619) Perbaikan teknis terkait upload tema di OpenDK.
 2. [#1630](https://github.com/OpenSID/OpenDK/issues/1630) Sesuaikan perubahan tombol aksi agar konsisten.
 3. [#1632](https://github.com/OpenSID/OpenDK/issues/1632) Penyesuaian pendaftaran kerjasama.
+4. [#1635](https://github.com/OpenSID/OpenDK/issues/1635) Penyesuaian alert agar konsisten.

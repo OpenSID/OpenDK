@@ -71,7 +71,7 @@
                         <tr>
                             <td></td>
                             <td></td>
-                            <td><?= 'a/n ' . ($surat->penduduk->nama ?? $surat->nama_penduduk) ?></td>
+                            <td><?= 'a/n ' . ($surat->penduduk->nama ?? $surat->nama_penduduk ?? '-') ?></td>
                         </tr>
                         <tr>
                             <td colspan="3"><u><b>Ditandatangani oleh :</b></u></td>

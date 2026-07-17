@@ -295,6 +295,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
             });
         });
+
+        // Verifikasi surat (publik - tidak perlu login)
+        Route::namespace('\App\Http\Controllers\Surat')->group(function () {
+            Route::get('/surat/verifikasi', ['as' => 'surat.verifikasi', 'uses' => 'SuratController@verifikasi']);
+            Route::post('/surat/verifikasi', ['as' => 'surat.verifikasi.store', 'uses' => 'SuratController@verifikasiStore']);
+        });
     });
 
     /**
@@ -872,10 +878,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('/arsip/getdata', ['as' => 'surat.arsip.getdata', 'uses' => 'SuratController@getData']);
                 Route::get('/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
                 Route::get('/arsip/download/{surat}', ['as' => 'surat.arsip.download', 'uses' => 'SuratController@download']);
-
-                // verifikasi
-                Route::get('/verifikasi', ['as' => 'surat.verifikasi', 'uses' => 'SuratController@verifikasi']);
-                Route::post('/verifikasi', ['as' => 'surat.verifikasi.store', 'uses' => 'SuratController@verifikasiStore']);
 
                 // pengaturan
                 Route::get('/pengaturan', ['as' => 'surat.pengaturan', 'uses' => 'SuratController@pengaturan']);

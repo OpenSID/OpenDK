@@ -38,7 +38,7 @@
             <div class="box-footer">
                 <div class="form-group">
                     <div class="text-center">
-                        @if ($surat->log_verifikasi == 4)
+                        @if ($surat->log_verifikasi == App\Enums\LogVerifikasiSurat::ProsesTTE)
                             <button id="tandatangan-qr" class="btn btn-primary">Tandatangani dengan QR Code</button>
                             @if ($settings['tte'] && $settings['tte_api'] !== 'demo')
                                 <button id="passphrase" class="btn btn-success">Tandatangani (TTE)</button>

@@ -327,7 +327,7 @@ class PermohonanController extends Controller
                 ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
                 ->build();
 
-            $qrTempPath = public_path('storage/surat/qr_temp_' . $surat->id . '.png');
+            $qrTempPath = public_path('storage/surat/qr_temp_' . uniqid() . '_' . $surat->id . '.png');
             $qrCode->saveToFile($qrTempPath);
 
             $pdf = new Fpdi();
@@ -348,17 +348,25 @@ class PermohonanController extends Controller
 
             $pdf->Output('F', $signed_path);
 
-            @unlink($qrTempPath);
+            if (file_exists($qrTempPath)) {
+                unlink($qrTempPath);
+            }
 
             $fileHash = hash_file('sha256', $signed_path);
 
-            @unlink($file_path);
-            rename($signed_path, $file_path);
+            if (!rename($signed_path, $file_path)) {
+                throw new \RuntimeException('Gagal memindahkan file signed ke lokasi asal.');
+            }
 
             $surat->update([
                 'status' => StatusSurat::Arsip,
                 'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
                 'file_hash' => $fileHash,
+            ]);
+
+            LogTte::create([
+                'pesan_error' => 'success',
+                'jenis' => 'QRCode',
             ]);
 
             DB::commit();

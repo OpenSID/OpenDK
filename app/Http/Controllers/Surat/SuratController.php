@@ -82,7 +82,7 @@ class SuratController extends Controller
             })
             ->addColumn('hash', function ($row) {
                 if ($row->file_hash) {
-                    return '<code style="font-size: 10px;">' . substr($row->file_hash, 0, 16) . '...</code>';
+                    return '<code style="font-size: 10px;">' . e(substr($row->file_hash, 0, 16)) . '...</code>';
                 }
                 return '-';
             })

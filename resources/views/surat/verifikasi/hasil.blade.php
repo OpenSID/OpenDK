@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <th>Atas Nama</th>
-                        <td>{{ $surat->penduduk->nama ?? $surat->nama_penduduk }}</td>
+                        <td>{{ $surat->penduduk->nama ?? $surat->nama_penduduk ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th>Ditandatangani Oleh</th>

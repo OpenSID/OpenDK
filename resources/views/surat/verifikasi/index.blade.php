@@ -25,7 +25,7 @@
                 <div class="callout callout-info">
                     <h4><i class="icon fa fa-info"></i> Info!</h4>
                     Unggah file surat (PDF) untuk memverifikasi keasliannya. Sistem akan memeriksa apakah file ini benar-benar
-                    diterbitkan oleh Kecamatan {{ $profil->nama_kecamatan ?? '' }}.
+                    diterbitkan oleh Kecamatan {{ optional($profil)->nama_kecamatan ?? '' }}.
                 </div>
                 <form method="POST" action="{{ route('surat.verifikasi.store') }}" enctype="multipart/form-data">
                     @csrf

@@ -129,7 +129,7 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
             {!! html()->select('atasan', $atasan)->class('form-control')->placeholder('Pilih Atasan')->value(old('atasan', isset($pengurus) && !empty($pengurus) ? $pengurus->atasan : '')) !!}
         </div>
-    </div>    
+    </div>
 
     <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_warna">Bagan - Warna</label>
@@ -152,7 +152,7 @@
 @push('scripts')
     <script>
         //color picker with addon
-        $('.my-colorpicker2').colorpicker();        
+        $('.my-colorpicker2').colorpicker();
     </script>
 @endpush
 

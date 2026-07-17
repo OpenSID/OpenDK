@@ -46,8 +46,7 @@
                 processing: true,
                 serverSide: true,
                 ajax: "{!! route('informasi.prosedur.getdata') !!}",
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',

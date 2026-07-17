@@ -35,7 +35,7 @@
                     <table class="table table-striped table-bordered" id="artikel-table" data-testid="table-informasi">
                         <thead>
                             <tr>
-                                <th class="text-center text-nowrap" style="max-width: 150px;">Aksi</th>
+                                <th class="text-center text-nowrap" style="max-width: 80px;">Aksi</th>
                                 <th>Judul</th>
                                 <th>Kategori</th>
                                 <th style="max-width: 100px;">Status</th>
@@ -87,10 +87,18 @@
                     {
                         data: 'judul',
                         name: 'judul',
+                        class: 'artikel-title-cell',
+                        render: function(data, type, row) {
+                            var title = data;
+                            if (title && title.length > 50) {
+                                title = title.substr(0, 50) + '...';
+                            }
+                            return '<span title="' + (data ? data.replace(/"/g, '&quot;') : '') + '">' + title + '</span>';
+                        }
                     },
                     {
                         data: 'kategori',
-                        name: 'kategori',
+                        name: 'kategori.nama_kategori'
                     },
                     {
                         data: 'status',
@@ -103,8 +111,8 @@
                         data: 'tanggal_terbit',
                         name: 'tanggal_terbit',
                         class: 'text-center',
-                        searchable: false,
-                    },
+                        searchable: false
+                    }
                 ],
                 order: [
                     [4, 'desc']

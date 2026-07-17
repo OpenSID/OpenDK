@@ -46,7 +46,7 @@
                             </button>
                             {!! html()->form('POST', route('pesan.arsip.multiple'))->class(
                                     'form-group
-                                                                                                                                                                                                                                                                                                                inline',
+                                                                                                                                                                                                                                                                                                                                            inline',
                                 )->id('form-multiple-arsip-pesan')->open() !!}
                             <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan</button>
                             {!! html()->hidden('array_id')->id('array_multiple_id_arsip') !!}
@@ -54,7 +54,7 @@
 
                             {!! html()->form('POST', route('pesan.read.multiple'))->class(
                                     'form-group
-                                                                                                                                                                                                                                                                                                                inline',
+                                                                                                                                                                                                                                                                                                                                            inline',
                                 )->id('form-multiple-read-pesan')->open() !!}
                             {!! html()->hidden('array_id')->id('array_multiple_id') !!}
                             <button id="read-multiple-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-envelope-open"></i> Tandai Sudah dibaca</button>
@@ -233,10 +233,10 @@
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;
-                    let response = window.confirm("Apakah Anda yakin akan menandai pesan?")
-                    if (!response) return;
-                    $("#array_multiple_id").val(JSON.stringify(data))
-                    $('#form-multiple-read-pesan').submit()
+                    openConfirm("Apakah Anda yakin akan menandai pesan?", 'Konfirmasi', function() {
+                        $("#array_multiple_id").val(JSON.stringify(data))
+                        $('#form-multiple-read-pesan').submit()
+                    });
                 })
 
                 $("#arsip-action").click(function(e) {
@@ -247,10 +247,10 @@
                             return $(el).data('id');
                         })
                     if (data.length <= 0) return;
-                    let response = window.confirm("Apakah Anda yakin akan mengarsipkan pesan?")
-                    if (!response) return;
-                    $("#array_multiple_id_arsip").val(JSON.stringify(data))
-                    $('#form-multiple-arsip-pesan').submit()
+                    openConfirm("Apakah Anda yakin akan mengarsipkan pesan?", 'Konfirmasi', function() {
+                        $("#array_multiple_id_arsip").val(JSON.stringify(data))
+                        $('#form-multiple-arsip-pesan').submit()
+                    });
                 })
 
             });

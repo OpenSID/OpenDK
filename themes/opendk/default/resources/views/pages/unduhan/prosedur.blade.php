@@ -148,7 +148,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Gagal memuat detail potensi. Silakan coba lagi.');
+                    openAlert('Gagal memuat detail potensi. Silakan coba lagi.', 'Error', 'danger');
                 }
             });
         }

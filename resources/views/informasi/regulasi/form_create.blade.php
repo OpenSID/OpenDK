@@ -73,7 +73,7 @@
                     } else { //no
                         //warning
                         $("#file_regulasi").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

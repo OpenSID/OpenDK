@@ -49,8 +49,7 @@
                 processing: true,
                 serverSide: false,
                 ajax: "{!! route('informasi.event.getdata') !!}",
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',

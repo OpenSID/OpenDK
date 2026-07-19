@@ -20,7 +20,7 @@
 
                     {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style(
                             'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
-                                                                                                                                                                                                                            padding:10px;',
+                                                                                                                                                                                                                                                padding:10px;',
                         )->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
                     @if ($errors->has('isi'))
                         <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
@@ -38,9 +38,7 @@
 
                     @if (isset($artikel) && $artikel->gambar)
                         <div style="padding:8px; background:#f5f5f5; border-radius:4px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
-                            <img src="{{ $artikel->gambar }}"
-                                 style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;"
-                                 class="img-thumbnail">
+                            <img src="{{ $artikel->gambar }}" style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;" class="img-thumbnail">
                             <div style="overflow: hidden;">
                                 <span class="text-muted" style="word-break: break-all;">{{ basename($artikel->gambar) }}</span>
                             </div>

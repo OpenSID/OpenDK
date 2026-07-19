@@ -51,8 +51,7 @@
                 processing: true,
                 serverSide: false,
                 ajax: "{!! route('informasi.potensi.getdata') !!}",
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',

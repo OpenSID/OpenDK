@@ -24,7 +24,9 @@
                     </button>
                 </form>
                 {{-- tampilkan modal upload --}}
+                @if($showUnggahButton)
                 <a href="javascript:void(0)" class="btn btn-social bg-blue btn-sm" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Unggah</a>
+                @endif
                 <a href="{{ route('setting.themes.rescan') }}" class="btn btn-social bg-orange btn-sm"><i class="fa fa-recycle"></i> Pindai</a>
                 {{-- <a href="{{ site_url() }}" class="btn btn-social btn-info btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" target="_blank"><i class="fa fa-eye"></i> Lihat</a> --}}
             </div>
@@ -38,6 +40,7 @@
         </div>
 
         {{-- modal form unggah file .zip --}}
+        @if($showUnggahButton)
         <div class="modal fade" id="modal-upload" tabindex="-1" role="dialog" aria-labelledby="modal-upload-label">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -60,6 +63,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </section>
 @endsection
 @include('partials.asset_sweetalert')
@@ -98,6 +102,18 @@
                                 icon: 'error'
                             });
                         }
+                    },
+                    error: function(xhr) {
+                        $('#modal-upload').modal('hide');
+                        var message = 'Terjadi kesalahan saat mengunggah tema.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Gagal',
+                            text: message,
+                            icon: 'error'
+                        });
                     }
                 });
             });

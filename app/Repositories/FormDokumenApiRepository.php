@@ -17,6 +17,7 @@ class FormDokumenApiRepository extends BaseApiRepository
             'nama_dokumen',
             'description',
             'jenis_dokumen',
+            AllowedFilter::exact('id'),
             AllowedFilter::exact('jenis_dokumen_id'),
             AllowedFilter::exact('is_published'),
             AllowedFilter::exact('published_at'),

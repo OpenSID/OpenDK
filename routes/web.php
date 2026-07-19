@@ -267,7 +267,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::group(['prefix' => 'regulasi'], function () {
                     Route::permanentRedirect('/', '/');
                     Route::get('/', 'DownloadController@indexRegulasi')->name('unduhan.regulasi');
-                    Route::get('{nama_regulasi}', 'DownloadController@showRegulasi')->name('unduhan.regulasi.show');
                     Route::get('{file}/download', 'DownloadController@downloadRegulasi')->name('unduhan.regulasi.download');
                 });
 

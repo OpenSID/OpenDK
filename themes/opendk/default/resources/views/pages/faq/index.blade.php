@@ -12,7 +12,6 @@
                             <tr>
                                 <th>Pertanyaan</th>
                                 <th>Jawaban</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                     </table>
@@ -29,7 +28,7 @@
                 processing: true,
                 serverSide: false,
                 ajax: {
-                    url: '{!! $urlApi ?? url('/api/frontend/v1') !!}/faq',
+                    url: '{!! $urlApi !!}/faq',
                     cache: false,
                     dataSrc: 'data',
                     data: function(d) {
@@ -66,22 +65,14 @@
                             }
                             return data || '';
                         }
-                    },
-                    {
-                        data: 'attributes.status',
-                        name: 'status',
-                        render: function(data, type, row) {
-                            if (data == 1) {
-                                return '<span class="label label-success">Published</span>';
-                            } else {
-                                return '<span class="label label-warning">Draft</span>';
-                            }
-                        }
                     }
                 ],
                 order: [
                     [0, 'asc']
                 ],
+                language: {
+                    url: '{{ asset('plugins/datatables/id.json') }}'
+                }
             });
         });
     </script>

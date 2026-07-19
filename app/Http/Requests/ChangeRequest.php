@@ -31,6 +31,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NotInPasswordHistory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ChangeRequest extends FormRequest
@@ -58,7 +59,8 @@ class ChangeRequest extends FormRequest
                 'min:8',
                 'max:32',
                 'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                new NotInPasswordHistory(),
             ],
         ];
     }

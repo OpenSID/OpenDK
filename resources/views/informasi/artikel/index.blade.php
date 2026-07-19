@@ -77,8 +77,7 @@
                         d.id_kategori = $('#filter-kategori').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'aksi',
                         name: 'aksi',
                         class: 'text-center text-nowrap',

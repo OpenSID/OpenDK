@@ -52,7 +52,7 @@ class DownloadController extends FrontEndController
 
     public function downloadProsedur($file)
     {
-        $getFile = Prosedur::where('judul_prosedur', str_replace('-', ' ', $file))->firstOrFail();
+        $getFile = Prosedur::findOrFail($file);
 
         return response()->download($getFile->file_prosedur);
     }

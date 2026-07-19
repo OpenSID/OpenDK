@@ -21,7 +21,7 @@
                         <!-- form start -->
                         {!! html()->form('POST', route('informasi.prosedur.store'))->acceptsFiles()->id('form-prosedur')->class(
                                 'form-horizontal
-                                                                                                                                                                                                                    form-label-left',
+                                                                                                                                                                                                                                            form-label-left',
                             )->open() !!}
 
                         @if (count($errors) > 0)
@@ -70,7 +70,7 @@
                                 $('#showgambar').removeClass('hide');
                                 $('#showpdf').addClass('hide');
                             } else {
-                                $('#showpdf').attr('data', e.target.result + '#toolbar=1');
+                                $('#showpdf').attr('src', e.target.result + '#toolbar=1');
                                 $('#showpdf').removeClass('hide');
                                 $('#showgambar').addClass('hide');
                             }
@@ -81,7 +81,7 @@
                     } else { //no
                         //warning
                         $("#file_prosedur").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

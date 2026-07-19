@@ -1,3 +1,4 @@
+/* ── Highcharts styles (for dashboard & counter) ── */
 .highcharts-figure,
 .highcharts-data-table table {
     min-width: 360px;
@@ -41,35 +42,153 @@
     background: #f1f7ff;
 }
 
-#container h4 {
-    text-transform: none;
-    font-size: 14px;
-    font-weight: normal;
-}
-
-#container p {
-    font-size: 13px;
-    line-height: 16px;
-}
-
-@media screen and (max-width: 600px) {
-    #container h4 {
-        font-size: 2.3vw;
-        line-height: 3vw;
-    }
-
-    #container p {
-        font-size: 2.3vw;
-        line-height: 3vw;
-    }
-}
-
 .highcharts-description {
     margin: 0.3rem 10px;
 }
 
-
-/* image */
 .highcharts-data-label img {
-	border-radius: 6px !important;
+    border-radius: 6px !important;
+}
+
+/* ── OrgChart custom styles ── */
+#container {
+    min-height: 500px;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.orgchart {
+    background: #fff;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.orgchart > .nodes > .hierarchy {
+    text-align: center;
+}
+
+.orgchart .node {
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    transition: box-shadow 0.2s ease;
+    width: 180px;
+    border: none !important;
+}
+
+.orgchart .node:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.orgchart .node .title {
+    display: none;
+}
+
+.orgchart .node .content {
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    border: none;
+    background: #fff;
+    line-height: 1.3;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.bagan-foto {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 6px;
+    border: 3px solid #fff;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.bagan-jabatan {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.bagan-nama {
+    font-size: 11px;
+    color: #777;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.orgchart .lines .downLine {
+    background-color: #c0c0c0;
+}
+
+.orgchart .lines .topLine {
+    border-top-color: #c0c0c0;
+}
+
+.orgchart .lines .leftLine {
+    border-right-color: #c0c0c0;
+}
+
+.orgchart .lines .rightLine {
+    border-left-color: #c0c0c0;
+}
+
+.orgchart .verticalBorder {
+    border-left-color: #c0c0c0;
+}
+
+/* responsive */
+@media screen and (max-width: 600px) {
+    .orgchart .node {
+        width: 140px;
+    }
+
+    .bagan-foto {
+        width: 56px;
+        height: 56px;
+    }
+
+    .bagan-jabatan {
+        font-size: 11px;
+    }
+
+    .bagan-nama {
+        font-size: 10px;
+    }
+}
+
+/* Hide invisible root wrapper node (OrgChart v3 renders it because
+   Object.keys() > 2 after attachRel/buildHierarchy add properties) */
+.orgchart .node:not([id]) {
+    display: none !important;
+}
+
+.orgchart .root-wrapper {
+    display: none !important;
+}
+
+.orgchart .root-wrapper > .node {
+    display: none !important;
+}
+
+.orgchart .root-wrapper::before {
+    display: none !important;
 }

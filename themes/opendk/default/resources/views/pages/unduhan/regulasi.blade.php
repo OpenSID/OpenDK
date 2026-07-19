@@ -93,7 +93,8 @@
                 success: function(response) {
                     if (response.data && response.data.length > 0) {
                         var regulasi = response.data[0].attributes;
-                        let objFile = regulasi.mime_type != 'pdf' ? `<img id="fileUnduhan" src="${regulasi.file_regulasi_path}" width="100%">` : `<object data="${regulasi.file_regulasi_path}" type="application/pdf" width="100%" height="500" class="" id="showpdf"> </object>`;
+                        let isPdf = (regulasi.mime_type === 'application/pdf' || (regulasi.file_regulasi_path && regulasi.file_regulasi_path.toLowerCase().endsWith('.pdf')));
+                        let objFile = !isPdf ? `<img id="fileUnduhan" src="${regulasi.file_regulasi_path}" width="100%">` : `<iframe src="${regulasi.file_regulasi_path}" width="100%" height="500" class="" id="showpdf" frameborder="0"></iframe>`;
                         // Create modal content
                         var modalHtml = '<div class="modal fade" id="regulasiDetailModal" tabindex="-1" role="dialog">' +
                             '<div class="modal-dialog modal-lg" role="document">' +
@@ -104,8 +105,8 @@
                             '</div>' +
                             '<div class="modal-body">' +
                             '<div class="row">' +
-                            '<div class="col-md-12">' +
-                            objFile '</div>' +
+                            '<div class="col-md-12 text-center">' +
+                            objFile + '</div>' +
                             '</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
@@ -125,7 +126,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Gagal memuat detail regulasi. Silakan coba lagi.');
+                    openAlert('Gagal memuat detail regulasi. Silakan coba lagi.', 'Error', 'danger');
                 }
             });
         }

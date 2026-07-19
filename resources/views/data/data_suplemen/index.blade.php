@@ -30,7 +30,7 @@
                     <table class="table table-striped table-bordered" id="suplemen-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama Data</th>
                                 <th>Jumlah Terdata</th>
                                 <th>Sasaran</th>

@@ -76,7 +76,7 @@ class FaqController extends Controller
                         return '<span class="label label-success">Aktif</span>';
                     }
                 })
-                ->rawColumns(['status'])
+                ->rawColumns(['status', 'aksi'])
                 ->make(true);
         }
     }

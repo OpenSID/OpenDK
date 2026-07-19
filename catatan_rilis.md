@@ -9,6 +9,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### BUG
 
+1. [#1652](https://github.com/OpenSID/OpenDK/issues/1652) Perbaiki fungsi unduh prosedur.
 
 #### TEKNIS
 

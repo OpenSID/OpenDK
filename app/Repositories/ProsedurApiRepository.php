@@ -29,17 +29,35 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Repositories;
 
-use App\Http\Controllers\FrontEndController;
+use App\Models\Prosedur;
+use Spatie\QueryBuilder\AllowedFilter;
 
-class WebFaqController extends FrontEndController
+class ProsedurApiRepository extends BaseApiRepository
 {
-    public function index()
+    /**
+     * Constructor
+     */
+    public function __construct(Prosedur $model)
     {
-        $page_title = 'Pertanyaan Yang Sering Diajukan';
-        $urlApi = url('/api/frontend/v1');
+        parent::__construct($model);
+        $this->allowedFilters = [
+            'judul_prosedur',
+            AllowedFilter::exact('id'),
+        ];
+        $this->allowedSorts = [
+            'id',
+            'judul_prosedur',
+            'created_at',
+            'updated_at'
+        ];
+        $this->allowedIncludes = [];
+        $this->defaultSort = '-created_at';
+    }
 
-        return view('pages.faq.index', compact('page_title', 'urlApi'));
+    public function data()
+    {
+        return $this->getFilteredApi()->jsonPaginate();
     }
 }

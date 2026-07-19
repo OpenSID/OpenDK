@@ -29,17 +29,24 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Transformers;
 
-use App\Http\Controllers\FrontEndController;
+use App\Models\Prosedur;
+use League\Fractal\TransformerAbstract;
 
-class WebFaqController extends FrontEndController
+class ProsedurTransformer extends TransformerAbstract
 {
-    public function index()
+    /**
+     * Transform object data
+     *
+     * @param Prosedur $prosedur
+     * @return array
+     */
+    public function transform(Prosedur $prosedur): array
     {
-        $page_title = 'Pertanyaan Yang Sering Diajukan';
-        $urlApi = url('/api/frontend/v1');
-
-        return view('pages.faq.index', compact('page_title', 'urlApi'));
+        $prosedur->file_prosedur_path = asset($prosedur->file_prosedur);
+        // Menggunakan ID untuk route parameter agar konsisten dan tidak terkendala spasi/dash
+        $prosedur->path_download = route('unduhan.prosedur.download', ['file' => $prosedur->id]);
+        return $prosedur->toArray();
     }
 }

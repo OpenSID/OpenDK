@@ -59,4 +59,7 @@ mcp.json
 
 .env.testing
 nul
+
+# Agent
+/.qwen
 graphify-out

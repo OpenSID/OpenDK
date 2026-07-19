@@ -29,17 +29,36 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Http\Controllers\FrontEnd;
+namespace App\Http\Controllers\Api\Frontend;
 
-use App\Http\Controllers\FrontEndController;
+use App\Repositories\ProsedurApiRepository;
+use App\Services\CacheService;
+use App\Transformers\ProsedurTransformer;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Spatie\Fractal\Fractal;
 
-class WebFaqController extends FrontEndController
+class ProsedurController extends BaseController
 {
-    public function index()
-    {
-        $page_title = 'Pertanyaan Yang Sering Diajukan';
-        $urlApi = url('/api/frontend/v1');
+    protected ProsedurApiRepository $prosedurApiRepository;
+    protected CacheService $cacheService;
 
-        return view('pages.faq.index', compact('page_title', 'urlApi'));
+    public function __construct(
+        ProsedurApiRepository $prosedurApiRepository,
+        CacheService $cacheService
+    ) {
+        $this->prosedurApiRepository = $prosedurApiRepository;
+        $this->cacheService = $cacheService;
+        $this->prefix = config('theme-api.prosedur.cache_prefix', 'prosedur:api');
+    }
+
+    public function index(Request $request): Fractal|JsonResponse
+    {
+        $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
+        $cacheKey = $this->getCacheKey('index', $params);
+
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+            return $this->fractal($this->prosedurApiRepository->data(), new ProsedurTransformer, 'prosedur');
+        }, $this->prefix, 'prosedur');
     }
 }

@@ -1,32 +1,20 @@
-Di rilis versi v2607.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2607.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
 
 #### FITUR
 
-1. [#1624](https://github.com/OpenSID/OpenDK/issues/1624) Penyesuaian tombol agar fitur tambah prosedur lebih jelas & informatif.
-2. [#1626](https://github.com/OpenSID/OpenDK/issues/1626) Penyesuaian tombol agar fitur potensi lebih jelas & informatif.
-3. [#1645](https://github.com/OpenSID/OpenDK/issues/1645) Penyesuaian artikel desa untuk sinkronisasi API Satu Data di ubah menggunakan API.
-
+1. [#1616](https://github.com/OpenSID/OpenDK/issues/1616) Penambahan fitur backup dan restore asset storage.
+2. [#1648](https://github.com/OpenSID/OpenDK/issues/1648) Penambahan informasi yang lebih lengkap pada details pembangunan.
 
 #### BUG
 
-1. [#1668](https://github.com/OpenSID/OpenDK/issues/1668) Perbaikan feed untuk database gabungan yang tidak tampil.
-2. [#1669](https://github.com/OpenSID/OpenDK/issues/1669) Perbaikan foto pengurus dan media terkait tidak tampil.
-3. [#1629](https://github.com/OpenSID/OpenDK/issues/1629) Perbaikan error pada statistik/anggaran-desa.
-4. [#1634](https://github.com/OpenSID/OpenDK/issues/1634) Perbaiki menu aktif harus terbuka dan terlihat pada sidebar.
-5. [#1622](https://github.com/OpenSID/OpenDK/issues/1622) Perbaiki tab agama pada statistik kependudukan tidak berfungsi.
-6. [#1636](https://github.com/OpenSID/OpenDK/issues/1636) Perbaiki struktur organisasi.
-
-
+1. [#1652](https://github.com/OpenSID/OpenDK/issues/1652) Perbaiki fungsi unduh prosedur.
+2. [#1653](https://github.com/OpenSID/OpenDK/issues/1653) Perbaiki fungsi halaman public regulasi tidak ditampilkan dengan benar.
+3. [#1654](https://github.com/OpenSID/OpenDK/issues/1654) Perbaiki fungsi dokumen saat ini tidak di tampilkan dengan benar.
+6. [#1647](https://github.com/OpenSID/OpenDK/issues/1647) Perbaiki fungsi lihat penduduk details agar hanya menapilkan tanpa field.
+7. [#1655](https://github.com/OpenSID/OpenDK/issues/1655) Perbaiki fungsi Faq yang tampil pada halaman publik.
 
 #### TEKNIS
 
-1. [#1619](https://github.com/OpenSID/OpenDK/issues/1619) Perbaikan teknis terkait upload tema di OpenDK.
-2. [#1630](https://github.com/OpenSID/OpenDK/issues/1630) Sesuaikan perubahan tombol aksi agar konsisten.
-3. [#1632](https://github.com/OpenSID/OpenDK/issues/1632) Penyesuaian pendaftaran kerjasama.
-4. [#1635](https://github.com/OpenSID/OpenDK/issues/1635) Penyesuaian alert agar konsisten.
-5. [#1627](https://github.com/OpenSID/OpenDK/issues/1627) Penyesuaian UI/UX di modul event.
-6. [#1628](https://github.com/OpenSID/OpenDK/issues/1628) Penyesuaian UI/UX di modul artikel.
-7. [#1650](https://github.com/OpenSID/OpenDK/issues/1650) Penyesuaian menu seeder yang tidak memiliki sumber.

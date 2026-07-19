@@ -2,10 +2,18 @@
 @section('content_pengaturan_database')
     <form id="restoreDatabaseForm" enctype="multipart/form-data">
         <div class="form-group">
-            <label for="backupFile">File input</label>
-            <input type="file" id="backupFile" class="form-control" name="backupFile" accept=".sql" required>
-            <p class="help-block">Unggah file database (.sql)</p>
-            <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit">
+            <label for="backupFile">File Backup</label>
+            <input type="file" id="backupFile" class="form-control" name="backupFile" accept=".zip" required>
+            <p class="help-block">Unggah file backup (.zip) yang dihasilkan oleh sistem backup</p>
+            <div class="callout callout-warning" style="margin-top: 10px;">
+                <p><strong>Informasi:</strong></p>
+                <ul style="margin-bottom: 0;">
+                    <li>Hanya file <strong>.zip</strong> dari sistem backup yang diterima</li>
+                    <li>File <strong>.zip</strong> memulihkan <strong>database + file asset</strong> (foto, dokumen, dll) sekaligus</li>
+                </ul>
+                <p style="margin-top: 8px; margin-bottom: 0;"><strong>Peringatan:</strong> Restore akan menimpa database dan file yang ada di storage. Pastikan data penting sudah dicadangkan sebelum melanjutkan.</p>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" id="btnSubmit" style="margin-top: 10px;">
                 <i class="fa fa-refresh"></i> Restore
             </button>
         </div>
@@ -34,12 +42,15 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        restoreMessage.html('<p class="text-success">Database restored successfully!</p>');
+                        restoreMessage.html('<p class="text-success">' + response.message + '</p>');
                         buttonSubmit.attr("disabled", false)
                         $('#restoreDatabaseForm')[0].reset();
                     },
                     error: function(xhr) {
-                        restoreMessage.html('<p class="text-danger">Error: ' + xhr.responseJSON.message + '</p>');
+                        let errorMsg = (xhr.responseJSON && xhr.responseJSON.message)
+                            ? xhr.responseJSON.message
+                            : 'Terjadi kesalahan server. Silakan cek log aplikasi.';
+                        restoreMessage.html('<p class="text-danger">Error: ' + errorMsg + '</p>');
                         buttonSubmit.attr("disabled", false)
                         $('#restoreDatabaseForm')[0].reset();
                     }

@@ -299,7 +299,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         // Verifikasi surat (publik - tidak perlu login)
         Route::namespace('\App\Http\Controllers\Surat')->group(function () {
             Route::get('/surat/verifikasi', ['as' => 'surat.verifikasi', 'uses' => 'SuratController@verifikasi']);
-            Route::post('/surat/verifikasi', ['as' => 'surat.verifikasi.store', 'uses' => 'SuratController@verifikasiStore']);
+            Route::post('/surat/verifikasi', ['as' => 'surat.verifikasi.store', 'uses' => 'SuratController@verifikasiStore'])->middleware('throttle:10,1');
         });
     });
 

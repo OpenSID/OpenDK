@@ -1,21 +1,7 @@
-@extends('layouts.dashboard_template')
-
-@section('title')
-    Verifikasi Surat
-@endsection
+@extends('layouts.app')
 
 @section('content')
-    <section class="content-header block-breadcrumb">
-        <h1>
-            {{ $page_title ?? 'Page Title' }}
-            <small>{{ $page_description ?? '' }}</small>
-        </h1>
-        <ol class="breadcrumb">
-            <li><a href="{{ route('dashboard') }}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-            <li class="active">{{ $page_title }}</li>
-        </ol>
-    </section>
-    <section class="content container-fluid">
+    <div class="container" style="margin-top: 30px; margin-bottom: 30px;">
         @include('partials.flash_message')
         <div class="box box-primary">
             <div class="box-header with-border">
@@ -39,5 +25,5 @@
                 </form>
             </div>
         </div>
-    </section>
+    </div>
 @endsection

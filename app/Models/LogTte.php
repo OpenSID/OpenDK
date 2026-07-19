@@ -37,5 +37,5 @@ class LogTte extends Model
 {
     protected $table = 'das_log_tte';
 
-    protected $fillable = ['pesan_error', 'jenis'];
+    protected $fillable = ['pesan_error', 'jenis', 'surat_id'];
 }

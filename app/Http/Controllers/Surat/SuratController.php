@@ -37,14 +37,18 @@ use App\Http\Requests\PengaturanSuratRequest;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\Surat;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Yajra\DataTables\DataTables;
 
 class SuratController extends Controller
 {
-    public function arsip()
+    public function arsip(): View
     {
         $page_title = 'Arsip Surat';
         $page_description = 'Daftar Arsip Surat';
@@ -52,7 +56,7 @@ class SuratController extends Controller
         return view('surat.arsip', compact('page_title', 'page_description'));
     }
 
-    public function getData()
+    public function getData(): JsonResponse
     {
         $desa = request()->get('kode_desa');
         return DataTables::of(Surat::arsip()
@@ -89,24 +93,22 @@ class SuratController extends Controller
             ->rawColumns(['aksi', 'hash'])->make();
     }
 
-    public function download($id)
+    public function download(Surat $surat): BinaryFileResponse
     {
         try {
-            $surat = Surat::findOrFail($id);
-
             return Storage::download('public/surat/' . $surat->file);
         } catch (\Exception $e) {
             Log::error('Surat download failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'surat_id' => $id,
+                'surat_id' => $surat->id,
             ]);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }
 
-    public function pengaturan()
+    public function pengaturan(): View
     {
         $formAction = route('surat.pengaturan.update');
         $camat = $this->akun_camat;
@@ -118,7 +120,7 @@ class SuratController extends Controller
         return view('surat.pengaturan', compact('page_title', 'page_description', 'formAction', 'camat', 'sekretaris'));
     }
 
-    public function pengaturan_update(PengaturanSuratRequest $request)
+    public function pengaturan_update(PengaturanSuratRequest $request): RedirectResponse
     {
         try {
             foreach ($request->all() as $key => $value) {
@@ -136,15 +138,15 @@ class SuratController extends Controller
         return redirect()->route('surat.pengaturan')->with('success', 'Pengaturan Surat berhasil diubah!');
     }
 
-    public function qrcode($id)
+    public function qrcode(Surat $surat): View
     {
-        $surat = Surat::where('id', '=', $id)->where('status', '=', StatusSurat::Arsip)->firstOrFail();
+        abort_if($surat->status !== StatusSurat::Arsip, 404);
         $profil = Profil::first();
 
         return view('surat.qrcode', compact('surat', 'profil'));
     }
 
-    public function verifikasi()
+    public function verifikasi(): View
     {
         $page_title = 'Verifikasi Surat';
         $page_description = 'Verifikasi keaslian surat digital';
@@ -152,7 +154,7 @@ class SuratController extends Controller
         return view('surat.verifikasi.index', compact('page_title', 'page_description'));
     }
 
-    public function verifikasiStore(Request $request)
+    public function verifikasiStore(Request $request): View|RedirectResponse
     {
         $request->validate([
             'file' => 'required|mimes:pdf|max:5120',

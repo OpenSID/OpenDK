@@ -45,25 +45,27 @@ use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use setasign\Fpdi\Fpdi;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Yajra\DataTables\DataTables;
 
 class PermohonanController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        // dd(!$this->isDatabaseGabungan(), DataDesa::pluck('desa_id'));
         $page_title = 'Permohonan Surat';
         $page_description = 'Daftar Permohonan Surat';
 
         return view('surat.permohonan.index', compact('page_title', 'page_description'));
     }
 
-    public function getData()
+    public function getData(): JsonResponse
     {
         $desa = request('kode_desa');
 
@@ -133,9 +135,8 @@ class PermohonanController extends Controller
             ->rawColumns(['aksi', 'nama', 'log_verifikasi'])->make();
     }
 
-    public function show($id)
+    public function show(Surat $surat): View
     {
-        $surat = Surat::findOrFail($id);
         $page_title = 'Detail Surat';
         $page_description = "Detail Data Surat: {$surat->nama}";
 
@@ -159,27 +160,24 @@ class PermohonanController extends Controller
         return view('surat.permohonan.show', compact('page_title', 'page_description', 'surat'));
     }
 
-    public function download($id)
+    public function download(Surat $surat): BinaryFileResponse
     {
         try {
-            $surat = Surat::findOrFail($id);
-
             return Storage::download('public/surat/' . $surat->file);
         } catch (\Exception $e) {
             Log::error('Permohonan Surat download failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'surat_id' => $id,
+                'surat_id' => $surat->id,
             ]);
 
             return back()->with('error', 'Dokumen tidak ditemukan');
         }
     }
 
-    public function setujui($id)
+    public function setujui(Surat $surat): JsonResponse
     {
         try {
-            $surat = Surat::findOrFail($id);
             $log_sekarang = $surat->log_verifikasi;
 
             if ($log_sekarang == LogVerifikasiSurat::Operator) {
@@ -199,35 +197,38 @@ class PermohonanController extends Controller
             Log::error('Permohonan Surat approval failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'surat_id' => $id,
+                'surat_id' => $surat->id,
             ]);
         }
 
         return response()->json();
     }
 
-    public function tolak(Request $request, $id)
+    public function tolak(Request $request, Surat $surat): JsonResponse
     {
         try {
-            Surat::findOrFail($id)->update([
+            $request->validate(['keterangan' => 'required|string|max:500']);
+
+            $surat->update([
                 'log_verifikasi' => LogVerifikasiSurat::Ditolak,
                 'status' => StatusSurat::Ditolak,
-                'keterangan' => $request['keterangan'],
+                'keterangan' => $request->input('keterangan'),
             ]);
         } catch (\Exception $e) {
             Log::error('Permohonan Surat rejection failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'surat_id' => $id,
+                'surat_id' => $surat->id,
             ]);
         }
 
         return response()->json();
     }
 
-    public function passphrase(Request $request, $id)
+    public function passphrase(Request $request, Surat $surat): JsonResponse
     {
-        $surat = Surat::findOrFail($id);
+        $request->validate(['passphrase' => 'required|string']);
+
 
         DB::beginTransaction();
 
@@ -250,7 +251,7 @@ class PermohonanController extends Controller
                 'multipart' => [
                     ['name' => 'file', 'contents' => Psr7\Utils::tryFopen($file_path, 'r')],
                     ['name' => 'nik', 'contents' => $surat->pengurus->nik],
-                    ['name' => 'passphrase', 'contents' => $request['passphrase']],
+                    ['name' => 'passphrase', 'contents' => $request->input('passphrase')],
                     ['name' => 'tampilan', 'contents' => 'visible'],
                     ['name' => 'linkQR', 'contents' => route('surat.arsip.qrcode', $surat->id)],
                     ['name' => 'width', 'contents' => $width],
@@ -277,28 +278,26 @@ class PermohonanController extends Controller
                 'status' => true,
                 'pesan_error' => 'success',
                 'jenis' => 'success',
-            ]);
+            ], $surat->id);
         } catch (ClientException $e) {
             Log::error('Permohonan Surat TTE signing failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'surat_id' => $id,
+                'surat_id' => $surat->id,
             ]);
 
             DB::rollback();
 
             return $this->response([
                 'status' => false,
-                'pesan_error' => $e->getMessage(),
+                'pesan_error' => 'Terjadi kesalahan saat menandatangani surat.',
                 'jenis' => 'ClientException',
-            ]);
+            ], $surat->id);
         }
     }
 
-    public function tandatanganQr($id)
+    public function tandatanganQr(Surat $surat): JsonResponse
     {
-        $surat = Surat::findOrFail($id);
-
         if ($surat->log_verifikasi != LogVerifikasiSurat::ProsesTTE) {
             return response()->json(['status' => false, 'pesan_error' => 'Surat tidak dalam tahap penandatanganan.'], 400);
         }
@@ -311,9 +310,9 @@ class PermohonanController extends Controller
         DB::beginTransaction();
 
         try {
-            $file_path = public_path("storage/surat/{$surat->file}");
+            $file_path = public_path('storage/surat/' . basename($surat->file));
             $file_info = pathinfo($file_path);
-            $signed_path = public_path("storage/surat/{$file_info['filename']}_signed.pdf");
+            $signed_path = public_path('storage/surat/' . $file_info['filename'] . '_signed.pdf');
 
             $verificationUrl = route('surat.arsip.qrcode', $surat->id);
 
@@ -354,22 +353,23 @@ class PermohonanController extends Controller
 
             $fileHash = hash_file('sha256', $signed_path);
 
-            if (!rename($signed_path, $file_path)) {
-                throw new \RuntimeException('Gagal memindahkan file signed ke lokasi asal.');
-            }
-
             $surat->update([
                 'status' => StatusSurat::Arsip,
                 'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
                 'file_hash' => $fileHash,
             ]);
 
+            DB::commit();
+
+            if (!rename($signed_path, $file_path)) {
+                throw new \RuntimeException('Gagal memindahkan file signed ke lokasi asal.');
+            }
+
             LogTte::create([
                 'pesan_error' => 'success',
                 'jenis' => 'QRCode',
+                'surat_id' => $surat->id,
             ]);
-
-            DB::commit();
 
             return response()->json([
                 'status' => true,
@@ -378,31 +378,40 @@ class PermohonanController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollback();
+
+            if (isset($signed_path) && file_exists($signed_path)) {
+                unlink($signed_path);
+            }
+            if (isset($qrTempPath) && file_exists($qrTempPath)) {
+                unlink($qrTempPath);
+            }
+
             Log::error('QR Code signing failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'surat_id' => $id,
+                'surat_id' => $surat->id,
             ]);
 
             return response()->json([
                 'status' => false,
-                'pesan_error' => $e->getMessage(),
+                'pesan_error' => 'Terjadi kesalahan saat menandatangani surat.',
                 'jenis' => 'Exception',
             ]);
         }
     }
 
-    protected function response($notif = [])
+    protected function response(array $notif = [], $suratId = null): JsonResponse
     {
-        LogTte::create([
-            'pesan_error' => $notif['pesan_error'],
-            'jenis' => $notif['jenis'],
-        ]);
+        LogTte::create(array_filter([
+            'pesan_error' => $notif['pesan_error'] ?? '',
+            'jenis' => $notif['jenis'] ?? '',
+            'surat_id' => $suratId,
+        ]));
 
         return response()->json($notif);
     }
 
-    public function ditolak()
+    public function ditolak(): View
     {
         $page_title = 'Permohonan Surat Ditolak';
         $page_description = 'Daftar Permohonan Surat Ditolak';
@@ -410,7 +419,7 @@ class PermohonanController extends Controller
         return view('surat.permohonan.ditolak', compact('page_title', 'page_description'));
     }
 
-    public function getDataDitolak()
+    public function getDataDitolak(): JsonResponse
     {
         $desa = request('kode_desa');
         $surat = Surat::ditolak()

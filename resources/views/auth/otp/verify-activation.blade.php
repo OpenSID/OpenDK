@@ -190,8 +190,9 @@
                     if (expirySeconds <= 0) {
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
-                        alert('Kode OTP telah kadaluarsa. Silakan minta kode baru.');
-                        window.location.href = '{{ route('otp2fa.index') }}';
+                        openAlert('Kode OTP telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function() {
+                            window.location.href = '{{ route('otp2fa.index') }}';
+                        });
                     }
                 }, 1000);
 
@@ -209,7 +210,7 @@
                             purpose: 'activation'
                         },
                         success: function(response) {
-                            alert(response.message);
+                            openAlert(response.message, 'Info', 'success');
 
                             // Reset timer
                             expirySeconds = expiryMinutes * 60;
@@ -235,7 +236,7 @@
                             }, 1000);
                         },
                         error: function(xhr) {
-                            alert('Gagal mengirim ulang kode OTP');
+                            openAlert('Gagal mengirim ulang kode OTP', 'Error', 'danger');
                             $('#resend-btn').prop('disabled', false).html(
                                 '<i class="fa fa-refresh"></i> Kirim Ulang');
                         }

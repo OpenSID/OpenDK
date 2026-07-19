@@ -32,7 +32,7 @@
                         <!-- form start -->
                         <div class="row overflow-x">
                             <div class="col-md-12">
-                                <img src="{{ asset($potensi->file_gambar) }}" width="100%">
+                                <img src="{{ is_img(str_replace('//', '/', $potensi->file_gambar)) }}" width="100%">
                             </div>
                             <div class="col-md-12">
                                 <h3>{{ $potensi->nama_potensi }}</h3>

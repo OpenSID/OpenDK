@@ -19,7 +19,7 @@
 
                     {!! html()->form('POST', route('informasi.media-sosial.store'))->acceptsFiles()->id('form-media-sosial')->class(
                             'form-horizontal
-                                                                                                                                                                                form-label-left',
+                                                                                                                                                                                                    form-label-left',
                         )->open() !!}
 
                     <div class="box-body">
@@ -73,7 +73,7 @@
                     } else { //no
                         //warning
                         $("#logo").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

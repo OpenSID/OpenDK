@@ -40,4 +40,5 @@ return [
     'current' => 'Password saat ini',
     'new' => 'Password baru',
     'confirmation' => 'Konfirmasi password',
+    'history_found' => 'Password ini pernah digunakan sebelumnya. Silakan gunakan password yang berbeda.',
 ];

@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Observers\UserObserver;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -58,6 +59,11 @@ class User extends Authenticatable implements JWTSubject
      * @var string
      */
     public const DEFAULT_PASSWORD = '12345678';
+
+    protected static function booted(): void
+    {
+        static::observe(UserObserver::class);
+    }
 
     /**
      * Field yang diizinkan untuk mass assignment.
@@ -185,5 +191,13 @@ class User extends Authenticatable implements JWTSubject
     public function otpTokens()
     {
         return $this->hasMany(OtpToken::class);
+    }
+
+    /**
+     * Get the password histories for the user.
+     */
+    public function passwordHistories()
+    {
+        return $this->hasMany(PasswordHistory::class);
     }
 }

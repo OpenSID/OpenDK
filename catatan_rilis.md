@@ -7,6 +7,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 1. [#1616](https://github.com/OpenSID/OpenDK/issues/1616) Penambahan fitur backup dan restore asset storage.
 2. [#1648](https://github.com/OpenSID/OpenDK/issues/1648) Penambahan informasi yang lebih lengkap pada details pembangunan.
+3. [#1646](https://github.com/OpenSID/OpenDK/issues/1646) Penambahan Terapkan Password History (10 Kata Sandi Terakhir).
 
 #### BUG
 

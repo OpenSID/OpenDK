@@ -32,7 +32,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\PasswordHistoryService;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ResetPasswordController extends Controller
 {
@@ -55,4 +58,23 @@ class ResetPasswordController extends Controller
      * @var string
      */
     protected $redirectTo = '/dashboard';
+
+    protected function resetPassword($user, $password)
+    {
+        $service = app(PasswordHistoryService::class);
+
+        if ($service->isPasswordReused($user, $password)) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'password' => trans('passwords.history_found'),
+            ]);
+        }
+
+        $user->password = Hash::make($password);
+        $user->setRememberToken(\Illuminate\Support\Str::random(60));
+        $user->save();
+
+        event(new \Illuminate\Auth\Events\PasswordReset($user));
+
+        $this->guard()->login($user);
+    }
 }

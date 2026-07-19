@@ -32,14 +32,14 @@
 namespace App\Http\Controllers\FrontEnd;
 
 use App\Http\Controllers\FrontEndController;
-use App\Models\Faq;
 
 class WebFaqController extends FrontEndController
 {
     public function index()
-    {        
+    {
         $page_title = 'Pertanyaan Yang Sering Diajukan';
+        $urlApi = url('/api/frontend/v1');
 
-        return view('pages.faq.index', compact('page_title'));
+        return view('pages.faq.index', compact('page_title', 'urlApi'));
     }
 }

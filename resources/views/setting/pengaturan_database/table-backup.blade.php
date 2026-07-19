@@ -86,30 +86,22 @@
                             "_token": "{{ csrf_token() }}",
                         },
                         beforeSend: function() {
-                            restoreMessage.html('<p>Processing, please wait...</p>');
+                            restoreMessage.html('<p class="text-info">Sedang di proses, mohon tunggu...</p>');
                             btnBackup.removeClass("btn-social");
                             btnBackup.attr("disabled", true);
-                            btnBackup.html('<i class="fa fa-spinner fa-spin"></i> Loading...');
+                            btnBackup.html('<i class="fa fa-spinner fa-spin"></i> Sedang di proses...');
                         },
                         success: function(response) {
                             $('#data-backup-database').DataTable().ajax.reload();
 
-                            btnBackup.addClass("btn-social");
-                            btnBackup.attr("disabled", false);
-                            btnBackup.html('<i class="fa fa-plus"></i>Buat Cadangan Baru Database');
-                        },
-                        error: function(xhr, status, error) {
-                            restoreMessage.html('<p class="text-danger">Error: ' + xhr.responseJSON
-                                .message + '</p>');
-
-                            btnBackup.addClass("btn-social");
-                            btnBackup.attr("disabled", false);
-                            btnBackup.html('<i class="fa fa-plus"></i>Buat Cadangan Baru Database');
-                        },
-                        complete: function() {
                             restoreMessage.html(
                                 '<p class="text-success">Berhasil membuat salinan database.</p>'
                             );
+                        },
+                        error: function(xhr, status, error) {
+                            restoreMessage.html('<p class="text-danger">Error: ' + (xhr.responseJSON?.message || 'Gagal melakukan backup.') + '</p>');
+                        },
+                        complete: function() {
                             btnBackup.addClass("btn-social");
                             btnBackup.attr("disabled", false);
                             btnBackup.html('<i class="fa fa-plus"></i>Buat Cadangan Baru Database');

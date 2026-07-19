@@ -25,9 +25,11 @@
 <div class="form-group">
     <label class="control-label col-md-4 col-sm-3 col-xs-12">Gambar <span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        <input type="file" name="file_gambar" id="file_gambar" class="form-control" required accept="image/*">
+        <input type="file" name="file_gambar" id="file_gambar" class="form-control" required accept=".jpg,.jpeg,.png,.bmp,.gif">
+        <x-upload-hint formats="JPG, JPEG, PNG, BMP, GIF" :limit-kb="1024" />
+        <div class="clearfix"></div>
         <br>
-        <img src="http://placehold.co/1000x600" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <img class="hide" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 

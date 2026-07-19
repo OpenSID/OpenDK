@@ -28,7 +28,7 @@
                     <table class="table table-bordered table-hover" id="datadesa-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Kode {{ config('setting.sebutan_desa') }}</th>
                                 <th>Nama {{ config('setting.sebutan_desa') }}</th>
                                 <th>Website</th>

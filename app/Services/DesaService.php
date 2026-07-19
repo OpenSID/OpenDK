@@ -111,7 +111,7 @@ class DesaService extends BaseApiService
                 foreach ($allDesa as $desa) {
                     $feedReader = new SimplePie();
                     $feedReader->set_feed_url($desa->website_url_feed['website']);
-                    $feedReader->set_item_limit(5);
+                    //$feedReader->set_item_limit(5);
                     $feedReader->force_fsockopen(true);
                     $feedReader->set_cache_location(storage_path('framework/cache/simplepie'));
                     $feedReader->init();

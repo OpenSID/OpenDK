@@ -4,19 +4,16 @@
     <div class="col-md-8">
         <div class="box box-primary">
             <div class="box-header with-border">
-                <h4 class="box-title">DAFTAR POTENSI</h4>
+                <h4 class="box-title">Data Prosedur</h4>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="potensi-table">
+                    <table class="table table-striped table-bordered" id="prosedur-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
-                                <th>Gambar</th>
-                                <th>Nama Potensi</th>
-                                <th>Deskripsi</th>
-                                <th>Lokasi</th>
+                                <th>Judul Prosedur</th>
+                                <th style="width: 150px">Aksi</th>
                             </tr>
                         </thead>
                     </table>
@@ -31,11 +28,11 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            var table = $('#potensi-table').DataTable({
+            var table = $('#prosedur-table').DataTable({
                 processing: true,
                 serverSide: false,
                 ajax: {
-                    url: '{!! $urlApi !!}/potensi',
+                    url: '{!! $urlApi !!}/prosedur',
                     cache: false,
                     dataSrc: 'data',
                     data: function(d) {
@@ -54,47 +51,33 @@
                     }
                 },
                 columns: [{
+                        data: 'attributes.judul_prosedur',
+                        name: 'judul_prosedur',
+                        render: function(data, type, row) {
+                            return '<a href="#" onclick="showProsedurDetail(\'' + row.id + '\')">' + (data || '') + '</a>';
+                        }
+                    },
+                    {
                         data: null,
                         name: 'aksi',
                         class: 'text-center',
                         searchable: false,
                         orderable: false,
                         render: function(data, type, row) {
-                            return '<button class="btn btn-xs btn-primary" onclick="showPotensiDetail(\'' + row.id + '\')"><i class="fa fa-eye"></i> Detail</button>';
+                            var viewBtn = '<a href="#" onclick="showProsedurDetail(\'' + row.id + '\')" title="Lihat">' +
+                                '<button type="button" class="btn btn-warning btn-sm" style="width: 40px;"><i class="fa fa-eye fa-fw"></i></button>' +
+                                '</a>';
+
+                            var downloadBtn = '<a href="' + (row.attributes.path_download || '#') + '" title="Unduh" target="_blank">' +
+                                '<button type="button" class="btn btn-info btn-sm" style="width: 40px;"><i class="fa fa-download"></i></button>' +
+                                '</a>';
+
+                            return viewBtn + ' ' + downloadBtn;
                         }
-                    },
-                    {
-                        data: null,
-                        name: 'file_gambar_path',
-                        class: 'text-center',
-                        searchable: false,
-                        orderable: false,
-                        render: function(data, type, row) {
-                            var imagePath = row.attributes.file_gambar_path || '{{ asset('/img/no-image.png') }}';
-                            return '<img src="' + imagePath + '" alt="' + (row.attributes.nama_potensi || '') + '" style="max-width: 80px; max-height: 60px;">';
-                        }
-                    },
-                    {
-                        data: 'attributes.nama_potensi',
-                        name: 'nama_potensi'
-                    },
-                    {
-                        data: 'attributes.deskripsi',
-                        name: 'deskripsi',
-                        render: function(data, type, row) {
-                            if (data && data.length > 100) {
-                                return data.substring(0, 100) + '...';
-                            }
-                            return data || '';
-                        }
-                    },
-                    {
-                        data: 'attributes.lokasi',
-                        name: 'lokasi'
                     }
                 ],
                 order: [
-                    [2, 'asc']
+                    [0, 'asc']
                 ],
                 language: {
                     url: '{{ asset('plugins/datatables/id.json') }}'
@@ -102,56 +85,50 @@
             });
         });
 
-        // Function to show potensi detail in modal
-        function showPotensiDetail(id) {
+        // Function to show prosedur detail in modal
+        function showProsedurDetail(id) {
             $.ajax({
-                url: '{!! $urlApi !!}/potensi?filter[id]=' + id,
+                url: '{!! $urlApi !!}/prosedur?filter[id]=' + id,
                 method: 'GET',
                 success: function(response) {
                     if (response.data && response.data.length > 0) {
-                        var potensi = response.data[0].attributes;
-
+                        var prosedur = response.data[0].attributes;
+                        let isPdf = (prosedur.mime_type === 'application/pdf' || (prosedur.file_prosedur_path && prosedur.file_prosedur_path.toLowerCase().endsWith('.pdf')));
+                        let objFile = !isPdf ? `<img id="fileUnduhan" style="max-width: 100%; height: auto; margin: 0 auto;" src="${prosedur.file_prosedur_path}">` : `<iframe src="${prosedur.file_prosedur_path}" width="100%" height="500" class="" id="showpdf" frameborder="0"></iframe>`;
                         // Create modal content
-                        var modalHtml = '<div class="modal fade" id="potensiDetailModal" tabindex="-1" role="dialog">' +
+                        var modalHtml = '<div class="modal fade" id="prosedurDetailModal" tabindex="-1" role="dialog">' +
                             '<div class="modal-dialog modal-lg" role="document">' +
                             '<div class="modal-content">' +
                             '<div class="modal-header">' +
                             '<button type="button" class="close" data-dismiss="modal">&times;</button>' +
-                            '<h4 class="modal-title">' + (potensi.nama_potensi || '') + '</h4>' +
+                            '<h4 class="modal-title">' + (prosedur.judul_prosedur || '') + '</h4>' +
                             '</div>' +
                             '<div class="modal-body">' +
                             '<div class="row">' +
-                            '<div class="col-md-12">' +
-                            '<img src="' + (potensi.file_gambar_path || "{{ asset('/img/no-image.png') }}") + '" class="img-responsive" style="max-width: 100%; height: auto; margin-bottom: 15px;">' +
-                            '</div>' +
-                            '<div class="col-md-12">' +
-                            '<h5>Deskripsi:</h5>' +
-                            '<p>' + (potensi.deskripsi || '') + '</p>' +
-                            '<h5>Lokasi:</h5>' +
-                            '<p>' + (potensi.lokasi || '') + '</p>' +
-                            '</div>' +
+                            '<div class="col-md-12 text-center">' +
+                            objFile + '</div>' +
                             '</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +
                             '<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>' +
+                            '<a href="' + (prosedur.path_download || '#') + '" class="btn btn-primary" target="_blank">Unduh File</a>' +
                             '</div>' +
                             '</div>' +
                             '</div>' +
                             '</div>';
 
                         // Remove any existing modal
-                        $('#potensiDetailModal').remove();
+                        $('#prosedurDetailModal').remove();
 
                         // Add modal to body and show it
                         $('body').append(modalHtml);
-                        $('#potensiDetailModal').modal('show');
+                        $('#prosedurDetailModal').modal('show');
                     }
                 },
                 error: function(xhr, status, error) {
-                    alert('Gagal memuat detail potensi. Silakan coba lagi.');
+                    openAlert('Gagal memuat detail potensi. Silakan coba lagi.', 'Error', 'danger');
                 }
             });
         }
     </script>
-    @include('forms.datatable-vertical')
 @endpush

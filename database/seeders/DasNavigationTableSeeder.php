@@ -75,19 +75,11 @@ class DasNavigationTableSeeder extends Seeder
                 'status' => 1,
             ],
             [
-                'name' => 'Desa',
-                'slug' => Str::slug('Desa'),
-                'type' => MenuTipe::EKSTERNAL,
-                'url' => '#',
-                'order' => 4,
-                'status' => 1,
-            ],
-            [
                 'name' => 'Potensi',
                 'slug' => Str::slug('Potensi'),
                 'type' => MenuTipe::EKSTERNAL,
                 'url' => '#',
-                'order' => 5,
+                'order' => 4,
                 'status' => 1,
             ],
             [
@@ -95,7 +87,7 @@ class DasNavigationTableSeeder extends Seeder
                 'slug' => Str::slug('Statistik'),
                 'type' => MenuTipe::EKSTERNAL,
                 'url' => '#',
-                'order' => 6,
+                'order' => 5,
                 'status' => 1,
             ],
             [
@@ -103,15 +95,15 @@ class DasNavigationTableSeeder extends Seeder
                 'slug' => Str::slug('Unduhan'),
                 'type' => MenuTipe::EKSTERNAL,
                 'url' => '#',
-                'order' => 7,
+                'order' => 6,
                 'status' => 1,
             ],
             [
                 'name' => 'FAQ',
                 'slug' => Str::slug('FAQ'),
                 'type' => MenuTipe::EKSTERNAL,
-                'url' => url('faq'),
-                'order' => 8,
+                'url' => 'faq',
+                'order' => 7,
                 'status' => 1,
             ],
         ];
@@ -238,19 +230,6 @@ class DasNavigationTableSeeder extends Seeder
                 'status' => 1,
             ]
         ];
-
-        DB::table('das_data_desa')->get()->each(function ($data) use (&$subMenu) {
-            $slug = $data->sebutan_desa . '-' . Str::slug($data->nama);
-            $subMenu[] = [
-                'parent_id' => Navigation::where('slug', 'desa')->first()->id,
-                'name' => ucwords($data->sebutan_desa . ' ' . $data->nama),
-                'slug' => $slug,
-                'type' => MenuTipe::DESA,
-                'url' => 'desa/' . $slug,
-                'order' => $data->id,
-                'status' => 1,
-            ];
-        });
 
         DB::table('das_tipe_potensi')->get()->each(function ($data) use (&$subMenu) {
             $subMenu[] = [

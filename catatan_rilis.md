@@ -18,3 +18,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### TEKNIS
 
+1. [#1670](https://github.com/OpenSID/OpenDK/issues/1670) Penyesuaian sembunyikan tombol unggah pada pengaturan daftar tema.

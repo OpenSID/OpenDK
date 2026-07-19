@@ -17,7 +17,7 @@ class RegulasiTransformer extends TransformerAbstract
     public function transform(Regulasi $regulasi): array
     {
         $regulasi->file_regulasi_path = asset($regulasi->file_regulasi);
-        $regulasi->path_download = route('unduhan.regulasi.download', ['file' => str_slug($regulasi->judul)]);
+        $regulasi->path_download = route('unduhan.regulasi.download', ['file' => $regulasi->id]);
         return $regulasi->toArray();        
     }
 }

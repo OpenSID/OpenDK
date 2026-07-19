@@ -14,6 +14,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1653](https://github.com/OpenSID/OpenDK/issues/1653) Perbaiki fungsi halaman public regulasi tidak ditampilkan dengan benar.
 3. [#1654](https://github.com/OpenSID/OpenDK/issues/1654) Perbaiki fungsi dokumen saat ini tidak di tampilkan dengan benar.
 6. [#1647](https://github.com/OpenSID/OpenDK/issues/1647) Perbaiki fungsi lihat penduduk details agar hanya menapilkan tanpa field.
+7. [#1655](https://github.com/OpenSID/OpenDK/issues/1655) Perbaiki fungsi Faq yang tampil pada halaman publik.
 
 #### TEKNIS
 

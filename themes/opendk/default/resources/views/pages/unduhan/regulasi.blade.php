@@ -105,8 +105,8 @@
                             '</div>' +
                             '<div class="modal-body">' +
                             '<div class="row">' +
-                            '<div class="col-md-12">' +
-                            objFile '</div>' +
+                            '<div class="col-md-12 text-center">' +
+                            objFile + '</div>' +
                             '</div>' +
                             '</div>' +
                             '<div class="modal-footer">' +

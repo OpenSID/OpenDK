@@ -15,7 +15,7 @@
     <div class="col-md-6 col-sm-8 col-xs-12">
         {!! html()->textarea('description', old('description', $event->description))->class('textarea my-editor')->placeholder('Deskripsi kegiatan')->style(
                 'width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding:
-                                                                                        10px;',
+                                                                                                10px;',
             )->required() !!}
     </div>
 </div>
@@ -33,15 +33,15 @@
 </div>
 @if ($event->attachment)
     @php
-        $ext      = strtolower(pathinfo($event->attachment, PATHINFO_EXTENSION));
-        $isImage  = in_array($ext, ['jpg','jpeg','png','gif','svg']);
+        $ext = strtolower(pathinfo($event->attachment, PATHINFO_EXTENSION));
+        $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'svg']);
         $fileName = basename($event->attachment);
-        $iconClass = match($ext) {
-            'pdf'         => 'fa-file-pdf-o text-danger',
-            'doc','docx'  => 'fa-file-word-o text-primary',
-            'xls','xlsx'  => 'fa-file-excel-o text-success',
-            'ppt','pptx'  => 'fa-file-powerpoint-o text-warning',
-            default       => 'fa-file-o text-muted',
+        $iconClass = match ($ext) {
+            'pdf' => 'fa-file-pdf-o text-danger',
+            'doc', 'docx' => 'fa-file-word-o text-primary',
+            'xls', 'xlsx' => 'fa-file-excel-o text-success',
+            'ppt', 'pptx' => 'fa-file-powerpoint-o text-warning',
+            default => 'fa-file-o text-muted',
         };
     @endphp
     <div class="form-group">
@@ -49,9 +49,7 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
             <div style="padding:8px; background:#f5f5f5; border-radius:4px; display:flex; align-items:center; gap:10px;">
                 @if ($isImage)
-                    <img src="{{ asset($event->attachment) }}"
-                         style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;"
-                         class="img-thumbnail">
+                    <img src="{{ asset($event->attachment) }}" style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;" class="img-thumbnail">
                 @else
                     <i class="fa {{ $iconClass }} fa-2x"></i>
                 @endif
@@ -78,9 +76,7 @@
 
 @php
     $limitEnabled = \App\Services\FileUploadService::isLimitEnabled();
-    $uploadHintEvent = '<small class="help-block"><i class="fa fa-info-circle"></i> Format yang diizinkan: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, SVG.'
-        . ($limitEnabled ? ' Ukuran maksimum: <strong>2 MB</strong>.' : '')
-        . '</small>';
+    $uploadHintEvent = '<small class="help-block"><i class="fa fa-info-circle"></i> Format yang diizinkan: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, SVG.' . ($limitEnabled ? ' Ukuran maksimum: <strong>2 MB</strong>.' : '') . '</small>';
 @endphp
 
 @push('scripts')

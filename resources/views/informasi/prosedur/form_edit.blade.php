@@ -20,9 +20,7 @@
                 @if ($isPdf)
                     <i class="fa fa-file-pdf-o fa-2x text-danger"></i>
                 @else
-                    <img src="{{ asset($prosedur->file_prosedur) }}"
-                         style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;"
-                         class="img-thumbnail">
+                    <img src="{{ asset($prosedur->file_prosedur) }}" style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;" class="img-thumbnail">
                 @endif
                 <div style="overflow: hidden;">
                     <span class="text-muted" style="word-break: break-all;">{{ $fileName }}</span><br>

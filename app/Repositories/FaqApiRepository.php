@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\Status;
 use App\Models\Faq;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -31,6 +32,8 @@ class FaqApiRepository extends BaseApiRepository
 
     public function data()
     {
-        return $this->getFilteredApi()->jsonPaginate();
+        return $this->getFilteredApi()
+            ->where('status', Status::Aktif)
+            ->jsonPaginate();
     }
 }

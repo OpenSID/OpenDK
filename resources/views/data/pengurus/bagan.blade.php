@@ -26,18 +26,20 @@
 
             {{-- visual --}}
             <div class="col-md-12" id="contentBox" style="display: none;">
+                <div style="margin-bottom: 10px; text-align: right;">
+                    <button type="button" class="btn btn-primary" id="btnDownload">
+                        <i class="fa fa-download"></i> Download Gambar
+                    </button>
+                </div>
                 <div class="box box-primary">
-                    <figure class="highcharts-figure">
-                        <div id="container"></div>
-                        <p class="highcharts-description"></p>
-                    </figure>
+                    <div id="container"></div>
                 </div>
             </div>
         </div>
     </section>
 @endsection
 
-@include('partials.asset_highcharts')
+@include('partials.asset_orgchart')
 
 @push('scripts')
     <script type="text/javascript">
@@ -46,74 +48,48 @@
             const loader = document.getElementById('loader');
             const contentBox = document.getElementById('contentBox');
 
-            // Loader tetap terlihat, content disembunyikan
             loader.style.display = 'block';
             contentBox.style.display = 'none';
 
             fetch('{{ route('data.pengurus.ajax-bagan') }}')
                 .then(response => response.json())
                 .then(result => {
-                    /// Setelah data diterima, tampilkan konten & sembunyikan loader
                     loader.style.display = 'none';
                     contentBox.style.display = 'block';
 
-                    // Pastikan setiap node memiliki column
-                    const cleanedNodes = result.nodes.map(node => ({
-                        ...node,
-                        column: node.column ?? 0
-                    }));
+                    $('#container').orgchart({
+                        'data': {
+                            children: result.children,
+                            name: '',
+                            title: ''
+                        },
+                        'nodeContent': 'title',
+                        'nodeId': 'id',
+                        'nodeTitle': 'name',
+                        'createNode': function($node, data) {
+                            if (data.name === '') {
+                                $node.closest('.hierarchy').addClass('root-wrapper');
+                                return;
+                            }
 
-                    Highcharts.chart('container', {
-                        chart: {
-                            height: 600,
-                            inverted: true
-                        },
-                        title: {
-                            text: 'Struktur Organisasi'
-                        },
-                        series: [{
-                            type: 'organization',
-                            name: 'Struktur Organisasi',
-                            keys: ['from', 'to'],
-                            data: result.data,
-                            levels: [{
-                                level: 0,
-                                color: 'silver',
-                                dataLabels: {
-                                    color: 'white'
-                                },
-                                height: 25
-                            }, {
-                                level: 1,
-                                color: 'silver',
-                                dataLabels: {
-                                    color: 'white'
-                                },
-                                height: 25
-                            }, {
-                                level: 2,
-                                color: '#980104'
-                            }, {
-                                level: 4,
-                                color: '#359154'
-                            }],
-                            // nodes: cleanedNodes,
-                            nodes: result.nodes,
-                            colorByPoint: false,
-                            color: '#007ad0',
-                            dataLabels: {
-                                color: 'white'
-                            },
-                            borderColor: 'white',
-                            nodeWidth: 80
-                        }],
-                        tooltip: {
-                            outside: true
-                        },
-                        exporting: {
-                            allowHTML: true,
-                            sourceWidth: 800,
-                            sourceHeight: 600
+                            var $content = $node.find('.content').empty();
+
+                            if (data.image) {
+                                $content.append($('<img>', {
+                                    src: data.image,
+                                    class: 'bagan-foto'
+                                }));
+                            }
+
+                            $content.append(
+                                $('<div class="bagan-jabatan">').text(data.title)
+                            );
+                            $content.append(
+                                $('<div class="bagan-nama">').text(data.name)
+                            );
+
+                            $node.find('.title').css('background-color', data.color || '#007ad0').empty();
+                            $content.css('border', '2px solid ' + (data.color || '#007ad0'));
                         }
                     });
                 })
@@ -121,6 +97,19 @@
                     console.error('Error fetching data:', error);
                     loader.style.display = 'none';
                 });
+
+            document.getElementById('btnDownload').addEventListener('click', function() {
+                var chart = document.getElementById('container');
+                html2canvas(chart, {
+                    scale: 2,
+                    useCORS: true
+                }).then(function(canvas) {
+                    var link = document.createElement('a');
+                    link.download = 'struktur-organisasi.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+            });
 
 
         });

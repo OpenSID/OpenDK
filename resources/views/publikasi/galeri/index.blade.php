@@ -27,7 +27,7 @@
                     <table class="table table-striped table-bordered" id="galeri-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 150px;">Aksi</th>
+                                <th style="max-width: 80px;">Aksi</th>
                                 <th>Nama Album</th>
                                 <th style="max-width: 100px;">Aktif</th>
                                 <th>Dimuat pada</th>

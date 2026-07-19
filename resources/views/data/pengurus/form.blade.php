@@ -1,9 +1,3 @@
-@php
-    // dd(isset($pengurus) && !empty($pengurus))
-    // if(!$pengurus->nama) {
-    // $pengurus = '';
-    // }
-@endphp
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Foto</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -138,15 +132,6 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_tingkat">Bagan - Tingkat</label>
-
-        <div class="col-md-6 col-sm-6 col-xs-12">
-            {!! html()->number('bagan_tingkat')->class('form-control')->id('bagan_tingkat')->placeholder('Angka menunjukkan tingkat di bagan organisasi. Contoh: 2')->value(old('bagan_tingkat', isset($pengurus) && !empty($pengurus) ? $pengurus->bagan_tingkat : '')) !!}
-            <small class="text-muted">Gunakan angka 0 untuk tingkatan tertinggi.</small>
-        </div>
-    </div>
-
-    <div class="form-group">
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="bagan_warna">Bagan - Warna</label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -168,16 +153,6 @@
     <script>
         //color picker with addon
         $('.my-colorpicker2').colorpicker();
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const inputTingkat = document.getElementById("bagan_tingkat");
-
-            inputTingkat.addEventListener("input", function() {
-                if (this.value < 0) {
-                    this.value = 0; // Paksa angka negatif menjadi 0
-                }
-            });
-        });
     </script>
 @endpush
 

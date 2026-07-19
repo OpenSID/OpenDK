@@ -20,7 +20,7 @@
 
                     {!! html()->textarea('isi')->class('form-control my-editor')->placeholder('Isi Artikel')->style(
                             'width:100%; height:750px; font-size:14px; line-height:18px; border:1px solid #dddddd;
-                                                                                                                                                                                                                            padding:10px;',
+                                                                                                                                                                                                                                                padding:10px;',
                         )->value(old('isi', isset($artikel) ? $artikel->isi : '')) !!}
                     @if ($errors->has('isi'))
                         <span class="help-block" style="color:red">{{ $errors->first('isi') }}</span>
@@ -36,11 +36,30 @@
                 <div class="form-group">
                     <label class="control-label" for="gambar">Gambar</label>
 
-                    <img src="{{ is_img($artikel->gambar ?? null) }}" id="showgambar" style="width:100%; max-height:250px; float:left;" />
+                    @if (isset($artikel) && $artikel->gambar)
+                        <div style="padding:8px; background:#f5f5f5; border-radius:4px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
+                            <img src="{{ $artikel->gambar }}" style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;" class="img-thumbnail">
+                            <div style="overflow: hidden;">
+                                <span class="text-muted" style="word-break: break-all;">{{ basename($artikel->gambar) }}</span>
+                            </div>
+                        </div>
+                        <small class="help-block text-muted">
+                            Upload gambar baru di bawah untuk menggantikan gambar yang ada.
+                        </small>
+                    @else
+                        <img class="hide" id="showgambar" style="width:100%; max-height:250px; float:left;" />
+                    @endif
 
                     {!! html()->file('gambar')->class('form-control')->id('file-artikel')->accept('.jpg,.jpeg,.png') !!}
+                    <x-upload-hint formats="JPG, JPEG, PNG" />
                     @if ($errors->has('gambar'))
                         <span class="help-block" style="color:red">{{ $errors->first('gambar') }}</span>
+                    @endif
+
+                    @if (isset($artikel) && $artikel->gambar)
+                        <div class="clearfix"></div>
+                        <br>
+                        <img class="hide" id="showgambar" style="width:100%; max-height:250px; float:left;" />
                     @endif
                 </div>
 
@@ -99,7 +118,6 @@
 
                             $('#showgambar').attr('src', e.target.result);
                             $('#showgambar').removeClass('hide');
-                            $('#showpdf').addClass('hide');
 
                         }
 

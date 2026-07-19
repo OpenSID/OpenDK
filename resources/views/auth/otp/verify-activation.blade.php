@@ -190,7 +190,7 @@
                     if (expirySeconds <= 0) {
                         clearInterval(expiryInterval);
                         clearInterval(resendInterval);
-                        openAlert('Kode OTP telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function () {
+                        openAlert('Kode OTP telah kadaluarsa. Silakan minta kode baru.', 'Info', 'warning', function() {
                             window.location.href = '{{ route('otp2fa.index') }}';
                         });
                     }

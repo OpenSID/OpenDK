@@ -32,9 +32,7 @@
 
 @php
     $limitEnabled = \App\Services\FileUploadService::isLimitEnabled();
-    $uploadHintEvent = '<small class="help-block"><i class="fa fa-info-circle"></i> Format yang diizinkan: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, SVG.'
-        . ($limitEnabled ? ' Ukuran maksimum: <strong>2 MB</strong>.' : '')
-        . '</small>';
+    $uploadHintEvent = '<small class="help-block"><i class="fa fa-info-circle"></i> Format yang diizinkan: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, SVG.' . ($limitEnabled ? ' Ukuran maksimum: <strong>2 MB</strong>.' : '') . '</small>';
 @endphp
 
 @push('scripts')

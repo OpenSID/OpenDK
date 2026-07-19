@@ -25,7 +25,7 @@
                     </div>
                     <div id="container"></div>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -43,20 +43,24 @@
             loader.style.display = 'block';
             contentBox.style.display = 'none';
 
-            fetch('{{ route('profil.struktur-organisasi-ajax') }}',{
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'Fetch',
-                    'Accept': 'application/json'
-                }
-            })
+            fetch('{{ route('profil.struktur-organisasi-ajax') }}', {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'Fetch',
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(response => response.json())
                 .then(result => {
                     loader.style.display = 'none';
                     contentBox.style.display = 'block';
 
                     $('#container').orgchart({
-                        'data' : { children: result.children, name: '', title: '' },
+                        'data': {
+                            children: result.children,
+                            name: '',
+                            title: ''
+                        },
                         'nodeContent': 'title',
                         'nodeId': 'id',
                         'nodeTitle': 'name',
@@ -94,7 +98,10 @@
 
             document.getElementById('btnDownload').addEventListener('click', function() {
                 var chart = document.getElementById('container');
-                html2canvas(chart, { scale: 2, useCORS: true }).then(function(canvas) {
+                html2canvas(chart, {
+                    scale: 2,
+                    useCORS: true
+                }).then(function(canvas) {
                     var link = document.createElement('a');
                     link.download = 'struktur-organisasi.png';
                     link.href = canvas.toDataURL('image/png');
@@ -106,4 +113,3 @@
         });
     </script>
 @endpush
-

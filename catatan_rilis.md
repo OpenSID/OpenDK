@@ -1,4 +1,4 @@
-Di rilis versi v2607.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2607.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
@@ -28,3 +28,5 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1632](https://github.com/OpenSID/OpenDK/issues/1632) Penyesuaian pendaftaran kerjasama.
 4. [#1635](https://github.com/OpenSID/OpenDK/issues/1635) Penyesuaian alert agar konsisten.
 5. [#1627](https://github.com/OpenSID/OpenDK/issues/1627) Penyesuaian UI/UX di modul event.
+6. [#1628](https://github.com/OpenSID/OpenDK/issues/1628) Penyesuaian UI/UX di modul artikel.
+7. [#1650](https://github.com/OpenSID/OpenDK/issues/1650) Penyesuaian menu seeder yang tidak memiliki sumber.

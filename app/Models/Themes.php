@@ -46,7 +46,8 @@ class Themes extends Model
         'path',
         'vendor',
         'active',
-        'system'        
+        'system',
+        'screenshot'        
     ];
 
     // append slug attribute

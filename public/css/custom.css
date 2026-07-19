@@ -320,10 +320,10 @@ body{
 	}
 }
 
-.dropdown-menu  { 
-	max-height: 180px;
-	overflow-y: auto;
-	background-attachment: local, local, scroll, scroll;
+.navbar-nav .dropdown-menu  { 
+    max-height: 180px;
+    overflow-y: auto;
+    background-attachment: local, local, scroll, scroll;
 }
 
 .sticky {

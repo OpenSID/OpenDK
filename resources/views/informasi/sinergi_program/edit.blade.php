@@ -32,7 +32,7 @@
                     <!-- form start -->
                     {!! html()->form('PUT', route('informasi.sinergi-program.update', $sinergi->id))->id('form-sinergi-program')->class(
                             'form-horizontal
-                                                                                                                                                                                form-label-left',
+                                                                                                                                                                                                    form-label-left',
                         )->acceptsFiles()->open() !!}
 
                     <div class="box-body">
@@ -77,7 +77,7 @@
                     } else { //no
                         //warning
                         $("#gambar").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

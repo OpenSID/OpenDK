@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackEnd;
 use App\Http\Controllers\BackEndController;
 use App\Models\Themes;
 use App\Services\ThemeService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Log;
 
 class ThemesController extends BackEndController
@@ -13,18 +14,18 @@ class ThemesController extends BackEndController
 
     public function __construct(ThemeService $themeService)
     {
+        parent::__construct();
         $this->themeService = $themeService;
-        // In Laravel, if parent has no constructor this is fine, if it does, 
-        // we might need parent::__construct(), but usually it's injected.
     }
 
-    public function index()
+    public function index(): View
     {
         $page_title = 'Tema';
         $page_description = 'Daftar Tema';
         $themes = Themes::orderBy('active', 'desc')->get();
-
-        return view('backend.themes.index', compact('page_title', 'page_description', 'themes'));
+        $showUnggahButton = ! $this->isDatabaseGabungan();
+        
+        return view('backend.themes.index', compact('page_title', 'page_description', 'themes', 'showUnggahButton'));
     }
 
     public function activate(Themes $themes)
@@ -55,6 +56,12 @@ class ThemesController extends BackEndController
 
     public function upload()
     {
+        if($this->isDatabaseGabungan()){
+            return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unggah tema tidak diijinkan pada database gabungan',
+                ], 403);
+        }
         try {
             $file = request()->file('file');
             
@@ -62,6 +69,13 @@ class ThemesController extends BackEndController
                 return response()->json([
                     'status' => 'error',
                     'message' => 'File tema tidak ditemukan',
+                ], 400);
+            }
+
+            if (!$file->isValid()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Upload file gagal: ' . $file->getErrorMessage(),
                 ]);
             }
 

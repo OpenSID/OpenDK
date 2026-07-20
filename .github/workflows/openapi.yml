@@ -27,7 +27,7 @@ jobs:
           coverage: none
 
       - name: Validate YAML & OpenAPI structure
-        run: php vendor/bin/validate-openapi.php
+        run: php bin/validate-openapi.php
 
   generate:
     name: Generate OpenAPI Spec
@@ -99,7 +99,7 @@ jobs:
         run: php artisan scribe:copy-openapi
 
       - name: Validate Generated Spec
-        run: php vendor/bin/validate-openapi.php
+        run: php bin/validate-openapi.php
 
       - name: Check for diff (fail if spec changed unexpectedly)
         run: |

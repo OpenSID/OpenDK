@@ -1,10 +1,10 @@
 <?php
 
-require_once __DIR__ . '/../autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Yaml\Yaml;
 
-$specPath = __DIR__ . '/../../openapi/openapi.yaml';
+$specPath = __DIR__ . '/../openapi/openapi.yaml';
 
 if (!file_exists($specPath)) {
     echo 'Error: openapi/openapi.yaml not found' . PHP_EOL;

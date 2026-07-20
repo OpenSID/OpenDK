@@ -113,7 +113,7 @@
             "@php artisan scribe:copy-openapi"
         ],
         "validate-openapi": [
-            "@php vendor/bin/validate-openapi.php"
+            "@php bin/validate-openapi.php"
         ]
     },
     "minimum-stability": "stable",

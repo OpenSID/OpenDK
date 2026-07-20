@@ -140,6 +140,17 @@ class PembangunanController extends Controller
         ]);
     }
 
+    /**
+     * Sinkronisasi dokumentasi pembangunan dari OpenSID.
+     *
+     * @group OpenSID Integration
+     *
+     * @bodyParam file file required File ZIP berisi data dokumentasi (csv/xlsx). Example: null
+     * @response {
+     *   "message": "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
+     *   "status": "success"
+     * }
+     */
     public function storeDokumentasi(PembangunanDokumentasiRequest $request)
     {
         $fileName = null;

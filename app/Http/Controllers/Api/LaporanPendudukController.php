@@ -38,9 +38,16 @@ use App\Jobs\LaporanPendudukQueueJob;
 class LaporanPendudukController extends Controller
 {
     /**
-     * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
+     * Sinkronisasi laporan penduduk dari OpenSID.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @group OpenSID Integration
+     *
+     * @bodyParam desa_id string required Kode desa. Example: 3201012001
+     * @bodyParam laporan_penduduk array required Data laporan penduduk.
+     * @response {
+     *   "status": "success",
+     *   "message": "Proses sync data Laporan Penduduk OpenSID sedang berjalan"
+     * }
      */
     public function store(LaporanPendudukRequest $request)
     {

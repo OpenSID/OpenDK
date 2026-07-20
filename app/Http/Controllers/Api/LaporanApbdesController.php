@@ -38,10 +38,16 @@ use App\Jobs\LaporanApbdesQueueJob;
 class LaporanApbdesController extends Controller
 {
     /**
-     * Tambah / Ubah Data Apbdes Sesuai OpenSID
+     * Sinkronisasi data APBDes dari OpenSID.
      *
-     * @param  ApbdesRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @group OpenSID Integration
+     *
+     * @bodyParam desa_id string required Kode desa. Example: 3201012001
+     * @bodyParam laporan_apbdes array required Data laporan APBDes.
+     * @response {
+     *   "status": "success",
+     *   "message": "Proses sync data Laporan Apbdes OpenSID sedang berjalan"
+     * }
      */
     public function store(LaporanApbdesRequest $request)
     {

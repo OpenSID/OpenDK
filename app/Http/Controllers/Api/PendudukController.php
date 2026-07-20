@@ -43,12 +43,19 @@ use ZipArchive;
 
 class PendudukController extends Controller
 {
-    /**
-     * Hapus Data Penduduk Sesuai OpenSID
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(PendudukRequest $request)
+/**
+ * Sinkronisasi data penduduk dari OpenSID.
+ *
+ * @group OpenSID Integration
+ *
+ * @bodyParam desa_id string required Kode desa. Example: 3201012001
+ * @bodyParam file file required File ZIP berisi data penduduk. Example: null
+ * @response {
+ *   "status": "success",
+ *   "message": "Proses sync Data Penduduk OpenSID sedang berjalan"
+ * }
+ */
+public function store(PendudukRequest $request)
     {
         // dispatch queue job penduduk
         PendudukQueueJob::dispatch($request->all());

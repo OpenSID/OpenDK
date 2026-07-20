@@ -48,9 +48,16 @@ use Illuminate\Support\Facades\Validator;
 class SuratController extends Controller
 {
     /**
-     * index
+     * Daftar surat untuk desa tertentu.
      *
-     * @return void
+     * @group OpenSID Integration
+     *
+     * @queryParam desa_id string required Kode desa. Example: 3201012001
+     * @response {
+     *   "status": true,
+     *   "message": "Daftar Surat",
+     *   "data": [{"nomor": "001/SK/2024", "file": "surat.pdf", "nama": "SK Kepala Desa"}]
+     * }
      */
     public function index(Request $request)
     {
@@ -76,10 +83,21 @@ class SuratController extends Controller
     }
 
     /**
-     * store
+     * Kirim surat dari OpenSID ke OpenDK (TTE).
      *
-     * @param  mixed  $request
-     * @return void
+     * @group OpenSID Integration
+     *
+     * @bodyParam desa_id string required Kode desa. Example: 3201012001
+     * @bodyParam nik string required NIK penduduk (16 digit). Example: 3201012001000001
+     * @bodyParam tanggal string required Tanggal surat (Y-m-d). Example: 2024-01-15
+     * @bodyParam nomor string required Nomor surat (unique). Example: 001/SK/2024
+     * @bodyParam nama string required Nama surat. Example: SK Kepala Desa
+     * @bodyParam file file required File PDF surat (max 2MB). Example: null
+     * @response {
+     *   "status": true,
+     *   "message": "Surat Berhasil Dikirim!",
+     *   "data": {"nomor": "001/SK/2024"}
+     * }
      */
     public function store(Request $request)
     {
@@ -171,9 +189,16 @@ class SuratController extends Controller
     }
 
     /**
-     * index
+     * Download file surat dalam format PDF.
      *
-     * @return void
+     * @group OpenSID Integration
+     *
+     * @queryParam desa_id string required Kode desa. Example: 3201012001
+     * @queryParam nomor string required Nomor surat. Example: 001/SK/2024
+     * @response {
+     *   "Content-Type": "application/pdf",
+     *   "Content-Disposition": "inline; filename=\"surat.pdf\""
+     * }
      */
     public function download(Request $request)
     {

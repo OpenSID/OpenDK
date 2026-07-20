@@ -48,6 +48,17 @@ class ProgamBantuanController extends Controller
      */
     private const SUPPORTED_EXTENSIONS = ['csv', 'xlsx'];
 
+    /**
+     * Sinkronisasi data program bantuan dari OpenSID.
+     *
+     * @group OpenSID Integration
+     *
+     * @bodyParam file file required File ZIP berisi data bantuan (csv/xlsx). Example: null
+     * @response {
+     *   "message": "Data Bantuan Sedang di Sinkronkan",
+     *   "status": "success"
+     * }
+     */
     public function store(ProgramBantuanRequest $request)
     {
         $fileName = null;
@@ -133,6 +144,17 @@ class ProgamBantuanController extends Controller
         ]);
     }
 
+    /**
+     * Sinkronisasi data peserta program bantuan dari OpenSID.
+     *
+     * @group OpenSID Integration
+     *
+     * @bodyParam file file required File ZIP berisi data peserta bantuan (csv/xlsx). Example: null
+     * @response {
+     *   "status": "success",
+     *   "message": "Data Bantuan Sedang di Sinkronkan"
+     * }
+     */
     public function storePeserta(ProgramBantuanRequest $request)
     {
         $fileName = null;

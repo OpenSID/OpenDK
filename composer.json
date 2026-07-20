@@ -107,6 +107,13 @@
         ],
         "pint": [
             "./vendor/bin/pint"
+        ],
+        "generate-openapi": [
+            "@php artisan scribe:generate",
+            "@php artisan scribe:copy-openapi"
+        ],
+        "validate-openapi": [
+            "@php vendor/bin/validate-openapi.php"
         ]
     },
     "minimum-stability": "stable",

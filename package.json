@@ -10,7 +10,8 @@
         "test:e2e:headed": "playwright test --headed",
         "test:e2e:ui": "playwright test --ui",
         "test:e2e:debug": "playwright test --debug",
-        "test:e2e:report": "playwright show-report"
+        "test:e2e:report": "playwright show-report",
+        "test:contract": "php vendor/bin/pest tests/Contract --group=contract"
     },
     "devDependencies": {
         "@playwright/test": "^1.56.1",

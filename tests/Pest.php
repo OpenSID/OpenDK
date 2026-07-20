@@ -24,6 +24,11 @@ pest()->group('unit')
     ->extend(Tests\TestCase::class)
     ->in('Unit');
 
+// Contract tests — validate OpenSID request payloads against OpenAPI spec
+// These don't need Laravel app (no DB), use base PHPUnit for speed
+pest()->group('contract')
+    ->in('Contract');
+
 // Configure test groups for Browser tests
 pest()->group('browser')
     //->extend(Tests\BrowserTestCase::class)

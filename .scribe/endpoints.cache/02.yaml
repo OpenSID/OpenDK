@@ -215,11 +215,11 @@ endpoints:
       laporan_apbdes:
         custom: []
         name: laporan_apbdes
-        description: 'Array objek laporan. Setiap objek berisi: id (int), judul (string), tahun (int), semester (int 1/2), nama_file (string), file (string base64 encoded).'
+        description: 'Array objek laporan.'
         required: true
         example:
-          - architecto
-        type: 'string[]'
+          - []
+        type: 'object[]'
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -290,10 +290,88 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      laporan_apbdes.id:
+        custom: []
+        name: laporan_apbdes.id
+        description: 'ID laporan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_apbdes.judul:
+        custom: []
+        name: laporan_apbdes.judul
+        description: 'Judul laporan.'
+        required: true
+        example: 'Laporan APBDes 2024'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_apbdes.tahun:
+        custom: []
+        name: laporan_apbdes.tahun
+        description: 'Tahun anggaran.'
+        required: true
+        example: 2024
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_apbdes.semester:
+        custom: []
+        name: laporan_apbdes.semester
+        description: 'Semester (1/2).'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_apbdes.nama_file:
+        custom: []
+        name: laporan_apbdes.nama_file
+        description: 'Nama file.'
+        required: true
+        example: apbdes_2024_s1.pdf
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_apbdes.file:
+        custom: []
+        name: laporan_apbdes.file
+        description: 'File base64 encoded.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
       desa_id: '3201012001'
       laporan_apbdes:
-        - architecto
+        0:
+          id: 16
+          judul: architecto
+          tahun: 16
+          semester: 16
+          nama_file: architecto
+          file: architecto
+        id: 1
+        judul: 'Laporan APBDes 2024'
+        tahun: 2024
+        semester: 1
+        nama_file: apbdes_2024_s1.pdf
+        file: architecto
     fileParameters: []
     responses:
       -
@@ -352,11 +430,11 @@ endpoints:
       laporan_penduduk:
         custom: []
         name: laporan_penduduk
-        description: 'Array objek laporan. Setiap objek berisi: id (int), judul (string), bulan (int 1-12), tahun (int), nama_file (string), file (string base64 encoded).'
+        description: 'Array objek laporan.'
         required: true
         example:
-          - architecto
-        type: 'string[]'
+          - []
+        type: 'object[]'
         enumValues: []
         exampleWasSpecified: false
         nullable: false
@@ -416,10 +494,87 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         deprecated: false
+      laporan_penduduk.id:
+        custom: []
+        name: laporan_penduduk.id
+        description: 'ID laporan.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_penduduk.judul:
+        custom: []
+        name: laporan_penduduk.judul
+        description: 'Judul laporan.'
+        required: true
+        example: 'Laporan Penduduk Jan 2024'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_penduduk.bulan:
+        custom: []
+        name: laporan_penduduk.bulan
+        description: 'Bulan (1-12).'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_penduduk.tahun:
+        custom: []
+        name: laporan_penduduk.tahun
+        description: Tahun.
+        required: true
+        example: 2024
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_penduduk.nama_file:
+        custom: []
+        name: laporan_penduduk.nama_file
+        description: 'Nama file.'
+        required: true
+        example: penduduk_2024_01.pdf
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      laporan_penduduk.file:
+        custom: []
+        name: laporan_penduduk.file
+        description: 'File base64 encoded.'
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
       desa_id: '3201012001'
       laporan_penduduk:
-        - architecto
+        0:
+          id: 16
+          judul: architecto
+          bulan: 16
+          tahun: 16
+          file: architecto
+        id: 1
+        judul: 'Laporan Penduduk Jan 2024'
+        bulan: 1
+        tahun: 2024
+        nama_file: penduduk_2024_01.pdf
+        file: architecto
     fileParameters: []
     responses:
       -

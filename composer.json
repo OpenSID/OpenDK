@@ -47,6 +47,7 @@
         "barryvdh/laravel-debugbar": "^4.0",
         "fakerphp/faker": "^1.9.1",
         "filp/whoops": "~2.0",
+        "justinrainbow/json-schema": "^6.10",
         "laravel/pint": "^1.5",
         "laravel/tinker": "^3.0",
         "mockery/mockery": "^1.4.4",
@@ -114,6 +115,9 @@
         ],
         "validate-openapi": [
             "@php bin/validate-openapi.php"
+        ],
+        "test:contract": [
+            "@php vendor/bin/pest tests/Contract --group=contract"
         ]
     },
     "minimum-stability": "stable",

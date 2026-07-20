@@ -276,11 +276,43 @@ paths:
                   example: '3201012001'
                 laporan_apbdes:
                   type: array
-                  description: 'Array objek laporan. Setiap objek berisi: id (int), judul (string), tahun (int), semester (int 1/2), nama_file (string), file (string base64 encoded).'
+                  description: 'Array objek laporan.'
                   example:
-                    - architecto
+                    - []
                   items:
-                    type: string
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 'ID laporan.'
+                        example: 1
+                      judul:
+                        type: string
+                        description: 'Judul laporan.'
+                        example: 'Laporan APBDes 2024'
+                      tahun:
+                        type: integer
+                        description: 'Tahun anggaran.'
+                        example: 2024
+                      semester:
+                        type: integer
+                        description: 'Semester (1/2).'
+                        example: 1
+                      nama_file:
+                        type: string
+                        description: 'Nama file.'
+                        example: apbdes_2024_s1.pdf
+                      file:
+                        type: string
+                        description: 'File base64 encoded.'
+                        example: architecto
+                    required:
+                      - id
+                      - judul
+                      - tahun
+                      - semester
+                      - nama_file
+                      - file
               required:
                 - desa_id
                 - laporan_apbdes
@@ -322,11 +354,43 @@ paths:
                   example: '3201012001'
                 laporan_penduduk:
                   type: array
-                  description: 'Array objek laporan. Setiap objek berisi: id (int), judul (string), bulan (int 1-12), tahun (int), nama_file (string), file (string base64 encoded).'
+                  description: 'Array objek laporan.'
                   example:
-                    - architecto
+                    - []
                   items:
-                    type: string
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 'ID laporan.'
+                        example: 1
+                      judul:
+                        type: string
+                        description: 'Judul laporan.'
+                        example: 'Laporan Penduduk Jan 2024'
+                      bulan:
+                        type: integer
+                        description: 'Bulan (1-12).'
+                        example: 1
+                      tahun:
+                        type: integer
+                        description: Tahun.
+                        example: 2024
+                      file:
+                        type: string
+                        description: 'File base64 encoded.'
+                        example: architecto
+                      nama_file:
+                        type: string
+                        description: 'Nama file.'
+                        example: penduduk_2024_01.pdf
+                    required:
+                      - id
+                      - judul
+                      - bulan
+                      - tahun
+                      - file
+                      - nama_file
               required:
                 - desa_id
                 - laporan_penduduk

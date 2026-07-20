@@ -26,6 +26,9 @@ jobs:
           php-version: '8.4'
           coverage: none
 
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
       - name: Validate YAML & OpenAPI structure
         run: php bin/validate-openapi.php
 

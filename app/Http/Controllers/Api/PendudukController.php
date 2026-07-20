@@ -129,4 +129,17 @@ class PendudukController extends Controller
             'message' => 'Data Foto Telah Berhasil di Sinkronkan',
         ]);
     }
+
+    /**
+     * Test endpoint untuk verifikasi API berjalan.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function test()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Penduduk API route is working',
+        ]);
+    }
 }

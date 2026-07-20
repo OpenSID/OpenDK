@@ -86,15 +86,6 @@ Paths: 54
   ...
 ```
 
-### Catatan: Endpoint yang Memerlukan Database Terisi
-
-Beberapa endpoint **OpenSID data submission** (`laporan-apbdes`, `laporan-penduduk`,
-`pembangunan`, `program-bantuan`) menggunakan `CekDesa` validation rule yang
-melakukan query ke tabel `profil` saat instantiasi FormRequest.
-Endpoint ini hanya muncul di spec jika database memiliki data profil kecamatan.
-Di CI (GitHub Actions), database test sudah berisi data tersebut sehingga spec
-lengkap.
-
 ### Melihat Dokumentasi
 
 Setelah `php artisan scribe:generate`, dokumentasi dapat diakses di:

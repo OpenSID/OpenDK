@@ -29,38 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Role;
 
-use Spatie\Permission\Models\Role as ModelsRole;
-
-class Role extends ModelsRole
+return new class extends Migration
 {
     /**
-     * Role sistem yang tidak boleh dihapus karena merupakan role bawaan aplikasi.
+     * Run the migrations.
+     * Tambahkan role baru untuk instalasi existing yang sudah melewati seeder awal.
      */
-    const PROTECTED_ROLES = [
-        'super-admin',
-        'admin-kecamatan',
-        'admin-komplain',
-        'administrator-website',
-    ];
-
-    public function scopeWeb($query)
+    public function up(): void
     {
-        return $query->where('guard_name', 'web');
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
+        Role::firstOrCreate(['name' => 'admin-komplain', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'administrator-website', 'guard_name' => 'web']);
+
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
     }
 
-    public static function datatables()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        return static::select('roles.*');
+        Role::where('name', 'admin-komplain')->where('guard_name', 'web')->delete();
+        Role::where('name', 'administrator-website')->where('guard_name', 'web')->delete();
     }
-
-    public static function getListPermission(): Collection
-    {
-        return Permission::where('parent_id', 0)
-            ->with('children.children')
-            ->orderBy('sort')
-            ->get();
-    }
-}
+};

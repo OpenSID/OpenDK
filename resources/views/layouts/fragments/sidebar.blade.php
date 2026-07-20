@@ -490,8 +490,7 @@
                     </li>
                 @endcan
             @endif
-            @can('access.counter')
-                <li class="header">VISITOR COUNTER</li>
+            <li class="header">VISITOR COUNTER</li>
                 <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
                     <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
                         <span class="pull-right-container">
@@ -500,7 +499,6 @@
                         </span>
                     </a>
                 </li>
-            @endcan
 
         </ul>
         <!-- /.sidebar-menu -->

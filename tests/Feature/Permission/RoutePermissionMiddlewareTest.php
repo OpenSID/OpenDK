@@ -58,15 +58,12 @@ describe('Route Permission Middleware', function () {
         $response->assertStatus(200);
     });
 
-    test('counter route is accessible when user has access.counter permission', function () {
-        $permission = Permission::firstOrCreate(['name' => 'access.counter', 'guard_name' => 'web']);
-        
+    test('counter route is accessible to authenticated user', function () {
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
         }
-        
-        $user->givePermissionTo($permission);
+
         $this->actingAs($user);
 
         $response = $this->get('/counter');

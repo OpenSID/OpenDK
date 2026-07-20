@@ -117,10 +117,10 @@ class RoleSpatieSeeder extends Seeder
         // =====================================================================
         // FASE 1: Permission Level 1 & 2 (per modul)
         // =====================================================================
+        // Catatan: access.counter, access.change_default, dan access.api dihapus
+        // karena tidak relevan untuk manajemen hak akses group pengguna.
         $permissions = [
             'access.dashboard',
-            'access.counter',
-            'access.change_default',
             'access.informasi',
             'access.informasi.prosedur',
             'access.informasi.regulasi',
@@ -166,7 +166,6 @@ class RoleSpatieSeeder extends Seeder
             'access.admin_komplain',
             'access.pesan',
             'access.surat',
-            'access.api',
             'access.setting',
             'access.setting.user',
             'access.setting.role',
@@ -184,11 +183,6 @@ class RoleSpatieSeeder extends Seeder
             'access.setting.info_sistem',
             'access.setting.database',
             'access.setting.jenis_dokumen',
-            // old permissions, to be removed in the future
-            'view',
-            'create',
-            'edit',
-            'delete',
         ];
 
         $sort = 1;
@@ -236,23 +230,64 @@ class RoleSpatieSeeder extends Seeder
         // =====================================================================
         // FASE 3: Roles
         // =====================================================================
-        $superAdmin        = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
-        $adminKecamatan    = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
-        $kontributorArtikel = Role::firstOrCreate(['name' => 'kontributor-artikel', 'guard_name' => 'web']);
+        $superAdmin           = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
+        $adminKecamatan       = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
+        $adminKomplain        = Role::firstOrCreate(['name' => 'admin-komplain', 'guard_name' => 'web']);
+        $administratorWebsite = Role::firstOrCreate(['name' => 'administrator-website', 'guard_name' => 'web']);
 
         // Super-admin mendapat semua permission (level 1, 2, dan 3)
         $allPermissions = Permission::all()->pluck('name')->toArray();
         $superAdmin->syncPermissions($allPermissions);
 
-        // Admin Kecamatan: semua kecuali setting
+        // Admin Kecamatan: semua permission kecuali access.setting.*
         $adminKecamatanPermissions = array_values(array_filter($allPermissions, function ($permission) {
             return ! str_starts_with($permission, 'access.setting');
         }));
         $adminKecamatan->syncPermissions($adminKecamatanPermissions);
 
-        // Kontributor Artikel: hanya informasi artikel + aksi view/create/edit/delete
-        $kontributorArtikelPermissions = [
+        // Admin Komplain: hanya akses Admin Komplain dan Pengaturan Kategori Komplain
+        $adminKomplainPermissions = array_filter([
+            'access.dashboard',
+            'access.admin_komplain',
+            'access.admin_komplain.view',
+            'access.admin_komplain.edit',
+            'access.admin_komplain.delete',
+            'access.setting',
+            'access.setting.komplain_kategori',
+            'access.setting.komplain_kategori.view',
+            'access.setting.komplain_kategori.create',
+            'access.setting.komplain_kategori.edit',
+            'access.setting.komplain_kategori.delete',
+        ], fn($p) => Permission::where('name', $p)->where('guard_name', 'web')->exists());
+        $adminKomplain->syncPermissions($adminKomplainPermissions);
+
+        // Administrator Website: akses Informasi, Publikasi, dan Pengaturan Slide
+        $administratorWebsitePermissions = array_filter([
+            'access.dashboard',
+            // Informasi — semua sub-modul
             'access.informasi',
+            'access.informasi.prosedur',
+            'access.informasi.prosedur.view',
+            'access.informasi.prosedur.create',
+            'access.informasi.prosedur.edit',
+            'access.informasi.prosedur.delete',
+            'access.informasi.prosedur.export',
+            'access.informasi.regulasi',
+            'access.informasi.regulasi.view',
+            'access.informasi.regulasi.create',
+            'access.informasi.regulasi.edit',
+            'access.informasi.regulasi.delete',
+            'access.informasi.regulasi.export',
+            'access.informasi.potensi',
+            'access.informasi.potensi.view',
+            'access.informasi.potensi.create',
+            'access.informasi.potensi.edit',
+            'access.informasi.potensi.delete',
+            'access.informasi.event',
+            'access.informasi.event.view',
+            'access.informasi.event.create',
+            'access.informasi.event.edit',
+            'access.informasi.event.delete',
             'access.informasi.artikel',
             'access.informasi.artikel.view',
             'access.informasi.artikel.create',
@@ -260,14 +295,59 @@ class RoleSpatieSeeder extends Seeder
             'access.informasi.artikel.delete',
             'access.informasi.artikel_kategori',
             'access.informasi.artikel_kategori.view',
+            'access.informasi.artikel_kategori.create',
+            'access.informasi.artikel_kategori.edit',
+            'access.informasi.artikel_kategori.delete',
             'access.informasi.komentar_artikel',
             'access.informasi.komentar_artikel.view',
             'access.informasi.komentar_artikel.edit',
             'access.informasi.komentar_artikel.delete',
-        ];
-        $kontributorArtikel->syncPermissions(
-            array_filter($kontributorArtikelPermissions, fn($p) => Permission::where('name', $p)->exists())
-        );
+            'access.informasi.faq',
+            'access.informasi.faq.view',
+            'access.informasi.faq.create',
+            'access.informasi.faq.edit',
+            'access.informasi.faq.delete',
+            'access.informasi.form_dokumen',
+            'access.informasi.form_dokumen.view',
+            'access.informasi.form_dokumen.create',
+            'access.informasi.form_dokumen.edit',
+            'access.informasi.form_dokumen.delete',
+            'access.informasi.media_sosial',
+            'access.informasi.media_sosial.view',
+            'access.informasi.media_sosial.create',
+            'access.informasi.media_sosial.edit',
+            'access.informasi.media_sosial.delete',
+            'access.informasi.media_terkait',
+            'access.informasi.media_terkait.view',
+            'access.informasi.media_terkait.create',
+            'access.informasi.media_terkait.edit',
+            'access.informasi.media_terkait.delete',
+            'access.informasi.sinergi_program',
+            'access.informasi.sinergi_program.view',
+            'access.informasi.sinergi_program.create',
+            'access.informasi.sinergi_program.edit',
+            'access.informasi.sinergi_program.delete',
+            // Publikasi — semua sub-modul
+            'access.publikasi',
+            'access.publikasi.album',
+            'access.publikasi.album.view',
+            'access.publikasi.album.create',
+            'access.publikasi.album.edit',
+            'access.publikasi.album.delete',
+            'access.publikasi.galeri',
+            'access.publikasi.galeri.view',
+            'access.publikasi.galeri.create',
+            'access.publikasi.galeri.edit',
+            'access.publikasi.galeri.delete',
+            // Pengaturan Slide
+            'access.setting',
+            'access.setting.slide',
+            'access.setting.slide.view',
+            'access.setting.slide.create',
+            'access.setting.slide.edit',
+            'access.setting.slide.delete',
+        ], fn($p) => Permission::where('name', $p)->where('guard_name', 'web')->exists());
+        $administratorWebsite->syncPermissions($administratorWebsitePermissions);
 
         // =====================================================================
         // FASE 4: User admin default

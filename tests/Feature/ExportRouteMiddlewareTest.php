@@ -55,7 +55,7 @@ beforeEach(function () {
  */
 function ensureRolesExist(): void
 {
-    $roles = ['super-admin', 'admin-desa', 'admin-kecamatan', 'admin-komplain'];
+    $roles = ['super-admin', 'admin-kecamatan', 'admin-komplain', 'administrator-website'];
 
     foreach ($roles as $roleName) {
         Role::firstOrCreate(['name' => $roleName, 'guard_name' => 'web']);
@@ -108,9 +108,9 @@ test('export anggaran desa middleware allows super-admin role', function () {
 
 test('export anggaran desa middleware blocks user without required role', function () {
     // Arrange: Buat user dengan role yang tidak sesuai
-    // Route membutuhkan: super-admin OR admin-desa
+    // Route membutuhkan permission: access.data.anggaran_desa.export
     $user = User::factory()->create();
-    $user->assignRole('admin-komplain'); // Role ini tidak punya akses
+    $user->assignRole('admin-komplain'); // Role ini tidak punya akses export anggaran desa
 
     $desa = DataDesa::factory()->create();
     AnggaranDesa::factory()->create([
@@ -246,7 +246,7 @@ test('export with multiple roles including required role', function () {
     // Arrange: User dengan multiple roles (termasuk yang required)
     $user = User::factory()->create();
     $user->assignRole('super-admin');
-    $user->assignRole('admin-desa');
+    $user->assignRole('admin-kecamatan');
 
     $desa = DataDesa::factory()->create();
     AnggaranDesa::factory()->create([
@@ -268,7 +268,7 @@ test('export keluarga route middleware configuration', function () {
     // Arrange: Check route exists
     $route = \Route::getRoutes()->getByName('data.keluarga.export-excel');
 
-    // Assert: Route harus ada dan punya middleware admin-desa
+    // Assert: Route harus ada
     expect($route)->not->toBeNull();
 });
 

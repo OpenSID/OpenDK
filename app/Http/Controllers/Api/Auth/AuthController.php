@@ -61,6 +61,7 @@ class AuthController extends Controller
      * Mendapatkan JWT token dengan credentials email dan password.
      * Hanya user dengan permission `access.data`, `access.api`, atau `access.setting` yang diizinkan.
      *
+     * @unauthenticated
      * @bodyParam email string required Email pengguna. Example: admin@mail.com
      * @bodyParam password string required Password pengguna. Example: password
      * @response {

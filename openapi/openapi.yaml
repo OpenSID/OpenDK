@@ -98,7 +98,6 @@ paths:
       responses: {  }
       tags:
         - Autentikasi
-      security: []
   /api/v1/auth/refresh:
     post:
       summary: 'Refresh a token.'
@@ -108,7 +107,6 @@ paths:
       responses: {  }
       tags:
         - Autentikasi
-      security: []
   /api/v1/auth/me:
     get:
       summary: 'Get the authenticated User.'
@@ -130,7 +128,6 @@ paths:
                     example: Unauthenticated.
       tags:
         - Autentikasi
-      security: []
   /api/v1/test:
     get:
       summary: ''
@@ -152,7 +149,6 @@ paths:
                     example: Unauthenticated.
       tags:
         - Endpoints
-      security: []
   /api/v1/penduduk/test:
     post:
       summary: 'Test endpoint untuk verifikasi API berjalan.'
@@ -162,7 +158,6 @@ paths:
       responses: {  }
       tags:
         - Endpoints
-      security: []
   /api/v1/penduduk:
     post:
       summary: 'Hapus data penduduk secara batch (via JSON).'
@@ -209,7 +204,6 @@ paths:
               required:
                 - hapus_penduduk
                 - desa_id
-      security: []
   /api/v1/penduduk/storedata:
     post:
       summary: 'Sinkronisasi data dan foto penduduk via ZIP dari OpenSID.'
@@ -244,7 +238,6 @@ paths:
                   description: 'File ZIP (max 5MB) berisi data penduduk + foto.'
               required:
                 - file
-      security: []
   /api/v1/laporan-apbdes:
     post:
       summary: 'Sinkronisasi data APBDes dari OpenSID (JSON + base64 file).'
@@ -291,7 +284,6 @@ paths:
               required:
                 - desa_id
                 - laporan_apbdes
-      security: []
   /api/v1/laporan-penduduk:
     post:
       summary: 'Sinkronisasi laporan penduduk dari OpenSID (JSON + base64 file).'
@@ -338,7 +330,6 @@ paths:
               required:
                 - desa_id
                 - laporan_penduduk
-      security: []
   /api/v1/pesan:
     post:
       summary: 'Kirim pesan baru atau balas pesan dari OpenSID.'
@@ -400,7 +391,6 @@ paths:
                 - kode_desa
                 - pengirim
                 - nama_pengirim
-      security: []
   /api/v1/pesan/getpesan:
     post:
       summary: 'Ambil daftar pesan untuk desa tertentu.'
@@ -463,7 +453,6 @@ paths:
                   example: 0
               required:
                 - kode_desa
-      security: []
   /api/v1/pesan/detail:
     get:
       summary: 'Lihat detail percakapan pesan.'
@@ -526,7 +515,6 @@ paths:
                               example: 'Isi pesan'
       tags:
         - 'OpenSID Integration'
-      security: []
   /api/v1/pembangunan:
     post:
       summary: 'Sinkronisasi data pembangunan via ZIP dari OpenSID.'
@@ -570,7 +558,6 @@ paths:
               required:
                 - file
                 - desa_id
-      security: []
   /api/v1/pembangunan/dokumentasi:
     post:
       summary: 'Sinkronisasi dokumentasi pembangunan via ZIP dari OpenSID.'
@@ -614,7 +601,6 @@ paths:
               required:
                 - file
                 - desa_id
-      security: []
   /api/v1/identitas-desa:
     post:
       summary: 'Sinkronisasi identitas desa dari OpenSID.'
@@ -665,7 +651,6 @@ paths:
                   example: profil/desa
               required:
                 - kode_desa
-      security: []
   /api/v1/program-bantuan:
     post:
       summary: 'Sinkronisasi data program bantuan via ZIP dari OpenSID.'
@@ -709,7 +694,6 @@ paths:
               required:
                 - file
                 - desa_id
-      security: []
   /api/v1/program-bantuan/peserta:
     post:
       summary: 'Sinkronisasi data peserta program bantuan via ZIP dari OpenSID.'
@@ -753,7 +737,6 @@ paths:
               required:
                 - file
                 - desa_id
-      security: []
   /api/v1/surat:
     get:
       summary: 'Daftar surat untuk desa tertentu.'
@@ -826,7 +809,6 @@ paths:
                   example: architecto
               required:
                 - desa_id
-      security: []
   /api/v1/surat/kirim:
     post:
       summary: 'Kirim surat dari OpenSID ke OpenDK (TTE).'
@@ -898,7 +880,6 @@ paths:
                 - nomor
                 - nama
                 - file
-      security: []
   /api/v1/surat/download:
     get:
       summary: 'Download file surat dalam format PDF.'
@@ -962,4 +943,3 @@ paths:
               required:
                 - desa_id
                 - nomor
-      security: []

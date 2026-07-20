@@ -58,7 +58,7 @@ return [
 
     'auth' => [
         'enabled' => true,
-        'default' => false,
+        'default' => true,
         'in' => AuthIn::BEARER->value,
         'name' => 'key',
         'use_value' => env('SCRIBE_AUTH_KEY'),

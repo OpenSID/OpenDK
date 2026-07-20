@@ -201,7 +201,91 @@ public function index() { ... }
 composer generate-openapi
 ```
 
-## 6. API Key & Token Management
+## 6. ZIP Contract Validation
+
+Endpoint yang menerima file ZIP (`penduduk/storedata`, `pembangunan/*`, `program-bantuan/*`)
+memiliki kontrak format isi ZIP yang harus dipatuhi oleh pengirim (OpenSID).
+
+### Validasi Otomatis
+
+Setiap ZIP wajib berisi minimal 1 file `.csv` atau `.xlsx` (`.xlsx` khusus penduduk).
+Jika tidak ditemukan, endpoint mengembalikan error.
+
+```bash
+# Cek isi ZIP sebelum kirim
+unzip -l file.zip
+
+# Validasi kolom XLSX (contoh untuk pembangunan)
+python3 -c "
+import pandas as pd
+required = ['desa_id','id','judul','anggaran']
+df = pd.read_excel('pembangunan.xlsx')
+missing = [c for c in required if c not in df.columns]
+if missing: print('Missing columns:', missing)
+else: print('All required columns present')
+"
+```
+
+### Kontrak per Endpoint
+
+| Endpoint | File in ZIP | Kolom Wajib |
+|---|---|---|
+| `POST /api/v1/penduduk/storedata` | `*.xlsx` + foto `*.jpg`/`*.png` | desa_id, id, nomor_nik, nama, nomor_kk, jenis_kelamin, tempat_lahir, tanggal_lahir, agama, pendidikan_dlm_kk, pekerjaan, kawin, hubungan_keluarga, kewarganegaraan, nama_ibu, nama_ayah, gol_darah, akta_lahir, nik_ayah, nik_ibu, foto, alamat, dusun, rw, rt, status_dasar, status_rekam |
+| `POST /api/v1/pembangunan/` | `*.csv` / `*.xlsx` | desa_id, id, sumber_dana, lokasi, judul, volume, tahun_anggaran, status, anggaran |
+| `POST /api/v1/pembangunan/dokumentasi` | `*.csv` / `*.xlsx` | desa_id, id, id_pembangunan, gambar, persentase, keterangan |
+| `POST /api/v1/program-bantuan/` | `*.csv` / `*.xlsx` | desa_id, id, nama, sasaran, status, sdate, edate |
+| `POST /api/v1/program-bantuan/peserta` | `*.csv` / `*.xlsx` | desa_id, id, peserta, program_id, no_id_kartu, kartu_nik, kartu_nama, sasaran |
+
+### Contract Test Script
+
+Buat file `tests/Feature/Api/ZipContractTest.php` untuk memvalidasi struktur ZIP:
+
+```bash
+php artisan make:test Api/ZipContractTest
+```
+
+Contoh test:
+
+```php
+<?php
+
+use function Pest\Laravel\postJson;
+
+it('validates pembangunan zip contains csv/xlsx', function () {
+    // Buat ZIP kosong — harus ditolak
+    $emptyZip = new ZipArchive();
+    $path = tempnam(sys_get_temp_dir(), 'test') . '.zip';
+    $emptyZip->open($path, ZipArchive::CREATE);
+    $emptyZip->addFromString('data.csv', 'desa_id,id,judul' . PHP_EOL . '3201012001,1,Test');
+    $emptyZip->close();
+
+    $response = postJson('/api/v1/pembangunan', [
+        'desa_id' => '3201012001',
+        'file' => new \Illuminate\Http\UploadedFile($path, 'data.zip', 'application/zip', null, true),
+    ]);
+
+    $response->assertStatus(200);
+    unlink($path);
+});
+```
+
+### Test Data Generator
+
+Gunakan script berikut untuk membuat ZIP sample yang valid:
+
+```bash
+#!/bin/bash
+# generate_sample_pembangunan.sh
+cat > data.csv << 'CSV'
+desa_id,id,sumber_dana,lokasi,judul,volume,tahun_anggaran,status,anggaran
+3201012001,1,ADD,Dusun 01,Pembangunan Jalan,100,2024,1,50000000
+CSV
+zip sample_pembangunan.zip data.csv
+rm data.csv
+echo "Created sample_pembangunan.zip"
+```
+
+## 7. API Key & Token Management
 
 ### Mendapatkan API Key
 

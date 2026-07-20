@@ -38,12 +38,12 @@ use App\Jobs\LaporanApbdesQueueJob;
 class LaporanApbdesController extends Controller
 {
     /**
-     * Sinkronisasi data APBDes dari OpenSID.
+     * Sinkronisasi data APBDes dari OpenSID (JSON + base64 file).
      *
      * @group OpenSID Integration
      *
      * @bodyParam desa_id string required Kode desa. Example: 3201012001
-     * @bodyParam laporan_apbdes array required Data laporan APBDes.
+     * @bodyParam laporan_apbdes array required Array objek laporan. Setiap objek berisi: id (int), judul (string), tahun (int), semester (int 1/2), nama_file (string), file (string base64 encoded).
      * @response {
      *   "status": "success",
      *   "message": "Proses sync data Laporan Apbdes OpenSID sedang berjalan"

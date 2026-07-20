@@ -49,11 +49,15 @@ class ProgamBantuanController extends Controller
     private const SUPPORTED_EXTENSIONS = ['csv', 'xlsx'];
 
     /**
-     * Sinkronisasi data program bantuan dari OpenSID.
+     * Sinkronisasi data program bantuan via ZIP dari OpenSID.
      *
      * @group OpenSID Integration
      *
-     * @bodyParam file file required File ZIP berisi data bantuan (csv/xlsx). Example: null
+     * Kontrak ZIP:
+     * - Berisi 1 file `*.csv` atau `*.xlsx`.
+     * - Kolom: desa_id, id, nama, sasaran, status, sdate, edate, ndesc.
+     *
+     * @bodyParam file file required File ZIP (max 50MB) berisi data program bantuan. Example: null
      * @response {
      *   "message": "Data Bantuan Sedang di Sinkronkan",
      *   "status": "success"
@@ -145,11 +149,18 @@ class ProgamBantuanController extends Controller
     }
 
     /**
-     * Sinkronisasi data peserta program bantuan dari OpenSID.
+     * Sinkronisasi data peserta program bantuan via ZIP dari OpenSID.
      *
      * @group OpenSID Integration
      *
-     * @bodyParam file file required File ZIP berisi data peserta bantuan (csv/xlsx). Example: null
+     * Kontrak ZIP:
+     * - Berisi 1 file `*.csv` atau `*.xlsx`.
+     * - Kolom: desa_id, id, peserta, program_id, no_id_kartu, kartu_nik,
+     *   kartu_nama, sasaran, kartu_tempat_lahir, kartu_tanggal_lahir,
+     *   kartu_alamat, kartu_peserta.
+     * - Validasi side-effect: jika sasaran=1, kartu_nik harus ada di das_penduduk.
+     *
+     * @bodyParam file file required File ZIP (max 50MB) berisi data peserta bantuan. Example: null
      * @response {
      *   "status": "success",
      *   "message": "Data Bantuan Sedang di Sinkronkan"

@@ -18,7 +18,7 @@ tags:
     description: ''
   -
     name: 'OpenSID Integration'
-    description: ''
+    description: "Kontrak ZIP:\n- Berisi 1 file `*.xlsx` (data penduduk) dan file foto `*.jpg`/`*.png`.\n- Kolom XLSX: desa_id, id, nomor_nik, nama, nomor_kk, jenis_kelamin,\n  tempat_lahir, tanggal_lahir, agama, pendidikan_dlm_kk, pekerjaan,\n  kawin, hubungan_keluarga, kewarganegaraan, nama_ibu, nama_ayah,\n  gol_darah, akta_lahir, nik_ayah, nik_ibu, foto, alamat, dusun,\n  rw, rt, status_dasar, status_rekam."
 components:
   securitySchemes:
     default:
@@ -153,27 +153,6 @@ paths:
       tags:
         - Endpoints
       security: []
-  /api/v1/penduduk/storedata:
-    post:
-      summary: 'Tambah dan Ubah Data dan Foto Penduduk Sesuai OpenSID'
-      operationId: tambahDanUbahDataDanFotoPendudukSesuaiOpenSID
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: false
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: 'Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes.'
-      security: []
   /api/v1/penduduk/test:
     post:
       summary: 'Test endpoint untuk verifikasi API berjalan.'
@@ -184,37 +163,10 @@ paths:
       tags:
         - Endpoints
       security: []
-  /api/v1/pembangunan:
-    post:
-      summary: 'Tambah Data Pembangunan Sesuai OpenSID'
-      operationId: tambahDataPembangunanSesuaiOpenSID
-      description: ''
-      parameters: []
-      responses: {  }
-      tags:
-        - Endpoints
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                file:
-                  type: string
-                  format: binary
-                  description: 'Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes.'
-                desa_id:
-                  type: string
-                  description: ''
-                  example: architecto
-              required:
-                - desa_id
-      security: []
   /api/v1/penduduk:
     post:
-      summary: 'Sinkronisasi data penduduk dari OpenSID.'
-      operationId: sinkronisasiDataPendudukDariOpenSID
+      summary: 'Hapus data penduduk secara batch (via JSON).'
+      operationId: hapusDataPendudukSecaraBatchviaJSON
       description: ''
       parameters: []
       responses:
@@ -239,47 +191,64 @@ paths:
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
               type: object
               properties:
                 hapus_penduduk:
                   type: array
-                  description: ''
+                  description: 'Array objek penduduk yang akan dihapus. Setiap objek berisi: id_pend_desa (int), foto (string/null), desa_id (string).'
                   example:
-                    - []
+                    - architecto
                   items:
-                    type: object
-                    properties:
-                      id_pend_desa:
-                        type: integer
-                        description: ''
-                        example: 16
-                      foto:
-                        type: string
-                        description: ''
-                        example: null
-                        nullable: true
-                      desa_id:
-                        type: string
-                        description: 'Must match an existing stored value.'
-                        example: architecto
+                    type: string
                 desa_id:
                   type: string
                   description: 'Kode desa.'
                   example: '3201012001'
+              required:
+                - hapus_penduduk
+                - desa_id
+      security: []
+  /api/v1/penduduk/storedata:
+    post:
+      summary: 'Sinkronisasi data dan foto penduduk via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataDanFotoPendudukViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Data Foto Telah Berhasil di Sinkronkan'
+                properties:
+                  message:
+                    type: string
+                    example: 'Data Foto Telah Berhasil di Sinkronkan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
                 file:
                   type: string
                   format: binary
-                  description: 'File ZIP berisi data penduduk.'
+                  description: 'File ZIP (max 5MB) berisi data penduduk + foto.'
               required:
-                - desa_id
                 - file
       security: []
   /api/v1/laporan-apbdes:
     post:
-      summary: 'Sinkronisasi data APBDes dari OpenSID.'
-      operationId: sinkronisasiDataAPBDesDariOpenSID
+      summary: 'Sinkronisasi data APBDes dari OpenSID (JSON + base64 file).'
+      operationId: sinkronisasiDataAPBDesDariOpenSIDJSON+Base64File
       description: ''
       parameters: []
       responses:
@@ -314,7 +283,7 @@ paths:
                   example: '3201012001'
                 laporan_apbdes:
                   type: array
-                  description: 'Data laporan APBDes.'
+                  description: 'Array objek laporan. Setiap objek berisi: id (int), judul (string), tahun (int), semester (int 1/2), nama_file (string), file (string base64 encoded).'
                   example:
                     - architecto
                   items:
@@ -325,8 +294,8 @@ paths:
       security: []
   /api/v1/laporan-penduduk:
     post:
-      summary: 'Sinkronisasi laporan penduduk dari OpenSID.'
-      operationId: sinkronisasiLaporanPendudukDariOpenSID
+      summary: 'Sinkronisasi laporan penduduk dari OpenSID (JSON + base64 file).'
+      operationId: sinkronisasiLaporanPendudukDariOpenSIDJSON+Base64File
       description: ''
       parameters: []
       responses:
@@ -361,7 +330,7 @@ paths:
                   example: '3201012001'
                 laporan_penduduk:
                   type: array
-                  description: 'Data laporan penduduk.'
+                  description: 'Array objek laporan. Setiap objek berisi: id (int), judul (string), bulan (int 1-12), tahun (int), nama_file (string), file (string base64 encoded).'
                   example:
                     - architecto
                   items:
@@ -558,10 +527,10 @@ paths:
       tags:
         - 'OpenSID Integration'
       security: []
-  /api/v1/pembangunan/dokumentasi:
+  /api/v1/pembangunan:
     post:
-      summary: 'Sinkronisasi dokumentasi pembangunan dari OpenSID.'
-      operationId: sinkronisasiDokumentasiPembangunanDariOpenSID
+      summary: 'Sinkronisasi data pembangunan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataPembangunanViaZIPDariOpenSID
       description: ''
       parameters: []
       responses:
@@ -593,7 +562,51 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: 'File ZIP berisi data dokumentasi (csv/xlsx).'
+                  description: 'File ZIP (max 50MB) berisi data pembangunan.'
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - file
+                - desa_id
+      security: []
+  /api/v1/pembangunan/dokumentasi:
+    post:
+      summary: 'Sinkronisasi dokumentasi pembangunan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDokumentasiPembangunanViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan'
+                  status: success
+                properties:
+                  message:
+                    type: string
+                    example: 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan'
+                  status:
+                    type: string
+                    example: success
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'File ZIP (max 50MB) berisi data dokumentasi.'
                 desa_id:
                   type: string
                   description: ''
@@ -655,8 +668,8 @@ paths:
       security: []
   /api/v1/program-bantuan:
     post:
-      summary: 'Sinkronisasi data program bantuan dari OpenSID.'
-      operationId: sinkronisasiDataProgramBantuanDariOpenSID
+      summary: 'Sinkronisasi data program bantuan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataProgramBantuanViaZIPDariOpenSID
       description: ''
       parameters: []
       responses:
@@ -688,7 +701,7 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: 'File ZIP berisi data bantuan (csv/xlsx).'
+                  description: 'File ZIP (max 50MB) berisi data program bantuan.'
                 desa_id:
                   type: string
                   description: ''
@@ -699,8 +712,8 @@ paths:
       security: []
   /api/v1/program-bantuan/peserta:
     post:
-      summary: 'Sinkronisasi data peserta program bantuan dari OpenSID.'
-      operationId: sinkronisasiDataPesertaProgramBantuanDariOpenSID
+      summary: 'Sinkronisasi data peserta program bantuan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataPesertaProgramBantuanViaZIPDariOpenSID
       description: ''
       parameters: []
       responses:
@@ -732,7 +745,7 @@ paths:
                 file:
                   type: string
                   format: binary
-                  description: 'File ZIP berisi data peserta bantuan (csv/xlsx).'
+                  description: 'File ZIP (max 50MB) berisi data peserta bantuan.'
                 desa_id:
                   type: string
                   description: ''

@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penduduk extends Model
 {
-    use HasFactory;    
+    use HasFactory;
 
     protected $table = 'das_penduduk';
 
@@ -95,7 +95,7 @@ class Penduduk extends Model
     ];
 
     /**
-     * Relation Methods
+     * Relation Methods.
      * */
     public function getPendudukAktif($did, $year)
     {
@@ -134,6 +134,7 @@ class Penduduk extends Model
     {
         return $this->hasOne(Keluarga::class, 'no_kk', 'no_kk');
     }
+
     public function suplemen_terdata()
     {
         return $this->hasMany(SuplemenTerdata::class, 'penduduk_id', 'id');

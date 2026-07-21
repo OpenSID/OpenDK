@@ -32,16 +32,17 @@
 namespace App\Helpers;
 
 /**
- * Pengganti untuk RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker
- * 
+ * Pengganti untuk RachidLaasri\LaravelInstaller\Helpers\RequirementsChecker.
+ *
  * Class ini dibuat untuk menggantikan functionality dari package yang sudah abandoned
  */
 class SystemRequirementsChecker
 {
     /**
-     * Check PHP version against minimum requirement
+     * Check PHP version against minimum requirement.
      *
      * @param string $minPhpVersion
+     *
      * @return array
      */
     public function checkPHPversion($minPhpVersion = '8.1')
@@ -59,9 +60,8 @@ class SystemRequirementsChecker
     }
 
     /**
-     * Check system requirements
+     * Check system requirements.
      *
-     * @param array $requirements
      * @return array
      */
     public function check(array $requirements)
@@ -97,9 +97,8 @@ class SystemRequirementsChecker
     }
 
     /**
-     * Check folder permissions
+     * Check folder permissions.
      *
-     * @param array $folders
      * @return array
      */
     public function checkPermissions(array $folders)

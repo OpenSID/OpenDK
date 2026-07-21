@@ -31,13 +31,13 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use Illuminate\Http\Request;
-use App\Models\SinergiProgram;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SinergiProgramRequest;
+use App\Models\SinergiProgram;
+use App\Traits\HandlesFileUpload;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class SinergiProgramController extends Controller
 {
@@ -58,14 +58,14 @@ class SinergiProgramController extends Controller
         if ($request->ajax()) {
             return DataTables::of(SinergiProgram::all())
                 ->addIndexColumn()
-                ->addColumn('aksi', function ($row) {                    
+                ->addColumn('aksi', function ($row) {
                     $data['show_web'] = $row->url;
 
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.informasi.sinergi_program.edit') ? route('informasi.sinergi-program.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.informasi.sinergi_program.delete') ? route('informasi.sinergi-program.destroy', $row->id) : null;
                         $data['naik'] = route('informasi.sinergi-program.urut', [$row->id, -1]);
-                        $data['turun'] = route('informasi.sinergi-program.urut', [$row->id, 1]);                        
+                        $data['turun'] = route('informasi.sinergi-program.urut', [$row->id, 1]);
                         if ($row->status == 0) {
                             $data['unlock_url'] = route('informasi.sinergi-program.status', $row->id);
                         } else {
@@ -78,9 +78,9 @@ class SinergiProgramController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->editColumn('gambar', function ($row) {
                     return '<img src="' . asset($row->gambar) . '" style="max-width:100px; max-height:60px;"/>';
@@ -159,7 +159,6 @@ class SinergiProgramController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
      * @return Response
      */
     public function destroy(SinergiProgram $sinergi)
@@ -184,13 +183,14 @@ class SinergiProgramController extends Controller
         try {
             if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
                 return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
-            } elseif ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
+            }
+            if ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
                 return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
-            } else {
+            }
                 $perubahan = $sinergi->urutan + $urutan;
                 SinergiProgram::where('urutan', $perubahan)->update(['urutan' => $sinergi->urutan]);
                 $sinergi->update(['urutan' => $perubahan]);
-            }
+
         } catch (\Exception $e) {
             Log::error('Sinergi Program urutan change failed', [
                 'error' => $e->getMessage(),

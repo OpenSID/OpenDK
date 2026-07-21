@@ -35,11 +35,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class CounterVisitor extends Model
 {
+    public $timestamps = false;
+
     protected $table = 'das_counter_visitor';
 
     protected $fillable = ['visitor'];
-
-    public $timestamps = false;
 
     public function pages()
     {

@@ -134,7 +134,7 @@ test('export keluarga with semua filter', function () {
 test('export keluarga with small dataset performance', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dalam jumlah kecil
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
@@ -159,7 +159,7 @@ test('export keluarga with small dataset performance', function () {
 test('export keluarga with medium dataset performance', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dalam jumlah medium
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
@@ -184,7 +184,7 @@ test('export keluarga with medium dataset performance', function () {
 test('export keluarga with large dataset performance', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dalam jumlah besar
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
@@ -209,7 +209,7 @@ test('export keluarga with large dataset performance', function () {
 test('export keluarga with multiple desa performance', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data di beberapa desa
     $startTime = microtime(true);
     $desas = DataDesa::factory()->count(5)->create();
@@ -236,7 +236,7 @@ test('export keluarga with multiple desa performance', function () {
 test('export keluarga with filter performance', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dalam jumlah besar dengan filter
     $startTime = microtime(true);
     $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
@@ -268,7 +268,7 @@ test('export keluarga with filter performance', function () {
 test('export keluarga memory usage with large dataset', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dalam jumlah besar
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
@@ -293,7 +293,7 @@ test('export keluarga memory usage with large dataset', function () {
 test('export keluarga with eager loading performance', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dengan relasi
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->count(10)->create(['desa_id' => $desa->desa_id]);
@@ -324,7 +324,7 @@ test('export keluarga with eager loading performance', function () {
 test('export keluarga repeated exports consistency', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data test
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
@@ -356,7 +356,7 @@ test('export keluarga repeated exports consistency', function () {
 test('export keluarga with complex data relationships', function () {
     // Arrange: Clean data first
     Keluarga::query()->delete();
-    
+
     // Buat data dengan relasi kompleks
     $desa = DataDesa::factory()->create();
     $startTime = microtime(true);

@@ -2,21 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\MediaTerkaitObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Observers\MediaTerkaitObserver;
 
 class MediaTerkait extends Model
 {
     use HasFactory;
-
-    /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::observe(MediaTerkaitObserver::class);
-    }
 
     protected $fillable = [
         'logo',
@@ -28,8 +20,8 @@ class MediaTerkait extends Model
 
     public function scopeSearch($query, $search)
     {
-        return empty($search) 
-            ? $query 
+        return empty($search)
+            ? $query
             : $query->where('nama', 'LIKE', "%{$search}%");
     }
 
@@ -40,5 +32,11 @@ class MediaTerkait extends Model
         });
     }
 
-
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(MediaTerkaitObserver::class);
+    }
 }

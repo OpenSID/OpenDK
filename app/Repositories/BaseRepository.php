@@ -46,9 +46,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Get all records
+     * Get all records.
      *
-     * @param array $columns
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all(array $columns = ['*'])
@@ -57,10 +56,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Find record by ID
+     * Find record by ID.
      *
-     * @param int $id
-     * @param array $columns
      * @return Model|null
      */
     public function find(int $id, array $columns = ['*'])
@@ -69,10 +66,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Find record by slug
+     * Find record by slug.
      *
-     * @param string $slug
-     * @param array $columns
      * @return Model|null
      */
     public function findBySlug(string $slug, array $columns = ['*'])
@@ -81,9 +76,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Create new record
+     * Create new record.
      *
-     * @param array $data
      * @return Model
      */
     public function create(array $data)
@@ -92,10 +86,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Update record
+     * Update record.
      *
-     * @param int $id
-     * @param array $data
      * @return bool
      */
     public function update(int $id, array $data)
@@ -104,9 +96,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Delete record
+     * Delete record.
      *
-     * @param int $id
      * @return bool
      */
     public function delete(int $id)
@@ -115,10 +106,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Get paginated results
+     * Get paginated results.
      *
-     * @param int $perPage
-     * @param array $columns
      * @return LengthAwarePaginator
      */
     public function paginate(int $perPage = 15, array $columns = ['*'])
@@ -127,9 +116,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply filters to query
+     * Apply filters to query.
      *
-     * @param array $filters
      * @return self
      */
     public function applyFilters(array $filters)
@@ -144,10 +132,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply search to query
+     * Apply search to query.
      *
-     * @param string $search
-     * @param array $fields
      * @return self
      */
     public function applySearch(string $search, array $fields = [])
@@ -166,10 +152,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply sorting to query
+     * Apply sorting to query.
      *
-     * @param string $field
-     * @param string $direction
      * @return self
      */
     public function applySorting(string $field, string $direction = 'desc')
@@ -180,9 +164,8 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply relationships to query
+     * Apply relationships to query.
      *
-     * @param array $relations
      * @return self
      */
     public function with(array $relations)
@@ -193,9 +176,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Get the underlying query builder
-     *
-     * @return Builder
+     * Get the underlying query builder.
      */
     protected function getQuery(): Builder
     {

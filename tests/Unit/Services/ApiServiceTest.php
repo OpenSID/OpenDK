@@ -1,31 +1,31 @@
 <?php
 
-use App\Services\ApiService;
 use App\Models\SettingAplikasi;
 use App\Models\User;
+use App\Services\ApiService;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 
 // ApiService Testing
 it('can instantiate api service', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     $service = new ApiService();
-    
+
     expect($service)->toBeInstanceOf(ApiService::class);
 });
 
 it('can register customer successfully', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     // Create a user and authenticate
     $user = User::factory()->create();
     Auth::login($user);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/register-kecamatan' => Http::response([
             'id' => 1,
@@ -47,7 +47,7 @@ it('can register customer successfully', function () {
         'status_langganan_id' => 1,
         'permohonan' => 'test_file.pdf'
     ]);
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeTrue();
     expect($response['message'])->toBe('Pendaftaran pelanggan berhasil.');
@@ -57,11 +57,11 @@ it('can register customer successfully', function () {
 it('handles registration failure', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     // Create a user and authenticate
     $user = User::factory()->create();
     Auth::login($user);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/register-kecamatan' => Http::response([
             'error' => 'Validation failed'
@@ -82,7 +82,7 @@ it('handles registration failure', function () {
         'status_langganan_id' => 1,
         'permohonan' => 'test_file.pdf'
     ]);
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeFalse();
     expect($response['message'])->toBe('Pendaftaran pelanggan gagal.');
@@ -92,11 +92,11 @@ it('handles registration failure', function () {
 it('handles registration network error', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     // Create a user and authenticate
     $user = User::factory()->create();
     Auth::login($user);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/register-kecamatan' => Http::response('', 500)
     ]);
@@ -115,16 +115,16 @@ it('handles registration network error', function () {
         'status_langganan_id' => 1,
         'permohonan' => 'test_file.pdf'
     ]);
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeFalse();
-    expect($response['message'])->toBe('Pendaftaran pelanggan gagal.');    
+    expect($response['message'])->toBe('Pendaftaran pelanggan gagal.');
 });
 
 it('can get registered customers', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/terdaftar-kecamatan' => Http::response([
             [
@@ -142,7 +142,7 @@ it('can get registered customers', function () {
 
     $service = new ApiService();
     $response = $service->terdaftar('3201');
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeTrue();
     expect($response['message'])->toBe('Data berhasil diambil.');
@@ -153,7 +153,7 @@ it('can get registered customers', function () {
 it('handles get registered customers failure', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/terdaftar-kecamatan' => Http::response([
             'message' => 'Unauthorized access'
@@ -162,7 +162,7 @@ it('handles get registered customers failure', function () {
 
     $service = new ApiService();
     $response = $service->terdaftar('3201');
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeFalse();
     expect($response['message'])->toBe('Unauthorized access');
@@ -172,7 +172,7 @@ it('handles get registered customers failure', function () {
 it('can get registration form', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/form-register-kecamatan' => Http::response([
             'fields' => [
@@ -185,7 +185,7 @@ it('can get registration form', function () {
 
     $service = new ApiService();
     $response = $service->getFormRegister();
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeTrue();
     expect($response['message'])->toBe('Data berhasil diambil.');
@@ -196,14 +196,14 @@ it('can get registration form', function () {
 it('handles get registration form failure', function () {
     // Create required settings
     SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
-    
+
     Http::fake([
         '*/api/v1/pelanggan/form-register-kecamatan' => Http::response('', 500)
     ]);
 
     $service = new ApiService();
     $response = $service->getFormRegister();
-    
+
     expect($response)->toBeArray();
     expect($response['success'])->toBeFalse();
     expect($response['message'])->toBe('Gagal mengambil data.');
@@ -213,7 +213,7 @@ it('handles get registration form failure', function () {
 it('handles missing layanan_opendesa_token setting', function () {
     // Don't create required setting
     $service = new ApiService();
-    
+
     // Should still instantiate but may have issues with API calls
     expect($service)->toBeInstanceOf(ApiService::class);
 });

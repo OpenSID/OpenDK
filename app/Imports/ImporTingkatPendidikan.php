@@ -41,7 +41,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporTingkatPendidikan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporTingkatPendidikan implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 

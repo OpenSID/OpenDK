@@ -31,17 +31,17 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Enums\TipeWaktuFormDokumen;
-use App\Enums\StatusFormDokumen;
 use App\Enums\KonversiHariFormDokumen;
-use App\Models\FormDokumen;
-use App\Models\JenisDokumen;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
+use App\Enums\StatusFormDokumen;
+use App\Enums\TipeWaktuFormDokumen;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DokumenRequest;
+use App\Models\FormDokumen;
+use App\Models\JenisDokumen;
+use App\Traits\HandlesFileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class FormDokumenController extends Controller
 {
@@ -78,7 +78,6 @@ class FormDokumenController extends Controller
                 }
 
                 $data['download_url'] = auth()->user()->can('access.informasi.form_dokumen.export') ? route('informasi.form-dokumen.download', $row->id) : null;
-
 
                 return view('forms.aksi', $data);
             })
@@ -118,7 +117,6 @@ class FormDokumenController extends Controller
 
             $isPublished = $input['status'] == StatusFormDokumen::Terbit;
             $input['is_published'] = $isPublished;
-
 
             if ($isPublished) {
                 $publishedAt = now();
@@ -199,7 +197,6 @@ class FormDokumenController extends Controller
 
             $isPublished = $input['status'] == StatusFormDokumen::Terbit;
             $input['is_published'] = $isPublished;
-
 
             if ($isPublished) {
                 $publishedAt = now();

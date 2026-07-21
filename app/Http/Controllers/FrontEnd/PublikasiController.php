@@ -39,7 +39,7 @@ class PublikasiController extends FrontEndController
     public function album()
     {
         Counter::count('publik.publikasi.album');
-        
+
         $page_title = 'Galeri';
 
         return view('pages.publikasi.album', compact('page_title'));
@@ -47,7 +47,7 @@ class PublikasiController extends FrontEndController
 
     public function galeri($slug)
     {
-        Counter::count('publik.publikasi.album');        
+        Counter::count('publik.publikasi.album');
         $page_title = 'Galeri';
 
         return view('pages.publikasi.galeri', compact('page_title', 'slug'));
@@ -55,7 +55,7 @@ class PublikasiController extends FrontEndController
 
     public function galeri_detail($slug)
     {
-        Counter::count('publik.publikasi.album');        
+        Counter::count('publik.publikasi.album');
         $page_title = 'Galeri';
 
         return view('pages.publikasi.galeri_detail', compact('page_title', 'slug'));

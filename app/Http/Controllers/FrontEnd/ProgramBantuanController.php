@@ -34,19 +34,18 @@ namespace App\Http\Controllers\FrontEnd;
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
 
-
 class ProgramBantuanController extends FrontEndController
-{    
+{
     /**
-     * Menampilkan Data Program Bantuan
+     * Menampilkan Data Program Bantuan.
      **/
     public function showProgramBantuan()
     {
         Counter::count('statistik.program-bantuan');
 
         $page_title = 'Program Bantuan';
-        $page_description = 'Data Program Bantuan';            
+        $page_description = 'Data Program Bantuan';
 
         return view('pages.program_bantuan.show_program_bantuan', compact('page_title', 'page_description'));
-    }        
+    }
 }

@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\DB;
 class StatistikChartPendudukGolDarahService extends BaseApiService
 {
     private $colors = [1 => '#f97d7d', 2 => '#f86565', 3 => '#f74d4d', 4 => '#f63434', 13 => '#f51c1c'];
+
     public function chart($did, $year)
     {
         if ($this->useDatabaseGabungan()) {
@@ -72,8 +73,8 @@ class StatistikChartPendudukGolDarahService extends BaseApiService
         $golonganDarah = DB::table('ref_golongan_darah')->orderBy('id')->get();
         foreach ($golonganDarah as $val) {
             $queryTotal = DB::table('das_penduduk')
-                //->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
-                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')                
+                // ->join('das_keluarga', 'das_penduduk.no_kk', '=', 'das_keluarga.no_kk')
+                ->leftJoin('ref_pendidikan_kk', 'das_penduduk.pendidikan_kk_id', '=', 'ref_pendidikan_kk.id')
                 ->whereYear('das_penduduk.created_at', '<=', $year);
             if ($val->id != 13) {
                 $queryTotal->where('das_penduduk.golongan_darah_id', '=', $val->id);

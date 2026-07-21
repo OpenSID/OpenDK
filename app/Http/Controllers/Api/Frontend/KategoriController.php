@@ -32,11 +32,9 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\KategoriApiRepository;
-use App\Transformers\KategoriTransformer;
-use App\Http\Requests\Api\Frontend\StoreCommentRequest;
 use App\Transformers\ArtikelKategoriTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
@@ -45,6 +43,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK Kategori API",
  *     description="API untuk mengakses data kategori dengan Spatie Query Builder filtering dan sorting",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -56,7 +55,6 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola kategori"
  * )
  */
-
 class KategoriController extends BaseController
 {
     protected KategoriApiRepository $kategoriApiRepository;
@@ -76,66 +74,85 @@ class KategoriController extends BaseController
      *     summary="Get list of articles",
      *     description="Retrieve paginated list of articles with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Kategori"},
+     *
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=1, minimum=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page[size]",
      *         in="query",
      *         description="Number of items per page (max: 100)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[kategori]",
      *         in="query",
      *         description="Filter by category slug",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="berita")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[status]",
      *         in="query",
      *         description="Filter by status (1=published, 0=draft)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", enum={0, 1}, example=1)
-     *     ),     
+     *     ),
+     *
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="Search in title and content fields",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="berita penting")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="sort",
      *         in="query",
      *         description="Sort field",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"created_at", "updated_at", "judul", "id"}, default="created_at")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="order",
      *         in="query",
      *         description="Sort order",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
-     *     ),     
+     *     ),
+     *
      *     @OA\Parameter(
      *         name="fields",
      *         in="query",
      *         description="Select specific fields (comma-separated)",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="id,nama,slug,created_at")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="type", type="string", example=null),
@@ -143,7 +160,7 @@ class KategoriController extends BaseController
      *                 @OA\Property(property="attributes", type="object", example={
      *                     "id": null,
      *                     "slug": "eveniet-nemo-praesentium-et-dolores-dolor-nemo",
-     *                     "nama": "Eveniet nemo praesentium et dolores dolor nemo.",     
+     *                     "nama": "Eveniet nemo praesentium et dolores dolor nemo.",
      *                     "created_at": "2025-01-05T14:19:31.000000Z",
      *                     "updated_at": "2025-01-27T08:47:27.000000Z"
      *                 })
@@ -164,20 +181,26 @@ class KategoriController extends BaseController
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "per_page": ["The per page must not be greater than 100."],
      *                 "sort": ["The selected sort is invalid."]
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Server error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Internal server error")
      *         )
      *     )
@@ -188,8 +211,8 @@ class KategoriController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return Cache::remember($cacheKey, $this->getCacheDuration(), function () {
             return $this->fractal($this->kategoriApiRepository->data(), new ArtikelKategoriTransformer(), 'kategori');
         });
-    }            
+    }
 }

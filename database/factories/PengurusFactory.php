@@ -31,9 +31,6 @@
 
 namespace Database\Factories;
 
-use App\Enums\JenisJabatan;
-use App\Models\Agama;
-use App\Models\Pendidikan;
 use App\Models\Pengurus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

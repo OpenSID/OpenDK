@@ -13,7 +13,6 @@
  *   2  — coverage drop exceeds allowed delta (reads COVERAGE_PREV if set)
  *   3  — file parse error
  */
-
 $opts = getopt('', ['min:', 'drop:', 'unit:', 'integration:']);
 
 $minThreshold   = (float) ($opts['min'] ?? 70);
@@ -135,7 +134,7 @@ if ($previousCoverage !== false && is_numeric($previousCoverage)) {
 
     echo "\n  Previous coverage : {$prev}%\n";
     echo "  Current coverage  : {$combinedPct}%\n";
-    echo "  Delta             : -" . round($delta, 2) . "%\n";
+    echo '  Delta             : -' . round($delta, 2) . "%\n";
 
     if ($delta > $dropThreshold) {
         echo "✗ FAIL: Coverage dropped by {$delta}% (max allowed: {$dropThreshold}%)\n";
@@ -171,7 +170,7 @@ if ($summaryFile) {
 
     if ($previousCoverage !== false && is_numeric($previousCoverage)) {
         $dropStatus = $delta <= $dropThreshold ? '✅' : '❌';
-        $summary .= "| Drop Check | -" . round($delta, 2) . "% (≤{$dropThreshold}%) | {$dropStatus} |\n";
+        $summary .= '| Drop Check | -' . round($delta, 2) . "% (≤{$dropThreshold}%) | {$dropStatus} |\n";
     }
 
     file_put_contents($summaryFile, $summary, FILE_APPEND);
@@ -184,8 +183,7 @@ if ($failed) {
     echo "  ✗ COVERAGE GATE FAILED\n";
     echo "═══════════════════════════════════════\n";
     exit(1);
-} else {
+}
     echo "  ✓ COVERAGE GATE PASSED\n";
     echo "═══════════════════════════════════════\n";
     exit(0);
-}

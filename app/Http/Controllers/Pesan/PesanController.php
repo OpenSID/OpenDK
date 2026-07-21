@@ -72,28 +72,11 @@ class PesanController extends Controller
             })
             ->paginate(Pesan::PER_PAGE);
 
-        $list_desa = (new DesaService())->listDesa();        
+        $list_desa = (new DesaService())->listDesa();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 
         return view('pesan.masuk.index', $data->all());
-    }
-
-    protected function loadCounter()
-    {
-        $counter_unread = Pesan::where([
-            'jenis' => Pesan::PESAN_MASUK,
-            'diarsipkan' => Pesan::NON_ARSIP,
-            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
-        $counter_unread_keluar = Pesan::where([
-            'jenis' => Pesan::PESAN_KELUAR,
-            'diarsipkan' => Pesan::NON_ARSIP,
-            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
-
-        return [
-            'counter_unread' => $counter_unread,
-            'counter_unread_keluar' => $counter_unread_keluar,
-        ];
     }
 
     public function loadPesanKeluar(Request $request)
@@ -277,5 +260,22 @@ class PesanController extends Controller
         }
 
         return back()->withInput()->with('error', 'Pesan gagal dikirim!');
+    }
+
+    protected function loadCounter()
+    {
+        $counter_unread = Pesan::where([
+            'jenis' => Pesan::PESAN_MASUK,
+            'diarsipkan' => Pesan::NON_ARSIP,
+            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
+        $counter_unread_keluar = Pesan::where([
+            'jenis' => Pesan::PESAN_KELUAR,
+            'diarsipkan' => Pesan::NON_ARSIP,
+            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
+
+        return [
+            'counter_unread' => $counter_unread,
+            'counter_unread_keluar' => $counter_unread_keluar,
+        ];
     }
 }

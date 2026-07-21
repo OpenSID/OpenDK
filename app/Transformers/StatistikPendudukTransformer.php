@@ -34,15 +34,12 @@ namespace App\Transformers;
 use League\Fractal\TransformerAbstract;
 
 class StatistikPendudukTransformer extends TransformerAbstract
-{    
+{
     /**
-     * Turn this item object into a generic array
-     *
-     * @param $data
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(array $data): array
-    {        
+    {
         return $data;
-    }    
+    }
 }

@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\Warganegara;
-use App\Models\Penduduk;
-
 
 // Warganegara Model Testing
 it('can create a warganegara', function () {
@@ -39,7 +37,7 @@ it('has correct table name', function () {
 
 it('has many penduduk relationship', function () {
     $warganegara = Warganegara::factory()->create();
-    
+
     expect($warganegara->penduduk())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasMany::class);
 });
 

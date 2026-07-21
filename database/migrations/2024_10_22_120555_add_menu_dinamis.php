@@ -2,11 +2,8 @@
 
 use App\Models\NavMenu;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -21,7 +18,7 @@ return new class extends Migration
                 'url' => '/',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 1,
                 'is_show' => 1
             ],
@@ -31,7 +28,7 @@ return new class extends Migration
                 'url' => '#',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 2,
                 'is_show' => 1
             ],
@@ -51,7 +48,7 @@ return new class extends Migration
                 'url' => '/berita-desa',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 3,
                 'is_show' => 1
             ],
@@ -61,7 +58,7 @@ return new class extends Migration
                 'url' => '#',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 4,
                 'is_show' => 1
             ],
@@ -111,7 +108,7 @@ return new class extends Migration
                 'url' => '#',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 5,
                 'is_show' => 1
             ],
@@ -121,7 +118,7 @@ return new class extends Migration
                 'url' => '#',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 6,
                 'is_show' => 1
             ],
@@ -131,7 +128,7 @@ return new class extends Migration
                 'url' => '#',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 7,
                 'is_show' => 1
             ],
@@ -141,7 +138,7 @@ return new class extends Migration
                 'url' => '#',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 8,
                 'is_show' => 1
             ],
@@ -211,7 +208,7 @@ return new class extends Migration
                 'url' => '/statistik/anggaran-desa',
                 'target' => '_self',
                 'type' => 'modul',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 9,
                 'is_show' => 1
             ],
@@ -251,7 +248,7 @@ return new class extends Migration
                 'url' => 'https://demodk.opendesa.id/faq',
                 'target' => '_blank',
                 'type' => 'link',
-                'parent_id' => NULL,
+                'parent_id' => null,
                 'order' => 10,
                 'is_show' => 1
             ],

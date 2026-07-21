@@ -35,17 +35,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class SuratResource extends JsonResource
 {
-    //define properti
+    // define properti
     public $status;
 
     public $message;
 
     /**
-     * __construct
+     * __construct.
      *
-     * @param  mixed  $status
-     * @param  mixed  $message
-     * @param  mixed  $resource
      * @return void
      */
     public function __construct($status, $message, $resource)
@@ -58,7 +55,8 @@ class SuratResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     public function toArray($request)

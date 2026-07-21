@@ -1,8 +1,8 @@
 <?php
 
-use Tests\BrowserTestCase;
 use Tests\Browser\Pages\DashboardPage;
 use Tests\Browser\Pages\UserPage;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 

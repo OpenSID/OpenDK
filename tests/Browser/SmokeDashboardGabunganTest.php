@@ -29,7 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-/**
+/*
  * Smoke Test: Dashboard — Mode Database Gabungan
  *
  * Memastikan fungsionalitas inti halaman Dashboard berjalan dengan benar
@@ -65,7 +65,7 @@ const SMOKE_MOCK_PENDUDUK  = 15420;
 const SMOKE_MOCK_KELUARGA  = 4200;
 const SMOKE_MOCK_BANTUAN   = 8;
 
-/**
+/*
  * Setup sebelum setiap test:
  * 1. Aktifkan mode database gabungan via SettingAplikasi + config
  * 2. Pasang Http::fake() untuk 4 endpoint API yang dipanggil DashboardController

@@ -34,10 +34,11 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * Status untuk melihat aktif dan tidak aktif
+ * Status untuk melihat aktif dan tidak aktif.
  */
 final class Tema extends Enum
 {
     public const TemaKostum = 0;
+
     public const TemaSistem = 1;
 }

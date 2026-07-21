@@ -32,7 +32,6 @@
 namespace Tests\Feature\MasterData;
 
 use App\Models\Profil;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Create default profil for testing

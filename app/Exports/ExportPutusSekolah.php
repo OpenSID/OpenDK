@@ -53,8 +53,6 @@ class ExportPutusSekolah implements FromCollection, WithHeadings, WithMapping, W
 
     /**
      * Definisi header kolom untuk export Excel.
-     *
-     * @return array
      */
     public function headings(): array
     {
@@ -78,9 +76,6 @@ class ExportPutusSekolah implements FromCollection, WithHeadings, WithMapping, W
 
     /**
      * Mapping data untuk setiap baris.
-     *
-     * @param $putusSekolah
-     * @return array
      */
     public function map($putusSekolah): array
     {
@@ -105,7 +100,6 @@ class ExportPutusSekolah implements FromCollection, WithHeadings, WithMapping, W
     /**
      * Styling untuk Excel worksheet.
      *
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

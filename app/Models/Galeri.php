@@ -2,23 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\GaleriObserver;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Observers\GaleriObserver;
 
 class Galeri extends Model
 {
     use HasFactory, Sluggable;
-
-    /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::observe(GaleriObserver::class);
-    }
 
     protected $fillable = [
         'album_id',
@@ -63,8 +55,16 @@ class Galeri extends Model
         return $this->belongsTo(Album::class);
     }
 
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(GaleriObserver::class);
+    }
+
     protected function getGambarPathAttribute(){
         $gambar = $this->gambar[0];
-        return $this->attributes['jenis'] == 'file' ? isThumbnail("publikasi/galeri/".$gambar) : asset('/img/no-image.png');
+        return $this->attributes['jenis'] == 'file' ? isThumbnail('publikasi/galeri/'.$gambar) : asset('/img/no-image.png');
     }
 }

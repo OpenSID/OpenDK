@@ -81,7 +81,7 @@ class PendudukFactory extends Factory
             'no_kk_sebelumnya' => $this->faker->optional()->numerify('################'),
             'desa_id' => function () {
                 return \App\Models\DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['desa_id' => '3301011234567', 'nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->desa_id;
-            },            
+            },
             'created_at' => now(),
             'updated_at' => now(),
             'imported_at' => now(),

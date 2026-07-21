@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class FileUploadService
 {
     /**
-     * Upload file dengan validasi keamanan
+     * Upload file dengan validasi keamanan.
      */
     public function uploadSecure(
         UploadedFile $file,
@@ -53,7 +53,7 @@ class FileUploadService
     }
 
     /**
-     * Upload multiple files
+     * Upload multiple files.
      */
     public function uploadMultiple(
         array $files,
@@ -73,7 +73,7 @@ class FileUploadService
     }
 
     /**
-     * Delete file
+     * Delete file.
      */
     public function delete(string $path): bool
     {
@@ -85,7 +85,36 @@ class FileUploadService
     }
 
     /**
-     * Validate MIME type
+     * Get allowed MIME types by category.
+     */
+    public static function getAllowedMimes(string $category): array
+    {
+        return match ($category) {
+            'image' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+            'document' => ['application/pdf', 'application/msword',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            'spreadsheet' => ['application/vnd.ms-excel',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'text/csv'],
+            'archive' => ['application/zip', 'application/x-zip-compressed'],
+            default => [],
+        };
+    }
+
+    /**
+     * Cek apakah batas ukuran file upload aktif berdasarkan pengaturan aplikasi.
+     * Mengembalikan true jika limit berlaku, false jika limit dinonaktifkan.
+     */
+    public static function isLimitEnabled(): bool
+    {
+        $value = \App\Models\SettingAplikasi::where('key', 'upload_limit')->value('value');
+
+        // Default aktif (true) jika setting belum ada di database
+        return (bool) (int) ($value ?? 1);
+    }
+
+    /**
+     * Validate MIME type.
      */
     protected function validateMimeType(UploadedFile $file, array $allowedMimes): void
     {
@@ -123,7 +152,7 @@ class FileUploadService
     }
 
     /**
-     * Sanitize directory path to prevent path traversal
+     * Sanitize directory path to prevent path traversal.
      */
     protected function sanitizeDirectoryPath(string $directory): string
     {
@@ -138,7 +167,7 @@ class FileUploadService
     }
 
     /**
-     * Sanitize file extension to prevent malicious extensions
+     * Sanitize file extension to prevent malicious extensions.
      */
     protected function sanitizeExtension(string $extension): string
     {
@@ -163,7 +192,7 @@ class FileUploadService
     }
 
     /**
-     * Generate safe filename
+     * Generate safe filename.
      */
     protected function generateSafeFileName(UploadedFile $file): string
     {
@@ -183,34 +212,5 @@ class FileUploadService
         $extension = $this->sanitizeExtension($extension);
 
         return "{$timestamp}_{$random}.{$extension}";
-    }
-
-    /**
-     * Get allowed MIME types by category
-     */
-    public static function getAllowedMimes(string $category): array
-    {
-        return match ($category) {
-            'image' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-            'document' => ['application/pdf', 'application/msword',
-                'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-            'spreadsheet' => ['application/vnd.ms-excel',
-                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                'text/csv'],
-            'archive' => ['application/zip', 'application/x-zip-compressed'],
-            default => [],
-        };
-    }
-
-    /**
-     * Cek apakah batas ukuran file upload aktif berdasarkan pengaturan aplikasi.
-     * Mengembalikan true jika limit berlaku, false jika limit dinonaktifkan.
-     */
-    public static function isLimitEnabled(): bool
-    {
-        $value = \App\Models\SettingAplikasi::where('key', 'upload_limit')->value('value');
-
-        // Default aktif (true) jika setting belum ada di database
-        return (bool) (int) ($value ?? 1);
     }
 }

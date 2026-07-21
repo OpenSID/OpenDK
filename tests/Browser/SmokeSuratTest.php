@@ -56,7 +56,6 @@ it('smoke test menu Layanan Surat - Permohonan', function () {
 
 })->group('smoke', 'smoke-surat', 'browser');
 
-
 // =============================================================================
 // MENU: LAYANAN SURAT -> ARSIP
 // =============================================================================
@@ -98,7 +97,6 @@ it('smoke test menu Layanan Surat - Arsip', function () {
 
 })->group('smoke', 'smoke-surat', 'browser');
 
-
 // =============================================================================
 // MENU: LAYANAN SURAT -> PENGATURAN
 // =============================================================================
@@ -109,12 +107,12 @@ it('smoke test menu Layanan Surat - Pengaturan', function () {
 
     // Field aktifasi modul TTE tampil
     $this->page->assertSee('Aktifkan Modul TTE');
-    
+
     // Field url, username, password tampil
     $this->page->assertVisible('input[name="tte_api"]');
     $this->page->assertVisible('input[name="tte_username"]');
     $this->page->assertVisible('input[name="tte_password"]');
-    
+
     // Field aktifasi pemeriksaan camat dan sekretaris
     $this->page->assertSee('Pemeriksaan Camat');
     $this->page->assertSee('Pemeriksaan Sekretaris');

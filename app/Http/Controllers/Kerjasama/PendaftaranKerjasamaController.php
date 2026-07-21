@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Kerjasama;
 
-use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class PendaftaranKerjasamaController extends Controller
 {

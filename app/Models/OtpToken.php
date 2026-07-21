@@ -31,13 +31,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OtpToken extends Model
 {
     use HasFactory;
+
     /**
      * {@inheritDoc}
      */
@@ -61,8 +62,6 @@ class OtpToken extends Model
 
     /**
      * Get the user that owns the OTP token.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -71,8 +70,6 @@ class OtpToken extends Model
 
     /**
      * Check if the OTP token has expired.
-     *
-     * @return bool
      */
     public function isExpired(): bool
     {
@@ -81,8 +78,6 @@ class OtpToken extends Model
 
     /**
      * Check if the maximum number of attempts has been reached.
-     *
-     * @return bool
      */
     public function hasMaxAttempts(): bool
     {
@@ -91,8 +86,6 @@ class OtpToken extends Model
 
     /**
      * Increment the number of attempts.
-     *
-     * @return void
      */
     public function incrementAttempts(): void
     {
@@ -102,7 +95,8 @@ class OtpToken extends Model
     /**
      * Scope untuk mendapatkan token yang belum expired.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeValid($query)

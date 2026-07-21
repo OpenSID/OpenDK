@@ -63,7 +63,6 @@ it('smoke test menu Publikasi - Album', function () {
     );
 })->group('smoke', 'smoke-publikasi', 'browser');
 
-
 // =============================================================================
 // MENU: ADMIN SIKEMA → DAFTAR KELUHAN
 // =============================================================================
@@ -85,7 +84,6 @@ it('smoke test Admin SIKEMA - Daftar Keluhan', function () {
     // 2. Tabel ada di halaman (serverSide: true, data diload via AJAX POST)
     $this->page->assertVisible('[data-testid="table-sikema"]');
 })->group('smoke', 'smoke-publikasi', 'smoke-sikema', 'browser');
-
 
 // =============================================================================
 // MENU: ADMIN SIKEMA → STATISTIK

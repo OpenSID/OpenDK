@@ -37,14 +37,14 @@ use App\Http\Controllers\FrontEndController;
 class AnggaranRealisasiController extends FrontEndController
 {
     /**
-     * Menampilkan Data Anggaran Dan realisasi Kecamatan
+     * Menampilkan Data Anggaran Dan realisasi Kecamatan.
      **/
     public function showAnggaranDanRealisasi()
     {
         Counter::count('statistik.anggaran-dan-realisasi');
 
         $data['page_title'] = 'Anggaran & Realisasi';
-        $data['page_description'] = 'Data Anggaran & Realisasi';        
+        $data['page_description'] = 'Data Anggaran & Realisasi';
 
         return view('pages.anggaran_realisasi.show_anggaran_realisasi')->with($data);
     }

@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class JenisDokumen extends Model
 {
     use HasFactory;
-
     use Sluggable;
 
     protected $table = 'das_jenis_dokumen';

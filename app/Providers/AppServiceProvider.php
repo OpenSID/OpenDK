@@ -33,9 +33,9 @@ namespace App\Providers;
 
 use App\Services\CacheService;
 use App\Support\Collection;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -223,7 +223,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function paginate(): void
     {
-        /**
+        /*
          * Paginate a standard Laravel Collection.
          *
          * @param  int  $perPage

@@ -32,19 +32,19 @@
 namespace App\Services;
 
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
+use Illuminate\Support\Facades\Log;
 
 class StatistikChartPendudukService extends BaseApiService
 {
     public function chart($did, $listYears)
-    {        
+    {
         if ($this->useDatabaseGabungan()) {
             $data = [];
-            try {                
+            try {
                 $filters = [
-                    'filter[id]' => 'jenis-kelamin',                    
+                    'filter[id]' => 'jenis-kelamin',
                     'filter[kecamatan]' => $this->kodeKecamatan,
                 ];
                 if($did != 'Semua') {
@@ -55,17 +55,17 @@ class StatistikChartPendudukService extends BaseApiService
                 foreach ($listYears as $year) {
                     $filters['filter[tahun]'] = $year;
                     $requests[$year] = $client->getAsync('/api/v1/statistik-web/penduduk', ['query' => $filters]);
-                }        
+                }
                 $promises = Utils::unwrap($requests);
-                
-                $responses = Utils::settle($promises)->wait();                
+
+                $responses = Utils::settle($promises)->wait();
                 foreach ($responses as $key => $response) {
-                    $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data'])->keyBy('id');                    
+                    $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data'])->keyBy('id');
                     $queryResultLaki = $json->get(1)['attributes']['jumlah'] ?? 0;
-                    $queryResultPerempuan = $json->get(2)['attributes']['jumlah'] ?? 0;                    
+                    $queryResultPerempuan = $json->get(2)['attributes']['jumlah'] ?? 0;
                     $data[] = ['year' => $key, 'value_lk' => $queryResultLaki, 'value_pr' => $queryResultPerempuan];
                 }
-                
+
             } catch (\Exception $e) {
                 Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
@@ -75,7 +75,7 @@ class StatistikChartPendudukService extends BaseApiService
     }
 
     private function localChart($did, $listYears){
-        // Data Grafik Pertumbuhan        
+        // Data Grafik Pertumbuhan
         $penduduk = new Penduduk();
         $data = [];
         foreach ($listYears as $yearls) {

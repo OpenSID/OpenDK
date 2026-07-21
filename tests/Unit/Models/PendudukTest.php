@@ -1,20 +1,7 @@
 <?php
 
-use App\Models\Penduduk;
-use App\Models\Keluarga;
 use App\Models\DataDesa;
-use App\Models\Pekerjaan;
-use App\Models\Kawin;
-use App\Models\PendidikanKK;
-use App\Models\SuplemenTerdata;
-use App\Models\Lembaga;
-use App\Models\LembagaAnggota;
-use App\Models\PendudukSex;
-use App\Models\WilClusterDesa;
-use Carbon\Carbon;
-
-
-
+use App\Models\Penduduk;
 
 it('can create a penduduk', function () {
     $penduduk = Penduduk::factory()->create([
@@ -141,7 +128,6 @@ it('has pekerjaan relationship', function () {
 
     expect($penduduk->pekerjaan())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
-
 
 it('has pendidikan_kk relationship', function () {
     $penduduk = Penduduk::factory()->create();

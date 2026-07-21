@@ -31,13 +31,12 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Models\TipePotensi;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipePotensiRequest;
+use App\Models\TipePotensi;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class TipePotensiController extends Controller
 {
@@ -65,8 +64,7 @@ class TipePotensiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param TipePotensiRequest $request
-     * 
+     *
      * @return Response
      */
     public function store(TipePotensiRequest $request)
@@ -100,7 +98,8 @@ class TipePotensiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -113,9 +112,8 @@ class TipePotensiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
-     * @param TipePotensiRequest $request
-     * 
+     * @param int $id
+     *
      * @return Response
      */
     public function update(TipePotensiRequest $request, $id)
@@ -148,7 +146,8 @@ class TipePotensiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)

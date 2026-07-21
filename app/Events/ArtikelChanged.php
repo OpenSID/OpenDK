@@ -45,7 +45,6 @@ class ArtikelChanged
     /**
      * Create a new event instance.
      *
-     * @param  Artikel  $artikel
      * @return void
      */
     public function __construct(Artikel $artikel)

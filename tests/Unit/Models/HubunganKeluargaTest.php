@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\HubunganKeluarga;
-use App\Models\Penduduk;
-
 
 // HubunganKeluarga Model Testing
 it('can create a hubungan keluarga', function () {
@@ -36,7 +34,6 @@ it('has correct table name', function () {
 
     expect($hubungan->getTable())->toBe('ref_hubungan_keluarga');
 });
-
 
 it('can handle null values for optional fields', function () {
     $hubungan = HubunganKeluarga::factory()->create();

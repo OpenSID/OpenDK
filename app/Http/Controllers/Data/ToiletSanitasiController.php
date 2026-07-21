@@ -120,7 +120,8 @@ class ToiletSanitasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -135,7 +136,8 @@ class ToiletSanitasiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(Request $request, $id)
@@ -163,7 +165,8 @@ class ToiletSanitasiController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -186,7 +189,6 @@ class ToiletSanitasiController extends Controller
     /**
      * Export Excel data Toilet Sanitasi.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function exportExcel(Request $request)

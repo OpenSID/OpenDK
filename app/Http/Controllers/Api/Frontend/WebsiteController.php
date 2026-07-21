@@ -37,17 +37,17 @@ use App\Repositories\ProfilApiRepository;
 use App\Repositories\WebsiteApiRepository;
 use App\Transformers\ProfilTransformer;
 use App\Transformers\WebsiteTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Fractal\Fractal;
-
 
 class WebsiteController extends BaseController
 {
     protected ProfilApiRepository $profilApiRepository;
+
     protected DesaApiRepository $desaApiRepository;
+
     protected WebsiteApiRepository $websiteApiRepository;
 
     public function __construct(
@@ -60,6 +60,7 @@ class WebsiteController extends BaseController
         $this->websiteApiRepository = $websiteApiRepository;
         $this->prefix = config('theme-api.website.cache_prefix', 'website:api');
     }
+
     /**
      * Data website lengkap (profil, desa, events, medsos, navigasi, slides, dll).
      *
@@ -67,6 +68,7 @@ class WebsiteController extends BaseController
      *
      * @queryParam page int Halaman. Example: 1
      * @queryParam per_page int Item per halaman. Example: 10
+     *
      * @response {
      *   "data": [{"id": "profile", "attributes": {"nama_kecamatan": "..."}}]
      * }
@@ -76,8 +78,8 @@ class WebsiteController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            $websiteData = $this->websiteApiRepository->getAllWebsiteData();              
+        return Cache::remember($cacheKey, $this->getCacheDuration(), function () {
+            $websiteData = $this->websiteApiRepository->getAllWebsiteData();
             return $this->fractal([
                 ['id' => 'profile',  (new ProfilTransformer())->transform(Profil::with(['dataUmum'])->first())],
                 ['id' => 'desa',  $this->desaApiRepository->data()],
@@ -93,5 +95,5 @@ class WebsiteController extends BaseController
                 ['id' => 'config',  config('profil')],
             ], new WebsiteTransformer());
         });
-    }    
+    }
 }

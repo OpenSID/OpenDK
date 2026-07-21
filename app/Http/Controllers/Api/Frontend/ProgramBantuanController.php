@@ -36,7 +36,6 @@ use App\Services\StatistikChartBantuanPendudukService;
 
 class ProgramBantuanController extends BaseController
 {
-
     public function getChartBantuanPenduduk()
     {
         $did = request('did');

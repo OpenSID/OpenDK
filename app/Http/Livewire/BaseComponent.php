@@ -9,25 +9,32 @@ abstract class BaseComponent extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'page' => ['except' => 1],
-    ];    
-
     public string $page_title = '';
+
     public string $page_description = '';
 
     public $search = '';
+
     public $status = null;
+
     public $perPage = 10;
+
     public $form = false;
+
     public $editMode = false;
 
     public $selectedItems = [];
+
     public $selectAll = false;
 
     public $instance;
+
+    protected $paginationTheme = 'bootstrap';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'page' => ['except' => 1],
+    ];
 
     protected string $fileProperty = 'logo';
 
@@ -38,27 +45,6 @@ abstract class BaseComponent extends Component
         $modelClass = $this->getModelClass();
         $this->instance = new $modelClass();
     }
-
-    protected function baseRules(array $fields, array $fileFields = [])
-    {
-        $rules = [];
-        foreach ($fields as $field => $validasi) {
-            $rules["instance.$field"] = $validasi;
-        }
-        foreach ($fileFields as $file => $rule) {
-            $rules[$file] = $rule;
-        }
-        return $rules;
-    }
-
-    protected function setFormState(bool $edit = false)
-    {
-        $this->clear();
-        $this->form = true;
-        $this->editMode = $edit;
-        $this->page_description = ($edit ? 'Edit ' : 'Tambah ') . $this->page_title;
-    }
-
 
     public function lock($id, $field = 'status', $labelField = 'judul')
     {
@@ -74,7 +60,6 @@ abstract class BaseComponent extends Component
         $label = $model->$labelField ?? 'Item';
         session()->flash('success', "Data: {$label} berhasil di {$statusText}");
     }
-
 
     public function toggleSelectAll()
     {
@@ -131,7 +116,6 @@ abstract class BaseComponent extends Component
         session()->flash('success', $this->editMode ? 'Data berhasil diperbarui!' : 'Data berhasil disimpan!');
     }
 
-
     public function editWithFiles($id, array $fileConfigs = [])
     {
         try {
@@ -153,7 +137,6 @@ abstract class BaseComponent extends Component
         }
     }
 
-
     public function kembali()
     {
         $this->clear();
@@ -173,7 +156,6 @@ abstract class BaseComponent extends Component
         $this->instance = new ($this->getModelClass());
     }
 
-
     public function destroy($id)
     {
         try {
@@ -186,4 +168,23 @@ abstract class BaseComponent extends Component
         }
     }
 
+    protected function baseRules(array $fields, array $fileFields = [])
+    {
+        $rules = [];
+        foreach ($fields as $field => $validasi) {
+            $rules["instance.$field"] = $validasi;
+        }
+        foreach ($fileFields as $file => $rule) {
+            $rules[$file] = $rule;
+        }
+        return $rules;
+    }
+
+    protected function setFormState(bool $edit = false)
+    {
+        $this->clear();
+        $this->form = true;
+        $this->editMode = $edit;
+        $this->page_description = ($edit ? 'Edit ' : 'Tambah ') . $this->page_title;
+    }
 }

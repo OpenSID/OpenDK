@@ -34,7 +34,7 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * Status kondisi verifikasi surat
+ * Status kondisi verifikasi surat.
  */
 final class StatusVerifikasiSurat extends Enum
 {

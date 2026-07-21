@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
-use function Pest\Laravel\{get, post, put, delete};
+
+use function Pest\Laravel\get;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,7 @@ pest()->group('contract')
 
 // Configure test groups for Browser tests
 pest()->group('browser')
-    //->extend(Tests\BrowserTestCase::class)
+    // ->extend(Tests\BrowserTestCase::class)
     ->in('Browser')
     ->beforeEach(function () {
         // Set headless mode for faster execution
@@ -135,7 +136,7 @@ dataset('status_codes', [200, 201, 400, 401, 403, 404, 500]);
 */
 
 /**
- * Helper function to create an authenticated user for testing
+ * Helper function to create an authenticated user for testing.
  */
 function createAuthenticatedUser($role = 'admin')
 {
@@ -150,7 +151,7 @@ function createAuthenticatedUser($role = 'admin')
 }
 
 /**
- * Helper function to get test database connection
+ * Helper function to get test database connection.
  */
 function getTestConnection()
 {

@@ -32,7 +32,6 @@
 namespace Tests\Feature\Content;
 
 use App\Models\Navigation;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Test setup if needed

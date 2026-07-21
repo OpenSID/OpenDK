@@ -7,17 +7,13 @@ use League\Fractal\TransformerAbstract;
 
 class RegulasiTransformer extends TransformerAbstract
 {
-
     /**
-     * Transform object data
-     *
-     * @param Regulasi $regulasi
-     * @return array
+     * Transform object data.
      */
     public function transform(Regulasi $regulasi): array
     {
         $regulasi->file_regulasi_path = asset($regulasi->file_regulasi);
         $regulasi->path_download = route('unduhan.regulasi.download', ['file' => $regulasi->id]);
-        return $regulasi->toArray();        
+        return $regulasi->toArray();
     }
 }

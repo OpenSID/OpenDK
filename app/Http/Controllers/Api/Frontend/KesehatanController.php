@@ -32,12 +32,12 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Services\KesehatanChartAKIAKBService;
-use App\Services\KesehatanChartImunisasiService;
 use App\Services\KesehatanChartEpidemiPenyakitService;
+use App\Services\KesehatanChartImunisasiService;
 use App\Services\KesehatanChartToiletSanitasiService;
 
 class KesehatanController extends BaseController
-{    
+{
     // Get Data Chart AKI & AKB
     public function getChartAKIAKB()
     {

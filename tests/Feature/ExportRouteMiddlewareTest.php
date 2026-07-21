@@ -51,7 +51,7 @@ beforeEach(function () {
 });
 
 /**
- * Helper function to ensure roles exist for testing
+ * Helper function to ensure roles exist for testing.
  */
 function ensureRolesExist(): void
 {

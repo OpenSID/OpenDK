@@ -51,7 +51,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Combined OTP & 2FA management page
+     * Combined OTP & 2FA management page.
      */
     public function index()
     {
@@ -67,7 +67,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Show 2FA settings form
+     * Show 2FA settings form.
      */
     public function showSettingsForm()
     {
@@ -81,7 +81,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Save 2FA settings (email/telegram contact)
+     * Save 2FA settings (email/telegram contact).
      */
     public function saveSettings(Request $request)
     {
@@ -121,7 +121,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Show 2FA activation form
+     * Show 2FA activation form.
      */
     public function showActivationForm()
     {
@@ -139,7 +139,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Request OTP for 2FA activation (directly activate without verification)
+     * Request OTP for 2FA activation (directly activate without verification).
      */
     public function requestActivation(Request $request)
     {
@@ -165,7 +165,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Deactivate 2FA
+     * Deactivate 2FA.
      */
     public function deactivate(Request $request)
     {
@@ -180,7 +180,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Show 2FA verification form for login
+     * Show 2FA verification form for login.
      */
     public function showVerifyLoginForm()
     {
@@ -207,7 +207,7 @@ class TwoFactorController extends Controller
     }
 
     /**
-     * Verify 2FA code and complete login
+     * Verify 2FA code and complete login.
      */
     public function verifyLogin(Request $request)
     {

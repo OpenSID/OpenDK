@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\DB;
 class RefPendidikanTableSeeder extends Seeder
 {
     /**
-     * Auto generated seed file
+     * Auto generated seed file.
      *
      * @return void
      */

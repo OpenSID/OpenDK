@@ -1,8 +1,8 @@
 <?php
 
-use App\Services\PendudukService;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
+use App\Services\PendudukService;
 use Illuminate\Support\Facades\Http;
 
 // Seed required settings for BaseApiService constructor

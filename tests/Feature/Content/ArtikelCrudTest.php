@@ -91,7 +91,7 @@ describe('Artikel CRUD', function () {
         $this->assertDatabaseHas('das_artikel', [
             'judul' => 'Judul Artikel Baru',
         ]);
-    });    
+    });
 
     test('store fails with invalid data', function () {
         $invalidData = [

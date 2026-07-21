@@ -15,26 +15,7 @@ class LaporanPendudukService
     }
 
     /**
-     * General API Call Method
-     */
-    protected function apiRequest(string $endpoint, array $params = [])
-    {
-        // Base URL
-        $baseUrl = $this->settings['api_server_database_gabungan'];
-
-        // Buat permintaan API dengan Header dan Parameter
-        $response = Http::withHeaders([
-            'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
-        ])->get($baseUrl . $endpoint, $params);
-
-        // Return JSON hasil
-        return $response->json('data') ?? [];
-    }
-
-    /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function desa(array $filters = [])
     {
@@ -61,7 +42,7 @@ class LaporanPendudukService
     }
 
     /**
-     * Export Data Penduduk
+     * Export Data Penduduk.
      */
     public function exportLaporanPenduduk(array $filters = [])
     {
@@ -87,5 +68,24 @@ class LaporanPendudukService
                 'tanggal_lapor' => $item['attributes']['tanggal_lapor'] ?? '',
             ];
         });
+    }
+
+    /**
+     * General API Call Method.
+     */
+    protected function apiRequest(string $endpoint, array $params = [])
+    {
+        // Base URL
+        $baseUrl = $this->settings['api_server_database_gabungan'];
+
+        // Buat permintaan API dengan Header dan Parameter
+        $response = Http::withHeaders([
+            'Accept' => 'application/ld+json',
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],
+        ])->get($baseUrl . $endpoint, $params);
+
+        // Return JSON hasil
+        return $response->json('data') ?? [];
     }
 }

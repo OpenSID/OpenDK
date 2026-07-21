@@ -32,12 +32,12 @@
 namespace App\Http\Controllers\Counter;
 
 use App\Enums\VisitorFilterEnum;
-use App\Models\Visitor;
+use App\Http\Controllers\Controller;
 use App\Models\CounterPage;
+use App\Models\Profil;
+use App\Models\Visitor;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use App\Models\Profil;
 
 class CounterController extends Controller
 {
@@ -77,23 +77,6 @@ class CounterController extends Controller
             'dailyStats',
             'top_pages_visited'
         ));
-    }
-
-    private function formatLabels($dailyStats, $filter)
-    {
-        if ($filter === VisitorFilterEnum::THIS_YEAR) {
-            return $dailyStats->pluck('date')->map(function ($date) {
-                return Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y');
-            })->toArray();
-        } elseif ($filter === VisitorFilterEnum::ALL) {
-            return $dailyStats->pluck('date')->map(function ($date) {
-                return Carbon::createFromFormat('Y', $date)->translatedFormat('Y');
-            })->toArray();
-        } else {
-            return $dailyStats->pluck('date')->map(function ($date) {
-                return Carbon::createFromFormat('Y-m-d', $date)->translatedFormat('d F Y');
-            })->toArray();
-        }
     }
 
     public function cetak()
@@ -142,5 +125,22 @@ class CounterController extends Controller
         }
 
         return $data;
+    }
+
+    private function formatLabels($dailyStats, $filter)
+    {
+        if ($filter === VisitorFilterEnum::THIS_YEAR) {
+            return $dailyStats->pluck('date')->map(function ($date) {
+                return Carbon::createFromFormat('Y-m', $date)->translatedFormat('F Y');
+            })->toArray();
+        } elseif ($filter === VisitorFilterEnum::ALL) {
+            return $dailyStats->pluck('date')->map(function ($date) {
+                return Carbon::createFromFormat('Y', $date)->translatedFormat('Y');
+            })->toArray();
+        } else {
+            return $dailyStats->pluck('date')->map(function ($date) {
+                return Carbon::createFromFormat('Y-m-d', $date)->translatedFormat('d F Y');
+            })->toArray();
+        }
     }
 }

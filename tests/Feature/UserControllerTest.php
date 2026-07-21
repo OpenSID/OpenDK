@@ -31,15 +31,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Pengurus;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Database\Seeders\RefAgamaTableSeeder;
 use Database\Seeders\RefPendidikanTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Tests\CrudTestCase;
 
 class UserControllerTest extends CrudTestCase
@@ -318,7 +317,7 @@ class UserControllerTest extends CrudTestCase
      *
      * @return void
      */
-    public function test_getDataUser_returns_json_response()
+    public function test_get_data_user_returns_json_response()
     {
         $user = User::first();
 

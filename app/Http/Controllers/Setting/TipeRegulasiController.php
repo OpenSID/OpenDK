@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Models\TipeRegulasi;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TipeRegulasiRequest;
+use App\Models\TipeRegulasi;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class TipeRegulasiController extends Controller
 {
@@ -63,8 +63,7 @@ class TipeRegulasiController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param TipeRegulasiRequest $request
-     * 
+     *
      * @return Response
      */
     public function store(TipeRegulasiRequest $request)
@@ -95,7 +94,8 @@ class TipeRegulasiController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -108,9 +108,8 @@ class TipeRegulasiController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
-     * @param TipeRegulasiRequest $request
-     * 
+     * @param int $id
+     *
      * @return Response
      */
     public function update(TipeRegulasiRequest $request, $id)

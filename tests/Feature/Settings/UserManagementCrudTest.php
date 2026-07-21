@@ -31,11 +31,10 @@
 
 namespace Tests\Feature\Settings;
 
-use App\Models\User;
 use App\Models\Pengurus;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Storage;
-use Tests\CrudTestCase;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     Storage::fake('public');

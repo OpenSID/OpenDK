@@ -33,10 +33,9 @@ namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\ProfilApiRepository;
 use App\Transformers\ProfilTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Validator;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -44,6 +43,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK Profil API",
  *     description="API untuk mengakses data profil dengan Spatie Query Builder filtering dan sorting",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -55,7 +55,6 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola profil"
  * )
  */
-
 class ProfilController extends BaseController
 {
     protected ProfilApiRepository $profilApiRepository;
@@ -75,87 +74,112 @@ class ProfilController extends BaseController
      *     summary="Get list of profiles",
      *     description="Retrieve paginated list of profiles with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Profil"},
+     *
      *     @OA\Parameter(
      *         name="page",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=1, minimum=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="per_page",
      *         in="query",
      *         description="Number of items per page (max: 100)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[nama_kecamatan]",
      *         in="query",
      *         description="Filter by kecamatan name",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="Jakarta Pusat")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[nama_kabupaten]",
      *         in="query",
      *         description="Filter by kabupaten name",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="Jakarta")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[nama_provinsi]",
      *         in="query",
      *         description="Filter by provinsi name",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="DKI Jakarta")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[kecamatan_id]",
      *         in="query",
      *         description="Filter by kecamatan ID",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="Search in kecamatan, kabupaten, provinsi, and alamat fields",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="jakarta")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="sort",
      *         in="query",
      *         description="Sort field",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"nama_kecamatan", "nama_kabupaten", "nama_provinsi", "created_at", "updated_at", "id"}, default="nama_kecamatan")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="order",
      *         in="query",
      *         description="Sort order",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"asc", "desc"}, default="asc")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="include",
      *         in="query",
      *         description="Include relationships (comma-separated)",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="dataUmum,dataDesa")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="fields",
      *         in="query",
      *         description="Select specific fields (comma-separated)",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="id,nama_kecamatan,nama_kabupaten,nama_provinsi,alamat")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="type", type="string", example=null),
@@ -198,20 +222,26 @@ class ProfilController extends BaseController
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "per_page": ["The per page must not be greater than 100."],
      *                 "sort": ["The selected sort is invalid."]
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Server error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Internal server error")
      *         )
      *     )
@@ -222,8 +252,8 @@ class ProfilController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return Cache::remember($cacheKey, $this->getCacheDuration(), function () {
             return $this->fractal($this->profilApiRepository->data(), new ProfilTransformer());
         });
-    }    
+    }
 }

@@ -31,13 +31,12 @@
 
 namespace App\Http\Controllers\BackEnd;
 
-use App\Models\Event;
-use Illuminate\Support\Carbon;
-use App\Traits\HandlesFileUpload;
-use App\Http\Requests\EventRequest;
-use Illuminate\Support\Facades\File;
-use Yajra\DataTables\Facades\DataTables;
 use App\Http\Controllers\BackEndController;
+use App\Http\Requests\EventRequest;
+use App\Models\Event;
+use App\Traits\HandlesFileUpload;
+use Illuminate\Support\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class EventController extends BackEndController
 {
@@ -72,7 +71,7 @@ class EventController extends BackEndController
                         $data['delete_url'] = auth()->user()->can('access.informasi.event.delete') ? route('informasi.event.destroy', $row->id) : null;
                     }
                 }
-                
+
                 if ($row->status == 'CLOSED' && $row->attachment != null) {
                     $data['download_url'] = auth()->user()->can('access.informasi.event.export') ? route('informasi.event.download', $row->id) : null;
                     $data['preview_url'] = route('informasi.event.preview', $row->id);

@@ -57,7 +57,7 @@ class MediaSosialRequest extends FormRequest
             'url' => 'required|url',
             'status' => 'required',
         ];
-    
+
         if ($this->isMethod('post')) {
             $rules['logo'] = 'required|file|mimes:jpg,jpeg,png' . (\App\Services\FileUploadService::isLimitEnabled() ? '|max:2048' : '') . '|valid_file';
         } else {

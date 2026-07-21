@@ -3,12 +3,12 @@
 use App\Models\User;
 use Database\Seeders\RoleSpatieSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use function Pest\Laravel\postJson;
+use Illuminate\Support\Facades\Auth;
+
 use function Pest\Laravel\getJson;
+use function Pest\Laravel\postJson;
 use function Pest\Laravel\seed;
 use function Pest\Laravel\withToken;
-use function Pest\Laravel\actingAs;
-use Illuminate\Support\Facades\Auth;
 
 uses(DatabaseTransactions::class);
 

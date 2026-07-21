@@ -29,7 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-/**
+/*
  * Test untuk memastikan endpoint DataTables pada menu Admin SIKEMA → Daftar Keluhan
  * dapat diakses menggunakan metode POST (antisipasi WAF blocking URL panjang).
  */

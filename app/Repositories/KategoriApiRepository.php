@@ -37,28 +37,28 @@ use Spatie\QueryBuilder\AllowedFilter;
 class KategoriApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(ArtikelKategori $model)
     {
         parent::__construct($model);
-        
+
         // Initialize allowed filters, sorts, and includes
         $this->allowedFilters = [
             'nama_kategori',
             AllowedFilter::exact('id_kategori'),
-            AllowedFilter::exact('slug'),                        
-            AllowedFilter::callback('search', function($query, $value){                
+            AllowedFilter::exact('slug'),
+            AllowedFilter::callback('search', function($query, $value){
                 $query->where('nama', 'LIKE', '%'.$value.'%')
                         ->orWhere('slug', 'LIKE', '%'.$value.'%');
-            }),            
+            }),
         ];
         $this->allowedSorts = ['created_at', 'updated_at', 'nama', 'id'];
         $this->allowedIncludes = [];
         $this->defaultSort = '-created_at';
     }
-    
+
     public function data(){
         return $this->getFilteredApi()->jsonPaginate();
-    }        
+    }
 }

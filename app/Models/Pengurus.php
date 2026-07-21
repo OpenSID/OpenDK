@@ -167,12 +167,12 @@ class Pengurus extends Model
         $kecuali = [];
 
         // Cek apakah kades
-        if (Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->where('status', Status::Aktif)->exists()) {
+        if (self::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->where('status', Status::Aktif)->exists()) {
             $kecuali[] = JenisJabatan::Camat;
         }
 
         // Cek apakah sekdes
-        if (Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Sekretaris))->where('status', Status::Aktif)->exists()) {
+        if (self::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Sekretaris))->where('status', Status::Aktif)->exists()) {
             $kecuali[] = JenisJabatan::Sekretaris;
         }
 

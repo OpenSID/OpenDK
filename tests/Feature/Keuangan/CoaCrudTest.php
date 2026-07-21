@@ -34,14 +34,13 @@ namespace Tests\Feature\Keuangan;
 use App\Models\Coa;
 use App\Models\SubCoa;
 use App\Models\SubSubCoa;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Clean up test data before each test for isolation using Eloquent models
     SubCoa::where('sub_name', 'LIKE', 'Test%')->delete();
     SubSubCoa::where('sub_sub_name', 'LIKE', 'Test%')->delete();
     Coa::where('coa_name', 'LIKE', 'Test%')->delete();
-    
+
     // Create required test data using Eloquent models
     // For models with non-incrementing IDs, we need to set attributes and save
     $subCoa = new SubCoa();
@@ -49,7 +48,7 @@ beforeEach(function () {
     $subCoa->type_id = '1';
     $subCoa->sub_name = 'Test Sub Coa';
     $subCoa->save();
-    
+
     $subSubCoa = new SubSubCoa();
     $subSubCoa->id = '1';
     $subSubCoa->type_id = '1';
@@ -135,5 +134,5 @@ describe('COA CRUD', function () {
 
         $response->assertStatus(200);
         $response->assertJsonFragment(['sub_sub_name' => 'Test Sub Sub Coa 99']);
-    });    
+    });
 });

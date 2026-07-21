@@ -73,7 +73,7 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function desa(array $filters = [])
     {
@@ -97,13 +97,13 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Get feeds for all desa
+     * Get feeds for all desa.
      */
     public function getFeeds(): array
     {
         // Cache feeds for 1 hour to improve performance
         return Cache::remember('desa_feeds', 60 * 60, function () {
-            try {                
+            try {
                 $allDesa = $this->listDesa()->map(function($item){
                         return ($item instanceof DataDesa) ? $item : new DataDesa((array) $item);
                     })->filter(static fn($q) => !empty($q->website));
@@ -111,7 +111,7 @@ class DesaService extends BaseApiService
                 foreach ($allDesa as $desa) {
                     $feedReader = new SimplePie();
                     $feedReader->set_feed_url($desa->website_url_feed['website']);
-                    //$feedReader->set_item_limit(5);
+                    // $feedReader->set_item_limit(5);
                     $feedReader->force_fsockopen(true);
                     $feedReader->set_cache_location(storage_path('framework/cache/simplepie'));
                     $feedReader->init();
@@ -151,7 +151,7 @@ class DesaService extends BaseApiService
                         }
                     }
                 }
-                
+
                 Log::info('Total feeds collected', ['count' => count($feeds)]);
                 return $feeds;
             } catch (Exception $e) {
@@ -159,7 +159,7 @@ class DesaService extends BaseApiService
                 return [];
             }
         });
-    }                       
+    }
 
     public function listPathDesa()
     {
@@ -171,7 +171,7 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function jumlahDesa(array $filters = [])
     {
@@ -197,10 +197,7 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Dapatkan object desa berdasarkan kode_desa tertentu
-     *
-     * @param string $kodeDesa
-     * @return collection|DataDesa|stdClass|null
+     * Dapatkan object desa berdasarkan kode_desa tertentu.
      */
     public function getDesaByKode(string $kodeDesa): Collection|DataDesa|stdClass|null
     {

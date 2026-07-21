@@ -6,12 +6,9 @@ use App\Models\FormDokumen;
 use League\Fractal\TransformerAbstract;
 
 class FormDokumenTransformer extends TransformerAbstract
-{    
+{
     /**
-     * Transform object data
-     *
-     * @param FormDokumen $formDokumen
-     * @return array
+     * Transform object data.
      */
     public function transform(FormDokumen $formDokumen): array
     {

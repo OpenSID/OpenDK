@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\JenisJabatan;
-use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Jabatan;
 use App\Models\Profil;
@@ -9,9 +8,11 @@ use App\Models\SettingAplikasi;
 use Database\Seeders\RoleSpatieSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
-use Stevebauman\Purify\Facades\Purify;
+
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\seed;
+
+use Stevebauman\Purify\Facades\Purify;
 
 uses(DatabaseTransactions::class);
 

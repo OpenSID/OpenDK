@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\LembagaAnggota;
 use App\Models\Lembaga;
+use App\Models\LembagaAnggota;
 use App\Models\Penduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

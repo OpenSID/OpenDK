@@ -31,21 +31,19 @@
 
 namespace App\Services;
 
+use App\Mail\OtpMail;
 use App\Models\OtpToken;
 use App\Models\User;
-use App\Mail\OtpMail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class OtpService
 {
     /**
-     * Generate OTP code (6 digit)
-     *
-     * @return int
+     * Generate OTP code (6 digit).
      */
     public function generateOtpCode(): int
     {
@@ -53,12 +51,11 @@ class OtpService
     }
 
     /**
-     * Generate and save OTP token
+     * Generate and save OTP token.
      *
-     * @param  User  $user
-     * @param  string  $channel (email|telegram)
-     * @param  string  $identifier
-     * @param  string  $purpose (activation|login)
+     * @param string $channel (email|telegram)
+     * @param string $purpose (activation|login)
+     *
      * @return array ['token' => OtpToken, 'otp' => int]
      */
     public function generateAndSave(User $user, string $channel, string $identifier, string $purpose = 'login'): array
@@ -93,12 +90,7 @@ class OtpService
     }
 
     /**
-     * Send OTP via email
-     *
-     * @param  string  $email
-     * @param  int  $otp
-     * @param  string  $purpose
-     * @return bool
+     * Send OTP via email.
      */
     public function sendViaEmail(string $email, int $otp, string $purpose = 'login'): bool
     {
@@ -112,12 +104,7 @@ class OtpService
     }
 
     /**
-     * Send OTP via Telegram
-     *
-     * @param  string  $chatId
-     * @param  int  $otp
-     * @param  string  $purpose
-     * @return bool
+     * Send OTP via Telegram.
      */
     public function sendViaTelegram(string $chatId, int $otp, string $purpose = 'login'): bool
     {
@@ -144,46 +131,7 @@ class OtpService
     }
 
     /**
-     * Format Telegram message
-     *
-     * @param  int  $otp
-     * @param  string  $purpose
-     * @return string
-     */
-    private function formatTelegramMessage(int $otp, string $purpose): string
-    {
-        $appName = config('app.name', 'OpenDK');
-
-        switch ($purpose) {
-            case 'activation':
-                $purposeText = 'Aktivasi OTP';
-                break;
-            case '2fa_activation':
-                $purposeText = 'Aktivasi 2FA';
-                break;
-            case '2fa_login':
-                $purposeText = 'Login 2FA';
-                break;
-            default:
-                $purposeText = 'Login';
-                break;
-        }
-
-        return "🔐 <b>{$appName} - {$purposeText}</b>\n\n" .
-            "Kode OTP Anda: <code>{$otp}</code>\n\n" .
-            "⏰ Berlaku selama " . config('otp.expiry_minutes', 5) . " menit\n" .
-            "🔒 Jangan bagikan kode ini kepada siapa pun\n\n" .
-            "<i>Jika Anda tidak meminta kode ini, abaikan pesan ini.</i>";
-    }
-
-    /**
-     * Generate and send OTP
-     *
-     * @param  User  $user
-     * @param  string  $channel
-     * @param  string  $identifier
-     * @param  string  $purpose
-     * @return array
+     * Generate and send OTP.
      */
     public function generateAndSend(User $user, string $channel, string $identifier, string $purpose = 'login'): array
     {
@@ -204,12 +152,7 @@ class OtpService
     }
 
     /**
-     * Verify OTP
-     *
-     * @param  User  $user
-     * @param  string  $otp
-     * @param  string  $purpose
-     * @return array
+     * Verify OTP.
      */
     public function verify(User $user, string $otp, string $purpose = 'login'): array
     {
@@ -273,7 +216,7 @@ class OtpService
     }
 
     /**
-     * Cleanup expired tokens
+     * Cleanup expired tokens.
      *
      * @return int Number of deleted tokens
      */
@@ -283,10 +226,7 @@ class OtpService
     }
 
     /**
-     * Verify Telegram chat ID
-     *
-     * @param  string  $chatId
-     * @return bool
+     * Verify Telegram chat ID.
      */
     public function verifyTelegramChatId(string $chatId): bool
     {
@@ -305,5 +245,34 @@ class OtpService
             Log::error('Failed to verify Telegram chat ID: ' . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Format Telegram message.
+     */
+    private function formatTelegramMessage(int $otp, string $purpose): string
+    {
+        $appName = config('app.name', 'OpenDK');
+
+        switch ($purpose) {
+            case 'activation':
+                $purposeText = 'Aktivasi OTP';
+                break;
+            case '2fa_activation':
+                $purposeText = 'Aktivasi 2FA';
+                break;
+            case '2fa_login':
+                $purposeText = 'Login 2FA';
+                break;
+            default:
+                $purposeText = 'Login';
+                break;
+        }
+
+        return "🔐 <b>{$appName} - {$purposeText}</b>\n\n" .
+            "Kode OTP Anda: <code>{$otp}</code>\n\n" .
+            '⏰ Berlaku selama ' . config('otp.expiry_minutes', 5) . " menit\n" .
+            "🔒 Jangan bagikan kode ini kepada siapa pun\n\n" .
+            '<i>Jika Anda tidak meminta kode ini, abaikan pesan ini.</i>';
     }
 }

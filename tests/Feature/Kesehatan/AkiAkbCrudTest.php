@@ -33,7 +33,6 @@ namespace Tests\Feature\Kesehatan;
 
 use App\Models\AkiAkb;
 use App\Models\DataDesa;
-use Tests\CrudTestCase;
 
 const AJAX_HEADERS_AKI_AKB = ['X-Requested-With' => 'XMLHttpRequest'];
 

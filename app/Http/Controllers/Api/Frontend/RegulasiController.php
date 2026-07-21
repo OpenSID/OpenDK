@@ -34,8 +34,8 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Repositories\RegulasiApiRepository;
 use App\Services\CacheService;
 use App\Transformers\RegulasiTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -43,6 +43,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK Regulasi API",
  *     description="API untuk mengakses data regulasi",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -54,10 +55,10 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola regulasi"
  * )
  */
-
 class RegulasiController extends BaseController
 {
     protected RegulasiApiRepository $regulasiApiRepository;
+
     protected CacheService $cacheService;
 
     public function __construct(
@@ -77,52 +78,67 @@ class RegulasiController extends BaseController
      *     summary="Get list of regulasi",
      *     description="Retrieve paginated list of regulasi with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Regulasi"},
+     *
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=1, minimum=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page[size]",
      *         in="query",
      *         description="Number of items per page (max: 100)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[judul]",
      *         in="query",
      *         description="Filter regulasi by title",
      *         required=false,
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[deskripsi]",
      *         in="query",
      *         description="Filter regulasi by description",
      *         required=false,
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[tipe_regulasi]",
      *         in="query",
      *         description="Filter regulasi by type",
      *         required=false,
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[kecamatan_id]",
      *         in="query",
      *         description="Filter regulasi by district ID",
      *         required=false,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="type", type="string", example="regulasi"),
@@ -157,20 +173,26 @@ class RegulasiController extends BaseController
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "per_page": {"The per page must not be greater than 100."},
      *                 "sort": {"The selected sort is invalid."}
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Server error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Internal server error")
      *         )
      *     )
@@ -181,7 +203,7 @@ class RegulasiController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () {
             return $this->fractal($this->regulasiApiRepository->data(), new RegulasiTransformer, 'regulasi');
         }, $this->prefix, 'regulasi');
     }

@@ -42,7 +42,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
     protected bool $gabungan;
+
     protected array $params;
+
     protected DesaService $desaService;
 
     public function __construct($gabungan, $params = [])
@@ -51,6 +53,7 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
         $this->params = $params;
         $this->desaService = new DesaService();
     }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -58,14 +61,11 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
     {
         if ($this->gabungan) {
             return $this->desaService->listDesa(true);
-        } else {
-            return DataDesa::all();
         }
+            return DataDesa::all();
+
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return [
@@ -80,10 +80,6 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
         ];
     }
 
-    /**
-     * @param mixed $desa
-     * @return array
-     */
     public function map($desa): array
     {
         if ($this->gabungan) {
@@ -97,7 +93,7 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
                 '', // created_at tidak tersedia di API gabungan
                 '', // updated_at tidak tersedia di API gabungan
             ];
-        } else {
+        }
             return [
                 $desa->id,
                 $desa->desa_id,
@@ -108,11 +104,10 @@ class ExportDataDesa implements FromCollection, WithHeadings, WithMapping, WithS
                 $desa->created_at ? $desa->created_at->format('d/m/Y H:i:s') : '',
                 $desa->updated_at ? $desa->updated_at->format('d/m/Y H:i:s') : '',
             ];
-        }
+
     }
 
     /**
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

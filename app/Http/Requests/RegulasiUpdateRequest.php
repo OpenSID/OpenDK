@@ -52,6 +52,6 @@ class RegulasiUpdateRequest extends RegulasiRequest
     {
         $rules = parent::rules();
         $rules['file_regulasi'] = str_replace('required|', '', $rules['file_regulasi']);
-        return $rules;        
+        return $rules;
     }
 }

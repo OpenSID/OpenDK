@@ -1,27 +1,17 @@
 <?php
 
-use App\Models\User;
 use App\Models\DataDesa;
-use App\Models\Penduduk;
-use App\Models\Keluarga;
-use App\Models\Profil;
-use App\Models\Agama;
-use App\Models\Cacat;
-use App\Models\Pekerjaan;
-use App\Models\Pendidikan;
-use App\Models\PendidikanKK;
 use App\Models\Kawin;
-use App\Models\GolonganDarah;
-use App\Models\Warganegara;
-use App\Models\HubunganKeluarga;
-use App\Models\PendudukSex;
-
-
+use App\Models\Keluarga;
+use App\Models\Pekerjaan;
+use App\Models\PendidikanKK;
+use App\Models\Penduduk;
+use App\Models\User;
 
 // User Model Relationships
 it('user has many otp tokens', function () {
     $user = User::factory()->create();
-    
+
     expect($user->otpTokens())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasMany::class);
 });
 
@@ -48,16 +38,15 @@ it('user has permissions through roles', function () {
 // DataDesa Model Relationships
 it('data desa has many penduduk', function () {
     $dataDesa = DataDesa::factory()->create();
-    
+
     expect($dataDesa->penduduk())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasMany::class);
 });
 
 it('data desa has many keluarga', function () {
     $dataDesa = DataDesa::factory()->create();
-    
+
     expect($dataDesa->keluarga())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasMany::class);
 });
-
 
 // Penduduk Model Relationships
 it('penduduk belongs to data desa', function () {
@@ -84,7 +73,6 @@ it('penduduk belongs to pekerjaan', function () {
     expect($penduduk->pekerjaan->id)->toBe($pekerjaan->id);
 });
 
-
 it('penduduk belongs to pendidikan kk', function () {
     $pendidikanKK = PendidikanKK::factory()->create();
     $penduduk = Penduduk::factory()->create(['pendidikan_kk_id' => $pendidikanKK->id]);
@@ -100,7 +88,6 @@ it('penduduk belongs to status kawin', function () {
     expect($penduduk->kawin)->not->toBeNull();
     expect($penduduk->kawin->id)->toBe($statusKawin->id);
 });
-
 
 // Keluarga Model Relationships
 it('keluarga belongs to data desa', function () {
@@ -119,7 +106,7 @@ it('keluarga has one kepala keluarga', function () {
     ]);
     $keluarga->nik_kepala = $kepalaKeluarga->nik;
     $keluarga->save();
-    $keluarga->load('kepala_kk');    
+    $keluarga->load('kepala_kk');
     expect($keluarga->kepala_kk)->not->toBeNull();
     expect($keluarga->kepala_kk->id)->toBe($kepalaKeluarga->id);
 });
@@ -164,7 +151,7 @@ it('eager loads relationships efficiently', function () {
     $loadedPenduduk = Penduduk::with(['desa', 'keluarga'])->first();
 
     expect($loadedPenduduk->relationLoaded('desa'))->toBeTrue();
-    expect($loadedPenduduk->relationLoaded('keluarga'))->toBeTrue();    
+    expect($loadedPenduduk->relationLoaded('keluarga'))->toBeTrue();
 });
 
 it('counts relationships correctly', function () {

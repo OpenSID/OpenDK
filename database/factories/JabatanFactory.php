@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Jabatan;
 use App\Enums\JenisJabatan;
+use App\Models\Jabatan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class JabatanFactory extends Factory

@@ -43,8 +43,8 @@ use Tests\Traits\WithUserAuthentication;
 class CrudTestCase extends TestCase
 {
     use WithDatabaseSetup;
-    use WithUserAuthentication;
     use WithSettingAplikasi;
+    use WithUserAuthentication;
 
     /**
      * Set up the test environment.
@@ -54,7 +54,7 @@ class CrudTestCase extends TestCase
         parent::setUp();
 
         $this->withViewErrors([]);
-        $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test                
+        $this->withoutMiddleware([Authenticate::class, RoleMiddleware::class, PermissionMiddleware::class, CompleteProfile::class, GlobalShareMiddleware::class]); // Disable middleware for this test
         $this->setDefaultApplicationConfig();
     }
 

@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class ToiletSanitasi extends Model
 {
     use HasFactory;
+
     protected $table = 'das_toilet_sanitasi';
 
     protected $fillable = [

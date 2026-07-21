@@ -35,7 +35,7 @@ class UpdateLembagaRequest extends FormRequest
 
         // Cek apakah field kode mengalami perubahan
         $lembaga = Lembaga::findOrFail($id);
-        
+
         if ($this->input('kode') !== $lembaga->kode) {
             $rules['kode'] = 'required|string|max:255|unique:das_lembaga,kode';
         }

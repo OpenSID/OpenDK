@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PotensiRequest;
 use App\Models\Potensi;
 use App\Models\TipePotensi;
 use App\Traits\HandlesFileUpload;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PotensiRequest;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -192,7 +192,7 @@ class PotensiController extends Controller
             if (file_exists($storagePath)) {
                 return response()->download($storagePath);
             }
-            
+
             return back()->with('error', 'Dokumen potensi tidak ditemukan');
         } catch (\Exception $e) {
             Log::error('Potensi download failed', [

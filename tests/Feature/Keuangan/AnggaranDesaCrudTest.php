@@ -73,5 +73,5 @@ describe('Anggaran Desa CRUD', function () {
         $response = $this->get(route('data.anggaran-desa.export-excel'));
 
         $response->assertStatus(200);
-    });   
+    });
 });

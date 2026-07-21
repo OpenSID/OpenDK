@@ -31,16 +31,16 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\Artikel;
-use App\Models\ArtikelKategori;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArtikelRequest;
+use App\Models\Artikel;
+use App\Models\ArtikelKategori;
+use App\Traits\HandlesFileUpload;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
+use Yajra\DataTables\DataTables;
 
 class ArtikelController extends Controller
 {
@@ -83,9 +83,9 @@ class ArtikelController extends Controller
                 ->editColumn('status', function (Artikel $row): string {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->editColumn('tanggal_terbit', function (Artikel $row): string {
                     return $row->tanggal_terbit ? format_date($row->tanggal_terbit) : '-';

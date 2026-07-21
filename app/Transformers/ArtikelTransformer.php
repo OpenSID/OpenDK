@@ -32,16 +32,14 @@
 namespace App\Transformers;
 
 use App\Models\Artikel;
-use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
 class ArtikelTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'kategori',
@@ -49,21 +47,18 @@ class ArtikelTransformer extends TransformerAbstract
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param Artikel $artikel
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(Artikel $artikel): array
     {
         $artikel->tanggal = format_date($artikel->getRawOriginal('tanggal_terbit'));
         $artikel->link = $artikel->link;
-        $artikel->gambar_src = is_img($artikel->gambar);        
+        $artikel->gambar_src = is_img($artikel->gambar);
         return $artikel->toArray();
     }
 
     /**
-     * Include Kategori
+     * Include Kategori.
      */
     public function includeKategori(Artikel $artikel): ?Item
     {
@@ -77,7 +72,7 @@ class ArtikelTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Comments
+     * Include Comments.
      */
     public function includeComments(Artikel $artikel): ?Collection
     {

@@ -56,7 +56,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function () {
-    /**
+    /*
      * Authentication api
      */
     Route::group(['prefix' => 'auth', 'controller' => AuthController::class], function () {
@@ -71,7 +71,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         Route::get('test', function () {
             return response()->json('Welcome to api route');
         });
-        /**
+        /*
          * Penduduk
          */
         Route::group(['prefix' => 'penduduk', 'controller' => PendudukController::class], function () {
@@ -80,14 +80,14 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
             Route::post('test', 'test');
         });
 
-        /**
+        /*
          * Laporan Apbdes
          */
         Route::group(['prefix' => 'laporan-apbdes', 'controller' => LaporanApbdesController::class], function () {
             Route::post('/', 'store');
         });
 
-        /**
+        /*
          * Laporan Penduduk
          */
         Route::group(['prefix' => 'laporan-penduduk', 'controller' => LaporanPendudukController::class], function () {
@@ -100,7 +100,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
             Route::get('detail', 'detail');
         });
 
-        /**
+        /*
          * Pembangunan
          */
         Route::group(['prefix' => 'pembangunan', 'controller' => PembangunanController::class], function () {
@@ -108,14 +108,14 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
             Route::post('dokumentasi', 'storeDokumentasi');
         });
 
-        /**
+        /*
          * Identitas Desa
          */
         Route::group(['prefix' => 'identitas-desa', 'controller' => ProfilDesaController::class], function () {
             Route::post('/', 'store');
         });
 
-        /**
+        /*
          * Program Bantuan
          */
         Route::group(['prefix' => 'program-bantuan', 'controller' => ProgamBantuanController::class], function () {
@@ -123,7 +123,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
             Route::post('peserta', 'storePeserta');
         });
 
-        //Surat
+        // Surat
         Route::group(['prefix' => 'surat', 'controller' => SuratController::class], function () {
             Route::get('/', 'index');
             Route::post('kirim', 'store');

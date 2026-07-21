@@ -4,12 +4,11 @@ namespace App\Repositories;
 
 use App\Enums\Status;
 use App\Models\Faq;
-use Spatie\QueryBuilder\AllowedFilter;
 
 class FaqApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Faq $model)
     {

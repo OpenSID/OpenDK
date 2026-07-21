@@ -37,9 +37,7 @@ use League\Fractal\TransformerAbstract;
 class KomplainTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'kategori_komplain',
@@ -48,10 +46,7 @@ class KomplainTransformer extends TransformerAbstract
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param Komplain $komplain
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(Komplain $komplain): array
     {
@@ -78,15 +73,14 @@ class KomplainTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Kategori Komplain
+     * Include Kategori Komplain.
      *
-     * @param Komplain $komplain
      * @return \League\Fractal\Resource\Item|null
      */
     public function includeKategoriKomplain(Komplain $komplain)
     {
         $kategori = $komplain->kategori_komplain;
-        
+
         if ($kategori) {
             return $this->item($kategori, new \App\Transformers\KategoriKomplainTransformer(), 'kategori_komplain');
         }
@@ -95,15 +89,14 @@ class KomplainTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Penduduk
+     * Include Penduduk.
      *
-     * @param Komplain $komplain
      * @return \League\Fractal\Resource\Item|null
      */
     public function includePenduduk(Komplain $komplain)
     {
         $penduduk = $komplain->penduduk;
-        
+
         if ($penduduk) {
             return $this->item($penduduk, new \App\Transformers\PendudukTransformer(), 'penduduk');
         }
@@ -112,15 +105,14 @@ class KomplainTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Jawaban Komplain
+     * Include Jawaban Komplain.
      *
-     * @param Komplain $komplain
      * @return \League\Fractal\Resource\Collection|null
      */
     public function includeJawabs(Komplain $komplain)
     {
         $jawabs = $komplain->jawabs;
-        
+
         if ($jawabs) {
             return $this->collection($jawabs, new \App\Transformers\JawabKomplainTransformer(), 'jawabs');
         }

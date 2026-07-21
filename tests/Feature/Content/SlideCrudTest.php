@@ -34,7 +34,6 @@ namespace Tests\Feature\Content;
 use App\Models\Slide;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     Storage::fake('public');

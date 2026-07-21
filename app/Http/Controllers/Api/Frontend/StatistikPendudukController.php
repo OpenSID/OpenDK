@@ -33,8 +33,8 @@ namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\StatistikPendudukApiRepository;
 use App\Transformers\StatistikPendudukTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
@@ -43,6 +43,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK Desa API",
  *     description="API untuk mengakses data profil dengan Spatie Query Builder filtering dan sorting",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -54,7 +55,6 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola profil"
  * )
  */
-
 class StatistikPendudukController extends BaseController
 {
     protected StatistikPendudukApiRepository $repository;
@@ -74,24 +74,31 @@ class StatistikPendudukController extends BaseController
      *     summary="Get statistik penduduk",
      *     description="Retrieve statistik penduduk data with dashboard metrics and various charts",
      *     tags={"Statistik Penduduk"},
+     *
      *     @OA\Parameter(
      *         name="filter[kategori]",
      *         in="query",
      *         description="Category for filtering",
      *         required=false,
+     *
      *         @OA\Schema(type="string", default="Semua")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[tahun]",
      *         in="query",
      *         description="Year for filtering",
      *         required=false,
+     *
      *         @OA\Schema(type="string", default="2025")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="type", type="string", example="statistik-penduduk"),
@@ -150,10 +157,13 @@ class StatistikPendudukController extends BaseController
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Server error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Internal server error")
      *         )
      *     )
@@ -162,14 +172,14 @@ class StatistikPendudukController extends BaseController
     public function index(Request $request): Fractal|JsonResponse
     {
         $params = $request->only(['page', 'filter', 'search', 'sort', 'order', 'include','desa','tahun']);
-        $cacheKey = $this->getCacheKey('index', $params);        
+        $cacheKey = $this->getCacheKey('index', $params);
         return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             $desa = $request->get('desa', 'Semua');
-            $tahun = $request->get('tahun', date('Y'));            
-            return $this->fractal($this->repository->data($desa, $tahun), new StatistikPendudukTransformer(), 'statistik-penduduk');    
+            $tahun = $request->get('tahun', date('Y'));
+            return $this->fractal($this->repository->data($desa, $tahun), new StatistikPendudukTransformer(), 'statistik-penduduk');
         });
     }
-    
+
     /**
      * Daftar tahun yang tersedia untuk data statistik penduduk.
      *
@@ -183,15 +193,15 @@ class StatistikPendudukController extends BaseController
     {
         $params = $request->only(['page', 'filter', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('listYear', $params);
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
-            return response()->json([                
-                "data" => [
+        return Cache::remember($cacheKey, $this->getCacheDuration(), function () {
+            return response()->json([
+                'data' => [
                     [
-                        "type" => "tahun",                        
-                        "attributes" => [
+                        'type' => 'tahun',
+                        'attributes' => [
                             $this->repository->yearsList()
                         ]
-                    ]                    
+                    ]
                 ]
             ]);
         });

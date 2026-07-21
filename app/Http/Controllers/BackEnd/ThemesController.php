@@ -24,7 +24,7 @@ class ThemesController extends BackEndController
         $page_description = 'Daftar Tema';
         $themes = Themes::orderBy('active', 'desc')->get();
         $showUnggahButton = ! $this->isDatabaseGabungan();
-        
+
         return view('backend.themes.index', compact('page_title', 'page_description', 'themes', 'showUnggahButton'));
     }
 
@@ -58,13 +58,13 @@ class ThemesController extends BackEndController
     {
         if($this->isDatabaseGabungan()){
             return response()->json([
-                    'status' => 'error',
-                    'message' => 'Unggah tema tidak diijinkan pada database gabungan',
-                ], 403);
+                'status' => 'error',
+                'message' => 'Unggah tema tidak diijinkan pada database gabungan',
+            ], 403);
         }
         try {
             $file = request()->file('file');
-            
+
             if (!$file) {
                 return response()->json([
                     'status' => 'error',
@@ -80,7 +80,7 @@ class ThemesController extends BackEndController
             }
 
             $result = $this->themeService->installFromZip($file);
-            
+
             return response()->json($result);
 
         } catch (\Exception $e) {
@@ -89,7 +89,7 @@ class ThemesController extends BackEndController
                 'user_id' => auth()->id(),
                 'error' => $e->getMessage(),
             ]);
-            
+
             return response()->json([
                 'status' => 'error',
                 'message' => 'Tema gagal diunggah. Silakan periksa log untuk detail.',
@@ -115,7 +115,7 @@ class ThemesController extends BackEndController
     }
 
     /**
-     * Clear API cache manually (untuk admin)
+     * Clear API cache manually (untuk admin).
      */
     public function clearCache()
     {

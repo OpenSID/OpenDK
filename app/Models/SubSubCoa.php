@@ -35,13 +35,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubSubCoa extends Model
 {
-    protected $table = 'ref_sub_sub_coa';
-
-    protected $primaryKey = 'id';
-
     public $incrementing = false;
 
     public $timestamps = false;
+
+    protected $table = 'ref_sub_sub_coa';
+
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'type_id',

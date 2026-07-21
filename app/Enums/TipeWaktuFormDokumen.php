@@ -34,7 +34,7 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * tipe waktu form dokumen
+ * tipe waktu form dokumen.
  */
 final class TipeWaktuFormDokumen extends Enum
 {

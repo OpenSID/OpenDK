@@ -33,7 +33,7 @@ class UpdateLembagaAnggotaRequest extends FormRequest
 
         // cek no_anggota berdasarkan id
         $anggota = LembagaAnggota::findOrFail($id);
-        
+
         // jika inputan nomor anggota tidak sama dengan data no_anggota
         if($this->input('no_anggota') !== $anggota->no_anggota){
             $rules['no_anggota'] = 'required|unique:das_lembaga_anggota,no_anggota';

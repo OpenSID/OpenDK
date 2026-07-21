@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 // KeluargaService Testing
 it('can instantiate keluarga service', function () {
     $service = new KeluargaService();
-    
+
     expect($service)->toBeInstanceOf(KeluargaService::class);
 });
 
@@ -34,7 +34,7 @@ it('can get keluarga by ID from API', function () {
 
     $service = new KeluargaService();
     $keluarga = $service->keluarga(1);
-    
+
     expect($keluarga)->toBeObject();
     expect($keluarga->id)->toBe(1);
     expect($keluarga->no_kk)->toBe('1234567890123456');
@@ -64,7 +64,7 @@ it('handles missing attributes in keluarga data', function () {
 
     $service = new KeluargaService();
     $keluarga = $service->keluarga(1);
-    
+
     expect($keluarga)->toBeObject();
     expect($keluarga->id)->toBe(1);
     expect($keluarga->no_kk)->toBe('1234567890123456');
@@ -92,7 +92,7 @@ it('can get jumlah keluarga from API', function () {
 
     $service = new KeluargaService();
     $jumlah = $service->jumlahKeluarga();
-    
+
     expect($jumlah)->toBe(50);
 });
 
@@ -107,7 +107,7 @@ it('returns 0 when API response has no total', function () {
 
     $service = new KeluargaService();
     $jumlah = $service->jumlahKeluarga();
-    
+
     expect($jumlah)->toBe(0);
 });
 
@@ -134,7 +134,7 @@ it('can export keluarga data from API', function () {
 
     $service = new KeluargaService();
     $exportData = $service->exportKeluarga();
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()->id)->toBe(1);
     expect($exportData->first()->nik_kepala)->toBe('1234567890123457');
@@ -164,7 +164,7 @@ it('handles missing attributes in export data', function () {
 
     $service = new KeluargaService();
     $exportData = $service->exportKeluarga();
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()->id)->toBe(1);
     expect($exportData->first()->nik_kepala)->toBe('');
@@ -194,7 +194,7 @@ it('handles dash in tgl_cetak_kk field', function () {
 
     $service = new KeluargaService();
     $exportData = $service->exportKeluarga();
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()->tgl_cetak_kk)->toBeNull();
 });
@@ -212,7 +212,7 @@ it('can apply filters to jumlah keluarga', function () {
 
     $service = new KeluargaService();
     $jumlah = $service->jumlahKeluarga(['filter[dusun]' => 'Dusun 1']);
-    
+
     expect($jumlah)->toBe(25);
 });
 
@@ -230,7 +230,7 @@ it('can export keluarga with custom parameters', function () {
 
     $service = new KeluargaService();
     $exportData = $service->exportKeluarga(['filter[rt]' => '01'], true);
-    
+
     expect($exportData)->toHaveCount(1);
 });
 
@@ -254,7 +254,7 @@ it('can export all keluarga data', function () {
 
     $service = new KeluargaService();
     $exportData = $service->exportKeluarga([], true);
-    
+
     expect($exportData)->toHaveCount(2);
 });
 
@@ -264,7 +264,7 @@ it('handles empty API response for keluarga', function () {
     ]);
 
     $service = new KeluargaService();
-    
+
     // This should handle empty response gracefully
     expect(fn() => $service->keluarga(1))->toThrow(\Exception::class);
 });
@@ -275,7 +275,7 @@ it('handles API errors gracefully', function () {
     ]);
 
     $service = new KeluargaService();
-    
+
     // This should handle API errors gracefully
     expect(fn() => $service->keluarga(1))->toThrow(\Exception::class);
 });
@@ -294,7 +294,7 @@ it('can export keluarga with null timestamps', function () {
 
     $service = new KeluargaService();
     $exportData = $service->exportKeluarga();
-    
+
     expect($exportData)->toHaveCount(1);
     expect($exportData->first()->created_at)->toBeNull();
     expect($exportData->first()->updated_at)->toBeNull();

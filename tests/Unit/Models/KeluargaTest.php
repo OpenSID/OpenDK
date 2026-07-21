@@ -1,9 +1,8 @@
 <?php
 
+use App\Models\DataDesa;
 use App\Models\Keluarga;
 use App\Models\Penduduk;
-use App\Models\DataDesa;
-
 
 it('can create a keluarga', function () {
     $keluarga = Keluarga::factory()->create([
@@ -46,19 +45,19 @@ it('has correct table name', function () {
 
 it('has cluster relationship', function () {
     $keluarga = Keluarga::factory()->create();
-    
+
     expect($keluarga->cluster())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
 it('has kepala_kk relationship', function () {
     $keluarga = Keluarga::factory()->create();
-    
+
     expect($keluarga->kepala_kk())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
 it('has desa relationship', function () {
     $keluarga = Keluarga::factory()->create();
-    
+
     expect($keluarga->desa())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 

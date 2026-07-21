@@ -44,7 +44,9 @@ class EpidemiPenyakitExportTest extends TestCase
     use DatabaseTransactions, WithoutMiddleware;
 
     protected $user;
+
     protected $desa;
+
     protected $penyakit;
 
     protected function setUp(): void
@@ -54,7 +56,7 @@ class EpidemiPenyakitExportTest extends TestCase
         // Buat user untuk testing
         $this->user = User::factory()->create();
 
-        // Buat desa untuk testing  
+        // Buat desa untuk testing
         $this->desa = DataDesa::factory()->create();
 
         // Buat jenis penyakit untuk testing
@@ -88,7 +90,7 @@ class EpidemiPenyakitExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // For binary files like Excel, check if headers are set correctly
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -114,7 +116,7 @@ class EpidemiPenyakitExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check headers for Excel download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -147,7 +149,7 @@ class EpidemiPenyakitExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check headers for Excel download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -174,7 +176,7 @@ class EpidemiPenyakitExportTest extends TestCase
         $this->assertNotNull($disposition, 'Content-Disposition header harus ada');
         $this->assertStringContainsString('data-epidemi-penyakit-', $disposition);
         $this->assertStringContainsString('.xlsx', $disposition);
-        
+
         // Verify timestamp format in filename (more flexible regex)
         $this->assertMatchesRegularExpression('/data-epidemi-penyakit-\d{4}/', $disposition);
     }
@@ -200,7 +202,7 @@ class EpidemiPenyakitExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check headers for proper Excel download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -213,13 +215,13 @@ class EpidemiPenyakitExportTest extends TestCase
         // Test if factories are working
         $this->assertNotNull($this->user);
         $this->assertInstanceOf(User::class, $this->user);
-        
+
         $this->assertNotNull($this->desa);
         $this->assertInstanceOf(DataDesa::class, $this->desa);
-        
+
         $this->assertNotNull($this->penyakit);
         $this->assertInstanceOf(JenisPenyakit::class, $this->penyakit);
-        
+
         // Test if route exists
         try {
             $routeUrl = route('data.epidemi-penyakit.export-excel');
@@ -256,17 +258,17 @@ class EpidemiPenyakitExportTest extends TestCase
 
         // Test the export class directly
         $export = new \App\Exports\ExportEpidemiPenyakit();
-        
+
         // Test collection method
         $collection = $export->collection();
         $this->assertNotNull($collection, 'Collection should not be null');
         $this->assertGreaterThan(0, $collection->count(), 'Collection should have data');
-        
+
         // Test headings method
         $headings = $export->headings();
         $this->assertIsArray($headings, 'Headings should be an array');
         $this->assertContains('Nama Desa', $headings, 'Should contain expected heading');
-        
+
         // Test mapping method
         $mapped = $export->map($epidemi);
         $this->assertIsArray($mapped, 'Mapped data should be an array');
@@ -298,10 +300,10 @@ class EpidemiPenyakitExportTest extends TestCase
         $this->assertEquals(3 + $epidemiDataSebelumnya, EpidemiPenyakit::count());
 
         $response = $this->get(route('data.epidemi-penyakit.export-excel'));
-        
+
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Verify filename includes timestamp
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertStringContainsString('data-epidemi-penyakit-', $disposition);

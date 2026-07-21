@@ -43,25 +43,6 @@ use Illuminate\Support\Facades\Log;
 class ProfilController extends Controller
 {
     /**
-     * Clear cache untuk data profil kecamatan
-     *
-     * @return void
-     */
-    private function clearProfilCache()
-    {
-        Cache::forget('profil');
-        Cache::forget('setting');
-
-        // Clear cache dengan tags jika didukung
-        try {
-            Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
-        } catch (\Exception $e) {
-            // Cache tags mungkin tidak didukung pada semua driver cache
-            Log::info('Cache tags not supported by current cache driver');
-        }
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return Response
@@ -80,7 +61,8 @@ class ProfilController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(ProfilRequest $request, $id)
@@ -97,10 +79,10 @@ class ProfilController extends Controller
                 // Use FileUploadService for secure file upload
                 $file = $request->file('file_struktur_organisasi');
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($file, 'profil/struktur_organisasi', $allowedMimes);
                 $profil->file_struktur_organisasi = 'storage/' . $path;
@@ -112,17 +94,17 @@ class ProfilController extends Controller
                 // Use FileUploadService for secure file upload
                 $fileLogo = $request->file('file_logo');
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($fileLogo, 'profil/file_logo', $allowedMimes);
                 $profil->file_logo = 'storage/' . $path;
             }
 
             $profil->update();
-            
+
             if ($dataumum) {
                 $dataumum->update();
             }
@@ -145,9 +127,10 @@ class ProfilController extends Controller
     }
 
     /**
-     * Redirect to edit Data Umum if success
+     * Redirect to edit Data Umum if success.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function success($id)
@@ -156,5 +139,24 @@ class ProfilController extends Controller
         $page_description = 'Konfirmasi?';
 
         return view('data.profil.save_success', compact('id', 'page_title', 'page_description'));
+    }
+
+    /**
+     * Clear cache untuk data profil kecamatan.
+     *
+     * @return void
+     */
+    private function clearProfilCache()
+    {
+        Cache::forget('profil');
+        Cache::forget('setting');
+
+        // Clear cache dengan tags jika didukung
+        try {
+            Cache::tags(['profil', 'kecamatan', 'frontend'])->flush();
+        } catch (\Exception $e) {
+            // Cache tags mungkin tidak didukung pada semua driver cache
+            Log::info('Cache tags not supported by current cache driver');
+        }
     }
 }

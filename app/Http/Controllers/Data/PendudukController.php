@@ -42,7 +42,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -118,7 +117,6 @@ class PendudukController extends Controller
     /**
      * Show the specified resource.
      *
-     * @param  Penduduk  $penduduk
      * @return Response
      */
     public function show($id)
@@ -201,7 +199,7 @@ class PendudukController extends Controller
 
     /**
      * Impor data penduduk dari file Excel.
-     * Kalau penduduk sudah ada (berdasarkan NIK), update dengan data yg diimpor
+     * Kalau penduduk sudah ada (berdasarkan NIK), update dengan data yg diimpor.
      *
      * @return Response
      */
@@ -210,16 +208,16 @@ class PendudukController extends Controller
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
             $fileUploadService = new \App\Services\FileUploadService();
-            
+
             // Define allowed MIME types for zip files
             $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
 
@@ -262,9 +260,9 @@ class PendudukController extends Controller
         try {
             if ($this->isDatabaseGabungan()) {
                 return Excel::download(new ExportPenduduk(true, $params), 'data-penduduk.xlsx');
-            } else {
-                return Excel::download(new ExportPenduduk(false, $params), 'data-penduduk.xlsx');
             }
+                return Excel::download(new ExportPenduduk(false, $params), 'data-penduduk.xlsx');
+
         } catch (\Exception $e) {
             Log::error('Penduduk export failed', [
                 'error' => $e->getMessage(),

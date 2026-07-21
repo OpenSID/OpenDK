@@ -36,14 +36,13 @@ it('smoke test menu Kecamatan - Profil', function () {
     // Tombol Pilih file dan Preview
     $this->page->assertVisible('input[name="file_struktur_organisasi"]');
     $this->page->assertVisible('input[name="file_logo"]');
-    
+
     // Preview gambar diskip
     $this->page->assertPresent('textarea[name="sambutan"]');
     $this->page->assertPresent('textarea[name="visi"]');
     $this->page->assertPresent('textarea[name="misi"]');
 
 })->group('smoke', 'smoke-kecamatan', 'browser');
-
 
 // =============================================================================
 // MENU: KECAMATAN -> DATA UMUM
@@ -74,7 +73,6 @@ it('smoke test menu Kecamatan - Data Umum', function () {
 
 })->group('smoke', 'smoke-kecamatan', 'browser');
 
-
 // =============================================================================
 // MENU: KECAMATAN -> DATA DESA
 // =============================================================================
@@ -97,7 +95,6 @@ it('smoke test menu Kecamatan - Data Desa', function () {
 
 })->group('smoke', 'smoke-kecamatan', 'browser');
 
-
 // =============================================================================
 // MENU: KECAMATAN -> DATA SARANA
 // =============================================================================
@@ -119,16 +116,12 @@ it('smoke test menu Kecamatan - Data Sarana', function () {
     $this->page->assertPresent('select#list_desa');
     $this->page->assertPresent('select#kategori');
 
-
-
     $this->page->assertVisible('#datasarana-table');
 
     // Tunggu DataTable selesai render
     sleep(2);
 
-
 })->group('smoke', 'smoke-kecamatan', 'browser');
-
 
 // =============================================================================
 // MENU: KECAMATAN -> PENGURUS
@@ -153,7 +146,6 @@ it('smoke test menu Kecamatan - Pengurus', function () {
 
 })->group('smoke', 'smoke-kecamatan', 'browser');
 
-
 // =============================================================================
 // MENU: KECAMATAN -> JABATAN
 // =============================================================================
@@ -165,6 +157,4 @@ it('smoke test menu Kecamatan - Jabatan', function () {
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kecamatan', 'browser');
-

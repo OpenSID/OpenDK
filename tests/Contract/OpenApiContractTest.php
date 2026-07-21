@@ -1,8 +1,8 @@
 <?php
 
-use Symfony\Component\Yaml\Yaml;
-use JsonSchema\Validator as JsonSchemaValidator;
 use JsonSchema\Constraints\Constraint;
+use JsonSchema\Validator as JsonSchemaValidator;
+use Symfony\Component\Yaml\Yaml;
 
 function getRequestSchema(array $spec, string $path, string $method): ?array
 {

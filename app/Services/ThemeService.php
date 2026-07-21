@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Storage;
 class ThemeService
 {
     protected ThemeHooksValidator $validator;
+
     protected CacheService $cacheService;
+
     protected FileUploadService $fileUploadService;
 
     public function __construct(
-        ThemeHooksValidator $validator, 
-        CacheService $cacheService, 
+        ThemeHooksValidator $validator,
+        CacheService $cacheService,
         FileUploadService $fileUploadService
     ) {
         $this->validator = $validator;
@@ -56,7 +58,7 @@ class ThemeService
     public function installFromZip(UploadedFile $file): array
     {
         $allowedMimes = FileUploadService::getAllowedMimes('archive');
-        
+
         $fileMimeType = $file->getMimeType();
         if (!in_array($fileMimeType, $allowedMimes)) {
             return [
@@ -66,7 +68,7 @@ class ThemeService
         }
 
         $path = $this->fileUploadService->uploadSecure($file, 'framework/themes', $allowedMimes, 51200);
-        
+
         $fileName = basename($path);
         $filePath = Storage::disk('public')->path('framework/themes');
 
@@ -133,7 +135,7 @@ class ThemeService
                 $zip->close();
             }
         }
-        
+
         return [
             'status' => 'error',
             'message' => 'Tema gagal diunggah (struktur arsip tidak valid atau file hilang)',
@@ -170,16 +172,16 @@ class ThemeService
         $themeJsonPath = "$path/$folder/theme.json";
         $themeJsonRaw  = file_get_contents($themeJsonPath);
         if ($themeJsonRaw === false) {
-            throw new \Exception("Tidak dapat membaca theme.json dari tema");
+            throw new \Exception('Tidak dapat membaca theme.json dari tema');
         }
 
         $themeConfig = json_decode($themeJsonRaw, true);
         if (! is_array($themeConfig)) {
-            throw new \Exception("theme.json tidak mengandung JSON yang valid");
+            throw new \Exception('theme.json tidak mengandung JSON yang valid');
         }
 
         if (!isset($themeConfig['api_version'])) {
-            Log::warning("Tema tidak mendefinisikan api_version, gunakan v1 sebagai default");
+            Log::warning('Tema tidak mendefinisikan api_version, gunakan v1 sebagai default');
         }
 
         return true;

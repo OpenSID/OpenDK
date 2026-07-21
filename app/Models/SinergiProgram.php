@@ -62,7 +62,7 @@ class SinergiProgram extends Model
     {
         parent::boot();
 
-        SinergiProgram::creating(function ($model) {
+        self::creating(function ($model) {
             $model->urutan = SinergiProgram::max('urutan') + 1;
         });
     }

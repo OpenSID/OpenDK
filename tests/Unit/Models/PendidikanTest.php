@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\Pendidikan;
-use App\Models\Penduduk;
-
 
 // Pendidikan Model Testing
 it('can create a pendidikan', function () {

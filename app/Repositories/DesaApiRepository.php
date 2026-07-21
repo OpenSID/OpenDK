@@ -37,18 +37,18 @@ use App\Services\DesaService;
 class DesaApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(DataDesa $model)
     {
-        parent::__construct($model);                        
+        parent::__construct($model);
     }
-    
+
     public function data()
-    {                
+    {
         $desaService = new DesaService();
         $collection = $desaService->listDesa();
-        
+
         return $collection->map(function($item){
             return $item instanceof DataDesa ? $item : new DataDesa((array) $item);
         });

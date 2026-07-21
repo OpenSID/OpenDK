@@ -29,7 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-/**
+/*
  * Test untuk memastikan endpoint DataTables pada menu Data → Kependudukan
  * dapat diakses menggunakan metode POST (antisipasi WAF blocking URL panjang).
  */
@@ -37,12 +37,11 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
-use App\Models\DataDesa;
 use App\Models\SettingAplikasi;
+use App\Models\Suplemen;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
-use App\Models\Suplemen;
 
 uses(DatabaseTransactions::class);
 

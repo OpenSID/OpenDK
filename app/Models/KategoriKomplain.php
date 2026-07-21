@@ -37,7 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class KategoriKomplain extends Model
 {
-    use Sluggable, HasFactory;
+    use HasFactory, Sluggable;
 
     protected $table = 'das_kategori_komplain';
 

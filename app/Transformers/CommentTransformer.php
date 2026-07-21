@@ -37,9 +37,7 @@ use League\Fractal\TransformerAbstract;
 class CommentTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'artikel',
@@ -48,10 +46,7 @@ class CommentTransformer extends TransformerAbstract
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param Comment $comment
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(Comment $comment): array
     {
@@ -60,15 +55,14 @@ class CommentTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Artikel
+     * Include Artikel.
      *
-     * @param Comment $comment
      * @return \League\Fractal\Resource\Item|null
      */
     public function includeArtikel(Comment $comment)
     {
         $artikel = $comment->artikel;
-        
+
         if ($artikel) {
             return $this->item($artikel, new ArtikelTransformer());
         }
@@ -77,34 +71,32 @@ class CommentTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Parent Comment
+     * Include Parent Comment.
      *
-     * @param Comment $comment
      * @return \League\Fractal\Resource\Item|null
      */
     public function includeParentComment(Comment $comment)
     {
         $parentComment = $comment->parentComment;
-        
+
         if ($parentComment) {
-            return $this->item($parentComment, new CommentTransformer());
+            return $this->item($parentComment, new self());
         }
 
         return null;
     }
 
     /**
-     * Include Replies
+     * Include Replies.
      *
-     * @param Comment $comment
      * @return \League\Fractal\Resource\Collection|null
      */
     public function includeReplies(Comment $comment)
     {
         $replies = $comment->replies;
-        
+
         if ($replies) {
-            return $this->collection($replies, new CommentTransformer());
+            return $this->collection($replies, new self());
         }
 
         return null;

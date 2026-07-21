@@ -32,15 +32,14 @@
 namespace Tests;
 
 class BrowserAuthenticatedTestCase extends BrowserTestCase
-{    
-    
+{
     /**
      * Set up the test environment.
      */
     protected function setUp(): void
     {
-        parent::setUp();                        
-        
+        parent::setUp();
+
         // Authenticate a user for all tests to prevent 403 errors
         // This is necessary for Laravel 11 where authorization is stricter
         $user = \App\Models\User::first();
@@ -48,5 +47,5 @@ class BrowserAuthenticatedTestCase extends BrowserTestCase
             $user = \App\Models\User::factory()->create();
         }
         $this->actingAs($user);
-    }        
+    }
 }

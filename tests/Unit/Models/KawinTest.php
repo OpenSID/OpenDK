@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\Kawin;
-use App\Models\Penduduk;
-
 
 // Kawin Model Testing
 it('can create a kawin', function () {
@@ -36,7 +34,6 @@ it('has correct table name', function () {
 
     expect($kawin->getTable())->toBe('ref_kawin');
 });
-
 
 it('can handle null values for optional fields', function () {
     $kawin = Kawin::factory()->create();

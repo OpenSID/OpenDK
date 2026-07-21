@@ -70,15 +70,14 @@ class ArtikelKategoriController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 'Ya') {
                         return '<span class="label label-success">Aktif</span>';
-                    } else {
-                        return '<span class="label label-danger">Tidak</span>';
                     }
+                        return '<span class="label label-danger">Tidak</span>';
+
                 })
                 ->rawColumns(['aksi', 'status'])
                 ->make(true);
         }
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -96,13 +95,12 @@ class ArtikelKategoriController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kategori' => "required|max:191",
+            'nama_kategori' => 'required|max:191',
             'status' => 'required',
         ]);
 
@@ -123,7 +121,8 @@ class ArtikelKategoriController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -138,8 +137,8 @@ class ArtikelKategoriController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -162,7 +161,8 @@ class ArtikelKategoriController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

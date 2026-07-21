@@ -43,6 +43,7 @@ class FasilitasPaudExportTest extends TestCase
     use DatabaseTransactions, WithoutMiddleware;
 
     protected $user;
+
     protected $desa;
 
     protected function setUp(): void
@@ -52,7 +53,7 @@ class FasilitasPaudExportTest extends TestCase
         // Buat user untuk testing
         $this->user = User::factory()->create();
 
-        // Buat desa untuk testing  
+        // Buat desa untuk testing
         $this->desa = DataDesa::factory()->create();
     }
 
@@ -82,7 +83,7 @@ class FasilitasPaudExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check if Content-Disposition header is set for download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -108,7 +109,7 @@ class FasilitasPaudExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check headers for Excel download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -142,7 +143,7 @@ class FasilitasPaudExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check headers for Excel download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -169,7 +170,7 @@ class FasilitasPaudExportTest extends TestCase
         $this->assertNotNull($disposition, 'Content-Disposition header harus ada');
         $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
         $this->assertStringContainsString('.xlsx', $disposition);
-        
+
         // Verify timestamp format in filename (more flexible regex)
         $this->assertMatchesRegularExpression('/data-fasilitas-paud-\d{4}/', $disposition);
     }
@@ -194,7 +195,7 @@ class FasilitasPaudExportTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Check headers for proper Excel download
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertNotNull($disposition, 'Content-Disposition header should be set');
@@ -207,10 +208,10 @@ class FasilitasPaudExportTest extends TestCase
         // Test if factories are working
         $this->assertNotNull($this->user);
         $this->assertInstanceOf(User::class, $this->user);
-        
+
         $this->assertNotNull($this->desa);
         $this->assertInstanceOf(DataDesa::class, $this->desa);
-        
+
         // Test if route exists
         try {
             $routeUrl = route('data.fasilitas-paud.export-excel');
@@ -246,12 +247,12 @@ class FasilitasPaudExportTest extends TestCase
 
         // Test the export class directly
         $export = new \App\Exports\ExportFasilitasPaud();
-        
+
         // Test collection method
         $collection = $export->collection();
         $this->assertNotNull($collection, 'Collection should not be null');
         $this->assertGreaterThan(0, $collection->count(), 'Collection should have data');
-        
+
         // Test headings method
         $headings = $export->headings();
         $this->assertIsArray($headings, 'Headings should be an array');
@@ -259,7 +260,7 @@ class FasilitasPaudExportTest extends TestCase
         $this->assertContains('Jumlah PAUD/RA', $headings, 'Should contain PAUD count heading');
         $this->assertContains('Jumlah Guru PAUD/RA', $headings, 'Should contain teacher count heading');
         $this->assertContains('Jumlah Siswa PAUD/RA', $headings, 'Should contain student count heading');
-        
+
         // Test mapping method
         $mapped = $export->map($fasilitasPaud);
         $this->assertIsArray($mapped, 'Mapped data should be an array');
@@ -295,10 +296,10 @@ class FasilitasPaudExportTest extends TestCase
         $this->assertEquals(3, FasilitasPAUD::count());
 
         $response = $this->get(route('data.fasilitas-paud.export-excel'));
-        
+
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Verify filename includes timestamp
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
@@ -321,10 +322,10 @@ class FasilitasPaudExportTest extends TestCase
         ]);
 
         $response = $this->get(route('data.fasilitas-paud.export-excel'));
-        
+
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Should still work with zero values
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
@@ -346,10 +347,10 @@ class FasilitasPaudExportTest extends TestCase
         $this->assertEquals(50, FasilitasPAUD::count());
 
         $response = $this->get(route('data.fasilitas-paud.export-excel'));
-        
+
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        
+
         // Verify successful download with large dataset
         $disposition = $response->headers->get('Content-Disposition');
         $this->assertStringContainsString('data-fasilitas-paud-', $disposition);
@@ -373,7 +374,7 @@ class FasilitasPaudExportTest extends TestCase
         $this->assertEquals($this->desa->desa_id, $fasilitasPaud->desa->desa_id);
 
         $response = $this->get(route('data.fasilitas-paud.export-excel'));
-        
+
         $response->assertStatus(200);
         $response->assertHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     }

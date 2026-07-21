@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Models\JenisPenyakit;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JenisPenyakitRequest;
+use App\Models\JenisPenyakit;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class JenisPenyakitController extends Controller
 {
@@ -63,8 +63,7 @@ class JenisPenyakitController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param JenisPenyakitRequest $request
-     * 
+     *
      * @return Response
      */
     public function store(JenisPenyakitRequest $request)

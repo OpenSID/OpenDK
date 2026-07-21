@@ -56,14 +56,16 @@ class AuthController extends Controller
     }
 
     /**
-     * Login
+     * Login.
      *
      * Mendapatkan JWT token dengan credentials email dan password.
      * Hanya user dengan permission `access.data`, `access.api`, atau `access.setting` yang diizinkan.
      *
      * @unauthenticated
+     *
      * @bodyParam email string required Email pengguna. Example: admin@mail.com
      * @bodyParam password string required Password pengguna. Example: password
+     *
      * @response {
      *   "access_token": "eyJ0eXAiOiJKV1Qi...",
      *   "token_type": "bearer",
@@ -109,7 +111,6 @@ class AuthController extends Controller
     /**
      * Log the user out (Invalidate the token).
      *
-     * @param  Response  $response
      * @return JsonResponse
      */
     public function logout()
@@ -132,7 +133,8 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string  $token
+     * @param string $token
+     *
      * @return JsonResponse
      */
     protected function respondWithToken($token)

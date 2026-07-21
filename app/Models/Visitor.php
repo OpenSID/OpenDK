@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
 use App\Enums\VisitorFilterEnum;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Visitor extends Model
 {
@@ -68,8 +68,8 @@ class Visitor extends Model
 
         return self::filter($filter)
             ->selectRaw("DATE_FORMAT(visited_at, '$format') as date")
-            ->selectRaw("SUM(page_views) as page_views")
-            ->selectRaw("COUNT(DISTINCT ip_address) as unique_visitors")
+            ->selectRaw('SUM(page_views) as page_views')
+            ->selectRaw('COUNT(DISTINCT ip_address) as unique_visitors')
             ->groupBy('date')
             ->orderBy('date')
             ->get();

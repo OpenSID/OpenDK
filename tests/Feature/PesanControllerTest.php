@@ -36,8 +36,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 uses(DatabaseTransactions::class);
 
 beforeEach(function () {
-    $this->withViewErrors([]);    
-    Pesan::query()->delete();    
+    $this->withViewErrors([]);
+    Pesan::query()->delete();
 });
 
 test('index', function () {

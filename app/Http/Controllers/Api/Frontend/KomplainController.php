@@ -31,14 +31,14 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
-use App\Repositories\KomplainApiRepository;
 use App\Http\Requests\Api\Frontend\StoreKomplainRequest;
 use App\Models\Penduduk;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use App\Repositories\KomplainApiRepository;
 use App\Services\PendudukService;
-use Illuminate\Support\Facades\Cache;
 use App\Transformers\KomplainTransformer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -46,6 +46,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK Komplain API",
  *     description="API untuk mengelola data komplain dan jawaban komplain",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -57,7 +58,6 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola komplain"
  * )
  */
-
 class KomplainController extends BaseController
 {
     protected KomplainApiRepository $komplainApiRepository;
@@ -77,59 +77,76 @@ class KomplainController extends BaseController
      *     summary="Get list of complaints",
      *     description="Retrieve paginated list of complaints with filtering and search capabilities",
      *     tags={"Komplain"},
+     *
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=1, minimum=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page[size]",
      *         in="query",
      *         description="Number of items per page (max: 100)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[status]",
      *         in="query",
      *         description="Filter by status",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"REVIEW", "DITERIMA", "DITOLAK", "Selesai"}, example="DITERIMA")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[kategori]",
      *         in="query",
      *         description="Filter by category ID",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", example=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="Search in title and content fields",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="keluhan jalan")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="sort",
      *         in="query",
      *         description="Sort field",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"created_at", "updated_at", "judul"}, default="created_at")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="order",
      *         in="query",
      *         description="Sort order",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
@@ -158,7 +175,7 @@ class KomplainController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return Cache::remember($cacheKey, $this->getCacheDuration(), function () {
             return $this->fractal($this->komplainApiRepository->data(), new KomplainTransformer(), 'komplain');
         });
     }
@@ -171,10 +188,13 @@ class KomplainController extends BaseController
      *     summary="Create a new complaint",
      *     description="Store a new complaint with attachments",
      *     tags={"Komplain"},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"nik", "judul", "kategori", "laporan", "tanggal_lahir"},
+     *
      *             @OA\Property(property="nik", type="string", example="1234567890123456"),
      *             @OA\Property(property="judul", type="string", example="Jalan Rusak"),
      *             @OA\Property(property="kategori", type="integer", example=1),
@@ -187,10 +207,13 @@ class KomplainController extends BaseController
      *             @OA\Property(property="lampiran4", type="string", format="binary", description="File attachment 4")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Complaint created successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="object", example={
      *                 "id": 1,
      *                 "komplain_id": "123456",
@@ -202,10 +225,13 @@ class KomplainController extends BaseController
      *             @OA\Property(property="message", type="string", example="Komplain berhasil dikirim. Tunggu Admin untuk di review terlebih dahulu!")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "nik": ["The nik field is required."],
      *                 "judul": ["The judul field is required."]

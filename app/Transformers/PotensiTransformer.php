@@ -7,12 +7,8 @@ use League\Fractal\TransformerAbstract;
 
 class PotensiTransformer extends TransformerAbstract
 {
-
     /**
-     * Transform object data
-     *
-     * @param Potensi $potensi
-     * @return array
+     * Transform object data.
      */
     public function transform(Potensi $potensi): array
     {

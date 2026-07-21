@@ -38,6 +38,7 @@ use Illuminate\Support\Str;
 class DataDesa extends Model
 {
     use HasFactory;
+
     protected $table = 'das_data_desa';
 
     protected $fillable = [
@@ -101,18 +102,18 @@ class DataDesa extends Model
     {
         // Ganti '-' dengan spasi dan hilangkan titik '.'
         $formattedValue = str_replace('-', ' ', $value);
-        
+
         // Sanitize input to prevent SQL injection
         $sanitizedValue = preg_replace('/[^a-zA-Z0-9\s]/', '', $formattedValue);
-    
+
         return $query->where('nama', 'LIKE', '%' . $sanitizedValue . '%');
     }
-    
 
     /**
      * Scope query untuk website desa.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWebsiteUrl($query)

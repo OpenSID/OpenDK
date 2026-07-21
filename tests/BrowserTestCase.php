@@ -32,7 +32,6 @@
 namespace Tests;
 
 use App\Http\Middleware\CompleteProfile;
-use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -71,7 +70,7 @@ abstract class BrowserTestCase extends BaseTestCase
     }
 
     /**
-     * Create test data needed for the homepage
+     * Create test data needed for the homepage.
      */
     protected function createTestData(): void
     {

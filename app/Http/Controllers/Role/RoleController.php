@@ -34,10 +34,9 @@ namespace App\Http\Controllers\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RoleRequest;
 use App\Models\Menu;
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -62,7 +61,7 @@ class RoleController extends Controller
     /**
      * Gets the data.
      *
-     * @return     <type>  The data.
+     * @return  <type>  The data.
      */
     public function getData()
     {
@@ -102,7 +101,8 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return Response
      */
     public function store(RoleRequest $request)
@@ -145,7 +145,8 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -162,14 +163,15 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(Request $request, $id)
     {
         try {
             $role = Role::findOrFail($id);
-            
+
             // Update name
             $role->name = $request->name;
             $role->save();
@@ -183,7 +185,7 @@ class RoleController extends Controller
                     }
                 }
             }
-            
+
             $role->syncPermissions($permissions);
 
             session()->flash('success', 'Berhasil memperbarui role: ' . $role->name);
@@ -204,7 +206,8 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -216,12 +219,12 @@ class RoleController extends Controller
                 session()->flash('error', 'Role tidak bisa dihapus karena masih memiliki user');
 
                 return back();
-            }else {                
+            }
                 $role->delete();
                 session()->flash('success', 'Berhasil menghapus role: ' . $role->name);
 
                 return redirect()->route('setting.role.index');
-            }
+
         } catch (\Exception $e) {
             Log::error('Role deletion failed', [
                 'error' => $e->getMessage(),
@@ -237,7 +240,8 @@ class RoleController extends Controller
     /**
      * Display list of users by role.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function users($id): View
@@ -252,7 +256,8 @@ class RoleController extends Controller
     /**
      * Gets the data for users by role.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return DataTables
      */
     public function getDataUsersByRole($id): JsonResponse
@@ -260,11 +265,10 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $users = $role->users()->select('users.id', 'users.name', 'users.email', 'users.status');
 
-        
         return datatables($users)
         ->editColumn('status', function ($user) {
-            return $user->status === 1 
-                ? '<span class="badge badge-success">Aktif</span>' 
+            return $user->status === 1
+                ? '<span class="badge badge-success">Aktif</span>'
                 : '<span class="badge badge-danger">Nonaktif</span>';
         })
         ->addColumn('aksi', function ($user) {

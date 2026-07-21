@@ -55,7 +55,8 @@ class PesertaProgram extends Model
     {
         if ($this->sasaran == 1) {
             return $this->hasOne(Penduduk::class, 'nik', 'peserta');
-        } elseif ($this->sasaran == 2) {
+        }
+        if ($this->sasaran == 2) {
             return $this->hasOne(Penduduk::class, 'no_kk', 'peserta');
         }
     }

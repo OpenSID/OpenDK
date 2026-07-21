@@ -44,7 +44,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporAPBDesa implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 
@@ -69,7 +69,7 @@ class ImporAPBDesa implements ToCollection, WithHeadingRow, WithChunkReading, Sh
     public function collection(Collection $collection)
     {
         $kode_desa = Arr::flatten(DataDesa::pluck('desa_id'));
-        DB::beginTransaction(); //multai transaction
+        DB::beginTransaction(); // multai transaction
 
         foreach ($collection as $index => $value) {
             if (! in_array($this->request['desa'], $kode_desa)) {

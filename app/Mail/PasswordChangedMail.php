@@ -49,7 +49,8 @@ class PasswordChangedMail extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return void
      */
     public function __construct($name)

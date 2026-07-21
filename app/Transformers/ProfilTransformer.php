@@ -39,10 +39,9 @@ use League\Fractal\TransformerAbstract;
 class ProfilTransformer extends TransformerAbstract
 {
     use BaganTrait;
+
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'dataUmum',
@@ -51,29 +50,25 @@ class ProfilTransformer extends TransformerAbstract
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param Profil $profil
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(Profil $profil): array
     {
         $profil->file_struktur_organisasi_path = is_img($profil->file_struktur_organisasi);
-        $profil->foto_kepala_wilayah_path = is_img($profil->foto_kepala_wilayah, 'img/no-profile.png');        
+        $profil->foto_kepala_wilayah_path = is_img($profil->foto_kepala_wilayah, 'img/no-profile.png');
         $profil->file_logo_path = is_img($profil->file_logo);
         return $profil->toArray();
     }
 
     /**
-     * Include Data Umum
+     * Include Data Umum.
      *
-     * @param Profil $profil
      * @return \League\Fractal\Resource\Item|null
      */
     public function includeDataUmum(Profil $profil)
     {
         $dataUmum = $profil->dataUmum;
-        
+
         if ($dataUmum) {
             return $this->item($dataUmum, new DataUmumTransformer(), 'dataUmum');
         }
@@ -82,15 +77,14 @@ class ProfilTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Data Desa
+     * Include Data Desa.
      *
-     * @param Profil $profil
      * @return \League\Fractal\Resource\Collection|null
      */
     public function includeDataDesa(Profil $profil)
     {
         $dataDesa = (new DesaService())->listDesa();
-        
+
         if ($dataDesa) {
             return $this->collection($dataDesa, new DataDesaTransformer(), 'dataDesa');
         }
@@ -99,7 +93,7 @@ class ProfilTransformer extends TransformerAbstract
     }
 
     public function includeStrukturOrganisasi(Profil $profil)
-    {        
+    {
         return $this->collection([['id' => 1, $this->getDataStrukturOrganisasi()]], function($item){
             return $item;
         }, 'strukturOrganisasi');

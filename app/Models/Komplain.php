@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class Komplain extends Model
 {
     use HasFactory;
+
     protected $table = 'das_komplain';
 
     protected $fillable = [
@@ -76,7 +77,7 @@ class Komplain extends Model
         $id = mt_rand(100000, 999999);
         $pid = '';
 
-        if (! Komplain::where('komplain_id', '=', $id)->exists()) {
+        if (! self::where('komplain_id', '=', $id)->exists()) {
             $pid = $id;
         } else {
             self::generateID();

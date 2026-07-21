@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 class SecureFileUpload implements ValidationRule
 {
     protected array $allowedMimes;
+
     protected int $maxSize;
 
     public function __construct(array $allowedMimes = [], int $maxSize = 2048)
@@ -44,7 +45,7 @@ class SecureFileUpload implements ValidationRule
         // Check for dangerous extensions
         $dangerousExtensions = ['php', 'phtml', 'php3', 'php4', 'php5', 'exe', 'bat', 'sh'];
         $extension = strtolower($value->getClientOriginalExtension());
-        
+
         if (in_array($extension, $dangerousExtensions)) {
             $fail("The {$attribute} has a forbidden file extension.");
         }

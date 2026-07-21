@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Imunisasi;
 use App\Models\DataDesa;
+use App\Models\Imunisasi;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ImunisasiFactory extends Factory

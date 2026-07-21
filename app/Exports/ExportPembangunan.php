@@ -69,8 +69,6 @@ class ExportPembangunan implements FromCollection, WithHeadings, WithMapping, Wi
 
     /**
      * Definisi header kolom untuk export Excel.
-     *
-     * @return array
      */
     public function headings(): array
     {
@@ -91,9 +89,6 @@ class ExportPembangunan implements FromCollection, WithHeadings, WithMapping, Wi
 
     /**
      * Mapping data untuk setiap baris.
-     *
-     * @param $row
-     * @return array
      */
     public function map($row): array
     {
@@ -114,7 +109,6 @@ class ExportPembangunan implements FromCollection, WithHeadings, WithMapping, Wi
     /**
      * Styling untuk worksheet Excel.
      *
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

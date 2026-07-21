@@ -3,22 +3,19 @@
 namespace App\Services;
 
 use App\Models\CacheKey;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
 
 class CacheService
 {
     private static array $trackedKeys = [];
-    
+
     /**
-     * Store cache key and prefix in database for tracking
+     * Store cache key and prefix in database for tracking.
      *
-     * @param string $key Cache key to store
+     * @param string      $key    Cache key to store
      * @param string|null $prefix Cache prefix (optional)
-     * @param string|null $group Group name for organizing cache keys (optional)
-     * @return void
+     * @param string|null $group  Group name for organizing cache keys (optional)
      */
     public function storeCacheKey(string $key, ?string $prefix = null, ?string $group = null): void
     {
@@ -27,7 +24,7 @@ class CacheService
             if (isset(self::$trackedKeys[$key])) {
                 return;
             }
-            
+
             // Extract prefix from key if not provided
             if ($prefix === null) {
                 // If the key contains a colon, take the first part as prefix, otherwise use 'default'
@@ -38,7 +35,7 @@ class CacheService
                     $prefix = 'default';
                 }
             }
-            
+
             // Only store the cache key in database if it doesn't already exist
             if (!CacheKey::where('key', $key)->exists()) {
                 CacheKey::create([
@@ -47,7 +44,7 @@ class CacheService
                     'group' => $group,
                 ]);
             }
-            
+
             // Mark key as tracked in memory
             self::$trackedKeys[$key] = true;
         } catch (\Exception $e) {
@@ -57,21 +54,20 @@ class CacheService
     }
 
     /**
-     * Get cache with automatic key tracking
+     * Get cache with automatic key tracking.
      *
-     * @param string $key Cache key
-     * @param mixed $default Default value if cache doesn't exist
-     * @param string|null $prefix Cache prefix (optional)
-     * @param string|null $group Group name (optional)
+     * @param string      $key     Cache key
+     * @param mixed       $default Default value if cache doesn't exist
+     * @param string|null $prefix  Cache prefix (optional)
+     * @param string|null $group   Group name (optional)
+     * @param string      $key     Cache key
+     * @param mixed       $default Default value if cache doesn't exist
+     * @param string|null $prefix  Cache prefix (optional)
+     * @param string|null $group   Group name (optional)
+     *
      * @return mixed
     /**
      * Get cache with automatic key tracking
-     *
-     * @param string $key Cache key
-     * @param mixed $default Default value if cache doesn't exist
-     * @param string|null $prefix Cache prefix (optional)
-     * @param string|null $group Group name (optional)
-     * @return mixed
      */
     public function get(string $key, $default = null, ?string $prefix = null, ?string $group = null)
     {
@@ -79,20 +75,19 @@ class CacheService
     }
 
     /**
-     * Put cache with automatic key tracking
+     * Put cache with automatic key tracking.
      *
-     * @param string $key Cache key
-     * @param mixed $value Value to cache
-     * @param \DateTimeInterface|\DateInterval|int $ttl Time to live
-     * @param string|null $prefix Cache prefix (optional)
-     * @param string|null $group Group name (optional)
-     * @return void
+     * @param string                               $key    Cache key
+     * @param mixed                                $value  Value to cache
+     * @param \DateTimeInterface|\DateInterval|int $ttl    Time to live
+     * @param string|null                          $prefix Cache prefix (optional)
+     * @param string|null                          $group  Group name (optional)
      */
     public function put(string $key, $value, $ttl = 3600, ?string $prefix = null, ?string $group = null): void
     {
         // Store the cache key in database if it doesn't already exist
         $this->storeCacheKey($key, $prefix, $group);
-        
+
         // Handle null TTL for rememberForever
         if ($ttl === null) {
             Cache::forever($key, $value);
@@ -102,14 +97,13 @@ class CacheService
     }
 
     /**
-     * Remember cache with automatic key tracking
+     * Remember cache with automatic key tracking.
      *
-     * @param string $key Cache key
-     * @param \DateTimeInterface|\DateInterval|int $ttl Time to live
-     * @param \Closure $callback Callback to execute if cache doesn't exist
-     * @param string|null $prefix Cache prefix (optional)
-     * @param string|null $group Group name (optional)
-     * @return mixed
+     * @param string                               $key      Cache key
+     * @param \DateTimeInterface|\DateInterval|int $ttl      Time to live
+     * @param \Closure                             $callback Callback to execute if cache doesn't exist
+     * @param string|null                          $prefix   Cache prefix (optional)
+     * @param string|null                          $group    Group name (optional)
      */
     public function remember(string $key, $ttl, \Closure $callback, ?string $prefix = null, ?string $group = null)
     {
@@ -117,22 +111,21 @@ class CacheService
         if (Cache::has($key)) {
             return Cache::get($key);
         }
-        
+
         // Cache doesn't exist, so execute callback and store the result
         $value = $callback();
         $this->put($key, $value, $ttl, $prefix, $group);
-        
+
         return $value;
     }
 
     /**
-     * RememberForever cache with automatic key tracking
+     * RememberForever cache with automatic key tracking.
      *
-     * @param string $key Cache key
-     * @param \Closure $callback Callback to execute if cache doesn't exist
-     * @param string|null $prefix Cache prefix (optional)
-     * @param string|null $group Group name (optional)
-     * @return mixed
+     * @param string      $key      Cache key
+     * @param \Closure    $callback Callback to execute if cache doesn't exist
+     * @param string|null $prefix   Cache prefix (optional)
+     * @param string|null $group    Group name (optional)
      */
     public function rememberForever(string $key, \Closure $callback, ?string $prefix = null, ?string $group = null)
     {
@@ -140,38 +133,39 @@ class CacheService
         if (Cache::has($key)) {
             return Cache::get($key);
         }
-        
+
         // Cache doesn't exist, so execute callback and store the result
         $value = $callback();
         $this->put($key, $value, null, $prefix, $group);
-        
+
         return $value;
     }
 
     /**
-     * Remove all cache entries with the specified prefix
+     * Remove all cache entries with the specified prefix.
      *
      * @param string|null $prefix Cache prefix to clear. If null, uses default prefix
+     *
      * @return bool True if successful, false otherwise
      */
     public function removeCachePrefix(?string $prefix = null): bool
     {
         $cachePrefix = $prefix ?? 'theme:api';
-        
+
         try {
             // First, get all cache keys from our database that match the prefix
             $cacheKeys = CacheKey::where('prefix', 'like', "%{$cachePrefix}%")->pluck('key')->toArray();
-            
+
             // Delete these keys from cache
             if (!empty($cacheKeys)) {
                 foreach ($cacheKeys as $key) {
                     Cache::forget($key);
                 }
-                
+
                 // Delete records from our cache_keys table
                 CacheKey::where('prefix', 'like', "%{$cachePrefix}%")->delete();
             }
-            
+
             return true;
         } catch (\Exception $e) {
             // Log error if needed
@@ -179,11 +173,12 @@ class CacheService
             return false;
         }
     }
-    
+
     /**
-     * Remove specific cache keys by group
+     * Remove specific cache keys by group.
      *
      * @param string $group Group name to clear
+     *
      * @return bool True if successful, false otherwise
      */
     public function removeCacheByGroup(string $group): bool
@@ -191,28 +186,29 @@ class CacheService
         try {
             // Get all cache keys from our database that match the group
             $cacheKeys = CacheKey::where('group', $group)->pluck('key')->toArray();
-            
+
             // Delete these keys from cache
             if (!empty($cacheKeys)) {
                 foreach ($cacheKeys as $key) {
                     Cache::forget($key);
                 }
-                
+
                 // Delete records from our cache_keys table
                 CacheKey::where('group', $group)->delete();
             }
-            
+
             return true;
         } catch (\Exception $e) {
             Log::error('Failed to remove cache by group: ' . $e->getMessage());
             return false;
         }
     }
-    
+
     /**
-     * Remove specific cache keys by exact key match
+     * Remove specific cache keys by exact key match.
      *
      * @param string $key Key to remove
+     *
      * @return bool True if successful, false otherwise
      */
     public function removeCacheByKey(string $key): bool
@@ -220,14 +216,14 @@ class CacheService
         try {
             // Remove from Laravel cache
             Cache::forget($key);
-            
+
             // Remove from our cache_keys table
             CacheKey::where('key', $key)->delete();
-            
+
             return true;
         } catch (\Exception $e) {
             Log::error('Failed to remove cache by key: ' . $e->getMessage());
             return false;
         }
-    }  
+    }
 }

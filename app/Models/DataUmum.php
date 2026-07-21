@@ -31,12 +31,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class DataUmum extends Model
 {
     use HasFactory;
+
     // Attributes
     protected $table = 'das_data_umum';
 

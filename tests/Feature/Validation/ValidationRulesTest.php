@@ -32,7 +32,6 @@
 namespace Tests\Feature\Validation;
 
 use App\Models\Imunisasi;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Test setup if needed

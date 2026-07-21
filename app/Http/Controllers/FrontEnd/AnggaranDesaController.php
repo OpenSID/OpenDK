@@ -36,13 +36,13 @@ use App\Http\Controllers\FrontEndController;
 class AnggaranDesaController extends FrontEndController
 {
     /**
-     * Menampilkan Data Anggaran Dan realisasi Kecamatan
+     * Menampilkan Data Anggaran Dan realisasi Kecamatan.
      **/
     public function showAnggaranDesa()
     {
         $data['page_title'] = 'Anggaran Desa (APBDes)';
-        $data['page_description'] = 'Data Anggaran Desa (APBDes)';        
+        $data['page_description'] = 'Data Anggaran Desa (APBDes)';
         $data['hide_list_month'] = $this->isDatabaseGabungan() ? true : false;
         return view('pages.anggaran_desa.show_anggaran_desa')->with($data);
-    }    
+    }
 }

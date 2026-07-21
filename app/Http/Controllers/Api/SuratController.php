@@ -42,7 +42,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SuratController extends Controller
@@ -53,6 +52,7 @@ class SuratController extends Controller
      * @group OpenSID Integration
      *
      * @queryParam desa_id string required Kode desa. Example: 3201012001
+     *
      * @response {
      *   "status": true,
      *   "message": "Daftar Surat",
@@ -93,6 +93,7 @@ class SuratController extends Controller
      * @bodyParam nomor string required Nomor surat (unique). Example: 001/SK/2024
      * @bodyParam nama string required Nama surat. Example: SK Kepala Desa
      * @bodyParam file file required File PDF surat (max 2MB). Example: null
+     *
      * @response {
      *   "status": true,
      *   "message": "Surat Berhasil Dikirim!",
@@ -150,23 +151,23 @@ class SuratController extends Controller
         } else {
             if (! $penduduk = Penduduk::where('nik', $request->nik)->first()) {
                 Log::debug("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan");
-                
+
                 return response()->json("Penduduk dengan NIK {$request->nik} tidak terdaftar di kecamatan", 400);
             }
             $nama_penduduk = $penduduk->nama;
         }
 
         $file = $request->file('file');
-        
+
         // Use FileUploadService for secure file upload
         $fileUploadService = new \App\Services\FileUploadService();
-        
+
         // Define allowed MIME types for pdf files
         $allowedMimes = ['application/pdf'];
-        
+
         // Upload file securely to surat directory
         $path = $fileUploadService->uploadSecure($file, 'surat', $allowedMimes, 2048); // 2MB max
-        
+
         // Extract filename from path
         $file_name = basename($path);
 
@@ -195,6 +196,7 @@ class SuratController extends Controller
      *
      * @queryParam desa_id string required Kode desa. Example: 3201012001
      * @queryParam nomor string required Nomor surat. Example: 001/SK/2024
+     *
      * @response {
      *   "Content-Type": "application/pdf",
      *   "Content-Disposition": "inline; filename=\"surat.pdf\""
@@ -223,13 +225,10 @@ class SuratController extends Controller
 
         Log::debug("Kode desa {$request->desa_id} dan nomor surat {$request->nomor}");
 
-        
-        
         // Clean the nomor parameter to prevent SQL injection
         $cleanNomor = preg_replace('/[^0-9A-Za-z\/\-\.]/', '', $request->nomor);
-        
+
         $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $cleanNomor)->firstOrFail();
-        
 
         $file = public_path("storage/surat/{$surat->file}");
 

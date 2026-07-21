@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers\Setting;
 
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Backup\Tasks\Backup\BackupJobFactory;
-
 use Illuminate\Support\Facades\Artisan;
-
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
-use Exception;
+use Illuminate\Support\Facades\Storage;
 
+use Yajra\DataTables\DataTables;
 
 class PengaturanDatabaseController extends Controller
 {
@@ -122,26 +118,6 @@ class PengaturanDatabaseController extends Controller
         return redirect()->route('setting.pengaturan-database.backup')->with('error', 'Backup tidak ditemukan');
     }
 
-    /**
-     * Fungsi untuk format ukuran file
-     */
-    private function formatSizeUnits($bytes)
-    {
-        if ($bytes >= 1073741824) {
-            return number_format($bytes / 1073741824, 2) . ' GB';
-        } elseif ($bytes >= 1048576) {
-            return number_format($bytes / 1048576, 2) . ' MB';
-        } elseif ($bytes >= 1024) {
-            return number_format($bytes / 1024, 2) . ' KB';
-        } elseif ($bytes > 1) {
-            return $bytes . ' bytes';
-        } elseif ($bytes == 1) {
-            return $bytes . ' byte';
-        } else {
-            return '0 bytes';
-        }
-    }
-
     // RESTORE DATABASE
 
     public function restoreDatabase()
@@ -151,7 +127,6 @@ class PengaturanDatabaseController extends Controller
 
         return view('setting.pengaturan_database.table-restore', compact('page_title', 'page_description'));
     }
-
 
     public function restoreBackup(Request $request)
     {
@@ -179,7 +154,7 @@ class PengaturanDatabaseController extends Controller
         $filename = basename($path);
         $allowedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-';
 
-        if (! preg_match("/^[" . $allowedChars . "]+$/", $filename)) {
+        if (! preg_match('/^[' . $allowedChars . ']+$/', $filename)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Nama file tidak valid. Hanya boleh mengandung huruf (a-z/A-Z), angka (0-9), titik (.), dan garis bawah (_).',
@@ -224,6 +199,30 @@ class PengaturanDatabaseController extends Controller
             $this->deleteTemporaryDirectory(Storage::disk('public')->path($setDir));
             Log::info('Direktori sementara berhasil dihapus.');
         }
+    }
+
+    /**
+     * Fungsi untuk format ukuran file.
+     */
+    private function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            return number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        if ($bytes >= 1048576) {
+            return number_format($bytes / 1048576, 2) . ' MB';
+        }
+        if ($bytes >= 1024) {
+            return number_format($bytes / 1024, 2) . ' KB';
+        }
+        if ($bytes > 1) {
+            return $bytes . ' bytes';
+        }
+        if ($bytes == 1) {
+            return $bytes . ' byte';
+        }
+            return '0 bytes';
+
     }
 
     private function runRestoreDatabase($sqlFilePath)

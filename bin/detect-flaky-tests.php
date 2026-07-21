@@ -13,7 +13,6 @@
  *   3. Tests with zero duration (potential issue)
  *   4. Skipped/incomplete tests
  */
-
 $artifactsDir = $argv[1] ?? 'build/artifacts';
 
 if (!is_dir($artifactsDir)) {
@@ -113,13 +112,13 @@ echo "════════════════════════�
 echo "  Flaky Test Detection Report\n";
 echo "═══════════════════════════════════════\n\n";
 
-echo "Total tests  : " . count($allTests) . "\n";
-echo "Failed       : " . count($failedTests) . "\n";
-echo "Skipped      : " . count($skippedTests) . "\n";
-echo "Zero-duration: " . count($zeroTests) . "\n";
+echo 'Total tests  : ' . count($allTests) . "\n";
+echo 'Failed       : ' . count($failedTests) . "\n";
+echo 'Skipped      : ' . count($skippedTests) . "\n";
+echo 'Zero-duration: ' . count($zeroTests) . "\n";
 echo "Slow (>{$threshold}s): " . count($slowTests) . "\n";
-echo "Median time  : " . round($median, 3) . "s\n";
-echo "Mean time    : " . round($mean, 3) . "s\n";
+echo 'Median time  : ' . round($median, 3) . "s\n";
+echo 'Mean time    : ' . round($mean, 3) . "s\n";
 
 // Report failed tests
 if (!empty($failedTests)) {
@@ -128,7 +127,7 @@ if (!empty($failedTests)) {
         echo "  ✗ {$test['name']} ({$test['time']}s)\n";
     }
     if (count($failedTests) > 20) {
-        echo "  ... and " . (count($failedTests) - 20) . " more\n";
+        echo '  ... and ' . (count($failedTests) - 20) . " more\n";
     }
 }
 
@@ -139,7 +138,7 @@ if (!empty($zeroTests)) {
         echo "  ⚠ {$test['name']}\n";
     }
     if (count($zeroTests) > 10) {
-        echo "  ... and " . (count($zeroTests) - 10) . " more\n";
+        echo '  ... and ' . (count($zeroTests) - 10) . " more\n";
     }
 }
 
@@ -151,7 +150,7 @@ if (!empty($slowTests)) {
         echo "  ⚠ {$test['name']} ({$test['time']}s)\n";
     }
     if (count($slowTests) > 10) {
-        echo "  ... and " . (count($slowTests) - 10) . " more\n";
+        echo '  ... and ' . (count($slowTests) - 10) . " more\n";
     }
 }
 
@@ -162,7 +161,7 @@ if (!empty($skippedTests)) {
         echo "  ⏭ {$test['name']}\n";
     }
     if (count($skippedTests) > 10) {
-        echo "  ... and " . (count($skippedTests) - 10) . " more\n";
+        echo '  ... and ' . (count($skippedTests) - 10) . " more\n";
     }
 }
 
@@ -175,10 +174,10 @@ if ($summaryFile) {
     $summary  = "\n## 🐛 Flaky Test Detection\n\n";
     $summary .= "| Metric | Count |\n";
     $summary .= "|--------|-------|\n";
-    $summary .= "| Total tests | " . count($allTests) . " |\n";
-    $summary .= "| Failed | " . count($failedTests) . " |\n";
-    $summary .= "| Skipped | " . count($skippedTests) . " |\n";
-    $summary .= "| Zero-duration | " . count($zeroTests) . " |\n";
+    $summary .= '| Total tests | ' . count($allTests) . " |\n";
+    $summary .= '| Failed | ' . count($failedTests) . " |\n";
+    $summary .= '| Skipped | ' . count($skippedTests) . " |\n";
+    $summary .= '| Zero-duration | ' . count($zeroTests) . " |\n";
     $summary .= "| Slow (>{$threshold}s) | " . count($slowTests) . " |\n";
 
     if (!empty($slowTests)) {

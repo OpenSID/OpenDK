@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\Prosedur;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProsedurRequest;
+use App\Models\Prosedur;
+use App\Traits\HandlesFileUpload;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller
 {

@@ -42,8 +42,8 @@ class KependudukanController extends FrontEndController
     protected $profil;
 
     protected $penduduk;
-    private $statistikPendudukService;
 
+    private $statistikPendudukService;
 
     public function __construct(Profil $profil, Penduduk $penduduk)
     {
@@ -54,29 +54,16 @@ class KependudukanController extends FrontEndController
     }
 
     /**
-     * Menampilkan Data Kependudukan
+     * Menampilkan Data Kependudukan.
      **/
     public function showKependudukan()
     {
         Counter::count('statistik.kependudukan');
 
         $data['page_title'] = 'Kependudukan';
-        $data['page_description'] = 'Statistik Kependudukan';                
+        $data['page_description'] = 'Statistik Kependudukan';
 
         return view('pages.kependudukan.show_kependudukan')->with($data);
-    }
-
-    /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
-    protected function yearsList($max_tahun = null)
-    {
-        $min_tahun = $this->statistikPendudukService->minYear() ?? date('Y');
-
-        $daftar_tahun = [];
-        for ($y = $min_tahun; $y <= ($max_tahun ?? date('Y')); $y++) {
-            $daftar_tahun[] = $y;
-        }
-
-        return $daftar_tahun;
     }
 
     public function showKependudukanPartial()
@@ -92,9 +79,22 @@ class KependudukanController extends FrontEndController
         return $data;
     }
 
+    /* Menghasilkan array berisi semua tahun di mana penduduk tercatat sampai tahun sekarang */
+    protected function yearsList($max_tahun = null)
+    {
+        $min_tahun = $this->statistikPendudukService->minYear() ?? date('Y');
+
+        $daftar_tahun = [];
+        for ($y = $min_tahun; $y <= ($max_tahun ?? date('Y')); $y++) {
+            $daftar_tahun[] = $y;
+        }
+
+        return $daftar_tahun;
+    }
+
     protected function createDashboardKependudukan($did, $year)
     {
         $data = $this->statistikPendudukService->dashboard($did, $year);
         return $data;
-    }        
+    }
 }

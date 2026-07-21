@@ -37,7 +37,9 @@ use Illuminate\Support\Facades\View;
 class FrontEndController extends Controller
 {
     protected $settings;
+
     protected $urlApi = 'api/frontend/v1';
+
     public function __construct()
     {
         parent::__construct();

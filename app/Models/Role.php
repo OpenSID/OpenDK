@@ -30,6 +30,7 @@
  */
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Collection;
 
 use Spatie\Permission\Models\Role as ModelsRole;

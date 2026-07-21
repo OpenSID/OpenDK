@@ -9,9 +9,10 @@ use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\User;
 use Database\Seeders\RoleSpatieSeeder;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\seed;
 use function Pest\Laravel\withToken;

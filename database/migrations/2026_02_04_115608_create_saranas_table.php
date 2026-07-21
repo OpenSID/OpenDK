@@ -4,21 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         Schema::create('das_data_sarana', function (Blueprint $table) {
-            $table->bigIncrements('id');            
-            $table->char('desa_id', 13);            
+            $table->bigIncrements('id');
+            $table->char('desa_id', 13);
             $table->string('kategori', 191);
             $table->string('nama', 191)->nullable();
             $table->integer('jumlah')->default(0);
             $table->text('keterangan')->nullable();
-            
+
             $table->timestamps();
         });
     }

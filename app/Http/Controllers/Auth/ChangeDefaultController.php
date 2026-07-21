@@ -61,7 +61,6 @@ class ChangeDefaultController extends Controller
     /**
      * Store new password.
      *
-     * @param  \App\Http\Requests\ChangeRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ChangeRequest $request)

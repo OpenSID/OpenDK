@@ -41,16 +41,6 @@ class FormDokumen extends Model
 
     protected $table = 'das_form_dokumen';
 
-    /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::created(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-        static::updated(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-        static::deleted(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
-    }
-
     protected $fillable = [
         'nama_dokumen',
         'description',
@@ -75,5 +65,15 @@ class FormDokumen extends Model
     public function jenisDokumen()
     {
         return $this->belongsTo(JenisDokumen::class, 'jenis_dokumen_id');
+    }
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
+        static::updated(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
+        static::deleted(fn (FormDokumen $dokumen) => FormDokumenChanged::dispatch($dokumen));
     }
 }

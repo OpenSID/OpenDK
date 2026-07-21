@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 uses(DatabaseTransactions::class);
 
-/**
+/*
  * Test suite ini menguji PendudukController::detail() dalam mode database gabungan.
  *
  * Catatan: Http::fake() hanya dipanggil SEKALI di beforeEach agar tidak di-reset

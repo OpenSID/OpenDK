@@ -29,7 +29,6 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -60,6 +59,4 @@ class AlterTableLogImpor extends Migration
             $table->char('desa_id', 13)->nullable()->change();
         });
     }
-
-
 }

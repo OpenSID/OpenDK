@@ -43,7 +43,6 @@ use Yajra\DataTables\DataTables;
 
 class GaleriController extends Controller
 {
-
     public function index(Album $album)
     {
         $page_title = 'Album';
@@ -61,7 +60,7 @@ class GaleriController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     // $data['show_web'] = route('berita.detail', $row->slug);
-    
+
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.publikasi.galeri.edit') ? route('publikasi.galeri.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.publikasi.galeri.delete') ? route('publikasi.galeri.destroy', $row->id) : null;
@@ -77,9 +76,9 @@ class GaleriController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->editColumn('dibuat', function ($row) {
                     return format_datetime($row->created_at);

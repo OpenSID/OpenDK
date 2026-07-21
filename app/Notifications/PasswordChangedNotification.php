@@ -57,8 +57,9 @@ class PasswordChangedNotification extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @param  string  $ipAddress
-     * @param  string  $userAgent
+     * @param string $ipAddress
+     * @param string $userAgent
+     *
      * @return void
      */
     public function __construct($ipAddress = null, $userAgent = null)
@@ -70,7 +71,6 @@ class PasswordChangedNotification extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -81,7 +81,6 @@ class PasswordChangedNotification extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
@@ -92,15 +91,14 @@ class PasswordChangedNotification extends Notification implements ShouldQueue
             ->subject("Password Anda Telah Diubah - {$appName}")
             ->greeting("Halo, {$notifiable->name}!")
             ->line("Password akun Anda di {$appName} telah berhasil diubah.")
-            ->line("Jika Anda tidak merubah password, segera hubungi administrator.")
+            ->line('Jika Anda tidak merubah password, segera hubungi administrator.')
             ->action('Masuk ke Aplikasi', url('/login'))
-            ->salutation("Terima kasih!");
+            ->salutation('Terima kasih!');
     }
 
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)

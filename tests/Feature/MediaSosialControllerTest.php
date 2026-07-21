@@ -63,7 +63,7 @@ test('create a media sosial', function () {
 
     $content = @file_get_contents($file);
     if ($content === false) {
-        throw new \Exception("Gagal mengunduh gambar dari URL.");
+        throw new \Exception('Gagal mengunduh gambar dari URL.');
     }
     $tempPath = storage_path('app/temp-image.png');
     file_put_contents($tempPath, $content);

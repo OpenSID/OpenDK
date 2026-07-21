@@ -31,14 +31,13 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
-use App\Repositories\ArtikelApiRepository;
-use App\Transformers\ArtikelTransformer;
 use App\Http\Requests\Api\Frontend\StoreCommentRequest;
+use App\Repositories\ArtikelApiRepository;
 use App\Services\CacheService;
-use Illuminate\Http\Request;
+use App\Transformers\ArtikelTransformer;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Spatie\Fractal\Fractal;
 
 /**
@@ -46,6 +45,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK Artikel API",
  *     description="API untuk mengakses data artikel dengan Spatie Query Builder filtering dan sorting",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -57,10 +57,10 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola artikel"
  * )
  */
-
 class ArtikelController extends BaseController
 {
     protected ArtikelApiRepository $artikelApiRepository;
+
     protected CacheService $cacheService;
 
     public function __construct(
@@ -80,73 +80,94 @@ class ArtikelController extends BaseController
      *     summary="Get list of articles",
      *     description="Retrieve paginated list of articles with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"Artikel"},
+     *
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=1, minimum=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page[size]",
      *         in="query",
      *         description="Number of items per page (max: 100)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[kategori]",
      *         in="query",
      *         description="Filter by category slug",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="berita")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[status]",
      *         in="query",
      *         description="Filter by status (1=published, 0=draft)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", enum={0, 1}, example=1)
-     *     ),     
+     *     ),
+     *
      *     @OA\Parameter(
      *         name="search",
      *         in="query",
      *         description="Search in title and content fields",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="berita penting")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="sort",
      *         in="query",
      *         description="Sort field",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"created_at", "updated_at", "judul", "id"}, default="created_at")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="order",
      *         in="query",
      *         description="Sort order",
      *         required=false,
+     *
      *         @OA\Schema(type="string", enum={"asc", "desc"}, default="desc")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="include",
      *         in="query",
      *         description="Include relationships (comma-separated)",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="kategori,comments")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="fields",
      *         in="query",
      *         description="Select specific fields (comma-separated)",
      *         required=false,
+     *
      *         @OA\Schema(type="string", example="id,judul,slug,created_at")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="type", type="string", example=null),
@@ -179,20 +200,26 @@ class ArtikelController extends BaseController
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "per_page": ["The per page must not be greater than 100."],
      *                 "sort": ["The selected sort is invalid."]
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Server error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Internal server error")
      *         )
      *     )
@@ -202,8 +229,8 @@ class ArtikelController extends BaseController
     {
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
-        
-        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () {
             return $this->fractal($this->artikelApiRepository->data(), new ArtikelTransformer());
         }, $this->prefix, 'artikel');
     }
@@ -216,27 +243,35 @@ class ArtikelController extends BaseController
      *     summary="Add comment to article",
      *     description="Store a new comment for the specified article",
      *     tags={"Artikel"},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         description="Article ID",
      *         required=true,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"nama", "email", "body"},
+     *
      *             @OA\Property(property="nama", type="string", example="John Doe"),
      *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
      *             @OA\Property(property="body", type="string", example="Ini adalah komentar saya"),
      *             @OA\Property(property="comment_id", type="integer", nullable=true, example=null, description="Parent comment ID for replies")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Comment created successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="object", example={
      *                 "id": 1,
      *                 "das_artikel_id": 5,
@@ -249,19 +284,25 @@ class ArtikelController extends BaseController
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=404,
      *         description="Article not found",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "message": "Artikel not found"
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "nama": ["The nama field is required."],
      *                 "email": ["The email field is required."],
@@ -275,7 +316,7 @@ class ArtikelController extends BaseController
     {
         // Check if article exists
         $artikel = $this->artikelApiRepository->find($id);
-        
+
         if (!$artikel) {
             return response()->json([
                 'errors' => [

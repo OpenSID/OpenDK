@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class JenisPenyakit extends Model
 {
     use HasFactory;
+
     protected $table = 'ref_penyakit';
 
     protected $fillable = [

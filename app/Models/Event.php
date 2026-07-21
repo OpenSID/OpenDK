@@ -31,17 +31,17 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Event extends Model
 {
+    use HandlesResourceDeletion;
     use HasFactory;
     use Sluggable;
-    use HandlesResourceDeletion;
 
     protected $table = 'das_events';
 

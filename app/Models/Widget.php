@@ -2,24 +2,18 @@
 
 namespace App\Models;
 
+use App\Observers\WidgetObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Observers\WidgetObserver;
 
 class Widget extends Model
 {
     use HasFactory;
 
-    /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::observe(WidgetObserver::class);
-    }
-
     public const WIDGET_SISTEM  = 1;
+
     public const WIDGET_STATIS  = 2;
+
     public const WIDGET_DINAMIS = 3;
 
     protected $fillable = [
@@ -35,8 +29,8 @@ class Widget extends Model
 
     public function scopeSearch($query, $search)
     {
-        return empty($search) 
-            ? $query 
+        return empty($search)
+            ? $query
             : $query->where('judul', 'LIKE', "%{$search}%");
     }
 
@@ -64,7 +58,7 @@ class Widget extends Model
         $allTheme    = theme_new()->orderBy('system', 'desc')->get();
 
         $list_widget = [];
-        
+
         foreach ($allTheme as $tema) {
             $list        = $this->widget($tema->view_path . '/widgets/*.blade.php');
 
@@ -148,7 +142,7 @@ class Widget extends Model
 
     public static function updateUrutan(): void
     {
-        $all  = Widget::orderBy('urut')->get();
+        $all  = self::orderBy('urut')->get();
         $urut = 1;
 
         foreach ($all as $w) {
@@ -169,4 +163,11 @@ class Widget extends Model
         return str_replace('/resources/views/resources/views/', '/resources/views/', $value);
     }
 
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::observe(WidgetObserver::class);
+    }
 }

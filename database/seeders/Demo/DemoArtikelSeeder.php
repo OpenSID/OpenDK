@@ -53,7 +53,7 @@ class DemoArtikelSeeder extends Seeder
                 'judul' => $faker->sentence(),
                 'gambar' => '/img/no-image.png',
                 'isi' => $faker->paragraph(),
-                'status' => 1, //$faker->randomElement([0, 1]),
+                'status' => 1, // $faker->randomElement([0, 1]),
                 'created_at' => $faker->dateTimeThisYear(),
                 'updated_at' => $faker->dateTimeThisYear(),
             ]);

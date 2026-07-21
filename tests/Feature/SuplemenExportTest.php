@@ -227,17 +227,17 @@ test('export suplemen terdata by id', function () {
     // Arrange: Buat data suplemen dan terdata
     Suplemen::query()->delete();
     SuplemenTerdata::query()->delete();
-    
+
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
-    
+
     $suplemen = Suplemen::create([
         'nama' => 'Test Suplemen Terdata',
         'slug' => 'test-suplemen-terdata',
         'sasaran' => 1,
         'keterangan' => 'Test Keterangan'
     ]);
-    
+
     SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
         'penduduk_id' => $penduduk->id,
@@ -270,19 +270,19 @@ test('export suplemen terdata by id with multiple terdata', function () {
     // Arrange: Buat data suplemen dengan multiple terdata
     Suplemen::query()->delete();
     SuplemenTerdata::query()->delete();
-    
+
     $desa = DataDesa::factory()->create();
     $penduduk1 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 1']);
     $penduduk2 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 2']);
     $penduduk3 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 3']);
-    
+
     $suplemen = Suplemen::create([
         'nama' => 'Test Suplemen Multiple',
         'slug' => 'test-suplemen-multiple',
         'sasaran' => 1,
         'keterangan' => 'Test Keterangan'
     ]);
-    
+
     SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
         'penduduk_id' => $penduduk1->id,

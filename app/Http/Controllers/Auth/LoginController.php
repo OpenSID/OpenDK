@@ -33,7 +33,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\SendToken2FA;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -103,7 +102,6 @@ class LoginController extends Controller
     /**
      * Validate the user login request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return void
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -135,6 +133,7 @@ class LoginController extends Controller
 
         $request->validate($validation, $customMessages);
     }
+
     protected function authenticated(Request $request, $user)
     {
         // Check if 2FA is enabled for the user
@@ -148,8 +147,8 @@ class LoginController extends Controller
     /**
      * Log out the user and start the two factor authentication state.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\User $user
+     * @param \App\Models\User $user
+     *
      * @return \Illuminate\Http\Response
      */
     private function startTwoFactorAuthProcess(Request $request, $user)

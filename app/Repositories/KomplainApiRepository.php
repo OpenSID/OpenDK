@@ -37,12 +37,12 @@ use Spatie\QueryBuilder\AllowedFilter;
 class KomplainApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Komplain $model)
     {
         parent::__construct($model);
-        
+
         // Initialize allowed filters, sorts, and includes
         $this->allowedFilters = [
             'judul', 'slug', 'laporan','anonim',
@@ -51,7 +51,7 @@ class KomplainApiRepository extends BaseApiRepository
             AllowedFilter::exact('kategori'),
             AllowedFilter::exact('nik'),
             AllowedFilter::exact('komplain_id'),
-            AllowedFilter::callback('search', function($query, $value){                
+            AllowedFilter::callback('search', function($query, $value){
                 $query->where('judul', 'LIKE', '%'.$value.'%')
                       ->orWhere('laporan', 'LIKE', '%'.$value.'%');
             }),
@@ -60,38 +60,37 @@ class KomplainApiRepository extends BaseApiRepository
         $this->allowedIncludes = ['kategori_komplain', 'penduduk', 'jawabs'];
         $this->defaultSort = '-created_at';
     }
-    
+
     public function data(){
         return $this->getFilteredApi()
             ->where('status', '<>', 'DITOLAK')
             ->where('status', '<>', 'REVIEW')
             ->jsonPaginate();
-    }        
+    }
 
     /**
-     * Create a new complaint
+     * Create a new complaint.
      *
-     * @param array $data
      * @return \App\Models\Komplain
      */
     public function create(array $requestData)
     {
         $komplain = new Komplain($requestData);
-        
+
         // Generate ID and slug
         $komplain->komplain_id = Komplain::generateID();
         $komplain->slug = \Illuminate\Support\Str::slug($komplain->judul).'-'.$komplain->komplain_id;
         $komplain->status = 'REVIEW';
         $komplain->dilihat = 0;
-        
+
         return $komplain;
     }
 
     /**
-     * Save complaint with attachments
+     * Save complaint with attachments.
      *
      * @param \App\Models\Komplain $komplain
-     * @param array $attachments
+     *
      * @return bool
      */
     public function saveWithAttachments($komplain, array $attachments = [])
@@ -102,26 +101,25 @@ class KomplainApiRepository extends BaseApiRepository
             if (isset($attachments[$attachmentKey]) && $attachments[$attachmentKey] instanceof \Illuminate\Http\UploadedFile) {
                 $lampiran = $attachments[$attachmentKey];
                 $directory = 'storage/komplain/'.$komplain->komplain_id.'/';
-                
+
                 // Use FileUploadService for secure file upload
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($lampiran, $directory, $allowedMimes);
                 $komplain->{$attachmentKey} = $path;
             }
         }
-        
+
         return $komplain->save();
     }
 
     /**
-     * Create a reply for a complaint
+     * Create a reply for a complaint.
      *
-     * @param array $data
      * @return \App\Models\JawabKomplain
      */
     public function createReply(array $replyData)
@@ -129,7 +127,7 @@ class KomplainApiRepository extends BaseApiRepository
         $jawab = new \App\Models\JawabKomplain();
         $jawab->fill($replyData);
         $jawab->save();
-        
+
         return $jawab;
     }
 }

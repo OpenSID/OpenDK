@@ -37,38 +37,32 @@ use League\Fractal\TransformerAbstract;
 class ArtikelKategoriTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'artikels'
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param ArtikelKategori $kategori
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(ArtikelKategori $kategori): array
     {
         $kategori->type = 'kategori';
         $kategori->id = $kategori->id_kategori;
-        $kategori->link = route('berita-kategori',['slug' => $kategori->slug]);        
+        $kategori->link = route('berita-kategori',['slug' => $kategori->slug]);
         return $kategori->toArray();
     }
 
     /**
-     * Include Artikels
+     * Include Artikels.
      *
-     * @param ArtikelKategori $kategori
      * @return \League\Fractal\Resource\Collection|null
      */
     public function includeArtikels(ArtikelKategori $kategori)
     {
         $artikels = $kategori->artikels;
-        
+
         if ($artikels) {
             return $this->collection($artikels, new ArtikelTransformer());
         }

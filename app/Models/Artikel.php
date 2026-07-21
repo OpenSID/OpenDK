@@ -33,33 +33,23 @@ namespace App\Models;
 
 use App\Events\ArtikelChanged;
 use App\Traits\HandlesResourceDeletion;
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Artikel extends Model
 {
-    use Sluggable;
-    use HasFactory;
     use HandlesResourceDeletion;
+    use HasFactory;
+    use Sluggable;
 
     protected $table = 'das_artikel';
-
-    /**
-     * Register model lifecycle hooks.
-     */
-    protected static function booted(): void
-    {
-        static::created(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
-        static::updated(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
-        static::deleted(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
-    }
 
     protected $fillable = [
         'id_kategori',
@@ -129,5 +119,15 @@ class Artikel extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('tanggal_terbit', '<=', Carbon::today());
+    }
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
+        static::updated(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
+        static::deleted(fn (Artikel $artikel) => ArtikelChanged::dispatch($artikel));
     }
 }

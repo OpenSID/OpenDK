@@ -31,8 +31,8 @@
 
 namespace App\Http\Requests\Api\Frontend;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ValidasiNikRule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreKomplainRequest extends FormRequest
 {

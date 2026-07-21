@@ -42,7 +42,7 @@ use Illuminate\Support\Facades\Storage;
 use voku\helper\AntiXSS;
 use willvincent\Feeds\Facades\FeedsFacade;
 
-/**
+/*
  * Parsing url image dari rss feed description
  *
  * @param  string  $content
@@ -60,9 +60,10 @@ if (! function_exists('get_tag_image')) {
 }
 
 /**
- * { function_description }
+ * { function_description }.
  *
  * @param      <type>  $parent_id  The parent identifier
+ *
  * @return <type>  ( description_of_the_return_value )
  */
 function define_child($parent_id)
@@ -73,10 +74,11 @@ function define_child($parent_id)
 }
 
 /**
- * { function_description }
+ * { function_description }.
  *
  * @param      <type>  $id          The identifier
  * @param      <type>  $permission  The permission
+ *
  * @return <type>  ( description_of_the_return_value )
  */
 function permission_val($id, $permission)
@@ -98,9 +100,10 @@ function permission_name($name)
 }
 
 /**
- * Generate Password
+ * Generate Password.
  *
- * @param  int  $length  Length Character
+ * @param int $length Length Character
+ *
  * @return string voucher
  */
 function generate_password($length = 6)
@@ -122,7 +125,7 @@ function generate_password($length = 6)
 }
 
 /**
- * Respon Meta
+ * Respon Meta.
  *
  * @param      <type>  $message  The message
  */
@@ -389,7 +392,7 @@ function terbilang($angka)
 
 if (! function_exists('sudahInstal')) {
     /**
-     * Cek apakah sudah install OpenDK atau belum
+     * Cek apakah sudah install OpenDK atau belum.
      *
      * @return bool True jika sudah install, False jika belum install
      */
@@ -405,9 +408,9 @@ if (! function_exists('sudahInstal')) {
 
 if (! function_exists('isActive')) {
     /**
-     * Helper function untuk installer views - cek apakah route aktif
+     * Helper function untuk installer views - cek apakah route aktif.
      *
-     * @param  string  $routeName
+     * @param string $routeName
      */
     function isActive($routeName): string
     {
@@ -429,7 +432,7 @@ if (! function_exists('isActive')) {
     }
 }
 
-/**
+/*
  * Cek akses website.
  *
  * @param  string  $url
@@ -488,7 +491,7 @@ if (! function_exists('parsedown')) {
 
 if (! function_exists('theme_new')) {
     /**
-     * Ambil model tema
+     * Ambil model tema.
      *
      * @return Theme
      */

@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\User;
 use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
@@ -100,7 +99,7 @@ it('smoke test menu informasi', function (string $menuName, string $url, array $
 
     // 4. Verifikasi Minimal 1 Data Tampil (Class dataTables_empty tidak boleh ada)
     $this->page->assertMissing('.dataTables_empty');
-    
+
     // 5. Verifikasi Aksi Datatable (Tombol Lihat, Edit, Hapus, Download) di row pertama
     $table = '[data-testid="table-informasi"]';
     if (in_array('btn-lihat', $buttons)) {
@@ -130,7 +129,7 @@ it('smoke test menu informasi - Media Terkait (Livewire)', function () {
 
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/informasi/media-terkait');
     $this->page->assertPathIs('/informasi/media-terkait');
-    
+
     // Tombol Tambah
     $this->page->assertVisible('button[wire\:click="create"]');
     // Tombol Hapus Terpilih

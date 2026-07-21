@@ -34,9 +34,7 @@ it('smoke test menu Kependudukan - Penduduk', function () {
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kependudukan', 'browser');
-
 
 // =============================================================================
 // MENU: KEPENDUDUKAN -> KELUARGA
@@ -57,9 +55,7 @@ it('smoke test menu Kependudukan - Keluarga', function () {
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kependudukan', 'browser');
-
 
 // =============================================================================
 // MENU: KEPENDUDUKAN -> DATA SUPLEMEN
@@ -81,9 +77,7 @@ it('smoke test menu Kependudukan - Data Suplemen', function () {
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kependudukan', 'browser');
-
 
 // =============================================================================
 // MENU: KEPENDUDUKAN -> LAPORAN PENDUDUK
@@ -109,6 +103,5 @@ it('smoke test menu Kependudukan - Laporan Penduduk', function () {
     $this->page->assertVisible('table.table');
 
     sleep(2);
-
 
 })->group('smoke', 'smoke-kependudukan', 'browser');

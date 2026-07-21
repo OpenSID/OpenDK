@@ -31,12 +31,11 @@
 
 namespace App\Http\Controllers\Setting;
 
-use Illuminate\Http\Request;
-use App\Models\KategoriKomplain;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\KategoriKomplainRequest;
+use App\Models\KategoriKomplain;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class KategoriKomplainController extends Controller
 {
@@ -64,8 +63,7 @@ class KategoriKomplainController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param KategoriKomplainRequest $request
-     * 
+     *
      * @return Response
      */
     public function store(KategoriKomplainRequest $request)

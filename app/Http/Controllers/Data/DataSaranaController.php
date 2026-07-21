@@ -3,17 +3,15 @@
 namespace App\Http\Controllers\Data;
 
 use App\Enums\KategoriSarana;
+use App\Exports\ExportDataSarana;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DataSaranaRequest;
 use App\Http\Requests\DataSaranaImportRequest;
-use App\Models\DataDesa;
+use App\Http\Requests\DataSaranaRequest;
+use App\Imports\ImportDataSarana;
 use App\Models\DataSarana;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\ExportDataSarana;
-use App\Imports\ImportDataSarana;
-use App\Services\DesaService;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class DataSaranaController extends Controller
@@ -35,11 +33,11 @@ class DataSaranaController extends Controller
             $paramDatatable = json_decode($request->get('params'), 1);
             $request->merge($paramDatatable);
             $request->merge(['params' => null]);
-        }        
+        }
         $desaId = $request->desa_id;
         $kategori = $request->kategori;
         $query = DataTables::of(DataSarana::with('desa')->when($desaId, static fn($q) => $q->whereDesaId($desaId))->when($kategori, static fn($q) => $q->whereKategori($kategori)));
-        if ($isExcel){ 
+        if ($isExcel){
             $query->filtering();
             return Excel::download(new ExportDataSarana($query->results()), 'Data-sarana.xlsx');
         }
@@ -55,11 +53,10 @@ class DataSaranaController extends Controller
         })->rawColumns(['aksi'])->make(true);
     }
 
-
     public function create()
     {
-        $page_title = "Tambah Sarana";
-        $page_description = "Form tambah data sarana";
+        $page_title = 'Tambah Sarana';
+        $page_description = 'Form tambah data sarana';
 
         $desas = (new DesaService())->listDesa();
         return view('data.data_sarana.create', compact('page_title', 'page_description', 'desas'));
@@ -117,15 +114,15 @@ class DataSaranaController extends Controller
 
     public function import()
     {
-        $page_title = "Import Sarana";
-        $page_description = "Upload data sarana";        
+        $page_title = 'Import Sarana';
+        $page_description = 'Upload data sarana';
 
         return view('data.data_sarana.import', compact('page_title', 'page_description'));
     }
 
     public function importExcel(DataSaranaImportRequest $request)
     {
-        try {            
+        try {
             Excel::import(new ImportDataSarana($this->isDatabaseGabungan() ? 'local' : 'gabungan'), $request->file('file'));
         } catch (\Exception $e) {
             report($e);

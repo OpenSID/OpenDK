@@ -3,8 +3,6 @@
 use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Cache;
 
-
-
 it('can create a setting aplikasi', function () {
     $setting = SettingAplikasi::factory()->create([
         'key' => 'app_name',
@@ -50,7 +48,7 @@ it('clears cache when saved', function () {
         'key' => 'test_key',
         'value' => 'test_value',
     ]);
-    
+
     // The cache clearing happens automatically due to model events
     expect($setting->id)->not->toBeNull();
 });
@@ -62,7 +60,7 @@ it('clears cache when updated', function () {
     ]);
 
     $setting->update(['value' => 'updated_value']);
-    
+
     // The cache clearing happens automatically due to model events
     expect($setting->value)->toBe('updated_value');
 });
@@ -80,7 +78,7 @@ it('triggers events on save and update', function () {
 
     // Update setting
     $setting->update(['value' => 'updated_value']);
-    
+
     // The cache clearing happens automatically due to model events
     expect($setting->value)->toBe('updated_value');
 });
@@ -194,7 +192,7 @@ it('can handle bulk operations', function () {
 it('can handle cache clearing on bulk operations', function () {
     // Create multiple settings
     SettingAplikasi::factory()->count(5)->create();
-    
+
     // The cache clearing happens automatically due to model events
     expect(true)->toBeTrue();
 });

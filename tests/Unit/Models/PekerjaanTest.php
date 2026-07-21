@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\Pekerjaan;
-use App\Models\Penduduk;
-
 
 // Pekerjaan Model Testing
 it('can create a pekerjaan', function () {
@@ -35,7 +33,6 @@ it('has correct table name', function () {
 
     expect($pekerjaan->getTable())->toBe('ref_pekerjaan');
 });
-
 
 it('can handle null values for optional fields', function () {
     $pekerjaan = Pekerjaan::factory()->create();

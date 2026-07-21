@@ -32,9 +32,9 @@
 use App\Models\SettingAplikasi;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Mews\Captcha\Facades\Captcha;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\View;
+use Mews\Captcha\Facades\Captcha;
 
 uses(DatabaseTransactions::class);
 

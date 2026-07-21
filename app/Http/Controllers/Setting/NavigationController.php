@@ -112,7 +112,7 @@ class NavigationController extends Controller
 
             // generate slug
             $parent = Navigation::where('id', $parent_id)->first();
-            $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
+            $data['slug'] = (!empty($parent)) ? $parent->slug . '-' . Str::slug($data['name']) : Str::slug($data['name']);
 
             // set latest order
             $data['order'] = Navigation::lastOrder($parent_id) + 1;
@@ -134,7 +134,8 @@ class NavigationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -150,7 +151,8 @@ class NavigationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(NavigationRequest $request, $id)
@@ -162,7 +164,7 @@ class NavigationController extends Controller
 
             // generate slug
             $parent = Navigation::where('id', $parent_id)->first();
-            $data['slug'] = (!empty($parent)) ? $parent->slug . "-" . Str::slug($data['name']) : Str::slug($data['name']);
+            $data['slug'] = (!empty($parent)) ? $parent->slug . '-' . Str::slug($data['name']) : Str::slug($data['name']);
 
             $navigation = Navigation::findOrFail($id);
             $navigation->fill($data);
@@ -183,7 +185,8 @@ class NavigationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -212,8 +215,9 @@ class NavigationController extends Controller
     /**
      * Order the specified resource from storage.
      *
-     * @param  int  $id
-     * @param  string  $direction
+     * @param int    $id
+     * @param string $direction
+     *
      * @return Response
      */
     public function order($id, $direction)

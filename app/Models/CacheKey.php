@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class CacheKey extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
 
     protected $table = 'cache_keys';
 
@@ -17,8 +19,6 @@ class CacheKey extends Model
         'group',
     ];
 
-    public $timestamps = false;
-    
     protected $dates = [
         'created_at',
     ];

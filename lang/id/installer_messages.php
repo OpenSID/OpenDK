@@ -31,7 +31,7 @@
 
 return [
 
-    /**
+    /*
      * Shared translations.
      */
     'title' => 'Dashboard Dashboard Installer',
@@ -42,7 +42,7 @@ return [
         'errorTitle' => 'Terjadi galat sebagai berikut:',
     ],
 
-    /**
+    /*
      * Home page translations.
      */
     'welcome' => [
@@ -52,7 +52,7 @@ return [
         'next' => 'Cek Kebutuhan',
     ],
 
-    /**
+    /*
      * Requirements page translations.
      */
     'requirements' => [
@@ -61,7 +61,7 @@ return [
         'next' => 'Cek Hak Akses',
     ],
 
-    /**
+    /*
      * Permissions page translations.
      */
     'permissions' => [
@@ -70,7 +70,7 @@ return [
         'next' => 'Konfigurasi Lingkungan',
     ],
 
-    /**
+    /*
      * Environment page translations.
      */
     'environment' => [
@@ -188,7 +188,7 @@ return [
 
     'install' => 'Pasang',
 
-    /**
+    /*
      * Database page translations.
      */
     'database' => [
@@ -198,14 +198,14 @@ return [
         'test' => 'Uji Koneksi',
     ],
 
-    /**
+    /*
      * Installed Log translations.
      */
     'installed' => [
         'success_log_message' => 'Dashboard Kecamatan berhasil DIPASANG pada ',
     ],
 
-    /**
+    /*
      * Final page translations.
      */
     'final' => [
@@ -219,16 +219,16 @@ return [
         'exit' => 'Klik disini untuk keluar',
     ],
 
-    /**
+    /*
      * Update specific translations
      */
     'updater' => [
-        /**
+        /*
          * Shared translations.
          */
         'title' => 'Dashboard Kecamatan Updater',
 
-        /**
+        /*
          * Welcome page translations for update feature.
          */
         'welcome' => [
@@ -236,7 +236,7 @@ return [
             'message' => 'Selamat Datang di update wizard.',
         ],
 
-        /**
+        /*
          * Welcome page translations for update feature.
          */
         'overview' => [
@@ -245,7 +245,7 @@ return [
             'install_updates' => 'Pasang Pembaruan',
         ],
 
-        /**
+        /*
          * Final page translations.
          */
         'final' => [

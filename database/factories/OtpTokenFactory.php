@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\OtpToken;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
 class OtpTokenFactory extends Factory
 {

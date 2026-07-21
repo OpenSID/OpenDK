@@ -58,13 +58,13 @@ class CleanupExpiredOtpTokens extends Command
     public function handle()
     {
         $otpService = new OtpService();
-        
+
         $this->info('Cleaning up expired OTP tokens...');
-        
+
         $deleted = $otpService->cleanupExpired();
-        
+
         $this->info("Successfully deleted {$deleted} expired OTP token(s).");
-        
+
         return Command::SUCCESS;
     }
 }

@@ -8,13 +8,13 @@ uses(BrowserTestCase::class);
 test('public faq page should display only active faqs via datatables', function () {
     // 1. Setup Data
     Faq::query()->delete();
-    
+
     Faq::create([
         'question' => 'Apakah ini FAQ Aktif?',
         'answer' => 'Ya, ini aktif dan harus tampil.',
         'status' => 1
     ]);
-    
+
     Faq::create([
         'question' => 'Apakah ini FAQ Draft?',
         'answer' => 'Tidak, ini draft dan disembunyikan.',
@@ -25,10 +25,10 @@ test('public faq page should display only active faqs via datatables', function 
     visit('/faq')
         // Pastikan halaman terbuka dengan benar
         ->assertSee('Pertanyaan Yang Sering Diajukan')
-        
+
         // Pastikan input pencarian datatables muncul (indikasi datatables inisialisasi sukses)
         ->assertPresent('input[type="search"]')
-        
+
         // Tunggu proses AJAX selesai (menunggu ketersediaan data)
         ->assertScript(
             "new Promise((resolve) => {
@@ -47,16 +47,16 @@ test('public faq page should display only active faqs via datatables', function 
             })",
             true
         )
-        
+
         // Pastikan tabel tidak kosong
         ->assertMissing('.dataTables_empty')
-        
+
         // Pastikan FAQ aktif tampil
         ->assertSee('Apakah ini FAQ Aktif?')
         ->assertSee('Ya, ini aktif dan harus tampil.')
-        
+
         // Pastikan FAQ draft TIDAK tampil
         ->assertDontSee('Apakah ini FAQ Draft?')
         ->assertDontSee('Tidak, ini draft dan disembunyikan.');
-        
+
 })->group('browser', 'faq', 'public');

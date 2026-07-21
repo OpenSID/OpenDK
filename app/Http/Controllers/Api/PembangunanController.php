@@ -63,6 +63,7 @@ class PembangunanController extends Controller
      *   manfaat, waktu, foto.
      *
      * @bodyParam file file required File ZIP (max 50MB) berisi data pembangunan. Example: null
+     *
      * @response {
      *   "message": "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
      *   "status": "success"
@@ -164,6 +165,7 @@ class PembangunanController extends Controller
      *   created_at, updated_at.
      *
      * @bodyParam file file required File ZIP (max 50MB) berisi data dokumentasi. Example: null
+     *
      * @response {
      *   "message": "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
      *   "status": "success"

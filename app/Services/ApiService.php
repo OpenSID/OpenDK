@@ -3,16 +3,13 @@
 namespace App\Services;
 
 use App\Models\SettingAplikasi;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7;
 
 class ApiService
 {
-
     protected $server;
+
     protected $setting;
 
     public function __construct()
@@ -50,19 +47,20 @@ class ApiService
                 'message' => 'Pendaftaran pelanggan berhasil.',
                 'data'    => $response->json(),
             ];
-        } elseif ($response->failed()) {
+        }
+        if ($response->failed()) {
             return [
                 'success' => false,
                 'message' => 'Pendaftaran pelanggan gagal.',
                 'error'   => $response->json(),
             ];
-        } else {
+        }
             return [
                 'success' => false,
                 'message' => 'Terjadi masalah pada pendaftaran pelanggan.',
                 'status'  => $response->status(),
             ];
-        }
+
     }
 
     public function terdaftar($kode_kecamatan)
@@ -80,14 +78,14 @@ class ApiService
                 'message' => 'Data berhasil diambil.',
                 'data'    => $response->json(),
             ];
-        } else {
+        }
 
             return [
                 'success' => false,
                 'message' => $response->object()->message,
                 'data'  => $response->body(),
             ];
-        }
+
     }
 
     public function getFormRegister()

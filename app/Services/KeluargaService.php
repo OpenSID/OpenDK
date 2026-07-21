@@ -2,9 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\SettingAplikasi;
-use Illuminate\Support\Facades\Http;
-
 class KeluargaService extends BaseApiService
 {
     public function keluarga(int $id)
@@ -41,17 +38,17 @@ class KeluargaService extends BaseApiService
                     'anggota' => $item['attributes']['anggota'] ?? null
                 ];
             });
-        
+
         // Check if result has items
         if ($result->isEmpty()) {
             throw new \Exception('Keluarga data not found');
         }
-        
+
         return $result->first();
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function jumlahKeluarga(array $filters = [])
     {
@@ -73,7 +70,7 @@ class KeluargaService extends BaseApiService
     }
 
     /**
-     * Export Data Keluarga
+     * Export Data Keluarga.
      */
     public function exportKeluarga(array $params = [], $all = false)
     {
@@ -93,12 +90,12 @@ class KeluargaService extends BaseApiService
 
         // Panggil API dan ambil data
         $data = $this->apiRequest('/api/v1/keluarga', $finalParams);
-        
+
         // Handle empty response
         if (empty($data)) {
             return collect([]);
         }
-        
+
         // Format ulang data jika diperlukan
         return collect($data)->map(function ($item) {
             return (object) [
@@ -120,5 +117,4 @@ class KeluargaService extends BaseApiService
             ];
         });
     }
-
 }

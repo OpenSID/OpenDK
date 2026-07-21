@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class LaporanApbdes extends Model
 {
     use HasFactory;
+
     protected $table = 'das_apbdes';
 
     protected $fillable = [
@@ -49,7 +50,7 @@ class LaporanApbdes extends Model
     ];
 
     /**
-     * Relation Methods
+     * Relation Methods.
      * */
     public function desa()
     {

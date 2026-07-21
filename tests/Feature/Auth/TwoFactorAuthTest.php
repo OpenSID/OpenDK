@@ -10,9 +10,9 @@
  * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  */
 
-use App\Models\User;
 use App\Models\OtpToken;
 use App\Models\SettingAplikasi;
+use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;

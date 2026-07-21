@@ -47,7 +47,7 @@ class Themes extends Model
         'vendor',
         'active',
         'system',
-        'screenshot'        
+        'screenshot'
     ];
 
     // append slug attribute
@@ -72,7 +72,6 @@ class Themes extends Model
     {
         return $this->getFullPathAttribute() . '/assets';
     }
-
 
     public function getSlugAttribute()
     {

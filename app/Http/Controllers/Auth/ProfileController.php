@@ -55,19 +55,13 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     *
-     * @return View
-     */
     public function password(): View
     {
         return view('auth.password');
     }
 
     /**
-     *
-     * @param  ChangePasswordRequest  
-     * @return RedirectResponse
+     * @param  ChangePasswordRequest
      */
     public function updatePassword(ChangePasswordRequest $request): RedirectResponse
     {
@@ -93,7 +87,7 @@ class ProfileController extends Controller
             }
 
         }
-    
+
         return back()->with('success', trans('passwords.change_success'));
     }
 }

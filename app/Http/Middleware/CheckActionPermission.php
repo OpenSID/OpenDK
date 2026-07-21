@@ -12,10 +12,7 @@ class CheckActionPermission
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $basePermission
-     * @return mixed
+     * @param string $basePermission
      */
     public function handle(Request $request, Closure $next, $basePermission)
     {
@@ -25,7 +22,7 @@ class CheckActionPermission
 
         $user = Auth::user();
 
-        // Super-admin bypass is handled by Gate::before in AuthServiceProvider, 
+        // Super-admin bypass is handled by Gate::before in AuthServiceProvider,
         // but we can check here explicitly just in case.
         if ($user->hasRole('super-admin')) {
             return $next($request);
@@ -53,11 +50,8 @@ class CheckActionPermission
     }
 
     /**
-     * Menentukan tipe aksi (view, create, edit, delete, export, import) 
+     * Menentukan tipe aksi (view, create, edit, delete, export, import)
      * berdasarkan method HTTP dan nama route.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string
      */
     protected function determineAction(Request $request): string
     {

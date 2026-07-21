@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\Regulasi;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
 use App\Http\Requests\RegulasiUpdateRequest;
+use App\Models\Regulasi;
 use App\Models\TipeRegulasi;
+use App\Traits\HandlesFileUpload;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -123,7 +123,6 @@ class RegulasiController extends Controller
             $input = $request->input();
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
-
 
             if ($request->hasFile('file_regulasi')) {
                 $input['mime_type'] = $request->file('file_regulasi')->getMimeType();

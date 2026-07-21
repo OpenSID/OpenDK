@@ -31,24 +31,28 @@
 
 namespace App\Enums;
 
-use App\Models\Potensi;
-use BenSampo\Enum\Enum;
 use App\Models\DataDesa;
 use App\Models\TipePotensi;
+use BenSampo\Enum\Enum;
 
 /**
- * Jenis atau tipe jabatan untuk pengurus
+ * Jenis atau tipe jabatan untuk pengurus.
  */
 final class MenuTipe extends Enum
 {
     public const PROFIL    = 1;
-    public const DESA      = 2;
-    public const STATISTIK = 3;
-    public const POTENSI   = 4;
-    public const UNDUHAN   = 5;
-    public const PUBLIKASI   = 6;
-    public const EKSTERNAL = 0;
 
+    public const DESA      = 2;
+
+    public const STATISTIK = 3;
+
+    public const POTENSI   = 4;
+
+    public const UNDUHAN   = 5;
+
+    public const PUBLIKASI   = 6;
+
+    public const EKSTERNAL = 0;
 
     public static function all(): array
     {

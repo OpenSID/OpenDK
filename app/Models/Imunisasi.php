@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class Imunisasi extends Model
 {
     use HasFactory;
+
     protected $table = 'das_imunisasi';
 
     protected $fillable = [

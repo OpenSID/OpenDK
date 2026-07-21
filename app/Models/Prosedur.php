@@ -32,15 +32,15 @@
 namespace App\Models;
 
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Prosedur extends Model
 {
+    use HandlesResourceDeletion;
     use HasFactory;
     use Sluggable;
-    use HandlesResourceDeletion;
 
     protected $table = 'das_prosedur';
 
@@ -71,6 +71,4 @@ class Prosedur extends Model
             ],
         ];
     }
-
 }
-

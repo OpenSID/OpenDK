@@ -1,7 +1,7 @@
 <?php
 
-use Tests\BrowserTestCase;
 use App\Models\Program;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 

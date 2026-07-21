@@ -1,9 +1,9 @@
 <?php
 
-use Tests\BrowserTestCase;
-use App\Models\AnggaranRealisasi;
 use App\Models\AnggaranDesa;
+use App\Models\AnggaranRealisasi;
 use App\Models\LaporanApbdes;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -34,7 +34,6 @@ it('smoke test menu Finansial - Anggaran dan Realisasi', function () {
 
 })->group('smoke', 'smoke-finansial', 'browser');
 
-
 // =============================================================================
 // MENU: FINANSIAL -> APBDes
 // =============================================================================
@@ -54,7 +53,6 @@ it('smoke test menu Finansial - APBDes', function () {
     sleep(2);
 
 })->group('smoke', 'smoke-finansial', 'browser');
-
 
 // =============================================================================
 // MENU: FINANSIAL -> LAPORAN APBDes

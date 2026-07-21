@@ -32,9 +32,11 @@
 namespace App\Http\Middleware;
 
 use function array_diff_key;
+
 use Closure;
 use Form;
 use Illuminate\Http\Request;
+
 use function session;
 use function sprintf;
 
@@ -43,8 +45,7 @@ class CustomForms
     /**
      * Handle an incoming request.
      *
-     * @param  Request  $request
-     * @return mixed
+     * @param Request $request
      */
     public function handle($request, Closure $next)
     {

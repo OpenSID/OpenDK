@@ -60,7 +60,7 @@ class SuplemenController extends Controller
     }
 
     /**
-     * Return datatable Data Suplemen
+     * Return datatable Data Suplemen.
      */
     public function getDataSuplemen()
     {
@@ -130,7 +130,8 @@ class SuplemenController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -145,7 +146,8 @@ class SuplemenController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -174,7 +176,8 @@ class SuplemenController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -201,7 +204,8 @@ class SuplemenController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -215,7 +219,7 @@ class SuplemenController extends Controller
     }
 
     /**
-     * Return datatable Data Suplemen Terdata
+     * Return datatable Data Suplemen Terdata.
      */
     public function getDataSuplemenTerdata($id_terdata)
     {
@@ -309,7 +313,8 @@ class SuplemenController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function editDetail($id, $id_suplemen)
@@ -328,7 +333,8 @@ class SuplemenController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function updateDetail(Request $request, $id)
@@ -351,7 +357,8 @@ class SuplemenController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroyDetail($id, $id_suplemen)
@@ -375,7 +382,6 @@ class SuplemenController extends Controller
     /**
      * Export Excel data suplemen.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function exportExcel(Request $request)
@@ -390,8 +396,8 @@ class SuplemenController extends Controller
     /**
      * Export Excel data suplemen terdata.
      *
-     * @param Request $request
      * @param int $id Suplemen ID
+     *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function exportTerdataExcel(Request $request, $id)

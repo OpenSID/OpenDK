@@ -42,7 +42,9 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ExportKeluarga implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
     protected bool $gabungan;
+
     protected array $params;
+
     protected KeluargaService $keluargaService;
 
     public function __construct($gabungan, $params = [])
@@ -51,6 +53,7 @@ class ExportKeluarga implements FromCollection, WithHeadings, WithMapping, WithS
         $this->params = $params;
         $this->keluargaService = new KeluargaService();
     }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -69,9 +72,6 @@ class ExportKeluarga implements FromCollection, WithHeadings, WithMapping, WithS
         return $query->get();
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return [
@@ -91,10 +91,6 @@ class ExportKeluarga implements FromCollection, WithHeadings, WithMapping, WithS
         ];
     }
 
-    /**
-     * @param mixed $keluarga
-     * @return array
-     */
     public function map($keluarga): array
     {
         return [
@@ -115,7 +111,6 @@ class ExportKeluarga implements FromCollection, WithHeadings, WithMapping, WithS
     }
 
     /**
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

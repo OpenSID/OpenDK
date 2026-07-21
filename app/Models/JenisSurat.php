@@ -9,9 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 class JenisSurat extends Model
 {
     use HasFactory;
-
     use Sluggable;
-    
+
     protected $table = 'das_jenis_surat';
 
     protected $fillable = [
@@ -21,7 +20,7 @@ class JenisSurat extends Model
 
     /**
      * Return the sluggable configuration array for this model.
-    */
+     */
     public function sluggable(): array
     {
         return [

@@ -46,7 +46,7 @@ final class SessionState
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         return $user;
     }
 
@@ -54,9 +54,6 @@ final class SessionState
      * Kunjungi URL di browser dengan membawa session cookie
      * sehingga bypass form login dan request login.
      *
-     * @param User $user
-     * @param string $url
-     * @param array $options
      * @return \Pest\Browser\Api\Webpage
      */
     public static function loginAndNavigate(
@@ -75,9 +72,6 @@ final class SessionState
     /**
      * Dapatkan cookie session secara internal dari test application
      * lalu simpan ke storage agar tidak perlu fetch berulang-ulang.
-     *
-     * @param User $user
-     * @return string
      */
     public static function getSessionCookie(User $user): string
     {
@@ -91,10 +85,10 @@ final class SessionState
         // Panggil endpoint login quick bypass milik test runner
         // Ini akan mengembalikan session cookie di response header.
         $response = test()->get('/_pest/login/' . $user->id);
-        
+
         $cookieName = config('session.cookie');
         $cookieValue = '';
-        
+
         foreach ($response->headers->getCookies() as $cookie) {
             if ($cookie->getName() === $cookieName) {
                 $cookieValue = $cookie->getValue();
@@ -113,7 +107,7 @@ final class SessionState
     }
 
     /**
-     * Bersihkan session state
+     * Bersihkan session state.
      */
     public static function clear(): void
     {

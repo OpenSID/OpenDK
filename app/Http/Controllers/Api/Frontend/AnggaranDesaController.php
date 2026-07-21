@@ -46,14 +46,14 @@ class AnggaranDesaController extends BaseController
         theme_active();
         $dataAnggaran = (new StatistikChartAnggaranDesaService())->chart($mid, $did, $year);
         if($this->isDatabaseGabungan()){
-            $dataDetail = collect($dataAnggaran['data-detail'])->keyBy('id');            
+            $dataDetail = collect($dataAnggaran['data-detail'])->keyBy('id');
             unset($dataAnggaran['data-detail']);
-            
+
             $dataAnggaran['detail'] = view('pages.anggaran_desa.gabungan.detail_anggaran', compact('did', 'mid', 'year', 'dataDetail'))->render();
         }else {
             $detailData = $this->buildDetailAnggaran($did, $mid, $year);
             $dataAnggaran['detail'] = view('pages.anggaran_desa.detail_anggaran', compact('detailData'))->render();
-        }        
+        }
         return $dataAnggaran;
     }
 

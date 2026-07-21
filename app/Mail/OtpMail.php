@@ -40,14 +40,14 @@ class OtpMail extends Mailable
     use Queueable, SerializesModels;
 
     public $otp;
+
     public $purpose;
+
     public $expiryMinutes;
 
     /**
      * Create a new message instance.
      *
-     * @param  int  $otp
-     * @param  string  $purpose
      * @return void
      */
     public function __construct(int $otp, string $purpose = 'login')

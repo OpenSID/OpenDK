@@ -9,7 +9,10 @@ class EmailSmtp extends Model
 {
     use HasFactory;
 
+    public $timestamps = true;
+
     protected $table = 'ref_smtp';
+
     protected $primaryKey = 'id';
 
     protected $fillable = [
@@ -21,11 +24,9 @@ class EmailSmtp extends Model
         'status',
     ];
 
-    public $timestamps = true;
-
-    //mengambil data smtp terakhir berdasaerkan waktu penambahan data dan status
+    // mengambil data smtp terakhir berdasaerkan waktu penambahan data dan status
     public static function getLatestEmailSmtp()
     {
-        return EmailSmtp::latest('created_at')->where('status', '=', 1)->first();
+        return self::latest('created_at')->where('status', '=', 1)->first();
     }
 }

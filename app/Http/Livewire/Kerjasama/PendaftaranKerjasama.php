@@ -2,12 +2,11 @@
 
 namespace App\Http\Livewire\Kerjasama;
 
-use Livewire\Component;
-use App\Services\ApiService;
-use Livewire\WithFileUploads;
 use App\Models\SettingAplikasi;
+use App\Services\ApiService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class PendaftaranKerjasama extends Component
 {
@@ -16,15 +15,25 @@ class PendaftaranKerjasama extends Component
     public string $page_title = 'Pengajuan Kerja Sama';
 
     public int $user_id = 0;
+
     public int $status_registrasi_id = 4;
+
     public string $pesan_terdaftar;
+
     public string $status_langganan = 'belum terdaftar';
+
     public string $status_registrasi = 'Belum Mengajukan';
+
     public string $email;
+
     public string $domain;
+
     public string $kontak_nama;
+
     public string $kontak_no_hp;
+
     public string $kecamatan_id;
+
     public $permohonan;
 
     public $iteration;
@@ -62,7 +71,7 @@ class PendaftaranKerjasama extends Component
     {
         $apiService = new ApiService();
         $response = $apiService->terdaftar($this->kecamatan_id);
-        
+
         if ($response['success']) {
             $this->status_registrasi_id = $response['data']['data']['status_langganan_id'];
             $this->pesan_terdaftar = $response['data']['message'];
@@ -119,7 +128,7 @@ class PendaftaranKerjasama extends Component
 
             $apiService = new ApiService();
             $response = $apiService->register($data);
-            
+
             if ($response['success']) {
                 SettingAplikasi::where('key', 'layanan_opendesa_token')->update([
                     'value' => $response['data']['data']['token'],

@@ -34,13 +34,14 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Repositories\ProsedurApiRepository;
 use App\Services\CacheService;
 use App\Transformers\ProsedurTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\Fractal\Fractal;
 
 class ProsedurController extends BaseController
 {
     protected ProsedurApiRepository $prosedurApiRepository;
+
     protected CacheService $cacheService;
 
     public function __construct(
@@ -59,6 +60,7 @@ class ProsedurController extends BaseController
      *
      * @queryParam page int Halaman. Example: 1
      * @queryParam per_page int Item per halaman. Example: 10
+     *
      * @response {
      *   "data": [{"id": 1, "judul": "Prosedur Pembuatan KTP", "konten": "..."}]
      * }
@@ -68,7 +70,7 @@ class ProsedurController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return $this->cacheService->remember($cacheKey, $this->getCacheDuration(), function () {
             return $this->fractal($this->prosedurApiRepository->data(), new ProsedurTransformer, 'prosedur');
         }, $this->prefix, 'prosedur');
     }

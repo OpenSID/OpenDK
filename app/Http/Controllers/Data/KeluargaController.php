@@ -58,7 +58,7 @@ class KeluargaController extends Controller
     }
 
     /**
-     * Return datatable Data Keluarga
+     * Return datatable Data Keluarga.
      */
     public function getKeluarga()
     {
@@ -90,7 +90,8 @@ class KeluargaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function show($id)
@@ -107,9 +108,8 @@ class KeluargaController extends Controller
 
     /**
      * Export data keluarga ke Excel data keluarga di lokal
-     * untuk data api gabungan melalui view
+     * untuk data api gabungan melalui view.
      *
-     * @param  Request  $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function exportExcel(Request $request)

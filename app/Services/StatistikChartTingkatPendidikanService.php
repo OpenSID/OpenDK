@@ -46,7 +46,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
                 'grafik' => $this->dataGabungan($did, $year),
                 'tabel' => [],
             ];
-            
+
             return $data;
         }
         return $this->localChart($did, $year);
@@ -74,7 +74,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',            
+            'filter[id]' => 'pendidikan-dalam-kk',
             'filter[kecamatan]' => config('profil.kecamatan_id'),
         ];
         foreach (years_list() as $year) {
@@ -84,14 +84,14 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         try {
             $promises = Utils::unwrap($requests);
             $responses = Utils::settle($promises)->wait();
-            
+
             foreach ($responses as $key => $response) {
-                $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data']);            
+                $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data']);
                 $dataPendidikan[] = $this->mappingDataPendidikan($json, $key);
             }
         } catch (\Exception $e) {
             \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+        }
         return $dataPendidikan;
     }
 
@@ -101,7 +101,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',            
+            'filter[id]' => 'pendidikan-dalam-kk',
             'filter[tahun]' => $year,
             'filter[kecamatan]' => config('profil.kecamatan_id'),
         ];
@@ -113,33 +113,33 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         try {
             $promises = Utils::unwrap($requests);
             $responses = Utils::settle($promises)->wait();
-            
+
             foreach ($responses as $key => $response) {
-                $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data']);            
+                $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data']);
                 $dataPendidikan[] = $this->mappingDataPendidikan($json, $key);
             }
         } catch (\Exception $e) {
             \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+        }
         return $dataPendidikan;
     }
 
     private function dataGabunganSpesifik($did, $year)
-    {        
+    {
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',            
+            'filter[id]' => 'pendidikan-dalam-kk',
             'filter[tahun]' => $year,
             'filter[desa]' => $did,
             'filter[kecamatan]' => config('profil.kecamatan_id'),
         ];
-        
+
         try {
             $json = $this->apiRequest('/api/v1/statistik-web/penduduk', $filters);
             $dataPendidikan[] = $this->mappingDataPendidikan($json, $year);
         } catch (\Exception $e) {
             \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+        }
         return $dataPendidikan;
     }
 
@@ -149,8 +149,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',     
-            'filter[desa]' => $did,       
+            'filter[id]' => 'pendidikan-dalam-kk',
+            'filter[desa]' => $did,
             'filter[kecamatan]' => config('profil.kecamatan_id'),
         ];
         foreach (years_list() as $year) {
@@ -160,14 +160,14 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         try {
             $promises = Utils::unwrap($requests);
             $responses = Utils::settle($promises)->wait();
-            
+
             foreach ($responses as $key => $response) {
-                $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data']);            
+                $json = collect(json_decode($response['value']->getBody()->getContents(), true)['data']);
                 $dataPendidikan[] = $this->mappingDataPendidikan($json, $key);
             }
         } catch (\Exception $e) {
             \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__. $e->getMessage());
-        }                
+        }
         return $dataPendidikan;
     }
 
@@ -177,7 +177,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         })->mapWithKeys(function ($item) {
             return [$item['attributes']['nama'] => $item['attributes']['jumlah']];
         })->toArray();
-        
+
         return [
             'year' => $year,
             'tidak_tamat_sekolah' => ($dataFilter['TIDAK / BELUM SEKOLAH'] ?? 0) + ($dataFilter['BELUM TAMAT SD/SEDERAJAT'] ?? 0),
@@ -187,6 +187,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
             'tamat_diploma_sederajat' => ($dataFilter['DIPLOMA I / II'] ?? 0) + ($dataFilter['AKADEMI/ DIPLOMA III/S. MUDA'] ?? 0),
         ];
     }
+
     private function localChart($did, $year)
     {
         // Grafik Data TIngkat Pendidikan
@@ -250,7 +251,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
                     ->where('desa_id', '=', $did)
                     ->get()->first();
 
-                //return $queryPendidikan;
+                // return $queryPendidikan;
                 $dataTabel[] = [
                     'year' => 'Semester '.$key,
                     'tidak_tamat_sekolah' => intval($queryPendidikan->tidak_tamat_sekolah),

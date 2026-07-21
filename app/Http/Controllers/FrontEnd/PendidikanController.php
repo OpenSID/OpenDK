@@ -35,14 +35,14 @@ use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
 
 class PendidikanController extends FrontEndController
-{    
-
+{
     public function __construct()
-    {        
+    {
         parent::__construct();
     }
+
     /**
-     * Menampilkan Data Pendidikan
+     * Menampilkan Data Pendidikan.
      **/
     public function showPendidikan()
     {

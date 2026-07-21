@@ -4,7 +4,6 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\SettingAplikasi;
-use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -201,4 +200,3 @@ describe('restoreBackup - ZIP slip pada db-dumps/', function () {
         }
     });
 });
-

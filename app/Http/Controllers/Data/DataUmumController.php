@@ -56,7 +56,7 @@ class DataUmumController extends Controller
         $rekapKategori = DB::table('das_data_sarana')
             ->select('kategori', DB::raw('SUM(jumlah) as total'))
             ->groupBy('kategori')
-            ->pluck('total', 'kategori'); 
+            ->pluck('total', 'kategori');
 
         return view('data.data_umum.edit', compact('page_title', 'page_description', 'data_umum', 'luas_wilayah', 'rekapKategori'));
     }
@@ -64,7 +64,8 @@ class DataUmumController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(DataUmumRequest $request, $id)

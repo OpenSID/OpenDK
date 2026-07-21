@@ -37,19 +37,14 @@ use League\Fractal\TransformerAbstract;
 class JawabKomplainTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'penjawab_komplain'
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param JawabKomplain $jawabKomplain
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(JawabKomplain $jawabKomplain): array
     {
@@ -65,15 +60,14 @@ class JawabKomplainTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Penjawab Komplain
+     * Include Penjawab Komplain.
      *
-     * @param JawabKomplain $jawabKomplain
      * @return \League\Fractal\Resource\Item|null
      */
     public function includePenjawabKomplain(JawabKomplain $jawabKomplain)
     {
         $penjawab = $jawabKomplain->penjawab_komplain;
-        
+
         if ($penjawab) {
             return $this->item($penjawab, new \App\Transformers\PendudukTransformer(), 'penjawab_komplain');
         }

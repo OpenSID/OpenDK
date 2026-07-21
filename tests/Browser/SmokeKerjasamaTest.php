@@ -1,7 +1,7 @@
 <?php
 
-use Tests\BrowserTestCase;
 use Illuminate\Support\Facades\Http;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 

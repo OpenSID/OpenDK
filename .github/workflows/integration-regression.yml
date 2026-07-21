@@ -127,6 +127,14 @@ jobs:
           sleep 15
           mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
 
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate --force
+
       - name: Run Unit Tests with coverage
         env:
           DB_CONNECTION: mysql
@@ -383,6 +391,14 @@ jobs:
           echo "Waiting for MySQL to be ready..."
           sleep 15
           mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate --force
 
       - name: Run Integration Tests with coverage
         env:

@@ -38,9 +38,7 @@ it('smoke test menu Kesehatan - AKI AKB', function () {
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kesehatan', 'browser');
-
 
 // =============================================================================
 // MENU: KESEHATAN -> IMUNISASI
@@ -62,14 +60,12 @@ it('smoke test menu Kesehatan - Imunisasi', function () {
     $this->page->assertSee('Impor');
     $this->page->assertSee('Ekspor');
     $this->page->assertPresent('select#list_desa');
-    
+
     $this->page->assertVisible('#imunisasi-table');
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kesehatan', 'browser');
-
 
 // =============================================================================
 // MENU: KESEHATAN -> EPIDEMI PENYAKIT
@@ -94,9 +90,7 @@ it('smoke test menu Kesehatan - Epidemi Penyakit', function () {
 
     sleep(2);
 
-
 })->group('smoke', 'smoke-kesehatan', 'browser');
-
 
 // =============================================================================
 // MENU: KESEHATAN -> TOILET DAN SANITASI
@@ -120,6 +114,5 @@ it('smoke test menu Kesehatan - Toilet dan Sanitasi', function () {
     $this->page->assertVisible('#toilet-table');
 
     sleep(2);
-
 
 })->group('smoke', 'smoke-kesehatan', 'browser');

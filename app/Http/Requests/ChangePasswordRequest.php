@@ -38,8 +38,6 @@ class ChangePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -48,28 +46,24 @@ class ChangePasswordRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
             'current_password' => ['required'],
             'password' => [
-            'required', 
-            'min:8', 
-            'max:32', 
-            'confirmed',
-            'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
-            new NotInPasswordHistory(),
+                'required',
+                'min:8',
+                'max:32',
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+                new NotInPasswordHistory(),
             ],
         ];
     }
 
     /**
      * Get custom attributes for validator errors.
-     *
-     * @return array
      */
     public function attributes(): array
     {

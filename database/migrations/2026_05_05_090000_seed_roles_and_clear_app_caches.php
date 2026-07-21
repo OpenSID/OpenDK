@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\PermissionRegistrar;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         (new RoleSpatieSeeder())->run();

@@ -123,7 +123,8 @@ class EpidemiPenyakitController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -139,7 +140,8 @@ class EpidemiPenyakitController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(Request $request, $id)
@@ -169,7 +171,8 @@ class EpidemiPenyakitController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -192,7 +195,6 @@ class EpidemiPenyakitController extends Controller
     /**
      * Export Excel data Epidemi Penyakit.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function exportExcel(Request $request)

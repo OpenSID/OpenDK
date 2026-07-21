@@ -37,9 +37,6 @@ use Illuminate\Database\Eloquent\Model;
 class Pesan extends Model
 {
     use HasFactory;
-    protected $table = 'das_pesan';
-
-    protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at','additional_info'];
 
     public const PESAN_MASUK = 'Pesan Masuk';
 
@@ -55,9 +52,14 @@ class Pesan extends Model
 
     public const PER_PAGE = 10;
 
+    protected $table = 'das_pesan';
+
+    protected $fillable = ['judul', 'das_data_desa_id', 'jenis', 'sudah_dibaca', 'created_at','additional_info'];
+
     protected $casts = [
         'additional_info' => 'array',
     ];
+
     public function detailPesan()
     {
         return $this->hasMany(PesanDetail::class, 'pesan_id', 'id');

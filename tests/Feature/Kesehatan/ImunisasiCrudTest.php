@@ -33,7 +33,6 @@ namespace Tests\Feature\Kesehatan;
 
 use App\Models\DataDesa;
 use App\Models\Imunisasi;
-use Tests\CrudTestCase;
 
 const AJAX_HEADERS_IMUNISASI = ['X-Requested-With' => 'XMLHttpRequest'];
 
@@ -173,5 +172,5 @@ describe('Imunisasi CRUD', function () {
         $response = $this->put(route('data.imunisasi.update', 1), $invalidData);
 
         $response->assertSessionHasErrors('cakupan_imunisasi');
-    });    
+    });
 });

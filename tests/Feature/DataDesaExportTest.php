@@ -148,7 +148,7 @@ test('export styles', function () {
 // =============================================================================
 
 test('export data desa with empty database', function () {
-    // Arrange: Pastikan tidak ada data    
+    // Arrange: Pastikan tidak ada data
 
     // Act: Buat instance export
     $export = new ExportDataDesa(false, []);
@@ -160,8 +160,7 @@ test('export data desa with empty database', function () {
 });
 
 test('export data desa with special characters in nama', function () {
-    
-    
+
     // Buat data dengan karakter khusus
     DataDesa::factory()->create([
         'nama' => 'Desa Test & Special <Characters> "Quotes"',
@@ -179,13 +178,12 @@ test('export data desa with special characters in nama', function () {
 });
 
 test('export data desa with null values', function () {
-    
-    
+
     // Buat data dengan nilai null
     DataDesa::factory()->create([
         'website' => null,
         'sebutan_desa' => 'desa',
-        'luas_wilayah' => null,        
+        'luas_wilayah' => null,
     ]);
 
     // Act: Buat instance export dan map data
@@ -199,8 +197,7 @@ test('export data desa with null values', function () {
 });
 
 test('export data desa with very long nama', function () {
-    
-    
+
     // Buat data dengan nama sangat panjang (max 255 chars untuk kolom nama)
     $longName = str_repeat('Test ', 50); // 250 chars
     DataDesa::factory()->create([
@@ -217,8 +214,7 @@ test('export data desa with very long nama', function () {
 });
 
 test('export data desa with unicode characters', function () {
-    
-    
+
     // Buat data dengan karakter unicode
     DataDesa::factory()->create([
         'nama' => 'Desa Cékér Ménténg',
@@ -267,8 +263,7 @@ test('export data desa gabungan with empty api response', function () {
 });
 
 test('export data desa with large dataset performance', function () {
-    
-    
+
     // Buat data dalam jumlah besar
     $startTime = microtime(true);
     DataDesa::factory()->count(100)->create();

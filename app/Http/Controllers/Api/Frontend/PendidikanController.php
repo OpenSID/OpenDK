@@ -31,20 +31,19 @@
 
 namespace App\Http\Controllers\Api\Frontend;
 
-use App\Services\StatistikChartTingkatPendidikanService;
-use App\Services\PendidikanChartPutusSekolahService;
 use App\Services\PendidikanChartFasilitasPAUDService;
+use App\Services\PendidikanChartPutusSekolahService;
+use App\Services\StatistikChartTingkatPendidikanService;
 
 class PendidikanController extends BaseController
 {
-
     public function getChartTingkatPendidikan()
     {
         $did = request('did');
         $year = request('y');
 
         return (new StatistikChartTingkatPendidikanService)->chart($did, $year);
-        
+
     }
 
     public function getChartPutusSekolah()

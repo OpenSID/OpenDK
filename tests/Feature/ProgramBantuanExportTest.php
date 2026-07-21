@@ -193,7 +193,7 @@ test('export program bantuan with null dates', function () {
 test('export program bantuan with various sasaran values', function () {
     // Arrange: Clean data first
     Program::query()->delete();
-    
+
     // Buat data dengan berbagai sasaran
     $desa = DataDesa::factory()->create();
     Program::factory()->create([
@@ -224,7 +224,7 @@ test('export program bantuan with various sasaran values', function () {
 test('export program bantuan with special characters', function () {
     // Arrange: Clean data first
     Program::query()->delete();
-    
+
     // Buat data dengan karakter khusus
     $desa = DataDesa::factory()->create();
     Program::factory()->create([
@@ -244,7 +244,7 @@ test('export program bantuan with special characters', function () {
 test('export program bantuan performance test', function () {
     // Arrange: Clean data first
     Program::query()->delete();
-    
+
     // Buat data dalam jumlah besar
     $desa = DataDesa::factory()->create();
     $startTime = microtime(true);
@@ -266,7 +266,7 @@ test('export program bantuan performance test', function () {
 test('export program bantuan with multiple desa', function () {
     // Arrange: Clean data first
     Program::query()->delete();
-    
+
     // Buat data di beberapa desa
     $desa1 = DataDesa::factory()->create(['desa_id' => '111']);
     $desa2 = DataDesa::factory()->create(['desa_id' => '222']);
@@ -302,7 +302,7 @@ test('export program bantuan styles', function () {
 test('export program bantuan with null desa relationship', function () {
     // Arrange: Clean data first
     Program::query()->delete();
-    
+
     // Buat data dengan desa_id tidak valid
     $program = Program::factory()->create([
         'desa_id' => 'non_existent',
@@ -321,7 +321,7 @@ test('export program bantuan with null desa relationship', function () {
 test('export program bantuan memory usage', function () {
     // Arrange: Clean data first
     Program::query()->delete();
-    
+
     // Arrange: Buat data besar
     $desa = DataDesa::factory()->create();
     Program::factory()->count(500)->create([

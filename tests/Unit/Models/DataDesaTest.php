@@ -2,7 +2,6 @@
 
 use App\Models\DataDesa;
 
-
 it('can create a data desa', function () {
     $dataDesa = DataDesa::factory()->create([
         'nama' => 'Desa Makmur',

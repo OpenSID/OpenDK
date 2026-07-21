@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\DB;
 class StatistikChartPendudukPerkawinanService extends BaseApiService
 {
     private $colors = [1 => '#d365f8', 2 => '#c534f6', 3 => '#b40aed', 4 => '#8f08bc'];
+
     public function chart($did, $year)
     {
         if ($this->useDatabaseGabungan()) {
@@ -55,7 +56,7 @@ class StatistikChartPendudukPerkawinanService extends BaseApiService
                 foreach ($response as $key => $item) {
                     if (in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi])) {
                         continue;
-                    }                    
+                    }
                     $data[] = ['status' => ucfirst(strtolower($item['attributes']['nama'])), 'total' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#'.random_color()];
                 }
             } catch (\Exception $e) {
@@ -71,7 +72,7 @@ class StatistikChartPendudukPerkawinanService extends BaseApiService
         $penduduk = new Penduduk();
         // Data Chart Penduduk By Status Perkawinan
         $data = [];
-        $statusKawin = DB::table('ref_kawin')->orderBy('id')->get();        
+        $statusKawin = DB::table('ref_kawin')->orderBy('id')->get();
         foreach ($statusKawin as $val) {
             $total = $penduduk->getPendudukAktif($did, $year)
                 ->where('status_kawin', $val->id)

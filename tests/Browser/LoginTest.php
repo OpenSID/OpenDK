@@ -1,8 +1,8 @@
 <?php
 
-use Tests\BrowserTestCase;
-use Tests\Browser\Pages\LoginPage;
 use Tests\Browser\Pages\DashboardPage;
+use Tests\Browser\Pages\LoginPage;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -22,7 +22,7 @@ test('should login successfully with valid credentials', function () {
     ]);
     $user->assignRole('super-admin');
 
-    $loginPage = new LoginPage();    
+    $loginPage = new LoginPage();
 
     $browser = visit($loginPage->url());
     $loginPage->login($browser, 'login_test@example.com', 'password123');

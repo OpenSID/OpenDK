@@ -34,7 +34,6 @@ use App\Models\DataDesa;
 use App\Models\LaporanPenduduk;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Maatwebsite\Excel\Facades\Excel;
 
 uses(DatabaseTransactions::class);
 
@@ -55,7 +54,7 @@ beforeEach(function () {
 test('export laporan penduduk by id', function () {
     // Arrange: Buat data test
     LaporanPenduduk::query()->delete();
-    
+
     $desa = DataDesa::factory()->create([
         'nama' => 'Desa Test Export By ID'
     ]);
@@ -93,7 +92,7 @@ test('export laporan penduduk by id', function () {
 test('export laporan penduduk by id returns correct data', function () {
     // Arrange: Buat data test
     LaporanPenduduk::query()->delete();
-    
+
     $desa = DataDesa::factory()->create([
         'nama' => 'Desa Test Data'
     ]);
@@ -160,7 +159,7 @@ test('export laporan penduduk by id headings', function () {
 test('export laporan penduduk by id with special characters in judul', function () {
     // Arrange: Buat data dengan karakter khusus
     LaporanPenduduk::query()->delete();
-    
+
     $desa = DataDesa::factory()->create();
 
     $laporan = LaporanPenduduk::factory()->create([
@@ -194,7 +193,7 @@ test('export laporan penduduk by id with special characters in judul', function 
 test('export laporan penduduk by id with unicode characters', function () {
     // Arrange: Buat data dengan unicode
     LaporanPenduduk::query()->delete();
-    
+
     $desa = DataDesa::factory()->create([
         'nama' => 'Desa Cékér Ménténg'
     ]);
@@ -291,7 +290,7 @@ test('export laporan penduduk by id switches to local when gabungan inactive', f
 test('export laporan penduduk by id performance', function () {
     // Arrange: Buat data test
     LaporanPenduduk::query()->delete();
-    
+
     $desa = DataDesa::factory()->create();
     $laporan = LaporanPenduduk::factory()->create([
         'desa_id' => $desa->desa_id,
@@ -309,10 +308,10 @@ test('export laporan penduduk by id performance', function () {
 
     // Act: Export dan monitor waktu
     $startTime = microtime(true);
-    
+
     $export = new LaporanPendudukByIdExport(false, $data);
     $collection = $export->collection();
-    
+
     $endTime = microtime(true);
     $executionTime = $endTime - $startTime;
 

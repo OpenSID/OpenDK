@@ -102,7 +102,7 @@ class DataDesaController extends Controller
         }
 
         $page_title = config('setting.sebutan_desa');
-        ;
+
         $page_description = 'Tambah Desa';
         $profil = $this->profil;
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
@@ -138,7 +138,8 @@ class DataDesaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -149,7 +150,7 @@ class DataDesaController extends Controller
 
         $desa = DataDesa::findOrFail($id);
         $page_title = config('setting.sebutan_desa');
-        ;
+
         $page_description = 'Ubah Desa : ' . $desa->nama;
         $profil = $this->profil;
         $status_pantau = checkWebsiteAccessibility(config('app.server_pantau')) ? 1 : 0;
@@ -160,7 +161,8 @@ class DataDesaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(DesaRequest $request, $id)
@@ -186,7 +188,8 @@ class DataDesaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -304,7 +307,7 @@ class DataDesaController extends Controller
         }
         $desa = DataDesa::findOrFail($id);
         $page_title = config('setting.sebutan_desa');
-        ;
+
         $page_description = 'Peta Desa : ' . $desa->nama;
 
         return view('data.data_desa.peta', compact('page_title', 'page_description', 'desa'));
@@ -324,7 +327,7 @@ class DataDesaController extends Controller
     }
 
     /**
-     * Export data desa ke Excel
+     * Export data desa ke Excel.
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
@@ -336,9 +339,9 @@ class DataDesaController extends Controller
         try {
             if ($this->isDatabaseGabungan()) {
                 return Excel::download(new ExportDataDesa(true, $params), $fileName);
-            } else {
-                return Excel::download(new ExportDataDesa(false, $params), $fileName);
             }
+                return Excel::download(new ExportDataDesa(false, $params), $fileName);
+
         } catch (\Exception $e) {
             Log::error('Data Desa export failed', [
                 'error' => $e->getMessage(),

@@ -37,19 +37,14 @@ use League\Fractal\TransformerAbstract;
 class DataUmumTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'profil'
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param DataUmum $dataUmum
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(DataUmum $dataUmum): array
     {
@@ -100,15 +95,14 @@ class DataUmumTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Profil
+     * Include Profil.
      *
-     * @param DataUmum $dataUmum
      * @return \League\Fractal\Resource\Item|null
      */
     public function includeProfil(DataUmum $dataUmum)
     {
         $profil = $dataUmum->profil;
-        
+
         if ($profil) {
             return $this->item($profil, new ProfilTransformer(), 'profil');
         }

@@ -29,7 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-/**
+/*
  * Test untuk memastikan endpoint DataTables pada menu Setting → Pengaturan
  * dapat diakses menggunakan metode POST (antisipasi WAF blocking URL panjang).
  *

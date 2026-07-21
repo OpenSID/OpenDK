@@ -32,7 +32,6 @@
 namespace App\Repositories;
 
 use App\Models\DataDesa;
-use App\Services\DesaService;
 use App\Services\StatistikChartPendudukAgamaService;
 use App\Services\StatistikChartPendudukGolDarahService;
 use App\Services\StatistikChartPendudukPendidikanService;
@@ -44,19 +43,19 @@ use App\Services\StatistikPendudukService;
 class StatistikPendudukApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(DataDesa $model)
     {
-        parent::__construct($model);                        
+        parent::__construct($model);
     }
-    
+
     public function data($did, $year)
     {
         $listYears = $this->yearsList($year)['tahun'] ?? [date('Y')];
-        return [            
+        return [
             [
-                'id' => 1,                
+                'id' => 1,
                 'dashboard' => (new StatistikPendudukService())->dashboard($did, $year),
                 'chart' => [
                     'penduduk' => (new StatistikChartPendudukService())->chart($did, $listYears),
@@ -66,7 +65,7 @@ class StatistikPendudukApiRepository extends BaseApiRepository
                     'penduduk-kawin' => (new StatistikChartPendudukPerkawinanService())->chart($did, $year),
                     'penduduk-agama' => (new StatistikChartPendudukAgamaService())->chart($did, $year)
                 ]
-            ]            
+            ]
         ];
     }
 
@@ -80,5 +79,5 @@ class StatistikPendudukApiRepository extends BaseApiRepository
         }
 
         return ['id' => 'tahun', 'tahun' => $daftar_tahun];
-    }        
+    }
 }

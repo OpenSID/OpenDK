@@ -8,7 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 class PotensiApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Potensi $model)
     {

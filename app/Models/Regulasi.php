@@ -41,13 +41,6 @@ class Regulasi extends Model
 
     protected $table = 'das_regulasi';
 
-    protected static function booted(): void
-    {
-        static::created(fn (Regulasi $regulasi) => RegulasiChanged::dispatch($regulasi));
-        static::updated(fn (Regulasi $regulasi) => RegulasiChanged::dispatch($regulasi));
-        static::deleted(fn (Regulasi $regulasi) => RegulasiChanged::dispatch($regulasi));
-    }
-
     protected $fillable = [
         'kecamatan_id',
         'tipe_regulasi',
@@ -69,5 +62,12 @@ class Regulasi extends Model
     public function tipe()
     {
         return $this->hasOne(TipeRegulasi::class, 'id', 'tipe_regulasi');
+    }
+
+    protected static function booted(): void
+    {
+        static::created(fn (Regulasi $regulasi) => RegulasiChanged::dispatch($regulasi));
+        static::updated(fn (Regulasi $regulasi) => RegulasiChanged::dispatch($regulasi));
+        static::deleted(fn (Regulasi $regulasi) => RegulasiChanged::dispatch($regulasi));
     }
 }

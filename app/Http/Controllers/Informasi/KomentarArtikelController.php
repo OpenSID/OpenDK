@@ -31,8 +31,8 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\Comment;
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
@@ -98,7 +98,6 @@ class KomentarArtikelController extends Controller
 
         return response()->json(['success' => 'Status updated successfully.']);
     }
-
 
     public function destroy($id)
     {

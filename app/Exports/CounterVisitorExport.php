@@ -2,13 +2,14 @@
 
 namespace App\Exports;
 
-use App\Models\Visitor;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 class CounterVisitorExport implements FromCollection
 {
     protected $yearlyVisitors;
+
     protected $topPagesVisited;
+
     protected $profile;
 
     public function __construct($yearlyVisitors, $topPagesVisited, $profile = [])
@@ -19,8 +20,8 @@ class CounterVisitorExport implements FromCollection
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         $data = [];
@@ -64,9 +65,6 @@ class CounterVisitorExport implements FromCollection
         return collect($data);
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return [];

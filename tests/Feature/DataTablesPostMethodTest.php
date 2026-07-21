@@ -29,7 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-/**
+/*
  * Test untuk memastikan endpoint DataTables pada menu Data → Kecamatan
  * dapat diakses menggunakan metode POST (antisipasi WAF blocking URL panjang).
  *
@@ -40,14 +40,14 @@
  * 4. Jabatan        — route: data.jabatan.getdata.post (POST)
  */
 
+use App\Enums\KategoriSarana;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\DataDesa;
+use App\Models\DataSarana;
 use App\Models\Jabatan;
 use App\Models\Pengurus;
-use App\Models\DataSarana;
-use App\Enums\KategoriSarana;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Spatie\Permission\Middleware\PermissionMiddleware;

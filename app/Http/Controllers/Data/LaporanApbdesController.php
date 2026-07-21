@@ -141,7 +141,7 @@ class LaporanApbdesController extends Controller
 
     /**
      * Impor data apbdes dari file Excel.
-     * Kalau apbdes sudah ada (berdasarkan NIK), update dengan data yg diimpor
+     * Kalau apbdes sudah ada (berdasarkan NIK), update dengan data yg diimpor.
      *
      * @return Response
      */
@@ -154,16 +154,16 @@ class LaporanApbdesController extends Controller
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
             $fileUploadService = new \App\Services\FileUploadService();
-            
+
             // Define allowed MIME types for zip files
             $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
 
@@ -197,7 +197,8 @@ class LaporanApbdesController extends Controller
     /**
      * Download the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function download($id)
@@ -220,7 +221,6 @@ class LaporanApbdesController extends Controller
     /**
      * Export Excel data Laporan APBDes.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function exportExcel(Request $request)

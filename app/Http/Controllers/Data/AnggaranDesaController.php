@@ -127,7 +127,6 @@ class AnggaranDesaController extends Controller
     /**
      * Export Excel data Anggaran Desa.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Illuminate\Http\RedirectResponse
      */
     public function exportExcel(Request $request)

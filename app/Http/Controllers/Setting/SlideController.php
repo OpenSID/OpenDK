@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Models\Slide;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
-use App\Http\Requests\SlideRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SlideRequest;
+use App\Models\Slide;
+use App\Traits\HandlesFileUpload;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class SlideController extends Controller
 {

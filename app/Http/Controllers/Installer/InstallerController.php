@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Installer;
 
-use App\Http\Controllers\Controller;
 use App\Helpers\SystemRequirementsChecker;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 /**
- * Pengganti untuk installer controller dari package yang sudah abandoned
+ * Pengganti untuk installer controller dari package yang sudah abandoned.
  */
 class InstallerController extends Controller
 {

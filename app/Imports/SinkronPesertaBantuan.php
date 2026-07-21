@@ -44,7 +44,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class SinkronPesertaBantuan implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 
@@ -58,7 +58,7 @@ class SinkronPesertaBantuan implements ToCollection, WithHeadingRow, WithChunkRe
 
     public function collection(Collection $collection)
     {
-        DB::beginTransaction(); //multai transaction
+        DB::beginTransaction(); // multai transaction
 
         foreach ($collection as $value) {
             if ($value['sasaran'] == 1) {

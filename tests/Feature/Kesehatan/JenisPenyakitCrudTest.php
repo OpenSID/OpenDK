@@ -32,7 +32,6 @@
 namespace Tests\Feature\Kesehatan;
 
 use App\Models\JenisPenyakit;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Test setup if needed
@@ -143,7 +142,7 @@ describe('Jenis Penyakit CRUD', function () {
                 ],
             ],
         ]);
-    });    
+    });
 
     test('validation requires nama field', function () {
         $invalidData = [

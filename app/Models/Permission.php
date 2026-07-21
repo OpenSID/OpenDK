@@ -31,13 +31,13 @@
 
 namespace App\Models;
 
-use Spatie\Permission\Models\Permission as ModelsPermission;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Permission\Models\Permission as ModelsPermission;
 
 class Permission extends ModelsPermission
 {
     public function children(): HasMany
     {
-        return $this->hasMany(Permission::class, 'parent_id', 'id')->orderBy('sort');
+        return $this->hasMany(self::class, 'parent_id', 'id')->orderBy('sort');
     }
 }

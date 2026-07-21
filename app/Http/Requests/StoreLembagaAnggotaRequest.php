@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\Lembaga;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreLembagaAnggotaRequest extends FormRequest
 {
@@ -25,9 +25,9 @@ class StoreLembagaAnggotaRequest extends FormRequest
      */
     public function rules()
     {
-        $slug = $this->route('slug'); 
+        $slug = $this->route('slug');
         $lembaga = Lembaga::where('slug', $slug)->first();
-        
+
         return [
             'penduduk_id' => 'required|exists:das_penduduk,id',
             'no_anggota' => [

@@ -1,7 +1,5 @@
 <?php
 
-use Tests\BrowserAuthenticatedTestCase;
-
 uses(Tests\BrowserAuthenticatedTestCase::class);
 
 test('should display accessibility settings page', function () {

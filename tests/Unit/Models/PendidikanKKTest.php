@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\PendidikanKK;
-use App\Models\Penduduk;
-
 
 // PendidikanKK Model Testing
 it('can create a pendidikan kk', function () {

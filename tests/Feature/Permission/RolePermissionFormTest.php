@@ -34,7 +34,6 @@ namespace Tests\Feature\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Tests\TestCase;
 
 describe('Role Permission Form Display', function () {
     beforeEach(function () {
@@ -43,7 +42,7 @@ describe('Role Permission Form Display', function () {
 
     test('role permission form displays permission list', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.setting.role', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
@@ -67,7 +66,7 @@ describe('Role Permission Form Display', function () {
 
     test('permission name displays as friendly name on edit page', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.setting.role', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
@@ -91,7 +90,7 @@ describe('Role Permission Form Display', function () {
 
     test('all permissions from seeder are displayed in permission list', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.setting.role', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
@@ -108,7 +107,7 @@ describe('Role Permission Form Display', function () {
         $response = $this->get(route('setting.role.edit', $role->id));
 
         $response->assertStatus(200);
-        
+
         // Verify all parent permissions are present
         $response->assertSee('access.dashboard');
         $response->assertSee('access.informasi');
@@ -120,7 +119,7 @@ describe('Role Permission Form Display', function () {
     test('child permissions are displayed under parent', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.setting.role', 'guard_name' => 'web']);
         Permission::firstOrCreate(['name' => 'access.informasi.prosedur', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();

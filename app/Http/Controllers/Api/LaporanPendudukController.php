@@ -50,6 +50,7 @@ class LaporanPendudukController extends Controller
      * @bodyParam laporan_penduduk.tahun integer required Tahun. Example: 2024
      * @bodyParam laporan_penduduk.nama_file string required Nama file. Example: penduduk_2024_01.pdf
      * @bodyParam laporan_penduduk.file string required File base64 encoded.
+     *
      * @response {
      *   "status": "success",
      *   "message": "Proses sync data Laporan Penduduk OpenSID sedang berjalan"

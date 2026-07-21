@@ -37,7 +37,7 @@ class KesehatanChartEpidemiPenyakitService
                 foreach ($penyakit as $value) {
                     $semesterIds = explode(',', $this->getIdsSemester($key));
                     $query_total = DB::table('das_epidemi_penyakit')
-                        //->join('ref_penyakit', 'das_epidemi_penyakit.penyakit_id', '=', 'ref_penyakit.id')
+                        // ->join('ref_penyakit', 'das_epidemi_penyakit.penyakit_id', '=', 'ref_penyakit.id')
                         ->where('das_epidemi_penyakit.kecamatan_id', '=', get_kode_kecamatan())
                         ->whereIn('das_epidemi_penyakit.bulan', $semesterIds)
                         ->where('das_epidemi_penyakit.tahun', $year)
@@ -58,7 +58,7 @@ class KesehatanChartEpidemiPenyakitService
 
         // Data Tabel Cakupan Imunisasi
         $tabel_kesehatan = [];
-      
+
         return [
             'grafik' => $data_kesehatan,
             'tabel' => $tabel_kesehatan,

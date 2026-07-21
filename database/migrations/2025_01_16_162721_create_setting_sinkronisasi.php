@@ -3,11 +3,8 @@
 use App\Enums\Status;
 use App\Models\SettingAplikasi;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -16,7 +13,7 @@ return new class extends Migration
     public function up()
     {
         // Tambahkan setting untuk sinkronisasi database gabungan
-        SettingAplikasi::insert([            
+        SettingAplikasi::insert([
             'key' => 'sinkronisasi_database_gabungan',
             'value' => Status::TidakAktif,
             'type' => 'boolean',
@@ -24,7 +21,7 @@ return new class extends Migration
             'kategori' => 'sinkronisasi',
             'option' => '{}',
         ]);
-        SettingAplikasi::insert([            
+        SettingAplikasi::insert([
             'key' => 'api_server_database_gabungan',
             'value' => '',
             'type' => 'input',
@@ -32,7 +29,7 @@ return new class extends Migration
             'kategori' => 'sinkronisasi',
             'option' => '{}',
         ]);
-        SettingAplikasi::insert([            
+        SettingAplikasi::insert([
             'key' => 'api_key_database_gabungan',
             'value' => '',
             'type' => 'textarea',
@@ -42,14 +39,14 @@ return new class extends Migration
         ]);
 
         // Tambahkan setting untuk sinkronisasi opensid
-        SettingAplikasi::insert([            
+        SettingAplikasi::insert([
             'key' => 'api_key_opendk',
             'value' => '',
             'type' => 'textarea',
             'description' => 'OpenDK API Key Untuk Sinkronisasi Data.',
             'kategori' => 'sinkronisasi',
             'option' => '{"readonly":true}',
-        ]);        
+        ]);
     }
 
     /**

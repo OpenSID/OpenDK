@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class Program extends Model
 {
     use HasFactory;
+
     protected $table = 'das_program';
 
     protected $fillable = [

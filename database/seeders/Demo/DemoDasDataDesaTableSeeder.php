@@ -180,7 +180,6 @@ class DemoDasDataDesaTableSeeder extends Seeder
             DataDesa::create($desa);
         }
 
-
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -8,7 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 class RegulasiApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Regulasi $model)
     {

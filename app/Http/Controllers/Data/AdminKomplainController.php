@@ -154,7 +154,8 @@ class AdminKomplainController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -184,7 +185,7 @@ class AdminKomplainController extends Controller
             $komplain = Komplain::findOrFail($id);
             $komplain->fill($request->all());
 
-            $penduduk = $this->isDatabaseGabungan() 
+            $penduduk = $this->isDatabaseGabungan()
             ? (new PendudukService)->cekPendudukNikTanggalLahir($komplain->nik)
             : Penduduk::where('nik', $komplain->nik)->first();
 
@@ -194,13 +195,13 @@ class AdminKomplainController extends Controller
             // Save if lampiran available
             if ($request->hasFile('lampiran1')) {
                 $lampiran1 = $request->file('lampiran1');
-                
+
                 // Use FileUploadService for secure file upload
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($lampiran1, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
                 $komplain->lampiran1 = 'storage/'.$path;
@@ -208,13 +209,13 @@ class AdminKomplainController extends Controller
 
             if ($request->hasFile('lampiran2')) {
                 $lampiran2 = $request->file('lampiran2');
-                
+
                 // Use FileUploadService for secure file upload
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($lampiran2, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
                 $komplain->lampiran2 = 'storage/'.$path;
@@ -222,13 +223,13 @@ class AdminKomplainController extends Controller
 
             if ($request->hasFile('lampiran3')) {
                 $lampiran3 = $request->file('lampiran3');
-                
+
                 // Use FileUploadService for secure file upload
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($lampiran3, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
                 $komplain->lampiran3 = 'storage/'.$path;
@@ -236,13 +237,13 @@ class AdminKomplainController extends Controller
 
             if ($request->hasFile('lampiran4')) {
                 $lampiran4 = $request->file('lampiran4');
-                
+
                 // Use FileUploadService for secure file upload
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for image uploads
                 $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
-                
+
                 // Upload file securely
                 $path = $fileUploadService->uploadSecure($lampiran4, 'komplain/'.$komplain->komplain_id.'/', $allowedMimes);
                 $komplain->lampiran4 = 'storage/'.$path;
@@ -292,6 +293,50 @@ class AdminKomplainController extends Controller
         return view('sistem_komplain.statistik', compact('page_title', 'page_description', 'chart_kategori', 'chart_status', 'chart_desa'));
     }
 
+    public function getKomentar($id)
+    {
+        $jawab = JawabKomplain::findOrFail($id);
+        $response = [
+            'status' => 'success',
+            'data' => $jawab,
+        ];
+
+        return response()->json($response);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {
+        try {
+            Komplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+
+            return redirect()->route('admin-komplain.index')->with('error', 'Keluhan gagal dihapus!');
+        }
+
+        return redirect()->route('admin-komplain.index')->with('success', 'Keluhan sukses dihapus!');
+    }
+
+    public function deletekomentar($id)
+    {
+        try {
+            JawabKomplain::findOrFail($id)->delete();
+        } catch (\Exception $e) {
+            report($e);
+
+            return back()->with('error', 'Komentar Keluhan gagal dihapus!');
+        }
+
+        return back()->with('success', 'Komentar Keluhan sukses dihapus!');
+    }
+
     protected function getChartKategori()
     {
         $data_chart = [];
@@ -334,48 +379,5 @@ class AdminKomplainController extends Controller
         }
 
         return $data_chart;
-    }
-
-    public function getKomentar($id)
-    {
-        $jawab = JawabKomplain::findOrFail($id);
-        $response = [
-            'status' => 'success',
-            'data' => $jawab,
-        ];
-
-        return response()->json($response);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        try {
-            Komplain::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            report($e);
-
-            return redirect()->route('admin-komplain.index')->with('error', 'Keluhan gagal dihapus!');
-        }
-
-        return redirect()->route('admin-komplain.index')->with('success', 'Keluhan sukses dihapus!');
-    }
-
-    public function deletekomentar($id)
-    {
-        try {
-            JawabKomplain::findOrFail($id)->delete();
-        } catch (\Exception $e) {
-            report($e);
-
-            return back()->with('error', 'Komentar Keluhan gagal dihapus!');
-        }
-
-        return back()->with('success', 'Komentar Keluhan sukses dihapus!');
     }
 }

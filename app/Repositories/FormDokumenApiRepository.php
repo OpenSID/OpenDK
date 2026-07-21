@@ -8,7 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 class FormDokumenApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(FormDokumen $model)
     {
@@ -25,7 +25,7 @@ class FormDokumenApiRepository extends BaseApiRepository
             AllowedFilter::callback('aktif', function ($q, $value) {
                 if($value){
                     $q->whereNull('expired_at')->orWhere('expired_at', '>', now());
-                }                
+                }
             })
         ];
         $this->allowedSorts = [

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Models\Lembaga;
-use App\Models\Penduduk;
-use Illuminate\Http\Request;
-use App\Models\LembagaAnggota;
-use App\Models\KategoriLembaga;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLembagaRequest;
 use App\Http\Requests\UpdateLembagaRequest;
+use App\Models\KategoriLembaga;
+use App\Models\Lembaga;
+use App\Models\LembagaAnggota;
+use App\Models\Penduduk;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class LembagaController extends Controller
 {
@@ -84,7 +84,8 @@ class LembagaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLembagaRequest $request)
@@ -124,7 +125,8 @@ class LembagaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -135,7 +137,8 @@ class LembagaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -158,8 +161,9 @@ class LembagaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateLembagaRequest $request, $id)
@@ -202,11 +206,11 @@ class LembagaController extends Controller
         return redirect()->route('data.lembaga.index')->with('success', 'Lembaga berhasil diubah!');
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

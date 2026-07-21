@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\LaporanPenduduk;
 use App\Models\DataDesa;
+use App\Models\LaporanPenduduk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LaporanPendudukFactory extends Factory

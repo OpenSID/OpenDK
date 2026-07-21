@@ -3,7 +3,6 @@
 use App\Models\Penduduk;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Carbon;
 
 uses(DatabaseTransactions::class);
 

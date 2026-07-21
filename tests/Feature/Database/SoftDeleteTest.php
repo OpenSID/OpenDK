@@ -32,9 +32,6 @@
 namespace Tests\Feature\Database;
 
 use App\Models\DataDesa;
-use App\Models\AnggaranDesa;
-use Illuminate\Support\Facades\DB;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Test setup if needed

@@ -31,9 +31,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\StatusFormDokumen;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use App\Enums\StatusFormDokumen;
+
 class DokumenRequest extends FormRequest
 {
     /**

@@ -5,7 +5,7 @@ namespace App\Services;
 class BantuanService extends BaseApiService
 {
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function jumlahBantuan(array $filters = [])
     {
@@ -25,5 +25,4 @@ class BantuanService extends BaseApiService
         // Jika total tersedia, kembalikan nilainya
         return $data['meta']['pagination']['total'];
     }
-    
 }

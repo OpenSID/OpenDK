@@ -33,7 +33,6 @@ namespace Tests\Feature\Permission;
 
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Tests\TestCase;
 
 describe('Sidebar Menu Visibility', function () {
     beforeEach(function () {
@@ -42,7 +41,7 @@ describe('Sidebar Menu Visibility', function () {
 
     test('user sees dashboard menu when has access.dashboard permission', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.dashboard', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
@@ -58,7 +57,7 @@ describe('Sidebar Menu Visibility', function () {
 
     test('user sees informasi.prosedur menu when has permission', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.informasi.prosedur', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
@@ -74,7 +73,7 @@ describe('Sidebar Menu Visibility', function () {
 
     test('user sees informasi.artikel menu when has permission', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.informasi.artikel', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
@@ -99,7 +98,7 @@ describe('Sidebar Menu Visibility', function () {
         foreach ($perms as $perm) {
             Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
         }
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();

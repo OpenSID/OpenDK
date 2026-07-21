@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -42,7 +41,7 @@ class SmtpTestEmail extends Mailable
      */
     public function content()
     {
-        return new Content(null, null, null, null, [], "Testing Mail From OpenDK");
+        return new Content(null, null, null, null, [], 'Testing Mail From OpenDK');
     }
 
     /**

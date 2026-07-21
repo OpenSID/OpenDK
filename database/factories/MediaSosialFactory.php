@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class MediaSosialFactory extends Factory
 {
     protected $model = MediaSosial::class;
+
     /**
      * Define the model's default state.
      *

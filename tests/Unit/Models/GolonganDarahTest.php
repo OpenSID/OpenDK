@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\GolonganDarah;
-use App\Models\Penduduk;
-
 
 // GolonganDarah Model Testing
 it('can create a golongan darah', function () {

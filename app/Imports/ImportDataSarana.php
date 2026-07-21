@@ -11,9 +11,8 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class ImportDataSarana implements ToModel, WithHeadingRow
 {
     public function __construct(public String $type) {}
+
     /**
-     * @param array $row
-     *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
     public function model(array $row)

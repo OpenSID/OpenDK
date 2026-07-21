@@ -5,8 +5,8 @@ namespace Database\Factories;
 use App\Models\DataDesa;
 use App\Models\Surat;
 use App\Models\User;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class SuratFactory extends Factory
 {
     protected $model = Surat::class;
+
     /**
      * Define the model's default state.
      *

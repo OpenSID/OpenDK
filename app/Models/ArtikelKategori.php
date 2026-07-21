@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
 
 class ArtikelKategori extends Model
 {
@@ -14,7 +14,7 @@ class ArtikelKategori extends Model
 
     protected $primaryKey = 'id_kategori';
 
-    protected $guarded = ['id_kategori'];        
+    protected $guarded = ['id_kategori'];
 
     /**
      * Return the sluggable configuration array for this model.

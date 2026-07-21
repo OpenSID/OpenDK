@@ -10,7 +10,6 @@ class MediaTerkaitObserver
     /**
      * Handle the MediaTerkait "created" event.
      *
-     * @param  \App\Models\MediaTerkait  $mediaTerkait
      * @return void
      */
     public function created(MediaTerkait $mediaTerkait)
@@ -21,7 +20,6 @@ class MediaTerkaitObserver
     /**
      * Handle the MediaTerkait "updated" event.
      *
-     * @param  \App\Models\MediaTerkait  $mediaTerkait
      * @return void
      */
     public function updated(MediaTerkait $mediaTerkait)
@@ -34,7 +32,6 @@ class MediaTerkaitObserver
     /**
      * Handle the MediaTerkait "deleted" event.
      *
-     * @param  \App\Models\MediaTerkait  $mediaTerkait
      * @return void
      */
     public function deleted(MediaTerkait $mediaTerkait)
@@ -47,7 +44,6 @@ class MediaTerkaitObserver
     /**
      * Handle the MediaTerkait "restored" event.
      *
-     * @param  \App\Models\MediaTerkait  $mediaTerkait
      * @return void
      */
     public function restored(MediaTerkait $mediaTerkait)
@@ -58,7 +54,6 @@ class MediaTerkaitObserver
     /**
      * Handle the MediaTerkait "force deleted" event.
      *
-     * @param  \App\Models\MediaTerkait  $mediaTerkait
      * @return void
      */
     public function forceDeleted(MediaTerkait $mediaTerkait)

@@ -56,8 +56,6 @@ class PengurusController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return mixed
      */
     public function index(Request $request)
     {
@@ -106,9 +104,9 @@ class PengurusController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->rawColumns(['foto', 'identitas', 'status'])
                 ->make(true);
@@ -221,7 +219,7 @@ class PengurusController extends Controller
     }
 
     public function destroy(Pengurus $penguru): RedirectResponse
-    {        
+    {
         try {
             $penguru->delete();
         } catch (\Exception $e) {

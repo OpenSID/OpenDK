@@ -33,7 +33,6 @@ namespace Database\Seeders\Demo;
 
 use App\Enums\MenuTipe;
 use App\Models\Navigation;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

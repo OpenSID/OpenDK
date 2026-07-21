@@ -34,7 +34,6 @@ namespace Tests\Feature\Audit;
 use App\Models\DataDesa;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Test setup if needed

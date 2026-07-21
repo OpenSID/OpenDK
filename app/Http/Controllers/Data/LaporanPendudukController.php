@@ -150,16 +150,16 @@ class LaporanPendudukController extends Controller
         try {
             // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            
+
             // Use FileUploadService for secure file upload
             $fileUploadService = new \App\Services\FileUploadService();
-            
+
             // Define allowed MIME types for zip files
             $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
-            
+
             // Upload file securely to temp directory
             $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
-            
+
             // Extract filename from path
             $name = basename($path);
 
@@ -198,9 +198,9 @@ class LaporanPendudukController extends Controller
         try {
             if ($this->isDatabaseGabungan()) {
                 return Excel::download(new LaporanPendudukExport(true), 'laporan-penduduk.xlsx');
-            } else {
-                return Excel::download(new LaporanPendudukExport(false), 'laporan-penduduk.xlsx');
             }
+                return Excel::download(new LaporanPendudukExport(false), 'laporan-penduduk.xlsx');
+
         } catch (\Exception $e) {
             Log::error('Laporan Penduduk export failed', [
                 'error' => $e->getMessage(),
@@ -214,9 +214,9 @@ class LaporanPendudukController extends Controller
         try {
             if ($this->isDatabaseGabungan()) {
                 return Excel::download(new LaporanPendudukByIdExport(true, $data), 'laporan-penduduk.xlsx');
-            } else {
-                return Excel::download(new LaporanPendudukByIdExport(false, $data), 'laporan-penduduk.xlsx');
             }
+                return Excel::download(new LaporanPendudukByIdExport(false, $data), 'laporan-penduduk.xlsx');
+
         } catch (\Exception $e) {
             Log::error('Laporan Penduduk export by ID failed', [
                 'error' => $e->getMessage(),

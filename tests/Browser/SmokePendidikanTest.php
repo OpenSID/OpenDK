@@ -1,9 +1,9 @@
 <?php
 
-use Tests\BrowserTestCase;
-use App\Models\TingkatPendidikan;
-use App\Models\PutusSekolah;
 use App\Models\FasilitasPaud;
+use App\Models\PutusSekolah;
+use App\Models\TingkatPendidikan;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -35,7 +35,6 @@ it('smoke test menu Pendidikan - Tingkat Pendidikan', function () {
 
 })->group('smoke', 'smoke-pendidikan', 'browser');
 
-
 // =============================================================================
 // MENU: PENDIDIKAN -> SISWA PUTUS SEKOLAH
 // =============================================================================
@@ -54,7 +53,6 @@ it('smoke test menu Pendidikan - Siswa Putus Sekolah', function () {
     sleep(2);
 
 })->group('smoke', 'smoke-pendidikan', 'browser');
-
 
 // =============================================================================
 // MENU: PENDIDIKAN -> FASILITAS PAUD

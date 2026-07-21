@@ -43,7 +43,7 @@ class ExportPenduduk implements FromCollection, WithHeadings
     {
         if ($this->gabungan) {
             return $this->pendudukService->exportPenduduk($this->pageSize, $this->pageNumber, $this->filterSearch);
-        } else {
+        }
             $data = [];
             $penduduks = Penduduk::with('desa', 'pendidikan_kk', 'pekerjaan', 'kawin')->get();
 
@@ -64,7 +64,7 @@ class ExportPenduduk implements FromCollection, WithHeadings
             }
 
             return collect($data);
-        }
+
     }
 
     public function headings(): array

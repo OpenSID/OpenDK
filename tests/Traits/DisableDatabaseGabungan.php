@@ -5,7 +5,7 @@ namespace Tests\Traits;
 use App\Models\SettingAplikasi;
 
 /**
- * Trait DisableDatabaseGabungan
+ * Trait DisableDatabaseGabungan.
  *
  * This trait ensures that the sinkronisasi_database_gabungan setting
  * is set to '0' before each test. This is necessary because Pest runs

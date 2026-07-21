@@ -53,8 +53,6 @@ class ExportFasilitasPaud implements FromCollection, WithHeadings, WithMapping, 
 
     /**
      * Definisi header kolom untuk export Excel.
-     *
-     * @return array
      */
     public function headings(): array
     {
@@ -73,9 +71,6 @@ class ExportFasilitasPaud implements FromCollection, WithHeadings, WithMapping, 
 
     /**
      * Mapping data untuk setiap baris.
-     *
-     * @param $fasilitasPaud
-     * @return array
      */
     public function map($fasilitasPaud): array
     {
@@ -95,7 +90,6 @@ class ExportFasilitasPaud implements FromCollection, WithHeadings, WithMapping, 
     /**
      * Styling untuk Excel worksheet.
      *
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

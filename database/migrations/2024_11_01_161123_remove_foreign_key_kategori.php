@@ -5,12 +5,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      * Menghapus foreign key dan kolom kategori_id dari das_artikel
-     * (kolom ini sudah digantikan oleh id_kategori → das_artikel_kategori)
+     * (kolom ini sudah digantikan oleh id_kategori → das_artikel_kategori).
      *
      * @return void
      */
@@ -44,4 +43,3 @@ return new class extends Migration
         });
     }
 };
-

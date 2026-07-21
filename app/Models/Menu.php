@@ -72,7 +72,7 @@ class Menu extends Model
     }
 
     /**
-     * Show Menus
+     * Show Menus.
      *
      * @return void
      */

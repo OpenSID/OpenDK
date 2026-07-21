@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Program;
 use App\Models\DataDesa;
+use App\Models\Program;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProgramFactory extends Factory

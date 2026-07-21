@@ -41,8 +41,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ExportToiletSanitasi implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
     /**
-     * Mengambil koleksi data Toilet Sanitasi untuk ekspor
-     * 
+     * Mengambil koleksi data Toilet Sanitasi untuk ekspor.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function collection()
@@ -52,9 +52,7 @@ class ExportToiletSanitasi implements FromCollection, WithHeadings, WithMapping,
     }
 
     /**
-     * Header kolom untuk file Excel
-     * 
-     * @return array
+     * Header kolom untuk file Excel.
      */
     public function headings(): array
     {
@@ -72,10 +70,7 @@ class ExportToiletSanitasi implements FromCollection, WithHeadings, WithMapping,
     }
 
     /**
-     * Memetakan data untuk setiap baris Excel
-     * 
-     * @param mixed $toiletSanitasi
-     * @return array
+     * Memetakan data untuk setiap baris Excel.
      */
     public function map($toiletSanitasi): array
     {
@@ -95,9 +90,8 @@ class ExportToiletSanitasi implements FromCollection, WithHeadings, WithMapping,
     }
 
     /**
-     * Styling untuk file Excel
-     * 
-     * @param Worksheet $sheet
+     * Styling untuk file Excel.
+     *
      * @return array
      */
     public function styles(Worksheet $sheet)

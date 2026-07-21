@@ -45,7 +45,6 @@ class FormDokumenChanged
     /**
      * Create a new event instance.
      *
-     * @param  FormDokumen  $formDokumen
      * @return void
      */
     public function __construct(FormDokumen $formDokumen)

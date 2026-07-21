@@ -1,12 +1,12 @@
 <?php
 
-use Tests\BrowserTestCase;
-use App\Models\TipePotensi;
-use App\Models\KategoriKomplain;
-use App\Models\TipeRegulasi;
-use App\Models\JenisPenyakit;
-use App\Models\JenisDokumen;
 use App\Models\CoaType;
+use App\Models\JenisDokumen;
+use App\Models\JenisPenyakit;
+use App\Models\KategoriKomplain;
+use App\Models\TipePotensi;
+use App\Models\TipeRegulasi;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -31,9 +31,9 @@ it('smoke test menu Pengaturan Kategori - Tipe Potensi', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/setting/tipe-potensi');
     $this->page->assertPathIs('/setting/tipe-potensi');
 
-    $this->page->assertSee('Kategori Potensi'); 
+    $this->page->assertSee('Kategori Potensi');
     $this->page->assertVisible('#data_tipe_potensi');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -48,9 +48,9 @@ it('smoke test menu Pengaturan Kategori - Kategori Komplain', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/setting/komplain-kategori');
     $this->page->assertPathIs('/setting/komplain-kategori');
 
-    $this->page->assertSee('Kategori Komplain'); 
+    $this->page->assertSee('Kategori Komplain');
     $this->page->assertVisible('#data-komplain-kategori');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -65,9 +65,9 @@ it('smoke test menu Pengaturan Kategori - Tipe Regulasi', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/setting/tipe-regulasi');
     $this->page->assertPathIs('/setting/tipe-regulasi');
 
-    $this->page->assertSee('Tipe Regulasi'); 
+    $this->page->assertSee('Tipe Regulasi');
     $this->page->assertVisible('#data-tipe-regulasi');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -82,9 +82,9 @@ it('smoke test menu Pengaturan Kategori - Jenis Penyakit', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/setting/jenis-penyakit');
     $this->page->assertPathIs('/setting/jenis-penyakit');
 
-    $this->page->assertSee('Jenis Penyakit'); 
+    $this->page->assertSee('Jenis Penyakit');
     $this->page->assertVisible('#data-penyakit');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -99,9 +99,9 @@ it('smoke test menu Pengaturan Kategori - Jenis Dokumen', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/setting/jenis-dokumen');
     $this->page->assertPathIs('/setting/jenis-dokumen');
 
-    $this->page->assertSee('Jenis Dokumen'); 
+    $this->page->assertSee('Jenis Dokumen');
     $this->page->assertVisible('#data_jenis_dokumen');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -116,8 +116,8 @@ it('smoke test menu Pengaturan Kategori - COA', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/setting/coa');
     $this->page->assertPathIs('/setting/coa');
 
-    $this->page->assertSee('Daftar COA'); 
+    $this->page->assertSee('Daftar COA');
     $this->page->assertVisible('#data-coa >> nth=0');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');

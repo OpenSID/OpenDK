@@ -48,7 +48,7 @@ class ExportAKIAKB implements FromCollection, WithHeadings, WithMapping, WithSty
     }
 
     /**
-     * Mengambil koleksi data AKI AKB untuk ekspor
+     * Mengambil koleksi data AKI AKB untuk ekspor.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -78,9 +78,7 @@ class ExportAKIAKB implements FromCollection, WithHeadings, WithMapping, WithSty
     }
 
     /**
-     * Header kolom untuk file Excel
-     * 
-     * @return array
+     * Header kolom untuk file Excel.
      */
     public function headings(): array
     {
@@ -98,10 +96,7 @@ class ExportAKIAKB implements FromCollection, WithHeadings, WithMapping, WithSty
     }
 
     /**
-     * Memetakan data untuk setiap baris Excel
-     * 
-     * @param mixed $akiAkb
-     * @return array
+     * Memetakan data untuk setiap baris Excel.
      */
     public function map($akiAkb): array
     {
@@ -121,9 +116,8 @@ class ExportAKIAKB implements FromCollection, WithHeadings, WithMapping, WithSty
     }
 
     /**
-     * Styling untuk file Excel
-     * 
-     * @param Worksheet $sheet
+     * Styling untuk file Excel.
+     *
      * @return array
      */
     public function styles(Worksheet $sheet)

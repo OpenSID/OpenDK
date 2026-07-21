@@ -2,7 +2,6 @@
 
 use App\Models\Cacat;
 
-
 // Cacat Model Testing
 it('can create a cacat', function () {
     $cacat = Cacat::factory()->create([

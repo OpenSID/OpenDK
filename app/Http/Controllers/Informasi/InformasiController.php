@@ -36,7 +36,7 @@ use App\Http\Controllers\Controller;
 class InformasiController extends Controller
 {
     /**
-     * Menampilkan Daftar Prosedur
+     * Menampilkan Daftar Prosedur.
      **/
     public function showProsedur()
     {
@@ -47,7 +47,7 @@ class InformasiController extends Controller
     }
 
     /**
-     * Menampilkan Data Potensi
+     * Menampilkan Data Potensi.
      **/
     public function showPotensi()
     {
@@ -58,7 +58,7 @@ class InformasiController extends Controller
     }
 
     /**
-     * Menampilkan Data Event
+     * Menampilkan Data Event.
      **/
     public function showEvent()
     {
@@ -69,34 +69,34 @@ class InformasiController extends Controller
     }
 
     /**
-     * Menampilkan Data FAQ
+     * Menampilkan Data FAQ.
      **/
     public function showFAQ()
     {
         $data['page_title'] = 'FAQ';
-        //$data['page_description'] = 'Menampilkan Event Terdekat';
+        // $data['page_description'] = 'Menampilkan Event Terdekat';
 
         return view('Informasi.faq')->with($data);
     }
 
     /**
-     * Menampilkan Kontak Kecamatan
+     * Menampilkan Kontak Kecamatan.
      **/
     public function showKontak()
     {
         $data['page_title'] = 'Kontak Kecamatan ';
-        //$data['page_description'] = 'Menampilkan Event Terdekat';
+        // $data['page_description'] = 'Menampilkan Event Terdekat';
 
         return view('informasi.kontak')->with($data);
     }
 
     /**
-     * Menampilkan Kalender Kecamatan
+     * Menampilkan Kalender Kecamatan.
      **/
     public function showKalender()
     {
         $data['page_title'] = 'Kalender Kecamatan ';
-        //$data['page_description'] = 'Menampilkan Event Terdekat';
+        // $data['page_description'] = 'Menampilkan Event Terdekat';
 
         return view('informasi.kalender')->with($data);
     }

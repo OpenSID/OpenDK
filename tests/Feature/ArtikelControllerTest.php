@@ -208,7 +208,7 @@ test('store comment with invalid data returns validation error', function () {
 });
 
 test('store comment for non existent article returns 404', function () {
-    $response = $this->postJson("/api/frontend/v1/artikel/999999/comments", [
+    $response = $this->postJson('/api/frontend/v1/artikel/999999/comments', [
         'nama' => 'Test User',
         'email' => 'test@example.com',
         'body' => 'Ini adalah komentar test',

@@ -35,15 +35,15 @@ use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
 
 class KesehatanController extends FrontEndController
-{    
+{
     // Dashboiard Kesehatan AKI & AKB
     public function showKesehatan()
     {
         Counter::count('statistik.kesehatan');
 
         $page_title = 'Kesehatan';
-        $page_description = 'Data Kesehatan';                
+        $page_description = 'Data Kesehatan';
 
         return view('pages.kesehatan.show_kesehatan', compact('page_title', 'page_description'));
-    }    
+    }
 }

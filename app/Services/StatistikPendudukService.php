@@ -36,7 +36,6 @@ use App\Models\Penduduk;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\Utils;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class StatistikPendudukService extends BaseApiService
 {
@@ -63,7 +62,7 @@ class StatistikPendudukService extends BaseApiService
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function desa(array $filters = [])
     {
@@ -86,18 +85,18 @@ class StatistikPendudukService extends BaseApiService
     public function dashboard($did, $year)
     {
         $summary = [
-            "total_penduduk" => 0,
-            "total_lakilaki" => 0,
-            "total_perempuan" => 0,
-            "total_disabilitas" => 0,
-            "ktp_wajib" => 0,
-            "ktp_terpenuhi" => 0,
-            "ktp_persen_terpenuhi" => 0,
-            "akta_terpenuhi" => 0,
-            "akta_persen_terpenuhi" => 0,
-            "aktanikah_wajib" => 0,
-            "aktanikah_terpenuhi" => 0,
-            "aktanikah_persen_terpenuhi" => 0,
+            'total_penduduk' => 0,
+            'total_lakilaki' => 0,
+            'total_perempuan' => 0,
+            'total_disabilitas' => 0,
+            'ktp_wajib' => 0,
+            'ktp_terpenuhi' => 0,
+            'ktp_persen_terpenuhi' => 0,
+            'akta_terpenuhi' => 0,
+            'akta_persen_terpenuhi' => 0,
+            'aktanikah_wajib' => 0,
+            'aktanikah_terpenuhi' => 0,
+            'aktanikah_persen_terpenuhi' => 0,
         ];
         if ($this->useDatabaseGabungan()) {
             try {
@@ -142,9 +141,9 @@ class StatistikPendudukService extends BaseApiService
                     $mapData  = collect($data)->mapWithKeys(function ($item) {
                         return [$item['id'] => $item['attributes']];
                     });
-                    $summary["total_penduduk"] = $mapData[LabelStatistik::Total]['jumlah'] ?? 0;
-                    $summary["total_lakilaki"] = $mapData[LabelStatistik::LakiLaki]['jumlah'] ?? 0;
-                    $summary["total_perempuan"] = $mapData[LabelStatistik::Perempuan]['jumlah'] ?? 0;
+                    $summary['total_penduduk'] = $mapData[LabelStatistik::Total]['jumlah'] ?? 0;
+                    $summary['total_lakilaki'] = $mapData[LabelStatistik::LakiLaki]['jumlah'] ?? 0;
+                    $summary['total_perempuan'] = $mapData[LabelStatistik::Perempuan]['jumlah'] ?? 0;
 
                 }
                 if ($dataKtp) {
@@ -157,7 +156,7 @@ class StatistikPendudukService extends BaseApiService
                 if ($dataAkta) {
                     $aktaTerpenuhi = collect($dataAkta)->filter(static fn ($q) => $q['id'] == LabelStatistik::Jumlah)->sum('attributes.jumlah');
                     $summary['akta_terpenuhi'] = $aktaTerpenuhi;
-                    $summary['akta_persen_terpenuhi'] = $summary["total_penduduk"] == 0 ? 0 : format_number_id(($aktaTerpenuhi / $summary["total_penduduk"]) * 100);
+                    $summary['akta_persen_terpenuhi'] = $summary['total_penduduk'] == 0 ? 0 : format_number_id(($aktaTerpenuhi / $summary['total_penduduk']) * 100);
                 }
                 if ($dataNikah) {
                     $aktanikahWajib = collect($dataNikah)->filter(static fn ($q) => $q['id'] == '2')->sum('attributes.jumlah');

@@ -31,7 +31,6 @@
 
 namespace App\Imports;
 
-use App\Models\DataDesa;
 use App\Models\EpidemiPenyakit;
 use App\Services\DesaService;
 use Exception;
@@ -45,7 +44,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporEpidemiPenyakit implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporEpidemiPenyakit implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 
@@ -69,9 +68,9 @@ class ImporEpidemiPenyakit implements ToCollection, WithHeadingRow, WithChunkRea
      * {@inheritdoc}
      */
     public function collection(Collection $collection)
-    {        
+    {
         $kode_desa = Arr::flatten((new DesaService)->listDesa()->pluck('desa_id'));
-        DB::beginTransaction(); //multai transaction
+        DB::beginTransaction(); // multai transaction
 
         foreach ($collection as $index => $value) {
             if (! in_array($value['desa_id'], $kode_desa)) {

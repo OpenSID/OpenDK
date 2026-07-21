@@ -34,18 +34,13 @@ namespace App\Http\Controllers;
 use App\Enums\JenisJabatan;
 use App\Models\DataDesa;
 use App\Models\DataUmum;
-use App\Models\Event;
 use App\Models\Jabatan;
 use App\Models\Keluarga;
-use App\Models\MediaSosial;
-use App\Models\Navigation;
 use App\Models\Penduduk;
 use App\Models\Pengurus;
 use App\Models\Profil;
 use App\Models\Program;
 use App\Models\SettingAplikasi;
-use App\Models\SinergiProgram;
-use App\Models\Slide;
 use App\Models\TipePotensi;
 use App\Services\DesaService;
 use Exception;
@@ -64,7 +59,7 @@ class Controller extends BaseController
     use ValidatesRequests;
 
     /**
-     * Menampilkan Sebutan Wilayah Tingkat III (Kecamatan/Distrik)
+     * Menampilkan Sebutan Wilayah Tingkat III (Kecamatan/Distrik).
      */
     protected $akun_camat;
 
@@ -85,9 +80,9 @@ class Controller extends BaseController
     protected $settings;
 
     protected $umum;
-    
+
     public function __construct()
-    {        
+    {
         if (sudahInstal()) {
             $this->profil = Profil::first();
             $this->umum = DataUmum::first();
@@ -137,7 +132,7 @@ class Controller extends BaseController
             $navdesa = (new DesaService)->listDesa();
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
-            
+
             View::share([
                 'profil' => $this->profil,
                 'sebutan_wilayah' => $this->sebutan_wilayah,
@@ -149,6 +144,26 @@ class Controller extends BaseController
                 'pengurus' => $pengurus->sortBy('jabatan.jenis'),
             ]);
         }
+    }
+
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    public function setSettings(array $settings)
+    {
+        $this->settings = collect($settings);
+    }
+
+    public function setAkunSekretaris($pengurus)
+    {
+        $this->akun_sekretaris = $pengurus;
+    }
+
+    public function setAkunCamat($pengurus)
+    {
+        $this->akun_camat = $pengurus;
     }
 
     protected function kirimTrack()
@@ -206,29 +221,7 @@ class Controller extends BaseController
     }
 
     protected function isDatabaseGabungan()
-    {        
+    {
         return ($this->settings['sinkronisasi_database_gabungan'] ?? null) === '1';
     }
-
-    public function getSettings()
-    {
-        return $this->settings;
-    }
-
-    public function setSettings(array $settings)
-    {
-        $this->settings = collect($settings);
-    }
-
-    
-    public function setAkunSekretaris($pengurus)
-    {
-        $this->akun_sekretaris = $pengurus;
-    }
-
-    public function setAkunCamat($pengurus)
-    {
-        $this->akun_camat = $pengurus;
-    }
-    
 }

@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\Agama;
-use App\Models\Penduduk;
-
 
 // Agama Model Testing
 it('can create an agama', function () {

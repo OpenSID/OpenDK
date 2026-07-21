@@ -40,7 +40,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 class ArtikelApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Artikel $model)
     {
@@ -65,17 +65,18 @@ class ArtikelApiRepository extends BaseApiRepository
         $this->defaultSort = '-tanggal_terbit';
     }
 
+    public function data(): LengthAwarePaginator
+    {
+        return $this->getFilteredApi()->jsonPaginate();
+    }
+
     /**
      * Get query builder with Spatie Query Builder (if available)
-     * Laravel 11 compatibility: Ensure we pass a Builder instance
+     * Laravel 11 compatibility: Ensure we pass a Builder instance.
      */
     protected function getQueryBuilder()
     {
         $query = $this->model instanceof Builder ? $this->model : $this->model->newQuery();
         return QueryBuilder::for($query->published());
-    }
-    public function data(): LengthAwarePaginator
-    {
-        return $this->getFilteredApi()->jsonPaginate();
     }
 }

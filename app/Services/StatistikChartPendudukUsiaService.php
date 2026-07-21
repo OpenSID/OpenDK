@@ -38,6 +38,7 @@ use Illuminate\Support\Facades\DB;
 class StatistikChartPendudukUsiaService extends BaseApiService
 {
     private $colors = [7 => '#09a8ff', 6 => '#09bcff', 5 => '#09d1ff', 4 => '#09e5ff', 3 => '#09faff', 2 => '#09fff0', 1 => '#09ffdc'];
+
     public function chart($did, $year)
     {
         if ($this->useDatabaseGabungan()) {
@@ -52,12 +53,12 @@ class StatistikChartPendudukUsiaService extends BaseApiService
                     $filters['filter[desa]'] = $did;
                 }
                 $response = $this->apiRequest('/api/v1/statistik-web/penduduk', $filters);
-                foreach ($response as $key => $item) {                    
+                foreach ($response as $key => $item) {
                     if (in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi])) {
                         continue;
                     }
                     $data[] = ['umur' => ucfirst(strtolower($item['attributes']['nama'])), 'value' => $item['attributes']['jumlah'], 'color' => $this->colors[$key] ?? '#09a8ff'];
-                }                
+                }
             } catch (\Exception $e) {
                 \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }

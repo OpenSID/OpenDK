@@ -37,10 +37,7 @@ use League\Fractal\TransformerAbstract;
 class ProsedurTransformer extends TransformerAbstract
 {
     /**
-     * Transform object data
-     *
-     * @param Prosedur $prosedur
-     * @return array
+     * Transform object data.
      */
     public function transform(Prosedur $prosedur): array
     {

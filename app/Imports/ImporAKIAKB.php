@@ -32,7 +32,6 @@
 namespace App\Imports;
 
 use App\Models\AkiAkb;
-use App\Models\DataDesa;
 use App\Services\DesaService;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -45,7 +44,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporAKIAKB implements ShouldQueue, ToCollection, WithChunkReading, WithHeadingRow
 {
     use Importable;
 
@@ -71,7 +70,7 @@ class ImporAKIAKB implements ToCollection, WithHeadingRow, WithChunkReading, Sho
     public function collection(Collection $collection)
     {
         $kode_desa = Arr::flatten((new DesaService)->listDesa()->pluck('desa_id'));
-        DB::beginTransaction(); //multai transaction
+        DB::beginTransaction(); // multai transaction
 
         foreach ($collection as $index => $value) {
             if (! in_array($value['desa_id'], $kode_desa)) {

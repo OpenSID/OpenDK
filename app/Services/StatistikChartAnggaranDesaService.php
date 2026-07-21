@@ -32,12 +32,12 @@
 namespace App\Services;
 
 use App\Models\CoaType;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class StatistikChartAnggaranDesaService extends BaseApiService
 {
     private $dataTree;
+
     public function chart($mid, $did, $year)
     {
         if ($this->useDatabaseGabungan()) {
@@ -49,9 +49,9 @@ class StatistikChartAnggaranDesaService extends BaseApiService
                         'template_uuid' => 4,
                         'uraian' => 'Pendapatan',
                         'anggaran' => 0,
-                        'parent_uuid' => null,                        
+                        'parent_uuid' => null,
                     ],
-                    'children' => [],                    
+                    'children' => [],
                 ],
                 5 => [
                     'id' => 5,
@@ -59,9 +59,9 @@ class StatistikChartAnggaranDesaService extends BaseApiService
                         'template_uuid' => 4,
                         'uraian' => 'Belanja',
                         'anggaran' => 0,
-                        'parent_uuid' => null,                        
+                        'parent_uuid' => null,
                     ],
-                    'children' => [],                    
+                    'children' => [],
                 ],
                 6 => [
                     'id' => 6,
@@ -69,9 +69,9 @@ class StatistikChartAnggaranDesaService extends BaseApiService
                         'template_uuid' => 6,
                         'uraian' => 'Pembiayaan',
                         'anggaran' => 0,
-                        'parent_uuid' => null,                        
+                        'parent_uuid' => null,
                     ],
-                    'children' => [],                    
+                    'children' => [],
                 ],
             ];
             try {
@@ -96,13 +96,44 @@ class StatistikChartAnggaranDesaService extends BaseApiService
                 if($response){
                     $this->dataTree = collect($response);
                     $data['data-detail'] = $this->buildTree();
-                }                                
+                }
             } catch (\Exception $e) {
                 \Log::error('Failed get data in '.__FILE__.' function chart()'. $e->getMessage());
             }
             return $data;
         }
         return $this->localChart($mid, $did, $year);
+    }
+
+    protected function buildTree($parentId = null)
+    {
+        return $this->dataTree->filter(function ($item) use ($parentId) {
+            return $item['attributes']['parent_uuid'] === $parentId;
+        })->map(function ($item) {
+            $children = $this->buildTree($item['attributes']['template_uuid']);
+
+            $attributes = $item['attributes'];
+
+            if (!empty($children)) {
+                $sumAnggaran = collect($children)->sum(function ($child) {
+                    return (float) $child['attributes']['anggaran'];
+                });
+                $sumRealisasi = collect($children)->sum(function ($child) {
+                    return (float) $child['attributes']['realisasi'];
+                });
+
+                $attributes['anggaran'] = (string) $sumAnggaran;
+                $attributes['realisasi'] = (string) $sumRealisasi;
+                $attributes['anggaran_local'] = 'Rp. ' . number_format($sumAnggaran, 2, ',', '.');
+                $attributes['realisasi_local'] = 'Rp. ' . number_format($sumRealisasi, 2, ',', '.');
+            }
+
+            return [
+                'id' => $item['attributes']['template_uuid'],
+                'attributes' => $attributes,
+                'children' => $children,
+            ];
+        })->values()->all();
     }
 
     private function localChart($mid, $did, $year)
@@ -176,36 +207,5 @@ class StatistikChartAnggaranDesaService extends BaseApiService
         }
 
         return $dataAnggaran;
-    }
-
-    protected function buildTree($parentId = null)
-    {
-        return $this->dataTree->filter(function ($item) use ($parentId) {
-            return $item['attributes']['parent_uuid'] === $parentId;
-        })->map(function ($item) {
-            $children = $this->buildTree($item['attributes']['template_uuid']);
-
-            $attributes = $item['attributes'];
-
-            if (!empty($children)) {
-                $sumAnggaran = collect($children)->sum(function ($child) {
-                    return (float) $child['attributes']['anggaran'];
-                });
-                $sumRealisasi = collect($children)->sum(function ($child) {
-                    return (float) $child['attributes']['realisasi'];
-                });
-
-                $attributes['anggaran'] = (string) $sumAnggaran;
-                $attributes['realisasi'] = (string) $sumRealisasi;
-                $attributes['anggaran_local'] = 'Rp. ' . number_format($sumAnggaran, 2, ',', '.');
-                $attributes['realisasi_local'] = 'Rp. ' . number_format($sumRealisasi, 2, ',', '.');
-            }
-
-            return [
-                'id' => $item['attributes']['template_uuid'],
-                'attributes' => $attributes,
-                'children' => $children,
-            ];
-        })->values()->all();
     }
 }

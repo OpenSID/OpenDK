@@ -33,9 +33,9 @@ namespace App\Http\Controllers\FrontEnd;
 
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
+use App\Models\FormDokumen;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
-use App\Models\FormDokumen;
 use Yajra\DataTables\DataTables;
 
 class DownloadController extends FrontEndController
@@ -45,10 +45,10 @@ class DownloadController extends FrontEndController
         Counter::count('unduhan.prosedur');
 
         $page_title = 'Prosedur';
-        $page_description = 'Daftar SOP Kecamatan';        
+        $page_description = 'Daftar SOP Kecamatan';
 
         return view('pages.unduhan.prosedur', compact(['page_title', 'page_description']));
-    }    
+    }
 
     public function downloadProsedur($file)
     {
@@ -63,7 +63,7 @@ class DownloadController extends FrontEndController
 
         // TODO: Gunakan datatables
         $page_title = 'Regulasi';
-        $page_description = 'Daftar regulasi Kecamatan';        
+        $page_description = 'Daftar regulasi Kecamatan';
 
         return view('pages.unduhan.regulasi', compact('page_title', 'page_description'));
     }

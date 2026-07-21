@@ -31,7 +31,7 @@
 
 return [
 
-    /**
+    /*
      * Shared translations.
      */
     'title' => 'Laravel Installer',
@@ -42,7 +42,7 @@ return [
         'errorTitle' => 'The Following errors occurred:',
     ],
 
-    /**
+    /*
      * Home page translations.
      */
     'welcome' => [
@@ -52,7 +52,7 @@ return [
         'next' => 'Check Requirements',
     ],
 
-    /**
+    /*
      * Requirements page translations.
      */
     'requirements' => [
@@ -61,7 +61,7 @@ return [
         'next' => 'Check Permissions',
     ],
 
-    /**
+    /*
      * Permissions page translations.
      */
     'permissions' => [
@@ -70,7 +70,7 @@ return [
         'next' => 'Configure Environment',
     ],
 
-    /**
+    /*
      * Environment page translations.
      */
     'environment' => [
@@ -188,14 +188,14 @@ return [
 
     'install' => 'Install',
 
-    /**
+    /*
      * Installed Log translations.
      */
     'installed' => [
         'success_log_message' => 'Laravel Installer successfully INSTALLED on ',
     ],
 
-    /**
+    /*
      * Final page translations.
      */
     'final' => [
@@ -209,16 +209,16 @@ return [
         'exit' => 'Click here to exit',
     ],
 
-    /**
+    /*
      * Update specific translations
      */
     'updater' => [
-        /**
+        /*
          * Shared translations.
          */
         'title' => 'Laravel Updater',
 
-        /**
+        /*
          * Welcome page translations for update feature.
          */
         'welcome' => [
@@ -226,7 +226,7 @@ return [
             'message' => 'Welcome to the update wizard.',
         ],
 
-        /**
+        /*
          * Welcome page translations for update feature.
          */
         'overview' => [
@@ -235,7 +235,7 @@ return [
             'install_updates' => 'Install Updates',
         ],
 
-        /**
+        /*
          * Final page translations.
          */
         'final' => [

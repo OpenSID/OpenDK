@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Models\SuplemenTerdata;
-use App\Models\Suplemen;
 use App\Models\Penduduk;
+use App\Models\Suplemen;
+use App\Models\SuplemenTerdata;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SuplemenTerdataFactory extends Factory

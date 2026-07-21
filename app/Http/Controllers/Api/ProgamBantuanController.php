@@ -58,6 +58,7 @@ class ProgamBantuanController extends Controller
      * - Kolom: desa_id, id, nama, sasaran, status, sdate, edate, ndesc.
      *
      * @bodyParam file file required File ZIP (max 50MB) berisi data program bantuan. Example: null
+     *
      * @response {
      *   "message": "Data Bantuan Sedang di Sinkronkan",
      *   "status": "success"
@@ -161,6 +162,7 @@ class ProgamBantuanController extends Controller
      * - Validasi side-effect: jika sasaran=1, kartu_nik harus ada di das_penduduk.
      *
      * @bodyParam file file required File ZIP (max 50MB) berisi data peserta bantuan. Example: null
+     *
      * @response {
      *   "status": "success",
      *   "message": "Data Bantuan Sedang di Sinkronkan"

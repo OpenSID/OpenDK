@@ -43,10 +43,10 @@ class ClearArtikelCacheListener
      * @return void
      */
     public function handle(ArtikelChanged $event)
-    {        
+    {
         try {
             // Ambil CacheService dari container (sudah didaftarkan di AppServiceProvider)
-            $cacheService = app(CacheService::class);            
+            $cacheService = app(CacheService::class);
             $prefix = config('theme-api.artikel.cache_prefix', 'artikel:api');
             $cacheService->removeCachePrefix($prefix);
         } catch (\Exception $e) {

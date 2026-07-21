@@ -1,23 +1,25 @@
 <?php
 
-use Knuckles\Scribe\Extracting\Strategies;
-use Knuckles\Scribe\Config\Defaults;
 use Knuckles\Scribe\Config\AuthIn;
-use function Knuckles\Scribe\Config\{removeStrategies, configureStrategy};
+
+use function Knuckles\Scribe\Config\configureStrategy;
+
+use Knuckles\Scribe\Config\Defaults;
+use Knuckles\Scribe\Extracting\Strategies;
 
 return [
     'title' => config('app.name') . ' API Documentation',
 
     'description' => 'API publik dan internal OpenDK untuk integrasi dengan OpenSID.',
 
-    'intro_text' => <<<INTRO
+    'intro_text' => <<<'INTRO'
         Documentation ini mencakup seluruh endpoint publik (OpenSID API-key & data submission)
         dan frontend API yang digunakan oleh theme/tampilan publik.
 
         <aside>Pastikan Anda memiliki API key yang valid untuk mengakses endpoint yang memerlukan autentikasi.</aside>
     INTRO,
 
-    'base_url' => config("app.url"),
+    'base_url' => config('app.url'),
 
     'routes' => [
         [

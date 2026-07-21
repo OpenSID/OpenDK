@@ -13,9 +13,6 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Notification;
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 
 uses(DatabaseTransactions::class);
 

@@ -20,7 +20,7 @@ class ArtikelKategoriFactory extends Factory
     public function definition()
     {
         $nama = $this->faker->unique()->words(2, true);
-        
+
         return [
             'nama_kategori' => ucfirst($nama),
             'slug' => \Illuminate\Support\Str::slug($nama),

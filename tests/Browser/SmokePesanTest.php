@@ -46,7 +46,6 @@ it('smoke test menu Pesan - Pesan Masuk', function () {
 
 })->group('smoke', 'smoke-pesan', 'browser');
 
-
 // =============================================================================
 // MENU: PESAN -> PESAN KELUAR
 // =============================================================================
@@ -83,7 +82,6 @@ it('smoke test menu Pesan - Pesan Keluar', function () {
     );
 
 })->group('smoke', 'smoke-pesan', 'browser');
-
 
 // =============================================================================
 // MENU: PESAN -> ARSIP

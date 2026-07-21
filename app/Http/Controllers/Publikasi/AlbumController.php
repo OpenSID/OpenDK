@@ -55,7 +55,7 @@ class AlbumController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     // $data['show_web'] = route('berita.detail', $row->slug);
-    
+
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.publikasi.album.edit') ? route('publikasi.album.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.publikasi.album.delete') ? route('publikasi.album.destroy', $row->id) : null;
@@ -72,9 +72,9 @@ class AlbumController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->editColumn('dibuat', function ($row) {
                     return format_datetime($row->created_at);

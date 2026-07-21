@@ -39,7 +39,7 @@ use Illuminate\Support\Facades\DB;
 class AnggaranRealisasiController extends Controller
 {
     /**
-     * Menampilkan Data Anggaran Dan realisasi Kecamatan
+     * Menampilkan Data Anggaran Dan realisasi Kecamatan.
      **/
     public function showAnggaranDanRealisasi()
     {

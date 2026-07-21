@@ -46,6 +46,7 @@ class ProfilDesaController extends Controller
      * @bodyParam website string URL website desa. Example: https://desa.example.com
      * @bodyParam sebutan_desa string Sebutan desa. Example: Kampung
      * @bodyParam path string Path menu profil. Example: profil/desa
+     *
      * @response {
      *   "status": "success",
      *   "message": "Proses sinkronisasi identitas desa sudah selesai"

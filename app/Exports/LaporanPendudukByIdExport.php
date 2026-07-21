@@ -9,7 +9,9 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class LaporanPendudukByIdExport implements FromCollection, WithHeadings
 {
     protected bool $gabungan;
+
     protected $data;
+
     protected LaporanPendudukService $laporanPendudukService;
 
     public function __construct($gabungan, $data)
@@ -20,8 +22,8 @@ class LaporanPendudukByIdExport implements FromCollection, WithHeadings
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         // Menyiapkan data sebagai array untuk satu baris
@@ -40,9 +42,6 @@ class LaporanPendudukByIdExport implements FromCollection, WithHeadings
         return collect($arr);
     }
 
-    /**
-    * @return array
-    */
     public function headings(): array
     {
         return [

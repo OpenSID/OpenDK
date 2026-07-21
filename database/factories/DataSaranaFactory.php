@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\DataSarana;
 use App\Models\DataDesa;
+use App\Models\DataSarana;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DataSaranaFactory extends Factory

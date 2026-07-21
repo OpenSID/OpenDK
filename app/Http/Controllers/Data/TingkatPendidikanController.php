@@ -119,7 +119,8 @@ class TingkatPendidikanController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -142,7 +143,6 @@ class TingkatPendidikanController extends Controller
     /**
      * Export Excel data Tingkat Pendidikan.
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function exportExcel(Request $request)

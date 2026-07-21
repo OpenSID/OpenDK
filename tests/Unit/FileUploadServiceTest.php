@@ -13,21 +13,21 @@ describe('FileUploadService', function () {
 
     test('dapat upload file dengan aman', function () {
         $file = UploadedFile::fake()->image('test.jpg', 800, 600);
-        
+
         $path = $this->service->uploadSecure(
             $file,
             'test-directory',
             ['image/jpeg'],
             2048
         );
-        
+
         expect($path)->toBeString();
         Storage::disk('public')->assertExists($path);
     });
 
     test('menolak file dengan MIME type tidak diizinkan', function () {
         $file = UploadedFile::fake()->create('test.pdf', 100);
-        
+
         $this->service->uploadSecure(
             $file,
             'test-directory',
@@ -43,7 +43,7 @@ describe('FileUploadService', function () {
         );
 
         $file = UploadedFile::fake()->image('large.jpg')->size(5000); // 5MB
-        
+
         $this->service->uploadSecure(
             $file,
             'test-directory',
@@ -104,14 +104,14 @@ describe('FileUploadService', function () {
 
     test('generate filename yang aman', function () {
         $file = UploadedFile::fake()->image('../../evil.jpg');
-        
+
         $path = $this->service->uploadSecure(
             $file,
             'test-directory',
             ['image/jpeg'],
             2048
         );
-        
+
         expect($path)->not->toContain('..');
         expect($path)->not->toContain('evil');
     });
@@ -121,17 +121,17 @@ describe('FileUploadService', function () {
             UploadedFile::fake()->image('test1.jpg'),
             UploadedFile::fake()->image('test2.jpg'),
         ];
-        
+
         $paths = $this->service->uploadMultiple(
             $files,
             'test-directory',
             ['image/jpeg'],
             2048
         );
-        
+
         expect($paths)->toHaveCount(2);
         foreach ($paths as $path) {
             Storage::disk('public')->assertExists($path);
         }
     });
-});
+});

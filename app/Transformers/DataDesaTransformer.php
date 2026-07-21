@@ -37,19 +37,14 @@ use League\Fractal\TransformerAbstract;
 class DataDesaTransformer extends TransformerAbstract
 {
     /**
-     * List of resources possible to include
-     *
-     * @var array
+     * List of resources possible to include.
      */
     protected array $availableIncludes = [
         'profil'
     ];
 
     /**
-     * Turn this item object into a generic array
-     *
-     * @param DataDesa $dataDesa
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform(DataDesa $dataDesa): array
     {
@@ -72,15 +67,14 @@ class DataDesaTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Profil
+     * Include Profil.
      *
-     * @param DataDesa $dataDesa
      * @return \League\Fractal\Resource\Item|null
      */
     public function includeProfil(DataDesa $dataDesa)
     {
         $profil = $dataDesa->profil;
-        
+
         if ($profil) {
             return $this->item($profil, new ProfilTransformer());
         }

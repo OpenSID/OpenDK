@@ -34,33 +34,41 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * Kategori Sarana untuk mengelompokkan jenis sarana
+ * Kategori Sarana untuk mengelompokkan jenis sarana.
  */
 final class KategoriSarana extends Enum
 {
     // Sarana Kesehatan
     public const PUSKESMAS = 'puskesmas';
+
     public const PUSKESMAS_PEMBANTU = 'puskesmas_pembantu';
+
     public const POSYANDU = 'posyandu';
+
     public const PONDOK_BERSALIN = 'pondok_bersalin';
 
     // Sarana Pendidikan
     public const PAUD = 'paud';
+
     public const SD = 'sd';
+
     public const SMP = 'smp';
+
     public const SMA = 'sma';
 
     // Sarana Umum
     public const MASJID_BESAR = 'masjid_besar';
+
     public const MUSHOLA = 'mushola';
+
     public const GEREJA = 'gereja';
+
     public const PASAR = 'pasar';
+
     public const BALAI_PERTEMUAN = 'balai_pertemuan';
 
     /**
-     * Get description for the enum value
-     *
-     * @return string
+     * Get description for the enum value.
      */
     public static function getDescription($value): string
     {
@@ -97,9 +105,7 @@ final class KategoriSarana extends Enum
     }
 
     /**
-     * Get all options grouped by category
-     *
-     * @return array
+     * Get all options grouped by category.
      */
     public static function getGroupedOptions(): array
     {
@@ -125,11 +131,9 @@ final class KategoriSarana extends Enum
             ],
         ];
     }
+
     /**
      * Get enum value (constant) from its description label.
-     *
-     * @param string $label
-     * @return string|null
      */
     public static function getValueFromDescription(string $label): ?string
     {

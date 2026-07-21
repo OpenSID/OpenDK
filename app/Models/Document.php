@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model
 {
-    use HasFactory, HandlesResourceDeletion;
+    use HandlesResourceDeletion, HasFactory;
 
     protected $fillable = [
         'judul_document',

@@ -31,26 +31,23 @@
 
 namespace App\Helpers;
 
-use function env;
-use Carbon\Carbon;
-use function hash;
-use function config;
-use App\Models\CounterPage;
-use function number_format;
-use App\Models\CounterVisitor;
 use App\Enums\VisitorFilterEnum;
-use Illuminate\Support\Facades\DB;
+use App\Models\CounterPage;
+use App\Models\CounterVisitor;
+use Carbon\Carbon;
+
+use function config;
+use function env;
+use function hash;
+
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
+
+use function number_format;
 
 class Counter
 {
-    public function __construct(CrawlerDetect $visitor)
-    {
-        $this->visitor = $visitor;
-        $this->hasDnt = isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1 ? true : false;
-    }
-
     /**
      * Check to determine if bots/crawlers will be
      * counted as hits.
@@ -68,11 +65,17 @@ class Counter
     private static $honor_do_not_track = false;
 
     /**
-     * Singleton for the $page in question
+     * Singleton for the $page in question.
      *
      * @var null|object
      */
     private static $current_page;
+
+    public function __construct(CrawlerDetect $visitor)
+    {
+        $this->visitor = $visitor;
+        $this->hasDnt = isset($_SERVER['HTTP_DNT']) && $_SERVER['HTTP_DNT'] == 1 ? true : false;
+    }
 
     /**
      * Show view count for the requested page.
@@ -80,8 +83,9 @@ class Counter
      * Use this when you just want to show the current view count
      * for the page in question. Does not add counts.
      *
-     * @param  string  $identifier A unique string to the page you are tracking
-     * @param  null|int  $id A unique identifier for dynamic page tracking
+     * @param string   $identifier A unique string to the page you are tracking
+     * @param null|int $id         A unique identifier for dynamic page tracking
+     *
      * @return string Unique view count for requested resource
      */
     public function show($identifier, $id = null)
@@ -99,8 +103,9 @@ class Counter
      * Use this for pages that you want to show the count, while
      * also incrementing the count.
      *
-     * @param  string  $identifier
-     * @param  null|int  $id
+     * @param string   $identifier
+     * @param null|int $id
+     *
      * @return string Unique view count for requested resource
      */
     public function showAndCount($identifier, $id = null)
@@ -119,8 +124,9 @@ class Counter
      * if conditions are met. Ex: Count profile views, but only
      * show the view count to the profile user with show()
      *
-     * @param  string  $identifier
-     * @param  null|int  $id
+     * @param string   $identifier
+     * @param null|int $id
+     *
      * @return null
      */
     public function count($identifier, $id = null)
@@ -137,7 +143,8 @@ class Counter
      * Example: Show total views for the last 30 days
      * Counter::allHits(30)
      *
-     * @param  null|int  $days
+     * @param null|int $days
+     *
      * @return string Unique view count for all pages
      */
     public function allHits($days = null)
@@ -160,7 +167,8 @@ class Counter
      * Example: Show total visitors for the last 30 days
      * Counter::allVisitors(30)
      *
-     * @param  null|int  $days
+     * @param null|int $days
+     *
      * @return string Unique visitor count for all pages
      */
     public function allVisitors($days = null)
@@ -175,11 +183,40 @@ class Counter
         return number_format($hits);
     }
 
-    /*====================== PRIVATE METHODS =============================*/
+    /**
+     * Return visitor count for a specific time range.
+     *
+     * @param string $range Time range: 'today', 'yesterday', 'week', 'month', 'year', or 'all'
+     *
+     * @return string Unique visitor count for the specified range
+     */
+    public static function visitors($range = 'all')
+    {
+        // Mapping range ke VisitorFilterEnum
+        $filterMap = [
+            'today' => VisitorFilterEnum::TODAY,
+            'yesterday' => VisitorFilterEnum::YESTERDAY,
+            'week' => VisitorFilterEnum::THIS_WEEK,
+            'month' => VisitorFilterEnum::THIS_MONTH,
+            'year' => VisitorFilterEnum::THIS_YEAR,
+            'all' => VisitorFilterEnum::ALL,
+        ];
+
+        // Ambil filter berdasarkan range
+        $filter = $filterMap[$range] ?? VisitorFilterEnum::ALL;
+
+        // Hitung statistik menggunakan metode stats() dari model Visitor
+        $stats = \App\Models\Visitor::stats($filter);
+
+        return number_format($stats->page_views);
+    }
+
+    /* ====================== PRIVATE METHODS ============================= */
     /**
      * Processes the hit request for the page in question.
      *
-     * @param  string  $page
+     * @param string $page
+     *
      * @return null
      */
     private function processHit($page)
@@ -212,10 +249,11 @@ class Counter
     }
 
     /**
-     * Generates a hash based on page identifier
+     * Generates a hash based on page identifier.
      *
-     * @param  string  $identifier
-     * @param  null|int  $id
+     * @param string   $identifier
+     * @param null|int $id
+     *
      * @return string
      */
     private static function pageId($identifier, $id = null)
@@ -236,9 +274,10 @@ class Counter
     }
 
     /**
-     * Create and/or grab the visitor record
+     * Create and/or grab the visitor record.
      *
-     * @param  string  $visitor hash provided by hashVisitor()
+     * @param string $visitor hash provided by hashVisitor()
+     *
      * @return object Visitor eloquent object.
      */
     private static function createVisitorRecordIfNotPresent($visitor)
@@ -247,9 +286,10 @@ class Counter
     }
 
     /**
-     * Create and/or grab the page record
+     * Create and/or grab the page record.
      *
-     * @param  string  $page hash provided by pageId()
+     * @param string $page hash provided by pageId()
+     *
      * @return object Page eloquent object.
      */
     private static function createPageIfNotPresent($page)
@@ -260,7 +300,8 @@ class Counter
     /**
      * Create the count record if it does not exist.
      *
-     * @param  string  $page hash provided by pageId()
+     * @param string $page hash provided by pageId()
+     *
      * @return null
      */
     private static function createCountIfNotPresent($page)
@@ -274,7 +315,8 @@ class Counter
     /**
      * Returns hit count for the requested resource.
      *
-     * @param  string  $page hash provided by pageId()
+     * @param string $page hash provided by pageId()
+     *
      * @return string Unique view count for requested resource
      */
     private static function countHits($page)
@@ -282,32 +324,5 @@ class Counter
         $page_record = self::createPageIfNotPresent($page);
 
         return number_format($page_record->visitors->count());
-    }
-
-    /**
-     * Return visitor count for a specific time range.
-     *
-     * @param string $range Time range: 'today', 'yesterday', 'week', 'month', 'year', or 'all'
-     * @return string Unique visitor count for the specified range
-     */
-    public static function visitors($range = 'all')
-    {
-        // Mapping range ke VisitorFilterEnum
-        $filterMap = [
-            'today' => VisitorFilterEnum::TODAY,
-            'yesterday' => VisitorFilterEnum::YESTERDAY,
-            'week' => VisitorFilterEnum::THIS_WEEK,
-            'month' => VisitorFilterEnum::THIS_MONTH,
-            'year' => VisitorFilterEnum::THIS_YEAR,
-            'all' => VisitorFilterEnum::ALL,
-        ];
-
-        // Ambil filter berdasarkan range
-        $filter = $filterMap[$range] ?? VisitorFilterEnum::ALL;
-
-        // Hitung statistik menggunakan metode stats() dari model Visitor
-        $stats = \App\Models\Visitor::stats($filter);
-
-        return number_format($stats->page_views);
     }
 }

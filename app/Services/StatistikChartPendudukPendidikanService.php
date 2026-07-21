@@ -55,7 +55,7 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
                 })->mapWithKeys(function ($item) {
                     return [$item['attributes']['nama'] => $item['attributes']['jumlah']];
                 })->toArray();
-                //{"TIDAK \/ BELUM SEKOLAH":1355,"BELUM TAMAT SD\/SEDERAJAT":1208,"TAMAT SD \/ SEDERAJAT":2360,"SLTP\/SEDERAJAT":1758,"SLTA \/ SEDERAJAT":4632,"DIPLOMA I \/ II":209,"AKADEMI\/ DIPLOMA III\/S. MUDA":348,"DIPLOMA IV\/ STRATA I":1421,"STRATA II":93,"STRATA III":4}
+                // {"TIDAK \/ BELUM SEKOLAH":1355,"BELUM TAMAT SD\/SEDERAJAT":1208,"TAMAT SD \/ SEDERAJAT":2360,"SLTP\/SEDERAJAT":1758,"SLTA \/ SEDERAJAT":4632,"DIPLOMA I \/ II":209,"AKADEMI\/ DIPLOMA III\/S. MUDA":348,"DIPLOMA IV\/ STRATA I":1421,"STRATA II":93,"STRATA III":4}
                 $data[] = [
                     'year' => $year,
                     'SD' => $dataFilter['TAMAT SD / SEDERAJAT'] ?? 0,
@@ -89,7 +89,7 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
             ->where('pendidikan_kk_id', 4)
             ->count();
 
-        //SMA
+        // SMA
         $totalSlta = (clone $query_pendidikan)
                 ->where('pendidikan_kk_id', 5)
                 ->count();

@@ -32,8 +32,8 @@
 namespace Tests\Feature\MasterData;
 
 use App\Models\DataDesa;
-use App\Models\Profil;
 use App\Models\Imunisasi;
+use App\Models\Profil;
 use Tests\Traits\DisableDatabaseGabungan;
 
 uses(DisableDatabaseGabungan::class);

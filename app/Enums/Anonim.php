@@ -34,10 +34,11 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * Status untuk melihat aktif dan tidak aktif
+ * Status untuk melihat aktif dan tidak aktif.
  */
 final class Anonim extends Enum
 {
     public const Tampilkan = 0;
+
     public const Sembunyikan = 1;
 }

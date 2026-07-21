@@ -1,7 +1,6 @@
 <?php
 
 use Tests\BrowserTestCase;
-use Laravel\Dusk\Browser;
 
 uses(BrowserTestCase::class);
 
@@ -18,7 +17,7 @@ it('smoke test menu Pengaturan User - Grup Pengguna', function () {
 
     $this->page->assertSee('Grup Pengguna');
     $this->page->assertPresent('.box-body table');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -31,7 +30,7 @@ it('smoke test menu Pengaturan User - Pengguna', function () {
 
     $this->page->assertSee('Pengguna');
     $this->page->assertPresent('#user-table');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -46,7 +45,7 @@ it('smoke test menu Pengaturan User - Ganti Password', function () {
     $this->page->assertPresent('form[action*="password"]'); // form untuk update password
     $this->page->assertPresent('input[name="current_password"]');
     $this->page->assertPresent('input[name="password"]');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -55,9 +54,9 @@ it('smoke test menu Pengaturan User - Ganti Password', function () {
 // =============================================================================
 it('smoke test menu Pengaturan User - OTP & 2FA', function () {
     $this->page = \Tests\Browser\SessionState::loginAndNavigate($this->user, '/otp-2fa');
-    
+
     // We only assert see text because redirection might occur depending on settings
     $this->page->assertSee('OTP');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');

@@ -30,11 +30,9 @@
  */
 
 use App\Enums\KategoriSarana;
-use App\Http\Controllers\Data\DataSaranaController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
-use App\Imports\ImportDataSarana;
 use App\Models\DataDesa;
 use App\Models\DataSarana;
 use App\Models\SettingAplikasi;
@@ -56,13 +54,13 @@ beforeEach(function () {
         CompleteProfile::class,
         GlobalShareMiddleware::class,
     ]);
-    
+
     // disabled database gabungan for testing
     SettingAplikasi::updateOrCreate(
         ['key' => 'sinkronisasi_database_gabungan'],
         ['value' => '0']
     );
-    
+
     // Create test data
     $this->desa = DataDesa::factory()->create();
     $this->sarana = DataSarana::factory()->create([
@@ -97,15 +95,15 @@ test('getData returns json response for datatable', function () {
 
 test('getData with excel action triggers download', function () {
     Excel::fake();
-    
+
     $params = json_encode([
         'search' => ['value' => ''],
         'length' => 10,
         'start' => 0,
     ]);
-    
+
     $response = $this->get(route('data.data-sarana.getdata') . '?action=excel&params=' . urlencode($params));
-    
+
     Excel::assertDownloaded('Data-sarana.xlsx');
 });
 
@@ -132,7 +130,7 @@ test('store saves new data sarana with valid data', function () {
 
     $response->assertRedirect(route('data.data-sarana.index'));
     $response->assertSessionHas('success', 'Data Sarana berhasil disimpan!');
-    
+
     $this->assertDatabaseHas('das_data_sarana', [
         'nama' => 'Puskesmas Test',
         'jumlah' => 1,
@@ -178,7 +176,7 @@ test('update updates existing data sarana with valid data', function () {
 
     $response->assertRedirect(route('data.data-sarana.index'));
     $response->assertSessionHas('success', 'Data Sarana berhasil diperbarui');
-    
+
     $this->assertDatabaseHas('das_data_sarana', [
         'id' => $this->sarana->id,
         'nama' => 'Puskesmas Updated',
@@ -220,7 +218,7 @@ test('destroy deletes existing data sarana', function () {
 
     $response->assertRedirect(route('data.data-sarana.index'));
     $response->assertSessionHas('success', 'Data Sarana berhasil dihapus');
-    
+
     $this->assertDatabaseMissing('das_data_sarana', [
         'id' => $this->sarana->id,
     ]);
@@ -243,17 +241,17 @@ test('import displays the import form', function () {
 
 test('importExcel processes valid file', function () {
     Excel::fake();
-    
+
     Storage::fake('local');
     $file = UploadedFile::fake()->create('data_sarana.xlsx', 100, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    
+
     $response = $this->post(route('data.data-sarana.import-excel'), [
         'file' => $file,
     ]);
-    
+
     $response->assertRedirect(route('data.data-sarana.index'));
     $response->assertSessionHas('success', 'Data Sarana berhasil diimport');
-    
+
     Excel::assertImported('data_sarana.xlsx');
 });
 
@@ -261,18 +259,18 @@ test('importExcel fails with invalid file', function () {
     $response = $this->post(route('data.data-sarana.import-excel'), [
         'file' => null,
     ]);
-    
+
     $response->assertSessionHasErrors(['file']);
 });
 
 test('importExcel fails with wrong file type', function () {
     Storage::fake('local');
     $file = UploadedFile::fake()->create('data_sarana.txt', 100, 'text/plain');
-    
+
     $response = $this->post(route('data.data-sarana.import-excel'), [
         'file' => $file,
     ]);
-    
+
     $response->assertSessionHasErrors(['file']);
 });
 
@@ -283,7 +281,7 @@ test('getData includes desa relationship', function () {
 
     $response->assertStatus(200);
     $data = $response->json('data');
-    
+
     // Check if the first item has desa information
     if (!empty($data)) {
         $this->assertArrayHasKey('desa', $data[0]);
@@ -297,7 +295,7 @@ test('getData includes formatted kategori', function () {
 
     $response->assertStatus(200);
     $data = $response->json('data');
-    
+
     // Check if the first item has formatted kategori
     if (!empty($data)) {
         // Find our test sarana in the data
@@ -323,7 +321,7 @@ test('getData includes action buttons', function () {
 
     $response->assertStatus(200);
     $data = $response->json('data');
-    
+
     // Check if the first item has action buttons
     if (!empty($data)) {
         $this->assertArrayHasKey('aksi', $data[0]);

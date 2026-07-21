@@ -29,27 +29,26 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Frontend\AlbumController;
+use App\Http\Controllers\Api\Frontend\AnggaranDesaController;
+use App\Http\Controllers\Api\Frontend\AnggaranRealisasiController;
 use App\Http\Controllers\Api\Frontend\ArtikelController;
 use App\Http\Controllers\Api\Frontend\DesaController;
+use App\Http\Controllers\Api\Frontend\FaqController;
 use App\Http\Controllers\Api\Frontend\FormDokumenController;
 use App\Http\Controllers\Api\Frontend\GaleriController;
 use App\Http\Controllers\Api\Frontend\KategoriController;
-use App\Http\Controllers\Api\Frontend\ProfilController;
-use App\Http\Controllers\Api\Frontend\RegulasiController;
-use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
-use App\Http\Controllers\Api\Frontend\KomplainController;
-use App\Http\Controllers\Api\Frontend\WebsiteController;
-use App\Http\Controllers\Api\Frontend\AlbumController;
 use App\Http\Controllers\Api\Frontend\KesehatanController;
+use App\Http\Controllers\Api\Frontend\KomplainController;
 use App\Http\Controllers\Api\Frontend\PendidikanController;
 use App\Http\Controllers\Api\Frontend\PotensiController;
+use App\Http\Controllers\Api\Frontend\ProfilController;
 use App\Http\Controllers\Api\Frontend\ProgramBantuanController;
-use App\Http\Controllers\Api\Frontend\AnggaranRealisasiController;
-use App\Http\Controllers\Api\Frontend\AnggaranDesaController;
-use App\Http\Controllers\Api\Frontend\FaqController;
-use App\Http\Controllers\Api\Frontend\KependudukanController;
 use App\Http\Controllers\Api\Frontend\ProsedurController;
+use App\Http\Controllers\Api\Frontend\RegulasiController;
+use App\Http\Controllers\Api\Frontend\StatistikPendudukController;
+use App\Http\Controllers\Api\Frontend\WebsiteController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,38 +63,38 @@ use App\Http\Controllers\Api\Frontend\ProsedurController;
 
 Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function () {
 
-    /**
+    /*
      * Artikel API Routes
      */
     Route::group(['prefix' => 'artikel', 'controller' => ArtikelController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/artikel        
+        Route::get('/', 'index');                                    // GET /api/v1/artikel
         Route::post('/{id}/comments', 'storeComment');              // POST /api/v1/artikel/{id}/comments
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Kategori API Routes
      */
     Route::group(['prefix' => 'kategori', 'controller' => KategoriController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/kategori                
+        Route::get('/', 'index');                                    // GET /api/v1/kategori
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     Route::group(['prefix' => 'website', 'controller' => WebsiteController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/kategori                
+        Route::get('/', 'index');                                    // GET /api/v1/kategori
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Profil API Routes
      */
     Route::group(['prefix' => 'profil', 'controller' => ProfilController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/profil        
+        Route::get('/', 'index');                                    // GET /api/v1/profil
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
     Route::group(['prefix' => 'desa', 'controller' => DesaController::class], function () {
-        Route::get('/', 'index');                                    // GET /api/v1/desa        
+        Route::get('/', 'index');                                    // GET /api/v1/desa
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
@@ -105,7 +104,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Komplain API Routes
      */
     Route::group(['prefix' => 'komplain', 'controller' => KomplainController::class], function () {
@@ -114,7 +113,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Galeri API Routes
      */
     Route::group(['prefix' => 'galeri', 'controller' => GaleriController::class], function () {
@@ -122,7 +121,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Album API Routes
      */
     Route::group(['prefix' => 'album', 'controller' => AlbumController::class], function () {
@@ -130,7 +129,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Potensi API Routes
      */
     Route::group(['prefix' => 'potensi', 'controller' => PotensiController::class], function () {
@@ -138,7 +137,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Form Dokumen API Routes
      */
     Route::group(['prefix' => 'form-dokumen', 'controller' => FormDokumenController::class], function () {
@@ -146,7 +145,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Regulasi API Routes
      */
     Route::group(['prefix' => 'regulasi', 'controller' => RegulasiController::class], function () {
@@ -154,7 +153,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    /**
+    /*
      * Prosedur API Routes
      */
     Route::group(['prefix' => 'prosedur', 'controller' => ProsedurController::class], function () {
@@ -162,7 +161,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['xss_sanitization']], function 
         Route::delete('cache/{prefix?}', 'removeCachePrefix');
     });
 
-    Route::group(['prefix' => 'statistik'], function () {        
+    Route::group(['prefix' => 'statistik'], function () {
         Route::group(['controller' => PendidikanController::class], function () {
             Route::get('chart-tingkat-pendidikan', 'getChartTingkatPendidikan')->name('api.statistik.pendidikan.chart-tingkat-pendidikan');
             Route::get('chart-putus-sekolah', 'getChartPutusSekolah')->name('api.statistik.pendidikan.chart-putus-sekolah');

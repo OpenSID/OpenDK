@@ -2,19 +2,19 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use App\Models\Widget;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class SyncWidgets extends Command
 {
     protected $signature = 'widgets:sync';
+
     protected $description = 'Sinkronisasi widget dari folder resources/views/widgets dan dari semua tema';
 
     public function handle()
     {
-        $this->info("🔍 Memulai sinkronisasi widget...");
+        $this->info('🔍 Memulai sinkronisasi widget...');
 
         $paths = Widget::listWidgetBaru();
         $count = 0;

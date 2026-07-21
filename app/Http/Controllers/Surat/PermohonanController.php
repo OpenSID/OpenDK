@@ -113,13 +113,15 @@ class PermohonanController extends Controller
             ->editColumn('log_verifikasi', function ($row) {
                 if ($row->log_verifikasi == LogVerifikasiSurat::ProsesTTE) {
                     return "<span class='label label-primary'>Menunggu Ditandatangani {$this->settings['sebutan_camat']}</span>";
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
-                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_camat']}</span>";
-                } elseif ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
-                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_sekretaris']}</span>";
-                } else {
-                    return "<span class='label label-warning'>Menunggu Verifikasi Operator</span>";
                 }
+                if ($row->log_verifikasi == LogVerifikasiSurat::Camat) {
+                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_camat']}</span>";
+                }
+                if ($row->log_verifikasi == LogVerifikasiSurat::Sekretaris) {
+                    return "<span class='label label-warning'>Menunggu Verifikasi {$this->settings['sebutan_sekretaris']}</span>";
+                }
+                    return "<span class='label label-warning'>Menunggu Verifikasi Operator</span>";
+
             })
             ->editColumn('tanggal', function ($row) {
                 return format_date($row->tanggal);
@@ -289,16 +291,6 @@ class PermohonanController extends Controller
         }
     }
 
-    protected function response($notif = [])
-    {
-        LogTte::create([
-            'pesan_error' => $notif['pesan_error'],
-            'jenis' => $notif['jenis'],
-        ]);
-
-        return response()->json($notif);
-    }
-
     public function ditolak()
     {
         $page_title = 'Permohonan Surat Ditolak';
@@ -332,5 +324,15 @@ class PermohonanController extends Controller
                 return format_date($row->tanggal);
             })
             ->rawColumns(['log_verifikasi'])->make();
+    }
+
+    protected function response($notif = [])
+    {
+        LogTte::create([
+            'pesan_error' => $notif['pesan_error'],
+            'jenis' => $notif['jenis'],
+        ]);
+
+        return response()->json($notif);
     }
 }

@@ -41,9 +41,13 @@ use Spatie\QueryBuilder\QueryBuilder;
 abstract class BaseApiRepository implements BaseRepositoryInterface
 {
     protected Model|Builder $model;
+
     protected array $allowedFilters = [];
+
     protected array $allowedSorts = [];
+
     protected array $allowedIncludes = [];
+
     protected string $defaultSort = '-created_at';
 
     public function __construct(Model $model)
@@ -52,9 +56,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Get all records
+     * Get all records.
      *
-     * @param array $columns
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all(array $columns = ['*'])
@@ -63,10 +66,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Find record by ID
+     * Find record by ID.
      *
-     * @param int $id
-     * @param array $columns
      * @return Model|null
      */
     public function find(int $id, array $columns = ['*'])
@@ -75,10 +76,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Find record by slug
+     * Find record by slug.
      *
-     * @param string $slug
-     * @param array $columns
      * @return Model|null
      */
     public function findBySlug(string $slug, array $columns = ['*'])
@@ -87,9 +86,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Create new record
+     * Create new record.
      *
-     * @param array $data
      * @return Model
      */
     public function create(array $data)
@@ -98,10 +96,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Update record
+     * Update record.
      *
-     * @param int $id
-     * @param array $data
      * @return bool
      */
     public function update(int $id, array $data)
@@ -110,9 +106,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Delete record
+     * Delete record.
      *
-     * @param int $id
      * @return bool
      */
     public function delete(int $id)
@@ -121,9 +116,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply filters to query
+     * Apply filters to query.
      *
-     * @param array $filters
      * @return self
      */
     public function applyFilters(array $filters)
@@ -138,10 +132,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply search to query
+     * Apply search to query.
      *
-     * @param string $search
-     * @param array $fields
      * @return self
      */
     public function applySearch(string $search, array $fields = [])
@@ -160,10 +152,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply sorting to query
+     * Apply sorting to query.
      *
-     * @param string $field
-     * @param string $direction
      * @return self
      */
     public function applySorting(string $field, string $direction = 'desc')
@@ -174,9 +164,8 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply relationships to query
+     * Apply relationships to query.
      *
-     * @param array $relations
      * @return self
      */
     public function with(array $relations)
@@ -186,10 +175,12 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
         return $this;
     }
 
+    public function getDataArray(){
+        return $this->getFilteredApi()->get();
+    }
+
     /**
-     * Get the underlying query builder
-     *
-     * @return Builder
+     * Get the underlying query builder.
      */
     protected function getQuery(): Builder
     {
@@ -198,7 +189,7 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
 
     /**
      * Get query builder with Spatie Query Builder (if available)
-     * Laravel 11 compatibility: Ensure we pass a Builder instance
+     * Laravel 11 compatibility: Ensure we pass a Builder instance.
      */
     protected function getQueryBuilder()
     {
@@ -207,7 +198,7 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply custom filters
+     * Apply custom filters.
      */
     protected function addCustomFilter(string $name, callable $callback): self
     {
@@ -216,7 +207,7 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Apply custom sorts
+     * Apply custom sorts.
      */
     protected function addCustomSort(string $field): self
     {
@@ -225,7 +216,7 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     }
 
     /**
-     * Add allowed includes
+     * Add allowed includes.
      */
     protected function addAllowedInclude(string $relation): self
     {
@@ -236,9 +227,5 @@ abstract class BaseApiRepository implements BaseRepositoryInterface
     protected function getFilteredApi()
     {
         return $this->getQueryBuilder()->allowedFilters(...$this->allowedFilters)->allowedSorts(...$this->allowedSorts)->allowedIncludes(...$this->allowedIncludes);
-    }
-
-    public function getDataArray(){
-        return $this->getFilteredApi()->get();
     }
 }

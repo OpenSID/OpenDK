@@ -42,18 +42,18 @@ use App\Services\DesaService;
 use App\Services\KeluargaService;
 use App\Services\PendudukService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 uses(DatabaseTransactions::class);
 
 beforeEach(function () {
     $this->withoutMiddleware();
-    
+
     // Clear cache sebelum setiap test
     Cache::flush();
-    
+
     // Reset settings to default
     SettingAplikasi::updateOrCreate(
         ['key' => 'sinkronisasi_database_gabungan'],
@@ -71,7 +71,7 @@ test('export data desa with database gabungan inactive uses local database', fun
         ['key' => 'sinkronisasi_database_gabungan'],
         ['value' => '0']
     );
-    
+
     // Clean existing data first
     DataDesa::query()->delete();
     $desa = DataDesa::factory()->count(5)->create();
@@ -113,7 +113,7 @@ test('export penduduk with database gabungan inactive uses local database', func
         ['key' => 'sinkronisasi_database_gabungan'],
         ['value' => '0']
     );
-    
+
     // Clean existing data
     Penduduk::query()->delete();
 
@@ -178,10 +178,10 @@ test('export data desa with database gabungan active calls API', function () {
     $collection = $export->collection();
 
     // Assert: API dipanggil
-    Http::assertSent(fn ($request) => 
+    Http::assertSent(fn ($request) =>
         str_contains($request->url(), 'api/v1/wilayah/desa')
     );
-    
+
     expect($collection->count())->toBe(2)
         ->and($collection->first()->nama)->toBe('Desa Test 1');
 });
@@ -225,8 +225,8 @@ test('export data desa with database gabungan active via controller', function (
 
     // Assert: Response successful dan API dipanggil
     $response->assertSuccessful();
-    
-    Http::assertSent(fn ($request) => 
+
+    Http::assertSent(fn ($request) =>
         str_contains($request->url(), 'api/v1/wilayah/desa')
     );
 });
@@ -405,9 +405,9 @@ test('DesaService listDesa with database gabungan active uses cache', function (
     // Assert: Menggunakan cache, bukan API
     expect($result->count())->toBe(1)
         ->and($result->first()->nama)->toBe('Cached Desa');
-    
+
     // API tidak dipanggil karena cache hit
-    Http::assertNotSent(fn ($request) => 
+    Http::assertNotSent(fn ($request) =>
         $request->url() === 'https://api.example.com/api/v1/wilayah/desa'
     );
 });
@@ -452,10 +452,10 @@ test('DesaService listDesa with database gabungan active calls API when cache em
     $result = $service->listDesa();
 
     // Assert: API dipanggil saat cache kosong
-    Http::assertSent(fn ($request) => 
+    Http::assertSent(fn ($request) =>
         str_contains($request->url(), 'api/v1/wilayah/desa')
     );
-    
+
     expect($result->count())->toBe(1)
         ->and($result->first()->nama)->toBe('Desa From API');
 });
@@ -507,10 +507,10 @@ test('export keluarga with database gabungan active uses KeluargaService', funct
 
     // Act: Export dengan mode gabungan
     $export = new ExportKeluarga(true, []);
-    
+
     // Assert: Export class harus bisa diinstantiate
     expect($export)->toBeInstanceOf(ExportKeluarga::class);
-    
+
     // Note: KeluargaService implementation mungkin berbeda, test ini memastikan
     // class bisa diinstantiate dan method collection ada
     expect(method_exists($export, 'collection'))->toBeTrue();
@@ -553,7 +553,7 @@ test('export penduduk with database gabungan active uses PendudukService', funct
 
     // Act: Export dengan mode gabungan
     $export = new ExportPenduduk(true, []);
-    
+
     // Assert: Export class harus bisa diinstantiate
     expect($export)->toBeInstanceOf(ExportPenduduk::class)
         ->and(method_exists($export, 'collection'))->toBeTrue();
@@ -569,7 +569,7 @@ test('export aki akb always uses local database', function () {
         ['key' => 'sinkronisasi_database_gabungan'],
         ['value' => '1']
     );
-    
+
     // Clean data first
     AkiAkb::query()->delete();
 
@@ -685,7 +685,7 @@ test('api request includes correct authorization header', function () {
     $export->collection();
 
     // Assert: Authorization header harus benar
-    Http::assertSent(fn ($request) => 
+    Http::assertSent(fn ($request) =>
         $request->hasHeader('Authorization', 'Bearer secret-api-key-123') &&
         $request->hasHeader('Accept', 'application/ld+json') &&
         $request->hasHeader('Content-Type', 'application/json')
@@ -719,7 +719,7 @@ test('api request includes correct query parameters', function () {
     $export->collection();
 
     // Assert: Request dikirim ke endpoint yang benar
-    Http::assertSent(fn ($request) => 
+    Http::assertSent(fn ($request) =>
         str_contains($request->url(), 'api/v1/wilayah/desa')
     );
 });

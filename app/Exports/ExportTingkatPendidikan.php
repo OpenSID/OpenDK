@@ -53,8 +53,6 @@ class ExportTingkatPendidikan implements FromCollection, WithHeadings, WithMappi
 
     /**
      * Definisi header kolom untuk export Excel.
-     *
-     * @return array
      */
     public function headings(): array
     {
@@ -75,9 +73,6 @@ class ExportTingkatPendidikan implements FromCollection, WithHeadings, WithMappi
 
     /**
      * Mapping data untuk setiap baris.
-     *
-     * @param $tingkatPendidikan
-     * @return array
      */
     public function map($tingkatPendidikan): array
     {
@@ -99,7 +94,6 @@ class ExportTingkatPendidikan implements FromCollection, WithHeadings, WithMappi
     /**
      * Styling untuk Excel worksheet.
      *
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

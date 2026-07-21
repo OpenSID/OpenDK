@@ -23,7 +23,6 @@ test('should display all required cards when authenticated', function () {
         ->assertSee('Selengkapnya');
 })->group('browser', 'dashboard');
 
-
 test('should check dashboard loads successfully when authenticated', function () {
     $user = \Tests\Browser\SessionState::loginAdminUser();
     \Tests\Browser\SessionState::loginAndNavigate($user, '/dashboard')

@@ -31,16 +31,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Role;
 use App\Models\Permission;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class RoleSpatieSeeder extends Seeder
 {
     /**
      * Daftar aksi yang tersedia per modul (level 3 permission).
-     * Format: 'nama_permission_modul' => ['aksi1', 'aksi2', ...]
+     * Format: 'nama_permission_modul' => ['aksi1', 'aksi2', ...].
      */
     protected array $moduleActions = [
         // Informasi

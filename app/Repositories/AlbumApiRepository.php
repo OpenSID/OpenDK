@@ -8,7 +8,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 class AlbumApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Album $model)
     {
@@ -28,7 +28,6 @@ class AlbumApiRepository extends BaseApiRepository
         $this->allowedIncludes = ['galeris'];
         $this->defaultSort = '-created_at';
     }
-
 
     public function data()
     {

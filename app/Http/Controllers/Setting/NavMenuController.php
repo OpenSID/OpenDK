@@ -33,14 +33,13 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\Artikel;
+use App\Models\JenisDokumen;
 use App\Models\Kategori;
 use App\Models\NavMenu;
-use App\Models\JenisDokumen;
 use Illuminate\Http\Request;
 
 class NavMenuController extends Controller
 {
-
     public function index()
     {
         $page_title = 'Pengaturan Menu';
@@ -69,7 +68,6 @@ class NavMenuController extends Controller
 
         return view('setting.nav_menu.index', compact('page_title', 'page_description', 'nav_menus', 'sourceItem'));
     }
-
 
     public function store(Request $request)
     {

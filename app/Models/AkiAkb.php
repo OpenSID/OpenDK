@@ -37,6 +37,7 @@ use Illuminate\Database\Eloquent\Model;
 class AkiAkb extends Model
 {
     use HasFactory;
+
     protected $table = 'das_akib';
 
     protected $fillable = [

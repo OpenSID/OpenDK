@@ -34,7 +34,7 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * Jenis atau tipe jabatan untuk pengurus
+ * Jenis atau tipe jabatan untuk pengurus.
  */
 final class JenisJabatan extends Enum
 {

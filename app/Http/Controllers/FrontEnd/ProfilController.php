@@ -34,13 +34,11 @@ namespace App\Http\Controllers\FrontEnd;
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
 use App\Models\DataDesa;
-use App\Models\DataUmum;
-use App\Models\Pengurus;
 use App\Models\Profil;
 use App\Services\DesaService;
+use App\Traits\BaganTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
-use App\Traits\BaganTrait;
 
 class ProfilController extends FrontEndController
 {
@@ -69,7 +67,7 @@ class ProfilController extends FrontEndController
     }
 
     /**
-     * Menampilkan Halaman Profil Kecamatan
+     * Menampilkan Halaman Profil Kecamatan.
      **/
     public function LetakGeografis()
     {
@@ -91,7 +89,6 @@ class ProfilController extends FrontEndController
 
         $page_title = 'Struktur Pemerintahan';
         $page_description = $this->browser_title;
-
 
         return view('pages.profil.strukturpemerintahan', compact('page_title', 'page_description'));
     }

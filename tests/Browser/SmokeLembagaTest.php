@@ -1,8 +1,8 @@
 <?php
 
-use Tests\BrowserTestCase;
-use App\Models\Lembaga;
 use App\Models\KategoriLembaga;
+use App\Models\Lembaga;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -33,7 +33,6 @@ it('smoke test menu Lembaga - Lembaga', function () {
     sleep(2);
 
 })->group('smoke', 'smoke-lembaga', 'browser');
-
 
 // =============================================================================
 // MENU: LEMBAGA -> KATEGORI LEMBAGA

@@ -51,7 +51,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Combined OTP & 2FA management page
+     * Combined OTP & 2FA management page.
      */
     public function index()
     {
@@ -71,7 +71,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Show settings form
+     * Show settings form.
      */
     public function showSettingsForm()
     {
@@ -84,8 +84,8 @@ class OtpController extends Controller
         ]);
     }
 
-     /**
-     * Save 2FA settings (email/telegram contact) and send verification code
+    /**
+     * Save 2FA settings (email/telegram contact) and send verification code.
      */
     public function saveSettings(Request $request)
     {
@@ -99,22 +99,22 @@ class OtpController extends Controller
 
         $user = Auth::user();
         $channel = $request->channel;
-        
+
         // Check if channel changed, reset verified status
         $channelChanged = $user->otp_channel !== $channel;
-        
+
         // Validate that the required identifier exists
         if ($channel === 'email') {
             if (empty($user->email)) {
                 return back()->with('error', 'Email belum diatur. Silakan perbarui email Anda di menu User terlebih dahulu.');
             }
             $identifier = $user->email;
-            
+
             // Validate email format
             $emailValidator = Validator::make(['email' => $identifier], [
                 'email' => 'required|email',
             ]);
-            
+
             if ($emailValidator->fails()) {
                 return back()->with('error', 'Format email tidak valid. Silakan perbarui email Anda di menu User.');
             }
@@ -123,7 +123,7 @@ class OtpController extends Controller
                 return back()->with('error', 'Telegram ID belum diatur. Silakan perbarui Telegram ID Anda di menu User terlebih dahulu.');
             }
             $identifier = $user->telegram_id;
-            
+
             // Verify telegram chat ID
             if (!$this->otpService->verifyTelegramChatId($identifier)) {
                 return back()->with('error', 'Telegram ID tidak valid. Silakan periksa kembali Telegram ID Anda di menu User.');
@@ -134,13 +134,13 @@ class OtpController extends Controller
         $updateData = [
             'otp_channel' => $channel,
         ];
-        
+
         if ($channelChanged) {
             $updateData['otp_verified'] = false;
             $updateData['otp_enabled'] = false;
             $updateData['two_fa_enabled'] = false;
         }
-        
+
         $user->update($updateData);
 
         // Send verification code to confirm the identifier works
@@ -164,7 +164,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Show settings verification form
+     * Show settings verification form.
      */
     public function showVerifySettingsForm()
     {
@@ -174,7 +174,7 @@ class OtpController extends Controller
         }
 
         $verification = session('settings_verification');
-        
+
         return view('auth.otp2fa.verify-settings', [
             'page_title' => 'Verifikasi Pengaturan OTP & 2FA',
             'page_description' => 'Masukkan kode verifikasi untuk mengonfirmasi pengaturan',
@@ -184,7 +184,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Verify settings with OTP code
+     * Verify settings with OTP code.
      */
     public function verifySettings(Request $request)
     {
@@ -202,7 +202,7 @@ class OtpController extends Controller
         }
 
         $user = Auth::user();
-        
+
         // Verify OTP
         $result = $this->otpService->verify($user, $request->otp, 'settings_verification');
 
@@ -223,7 +223,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Show OTP activation form
+     * Show OTP activation form.
      */
     public function showActivationForm()
     {
@@ -240,7 +240,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Request OTP for activation (directly activate without verification)
+     * Request OTP for activation (directly activate without verification).
      */
     public function requestActivation(Request $request)
     {
@@ -266,12 +266,12 @@ class OtpController extends Controller
     }
 
     /**
-     * Deactivate OTP
+     * Deactivate OTP.
      */
     public function deactivate(Request $request)
     {
         $user = Auth::user();
-        
+
         $user->update([
             'otp_enabled' => false,
         ]);
@@ -280,18 +280,18 @@ class OtpController extends Controller
     }
 
     /**
-     * Show OTP login form
+     * Show OTP login form.
      */
     public function showLoginForm(Request $request)
     {
         $profil = $this->getProfilData();
         $sebutan_wilayah = $this->getSebutanWilayah();
-        
+
         return view('auth.otp.login', compact('profil', 'sebutan_wilayah'));
     }
 
     /**
-     * Request OTP for login
+     * Request OTP for login.
      */
     public function requestLoginOtp(Request $request)
     {
@@ -352,7 +352,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Show OTP verification form for login
+     * Show OTP verification form for login.
      */
     public function showVerifyLoginForm()
     {
@@ -368,7 +368,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Verify OTP and login
+     * Verify OTP and login.
      */
     public function loginWithOtp(Request $request)
     {
@@ -415,27 +415,27 @@ class OtpController extends Controller
     }
 
     /**
-     * Resend OTP
+     * Resend OTP.
      */
     public function resendOtp(Request $request)
     {
         $purpose = $request->input('purpose', 'login');
-        
+
         if ($purpose === 'settings_verification') {
             if (!session('settings_verification')) {
                 return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
             }
-            
+
             $verification = session('settings_verification');
             $user = Auth::user();
-            
+
             $result = $this->otpService->generateAndSend(
                 $user,
                 $verification['channel'],
                 $verification['identifier'],
                 'settings_verification'
             );
-            
+
             if ($result['sent']) {
                 session(['settings_verification.sent_at' => now()->timestamp]);
                 return response()->json(['success' => true, 'message' => 'Kode verifikasi baru telah dikirim']);
@@ -444,17 +444,17 @@ class OtpController extends Controller
             if (!session('otp_activation')) {
                 return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
             }
-            
+
             $activation = session('otp_activation');
             $user = Auth::user();
-            
+
             $result = $this->otpService->generateAndSend(
                 $user,
                 $activation['channel'],
                 $activation['identifier'],
                 'activation'
             );
-            
+
             if ($result['sent']) {
                 session(['otp_activation.sent_at' => now()->timestamp]);
                 return response()->json(['success' => true, 'message' => 'Kode OTP baru telah dikirim']);
@@ -463,14 +463,14 @@ class OtpController extends Controller
             if (!session('otp_login')) {
                 return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
             }
-            
+
             $loginData = session('otp_login');
             $user = User::find($loginData['user_id']);
-            
+
             if (!$user) {
                 return response()->json(['success' => false, 'message' => 'Pengguna tidak ditemukan'], 400);
             }
-            
+
             // Get identifier based on channel
             $channel = $user->otp_channel;
             if ($channel === 'email') {
@@ -480,14 +480,14 @@ class OtpController extends Controller
             } else {
                 return response()->json(['success' => false, 'message' => 'Metode verifikasi belum diatur'], 400);
             }
-            
+
             $result = $this->otpService->generateAndSend(
                 $user,
                 $channel,
                 $identifier,
                 'login'
             );
-            
+
             if ($result['sent']) {
                 session(['otp_login.sent_at' => now()->timestamp]);
                 return response()->json(['success' => true, 'message' => 'Kode OTP baru telah dikirim']);
@@ -497,14 +497,14 @@ class OtpController extends Controller
             if (!session('two-factor:auth')) {
                 return response()->json(['success' => false, 'message' => 'Sesi tidak ditemukan'], 400);
             }
-            
+
             $authData = session('two-factor:auth');
             $user = User::find($authData['id']);
-            
+
             if (!$user) {
                 return response()->json(['success' => false, 'message' => 'Pengguna tidak ditemukan'], 400);
             }
-            
+
             // Get identifier based on channel
             $channel = $user->otp_channel;
             if ($channel === 'email') {
@@ -514,24 +514,24 @@ class OtpController extends Controller
             } else {
                 return response()->json(['success' => false, 'message' => 'Metode verifikasi belum diatur'], 400);
             }
-            
+
             $result = $this->otpService->generateAndSend(
                 $user,
                 $channel,
                 $identifier,
                 '2fa_login'
             );
-            
+
             if ($result['sent']) {
                 return response()->json(['success' => true, 'message' => 'Kode 2FA baru telah dikirim']);
             }
         }
-        
+
         return response()->json(['success' => false, 'message' => 'Gagal mengirim ulang kode OTP'], 500);
     }
 
     /**
-     * Get profil data for views
+     * Get profil data for views.
      */
     private function getProfilData()
     {
@@ -543,7 +543,7 @@ class OtpController extends Controller
     }
 
     /**
-     * Get sebutan wilayah
+     * Get sebutan wilayah.
      */
     private function getSebutanWilayah()
     {

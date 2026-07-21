@@ -36,8 +36,9 @@ use App\Models\Penduduk;
 use Illuminate\Support\Facades\DB;
 
 class StatistikChartPendudukAgamaService extends BaseApiService
-{    
+{
     private $colors = [1 => '#dcaf1e', 2 => '#dc9f1e', 3 => '#dc8f1e', 4 => '#dc7f1e', 5 => '#dc6f1e', 6 => '#dc5f1e', 7 => '#dc4f1e'];
+
     public function chart($did, $year)
     {
         if ($this->useDatabaseGabungan()) {
@@ -52,7 +53,7 @@ class StatistikChartPendudukAgamaService extends BaseApiService
                     $filters['filter[desa]'] = $did;
                 }
                 $response = $this->apiRequest('/api/v1/statistik-web/penduduk', $filters);
-                foreach ($response as $key => $item) {                    
+                foreach ($response as $key => $item) {
                     if (in_array($item['id'], [LabelStatistik::Total, LabelStatistik::Jumlah, LabelStatistik::BelumMengisi])) {
                         continue;
                     }
@@ -67,11 +68,11 @@ class StatistikChartPendudukAgamaService extends BaseApiService
     }
 
     private function localChart($did, $year)
-    {        
+    {
         $penduduk = new Penduduk();
         // Data Chart Penduduk By Aama
         $data = [];
-        $agama = DB::table('ref_agama')->orderBy('id')->get();        
+        $agama = DB::table('ref_agama')->orderBy('id')->get();
         foreach ($agama as $val) {
             $total = $penduduk->getPendudukAktif($did, $year)
                 ->where('agama_id', $val->id)

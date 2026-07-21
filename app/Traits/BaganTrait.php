@@ -9,15 +9,15 @@ trait BaganTrait
     public function getDataStrukturOrganisasi(): array
     {
         $items = Pengurus::select([
-                'id',
-                'nama',
-                'gelar_depan',
-                'gelar_belakang',
-                'foto',
-                'atasan',
-                'bagan_warna',
-                'jabatan_id',
-            ])
+            'id',
+            'nama',
+            'gelar_depan',
+            'gelar_belakang',
+            'foto',
+            'atasan',
+            'bagan_warna',
+            'jabatan_id',
+        ])
             ->with(['jabatan:id,nama'])
             ->where('status', 1)
             ->get()

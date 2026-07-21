@@ -34,15 +34,12 @@ namespace App\Transformers;
 use League\Fractal\TransformerAbstract;
 
 class YearsListTransformer extends TransformerAbstract
-{    
+{
     /**
-     * Turn this item object into a generic array
-     *
-     * @param mixed $item
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform($item): array
-    {                
+    {
         return ['id' => rand(), $item];
-    }    
+    }
 }

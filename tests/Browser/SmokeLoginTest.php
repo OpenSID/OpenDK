@@ -29,8 +29,8 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use Tests\BrowserTestCase;
 use Tests\Browser\SessionState;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -69,7 +69,7 @@ it('smoke: pesan error tampil untuk kredensial invalid', function () {
 
 it('smoke: session restoration berfungsi', function () {
     $user = SessionState::loginAdminUser();
-    
+
     // Melakukan navigasi ke dashboard tanpa melalui form login (bypass via SessionState cookie)
     SessionState::loginAndNavigate($user, '/dashboard')
         ->assertPathIs('/dashboard')

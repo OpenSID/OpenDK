@@ -33,7 +33,7 @@ test('should have responsive design', function ($width, $height) {
         ->resize($width, $height)
         ->assertPresent('meta[name="viewport"]');
 })->with([
-            'mobile' => [375, 667],
-            'tablet' => [768, 1024],
-            'desktop' => [1440, 900],
-        ])->group('browser', 'homepage', 'responsive');
+    'mobile' => [375, 667],
+    'tablet' => [768, 1024],
+    'desktop' => [1440, 900],
+])->group('browser', 'homepage', 'responsive');

@@ -1,8 +1,8 @@
 <?php
 
-use Tests\BrowserTestCase;
 use Tests\Browser\Pages\DashboardPage;
 use Tests\Browser\Pages\DataUmumPage;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 
@@ -83,8 +83,6 @@ test('admin can update data umum info wilayah', function () {
             ->wait(0.5)
             ->assertValue('lat', $testData['lat'])
             ->assertValue('lng', $testData['lng']);
-
-
 
     } catch (\Throwable $e) {
         $msg = $e->getMessage();

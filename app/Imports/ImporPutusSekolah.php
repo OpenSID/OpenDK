@@ -38,7 +38,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporPutusSekolah implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporPutusSekolah implements ShouldQueue, ToModel, WithChunkReading, WithHeadingRow
 {
     use Importable;
 

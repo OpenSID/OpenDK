@@ -175,13 +175,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
     // Route::group(['middleware' => 'maintenance'], function () {
     Route::group(['middleware' => ['maintenance', 'track.visitors']], function () {
-        /**
+        /*
          * Group Routing for Halaman Website
          */
         Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
-            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');            
+            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
             /* route kategori */
             // Redirect dari /kategori ke halaman home secara permanent
@@ -296,7 +296,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         });
     });
 
-    /**
+    /*
      * Group Routing for Halaman Dahsboard
      */
     Route::group(['middleware' => ['auth:web', 'complete_profile']], function () {
@@ -311,7 +311,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
-        /**
+        /*
          * Group Routing for Informasi
          */
         Route::namespace('\App\Http\Controllers\BackEnd')->group(function () {
@@ -330,7 +330,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 });
             });
         });
-        /**
+        /*
          * Group Routing for Informasi
          */
         Route::namespace('\App\Http\Controllers\Informasi')->group(function () {
@@ -459,7 +459,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
-        /**
+        /*
          * Group Routing for Publikasi
          */
         Route::namespace('\App\Http\Controllers\Publikasi')->group(function () {
@@ -504,7 +504,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::get('/media-terkait', '\App\Http\Livewire\Informasi\MediaTerkaitController')->name('informasi.media.terkait');
         });
 
-        /**
+        /*
          * Group Routing for Data
          */
         Route::namespace('\App\Http\Controllers\Data')->group(function () {
@@ -828,7 +828,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
-        /**
+        /*
          * Group Routing for Pesan
          */
         Route::namespace('\App\Http\Controllers\Pesan')->group(function () {
@@ -847,7 +847,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
-        /**
+        /*
          * Group Routing for Pesan
          */
         Route::namespace('\App\Http\Controllers\Surat')->group(function () {
@@ -877,7 +877,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
-        /**
+        /*
          * Group Routing for Setting
          */
         Route::group(['prefix' => 'setting'], function () {
@@ -1055,7 +1055,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
         });
 
-        /**
+        /*
          * Group Routing for Counter
          */
         Route::group(['prefix' => 'counter', 'middleware' => ['action_permission:access.counter']], function () {

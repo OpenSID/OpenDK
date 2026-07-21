@@ -9,35 +9,45 @@ use Livewire\WithPagination;
 
 class MediaTerkaitController extends Component
 {
-    use WithPagination, WithFileUploads;
-
-    protected $paginationTheme = 'bootstrap';
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'page' => ['except' => 1],
-    ];
+    use WithFileUploads, WithPagination;
 
     public string $page_title = 'Media Terkait';
+
     public string $page_description = 'Media Terkait';
 
     public $page = 1;
+
     public $perPage = 10;
+
     public $search;
+
     public $status;
+
     public $form = false;
+
     public $editMode = false;
 
     // Media Terkait properties untuk Livewire 3 compatibility
     public $media_terkait_id = null;
+
     public $media_terkait = [
         'nama' => '',
         'url' => '',
         'status' => 1,
     ];
+
     public $logo;
 
     public $selectedItems = [];
+
     public $selectAll = false;
+
+    protected $paginationTheme = 'bootstrap';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'page' => ['except' => 1],
+    ];
 
     public function render()
     {
@@ -105,7 +115,7 @@ class MediaTerkaitController extends Component
     public function create()
     {
         $this->clear();
-        $this->page_description = "Tambah Media Terkait";
+        $this->page_description = 'Tambah Media Terkait';
         $this->form = true;
         $this->editMode = false;
     }

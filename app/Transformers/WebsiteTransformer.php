@@ -31,16 +31,12 @@
 
 namespace App\Transformers;
 
-use App\Support\Collection;
 use League\Fractal\TransformerAbstract;
 
 class WebsiteTransformer extends TransformerAbstract
 {
     /**
-     * Turn this item object into a generic array
-     *
-     * @param mixed $data
-     * @return array
+     * Turn this item object into a generic array.
      */
     public function transform($data): array
     {
@@ -48,17 +44,17 @@ class WebsiteTransformer extends TransformerAbstract
         if (is_array($data)) {
             return $data;
         }
-        
+
         // If it's an object with toArray method
         if (method_exists($data, 'toArray')) {
             return $data->toArray();
         }
-        
+
         // If it's a paginator, get the items
         if (method_exists($data, 'items')) {
             return $data->items();
         }
-        
+
         // Default fallback
         return (array) $data;
     }

@@ -94,12 +94,6 @@ class PageController extends FrontEndController
         ]);
     }
 
-    private function getFeeds()
-    {        
-        $feeds = (new DesaService())->getFeeds();
-        return $feeds ?? null;
-    }
-
     public function filterFeeds(Request $request)
     {
         $this->data = $this->getFeeds();
@@ -380,5 +374,11 @@ class PageController extends FrontEndController
         Session::put('survey_submitted', true);
 
         return redirect()->back()->with('success', 'Terima kasih atas tanggapan Anda!');
+    }
+
+    private function getFeeds()
+    {
+        $feeds = (new DesaService())->getFeeds();
+        return $feeds ?? null;
     }
 }

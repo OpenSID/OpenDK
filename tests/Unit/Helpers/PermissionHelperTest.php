@@ -31,8 +31,6 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
-
 describe('Permission Helper Function', function () {
     test('permission_name returns translated name for access.dashboard', function () {
         $result = permission_name('access.dashboard');

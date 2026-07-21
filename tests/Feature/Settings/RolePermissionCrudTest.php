@@ -32,15 +32,14 @@
 namespace Tests\Feature\Settings;
 
 use App\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
-use Tests\CrudTestCase;
+use Spatie\Permission\Models\Permission;
 
 beforeEach(function () {
     // Clear existing roles and permissions for clean test
     Role::whereNotIn('name', ['super-admin'])->delete();
     Permission::whereNotIn('name', ['access.setting.role'])->delete();
-    
+
     // Create permission for testing
     Permission::firstOrCreate(['name' => 'access.setting.role', 'guard_name' => 'web']);
 });
@@ -56,7 +55,7 @@ describe('Role and Permission CRUD', function () {
         $response->assertViewIs('role.index');
         $response->assertViewHas('page_title', 'Group Pengguna');
         $response->assertViewHas('page_description', 'Daftar Data');
-    });    
+    });
 
     test('store creates new role successfully', function () {
         $user = User::first() ?? User::factory()->create();
@@ -76,7 +75,7 @@ describe('Role and Permission CRUD', function () {
             'name' => 'test-role',
         ]);
     });
-    
+
     test('update updates role successfully', function () {
         $user = User::first() ?? User::factory()->create();
         $user->givePermissionTo('access.setting.role');
@@ -121,7 +120,7 @@ describe('Role and Permission CRUD', function () {
             'id' => $role->id,
         ]);
     });
-   
+
     test('role can be assigned to user', function () {
         $role = Role::create([
             'name' => 'test-role-assign',

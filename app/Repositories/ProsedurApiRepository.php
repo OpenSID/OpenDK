@@ -37,7 +37,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 class ProsedurApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Prosedur $model)
     {

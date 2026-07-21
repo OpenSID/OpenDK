@@ -1,9 +1,10 @@
 <?php
 
 use App\Models\Artikel;
-use App\Models\DataDesa;
 use App\Models\ArtikelKategori;
+use App\Models\DataDesa;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 
@@ -95,7 +96,7 @@ test('guest can post a comment to an article', function () {
 });
 
 test('guest gets 404 when posting comment to non-existent article', function () {
-    $response = postJson("/api/frontend/v1/artikel/99999/comments", [
+    $response = postJson('/api/frontend/v1/artikel/99999/comments', [
         'nama' => 'Test User',
         'email' => 'test@example.com',
         'body' => 'This is a test comment',

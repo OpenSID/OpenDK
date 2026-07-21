@@ -50,6 +50,7 @@ class LaporanApbdesController extends Controller
      * @bodyParam laporan_apbdes.semester integer required Semester (1/2). Example: 1
      * @bodyParam laporan_apbdes.nama_file string required Nama file. Example: apbdes_2024_s1.pdf
      * @bodyParam laporan_apbdes.file string required File base64 encoded.
+     *
      * @response {
      *   "status": "success",
      *   "message": "Proses sync data Laporan Apbdes OpenSID sedang berjalan"

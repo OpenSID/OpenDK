@@ -1,11 +1,8 @@
 <?php
 
-use App\Models\Profil;
-use App\Models\DataUmum;
 use App\Models\DataDesa;
+use App\Models\Profil;
 use Illuminate\Support\Facades\Cache;
-
-
 
 it('can create a profil', function () {
     $profil = Profil::factory()->create([
@@ -68,12 +65,11 @@ it('has strukturOrganisasi relationship', function () {
     expect($profil->strukturOrganisasi())->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\HasOne::class);
 });
 
-
 it('clears cache when saved', function () {
     $profil = Profil::factory()->create([
         'nama_kecamatan' => 'Test Kecamatan',
     ]);
-    
+
     // The cache clearing happens automatically due to model events
     expect($profil->id)->not->toBeNull();
 });
@@ -84,7 +80,7 @@ it('clears cache when updated', function () {
     ]);
 
     $profil->update(['nama_kecamatan' => 'Updated Name']);
-    
+
     // The cache clearing happens automatically due to model events
     expect($profil->nama_kecamatan)->toBe('Updated Name');
 });
@@ -95,7 +91,7 @@ it('clears cache when created', function () {
         'nama_kabupaten' => 'Test Kabupaten',
         'nama_provinsi' => 'Test Provinsi',
     ]);
-    
+
     // The cache clearing happens automatically due to model events
     expect($profil->id)->not->toBeNull();
 });
@@ -200,7 +196,7 @@ it('can handle multiple data desa for one profil', function () {
 
 it('can handle cache tags flush on save', function () {
     $profil = Profil::factory()->create();
-    
+
     // The cache clearing happens automatically due to model events
     expect($profil->id)->not->toBeNull();
 });
@@ -209,7 +205,7 @@ it('can handle cache tags flush on update', function () {
     $profil = Profil::factory()->create();
 
     $profil->update(['nama_kecamatan' => 'Updated Name']);
-    
+
     // The cache clearing happens automatically due to model events
     expect($profil->nama_kecamatan)->toBe('Updated Name');
 });
@@ -220,7 +216,7 @@ it('can handle cache tags flush on create', function () {
         'nama_kabupaten' => 'Test Kabupaten',
         'nama_provinsi' => 'Test Provinsi',
     ]);
-    
+
     // The cache clearing happens automatically due to model events
     expect($profil->id)->not->toBeNull();
 });

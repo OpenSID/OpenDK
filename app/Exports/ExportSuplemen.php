@@ -66,9 +66,6 @@ class ExportSuplemen implements FromCollection, WithHeadings, WithMapping, WithS
         return $query->get();
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return [
@@ -83,10 +80,6 @@ class ExportSuplemen implements FromCollection, WithHeadings, WithMapping, WithS
         ];
     }
 
-    /**
-     * @param mixed $suplemen
-     * @return array
-     */
     public function map($suplemen): array
     {
         $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
@@ -104,7 +97,6 @@ class ExportSuplemen implements FromCollection, WithHeadings, WithMapping, WithS
     }
 
     /**
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

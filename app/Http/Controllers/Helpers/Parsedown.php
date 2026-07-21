@@ -117,8 +117,6 @@ class Parsedown
 
     protected $inlineMarkerList = '!"*_&[:<>`~\\';
 
-    private static $instances = [];
-
     //
     // Fields
     //
@@ -159,6 +157,8 @@ class Parsedown
         'var', 'span',
         'wbr', 'time',
     ];
+
+    private static $instances = [];
 
     // ~
 
@@ -213,6 +213,105 @@ class Parsedown
         $this->safeMode = (bool) $safeMode;
 
         return $this;
+    }
+
+    //
+    // ~
+    //
+
+    public function line($text, $nonNestables = [])
+    {
+        $markup = '';
+
+        // $excerpt is based on the first occurrence of a marker
+
+        while ($excerpt = strpbrk($text, $this->inlineMarkerList)) {
+            $marker = $excerpt[0];
+
+            $markerPosition = strpos($text, $marker);
+
+            $Excerpt = ['text' => $excerpt, 'context' => $text];
+
+            foreach ($this->InlineTypes[$marker] as $inlineType) {
+                // check to see if the current inline type is nestable in the current context
+
+                if (! empty($nonNestables) && in_array($inlineType, $nonNestables)) {
+                    continue;
+                }
+
+                $Inline = $this->{'inline'.$inlineType}($Excerpt);
+
+                if (! isset($Inline)) {
+                    continue;
+                }
+
+                // makes sure that the inline belongs to "our" marker
+
+                if (isset($Inline['position']) && $Inline['position'] > $markerPosition) {
+                    continue;
+                }
+
+                // sets a default inline position
+
+                if (! isset($Inline['position'])) {
+                    $Inline['position'] = $markerPosition;
+                }
+
+                // cause the new element to 'inherit' our non nestables
+
+                foreach ($nonNestables as $non_nestable) {
+                    $Inline['element']['nonNestables'][] = $non_nestable;
+                }
+
+                // the text that comes before the inline
+                $unmarkedText = substr($text, 0, $Inline['position']);
+
+                // compile the unmarked text
+                $markup .= $this->unmarkedText($unmarkedText);
+
+                // compile the inline
+                $markup .= $Inline['markup'] ?? $this->element($Inline['element']);
+
+                // remove the examined text
+                $text = substr($text, $Inline['position'] + $Inline['extent']);
+
+                continue 2;
+            }
+
+            // the marker does not belong to an inline
+
+            $unmarkedText = substr($text, 0, $markerPosition + 1);
+
+            $markup .= $this->unmarkedText($unmarkedText);
+
+            $text = substr($text, $markerPosition + 1);
+        }
+
+        $markup .= $this->unmarkedText($text);
+
+        return $markup;
+    }
+
+    //
+    // Deprecated Methods
+    //
+
+    public function parse($text)
+    {
+        return $this->text($text);
+    }
+
+    public static function instance($name = 'default')
+    {
+        if (isset(self::$instances[$name])) {
+            return self::$instances[$name];
+        }
+
+        $instance = new static();
+
+        self::$instances[$name] = $instance;
+
+        return $instance;
     }
 
     //
@@ -1003,83 +1102,6 @@ class Parsedown
     // ~
     //
 
-    public function line($text, $nonNestables = [])
-    {
-        $markup = '';
-
-        // $excerpt is based on the first occurrence of a marker
-
-        while ($excerpt = strpbrk($text, $this->inlineMarkerList)) {
-            $marker = $excerpt[0];
-
-            $markerPosition = strpos($text, $marker);
-
-            $Excerpt = ['text' => $excerpt, 'context' => $text];
-
-            foreach ($this->InlineTypes[$marker] as $inlineType) {
-                // check to see if the current inline type is nestable in the current context
-
-                if (! empty($nonNestables) && in_array($inlineType, $nonNestables)) {
-                    continue;
-                }
-
-                $Inline = $this->{'inline'.$inlineType}($Excerpt);
-
-                if (! isset($Inline)) {
-                    continue;
-                }
-
-                // makes sure that the inline belongs to "our" marker
-
-                if (isset($Inline['position']) && $Inline['position'] > $markerPosition) {
-                    continue;
-                }
-
-                // sets a default inline position
-
-                if (! isset($Inline['position'])) {
-                    $Inline['position'] = $markerPosition;
-                }
-
-                // cause the new element to 'inherit' our non nestables
-
-                foreach ($nonNestables as $non_nestable) {
-                    $Inline['element']['nonNestables'][] = $non_nestable;
-                }
-
-                // the text that comes before the inline
-                $unmarkedText = substr($text, 0, $Inline['position']);
-
-                // compile the unmarked text
-                $markup .= $this->unmarkedText($unmarkedText);
-
-                // compile the inline
-                $markup .= $Inline['markup'] ?? $this->element($Inline['element']);
-
-                // remove the examined text
-                $text = substr($text, $Inline['position'] + $Inline['extent']);
-
-                continue 2;
-            }
-
-            // the marker does not belong to an inline
-
-            $unmarkedText = substr($text, 0, $markerPosition + 1);
-
-            $markup .= $this->unmarkedText($unmarkedText);
-
-            $text = substr($text, $markerPosition + 1);
-        }
-
-        $markup .= $this->unmarkedText($text);
-
-        return $markup;
-    }
-
-    //
-    // ~
-    //
-
     protected function inlineCode($Excerpt)
     {
         $marker = $Excerpt['text'][0];
@@ -1460,15 +1482,6 @@ class Parsedown
         return $markup;
     }
 
-    //
-    // Deprecated Methods
-    //
-
-    public function parse($text)
-    {
-        return $this->text($text);
-    }
-
     protected function sanitiseElement(array $Element)
     {
         static $goodAttribute = '/^[a-zA-Z0-9][a-zA-Z0-9-_]*+$/';
@@ -1528,18 +1541,5 @@ class Parsedown
         }
 
         return strtolower(substr($string, 0, $len)) === strtolower($needle);
-    }
-
-    public static function instance($name = 'default')
-    {
-        if (isset(self::$instances[$name])) {
-            return self::$instances[$name];
-        }
-
-        $instance = new static();
-
-        self::$instances[$name] = $instance;
-
-        return $instance;
     }
 }

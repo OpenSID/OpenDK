@@ -3,7 +3,6 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
-use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Middleware\PermissionMiddleware;

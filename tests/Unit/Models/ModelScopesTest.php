@@ -1,16 +1,11 @@
 <?php
 
-use App\Models\User;
 use App\Models\DataDesa;
-use App\Models\Penduduk;
 use App\Models\Keluarga;
-use App\Models\Profil;
-use App\Models\SettingAplikasi;
 use App\Models\OtpToken;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
-
-
+use App\Models\Penduduk;
+use App\Models\SettingAplikasi;
+use App\Models\User;
 
 // User Model Scopes
 it('can filter users by role', function () {

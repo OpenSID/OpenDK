@@ -38,23 +38,23 @@ use App\Jobs\PendudukQueueJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use ZipArchive;
 
 class PendudukController extends Controller
 {
 /**
-     * Hapus data penduduk secara batch (via JSON).
-     *
-     * @group OpenSID Integration
-     *
-     * @bodyParam desa_id string required Kode desa. Example: 3201012001
-     * @bodyParam hapus_penduduk array required Array objek penduduk yang akan dihapus. Setiap objek berisi: id_pend_desa (int), foto (string/null), desa_id (string).
-     * @response {
-     *   "status": "success",
-     *   "message": "Proses sync Data Penduduk OpenSID sedang berjalan"
-     * }
-     */
+ * Hapus data penduduk secara batch (via JSON).
+ *
+ * @group OpenSID Integration
+ *
+ * @bodyParam desa_id string required Kode desa. Example: 3201012001
+ * @bodyParam hapus_penduduk array required Array objek penduduk yang akan dihapus. Setiap objek berisi: id_pend_desa (int), foto (string/null), desa_id (string).
+ *
+ * @response {
+ *   "status": "success",
+ *   "message": "Proses sync Data Penduduk OpenSID sedang berjalan"
+ * }
+ */
 public function store(PendudukRequest $request)
     {
         // dispatch queue job penduduk
@@ -80,6 +80,7 @@ public function store(PendudukRequest $request)
      *   rw, rt, status_dasar, status_rekam.
      *
      * @bodyParam file file required File ZIP (max 5MB) berisi data penduduk + foto. Example: null
+     *
      * @response {
      *   "message": "Data Foto Telah Berhasil di Sinkronkan"
      * }
@@ -105,14 +106,14 @@ public function store(PendudukRequest $request)
 
             // Extract filename from path
             $name = basename($path);
-            
+
             // Temporary path file
             $path = storage_path("app/public/temp/{$name}");
             $extract = storage_path('app/public/penduduk/foto/');
             $excellName = '';
             // Ekstrak file
             $zip = new ZipArchive();
-            if ($zip->open($path) === TRUE) {
+            if ($zip->open($path) === true) {
 
                 for ($i = 0; $i < $zip->numFiles; $i++) {
 
@@ -127,7 +128,6 @@ public function store(PendudukRequest $request)
                 $zip->extractTo($extract);
                 $zip->close();
             }
-
 
             // Proses impor excell
             (new SinkronPenduduk())

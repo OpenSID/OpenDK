@@ -39,7 +39,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class ImporAnggaranRealisasi implements ToModel, WithHeadingRow, WithChunkReading, ShouldQueue
+class ImporAnggaranRealisasi implements ShouldQueue, ToModel, WithChunkReading, WithHeadingRow
 {
     use Importable;
 

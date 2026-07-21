@@ -41,13 +41,6 @@ class Potensi extends Model
 
     protected $table = 'das_potensi';
 
-    protected static function booted(): void
-    {
-        static::created(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
-        static::updated(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
-        static::deleted(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
-    }
-
     protected $fillable = [
         'kategori_id',
         'nama_potensi',
@@ -70,5 +63,12 @@ class Potensi extends Model
     public function tipe()
     {
         return $this->hasOne(TipePotensi::class, 'id', 'kategori_id');
+    }
+
+    protected static function booted(): void
+    {
+        static::created(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+        static::updated(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+        static::deleted(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
     }
 }

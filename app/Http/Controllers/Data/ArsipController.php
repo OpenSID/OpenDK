@@ -31,8 +31,6 @@
 
 namespace App\Http\Controllers\Data;
 
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DocumentRequest;
 use App\Models\Document;
@@ -41,21 +39,23 @@ use App\Models\Penduduk;
 use App\Models\Pengurus;
 use App\Traits\HandlesFileUpload;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class ArsipController extends Controller
 {
     use HandlesFileUpload;
 
     public function arsip(Request $request)
-    {   
+    {
         try {
             $pengurus_id = $request->get('pengurus_id');
 
             if ($request->ajax()) {
                 $document = Document::with('pengurus:id,nama,gelar_depan,gelar_belakang', 'jenis_surat:id,nama')->where('pengurus_id', $pengurus_id);
-                
+
                 return DataTables::of($document)
                     ->addIndexColumn()
                     ->addColumn('aksi', function ($row) use ($pengurus_id){
@@ -65,7 +65,7 @@ class ArsipController extends Controller
                             $data['download_zip'] = route('data.pengurus.edit.download.arsip', $row->id);
                             $data['nama_file'] = $row->judul_document;
                         }
-    
+
                         return view('forms.aksi', $data);
                     })
                     ->filter(function ($query) use ($request) {
@@ -88,7 +88,7 @@ class ArsipController extends Controller
             Log::channel('daily')->error('arsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal memuat halaman arsip!');
         }
     }
@@ -125,10 +125,10 @@ class ArsipController extends Controller
             Log::channel('daily')->error('penduduk_arsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal mendapatkan penduduk arsip!');
         }
-        
+
     }
 
     public function create_arsip($pengurus_id)
@@ -144,7 +144,7 @@ class ArsipController extends Controller
             Log::channel('daily')->error('create_arsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal create arsip!');
         }
     }
@@ -161,7 +161,7 @@ class ArsipController extends Controller
             Log::channel('daily')->error('edit_arsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal edit arsip!');
         }
     }
@@ -173,10 +173,10 @@ class ArsipController extends Controller
             if ($request->hasFile('path_document')) {
                 $file = $request->file('path_document');
                 $mimeType = mime_content_type($file->getRealPath());
-                
+
                 // Use FileUploadService for secure file upload
                 $fileUploadService = new \App\Services\FileUploadService();
-                
+
                 // Define allowed MIME types for document uploads
                 $allowedMimes = [
                     'application/pdf',
@@ -186,18 +186,18 @@ class ArsipController extends Controller
                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                     'application/x-ole-storage'
                 ];
-                
+
                 // Validate file type
                 if (!in_array($mimeType, $allowedMimes)) {
                     return redirect()->back()->withErrors(['path_document' => 'Isian path document harus dokumen berjenis : pdf, doc, docx, xls, xlsx.']);
                 }
-                
+
                 // Upload file securely and get the path
-                $securePath = $fileUploadService->uploadSecure($file, "arsip/documents", $allowedMimes);
-                
+                $securePath = $fileUploadService->uploadSecure($file, 'arsip/documents', $allowedMimes);
+
                 // Get the original name from the secure path
                 $originalName = basename($securePath);
-                
+
                 // Update the input with the secure path
                 $input['path_document'] = $securePath;
             }else{
@@ -206,31 +206,31 @@ class ArsipController extends Controller
                 $input['path_document'] = $path_document;
                 $originalName = $document->nama_document;
             }
-            
+
             if (Document::where('pengurus_id', $request->post('pengurus_id'))->exists()) {
                 $data_document = Document::where('pengurus_id', $request->post('pengurus_id'))->orderBy('id', 'DESC')->first();
-                $no_urut = $data_document->no_urut ?? 0; 
+                $no_urut = $data_document->no_urut ?? 0;
             }else{
                 $no_urut = 0;
             }
-            
-            $input['kode_surat'] = "SK-" . ($no_urut + 1); 
-            $input['ditandatangani'] =  Auth::user()->name; 
+
+            $input['kode_surat'] = 'SK-' . ($no_urut + 1);
+            $input['ditandatangani'] =  Auth::user()->name;
             $input['no_urut'] = $request->post('document_id') ? $no_urut : $no_urut + 1;
             $input['nama_document'] = $originalName;
             $insert = Document::updateOrcreate(['id' => $request->post('document_id')], $input);
             if ($insert) {
                 return redirect()->route('data.pengurus.arsip', ['pengurus_id' => $request->post('pengurus_id')])->with('success', 'Berhasil Simpan Document');
-            }else{
-                return back()->with('success', 'Gagal Simpan Document');
             }
+                return back()->with('success', 'Gagal Simpan Document');
+
         } catch (\Exception $e) {
             report($e);
             Log::channel('daily')->error('store_arsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'gagal tambah arsip!');
         }
     }
@@ -240,20 +240,20 @@ class ArsipController extends Controller
         try {
             $document = Document::find($id);
             if ($document) {
-                if ($document->delete()) { 
+                if ($document->delete()) {
                     return back()->with('success', 'Document Berhasil Dihapus');
-                } else {
-                    return back()->with('error', 'Document Gagal Dihapus');
                 }
-            } else {
-                return back()->with('error', 'Document tidak ditemukan');
+                    return back()->with('error', 'Document Gagal Dihapus');
+
             }
+                return back()->with('error', 'Document tidak ditemukan');
+
         } catch (Exception $e) {
             report($e);
             Log::channel('daily')->error('deleteDocument di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal Delete Dokumen!');
         }
     }
@@ -264,31 +264,31 @@ class ArsipController extends Controller
             $pengurus = Pengurus::where('id', $pengurus_id)->first('nama');
             $zipFileName = $pengurus->nama . '-dokumen-arsip.zip';
             $zipPath = storage_path($zipFileName);
-        
+
             $zip = new \ZipArchive;
-        
-            if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === TRUE) {
+
+            if ($zip->open($zipPath, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) === true) {
 
                 $files = Document::where('pengurus_id', $pengurus_id)->get();
-        
+
                 foreach ($files as $file) {
                     if (file_exists($file->path_document)) {
                         $zip->addFile($file->path_document, basename($file->nama_document));
                     }
                 }
-        
+
                 $zip->close();
-        
+
                 return response()->download($zipPath)->deleteFileAfterSend(true);
-            } else {
-                return response()->json(['error' => 'Gagal membuat file ZIP'], 500);
             }
+                return response()->json(['error' => 'Gagal membuat file ZIP'], 500);
+
         } catch (Exception $e) {
             report($e);
             Log::channel('daily')->error('downloadArsipZip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal Download Arsip');
         }
     }
@@ -307,7 +307,7 @@ class ArsipController extends Controller
             Log::channel('daily')->error('downloadArsip di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal Download Arsip');
         }
     }
@@ -319,14 +319,14 @@ class ArsipController extends Controller
             $penduduk = Penduduk::where('nama', 'like', "%{$search}%")
                         ->limit(5)
                         ->get(['id', 'nama', 'nik']);
-        
+
             return response()->json($penduduk);
         } catch (Exception $e) {
             report($e);
             Log::channel('daily')->error('pendudukSelect2 di ArsipController: ' . $e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
-            ]);            
+            ]);
             return back()->withInput()->with('error', 'Gagal Download Arsip');
         }
     }

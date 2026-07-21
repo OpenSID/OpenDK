@@ -1,7 +1,6 @@
 <?php
 
 use Tests\BrowserTestCase;
-use Laravel\Dusk\Browser;
 
 uses(BrowserTestCase::class);
 
@@ -18,7 +17,7 @@ it('smoke test menu Pengaturan Sistem - Menu', function () {
 
     $this->page->assertSee('Menu');
     $this->page->assertPresent('.box-body table');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -32,7 +31,7 @@ it('smoke test menu Pengaturan Sistem - Widget', function () {
     $this->page->assertSee('Widget');
     // Livewire tables use different structures, let's assert generic text presence
     $this->page->assertSee('Jenis Widget');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -45,7 +44,7 @@ it('smoke test menu Pengaturan Sistem - Slide', function () {
 
     $this->page->assertSee('Slide');
     $this->page->assertVisible('#data-slide');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -57,8 +56,8 @@ it('smoke test menu Pengaturan Sistem - Themes', function () {
     $this->page->assertPathIs('/setting/themes');
 
     $this->page->assertSee('Themes');
-    $this->page->assertSee('Aktif'); 
-    
+    $this->page->assertSee('Aktif');
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -71,7 +70,7 @@ it('smoke test menu Pengaturan Sistem - Aplikasi', function () {
 
     $this->page->assertSee('Aplikasi');
     $this->page->assertPresent('.box-body table');
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -84,7 +83,7 @@ it('smoke test menu Pengaturan Sistem - Info Sistem', function () {
 
     $this->page->assertSee('Info Sistem');
     $this->page->assertPresent('.nav-tabs'); // Ensure tabs exist
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -97,7 +96,7 @@ it('smoke test menu Pengaturan Sistem - Pengaturan Database', function () {
 
     $this->page->assertSee('Database');
     $this->page->assertPresent('.nav-tabs'); // Backup and Restore tabs
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');
 
@@ -110,6 +109,6 @@ it('smoke test menu Pengaturan Sistem - Total Pengunjung', function () {
 
     $this->page->assertSee('Total Pengunjung');
     $this->page->assertPresent('#container'); // Highcharts container
-    
+
     sleep(2);
 })->group('smoke', 'smoke-pengaturan', 'browser');

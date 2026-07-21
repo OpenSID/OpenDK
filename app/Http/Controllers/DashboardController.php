@@ -96,15 +96,11 @@ class DashboardController extends Controller
         $deviceData = $this->convertToHighchartFormat($deviceCounts);
         $platformData = $this->convertToHighchartFormat($platformCounts);
 
-
         return view('dashboard.index', compact('page_title', 'data', 'top_pages_visited', 'browserData', 'deviceData', 'platformData'));
     }
 
     /**
-     * Ubah array associative count ke format Highcharts
-     *
-     * @param array $counts
-     * @return array
+     * Ubah array associative count ke format Highcharts.
      */
     private function convertToHighchartFormat(array $counts): array
     {

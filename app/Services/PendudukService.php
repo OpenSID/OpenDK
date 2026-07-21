@@ -3,14 +3,13 @@
 namespace App\Services;
 
 use App\Models\Penduduk;
-use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PendudukService extends BaseApiService
 {
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function jumlahPenduduk(array $filters = [])
     {
@@ -32,7 +31,7 @@ class PendudukService extends BaseApiService
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function desa(array $filters = [])
     {
@@ -58,7 +57,7 @@ class PendudukService extends BaseApiService
     }
 
     /**
-     * Export Data Penduduk
+     * Export Data Penduduk.
      */
     public function exportPenduduk($size, $number, $search)
     {
@@ -109,7 +108,7 @@ class PendudukService extends BaseApiService
     }
 
     /**
-     * Export Data Penduduk
+     * Export Data Penduduk.
      */
     public function cekPendudukNikTanggalLahir($nik, $tgl_lhr = null)
     {

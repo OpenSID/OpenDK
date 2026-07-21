@@ -32,11 +32,9 @@
 namespace Tests\Feature\Database;
 
 use App\Models\DataDesa;
-use App\Models\Penduduk;
 use App\Models\Imunisasi;
-use App\Models\AnggaranDesa;
+use App\Models\Penduduk;
 use Illuminate\Support\Facades\DB;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Test setup if needed

@@ -32,7 +32,6 @@
 namespace Tests\Feature\Settings;
 
 use App\Models\SettingAplikasi;
-use Tests\CrudTestCase;
 
 beforeEach(function () {
     // Initialize test data for setting aplikasi using Eloquent model
@@ -46,7 +45,7 @@ beforeEach(function () {
             'option' => json_encode([]),
         ]
     );
-    
+
     SettingAplikasi::updateOrCreate(
         ['key' => 'website_description'],
         [

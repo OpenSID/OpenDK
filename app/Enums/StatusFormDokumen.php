@@ -34,7 +34,7 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * status form dokumen
+ * status form dokumen.
  */
 final class StatusFormDokumen extends Enum
 {

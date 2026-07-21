@@ -33,8 +33,8 @@ namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\FaqApiRepository;
 use App\Transformers\FaqTransformer;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Spatie\Fractal\Fractal;
 
@@ -43,6 +43,7 @@ use Spatie\Fractal\Fractal;
  *     version="1.0.0",
  *     title="OpenDK FAQ API",
  *     description="API untuk mengakses data FAQ",
+ *
  *     @OA\Contact(
  *         name="OpenDK Development Team",
  *         email="dev@opendesa.id"
@@ -54,7 +55,6 @@ use Spatie\Fractal\Fractal;
  *     description="API endpoints untuk mengelola FAQ"
  * )
  */
-
 class FaqController extends BaseController
 {
     protected FaqApiRepository $faqApiRepository;
@@ -74,45 +74,58 @@ class FaqController extends BaseController
      *     summary="Get list of FAQ",
      *     description="Retrieve paginated list of FAQ with filtering, sorting, and search capabilities using Spatie Query Builder",
      *     tags={"FAQ"},
+     *
      *     @OA\Parameter(
      *         name="page[number]",
      *         in="query",
      *         description="Page number for pagination",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=1, minimum=1)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="page[size]",
      *         in="query",
      *         description="Number of items per page (max: 100)",
      *         required=false,
+     *
      *         @OA\Schema(type="integer", default=15, minimum=1, maximum=100)
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[question]",
      *         in="query",
      *         description="Filter FAQ by question",
      *         required=false,
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[answer]",
      *         in="query",
      *         description="Filter FAQ by answer",
      *         required=false,
+     *
      *         @OA\Schema(type="string")
      *     ),
+     *
      *     @OA\Parameter(
      *         name="filter[status]",
      *         in="query",
      *         description="Filter FAQ by status",
      *         required=false,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="data", type="array", @OA\Items(
      *                 type="object",
      *                 @OA\Property(property="type", type="string", example="faq"),
@@ -143,20 +156,26 @@ class FaqController extends BaseController
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="errors", type="object", example={
      *                 "per_page": {"The per page must not be greater than 100."},
      *                 "sort": {"The selected sort is invalid."}
      *             })
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=500,
      *         description="Server error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Internal server error")
      *         )
      *     )
@@ -167,7 +186,7 @@ class FaqController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return Cache::remember($cacheKey, $this->getCacheDuration(), function () {
             $data = $this->faqApiRepository->data();
             return $this->fractal($data, new FaqTransformer, 'faq');
         });

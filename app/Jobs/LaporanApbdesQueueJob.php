@@ -55,7 +55,8 @@ class LaporanApbdesQueueJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  array  $request
+     * @param array $request
+     *
      * @return void
      */
     public function __construct($request)

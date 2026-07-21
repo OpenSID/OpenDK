@@ -31,13 +31,13 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\MediaSosial;
-use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MediaSosialRequest;
+use App\Models\MediaSosial;
+use App\Traits\HandlesFileUpload;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class MediaSosialController extends Controller
 {
@@ -71,9 +71,9 @@ class MediaSosialController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->rawColumns(['status', 'aksi'])
                 ->escapeColumns([])
@@ -130,7 +130,8 @@ class MediaSosialController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function update(MediaSosialRequest $request, $id)

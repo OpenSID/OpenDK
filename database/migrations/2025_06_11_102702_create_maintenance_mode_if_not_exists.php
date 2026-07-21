@@ -3,11 +3,8 @@
 use App\Enums\Status;
 use App\Models\SettingAplikasi;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -19,7 +16,7 @@ return new class extends Migration
         if(SettingAplikasi::where('key', 'mode_maintenance')->exists()) {
             return; // Skip if the setting already exists
         }
-        SettingAplikasi::insert([            
+        SettingAplikasi::insert([
             'key' => 'mode_maintenance',
             'value' => Status::TidakAktif,
             'type' => 'boolean',
@@ -36,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        
+
     }
 };

@@ -33,7 +33,6 @@ namespace Tests\Feature\Permission;
 
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
-use Tests\TestCase;
 
 describe('Route Permission Middleware', function () {
     beforeEach(function () {
@@ -43,12 +42,12 @@ describe('Route Permission Middleware', function () {
     test('dashboard route is accessible when user has access.dashboard permission', function () {
         // Ensure permission exists
         $permission = Permission::firstOrCreate(['name' => 'access.dashboard', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         // Use givePermissionTo instead of syncPermissions
         $user->givePermissionTo($permission);
         $this->actingAs($user);
@@ -60,12 +59,12 @@ describe('Route Permission Middleware', function () {
 
     test('counter route is accessible when user has access.counter permission', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.counter', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         $user->givePermissionTo($permission);
         $this->actingAs($user);
 
@@ -76,12 +75,12 @@ describe('Route Permission Middleware', function () {
 
     test('informasi prosedur route requires permission', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.informasi.prosedur', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         $user->givePermissionTo($permission);
         $this->actingAs($user);
 
@@ -92,12 +91,12 @@ describe('Route Permission Middleware', function () {
 
     test('data penduduk route requires permission', function () {
         $permission = Permission::firstOrCreate(['name' => 'access.data.penduduk', 'guard_name' => 'web']);
-        
+
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         $user->givePermissionTo($permission);
         $this->actingAs($user);
 

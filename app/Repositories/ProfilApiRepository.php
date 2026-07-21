@@ -37,12 +37,12 @@ use Spatie\QueryBuilder\AllowedFilter;
 class ProfilApiRepository extends BaseApiRepository
 {
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(Profil $model)
     {
         parent::__construct($model);
-        
+
         // Initialize allowed filters, sorts, and includes
         $this->allowedFilters = [
             'nama_kecamatan', 'nama_kabupaten', 'nama_provinsi',
@@ -50,7 +50,7 @@ class ProfilApiRepository extends BaseApiRepository
             AllowedFilter::exact('kecamatan_id'),
             AllowedFilter::exact('kabupaten_id'),
             AllowedFilter::exact('provinsi_id'),
-            AllowedFilter::callback('search', function($query, $value){                
+            AllowedFilter::callback('search', function($query, $value){
                 $query->where('nama_kecamatan', 'LIKE', '%'.$value.'%')
                       ->orWhere('nama_kabupaten', 'LIKE', '%'.$value.'%')
                       ->orWhere('nama_provinsi', 'LIKE', '%'.$value.'%')
@@ -61,8 +61,8 @@ class ProfilApiRepository extends BaseApiRepository
         $this->allowedIncludes = ['dataUmum', 'dataDesa','strukturOrganisasi'];
         $this->defaultSort = 'nama_kecamatan';
     }
-    
-    public function data(){        
+
+    public function data(){
         return $this->getFilteredApi()->jsonPaginate();
     }
 

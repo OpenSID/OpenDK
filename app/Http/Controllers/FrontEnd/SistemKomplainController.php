@@ -31,16 +31,16 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Http\Controllers\FrontEndController;
+use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use Illuminate\Http\Request;
-use App\Models\JawabKomplain;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\FrontEndController;
 use App\Rules\ValidasiNikRule;
 use App\Services\PendudukService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class SistemKomplainController extends FrontEndController
 {
@@ -211,6 +211,7 @@ class SistemKomplainController extends FrontEndController
      * Display the specified resource.
      *
      * @param  int  slug
+     *
      * @return Response
      */
     public function show($slug)
@@ -292,5 +293,4 @@ class SistemKomplainController extends FrontEndController
 
         return view('pages.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
-
 }

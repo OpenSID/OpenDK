@@ -17,10 +17,10 @@ use App\Models\Widget;
 use App\Services\DesaService;
 use Closure;
 use Exception;
-use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 
 class GlobalShareMiddleware
 {
@@ -47,8 +47,8 @@ class GlobalShareMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse) $next
+     *
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
@@ -103,7 +103,6 @@ class GlobalShareMiddleware
             $navpotensi = TipePotensi::orderby('nama_kategori', 'ASC')->get();
             $pengurus = Pengurus::status()->get();
 
-
             View::share([
                 'profil' => $this->profil,
                 'sebutan_wilayah' => $this->sebutan_wilayah,
@@ -118,21 +117,6 @@ class GlobalShareMiddleware
         }
 
         return $next($request);
-    }
-
-    private function widgetAktif()
-    {
-        return Widget::status()
-            ->orderBy('urut')
-            ->get()
-            ->map(static function ($item) {
-                $item->judul = $item->judul;
-                $item->isi   = $item->jenis_widget == 3
-                    ? bersihkan_xss($item->isi)
-                    : str_replace('.blade.php', '', $item->isi);
-
-                return $item;
-            });
     }
 
     protected function kirimTrack()
@@ -187,5 +171,20 @@ class GlobalShareMiddleware
 
             return;
         }
+    }
+
+    private function widgetAktif()
+    {
+        return Widget::status()
+            ->orderBy('urut')
+            ->get()
+            ->map(static function ($item) {
+                $item->judul = $item->judul;
+                $item->isi   = $item->jenis_widget == 3
+                    ? bersihkan_xss($item->isi)
+                    : str_replace('.blade.php', '', $item->isi);
+
+                return $item;
+            });
     }
 }

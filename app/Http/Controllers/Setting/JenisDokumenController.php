@@ -31,14 +31,13 @@
 
 namespace App\Http\Controllers\Setting;
 
-use App\Models\JenisDokumen;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JenisDokumenRequest;
 use App\Models\FormDokumen;
+use App\Models\JenisDokumen;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class JenisDokumenController extends Controller
 {
@@ -65,8 +64,7 @@ class JenisDokumenController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param JenisDokumenRequest $request
-     * 
+     *
      * @return Response
      */
     public function store(JenisDokumenRequest $request)
@@ -100,7 +98,8 @@ class JenisDokumenController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -113,9 +112,8 @@ class JenisDokumenController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  int  $id
-     * @param JenisDokumenRequest $request
-     * 
+     * @param int $id
+     *
      * @return Response
      */
     public function update(JenisDokumenRequest $request, $id)
@@ -148,7 +146,8 @@ class JenisDokumenController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return Response
      */
     public function destroy($id)
@@ -163,7 +162,6 @@ class JenisDokumenController extends Controller
             if ($isUsed) {
                 return back()->with('error', 'Jenis Dokumen tidak bisa dihapus karena sedang digunakan pada Form Dokumen.');
             }
-            ;
 
             $jenisDokumen->delete();
         } catch (\Exception $e) {

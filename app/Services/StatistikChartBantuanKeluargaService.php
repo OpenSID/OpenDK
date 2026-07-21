@@ -34,5 +34,6 @@ namespace App\Services;
 class StatistikChartBantuanKeluargaService extends StatistikChartBantuanPendudukService
 {
     protected $sasaran = 2;
+
     protected $kategori = 'keluarga';
 }

@@ -11,7 +11,6 @@ class GaleriObserver
     /**
      * Handle the Galeri "created" event.
      *
-     * @param  \App\Models\Galeri  $galeri
      * @return void
      */
     public function created(Galeri $galeri)
@@ -22,7 +21,6 @@ class GaleriObserver
     /**
      * Handle the Galeri "updated" event.
      *
-     * @param  \App\Models\Galeri  $galeri
      * @return void
      */
     public function updated(Galeri $galeri)
@@ -49,7 +47,6 @@ class GaleriObserver
     /**
      * Handle the Galeri "deleted" event.
      *
-     * @param  \App\Models\Galeri  $galeri
      * @return void
      */
     public function deleted(Galeri $galeri)
@@ -73,7 +70,6 @@ class GaleriObserver
     /**
      * Handle the Galeri "restored" event.
      *
-     * @param  \App\Models\Galeri  $galeri
      * @return void
      */
     public function restored(Galeri $galeri)
@@ -84,7 +80,6 @@ class GaleriObserver
     /**
      * Handle the Galeri "force deleted" event.
      *
-     * @param  \App\Models\Galeri  $galeri
      * @return void
      */
     public function forceDeleted(Galeri $galeri)

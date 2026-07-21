@@ -38,6 +38,9 @@ use Illuminate\Support\Facades\Cache;
 class SettingAplikasi extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+
     protected $table = 'das_setting';
 
     protected $fillable = [
@@ -48,8 +51,6 @@ class SettingAplikasi extends Model
         'description',
         'option',
     ];
-
-    public $timestamps = false;
 
     protected static function boot()
     {

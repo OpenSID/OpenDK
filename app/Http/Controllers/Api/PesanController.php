@@ -55,6 +55,7 @@ class PesanController extends Controller
      * @bodyParam pengirim string required Pengirim pesan. Example: operator@desa.id
      * @bodyParam nama_pengirim string required Nama pengirim. Example: Ahmad
      * @bodyParam pesan_id int ID pesan untuk membalas percakapan yang sudah ada. Example: 5
+     *
      * @response {
      *   "status": true,
      *   "message": "Berhasil mengirim pesan"
@@ -116,6 +117,7 @@ class PesanController extends Controller
      *
      * @bodyParam kode_desa string required Kode desa. Example: 3201012001
      * @bodyParam id int ID pesan terakhir yang diterima (untuk pagination). Example: 0
+     *
      * @response {
      *   "status": true,
      *   "data": [{"id": 1, "judul": "Laporan", "detailPesan": []}]
@@ -149,6 +151,7 @@ class PesanController extends Controller
      * @group OpenSID Integration
      *
      * @queryParam id int required ID pesan. Example: 1
+     *
      * @response {
      *   "status": true,
      *   "data": {"id": 1, "judul": "Laporan", "detailPesan": [{"id": 1, "text": "Isi pesan"}]}

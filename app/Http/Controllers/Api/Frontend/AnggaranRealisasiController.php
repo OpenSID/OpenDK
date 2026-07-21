@@ -34,13 +34,13 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Services\AnggaranRealisasiChartService;
 
 class AnggaranRealisasiController extends BaseController
-{    
+{
     // TODO : Sederhanakan, buat jadi 1 kondisi yg lebih fleksibel.
     public function getChartAnggaranRealisasi()
     {
         $mid = request('mid');
         $year = request('y');
 
-        return (new AnggaranRealisasiChartService)->chart( $mid, $year);
+        return (new AnggaranRealisasiChartService)->chart($mid, $year);
     }
 }

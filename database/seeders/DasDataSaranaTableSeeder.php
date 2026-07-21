@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 class DasDataSaranaTableSeeder extends Seeder
 {
     /**
-     * Jalankan seeder untuk tabel das_data_sarana
+     * Jalankan seeder untuk tabel das_data_sarana.
      *
      * @return void
      */

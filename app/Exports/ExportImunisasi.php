@@ -41,8 +41,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ExportImunisasi implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
     /**
-     * Mengambil koleksi data Imunisasi untuk ekspor
-     * 
+     * Mengambil koleksi data Imunisasi untuk ekspor.
+     *
      * @return \Illuminate\Support\Collection
      */
     public function collection()
@@ -52,9 +52,7 @@ class ExportImunisasi implements FromCollection, WithHeadings, WithMapping, With
     }
 
     /**
-     * Header kolom untuk file Excel
-     * 
-     * @return array
+     * Header kolom untuk file Excel.
      */
     public function headings(): array
     {
@@ -71,10 +69,7 @@ class ExportImunisasi implements FromCollection, WithHeadings, WithMapping, With
     }
 
     /**
-     * Memetakan data untuk setiap baris Excel
-     * 
-     * @param mixed $imunisasi
-     * @return array
+     * Memetakan data untuk setiap baris Excel.
      */
     public function map($imunisasi): array
     {
@@ -93,9 +88,8 @@ class ExportImunisasi implements FromCollection, WithHeadings, WithMapping, With
     }
 
     /**
-     * Styling untuk file Excel
-     * 
-     * @param Worksheet $sheet
+     * Styling untuk file Excel.
+     *
      * @return array
      */
     public function styles(Worksheet $sheet)

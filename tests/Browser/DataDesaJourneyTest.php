@@ -1,10 +1,10 @@
 <?php
 
-use Tests\BrowserTestCase;
-use Tests\Browser\Pages\LoginPage;
-use Tests\Browser\Pages\DataDesaPage;
-use App\Models\User;
 use App\Models\Profil;
+use App\Models\User;
+use Tests\Browser\Pages\DataDesaPage;
+use Tests\Browser\Pages\LoginPage;
+use Tests\BrowserTestCase;
 
 uses(BrowserTestCase::class);
 

@@ -32,9 +32,8 @@
 namespace Database\Seeders;
 
 use App\Models\Kategori;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 
 class RefKategori extends Seeder
 {

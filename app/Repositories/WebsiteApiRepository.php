@@ -44,16 +44,23 @@ use App\Models\Slide;
 class WebsiteApiRepository extends BaseApiRepository
 {
     protected $eventModel;
+
     protected $mediaSosialModel;
+
     protected $mediaTerkaitModel;
+
     protected $navigationModel;
+
     protected $navMenuModel;
+
     protected $pengurusModel;
+
     protected $sinergiProgramModel;
+
     protected $slideModel;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct(
         Event $eventModel,
@@ -76,7 +83,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get all website data for frontend
+     * Get all website data for frontend.
      *
      * @return array
      */
@@ -96,7 +103,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get open events
+     * Get open events.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -106,7 +113,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get active media sosial
+     * Get active media sosial.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -116,7 +123,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get active media terkait
+     * Get active media terkait.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -126,7 +133,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get navigations with children
+     * Get navigations with children.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -140,7 +147,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get nav menus with children
+     * Get nav menus with children.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -154,7 +161,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get active sinergi program
+     * Get active sinergi program.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -166,7 +173,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get slides ordered by created_at
+     * Get slides ordered by created_at.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -176,7 +183,7 @@ class WebsiteApiRepository extends BaseApiRepository
     }
 
     /**
-     * Get active pengurus
+     * Get active pengurus.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */

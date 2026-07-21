@@ -76,7 +76,7 @@ class KesehatanChartImunisasiService
             }
 
             $tabel_kesehatan = view('pages.kesehatan.tabel_imunisasi_1', compact('data_tabel'))->render();
-            //$tabel_kesehatan = $data_tabel;
+            // $tabel_kesehatan = $data_tabel;
         } elseif ($year != 'Semua' && $did != 'Semua') {
             $data_tabel = [];
             foreach (kuartal_bulan() as $key => $kuartal) {
@@ -90,7 +90,7 @@ class KesehatanChartImunisasiService
                 ];
             }
 
-            //$tabel_kesehatan = $data_tabel;
+            // $tabel_kesehatan = $data_tabel;
             $tabel_kesehatan = view('pages.kesehatan.tabel_imunisasi_2', compact('data_tabel'))->render();
         }
 

@@ -13,7 +13,6 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 uses(DatabaseTransactions::class);
 

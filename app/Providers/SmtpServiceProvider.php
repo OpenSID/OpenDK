@@ -63,9 +63,9 @@ class SmtpServiceProvider extends ServiceProvider
             return;
         }
 
-        //validasi table email smtp, apabila tidak ada
+        // validasi table email smtp, apabila tidak ada
         try {
-            //mengambil data smtp terakhir
+            // mengambil data smtp terakhir
             $email_smtp = EmailSmtp::getLatestEmailSmtp();
             if ($email_smtp) {
                 $config = [

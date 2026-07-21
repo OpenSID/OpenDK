@@ -10,7 +10,6 @@ class WidgetObserver
     /**
      * Handle the Widget "created" event.
      *
-     * @param  \App\Models\Widget  $widget
      * @return void
      */
     public function created(Widget $widget)
@@ -21,7 +20,6 @@ class WidgetObserver
     /**
      * Handle the Widget "updated" event.
      *
-     * @param  \App\Models\Widget  $widget
      * @return void
      */
     public function updated(Widget $widget)
@@ -34,7 +32,6 @@ class WidgetObserver
     /**
      * Handle the Widget "deleted" event.
      *
-     * @param  \App\Models\Widget  $widget
      * @return void
      */
     public function deleted(Widget $widget)
@@ -47,7 +44,6 @@ class WidgetObserver
     /**
      * Handle the Widget "restored" event.
      *
-     * @param  \App\Models\Widget  $widget
      * @return void
      */
     public function restored(Widget $widget)
@@ -58,7 +54,6 @@ class WidgetObserver
     /**
      * Handle the Widget "force deleted" event.
      *
-     * @param  \App\Models\Widget  $widget
      * @return void
      */
     public function forceDeleted(Widget $widget)

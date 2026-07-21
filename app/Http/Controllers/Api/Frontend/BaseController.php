@@ -5,15 +5,15 @@ namespace App\Http\Controllers\Api\Frontend;
 use App\Models\SettingAplikasi;
 use App\Services\CacheService;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 
 class BaseController extends Controller
 {
     protected $prefix;
+
     protected function fractal(
         $data,
         null|callable|\League\Fractal\TransformerAbstract $transformer,
-        null|string $resourceName = null,
+        ?string $resourceName = null,
     ): \Spatie\Fractal\Fractal {
         return fractal(
             $data,
@@ -24,7 +24,7 @@ class BaseController extends Controller
     }
 
     /**
-     * Get cache key for Artikel API
+     * Get cache key for Artikel API.
      */
     protected function getCacheKey(string $method, array $params = []): string
     {
@@ -37,7 +37,7 @@ class BaseController extends Controller
     }
 
     /**
-     * Get cache duration from config
+     * Get cache duration from config.
      */
     protected function getCacheDuration(): int
     {
@@ -45,9 +45,10 @@ class BaseController extends Controller
     }
 
     /**
-     * Remove all cache entries with the specified prefix
+     * Remove all cache entries with the specified prefix.
      *
      * @param string|null $prefix Cache prefix to clear. If null, uses $this->prefix
+     *
      * @return bool True if successful, false otherwise
      */
     protected function removeCachePrefix(?string $prefix = null): bool

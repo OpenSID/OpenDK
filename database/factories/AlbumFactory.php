@@ -12,7 +12,7 @@ class AlbumFactory extends Factory
     public function definition()
     {
         return [
-            'judul' => $this->faker->sentence(3), // Random judul            
+            'judul' => $this->faker->sentence(3), // Random judul
             'gambar' => $this->faker->imageUrl(), // Random image URL
             'status' => $this->faker->boolean(), // Random status (0 or 1)
             'created_at' => now(),

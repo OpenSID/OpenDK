@@ -44,7 +44,7 @@ use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Class LogViewerController
+ * Class LogViewerController.
  */
 class LogViewerController extends Controller
 {
@@ -53,13 +53,13 @@ class LogViewerController extends Controller
      */
     protected $request;
 
-    private $log_viewer;
-
     protected $view_log = 'laravel-log-viewer::index';
 
     protected $profil;
 
     protected $requirements;
+
+    private $log_viewer;
 
     /**
      * LogViewerController constructor.
@@ -133,78 +133,6 @@ class LogViewerController extends Controller
             ->with('page_title', $page_title)
             ->with('email_smtp', $email_smtp)
             ->with('phpSupportInfo', $phpSupportInfo);
-    }
-
-    /**
-     * @return bool|mixed
-     *
-     * @throws \Exception
-     */
-    private function earlyReturn()
-    {
-        if ($this->request->input('f')) {
-            $this->log_viewer->setFolder(Crypt::decrypt($this->request->input('f')));
-        }
-
-        if ($this->request->input('dl')) {
-            return $this->download($this->pathFromInput('dl'));
-        } elseif ($this->request->has('clean')) {
-            app('files')->put($this->pathFromInput('clean'), '');
-
-            return $this->redirect(url()->previous());
-        } elseif ($this->request->has('del')) {
-            app('files')->delete($this->pathFromInput('del'));
-
-            return $this->redirect($this->request->url());
-        } elseif ($this->request->has('delall')) {
-            $files = ($this->log_viewer->getFolderName())
-                ? $this->log_viewer->getFolderFiles(true)
-                : $this->log_viewer->getFiles(true);
-            foreach ($files as $file) {
-                app('files')->delete($this->log_viewer->pathToLogFile($file));
-            }
-
-            return $this->redirect($this->request->url());
-        }
-
-        return false;
-    }
-
-    /**
-     * @param  string  $input_string
-     * @return string
-     *
-     * @throws \Exception
-     */
-    private function pathFromInput($input_string)
-    {
-        return $this->log_viewer->pathToLogFile(Crypt::decrypt($this->request->input($input_string)));
-    }
-
-    /**
-     * @return mixed
-     */
-    private function redirect($to)
-    {
-        if (function_exists('redirect')) {
-            return redirect($to);
-        }
-
-        return app('redirect')->to($to);
-    }
-
-    /**
-     * @param  string  $data
-     * @return mixed
-     */
-    private function download($data)
-    {
-        if (function_exists('response')) {
-            return response()->download($data);
-        }
-
-        // For laravel 4.2
-        return app('\Illuminate\Support\Facades\Response')->download($data);
     }
 
     public function linkStorage()
@@ -295,5 +223,77 @@ class LogViewerController extends Controller
         });
 
         return response($phpinfo);
+    }
+
+    /**
+     * @return bool|mixed
+     *
+     * @throws \Exception
+     */
+    private function earlyReturn()
+    {
+        if ($this->request->input('f')) {
+            $this->log_viewer->setFolder(Crypt::decrypt($this->request->input('f')));
+        }
+
+        if ($this->request->input('dl')) {
+            return $this->download($this->pathFromInput('dl'));
+        }
+        if ($this->request->has('clean')) {
+            app('files')->put($this->pathFromInput('clean'), '');
+
+            return $this->redirect(url()->previous());
+        }
+        if ($this->request->has('del')) {
+            app('files')->delete($this->pathFromInput('del'));
+
+            return $this->redirect($this->request->url());
+        }
+        if ($this->request->has('delall')) {
+            $files = ($this->log_viewer->getFolderName())
+                ? $this->log_viewer->getFolderFiles(true)
+                : $this->log_viewer->getFiles(true);
+            foreach ($files as $file) {
+                app('files')->delete($this->log_viewer->pathToLogFile($file));
+            }
+
+            return $this->redirect($this->request->url());
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $input_string
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    private function pathFromInput($input_string)
+    {
+        return $this->log_viewer->pathToLogFile(Crypt::decrypt($this->request->input($input_string)));
+    }
+
+    private function redirect($to)
+    {
+        if (function_exists('redirect')) {
+            return redirect($to);
+        }
+
+        return app('redirect')->to($to);
+    }
+
+    /**
+     * @param string $data
+     */
+    private function download($data)
+    {
+        if (function_exists('response')) {
+            return response()->download($data);
+        }
+
+        // For laravel 4.2
+        return app('\Illuminate\Support\Facades\Response')->download($data);
     }
 }

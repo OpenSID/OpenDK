@@ -34,7 +34,7 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 /**
- * konversi hari form dokumen
+ * konversi hari form dokumen.
  */
 final class KonversiHariFormDokumen extends Enum
 {

@@ -24,6 +24,9 @@ beforeEach(function () {
 
     Storage::fake('public');
 
+    // Mock backup:run agar tidak menjalankan Spatie backup nyata saat test
+    \Illuminate\Support\Facades\Artisan::shouldReceive('call')->with('backup:run')->andReturn(0)->byDefault();
+
     // Nonaktifkan upload_limit agar tidak mengganggu test
     SettingAplikasi::updateOrCreate(
         ['key' => 'upload_limit'],

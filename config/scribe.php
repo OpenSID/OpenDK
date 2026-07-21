@@ -22,7 +22,7 @@ return [
     'routes' => [
         [
             'match' => [
-                'prefixes' => ['api/v1/*'],
+                'prefixes' => ['api/v1/*', 'api/frontend/v1/*'],
                 'domains' => ['*'],
             ],
             'include' => [],

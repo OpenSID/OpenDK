@@ -119,6 +119,7 @@ jobs:
           php artisan jwt:secret
           chmod -R 777 storage bootstrap/cache
           touch storage/installed
+          mkdir -p build/logs
 
       - name: Import test database
         run: |
@@ -232,6 +233,7 @@ jobs:
           php artisan jwt:secret
           chmod -R 777 storage bootstrap/cache
           touch storage/installed
+          mkdir -p build/logs
 
       - name: Import test database
         run: |
@@ -384,6 +386,7 @@ jobs:
           php artisan jwt:secret
           chmod -R 777 storage bootstrap/cache
           touch storage/installed
+          mkdir -p build/logs
 
       - name: Import test database
         run: |
@@ -399,6 +402,16 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: secret
         run: php artisan migrate --force
+
+      - name: Generate OpenAPI Spec (Scribe)
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: |
+          php artisan scribe:generate
+          php artisan scribe:copy-openapi
 
       - name: Run Integration Tests with coverage
         env:
@@ -513,6 +526,7 @@ jobs:
           php artisan jwt:secret
           chmod -R 777 storage bootstrap/cache
           touch storage/installed
+          mkdir -p build/logs
 
       - name: Import test database
         run: |
@@ -576,6 +590,9 @@ jobs:
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare coverage directory
+        run: mkdir -p build/logs
 
       - name: Download unit coverage
         uses: actions/download-artifact@v4

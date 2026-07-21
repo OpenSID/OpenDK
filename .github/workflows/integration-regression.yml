@@ -143,8 +143,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: secret
         run: |
-          php artisan test --testsuite=Unit --coverage --min=0
-          cp build/logs/clover.xml build/logs/unit-clover.xml
+          php artisan test --testsuite=Unit --coverage-clover=build/logs/unit-clover.xml
 
       - name: Display coverage summary
         if: always()
@@ -420,8 +419,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: secret
         run: |
-          php artisan test --testsuite=Feature --coverage --min=0
-          cp build/logs/clover.xml build/logs/integration-clover.xml
+          php artisan test --testsuite=Feature --coverage-clover=build/logs/integration-clover.xml
 
       - name: Display coverage summary
         if: always()

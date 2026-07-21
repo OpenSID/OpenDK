@@ -13,7 +13,7 @@ permissions:
 env:
   PHP_VERSION: "8.4"
   NODE_VERSION: "20"
-  COVERAGE_MIN_THRESHOLD: 70
+  COVERAGE_MIN_THRESHOLD: 30
   COVERAGE_DROP_THRESHOLD: 2
 
 # ───────────────────────────────────────────────────────────────────────

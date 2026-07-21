@@ -32,6 +32,11 @@ pest()->group('browser')
         // Set headless mode for faster execution
     });
 
+// Configure test groups for ApiKey tests
+pest()->group('api-key')
+    ->extend(Tests\ApiKeyTestCase::class)
+    ->in('ApiKey');
+
 // Configure browser settings
 pest()->browser()
     ->timeout(30000); // Increase timeout to 30 seconds

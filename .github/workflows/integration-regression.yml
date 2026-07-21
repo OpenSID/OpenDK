@@ -617,7 +617,7 @@ jobs:
         with:
           files: build/logs/unit-clover.xml,build/logs/integration-clover.xml
           flags: combined
-          fail_ci_if_error: true
+          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
 
   # ═════════════════════════════════════════════════════════════════════

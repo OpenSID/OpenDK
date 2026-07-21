@@ -13,10 +13,14 @@
     <testsuite name="Browser">
       <directory suffix="Test.php">./tests/Browser</directory>
     </testsuite>
+    <testsuite name="Contract">
+      <directory suffix="Test.php">./tests/Contract</directory>
+    </testsuite>
   </testsuites>
   <logging>
     <junit outputFile="build/report.junit.xml"/>
     <teamcity outputFile="build/teamcity.txt"/>
+    <clover outputFile="build/logs/clover.xml"/>
   </logging>
   <php>
     <server name="APP_ENV" value="testing"/>

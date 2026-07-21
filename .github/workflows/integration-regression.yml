@@ -65,12 +65,26 @@ jobs:
         run: vendor/bin/pint --test
 
   # ═════════════════════════════════════════════════════════════════════
-  # Job 2 — Unit Tests  (SQLite in-memory, fast)
+  # Job 2 — Unit Tests  (MySQL, fast)
   # ═════════════════════════════════════════════════════════════════════
   unit:
     name: "Unit Tests"
     runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
       - name: Checkout code
@@ -102,18 +116,26 @@ jobs:
         run: |
           cp .env.example .env
           php artisan key:generate
+          php artisan jwt:secret
           chmod -R 777 storage bootstrap/cache
           touch storage/installed
 
+      - name: Import test database
+        run: |
+          tar -xzf database/database_test.sql.tar.gz -C database
+          echo "Waiting for MySQL to be ready..."
+          sleep 15
+          mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
       - name: Run Unit Tests with coverage
         env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ":memory:"
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
         run: |
-          vendor/bin/pest --group=unit \
-            --coverage-clover=build/logs/unit-clover.xml \
-            --coverage-text=build/logs/unit-coverage.txt \
-            --min=0
+          php artisan test --testsuite=Unit --coverage --min=0
+          cp build/logs/clover.xml build/logs/unit-clover.xml
 
       - name: Display coverage summary
         if: always()
@@ -289,7 +311,7 @@ jobs:
         run: php bin/validate-openapi.php
 
       - name: Run Contract Tests
-        run: vendor/bin/pest tests/Contract --group=contract
+        run: php artisan test --testsuite=Contract
 
       - name: Upload contract JUnit report
         uses: actions/upload-artifact@v4
@@ -369,10 +391,8 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: secret
         run: |
-          vendor/bin/pest --group=feature \
-            --coverage-clover=build/logs/integration-clover.xml \
-            --coverage-text=build/logs/integration-coverage.txt \
-            --min=0
+          php artisan test --testsuite=Feature --coverage --min=0
+          cp build/logs/clover.xml build/logs/integration-clover.xml
 
       - name: Display coverage summary
         if: always()

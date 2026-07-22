@@ -104,9 +104,9 @@
                         var dokumen = response.data[0].attributes;
                         let isPdf = (dokumen.mime_type === 'application/pdf' || (dokumen.file_dokumen_path && dokumen.file_dokumen_path.toLowerCase().endsWith('.pdf')));
                         let objFile = !isPdf ? `<img id="fileUnduhan" style="max-width: 100%; height: auto;" src="${dokumen.file_dokumen_path}">` : `<iframe src="${dokumen.file_dokumen_path}" width="100%" height="500" class="" id="showpdf" frameborder="0"></iframe>`;
-                        
+
                         var retensiText = formatRetensi(dokumen.retention_days);
-                        
+
                         var modalHtml = '<div class="modal fade" id="dokumenDetailModal" tabindex="-1" role="dialog">' +
                             '<div class="modal-dialog modal-lg" role="document">' +
                             '<div class="modal-content">' +

@@ -76,7 +76,15 @@
                         </div>
                         <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
                             <div class="input-group">
-                                <input id="password" type="password" class="form-control" name="password" required placeholder="Password" data-testid="login-password">
+                                <input
+                                    id="password"
+                                    type="password"
+                                    class="form-control"
+                                    name="password"
+                                    required
+                                    placeholder="Password"
+                                    data-testid="login-password"
+                                >
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>

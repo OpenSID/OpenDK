@@ -19,7 +19,7 @@
         <section class="content">
             <div class="row">
                 <div class="box box-primary">
-                    {!! html()->form('PUT', route('setting.aplikasi.update', $aplikasi->id))->id('form-setting-aplikasi')->class('form-horizontal form-label-left')->open() !!}
+                    {!! html()->form('PUT', route('setting.aplikasi.update', $aplikasi->id))->id('form-setting-aplikasi')->class('form-horizontal form-label-left')->attribute('data-testid', 'settings-edit-form')->open() !!}
 
                     <div class="box-body">
 

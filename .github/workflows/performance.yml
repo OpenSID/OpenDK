@@ -1,0 +1,175 @@
+name: Performance Tests
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  push:
+    branches: [master]
+    paths:
+      - 'app/Http/Controllers/Api/**'
+      - 'app/Http/Middleware/**'
+      - 'app/Services/**'
+      - 'routes/api.php'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Base URL for performance testing'
+        required: false
+        default: 'http://127.0.0.1:8000'
+      vus:
+        description: 'Number of virtual users'
+        required: false
+        default: '10'
+
+jobs:
+  performance-tests:
+    runs-on: ubuntu-latest
+    if: >
+      github.event_name == 'schedule' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && contains(github.event.head_commit.message, '[perf]'))
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_perf
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.4'
+        extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, tidy
+        coverage: none
+
+    - uses: actions/checkout@v4
+
+    - name: Copy .env
+      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+    - name: Generate key
+      run: php artisan key:generate && php artisan jwt:secret
+
+    - name: Directory Permissions
+      run: chmod -R 777 storage bootstrap/cache
+
+    - name: Set Installed State
+      run: touch storage/installed
+
+    - name: Extract database testing
+      run: |
+        tar -xzf database/database_test.sql.tar.gz -C database
+
+    - name: Wait for MySQL
+      run: sleep 15
+
+    - name: Import SQL file into MySQL
+      run: |
+        mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_perf < ./database/database_test.sql
+
+    - name: Run migrations
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: testing_perf
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+      run: php artisan migrate --force
+
+    - name: Seed test admin user
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: testing_perf
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+      run: |
+        php artisan tinker --execute="
+          use App\Models\User;
+          use Database\Seeders\RoleSpatieSeeder;
+          \$user = User::firstOrCreate(
+              ['email' => 'admin@mail.com'],
+              [
+                  'name' => 'Administrator',
+                  'password' => bcrypt('Admin123!'),
+                  'gender' => 'Male',
+                  'address' => 'Jakarta',
+                  'status' => 1,
+              ]
+          );
+          \$user->forceFill(['status' => 1])->save();
+          if (!class_exists(RoleSpatieSeeder::class)) {
+              (new RoleSpatieSeeder())->run();
+          }
+          \$user->assignRole('super-admin');
+          echo 'Admin user seeded: ' . \$user->email;
+        "
+
+    - name: Start Laravel Server
+      run: php artisan serve --env=testing --host=0.0.0.0 --port=8000 &
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: testing_perf
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+
+    - name: Wait for server
+      run: sleep 5
+
+    - name: Install k6
+      uses: grafana/install-k6-action@v1
+      with:
+        version: 'v0.49.0'
+
+    - name: Run Performance Test
+      run: |
+        K6_BASE_URL=${{ github.event.inputs.base_url || 'http://127.0.0.1:8000' }} \
+        K6_VUS=${{ github.event.inputs.vus || '10' }} \
+        k6 run tests/performance/load-test.js
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: testing_perf
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+      continue-on-error: false
+
+    - name: Run Rate Limit Test
+      run: |
+        K6_BASE_URL=${{ github.event.inputs.base_url || 'http://127.0.0.1:8000' }} \
+        k6 run tests/performance/rate-limit-test.js
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: testing_perf
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+
+    - name: Upload Performance Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: performance-report
+        path: tests/performance/*.json
+        retention-days: 30
+
+    - name: Summary
+      if: always()
+      run: |
+        echo "## Performance Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        if [ -f tests/performance/report.json ]; then
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat tests/performance/report.json >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+        else
+          echo "No performance report generated." >> $GITHUB_STEP_SUMMARY
+        fi

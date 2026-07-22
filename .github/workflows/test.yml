@@ -46,7 +46,7 @@ jobs:
       run: npm install
 
     - name: Install Playwright Browsers
-      run: npx playwright install
+      run: npm install playwright && npx playwright install
 
     - name: Generate key
       run: php artisan key:generate && php artisan jwt:secret

@@ -24,3 +24,14 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 1. [#1670](https://github.com/OpenSID/OpenDK/issues/1670) Penyesuaian sembunyikan tombol unggah pada pengaturan daftar tema.
 2. [#1651](https://github.com/OpenSID/OpenDK/issues/1651) Penyesuaian susun ulang akses untuk group pengguna.
+3. [#1657](https://github.com/OpenSID/OpenDK/issues/1657) Penambahan data dummy seeder untuk demo OpenDK.
+
+#### CATATAN TAMBAHAN
+
+# Jalankan migrasi dan seeder setelah diinstalasi.
+
+php artisan migrate  
+php artisan db:seed --class=RoleSpatieSeeder.
+
+# Jalankan seeder demo
+php artisan db:seed --class=DemoDatabaseSeeder

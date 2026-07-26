@@ -16,7 +16,7 @@
             @foreach ($sections as $sectionKey => $section)
                 @php
                     $sectionData = $dataDetail[$sectionKey] ?? null;
-                    $sectionTotal = $sectionData ? ($sectionData['attributes']['anggaran_local'] ?? format_number_id(0)) : format_number_id(0);
+                    $sectionTotal = $sectionData ? $sectionData['attributes']['anggaran_local'] ?? format_number_id(0) : format_number_id(0);
                 @endphp
                 <div class="panel box box-primary">
                     <div class="box-header with-border">

@@ -49,19 +49,6 @@ class DemoDasNavigationTableSeeder extends Seeder
         // Submenu
         $subMenu = [];
 
-        DB::table('das_data_desa')->get()->each(function ($data) use (&$subMenu) {
-            $slug = $data->sebutan_desa . '-' . Str::slug($data->nama);
-            $subMenu[] = [
-                'parent_id' => Navigation::where('slug', 'desa')->first()->id,
-                'name' => ucwords($data->sebutan_desa . ' ' . $data->nama),
-                'slug' => $slug,
-                'type' => MenuTipe::DESA,
-                'url' => 'desa/' . $slug,
-                'order' => $data->id,
-                'status' => 1,
-            ];
-        });
-
         DB::table('das_tipe_potensi')->get()->each(function ($data) use (&$subMenu) {
             $subMenu[] = [
                 'parent_id' => Navigation::where('slug', 'potensi')->first()->id,

@@ -97,7 +97,7 @@ return [
                 'dump_binary_path' => env('DB_MYSQLDUMP_PATH'), // Sesuaikan dengan lokasi binary mysqldump di server
                 // 'use_single_transaction' => true, // InnoDB
                 // 'timeout' => 60, // Waktu timeout dalam detik
-                'add_extra_option' => '--password=' . env('DB_PASSWORD', ''),
+                // 'add_extra_option' => '--password=' . env('DB_PASSWORD', ''),
             ],
         ],
 

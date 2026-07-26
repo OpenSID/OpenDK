@@ -34,9 +34,7 @@
                 $fileName = basename($potensi->file_gambar);
             @endphp
             <div style="padding:8px; background:#f5f5f5; border-radius:4px; margin-bottom:8px; display:flex; align-items:center; gap:10px;">
-                <img src="{{ is_img(str_replace('//', '/', $potensi->file_gambar)) }}"
-                     style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;"
-                     class="img-thumbnail">
+                <img src="{{ is_img(str_replace('//', '/', $potensi->file_gambar)) }}" style="max-height:60px; max-width:90px; object-fit:contain; border-radius:3px;" class="img-thumbnail">
                 <div style="overflow: hidden;">
                     <span class="text-muted" style="word-break: break-all;">{{ $fileName }}</span><br>
                     <a href="{{ route('informasi.potensi.download', $potensi->id) }}" class="btn btn-xs btn-default" style="margin-top: 4px;">

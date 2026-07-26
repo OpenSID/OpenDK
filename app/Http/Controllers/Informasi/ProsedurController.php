@@ -90,6 +90,8 @@ class ProsedurController extends Controller
                 return '-';
             })
             ->addColumn('aksi', function ($row) {
+                $data['show_url'] = auth()->user()->can('access.informasi.prosedur.view') ? route('informasi.prosedur.show', $row->id) : null;
+
                 if (!auth()->guest()) {
                     $data['edit_url'] = auth()->user()->can('access.informasi.prosedur.edit') ? route('informasi.prosedur.edit', $row->id) : null;
                     $data['delete_url'] = auth()->user()->can('access.informasi.prosedur.delete') ? route('informasi.prosedur.destroy', $row->id) : null;

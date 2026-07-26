@@ -58,7 +58,11 @@
                     contentBox.style.display = 'block';
 
                     $('#container').orgchart({
-                        'data' : { children: result.children, name: '', title: '' },
+                        'data': {
+                            children: result.children,
+                            name: '',
+                            title: ''
+                        },
                         'nodeContent': 'title',
                         'nodeId': 'id',
                         'nodeTitle': 'name',
@@ -96,7 +100,10 @@
 
             document.getElementById('btnDownload').addEventListener('click', function() {
                 var chart = document.getElementById('container');
-                html2canvas(chart, { scale: 2, useCORS: true }).then(function(canvas) {
+                html2canvas(chart, {
+                    scale: 2,
+                    useCORS: true
+                }).then(function(canvas) {
                     var link = document.createElement('a');
                     link.download = 'struktur-organisasi.png';
                     link.href = canvas.toDataURL('image/png');

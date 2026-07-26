@@ -17,6 +17,7 @@ class PendudukService extends BaseApiService
         // Default parameter
         $defaultParams = [
             'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+            'filter[status_dasar]' => 1,
         ];
 
         // Gabungkan parameter default dengan filter dinamis

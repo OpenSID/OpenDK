@@ -236,7 +236,7 @@ class RoleSpatieSeeder extends Seeder
         $administratorWebsite = Role::firstOrCreate(['name' => 'administrator-website', 'guard_name' => 'web']);
 
         // Super-admin mendapat semua permission (level 1, 2, dan 3)
-        $allPermissions = Permission::all()->pluck('name')->toArray();
+        $allPermissions = Permission::where('guard_name', 'web')->pluck('name')->toArray();
         $superAdmin->syncPermissions($allPermissions);
 
         // Admin Kecamatan: semua permission kecuali access.setting.*

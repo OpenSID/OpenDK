@@ -16,6 +16,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1654](https://github.com/OpenSID/OpenDK/issues/1654) Perbaiki fungsi dokumen saat ini tidak di tampilkan dengan benar.
 6. [#1647](https://github.com/OpenSID/OpenDK/issues/1647) Perbaiki fungsi lihat penduduk details agar hanya menapilkan tanpa field.
 7. [#1655](https://github.com/OpenSID/OpenDK/issues/1655) Perbaiki fungsi Faq yang tampil pada halaman publik.
+8. [#1682](https://github.com/OpenSID/OpenDK/issues/1682) Perbaiki statistik penduduk di halaman public masih belum sesuai.
 
 #### TEKNIS
 

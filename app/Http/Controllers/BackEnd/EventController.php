@@ -78,7 +78,7 @@ class EventController extends BackEndController
                     $data['preview_url'] = route('informasi.event.preview', $row->id);
                 }
 
-                return view('forms.aksi-grup', $data);
+                return view('forms.aksi', $data);
             })
             ->rawColumns(['aksi'])
             ->make();

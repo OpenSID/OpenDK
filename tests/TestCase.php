@@ -38,7 +38,7 @@ use Tests\Traits\WithSettingAplikasi;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication, DatabaseTransactions, WithSettingAplikasi;    
+    use CreatesApplication, DatabaseTransactions, WithSettingAplikasi;
 
     /**
      * Set up the test environment.

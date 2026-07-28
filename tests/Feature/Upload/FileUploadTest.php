@@ -299,8 +299,7 @@ describe('File Upload Functionality', function () {
 
             $file = UploadedFile::fake()->image('logo.png')->size(100);
 
-            $updateData = [
-                'nama_kecamatan' => 'Updated Kecamatan',
+            $updateData = [                
                 'kecamatan_id' => '33010100',
                 'provinsi_id' => '33',
                 'kabupaten_id' => '33010',

@@ -50,9 +50,21 @@ abstract class TestCase extends BaseTestCase
 
         // Ensure a Profil record with valid kecamatan_id exists so the
         // CompleteProfile middleware does not redirect to data.profil.index.
-        Profil::firstOrCreate(
-            ['id' => 1],
-            [
+        $profil = Profil::first();
+        if ($profil) {
+            if (is_null($profil->kecamatan_id)) {
+                $profil->update([
+                    'kecamatan_id' => '33010100',
+                    'nama_kecamatan' => 'Pagentan',
+                    'nama_kabupaten' => 'Banjarnegara',
+                    'nama_provinsi' => 'Jawa Tengah',
+                    'provinsi_id' => '33',
+                    'kabupaten_id' => '33010',
+                    'nama' => 'Kecamatan Test',
+                ]);
+            }
+        } else {
+            Profil::create([
                 'nama' => 'Kecamatan Test',
                 'kecamatan_id' => '33010100',
                 'provinsi_id' => '33',
@@ -66,8 +78,8 @@ abstract class TestCase extends BaseTestCase
                 'email' => 'test@example.com',
                 'tahun_pembentukan' => '2024',
                 'dasar_pembentukan' => 'Dasar Pembentukan Test',
-            ]
-        );
+            ]);
+        }
 
         // Authenticate a user for all tests to prevent 403 errors
         // This is necessary for Laravel 11 where authorization is stricter
